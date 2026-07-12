@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useSocket } from '@/lib/use-socket';
+import { useTranslations } from 'next-intl';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, BarChart, Bar,
@@ -15,13 +16,6 @@ import {
 import { DraggableDashboard, WidgetDef } from '@/components/draggable-dashboard';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function saudacao() {
-  const h = new Date().getHours();
-  if (h < 12) return 'Bom dia';
-  if (h < 19) return 'Boa tarde';
-  return 'Boa noite';
-}
 
 const hoje = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
 const hojeISO = new Date().toISOString().split('T')[0];
@@ -91,6 +85,7 @@ function StatCard({ label, value, sub, color = 'bg-blue-600' }: { label: string;
 }
 
 function EmBreve({ titulo, descricao }: { titulo: string; descricao?: string }) {
+  const tCommon = useTranslations('common');
   return (
     <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-center" style={{ padding: '40px 24px' }}>
       <svg className="w-8 h-8 text-slate-300" style={{ marginBottom: '12px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +93,7 @@ function EmBreve({ titulo, descricao }: { titulo: string; descricao?: string }) 
       </svg>
       <p className="font-semibold text-slate-500 text-sm">{titulo}</p>
       {descricao && <p className="text-slate-400 text-xs" style={{ marginTop: '6px' }}>{descricao}</p>}
-      <span className="inline-block text-[10px] font-semibold badge-pad py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>Em breve</span>
+      <span className="inline-block text-[10px] font-semibold badge-pad py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>{tCommon('comingSoon')}</span>
     </div>
   );
 }
@@ -131,14 +126,22 @@ function Vazio({ msg = 'Sem dados para mostrar' }: { msg?: string }) {
 // ─── Header universal ─────────────────────────────────────────────────────────
 
 function DashboardHeader({ utilizador }: { utilizador: { nome: string; role: string; subRole?: string; servico?: string } }) {
+  const tRoles = useTranslations('roles');
+  const tSubRoles = useTranslations('subRoles');
+  const tDash = useTranslations('dashboard');
+  const tCommon = useTranslations('common');
   const primeiro = utilizador.nome.split(' ')[0];
-  const rl = roleLabel[utilizador.role] ?? utilizador.role;
-  const sr = utilizador.subRole ? (subRoleLabel[utilizador.subRole] ?? utilizador.subRole) : null;
+  const rl = tRoles.has(utilizador.role as any) ? tRoles(utilizador.role as any) : (roleLabel[utilizador.role] ?? utilizador.role);
+  const sr = utilizador.subRole
+    ? (tSubRoles.has(utilizador.subRole as any) ? tSubRoles(utilizador.subRole as any) : (subRoleLabel[utilizador.subRole] ?? utilizador.subRole))
+    : null;
+  const h = new Date().getHours();
+  const saudacaoStr = h < 12 ? tDash('welcome') : h < 19 ? tDash('welcomeAfternoon') : tDash('welcomeEvening');
   return (
     <div className="flex items-start justify-between" style={{ marginBottom: '36px' }}>
       <div>
         <p className="text-sm text-slate-400 capitalize" style={{ marginBottom: '4px' }}>{hoje}</p>
-        <h1 className="text-3xl font-bold text-slate-900">{saudacao()}, {primeiro} 👋</h1>
+        <h1 className="text-3xl font-bold text-slate-900">{saudacaoStr}, {primeiro} 👋</h1>
         <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
           <span className="text-xs font-medium badge-pad py-1 rounded-full bg-blue-100 text-blue-700">{rl}</span>
           {sr && <span className="text-xs font-medium badge-pad py-1 rounded-full bg-purple-100 text-purple-700">{sr}</span>}
@@ -146,7 +149,7 @@ function DashboardHeader({ utilizador }: { utilizador: { nome: string; role: str
       </div>
       <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl" style={{ padding: '8px 16px' }}>
         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-emerald-700 text-sm font-semibold">Sistema Online</span>
+        <span className="text-emerald-700 text-sm font-semibold">{tCommon('systemOnline')}</span>
       </div>
     </div>
   );
@@ -515,6 +518,7 @@ const TIPO_EXAME_LABELS: Record<string, string> = {
 };
 
 function DashboardImagiologia({ utilizador }: { utilizador: any }) {
+  const tCommon = useTranslations('common');
   const qc = useQueryClient();
   const toast = useToast();
   const [atualizando, setAtualizando] = useState<string | null>(null);
@@ -549,7 +553,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
       <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Exames Pendentes" value={worklist.length} color="bg-sky-500" sub={`${emProgresso} em progresso`} />
         <StatCard label="Urgentes" value={urgentes} color={urgentes > 0 ? 'bg-red-500' : 'bg-slate-400'} />
-        <StatCard label="Relatórios Emitidos Hoje" value={0} color="bg-slate-400" sub="Em breve" />
+        <StatCard label="Relatórios Emitidos Hoje" value={0} color="bg-slate-400" sub={tCommon('comingSoon')} />
       </div>
 
       <SecaoTitulo>Worklist — Exames Pendentes</SecaoTitulo>
@@ -1243,6 +1247,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
 // ─── Vista 10: TI ─────────────────────────────────────────────────────────────
 
 function DashboardTI({ utilizador }: { utilizador: any }) {
+  const tCommon = useTranslations('common');
   const { data: utilizadores = [], isLoading } = useQuery<any[]>({
     queryKey: ['dash-ti'],
     queryFn: () => api.get('/utilizadores').catch(() => ({ data: { data: [] } })).then(r => r.data?.data ?? r.data ?? []),
@@ -1256,7 +1261,7 @@ function DashboardTI({ utilizador }: { utilizador: any }) {
       <DashboardHeader utilizador={utilizador} />
       <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Utilizadores Ativos" value={utilizadores.filter((u: any) => u.ativo).length} color="bg-cyan-600" />
-        <StatCard label="Sessões Abertas" value="—" color="bg-slate-400" sub="Disponível em breve" />
+        <StatCard label="Sessões Abertas" value="—" color="bg-slate-400" sub={tCommon('availableSoon')} />
         <StatCard label="Alertas de Segurança" value={0} color="bg-emerald-500" />
       </div>
 
@@ -1293,13 +1298,14 @@ function DashboardTI({ utilizador }: { utilizador: any }) {
 // ─── Vista 11: Qualidade / Compliance ────────────────────────────────────────
 
 function DashboardQualidade({ utilizador }: { utilizador: any }) {
+  const tCommon = useTranslations('common');
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
       <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
-        <StatCard label="Não Conformidades" value="—" color="bg-slate-400" sub="Em breve" />
-        <StatCard label="Auditorias Pendentes" value="—" color="bg-slate-400" sub="Em breve" />
-        <StatCard label="IACS Ativos" value="—" color="bg-slate-400" sub="Em breve" />
+        <StatCard label="Não Conformidades" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
+        <StatCard label="Auditorias Pendentes" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
+        <StatCard label="IACS Ativos" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
       </div>
 
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
@@ -1334,13 +1340,15 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-executivo'],
     queryFn: async () => {
-      const [kp, ps, u, a] = await Promise.all([
+      const [kp, ps, u, a, oc, corr] = await Promise.all([
         api.get('/dashboard/executivo').catch(() => ({ data: null })),
         api.get('/dashboard/pessoal').catch(() => ({ data: null })),
         api.get('/urgencia/dashboard').catch(() => ({ data: null })),
         api.get('/dashboard/analytics').catch(() => ({ data: null })),
+        api.get('/outcomes/dashboard').catch(() => ({ data: null })),
+        api.get('/ai-clinico/outcomes-correlation').catch(() => ({ data: null })),
       ]);
-      return { kpis: kp.data, pessoal: ps.data, urgencia: u.data, analytics: a.data };
+      return { kpis: kp.data, pessoal: ps.data, urgencia: u.data, analytics: a.data, outcomes: oc.data, correlacaoAI: corr.data };
     },
     staleTime: 60_000,
   });
@@ -1349,6 +1357,8 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
   const pessoal = (data as any).pessoal ?? null;
   const urgencia = (data as any).urgencia ?? null;
   const analytics = (data as any).analytics ?? null;
+  const outcomes = (data as any).outcomes ?? null;
+  const correlacaoAI = (data as any).correlacaoAI ?? null;
   const pct = kpis?.camas?.taxaOcupacao ?? 0;
 
   if (isLoading) return <Spinner />;
@@ -1482,6 +1492,72 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
           </div>
         </CardContainer>
       )}
+
+      {/* Patient Outcomes Tracking */}
+      <div style={{ marginTop: '24px' }}>
+        <SecaoTitulo>Outcomes Clínicos — Inteligência IA</SecaoTitulo>
+        <div className="grid grid-cols-3 gap-5">
+          <CardContainer>
+            <CardHeader title="Readmissões 30 dias" />
+            <div style={{ padding: '24px' }}>
+              <p className="text-4xl font-bold" style={{ color: (outcomes?.taxaReadmissao30d ?? 0) > 15 ? '#ef4444' : '#10b981' }}>
+                {outcomes?.taxaReadmissao30d ?? '—'}%
+              </p>
+              <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>
+                {outcomes?.readmissoes30d ?? 0} readmissões registadas
+              </p>
+              <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                Benchmark: &lt;15% (WHO)
+              </p>
+            </div>
+          </CardContainer>
+
+          <CardContainer>
+            <CardHeader title="Outcomes por Tipo" />
+            <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {outcomes?.porTipo?.length ? outcomes.porTipo.map((t: any) => {
+                const tipoLabel: Record<string, string> = {
+                  readmissao_30d: 'Readmissão 30d', obito_intra: 'Óbito intra-hospitalar',
+                  complicacao: 'Complicação', melhoria: 'Melhoria registada',
+                };
+                const corMap: Record<string, string> = {
+                  readmissao_30d: '#f59e0b', obito_intra: '#ef4444', complicacao: '#f97316', melhoria: '#10b981',
+                };
+                return (
+                  <div key={t.tipo} className="flex justify-between text-sm">
+                    <span style={{ color: corMap[t.tipo] ?? '#64748b' }} className="font-medium">{tipoLabel[t.tipo] ?? t.tipo}</span>
+                    <span className="font-semibold text-slate-800">{t.total}</span>
+                  </div>
+                );
+              }) : <Vazio msg="Sem outcomes registados" />}
+            </div>
+          </CardContainer>
+
+          <CardContainer>
+            <CardHeader title="Correlação Decisões IA" />
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <p className="text-xs text-slate-500">Outcomes com decisão IA associada</p>
+                <p className="text-2xl font-bold text-slate-800">{outcomes?.correlacaoIA?.outcomesComDecisaoIA ?? 0}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Dessas decisões IA foram aceites</p>
+                <p className="text-2xl font-bold text-blue-600">{outcomes?.correlacaoIA?.decisoesIAAceites ?? 0}</p>
+              </div>
+              {correlacaoAI && (
+                <div style={{ marginTop: '8px', paddingTop: '12px', borderTop: '1px solid #e2e8f0' }}>
+                  <p className="text-xs text-slate-500">Decisões IA aceites → outcome negativo (30d)</p>
+                  <p className="text-2xl font-bold" style={{ color: (correlacaoAI.taxaOutcomeNegativoAceite ?? 0) > 20 ? '#ef4444' : '#10b981' }}>
+                    {correlacaoAI.taxaOutcomeNegativoAceite ?? 0}%
+                  </p>
+                  <p className="text-xs text-slate-400">{correlacaoAI.aceitesComOutcomeNegativo ?? 0} casos nos últimos 30 dias</p>
+                </div>
+              )}
+              <p className="text-xs text-slate-400">Permite avaliar impacto clínico das sugestões IA aceites vs rejeitadas</p>
+            </div>
+          </CardContainer>
+        </div>
+      </div>
     </>
   );
 }

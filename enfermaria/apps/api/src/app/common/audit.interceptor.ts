@@ -15,6 +15,8 @@ const DOENTE_ID_RE = /^\/(?:v\d+\/)?doentes\/([0-9a-f-]{8,})/i;
 const CAMPOS_SENSIVEIS = new Set([
   'password', 'passwordAtual', 'novaPassword', 'passwordHash',
   'mfaSecret', 'secret', 'code', 'token', 'passwordExpiredToken', 'mfaSetupToken',
+  // PII — RGPD: não guardar em audit log
+  'contacto', 'morada', 'nif', 'dataNascimento',
 ]);
 
 function redactirBody(body: unknown): string | undefined {

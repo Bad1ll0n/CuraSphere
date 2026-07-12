@@ -60,6 +60,33 @@ export class AiClinicoController {
     return this.service.insightsRejeicao(from, to);
   }
 
+  @Get('outcomes-correlation')
+  @Roles('medico', 'direcao', 'qualidade', 'ti')
+  correlacaoOutcomes(@Query('from') from?: string, @Query('to') to?: string) {
+    return this.service.correlacaoOutcomes(
+      from ? new Date(from) : undefined,
+      to ? new Date(to) : undefined,
+    );
+  }
+
+  @Post('icd10/sugerir')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
+  sugerirIcd10(@Body('nota') nota: string) {
+    return this.service.sugerirIcd10(nota ?? '');
+  }
+
+  @Get('staffing/previsoes')
+  @Roles('direcao', 'chefe_enfermeiros', 'chefe_turno', 'ti')
+  listarStaffingPrevisoes(@Query('dias') dias?: string) {
+    return this.service.listarStaffingPrevisoes(dias ? parseInt(dias, 10) : 7);
+  }
+
+  @Post('staffing/gerar')
+  @Roles('direcao', 'chefe_enfermeiros', 'ti')
+  gerarStaffingPrevisoes() {
+    return this.service.preverNecessidadesPessoal();
+  }
+
   @Post(':doenteId/readmissao')
   @Roles('medico', 'chefe_enfermeiros', 'administrativo', 'chefe_turno')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {

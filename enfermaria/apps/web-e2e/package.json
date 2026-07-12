@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "nx": {
-    "implicitDependencies": ["@org/web"],
+    "implicitDependencies": [
+      "@org/web"
+    ],
     "targets": {
       "e2e": {
         "executor": "nx:run-commands",
@@ -22,6 +24,7 @@
     }
   },
   "devDependencies": {
-    "@playwright/test": "^1.50.0"
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0"
   }
 }

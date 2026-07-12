@@ -291,6 +291,73 @@ export class RhService {
     return { ausenciasPendentes, ausenciasAtivas, formacoesAExpirar, totalStaff: staff, contratosAExpirar, avaliacoesPendentes };
   }
 
+  // ── Staff Wellbeing ───────────────────────────────────────────────────────
+
+  async submeterWellbeing(
+    utilizadorId: string | null,
+    respostas: Record<string, number>,
+  ) {
+    const valores = Object.values(respostas);
+    const media = valores.length > 0 ? valores.reduce((a, b) => a + b, 0) / valores.length : 1;
+    const scoreGlobal = Math.round(Math.min(100, Math.max(0, (media - 1) / 4 * 100 + 20)));
+
+    // Start of current week (Monday)
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 0=Dom, 1=Seg, ...
+    const diffParaSegunda = diaSemana === 0 ? -6 : 1 - diaSemana;
+    const segunda = new Date(agora);
+    segunda.setDate(agora.getDate() + diffParaSegunda);
+    segunda.setHours(0, 0, 0, 0);
+
+    return this.prisma.wellbeingSurvey.create({
+      data: {
+        utilizadorId: utilizadorId ?? null,
+        respostas,
+        scoreGlobal,
+        semana: segunda,
+      },
+    });
+  }
+
+  async dashboardWellbeing(semanas = 4) {
+    const agora = new Date();
+    const limite = new Date(agora);
+    limite.setDate(agora.getDate() - semanas * 7);
+
+    const surveys = await this.prisma.wellbeingSurvey.findMany({
+      where: { semana: { gte: limite } },
+      orderBy: { semana: 'asc' },
+    });
+
+    // Group by semana ISO string
+    const grouped: Record<string, { semana: string; scores: number[]; count: number }> = {};
+    for (const s of surveys) {
+      const key = s.semana.toISOString().split('T')[0];
+      if (!grouped[key]) {
+        grouped[key] = { semana: key, scores: [], count: 0 };
+      }
+      grouped[key].scores.push(s.scoreGlobal);
+      grouped[key].count++;
+    }
+
+    const semanaData = Object.values(grouped).map(g => ({
+      semana: g.semana,
+      mediaScore: g.count > 0 ? Math.round(g.scores.reduce((a, b) => a + b, 0) / g.count) : 0,
+      respostas: g.count,
+    }));
+
+    const allScores = surveys.map(s => s.scoreGlobal);
+    const mediaGlobal = allScores.length > 0
+      ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
+      : null;
+
+    return {
+      mediaGlobal,
+      totalRespostas: surveys.length,
+      semanas: semanaData,
+    };
+  }
+
   private async buscarAusencia(id: string) {
     const a = await this.prisma.ausencia.findUnique({ where: { id } });
     if (!a) throw new NotFoundException(`Ausência (ID ${id}) não encontrada`);

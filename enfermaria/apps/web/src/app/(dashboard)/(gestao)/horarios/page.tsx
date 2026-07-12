@@ -88,6 +88,13 @@ export default function HorariosPagina() {
   const [gerandoAuto, setGerandoAuto] = useState(false);
   const [resultadoAuto, setResultadoAuto] = useState<{ turnosCriados: number; profissionaisUsados: number; diasGerados: number } | null>(null);
 
+  // Previsão de staffing IA
+  interface StaffingPrevisao { id: string; data: string; turno: string; pessoalRecomendado: number; pessoalAtual: number | null; motivo: string; confianca: string }
+  const [staffingPrevisoes, setStaffingPrevisoes] = useState<StaffingPrevisao[]>([]);
+  const [loadingStaffing, setLoadingStaffing] = useState(false);
+  const [gerandoStaffing, setGerandoStaffing] = useState(false);
+  const [staffingAberto, setStaffingAberto] = useState(false);
+
   // Gestão de folgas
   const [minhasFolgas, setMinhasFolgas] = useState<Array<{ id: string; dataInicio: string; dataFim: string; estado: string; tipo: string }>>([]);
   const [folgasPendentes, setFolgasPendentes] = useState<Array<Ausencia & { tipo: string }>>([]);
@@ -143,6 +150,28 @@ export default function HorariosPagina() {
   };
 
   useEffect(() => { carregar(); }, [mes, ano]);
+
+  const carregarStaffing = async () => {
+    setLoadingStaffing(true);
+    try {
+      const r = await api.get('/ai-clinico/staffing/previsoes', { params: { dias: 7 } });
+      setStaffingPrevisoes(r.data ?? []);
+    } catch {
+      setStaffingPrevisoes([]);
+    } finally {
+      setLoadingStaffing(false);
+    }
+  };
+
+  const gerarStaffing = async () => {
+    setGerandoStaffing(true);
+    try {
+      await api.post('/ai-clinico/staffing/gerar');
+      await carregarStaffing();
+    } catch { /* silencioso */ } finally {
+      setGerandoStaffing(false);
+    }
+  };
 
   useEffect(() => {
     if (!diaSelecionado || utilizador?.role !== 'medico') { setConsultasDia([]); return; }
@@ -451,6 +480,108 @@ export default function HorariosPagina() {
         </div>
       </div>
 
+
+      {/* Painel de Previsão de Staffing IA — apenas chefes */}
+      {isChefe && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginBottom: '24px' }}>
+          <button
+            onClick={() => { setStaffingAberto(a => !a); if (!staffingAberto && !staffingPrevisoes.length) carregarStaffing(); }}
+            className="w-full flex items-center justify-between hover:bg-slate-50/50 rounded-2xl transition-colors"
+            style={{ padding: '16px 24px' }}>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Previsão de Necessidades de Pessoal (IA)</span>
+              <span className="text-xs bg-violet-50 text-violet-600 border border-violet-200 rounded-md font-medium" style={{ padding: '2px 8px' }}>7 dias</span>
+            </div>
+            <svg className={`w-4 h-4 text-slate-400 transition-transform ${staffingAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {staffingAberto && (
+            <div style={{ padding: '0 24px 20px' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
+                <p className="text-xs text-slate-500">Previsão automática para os próximos 7 dias com base em dados históricos de admissões.</p>
+                <button
+                  onClick={gerarStaffing}
+                  disabled={gerandoStaffing}
+                  className="flex items-center gap-1.5 text-xs font-semibold bg-violet-600 hover:bg-violet-700 text-white rounded-lg disabled:opacity-50 transition-colors"
+                  style={{ padding: '6px 14px' }}>
+                  {gerandoStaffing ? 'A gerar...' : '↺ Gerar previsão'}
+                </button>
+              </div>
+
+              {loadingStaffing && <p className="text-xs text-slate-400">A carregar previsões...</p>}
+
+              {!loadingStaffing && staffingPrevisoes.length === 0 && (
+                <div className="text-center" style={{ padding: '24px' }}>
+                  <p className="text-sm text-slate-400" style={{ marginBottom: '12px' }}>Sem previsões geradas ainda.</p>
+                  <button onClick={gerarStaffing} disabled={gerandoStaffing}
+                    className="text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-700 border border-violet-200 rounded-xl disabled:opacity-50 transition-colors"
+                    style={{ padding: '8px 20px' }}>
+                    Gerar agora
+                  </button>
+                </div>
+              )}
+
+              {!loadingStaffing && staffingPrevisoes.length > 0 && (() => {
+                const diasUnicos = [...new Set(staffingPrevisoes.map(p => p.data.slice(0, 10)))].sort();
+                const corConfianca: Record<string, string> = { alta: 'text-green-600', media: 'text-amber-600', baixa: 'text-red-600' };
+                return (
+                  <div style={{ overflowX: 'auto' }}>
+                    <table className="w-full text-sm" style={{ borderCollapse: 'collapse', minWidth: '600px' }}>
+                      <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '8px 12px' }}>Data</th>
+                          {(['manha', 'tarde', 'noite'] as const).map(t => (
+                            <th key={t} className="text-center text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '8px 12px' }}>
+                              {t === 'manha' ? 'Manhã' : t === 'tarde' ? 'Tarde' : 'Noite'}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {diasUnicos.map(dia => {
+                          const d = new Date(dia + 'T00:00:00');
+                          const diasSemanaArr = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                          return (
+                            <tr key={dia} className="border-b border-slate-50 hover:bg-slate-50/50">
+                              <td className="text-slate-700 font-medium" style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                                <span className="text-xs text-slate-400 font-normal" style={{ marginRight: '6px' }}>{diasSemanaArr[d.getDay()]}</span>
+                                {d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
+                              </td>
+                              {(['manha', 'tarde', 'noite'] as const).map(turno => {
+                                const p = staffingPrevisoes.find(x => x.data.slice(0, 10) === dia && x.turno === turno);
+                                return (
+                                  <td key={turno} className="text-center" style={{ padding: '10px 12px' }}>
+                                    {p ? (
+                                      <div>
+                                        <span className="text-lg font-bold text-slate-800">{p.pessoalRecomendado}</span>
+                                        <span className={`block text-xs font-medium ${corConfianca[p.confianca] ?? 'text-slate-400'}`}>{p.confianca}</span>
+                                        <span className="block text-xs text-slate-400" title={p.motivo} style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: '0 auto' }}>{p.motivo}</span>
+                                      </div>
+                                    ) : (
+                                      <span className="text-slate-300">—</span>
+                                    )}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+        </div>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>

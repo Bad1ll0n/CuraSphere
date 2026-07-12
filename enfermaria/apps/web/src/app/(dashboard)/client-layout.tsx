@@ -20,9 +20,13 @@ import { CommandPalette } from '@/components/command-palette';
 import { DarkModeToggle } from '@/components/dark-mode-toggle';
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal';
 import { NotificationBell } from '@/components/notification-bell';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useTranslations } from 'next-intl';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
+  const tCommon = useTranslations('common');
+  const tLayout = useTranslations('layout');
   const router = useRouter();
   const pathname = usePathname();
 
@@ -107,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-        <span className="text-sm">A carregar...</span>
+        <span className="text-sm">{tCommon('loading')}</span>
       </div>
     </div>
   );
@@ -124,7 +128,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">
       <a href="#main-content" className="skip-to-content">
-        Ir para conteúdo principal
+        {tLayout('skipToContent')}
       </a>
 
       {sidebarAberta && (
@@ -164,12 +168,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main id="main-content" className="flex-1 overflow-auto" tabIndex={-1}>
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
           <NotificationBell />
+          <LanguageSwitcher />
           <DarkModeToggle />
         </div>
 
         <button
           className="md:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-[#0f172a] text-white rounded-xl flex items-center justify-center shadow-lg"
-          aria-label="Abrir menu"
+          aria-label={tLayout('openMenu')}
           aria-expanded={sidebarAberta}
           aria-controls="sidebar-nav"
           onClick={() => setSidebarAberta((v) => !v)}
@@ -187,12 +192,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </svg>
                 <p className="text-sm text-amber-800 font-medium">
                   {passwordAviso.diasRestantes !== null && passwordAviso.diasRestantes <= 0
-                    ? 'A tua password expirou. Altera-a agora para continuar a aceder.'
-                    : `A tua password expira em ${passwordAviso.diasRestantes} dia${passwordAviso.diasRestantes !== 1 ? 's' : ''}. Altera-a brevemente.`}
+                    ? tLayout('passwordExpired')
+                    : tLayout('passwordExpiresSoon', { days: passwordAviso.diasRestantes ?? 0, plural: (passwordAviso.diasRestantes ?? 1) !== 1 ? 's' : '' })}
                 </p>
               </div>
               <Link href="/perfil" className="text-xs font-semibold text-amber-700 underline hover:text-amber-900 shrink-0">
-                Alterar password
+                {tLayout('changePassword')}
               </Link>
             </div>
           )}

@@ -78,6 +78,15 @@ async function bootstrap() {
     crossOriginResourcePolicy: { policy: 'same-site' },
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     hsts: { maxAge: 63072000, includeSubDomains: true, preload: true },
+    permissionsPolicy: {
+      policy: {
+        camera: [],
+        microphone: ['self'],
+        geolocation: [],
+        payment: [],
+        'display-capture': ['self'],
+      },
+    },
   }));
   app.use((cookieParser as any)());
   app.use(json({ limit: '500kb' }));

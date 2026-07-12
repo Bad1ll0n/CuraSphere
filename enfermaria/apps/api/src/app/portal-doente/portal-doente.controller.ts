@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Request, Res, Header } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request, Res, Header, Query } from '@nestjs/common';
 import type { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -80,5 +80,44 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   entrarVideoPortal(@Param('id') id: string, @Request() req: any) {
     return this.service.entrarVideoPortal(id, req.user.sub);
+  }
+
+  // ── PRO endpoints (portal) ────────────────────────────────────────────────
+
+  @Get('pro/templates')
+  @UseGuards(PortalJwtGuard)
+  listarTemplates() {
+    return this.service.listarTemplatesPRO();
+  }
+
+  @Post('pro/submeter')
+  @UseGuards(PortalJwtGuard)
+  submeterPRO(
+    @Body() body: { templateId: string; respostas: Record<string, unknown> },
+    @Request() req: any,
+  ) {
+    return this.service.submeterPRO(req.user.doenteId, body.templateId, body.respostas);
+  }
+
+  @Get('pro/historico')
+  @UseGuards(PortalJwtGuard)
+  historicoPRO(@Request() req: any, @Query('templateId') templateId?: string) {
+    return this.service.historicoPRO(req.user.doenteId, templateId);
+  }
+
+  // ── PRO admin endpoints (clinical staff) ──────────────────────────────────
+
+  @Post('pro/templates')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
+  criarTemplate(@Body() body: { nome: string; campos: object[] }) {
+    return this.service.criarTemplatePRO(body.nome, body.campos);
+  }
+
+  @Get('pro/doente/:doenteId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
+  historicoPRODoente(@Param('doenteId') doenteId: string) {
+    return this.service.historicoPRODoente(doenteId);
   }
 }

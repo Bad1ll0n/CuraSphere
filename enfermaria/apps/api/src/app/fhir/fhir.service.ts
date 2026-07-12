@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
 
 // LOINC code → SinalVital field mapping
@@ -21,7 +22,14 @@ export class CriarDispositivoDto {
 
 @Injectable()
 export class FhirService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(FhirService.name);
+  // In-memory fallback cache when Redis unavailable
+  private readonly spmsMemCache = new Map<string, { value: any; expiresAt: number }>();
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async receberObservation(body: any, apiKey: string) {
     const dispositivo = await this.prisma.dispositivoFhir.findUnique({ where: { apiKey } });
@@ -264,6 +272,59 @@ export class FhirService {
     if (mime === 'application/fhir+json') return 'fhir_json';
     if (mime?.includes('hl7')) return 'hl7';
     return 'outro';
+  }
+
+  // ── SPMS Integration ────────────────────────────────────────────────────────
+
+  async buscarDadosSPMS(nsns: string): Promise<any> {
+    const apiKey = process.env['SPMS_API_KEY'];
+    if (!apiKey) return null;
+
+    const cacheKey = `spms:${nsns}`;
+    const TTL_SECONDS = 600; // 10 minutes
+
+    // 1. Try Redis cache
+    const cached = await this.redis.get<any>(cacheKey);
+    if (cached !== null) return cached;
+
+    // 2. Try in-memory fallback cache
+    const memEntry = this.spmsMemCache.get(cacheKey);
+    if (memEntry && memEntry.expiresAt > Date.now()) return memEntry.value;
+
+    // 3. Fetch from SPMS API
+    const baseUrl = process.env['SPMS_API_URL'] ?? 'https://api-staging.spms.min-saude.pt';
+    const url = `${baseUrl}/v1/utente?nsns=${encodeURIComponent(nsns)}`;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          Accept: 'application/json',
+        },
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        this.logger.warn(`SPMS API error ${response.status} for nsns=${nsns}`);
+        return null;
+      }
+
+      const data = await response.json();
+
+      // Cache result
+      await this.redis.set(cacheKey, data, TTL_SECONDS);
+      this.spmsMemCache.set(cacheKey, { value: data, expiresAt: Date.now() + TTL_SECONDS * 1000 });
+
+      return data;
+    } catch (err: any) {
+      this.logger.warn(`SPMS fetch failed for nsns=${nsns}: ${err?.message ?? err}`);
+      return null;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   // Mock lookup SNS — estrutura real, dados fictícios demonstrativos

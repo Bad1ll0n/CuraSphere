@@ -1,20 +1,24 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-const SHORTCUTS = [
-  { key: 'Cmd / Ctrl + K', desc: 'Abrir paleta de comandos e pesquisar doentes' },
-  { key: '? + texto', desc: 'Pesquisa inteligente (IA) no Cmd+K' },
-  { key: '?', desc: 'Mostrar esta lista de atalhos' },
-  { key: 'Escape', desc: 'Fechar modal, paleta ou overlay' },
-];
-
 export function KeyboardShortcutsModal({ open, onClose }: Props) {
+  const t = useTranslations('shortcuts');
+  const tCommon = useTranslations('common');
+
+  const SHORTCUTS = [
+    { key: 'Cmd / Ctrl + K', desc: t('openPalette') },
+    { key: '? + texto', desc: t('aiSearch') },
+    { key: '?', desc: t('showShortcuts') },
+    { key: 'Escape', desc: t('closeModal') },
+  ];
+
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -28,16 +32,16 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Atalhos de teclado"
+      aria-label={t('title')}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-[400px] shadow-2xl border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-base text-slate-800 dark:text-slate-100">Atalhos de teclado</h2>
+          <h2 className="font-bold text-base text-slate-800 dark:text-slate-100">{t('title')}</h2>
           <button
             onClick={onClose}
-            aria-label="Fechar"
+            aria-label={tCommon('close')}
             className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +59,7 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
             </div>
           ))}
         </div>
-        <p className="mt-4 text-xs text-slate-400 text-center">Prima <kbd className="bg-slate-100 dark:bg-slate-700 px-1 rounded font-mono text-xs">?</kbd> para reabrir</p>
+        <p className="mt-4 text-xs text-slate-400 text-center">{t('hint')}</p>
       </div>
     </div>
   );

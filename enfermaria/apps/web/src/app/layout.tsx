@@ -2,6 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getLocale } from 'next-intl/server';
 import { AuthProvider } from '../lib/auth-context';
 import { QueryProvider } from '../lib/query-provider';
 import { PwaRegister } from '../components/pwa-register';
@@ -31,16 +33,21 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="pt" className={inter.variable} suppressHydrationWarning>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('curasphere-theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='high-contrast')document.documentElement.classList.add('high-contrast');}catch(e){}})();` }} />
       </head>
       <body className="font-sans antialiased">
-        <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </QueryProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <QueryProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </QueryProvider>
+        </NextIntlClientProvider>
         <PwaRegister />
       </body>
     </html>

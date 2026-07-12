@@ -21,6 +21,7 @@ function Dashboard() {
     { href: '/portal/documentos', label: 'Os Meus Documentos', desc: 'Relatórios e exames clínicos', icon: '📄', color: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8' },
     { href: '/portal/medicacao', label: 'Medicação Activa', desc: 'Os seus medicamentos prescritos', icon: '💊', color: '#f0fdf4', border: '#bbf7d0', text: '#166534' },
     { href: '/portal/plano-alta', label: 'Plano de Alta', desc: 'Critérios e data estimada de alta', icon: '🏠', color: '#fff7ed', border: '#fed7aa', text: '#9a3412' },
+    { href: '/portal/pro', label: 'Como me Sinto', desc: 'Registe sintomas e bem-estar', icon: '❤', color: '#fff1f2', border: '#fecdd3', text: '#be123c' },
     { href: '/portal/mensagem', label: 'Contactar Equipa', desc: 'Enviar uma mensagem à equipa', icon: '✉️', color: '#faf5ff', border: '#e9d5ff', text: '#7c3aed' },
     { href: '/portal/exportar', label: 'Os Meus Dados', desc: 'Exportar dados clínicos (RGPD)', icon: '⬇', color: '#f8fafc', border: '#e2e8f0', text: '#475569' },
   ];

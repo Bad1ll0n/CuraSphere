@@ -4,6 +4,9 @@
 const { composePlugins, withNx } = require('@nx/next');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require('@sentry/nextjs');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -14,6 +17,10 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   transpilePackages: ['@org/shared', '@org/ui'],
   async headers() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+    const wsOrigins = apiUrl
+      ? `${apiUrl.replace(/^http/, 'ws')} ${apiUrl}`
+      : 'ws://localhost:3333 http://localhost:3333';
     return [
       {
         source: '/(.*)',
@@ -37,11 +44,11 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob:",
               "font-src 'self' data:",
-              "connect-src 'self' ws://localhost:3333 http://localhost:3333 https:",
+              `connect-src 'self' ${wsOrigins} https:`,
               "frame-ancestors 'none'",
               "object-src 'none'",
               "base-uri 'self'",
-              `report-uri ${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/v1/csp-report`,
+              `report-uri ${apiUrl || 'http://localhost:3333'}/v1/csp-report`,
             ].join('; '),
           },
         ],
@@ -54,7 +61,7 @@ const plugins = [withNx];
 
 const baseConfig = composePlugins(...plugins)(nextConfig);
 
-module.exports = withSentryConfig(baseConfig, {
+module.exports = withSentryConfig(withNextIntl(baseConfig), {
   silent: true,
   // Desactivar upload de source maps se não houver auth token configurado
   disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,

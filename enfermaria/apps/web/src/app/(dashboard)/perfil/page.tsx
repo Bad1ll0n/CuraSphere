@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 
 export default function PerfilPage() {
-  const { utilizador, logout } = useAuth();
+  const { utilizador, logout, registerPasskey } = useAuth();
 
   // MFA setup
   const [qrCode, setQrCode] = useState<string | null>(null);
@@ -73,6 +73,44 @@ export default function PerfilPage() {
       setMensagem({ tipo: 'erro', texto: e.response?.data?.message ?? 'Código inválido' });
     } finally {
       setLoadingDesativar(false);
+    }
+  };
+
+  // Passkeys
+  type Passkey = { id: string; nome: string; deviceType: string; backedUp: boolean; criadoEm: string; ultimoUsoEm: string | null };
+  const [passkeys, setPasskeys] = useState<Passkey[]>([]);
+  const [loadingRegPasskey, setLoadingRegPasskey] = useState(false);
+  const [nomePasskey, setNomePasskey] = useState('');
+  const [msgPasskey, setMsgPasskey] = useState<{ tipo: 'ok' | 'erro'; texto: string } | null>(null);
+
+  useEffect(() => {
+    api.get('/auth/webauthn/credentials')
+      .then(({ data }) => setPasskeys(data))
+      .catch(() => {});
+  }, []);
+
+  const adicionarPasskey = async () => {
+    setLoadingRegPasskey(true);
+    setMsgPasskey(null);
+    try {
+      await registerPasskey(nomePasskey || 'Passkey');
+      const { data } = await api.get('/auth/webauthn/credentials');
+      setPasskeys(data);
+      setNomePasskey('');
+      setMsgPasskey({ tipo: 'ok', texto: 'Passkey registada com sucesso.' });
+    } catch {
+      setMsgPasskey({ tipo: 'erro', texto: 'Erro ao registar passkey. Verifique se o seu dispositivo suporta passkeys.' });
+    } finally {
+      setLoadingRegPasskey(false);
+    }
+  };
+
+  const removerPasskey = async (id: string) => {
+    try {
+      await api.delete(`/auth/webauthn/credentials/${id}`);
+      setPasskeys(p => p.filter(pk => pk.id !== id));
+    } catch {
+      setMsgPasskey({ tipo: 'erro', texto: 'Erro ao remover passkey.' });
     }
   };
 
@@ -270,6 +308,81 @@ export default function PerfilPage() {
                 ? <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                 : <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
               {mensagem.texto}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Passkeys / FIDO2 */}
+      <section style={{ marginBottom: '40px' }}>
+        <h2 className="text-base font-bold text-slate-800" style={{ marginBottom: '4px' }}>Passkeys</h2>
+        <p className="text-xs text-slate-500" style={{ marginBottom: '16px' }}>
+          Inicie sessão com Touch ID, Face ID ou chave de segurança — sem password.
+        </p>
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm" style={{ padding: '24px' }}>
+          {/* Lista passkeys existentes */}
+          {passkeys.length > 0 ? (
+            <ul className="space-y-3" style={{ marginBottom: '20px' }}>
+              {passkeys.map(pk => (
+                <li key={pk.id} className="flex items-center justify-between gap-3 bg-slate-50 rounded-xl" style={{ padding: '12px 14px' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{pk.nome}</p>
+                      <p className="text-xs text-slate-400">
+                        {pk.deviceType === 'multiDevice' ? 'Sincronizada' : 'Dispositivo único'}{pk.backedUp ? ' · Cópia de segurança' : ''}
+                        {pk.ultimoUsoEm ? ` · Último uso: ${new Date(pk.ultimoUsoEm).toLocaleDateString('pt-PT')}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => removerPasskey(pk.id)}
+                    className="text-xs text-red-500 hover:text-red-600 border border-red-100 hover:border-red-200 rounded-lg transition-colors"
+                    style={{ padding: '6px 12px' }}
+                  >
+                    Remover
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-slate-400" style={{ marginBottom: '16px' }}>Nenhuma passkey registada.</p>
+          )}
+
+          {/* Adicionar nova passkey */}
+          <div className="border-t border-slate-100" style={{ paddingTop: '16px' }}>
+            <p className="text-xs font-semibold text-slate-600" style={{ marginBottom: '10px' }}>Adicionar nova passkey</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={nomePasskey}
+                onChange={e => setNomePasskey(e.target.value)}
+                placeholder="Ex: MacBook Touch ID"
+                maxLength={50}
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+              />
+              <button
+                onClick={adicionarPasskey}
+                disabled={loadingRegPasskey}
+                className="shrink-0 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-xl transition-colors"
+                style={{ padding: '10px 16px' }}
+              >
+                {loadingRegPasskey ? 'A registar...' : 'Registar'}
+              </button>
+            </div>
+          </div>
+
+          {msgPasskey && (
+            <div className={`flex items-center gap-2 text-sm rounded-xl ${msgPasskey.tipo === 'ok' ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' : 'bg-red-50 border border-red-200 text-red-700'}`}
+              style={{ padding: '12px 14px', marginTop: '12px' }}>
+              {msgPasskey.tipo === 'ok'
+                ? <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                : <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+              {msgPasskey.texto}
             </div>
           )}
         </div>

@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { Utilizador } from '@org/shared';
 import api from './api';
+import {
+  startAuthentication,
+  startRegistration,
+} from '@simplewebauthn/browser';
 
 interface LoginResult {
   mfaPendente: boolean;
@@ -20,6 +24,8 @@ interface AuthContextType {
   loading: boolean;
   login: (numeroFuncionario: string, password: string) => Promise<LoginResult>;
   loginMfa: (mfaChallengeToken: string, code: string) => Promise<void>;
+  loginPasskey: (numeroFuncionario?: string) => Promise<void>;
+  registerPasskey: (nome?: string) => Promise<void>;
   logout: () => void;
   passwordAviso: { ativo: boolean; diasRestantes: number | null };
 }
@@ -72,6 +78,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
+  const loginPasskey = async (numeroFuncionario?: string) => {
+    const { data: options } = await api.post('/auth/webauthn/auth/options', { numeroFuncionario });
+    const response = await startAuthentication({ optionsJSON: options });
+    const { data } = await api.post('/auth/webauthn/auth/verify', { numeroFuncionario, response });
+    setUtilizador(data.utilizador);
+    router.push('/');
+  };
+
+  const registerPasskey = async (nome?: string) => {
+    const { data: options } = await api.get('/auth/webauthn/register/options');
+    const response = await startRegistration({ optionsJSON: options });
+    await api.post('/auth/webauthn/register/verify', { response, nome: nome ?? 'Passkey' });
+  };
+
   const logout = () => {
     api.post('/auth/logout').catch(() => {});
     sessionStorage.removeItem('mfaSetupToken');
@@ -83,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ utilizador, loading, login, loginMfa, logout, passwordAviso }}>
+    <AuthContext.Provider value={{ utilizador, loading, login, loginMfa, loginPasskey, registerPasskey, logout, passwordAviso }}>
       {children}
     </AuthContext.Provider>
   );

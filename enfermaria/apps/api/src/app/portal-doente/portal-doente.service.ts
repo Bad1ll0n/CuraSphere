@@ -198,4 +198,34 @@ export class PortalDoenteService {
     await Promise.all(mensagens);
     return { mensagem: 'Mensagem enviada à equipa' };
   }
+
+  // ── PRO — Patient-Reported Outcomes ──────────────────────────────────────────
+
+  async listarTemplatesPRO() {
+    return this.prisma.templatePRO.findMany({ where: { ativo: true }, orderBy: { nome: 'asc' } });
+  }
+
+  async criarTemplatePRO(nome: string, campos: object[]) {
+    return this.prisma.templatePRO.create({ data: { nome, campos } });
+  }
+
+  async submeterPRO(doenteId: string, templateId: string, respostas: Record<string, unknown>) {
+    return this.prisma.registoPRO.create({
+      data: { doenteId, templateId, respostas },
+      include: { template: { select: { nome: true } } },
+    });
+  }
+
+  async historicoPRO(doenteId: string, templateId?: string) {
+    return this.prisma.registoPRO.findMany({
+      where: { doenteId, ...(templateId ? { templateId } : {}) },
+      include: { template: { select: { nome: true, campos: true } } },
+      orderBy: { criadoEm: 'desc' },
+      take: 50,
+    });
+  }
+
+  async historicoPRODoente(doenteId: string) {
+    return this.historicoPRO(doenteId);
+  }
 }

@@ -1,23 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 type Tema = 'light' | 'dark' | 'high-contrast';
 
 const PROXIMO: Record<Tema, Tema> = { light: 'dark', dark: 'high-contrast', 'high-contrast': 'light' };
 const LABEL: Record<Tema, string> = { light: '🌙', dark: '◐', 'high-contrast': '☀️' };
-const ARIA: Record<Tema, string> = {
-  light: 'Activar modo escuro',
-  dark: 'Activar modo alto contraste',
-  'high-contrast': 'Activar modo claro',
-};
 
 export function DarkModeToggle() {
+  const t = useTranslations('theme');
   const [tema, setTema] = useState<Tema>('light');
 
   useEffect(() => {
-    const t = localStorage.getItem('curasphere-theme') as Tema | null;
-    if (t === 'dark' || t === 'high-contrast') setTema(t);
+    const saved = localStorage.getItem('curasphere-theme') as Tema | null;
+    if (saved === 'dark' || saved === 'high-contrast') setTema(saved);
     else setTema('light');
   }, []);
 
@@ -30,11 +27,13 @@ export function DarkModeToggle() {
     try { localStorage.setItem('curasphere-theme', next); } catch { /* ignore */ }
   };
 
+  const ariaKey = tema === 'light' ? 'activateDark' : tema === 'dark' ? 'activateHighContrast' : 'activateLight';
+
   return (
     <button
       onClick={toggle}
-      aria-label={ARIA[tema]}
-      title={ARIA[tema]}
+      aria-label={t(ariaKey)}
+      title={t(ariaKey)}
       className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-700 transition-colors"
       style={{ fontSize: '16px' }}
     >

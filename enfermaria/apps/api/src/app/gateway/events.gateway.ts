@@ -42,7 +42,7 @@ function parseAllowedOrigins(): string[] | null {
     credentials: true,
   },
   namespace: '/ws',
-  maxHttpBufferSize: 1e6,
+  maxHttpBufferSize: 1e5,
   transports: ['websocket'],
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -57,6 +57,22 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private clientLocks = new Map<string, Array<{ notaId: string; doenteId: string }>>(); // socketId → nota locks held
   private lastPing = new Map<string, number>();     // socketId → last ping timestamp
   private lastPassagem = new Map<string, number>(); // socketId → last passagem timestamp
+
+  private readonly wsBucket = new Map<string, { tokens: number; resetAt: number }>();
+  private readonly WS_MAX_TOKENS = 10;
+  private readonly WS_REFILL_MS = 1000;
+
+  private consumeToken(socketId: string): boolean {
+    const now = Date.now();
+    let bucket = this.wsBucket.get(socketId);
+    if (!bucket || now >= bucket.resetAt) {
+      bucket = { tokens: this.WS_MAX_TOKENS, resetAt: now + this.WS_REFILL_MS };
+    }
+    if (bucket.tokens <= 0) return false;
+    bucket.tokens--;
+    this.wsBucket.set(socketId, bucket);
+    return true;
+  }
 
   constructor(
     private readonly jwt: JwtService,
@@ -108,6 +124,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.clientUsers.delete(client.id);
     this.lastPing.delete(client.id);
     this.lastPassagem.delete(client.id);
+    this.wsBucket.delete(client.id);
 
     if (utilizadorId) {
       await this.prisma.presencaOnline.deleteMany({
@@ -118,6 +135,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('ping')
   async handlePing(@ConnectedSocket() client: Socket) {
+    if (!this.consumeToken(client.id)) { client.emit('error', { message: 'Rate limit exceeded' }); client.disconnect(true); return; }
     const now = Date.now();
     if (now - (this.lastPing.get(client.id) ?? 0) < 30_000) return;
     this.lastPing.set(client.id, now);
@@ -136,6 +154,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { passagemId: string },
   ) {
+    if (!this.consumeToken(client.id)) { client.emit('error', { message: 'Rate limit exceeded' }); client.disconnect(true); return; }
     const now = Date.now();
     if (now - (this.lastPassagem.get(client.id) ?? 0) < 5_000) return;
     this.lastPassagem.set(client.id, now);
@@ -168,6 +187,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { doenteId: string },
   ) {
+    if (!this.consumeToken(client.id)) { client.emit('error', { message: 'Rate limit exceeded' }); client.disconnect(true); return; }
     if (!data?.doenteId) return;
     client.join(`doente:${data.doenteId}`);
   }
@@ -177,6 +197,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { notaId: string; doenteId: string },
   ) {
+    if (!this.consumeToken(client.id)) { client.emit('error', { message: 'Rate limit exceeded' }); client.disconnect(true); return; }
     if (!data?.notaId || !data?.doenteId) return;
     const userId = this.clientUsers.get(client.id);
     const nome = this.clientNames.get(client.id) ?? 'Utilizador';
@@ -202,6 +223,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { notaId: string; doenteId: string },
   ) {
+    if (!this.consumeToken(client.id)) { client.emit('error', { message: 'Rate limit exceeded' }); client.disconnect(true); return; }
     if (!data?.notaId || !data?.doenteId) return;
     await this.redis.del(`nota:lock:${data.notaId}`);
     const remaining = (this.clientLocks.get(client.id) ?? []).filter(l => l.notaId !== data.notaId);

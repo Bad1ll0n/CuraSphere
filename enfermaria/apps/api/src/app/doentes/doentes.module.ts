@@ -6,9 +6,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { PdfService } from '../common/pdf.service';
 import { NotificacoesModule } from '../notificacoes/notificacoes.module';
 import { AiClinicoModule } from '../ai-clinico/ai-clinico.module';
+import { WebhooksModule } from '../webhooks/webhooks.module';
 
 @Module({
-  imports: [PrismaModule, NotificacoesModule, AiClinicoModule],
+  imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [DoenteService, PdfService],
   exports: [DoenteService],

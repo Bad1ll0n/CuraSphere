@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { PrismaService } from '../prisma/prisma.service';
@@ -24,14 +24,27 @@ function cosineSimilarity(a: number[], b: number[]): number {
 }
 
 @Injectable()
-export class GuidelinesService {
+export class GuidelinesService implements OnModuleInit {
   private readonly logger = new Logger(GuidelinesService.name);
   private readonly anthropic = new Anthropic();
   private readonly openai = process.env['OPENAI_API_KEY']
     ? new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
     : null;
 
+  // Set to true when pgvector extension + embedding column are confirmed present
+  private pgvectorDisponivel = false;
+
   constructor(private readonly prisma: PrismaService) {}
+
+  async onModuleInit() {
+    try {
+      await this.prisma.$queryRaw`SELECT embedding FROM guidelines_clinicas LIMIT 0`;
+      this.pgvectorDisponivel = true;
+      this.logger.log('pgvector: coluna embedding detectada — vector search activo');
+    } catch {
+      this.logger.log('pgvector: coluna embedding não encontrada — usando cosine JS fallback');
+    }
+  }
 
   private async gerarEmbedding(texto: string): Promise<number[] | null> {
     if (!this.openai) return null;
@@ -67,18 +80,32 @@ export class GuidelinesService {
     return intersecao / Math.sqrt(setA.size * setB.size);
   }
 
+  private vectorToString(v: number[]): string {
+    return `[${v.join(',')}]`;
+  }
+
   async indexarGuideline(id: string): Promise<void> {
     const g = await this.prisma.guidelineClinica.findUnique({ where: { id } });
     if (!g) return;
     const texto = `${g.titulo} ${g.conteudo}`;
 
-    // Try OpenAI embeddings first, fall back to keyword extraction
     const embedding = await this.gerarEmbedding(texto);
+
     if (embedding) {
-      await this.prisma.guidelineClinica.update({
-        where: { id },
-        data: { embeddingJson: JSON.stringify(embedding) },
-      });
+      if (this.pgvectorDisponivel) {
+        const vecStr = this.vectorToString(embedding);
+        await this.prisma.$executeRaw`
+          UPDATE guidelines_clinicas
+          SET "embeddingJson" = ${JSON.stringify(embedding)},
+              embedding = ${vecStr}::vector
+          WHERE id = ${id}
+        `;
+      } else {
+        await this.prisma.guidelineClinica.update({
+          where: { id },
+          data: { embeddingJson: JSON.stringify(embedding) },
+        });
+      }
     } else {
       const termos = await this.extrairTermosClinicos(texto);
       await this.prisma.guidelineClinica.update({
@@ -103,13 +130,31 @@ export class GuidelinesService {
   }
 
   async buscarPorSimilaridade(query: string, limite = 5): Promise<any[]> {
+    // Fast path: pgvector HNSW index
+    if (this.pgvectorDisponivel && this.openai) {
+      const queryVec = await this.gerarEmbedding(query);
+      if (queryVec) {
+        const vecStr = this.vectorToString(queryVec);
+        const rows = await this.prisma.$queryRaw<any[]>`
+          SELECT id, titulo, categoria, conteudo, fonte, versao, "criadoEm",
+                 1 - (embedding <=> ${vecStr}::vector) AS score
+          FROM guidelines_clinicas
+          WHERE ativo = true
+            AND embedding IS NOT NULL
+          ORDER BY embedding <=> ${vecStr}::vector
+          LIMIT ${limite}
+        `;
+        return rows.filter(r => r.score > 0.3);
+      }
+    }
+
+    // Slow path: load all embeddings into memory and compute cosine in JS
     const guidelines = await this.prisma.guidelineClinica.findMany({
       where: { ativo: true, NOT: { embeddingJson: null } },
       select: { id: true, titulo: true, categoria: true, conteudo: true, fonte: true, versao: true, criadoEm: true, embeddingJson: true },
     });
     if (!guidelines.length) return [];
 
-    // Detect if stored as real embedding (number[]) or keywords (string[])
     let firstParsed: any[] = [];
     try { firstParsed = JSON.parse(guidelines[0].embeddingJson!); } catch { return []; }
     const isRealEmbedding = firstParsed.length > 100 && typeof firstParsed[0] === 'number';

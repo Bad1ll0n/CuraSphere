@@ -4,15 +4,46 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../lib/auth-context';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '../../../components/language-switcher';
 
 export default function LoginPage() {
-  const { login, loginMfa } = useAuth();
+  const { login, loginMfa, loginPasskey } = useAuth();
   const router = useRouter();
+  const t = useTranslations('login');
 
   const [numeroFuncionario, setNumeroFuncionario] = useState('');
   const [password, setPassword] = useState('');
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const [passkeySuportada, setPasskeySuportada] = useState(false);
+  const [ssoProviders, setSsoProviders] = useState<{ id: string; nome: string; tipo: string }[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.PublicKeyCredential) {
+      window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.()
+        .then(setPasskeySuportada)
+        .catch(() => {});
+    }
+    // Carregar providers SSO disponíveis
+    fetch('/api/auth/sso/providers')
+      .then(r => r.json())
+      .then(setSsoProviders)
+      .catch(() => {});
+  }, []);
+
+  const handlePasskeyLogin = async () => {
+    setErro('');
+    setLoading(true);
+    try {
+      await loginPasskey(numeroFuncionario || undefined);
+    } catch {
+      setErro('Autenticação com passkey falhou. Tente a password.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [mfaPendente, setMfaPendente] = useState(false);
   const [mfaChallengeToken, setMfaChallengeToken] = useState('');
@@ -41,7 +72,7 @@ export default function LoginPage() {
       }
       // If none of the above, login() already redirected to '/'
     } catch {
-      setErro('Número de funcionário ou password incorretos.');
+      setErro(t('invalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -54,7 +85,7 @@ export default function LoginPage() {
     try {
       await loginMfa(mfaChallengeToken, codigoMfa);
     } catch {
-      setErro('Código inválido. Tente novamente.');
+      setErro(t('mfa.invalidCode'));
       setCodigoMfa('');
       mfaInputRef.current?.focus();
     } finally {
@@ -107,6 +138,9 @@ export default function LoginPage() {
       {painelEsquerdo}
 
       <div className="flex-1 flex items-center justify-center bg-[#f8fafc] px-16 xl:px-24">
+        <div className="absolute top-4 right-4">
+          <LanguageSwitcher />
+        </div>
         <div className="w-full max-w-[400px]">
 
           <div className="flex lg:hidden items-center gap-2 mb-10">
@@ -117,26 +151,26 @@ export default function LoginPage() {
           {!mfaPendente ? (
             <>
               <div style={{ marginBottom: '40px' }}>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Bem-vindo de volta</h2>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('welcome')}</h2>
                 <p className="text-slate-500 text-sm">Introduza as suas credenciais para continuar</p>
               </div>
 
               <form onSubmit={handleSubmitCredenciais}>
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-semibold text-slate-700">Número de Funcionário</label>
+                  <label className="block text-sm font-semibold text-slate-700">{t('employeeNumber')}</label>
                   <input
                     type="text"
                     value={numeroFuncionario}
                     onChange={(e) => setNumeroFuncionario(e.target.value)}
                     className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-base text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
-                    placeholder="Ex: 00001"
+                    placeholder={t('employeeNumberPlaceholder')}
                     required
                     autoComplete="username"
                   />
                 </div>
 
                 <div className="space-y-1.5" style={{ marginTop: '28px' }}>
-                  <label className="block text-sm font-semibold text-slate-700">Password</label>
+                  <label className="block text-sm font-semibold text-slate-700">{t('password')}</label>
                   <input
                     type="password"
                     value={password}
@@ -156,9 +190,46 @@ export default function LoginPage() {
                   className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] disabled:opacity-60 text-white font-semibold py-3.5 rounded-lg transition-all shadow-lg shadow-blue-500/25 text-base"
                   style={{ marginTop: '36px' }}
                 >
-                  {loading ? <Spinner label="A entrar..." /> : 'Entrar'}
+                  {loading ? <Spinner label={t('signingIn')} /> : t('signIn')}
                 </button>
               </form>
+
+              {(passkeySuportada || ssoProviders.length > 0) && (
+                <div style={{ marginTop: '16px' }}>
+                  <div className="flex items-center gap-3 my-2">
+                    <div className="flex-1 h-px bg-slate-200" />
+                    <span className="text-xs text-slate-400">ou</span>
+                    <div className="flex-1 h-px bg-slate-200" />
+                  </div>
+                  <div className="space-y-2">
+                    {passkeySuportada && (
+                      <button
+                        type="button"
+                        onClick={handlePasskeyLogin}
+                        disabled={loading}
+                        className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] disabled:opacity-60 text-slate-700 font-medium py-3 rounded-lg transition-all text-sm"
+                      >
+                        <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                        Entrar com passkey
+                      </button>
+                    )}
+                    {ssoProviders.map((p: { id: string; nome: string; tipo: string }) => (
+                      <a
+                        key={p.id}
+                        href={`/api/auth/sso/${p.tipo}/login?providerId=${p.id}`}
+                        className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 font-medium py-3 rounded-lg transition-all text-sm"
+                      >
+                        <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        Entrar com {p.nome}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -168,8 +239,8 @@ export default function LoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Verificação em 2 passos</h2>
-                <p className="text-slate-500 text-sm">Abra a aplicação autenticadora e introduza o código de 6 dígitos.</p>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('mfa.title')}</h2>
+                <p className="text-slate-500 text-sm">{t('mfa.description')}</p>
               </div>
 
               <form onSubmit={handleSubmitMfa}>

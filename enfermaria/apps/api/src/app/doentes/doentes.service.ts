@@ -2,11 +2,13 @@ import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenEx
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { StorageService } from '../common/storage.service';
 import { EstadoDoente } from '../common/enums';
 import * as jwt from 'jsonwebtoken';
+import { WebhooksService } from '../webhooks/webhooks.service';
 
 @Injectable()
 export class DoenteService {
@@ -14,10 +16,12 @@ export class DoenteService {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly tenantContext: TenantContextService,
     private readonly notificacoes: NotificacoesService,
     private readonly aiClinico: AiClinicoService,
     private readonly storage: StorageService,
     private readonly config: ConfigService,
+    private readonly webhooks: WebhooksService,
   ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
@@ -37,7 +41,7 @@ export class DoenteService {
 
     if (!restritos.includes(role)) {
       // Admin e outros roles não clínicos: ver internados + ambulatorio (não pendente_cama)
-      const whereBase = { ativo: true, estadoRegisto: { not: 'pendente_cama' }, ...searchFilter };
+      const whereBase = { tenantId: this.tenantContext.tenantId, ativo: true, estadoRegisto: { not: 'pendente_cama' }, ...searchFilter };
       const [data, total] = await this.prisma.$transaction([
         this.prisma.doente.findMany({
           where: whereBase,
@@ -67,6 +71,7 @@ export class DoenteService {
     const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
 
     const whereClinico: any = {
+      tenantId: this.tenantContext.tenantId,
       ativo: true,
       estadoRegisto: 'internado',
       ...searchFilter,
@@ -172,6 +177,7 @@ export class DoenteService {
     nome: string;
     dataNascimento: Date;
     diagnosticoPrincipal: string;
+    icd10Code?: string;
     camaId: string;
     dataAltaPrevista?: Date;
     administrativoAdmissaoId: string;
@@ -182,7 +188,7 @@ export class DoenteService {
     localidade?: string;
     telefone?: string;
   }) {
-    return this.prisma.$transaction(async (tx) => {
+    const resultado = await this.prisma.$transaction(async (tx) => {
       const cama = await tx.cama.findUnique({ where: { id: data.camaId } });
       if (!cama) throw new NotFoundException(`Cama (ID ${data.camaId}) não encontrada`);
       if (cama.estado !== 'livre' && cama.estado !== 'reservada') {
@@ -210,10 +216,12 @@ export class DoenteService {
 
       const doente = await tx.doente.create({
         data: {
+          tenantId: this.tenantContext.tenantId,
           nome: data.nome,
           dataNascimento: new Date(data.dataNascimento),
           numeroProcesso,
           diagnosticoPrincipal: data.diagnosticoPrincipal,
+          ...(data.icd10Code && { icd10Code: data.icd10Code }),
           camaId: data.camaId,
           dataAltaPrevista: data.dataAltaPrevista ? new Date(data.dataAltaPrevista) : undefined,
           administrativoAdmissaoId: data.administrativoAdmissaoId,
@@ -250,6 +258,9 @@ export class DoenteService {
 
       return doente;
     }, { isolationLevel: 'Serializable' });
+
+    this.webhooks.dispatcharEvento('doente.admitido', { doenteId: resultado.id, nome: resultado.nome }).catch(() => null);
+    return resultado;
   }
 
   async editar(id: string, dto: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
@@ -297,6 +308,8 @@ export class DoenteService {
     this.agendarFollowUps(id, doente.nome).catch((err) =>
       this.logger.warn(`Follow-up scheduling failed: ${err?.message}`),
     );
+
+    this.webhooks.dispatcharEvento('doente.alta', { doenteId: id, nome: doente.nome }).catch(() => null);
 
     return { mensagem: 'Alta registada com sucesso' };
   }

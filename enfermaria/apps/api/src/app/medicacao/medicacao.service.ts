@@ -4,10 +4,13 @@ const { authenticator } = require('otplib') as any;
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { RedisService } from '../redis/redis.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
 import interacoesJson from './interacoes.json';
+import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
+import { WebhooksService } from '../webhooks/webhooks.service';
 
 export interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
 const INTERACOES: Interacao[] = interacoesJson as Interacao[];
@@ -49,9 +52,11 @@ export class MedicacaoService {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly tenantContext: TenantContextService,
     private readonly notificacoes: NotificacoesService,
     private readonly redis: RedisService,
     private readonly stewardship: StewardshipService,
+    private readonly webhooks: WebhooksService,
   ) {}
 
   private async verificarInteracaoIA(novoNome: string, ativas: string[]): Promise<{ bloqueante: boolean; aviso: string | null }> {
@@ -62,7 +67,7 @@ export class MedicacaoService {
         max_tokens: 200,
         temperature: 0.05 as any,
         system: [{ type: 'text' as const, text: 'És um sistema de verificação de interações medicamentosas clínicas. Responde APENAS com JSON válido: { "interacao": boolean, "severidade": "nenhuma|minor|moderada|grave|contraindicada", "descricao": "string curta ou null" }. Sê conservador — só assinala interações clinicamente documentadas.', cache_control: { type: 'ephemeral' as const } }],
-        messages: [{ role: 'user', content: `Novo fármaco: ${novoNome}\nAtivos: ${ativas.join(', ')}` }],
+        messages: [{ role: 'user', content: `Novo fármaco: ${sanitizeForPrompt(novoNome, 100)}\nAtivos: ${ativas.map(a => sanitizeForPrompt(a, 80)).join(', ')}` }],
       });
       const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
       const r = JSON.parse(texto);
@@ -175,7 +180,7 @@ export class MedicacaoService {
     administradoPorId: string;
     observacoes?: string;
   }) {
-    return this.prisma.$transaction(async (tx) => {
+    const registo = await this.prisma.$transaction(async (tx) => {
       const medicacao = await tx.medicacao.findUnique({
         where: { id: data.medicacaoId },
         include: {
@@ -225,6 +230,9 @@ export class MedicacaoService {
         },
       });
     }, { isolationLevel: 'Serializable' });
+
+    this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(() => null);
+    return registo;
   }
 
   async naoAdministrar(data: {
@@ -360,6 +368,7 @@ export class MedicacaoService {
 
     const medicacao = await this.prisma.medicacao.create({
       data: {
+        tenantId: this.tenantContext.tenantId,
         doenteId: data.doenteId,
         nome: data.nome,
         dose: data.dose,
@@ -578,7 +587,7 @@ export class MedicacaoService {
 
   async listarPrescricoesAtivas(servico?: string) {
     return this.prisma.doente.findMany({
-      where: { ativo: true, dataAlta: null },
+      where: { tenantId: this.tenantContext.tenantId, ativo: true, dataAlta: null },
       select: {
         id: true, nome: true,
         cama: { select: { numero: true, quarto: true } },

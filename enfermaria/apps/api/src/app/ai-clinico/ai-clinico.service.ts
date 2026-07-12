@@ -6,6 +6,20 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { GuidelinesService } from '../guidelines/guidelines.service';
 import { AlertasService } from '../alertas/alertas.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { sanitizeForPrompt } from './prompt-sanitizer';
+import { AiMetricsService } from './ai-metrics.service';
+import {
+  parseWithSchema,
+  AnaliseClinicoSchema,
+  TriagemSchema,
+  ProtocoloAiSchema,
+  TurnoSchema,
+  LOSSchema,
+  WatchdogDeterioracaoSchema,
+  ReadmissaoSchema,
+  NLQSchema,
+} from './ai-response-schemas';
 
 export interface EpisodioTriagem {
   queixaPrincipal: string;
@@ -39,11 +53,15 @@ export class AiClinicoService {
   private readonly cache = new Map<string, { data: any; ts: number }>();
   private readonly TTL_MS = 5 * 60 * 1000;
   private readonly TTL_LOS_MS = 2 * 60 * 60 * 1000;
+  private readonly MODEL_FAST = 'claude-haiku-4-5-20251001';
+  private readonly MODEL_CLINICAL = 'claude-sonnet-4-6';
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly guidelines: GuidelinesService,
     private readonly alertasService: AlertasService,
+    private readonly aiMetrics: AiMetricsService,
+    private readonly notificacoes: NotificacoesService,
   ) {}
 
   private async guidelinesCtx(query: string): Promise<string> {
@@ -66,15 +84,47 @@ export class AiClinicoService {
     this.cache.set(key, { data, ts: Date.now() });
   }
 
+  private async callAI(feature: string, params: Parameters<typeof this.client.messages.create>[0]) {
+    const t0 = Date.now();
+    let success = true;
+    let erro: string | undefined;
+    try {
+      const msg = await this.client.messages.create(params);
+      this.aiMetrics.registar({
+        feature,
+        modelo: params.model,
+        latencyMs: Date.now() - t0,
+        inputTokens: msg.usage?.input_tokens ?? 0,
+        outputTokens: msg.usage?.output_tokens ?? 0,
+        success: true,
+      }).catch(() => null);
+      return msg;
+    } catch (err) {
+      success = false;
+      erro = (err as any)?.message ?? 'unknown';
+      this.aiMetrics.registar({
+        feature,
+        modelo: params.model,
+        latencyMs: Date.now() - t0,
+        inputTokens: 0,
+        outputTokens: 0,
+        success,
+        erro,
+      }).catch(() => null);
+      throw err;
+    }
+  }
+
   private async logDecisao(
     tipo: string,
     payload: any,
     utilizadorId: string,
     doenteId?: string,
+    inputPayload?: any,
   ): Promise<string | null> {
     try {
       const decisao = await this.prisma.aiDecisao.create({
-        data: { tipo, payload, utilizadorId, doenteId },
+        data: { tipo, payload, utilizadorId, doenteId, inputPayload: inputPayload ?? null },
       });
       return decisao.id;
     } catch {
@@ -177,8 +227,8 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
 `.trim();
 
     const systemPrompt = isMedico
-      ? `És um sistema de apoio à decisão clínica para médicos em contexto hospitalar português. Analisa padrões nos sinais vitais, analíticas e contexto clínico. Nunca prescrevas medicamentos específicos. Termina com disclaimer. JSON: { "observacoes": ["..."], "padroesDetectados": ["..."], "investigacoesAConsiderar": ["..."], "disclaimer": "..." }`
-      : `És um sistema de apoio à observação clínica de enfermagem em contexto hospitalar português. Só observações de sinais vitais. Nunca sugiras tratamentos. JSON: { "observacoes": ["..."], "disclaimer": "..." }`;
+      ? `És um sistema de apoio à decisão clínica para médicos em contexto hospitalar português. Analisa padrões nos sinais vitais, analíticas e contexto clínico. Nunca prescrevas medicamentos específicos. Termina com disclaimer. Para cada observação, inclui em evidencias[] os dados específicos que a suportam. JSON: { "observacoes": ["..."], "padroesDetectados": ["..."], "investigacoesAConsiderar": ["..."], "evidencias": [{"tipo":"sinal_vital|medicacao|nota|exame|alerta","campo":"nome do campo","valor":"valor observado","relevancia":"alta|media"}], "disclaimer": "..." }`
+      : `És um sistema de apoio à observação clínica de enfermagem em contexto hospitalar português. Só observações de sinais vitais. Nunca sugiras tratamentos. JSON: { "observacoes": ["..."], "evidencias": [{"tipo":"sinal_vital","campo":"nome do campo","valor":"valor observado","relevancia":"alta|media"}], "disclaimer": "..." }`;
 
     const gCtx = await this.guidelinesCtx(doente.diagnosticoPrincipal ?? '');
     return { contexto, systemPrompt, gCtx };
@@ -195,7 +245,7 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
         }
         const { contexto, systemPrompt, gCtx } = built;
         const stream = await this.client.messages.stream({
-          model: 'claude-haiku-4-5-20251001',
+          model: this.MODEL_CLINICAL,
           max_tokens: 700,
           system: [{ type: 'text' as const, text: systemPrompt, cache_control: { type: 'ephemeral' as const } }],
           messages: [{ role: 'user', content: `Analisa este doente:\n\n${contexto}${gCtx}` }],
@@ -268,22 +318,22 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
 `.trim();
 
     const systemPrompt = isMedico
-      ? `És um sistema de apoio à decisão clínica para médicos em contexto hospitalar português. Analisa padrões nos sinais vitais, analíticas e contexto clínico. Nunca prescrevas medicamentos específicos. Termina com disclaimer. JSON: { "observacoes": ["..."], "padroesDetectados": ["..."], "investigacoesAConsiderar": ["..."], "disclaimer": "..." }`
-      : `És um sistema de apoio à observação clínica de enfermagem em contexto hospitalar português. Só observações de sinais vitais. Nunca sugiras tratamentos. JSON: { "observacoes": ["..."], "disclaimer": "..." }`;
+      ? `És um sistema de apoio à decisão clínica para médicos em contexto hospitalar português. Analisa padrões nos sinais vitais, analíticas e contexto clínico. Nunca prescrevas medicamentos específicos. Termina com disclaimer. Para cada observação, inclui em evidencias[] os dados específicos que a suportam. JSON: { "observacoes": ["..."], "padroesDetectados": ["..."], "investigacoesAConsiderar": ["..."], "evidencias": [{"tipo":"sinal_vital|medicacao|nota|exame|alerta","campo":"nome do campo","valor":"valor observado","relevancia":"alta|media"}], "disclaimer": "..." }`
+      : `És um sistema de apoio à observação clínica de enfermagem em contexto hospitalar português. Só observações de sinais vitais. Nunca sugiras tratamentos. JSON: { "observacoes": ["..."], "evidencias": [{"tipo":"sinal_vital","campo":"nome do campo","valor":"valor observado","relevancia":"alta|media"}], "disclaimer": "..." }`;
 
     const gCtx = await this.guidelinesCtx(doente.diagnosticoPrincipal ?? '');
 
     try {
-      const msg = await this.client.messages.create({
-        model: 'claude-haiku-4-5-20251001', max_tokens: 700, temperature: 0.2 as any,
+      const msg = await this.callAI('analisar', {
+        model: this.MODEL_CLINICAL, max_tokens: 700, temperature: 0.2 as any,
         system: [{ type: 'text' as const, text: systemPrompt, cache_control: { type: 'ephemeral' as const } }],
         messages: [{ role: 'user', content: `Analisa este doente:\n\n${contexto}${gCtx}` }],
       });
       const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
-      const resultado = this.parseJson(texto, { observacoes: [texto], disclaimer: 'Apoio à decisão clínica. Não substitui avaliação médica.' });
+      const resultado = parseWithSchema(texto, AnaliseClinicoSchema, { observacoes: [texto], disclaimer: 'Apoio à decisão clínica. Não substitui avaliação médica.' });
       this.store(cacheKey, resultado);
       if (utilizadorId) {
-        this.logDecisao('analise', resultado, utilizadorId, doenteId).then(id => {
+        this.logDecisao('analise', resultado, utilizadorId, doenteId, { contexto, systemPrompt }).then(id => {
           if (id) resultado._decisaoId = id;
         });
       }
@@ -310,21 +360,21 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
 `.trim();
 
     try {
-      const msg = await this.client.messages.create({
-        model: 'claude-haiku-4-5-20251001', max_tokens: 500, temperature: 0.15 as any,
+      const msg = await this.callAI('triagem', {
+        model: this.MODEL_FAST, max_tokens: 500, temperature: 0.15 as any,
         system: [{ type: 'text' as const, text: `És um sistema de apoio à triagem de urgência hospitalar português (Sistema Manchester). Analisa o episódio e identifica: sinais de alarme imediatos, observações relevantes para o enfermeiro triador, e discriminadores Manchester a avaliar. REGRAS: Nunca diagnósticas definitivamente. Nunca substituis o enfermeiro triador. A decisão final é sempre do profissional. JSON: { "alertasVermelhos": ["..."], "nivelSugerido": "vermelho|laranja|amarelo|verde|azul", "observacoes": ["..."], "discriminadoresAvaliar": ["..."], "disclaimer": "..." }`, cache_control: { type: 'ephemeral' as const } }],
         messages: [{ role: 'user', content: `Analisa este episódio de urgência:\n\n${contexto}` }],
       });
       const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
-      const resultado = this.parseJson(texto, {
-        alertasVermelhos: [], nivelSugerido: 'amarelo',
+      const resultado = parseWithSchema(texto, TriagemSchema, {
+        alertasVermelhos: [], nivelSugerido: 'amarelo' as const,
         observacoes: ['Não foi possível analisar o episódio automaticamente.'],
         discriminadoresAvaliar: [],
         disclaimer: 'Apoio à triagem. Decisão final do enfermeiro triador.',
       });
       this.store(cacheKey, resultado);
       if (utilizadorId) {
-        this.logDecisao('triagem', resultado, utilizadorId).then(id => {
+        this.logDecisao('triagem', resultado, utilizadorId, undefined, { contexto }).then(id => {
           if (id) resultado._decisaoId = id;
         });
       }
@@ -397,13 +447,13 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
     if (temDesvio) {
       try {
         const contextoStr = protocolos.map((p) => `${p.nome}: ${p.estado.toUpperCase()} — ${p.detalhe}`).join('\n');
-        const msg = await this.client.messages.create({
-          model: 'claude-haiku-4-5-20251001', max_tokens: 350, temperature: 0.1 as any,
+        const msg = await this.callAI('protocolo', {
+          model: this.MODEL_FAST, max_tokens: 350, temperature: 0.1 as any,
           system: [{ type: 'text' as const, text: 'Gera observações clínicas concisas sobre protocolos em desvio num hospital português. Nunca prescrevas tratamentos. JSON: { "observacoes": ["..."] }', cache_control: { type: 'ephemeral' as const } }],
           messages: [{ role: 'user', content: `Doente: ${doente.nome}\nProtocolos:\n${contextoStr}` }],
         });
         const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
-        const parsed = this.parseJson(texto, { observacoes: [] });
+        const parsed = parseWithSchema(texto, ProtocoloAiSchema, { observacoes: [] });
         observacoesAI = parsed.observacoes ?? [];
       } catch { /* silencioso */ }
     }
@@ -415,7 +465,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
     };
     this.cache.set(cacheKey, { data: resultado, ts: Date.now() });
     if (utilizadorId) {
-      this.logDecisao('protocolo', resultado, utilizadorId, doenteId).then(id => {
+      this.logDecisao('protocolo', resultado, utilizadorId, doenteId, { protocolos }).then(id => {
         if (id) resultado._decisaoId = id;
       });
     }
@@ -432,15 +482,15 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
       .join('\n');
 
     try {
-      const msg = await this.client.messages.create({
-        model: 'claude-haiku-4-5-20251001', max_tokens: 900, temperature: 0.3 as any,
+      const msg = await this.callAI('turno', {
+        model: this.MODEL_FAST, max_tokens: 900, temperature: 0.3 as any,
         system: [{ type: 'text' as const, text: `És um sistema de apoio à passagem de turno hospitalar português. Gera uma narrativa de passagem de turno profissional, concisa e em português europeu. Destaca doentes críticos, alertas activos e tarefas pendentes. Termina com 3 destaques prioritários para o turno seguinte. JSON: { "narrativa": "...", "destaques": ["...", "...", "..."], "disclaimer": "..." }`, cache_control: { type: 'ephemeral' as const } }],
         messages: [{ role: 'user', content: `Resume a passagem de turno para ${doentes.length} doentes:\n\n${contexto}` }],
       });
       const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
-      const resultado: any = this.parseJson(texto, { narrativa: texto, destaques: [], disclaimer: 'Gerado por IA. Verificar com equipa clínica.' });
+      const resultado: any = parseWithSchema(texto, TurnoSchema, { narrativa: texto, destaques: [], disclaimer: 'Gerado por IA. Verificar com equipa clínica.' });
       if (utilizadorId) {
-        this.logDecisao('turno', resultado, utilizadorId).then(id => {
+        this.logDecisao('turno', resultado, utilizadorId, undefined, { contexto }).then(id => {
           if (id) resultado._decisaoId = id;
         });
       }
@@ -524,21 +574,21 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
 `.trim();
 
     try {
-      const msg = await this.client.messages.create({
-        model: 'claude-haiku-4-5-20251001', max_tokens: 400, temperature: 0.2 as any,
+      const msg = await this.callAI('los', {
+        model: this.MODEL_FAST, max_tokens: 400, temperature: 0.2 as any,
         system: [{ type: 'text' as const, text: `És um sistema de apoio à previsão de tempo de internamento (LOS) hospitalar português. Com base nos dados clínicos, estima o número de dias adicionais de internamento esperados. JSON: { "losEstimadoDias": <número>, "confianca": "alta|media|baixa", "factores": ["..."], "alertaAtraso": <boolean>, "disclaimer": "..." }`, cache_control: { type: 'ephemeral' as const } }],
         messages: [{ role: 'user', content: `Estima o LOS para este doente:\n\n${contexto}` }],
       });
       const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
-      const resultado: any = this.parseJson(texto, {
+      const resultado: any = parseWithSchema(texto, LOSSchema, {
         losEstimadoDias: diasParaAlta ?? 3,
-        confianca: 'baixa', factores: [], alertaAtraso: false,
+        confianca: 'baixa' as const, factores: [], alertaAtraso: false,
         disclaimer: 'Estimativa automática. Não substitui avaliação clínica.',
       });
       resultado.diasJaInternado = diasInternamento;
       this.store(cacheKey, resultado);
       if (utilizadorId) {
-        this.logDecisao('los', resultado, utilizadorId, doenteId).then(id => {
+        this.logDecisao('los', resultado, utilizadorId, doenteId, { contexto }).then(id => {
           if (id) resultado._decisaoId = id;
         });
       }
@@ -708,8 +758,8 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
         const labsInfo = labsAlertas.length > 0 ? ` | Labs críticos: ${labsAlertas.join('; ')}` : '';
         const contextoCompacto = `Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'desconhecido'} | Estado: ${doente.estado} | NEWS2 atual: ${ultimoSinal?.news2 ?? 'sem registo'} | Tendência NEWS2 (slope/medição): ${slopeNews2.toFixed(2)} | Medições 24h: ${sinais24h.length} | SpO2: ${ultimoSinal?.saturacaoO2 ?? '?'}% | FC: ${ultimoSinal?.pulso ?? '?'} | Alertas urgentes: ${alertasAtivos}${labsInfo}`;
 
-        const msg = await this.client.messages.create({
-          model: 'claude-haiku-4-5-20251001',
+        const msg = await this.callAI('watchdog', {
+          model: this.MODEL_FAST,
           max_tokens: 100,
           temperature: 0.1 as any,
           system: [{ type: 'text' as const, text: 'És um sistema de vigilância clínica hospitalar. Analisa dados e responde APENAS com JSON válido, sem texto adicional: {"deterioracao": boolean, "razao": "máx 80 chars"}', cache_control: { type: 'ephemeral' as const } }],
@@ -717,7 +767,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
         });
 
         const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-        const resultado = this.parseJson(texto, { deterioracao: false, razao: '' });
+        const resultado = parseWithSchema(texto, WatchdogDeterioracaoSchema, { deterioracao: false, razao: '' });
 
         if (resultado.deterioracao) {
           await this.alertasService.criarAlerta(
@@ -770,8 +820,8 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
       escalas: doente.escalasClinicas.map(e => `${e.tipo}: ${e.pontuacao}`),
     });
 
-    const msg = await this.client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const msg = await this.callAI('readmissao', {
+      model: this.MODEL_CLINICAL,
       max_tokens: 350,
       temperature: 0.15 as any,
       system: [{ type: 'text' as const, text: 'Avalia risco de readmissão hospitalar nos 30 dias pós-alta com base em dados clínicos portugueses. Responde APENAS com JSON: { "risco": "baixo|medio|alto", "factores": ["string",...], "recomendacoes": ["string",...] }', cache_control: { type: 'ephemeral' as const } }],
@@ -779,7 +829,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     });
 
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-    const resultado = this.parseJson(texto, { risco: 'baixo', factores: [], recomendacoes: [] });
+    const resultado = parseWithSchema(texto, ReadmissaoSchema, { risco: 'baixo' as const, factores: [], recomendacoes: [] });
 
     await this.prisma.sumarioAlta.update({
       where: { doenteId },
@@ -801,20 +851,20 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
 Formato de resposta: [{"diagnostico":"...","probabilidade":"Alta|Média|Baixa","justificacao":"...","proximos_passos":"..."}]
 Máximo 5 diagnósticos. Ordena por probabilidade decrescente. Responde APENAS com JSON válido, sem texto adicional.`;
 
-    const msg = await this.client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const msg = await this.callAI('diagnostico_diferencial', {
+      model: this.MODEL_CLINICAL,
       max_tokens: 1200,
       system: [
         { type: 'text', text: SYSTEM_DD, cache_control: { type: 'ephemeral' as const } },
         { type: 'text', text: built.contexto },
       ],
-      messages: [{ role: 'user', content: `Sintomas/queixa actual: ${sintomas}` }],
+      messages: [{ role: 'user', content: `Sintomas/queixa actual: ${sanitizeForPrompt(sintomas, 600)}` }],
     });
 
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
     const resultado = (() => { try { return JSON.parse(texto); } catch { return []; } })();
 
-    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId).catch(() => {});
+    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId, { sintomas }).catch(() => {});
     return resultado;
   }
 
@@ -828,16 +878,16 @@ Tabelas disponíveis e campos:
 - alertaClinico: doenteId, tipo, lido(boolean), urgencia(boolean), criadoEm
     `.trim();
 
-    const msg = await this.client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const msg = await this.callAI('nlq', {
+      model: this.MODEL_FAST,
       max_tokens: 400,
       temperature: 0.1 as any,
       system: [{ type: 'text' as const, text: `Converte queries em linguagem natural para filtros Prisma sobre dados hospitalares.\n${schemaSimplificado}\nResponde APENAS com JSON válido (sem markdown): { "where": {filtros para tabela doente}, "include": {"sinaisVitais":{"orderBy":{"criadoEm":"desc"},"take":1}}, "take": número máx 20, "explicacao": "string curta em português" }\nPara relações (ex: doentes com news2 alto), usa where com nested sinaisVitais some.\nNunca retornes mais de 20 resultados. Sempre inclui ativo:true no where.`, cache_control: { type: 'ephemeral' as const } }],
-      messages: [{ role: 'user', content: query }],
+      messages: [{ role: 'user', content: sanitizeForPrompt(query, 400) }],
     });
 
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-    const filtros = this.parseJson(texto, { where: { ativo: true }, take: 10, explicacao: 'Sem resultados' });
+    const filtros = parseWithSchema(texto, NLQSchema, { where: { ativo: true }, take: 10, explicacao: 'Sem resultados' });
 
     const where = { ativo: true, ...(filtros.where ?? {}) };
     const take = Math.min(filtros.take ?? 10, 20);
@@ -853,7 +903,7 @@ Tabelas disponíveis e campos:
     });
 
     if (utilizadorId) {
-      this.logDecisao('nlq', { query, filtros, count: resultados.length }, utilizadorId).catch(() => {});
+      this.logDecisao('nlq', { filtros, count: resultados.length }, utilizadorId, undefined, { query }).catch(() => {});
     }
 
     return { resultados, explicacao: filtros.explicacao ?? 'Pesquisa concluída', total: resultados.length };
@@ -901,8 +951,8 @@ Tabelas disponíveis e campos:
       problemasActivos: doente.problemas.map(p => p.descricao),
     });
 
-    const msg = await this.client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const msg = await this.callAI('carta_alta', {
+      model: this.MODEL_CLINICAL,
       max_tokens: 900,
       system: [{ type: 'text' as const, text: 'Gera uma carta de alta médica em português europeu formal (formato A4, 280-350 palavras). A carta é enviada ao médico de família. Inclui: cabeçalho com data, identificação do doente, diagnóstico principal, resumo da evolução clínica, medicação de saída (com doses e via), recomendações pós-alta e follow-up. Assina como "Equipa Clínica — CuraSphere". Responde APENAS com o texto da carta, sem JSON, sem markdown.', cache_control: { type: 'ephemeral' as const } }],
       messages: [{ role: 'user', content: contexto }],
@@ -971,5 +1021,286 @@ Tabelas disponíveis e campos:
       porTipo,
       topMotivosRejeicao: topMotivos,
     };
+  }
+
+  // ── 13. Predictive Staffing AI ───────────────────────────────────────────────
+
+  async preverNecessidadesPessoal(): Promise<{ geradas: number }> {
+    const hoje = new Date();
+    const seteDigasData = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(hoje);
+      d.setDate(d.getDate() + i + 1);
+      return d;
+    });
+
+    // Dados históricos: admissões por dia da semana nas últimas 8 semanas
+    const oitoSemanasAtras = new Date(hoje);
+    oitoSemanasAtras.setDate(oitoSemanasAtras.getDate() - 56);
+
+    const admissoes = await this.prisma.doente.groupBy({
+      by: ['dataAdmissao'],
+      where: { dataAdmissao: { gte: oitoSemanasAtras } },
+      _count: { id: true },
+      orderBy: { dataAdmissao: 'asc' },
+    });
+
+    // Número total de internados actuais
+    const internados = await this.prisma.doente.count({
+      where: { ativo: true, estadoRegisto: 'internado' },
+    });
+
+    // Calcular média diária por dia da semana
+    const mediasPorDia: number[] = Array(7).fill(0);
+    const contagemPorDia: number[] = Array(7).fill(0);
+    for (const a of admissoes) {
+      const dow = new Date(a.dataAdmissao).getDay();
+      mediasPorDia[dow] += a._count.id;
+      contagemPorDia[dow]++;
+    }
+    const medias = mediasPorDia.map((s, i) => (contagemPorDia[i] > 0 ? s / contagemPorDia[i] : 0));
+
+    const turnos = ['manha', 'tarde', 'noite'] as const;
+    const ratioTurno: Record<string, number> = { manha: 0.4, tarde: 0.35, noite: 0.25 };
+    const RATIO_DOENTES_POR_ENFERMEIRO = 6;
+
+    let geradas = 0;
+
+    for (const data of seteDigasData) {
+      const dow = data.getDay();
+      const admissoesEsperadas = medias[dow] ?? 2;
+
+      const msg = await this.callAI('staffing', {
+        model: this.MODEL_FAST,
+        max_tokens: 200,
+        temperature: 0.1 as any,
+        system: [{ type: 'text' as const, text: 'Prevê necessidades de pessoal de enfermagem hospitalar para o dia indicado. Responde APENAS com JSON: [{"turno":"manha|tarde|noite","pessoalRecomendado":N,"motivo":"máx 80 chars","confianca":"alta|media|baixa"}]', cache_control: { type: 'ephemeral' as const } }],
+        messages: [{ role: 'user', content: JSON.stringify({
+          data: data.toISOString().slice(0, 10),
+          diaSemana: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][dow],
+          internadosActuais: internados,
+          admissoesEsperadas: Math.round(admissoesEsperadas),
+          ratioEnfermeiro: RATIO_DOENTES_POR_ENFERMEIRO,
+        }) }],
+      }).catch(() => null);
+
+      if (!msg) continue;
+      const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
+      let previsoes: any[] = [];
+      try {
+        const match = texto.match(/\[[\s\S]*\]/);
+        previsoes = match ? JSON.parse(match[0]) : [];
+      } catch { continue; }
+
+      for (const p of previsoes) {
+        if (!turnos.includes(p.turno)) continue;
+        const base = Math.ceil((internados + admissoesEsperadas) * ratioTurno[p.turno] / RATIO_DOENTES_POR_ENFERMEIRO);
+        const existente = await this.prisma.aiStaffingPrevisao.findFirst({
+          where: { data, turno: p.turno, servicoId: null },
+        });
+        if (existente) {
+          await this.prisma.aiStaffingPrevisao.update({
+            where: { id: existente.id },
+            data: { pessoalRecomendado: p.pessoalRecomendado ?? base, motivo: p.motivo ?? '', confianca: p.confianca ?? 'media' },
+          }).catch(() => null);
+        } else {
+          await this.prisma.aiStaffingPrevisao.create({
+            data: { data, turno: p.turno, servicoId: null, pessoalAtual: null, pessoalRecomendado: p.pessoalRecomendado ?? base, motivo: p.motivo ?? '', confianca: p.confianca ?? 'media' },
+          }).catch(() => null);
+        }
+        geradas++;
+      }
+    }
+
+    this.logger.log(`Staffing previsão: ${geradas} previsões geradas para 7 dias`);
+    return { geradas };
+  }
+
+  @Cron('0 22 * * *')
+  async cronStaffingPrevisao(): Promise<void> {
+    try {
+      await this.preverNecessidadesPessoal();
+    } catch (err) {
+      this.logger.error('Cron staffing previsão falhou', err);
+    }
+  }
+
+  async listarStaffingPrevisoes(dias = 7): Promise<any[]> {
+    const inicio = new Date();
+    const fim = new Date();
+    fim.setDate(fim.getDate() + dias);
+    return this.prisma.aiStaffingPrevisao.findMany({
+      where: { data: { gte: inicio, lte: fim } },
+      orderBy: [{ data: 'asc' }, { turno: 'asc' }],
+    });
+  }
+
+  // ── 15. ICD-10 AI Suggestion ────────────────────────────────────────────────
+
+  async sugerirIcd10(notaClinica: string): Promise<{ code: string; descricao: string; confianca: number }[]> {
+    const msg = await this.callAI('icd10_sugestao', {
+      model: this.MODEL_FAST,
+      max_tokens: 300,
+      temperature: 0.1 as any,
+      system: [{ type: 'text' as const, text: 'És um sistema de codificação ICD-10 para hospital português. Com base na nota clínica, sugere os 3 códigos ICD-10 mais prováveis. Responde APENAS com JSON: [{"code":"X00.0","descricao":"descrição em português","confianca":0.95}]. Usa códigos ICD-10 reais. Ordena por confiança decrescente.', cache_control: { type: 'ephemeral' as const } }],
+      messages: [{ role: 'user', content: sanitizeForPrompt(notaClinica, 800) }],
+    });
+    const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
+    try {
+      const match = texto.match(/\[[\s\S]*\]/);
+      return match ? JSON.parse(match[0]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  async correlacaoOutcomes(from?: Date, to?: Date) {
+    const inicio = from ?? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const fim = to ?? new Date();
+
+    const outcomes = await this.prisma.outcomeClinico.findMany({
+      where: { criadoEm: { gte: inicio, lte: fim } },
+    });
+
+    const outcomesComDecisao = outcomes.filter(o => o.relacionadoAiDecisaoId);
+    const decisoesIds = [...new Set(outcomesComDecisao.map(o => o.relacionadoAiDecisaoId!))];
+
+    const decisoes = decisoesIds.length > 0
+      ? await this.prisma.aiDecisao.findMany({
+          where: { id: { in: decisoesIds } },
+          select: { id: true, tipo: true, aceite: true },
+        })
+      : [];
+
+    const decisoesMap = new Map(decisoes.map(d => [d.id, d]));
+
+    const porTipo = Object.entries(
+      outcomes.reduce((acc: Record<string, number>, o) => {
+        acc[o.tipo] = (acc[o.tipo] ?? 0) + 1;
+        return acc;
+      }, {}),
+    ).map(([tipo, total]) => ({ tipo, total }));
+
+    const aceitesComOutcomeNegativo = outcomesComDecisao.filter(o => {
+      const d = decisoesMap.get(o.relacionadoAiDecisaoId!);
+      return d?.aceite && ['readmissao_30d', 'obito_intra', 'complicacao'].includes(o.tipo);
+    }).length;
+
+    return {
+      periodo: { inicio, fim },
+      totalOutcomes: outcomes.length,
+      porTipo,
+      outcomesComDecisaoIA: outcomesComDecisao.length,
+      aceitesComOutcomeNegativo,
+      taxaOutcomeNegativoAceite: decisoesIds.length > 0
+        ? Math.round((aceitesComOutcomeNegativo / decisoesIds.length) * 100)
+        : 0,
+    };
+  }
+
+  // ── 16. AI Feedback Analysis — cron semanal ──────────────────────────────────
+
+  @Cron('0 8 * * 1')
+  async analisarFeedbackSemanal(): Promise<void> {
+    try {
+      const semanaPassada = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      const decisoes = await this.prisma.aiDecisao.findMany({
+        where: { criadoEm: { gte: semanaPassada }, aceite: { not: null } },
+        select: { tipo: true, aceite: true, overrideMotivo: true },
+      });
+
+      if (decisoes.length < 5) {
+        this.logger.log('Feedback analysis: dados insuficientes para análise semanal');
+        return;
+      }
+
+      const porTipo: Record<string, { total: number; rejeitados: number; motivos: string[] }> = {};
+      for (const d of decisoes) {
+        if (!porTipo[d.tipo]) porTipo[d.tipo] = { total: 0, rejeitados: 0, motivos: [] };
+        porTipo[d.tipo].total++;
+        if (d.aceite === false) {
+          porTipo[d.tipo].rejeitados++;
+          if (d.overrideMotivo) porTipo[d.tipo].motivos.push(d.overrideMotivo);
+        }
+      }
+
+      const tiposComRejeicao = Object.entries(porTipo)
+        .filter(([, v]) => v.total >= 3 && v.rejeitados / v.total > 0.2)
+        .map(([tipo, v]) => ({ tipo, taxaRejeicao: v.rejeitados / v.total, motivos: v.motivos.slice(0, 5) }));
+
+      if (tiposComRejeicao.length === 0) {
+        this.logger.log('Feedback analysis: taxa de rejeição dentro dos limites aceitáveis');
+        return;
+      }
+
+      const resumo = tiposComRejeicao.map(t =>
+        `${t.tipo}: ${Math.round(t.taxaRejeicao * 100)}% rejeição — motivos: ${t.motivos.join('; ') || 'sem motivo'}`
+      ).join('\n');
+
+      const msg = await this.callAI('feedback_analysis', {
+        model: this.MODEL_FAST,
+        max_tokens: 600,
+        temperature: 0.2 as any,
+        system: [{ type: 'text' as const, text: 'Analisa padrões de rejeição de sugestões IA num sistema hospitalar e sugere ajustes nos prompts. Responde com JSON: [{"tipo":"string","taxaRejeicao":0.0,"padroes":"descrição dos padrões observados","sugestao":"ajuste recomendado no prompt"}]', cache_control: { type: 'ephemeral' as const } }],
+        messages: [{ role: 'user', content: `Dados de rejeição da semana:\n${resumo}` }],
+      });
+
+      const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
+      let insights: any[] = [];
+      try { const m = texto.match(/\[[\s\S]*\]/); insights = m ? JSON.parse(m[0]) : []; } catch { insights = []; }
+
+      const semana = new Date();
+      semana.setHours(0, 0, 0, 0);
+      semana.setDate(semana.getDate() - semana.getDay()); // início da semana (domingo)
+
+      for (const insight of insights) {
+        const existing = await this.prisma.aiPromptInsight.findFirst({
+          where: { semana, tipo: insight.tipo ?? 'desconhecido' },
+        });
+        if (existing) {
+          await this.prisma.aiPromptInsight.update({
+            where: { id: existing.id },
+            data: { taxaRejeicao: insight.taxaRejeicao ?? 0, padroes: insight.padroes ?? '', sugestao: insight.sugestao ?? '' },
+          }).catch(() => null);
+        } else {
+          await this.prisma.aiPromptInsight.create({
+            data: {
+              semana,
+              tipo: insight.tipo ?? 'desconhecido',
+              taxaRejeicao: insight.taxaRejeicao ?? 0,
+              padroes: insight.padroes ?? '',
+              sugestao: insight.sugestao ?? '',
+            },
+          }).catch(() => null);
+        }
+      }
+
+      if (insights.length > 0) {
+        await this.notificacoes.enviarParaRole('ti',
+          '⚠ IA: Taxa de rejeição elevada detectada',
+          `${insights.length} tipo(s) com rejeição >20% na última semana. Ver insights em Auditoria IA.`,
+        ).catch(() => null);
+      }
+
+      this.logger.log(`Feedback analysis semanal: ${insights.length} insights gerados`);
+    } catch (err) {
+      this.logger.error('Erro no feedback analysis semanal', err);
+    }
+  }
+
+  @Cron('0 8 * * 1')
+  async relatorioSemanalOutcomes(): Promise<void> {
+    try {
+      const correlacao = await this.correlacaoOutcomes();
+      const corpo = `${correlacao.totalOutcomes} outcomes registados nos últimos 30 dias. `
+        + `${correlacao.aceitesComOutcomeNegativo} decisões IA aceites resultaram em outcomes negativos `
+        + `(taxa: ${correlacao.taxaOutcomeNegativoAceite}%).`;
+      await this.notificacoes.enviarParaRole(
+        'direcao',
+        'Relatório Semanal — Correlação IA ↔ Outcomes',
+        corpo,
+      );
+    } catch (err) {
+      this.logger.error('Erro no relatório semanal de outcomes', err);
+    }
   }
 }

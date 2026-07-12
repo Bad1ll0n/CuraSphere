@@ -283,12 +283,12 @@ export class AuthService {
     return { expira: dias <= 0, diasRestantes: dias, aviso: dias <= 10 };
   }
 
-  private buildPayload(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string }) {
-    return { sub: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico };
+  private buildPayload(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {
+    return { sub: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
   }
 
-  private buildUtilizadorDto(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string }) {
-    return { id: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico };
+  private buildUtilizadorDto(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {
+    return { id: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
   }
 
   private async criarRefreshToken(utilizadorId: string): Promise<string> {

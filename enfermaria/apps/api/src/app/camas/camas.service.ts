@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
 import { RedisService } from '../redis/redis.service';
 import { EstadoCama } from '../common/enums';
 
@@ -14,6 +15,7 @@ export class CamasService {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly tenantContext: TenantContextService,
     private readonly redis: RedisService,
   ) {}
 
@@ -30,6 +32,7 @@ export class CamasService {
     if (cached) return cached;
 
     const result = await this.prisma.cama.findMany({
+      where: { tenantId: this.tenantContext.tenantId },
       include: { doente: { select: { id: true, nome: true, estado: true, diagnosticoPrincipal: true } } },
       orderBy: [{ quarto: 'asc' }, { numero: 'asc' }],
     });
@@ -42,7 +45,7 @@ export class CamasService {
     const existe = await this.prisma.cama.findUnique({ where: { numero: data.numero } });
     if (existe) throw new ConflictException('Número de cama já existe');
 
-    const cama = await this.prisma.cama.create({ data });
+    const cama = await this.prisma.cama.create({ data: { ...data, tenantId: this.tenantContext.tenantId } });
     await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
     return cama;
   }

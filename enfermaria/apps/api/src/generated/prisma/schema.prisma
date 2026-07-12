@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Utilizadores ────────────────────────────────────────────────────────────
@@ -52,6 +51,7 @@ enum Servico {
 
 model Utilizador {
   id                String    @id @default(uuid())
+  tenantId          String    @default("default")
   numeroFuncionario String    @unique
   nome              String
   passwordHash      String
@@ -193,7 +193,11 @@ model Utilizador {
   portaisCriados                 PortalDoente[]              @relation("PortalDoentesCriados")
   dashboardConfig                DashboardConfig?
   followUpsResponsavel           FollowUpAgendado[]
+  outcomesRegistados             OutcomeClinico[]            @relation("OutcomesRegistados")
+  webhooksCriados                Webhook[]                   @relation("WebhooksCriados")
+  webAuthnCredentials            WebAuthnCredential[]
 
+  @@index([tenantId, role, ativo])
   @@index([role, ativo])
   @@index([servico])
   @@map("utilizadores")
@@ -209,12 +213,13 @@ enum EstadoCama {
 }
 
 model Cama {
-  id      String     @id @default(uuid())
-  numero  String     @unique
-  quarto  String
-  estado  EstadoCama @default(livre)
-  servico String?
-  piso    Int?
+  id       String     @id @default(uuid())
+  tenantId String     @default("default")
+  numero   String     @unique
+  quarto   String
+  estado   EstadoCama @default(livre)
+  servico  String?
+  piso     Int?
 
   doente Doente?
 
@@ -234,11 +239,13 @@ enum EstadoDoente {
 
 model Doente {
   id                   String       @id @default(uuid())
+  tenantId             String       @default("default")
   nome                 String
   dataNascimento       DateTime?
   numeroProcesso       String       @unique
   estado               EstadoDoente @default(estavel)
   diagnosticoPrincipal String?
+  icd10Code            String?
   estadoRegisto        String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
   tipoVisita           String? // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
   dataAdmissao         DateTime     @default(now())
@@ -309,7 +316,9 @@ model Doente {
   portalDoente            PortalDoente?
   stewardshipAntibioticos StewardshipAntibiotico[]
   followUps               FollowUpAgendado[]
+  outcomesClinicos        OutcomeClinico[]
 
+  @@index([tenantId, estado])
   @@index([ativo])
   @@index([estado])
   @@index([dataAdmissao])
@@ -554,6 +563,7 @@ model Tarefa {
 
 model Medicacao {
   id          String    @id @default(uuid())
+  tenantId    String    @default("default")
   nome        String
   dose        String
   via         String
@@ -907,6 +917,7 @@ model SumarioAlta {
   fatoresReadmissao String?    @db.Text
   recomendacoesAlta String?    @db.Text
   cartaAlta         String?    @db.Text
+  icd10Code         String?
 
   @@map("sumarios_alta")
 }
@@ -2433,6 +2444,7 @@ model AiDecisao {
   overrideMotivo String?
   doenteId       String?
   utilizadorId   String
+  inputPayload   Json?
   criadoEm       DateTime @default(now())
 
   utilizador Utilizador @relation("AiDecisoes", fields: [utilizadorId], references: [id], onDelete: Cascade)
@@ -2440,6 +2452,39 @@ model AiDecisao {
   @@index([doenteId, criadoEm])
   @@index([tipo, criadoEm])
   @@map("ai_decisoes")
+}
+
+model AiMetrica {
+  id           String   @id @default(uuid())
+  feature      String
+  modelo       String
+  latencyMs    Int
+  inputTokens  Int
+  outputTokens Int
+  success      Boolean
+  erro         String?
+  criadoEm     DateTime @default(now())
+
+  @@index([feature, criadoEm])
+  @@map("ai_metricas")
+}
+
+model OutcomeClinico {
+  id                     String   @id @default(uuid())
+  doenteId               String
+  tipo                   String // 'readmissao_30d' | 'obito_intra' | 'complicacao' | 'melhoria'
+  descricao              String?
+  dataOcorrido           DateTime
+  relacionadoAiDecisaoId String?
+  registadoPorId         String
+  criadoEm               DateTime @default(now())
+
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador @relation("OutcomesRegistados", fields: [registadoPorId], references: [id])
+
+  @@index([doenteId, tipo])
+  @@index([tipo, criadoEm])
+  @@map("outcomes_clinicos")
 }
 
 // ─── Session 52: Resultados Analíticos (Lab) ─────────────────────────────────
@@ -2567,4 +2612,54 @@ model FollowUpAgendado {
   @@index([responsavelId, concluido])
   @@index([doenteId])
   @@map("followup_agendados")
+}
+
+// ─── Webhooks / Integration API ───────────────────────────────────────────────
+
+model Webhook {
+  id          String   @id @default(uuid())
+  url         String
+  secret      String
+  eventos     String[]
+  ativo       Boolean  @default(true)
+  criadoPorId String
+  criadoEm    DateTime @default(now())
+
+  criadoPor Utilizador @relation("WebhooksCriados", fields: [criadoPorId], references: [id])
+
+  @@index([criadoPorId])
+  @@map("webhooks")
+}
+
+// ─── WebAuthn / FIDO2 passkeys ───────────────────────────────────────────────
+
+model WebAuthnCredential {
+  id           String     @id @default(uuid())
+  credentialId String     @unique
+  publicKey    Bytes
+  counter      BigInt     @default(0)
+  deviceType   String     @default("singleDevice") // 'singleDevice' | 'multiDevice'
+  backedUp     Boolean    @default(false)
+  transports   String[] // ['internal', 'usb', 'ble', 'nfc', 'hybrid', 'cable']
+  nome         String     @default("Passkey") // nome dado pelo utilizador
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  criadoEm     DateTime   @default(now())
+  ultimoUsoEm  DateTime?
+
+  @@index([utilizadorId])
+  @@map("webauthn_credentials")
+}
+
+// ─── SSO Providers ────────────────────────────────────────────────────────────
+
+model SsoProvider {
+  id       String   @id @default(uuid())
+  tipo     String // 'saml' | 'oidc'
+  nome     String
+  config   Json // { entryPoint, cert, issuer, clientId, clientSecret, redirectUri, ... }
+  ativo    Boolean  @default(true)
+  criadoEm DateTime @default(now())
+
+  @@map("sso_providers")
 }

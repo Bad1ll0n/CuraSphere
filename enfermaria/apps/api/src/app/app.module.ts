@@ -1,6 +1,7 @@
 import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { CsrfMiddleware } from './common/csrf.middleware';
+import { TenantMiddleware } from './prisma/tenant.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -31,6 +32,14 @@ import { PortalDoenteModule } from './portal-doente/portal-doente.module';
 import { Hl7Module } from './hl7/hl7.module';
 import { DashboardConfigModule } from './dashboard-config/dashboard-config.module';
 import { AnomalyDetectionModule } from './common/anomaly-detection.module';
+import { MailerModule } from './mailer/mailer.module';
+import { RelatoriosAgendadosModule } from './relatorios-agendados/relatorios-agendados.module';
+import { Icd10Module } from './codificacao/icd10.module';
+import { OutcomesModule } from './outcomes/outcomes.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
+import { PopulationHealthModule } from './population-health/population-health.module';
+import { TransferenciasModule } from './transferencias/transferencias.module';
+import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module';
 
 @Module({
   imports: [
@@ -42,7 +51,13 @@ import { AnomalyDetectionModule } from './common/anomaly-detection.module';
         DATABASE_URL: Joi.string().required(),
         REDIS_URL: Joi.string().default('redis://localhost:6379'),
         JWT_SECRET: Joi.string().min(32).required(),
-        ALLOWED_ORIGINS: Joi.string().optional(),
+        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('1h'),
+        ENCRYPTION_KEY: Joi.string().hex().min(64).required(),
+        ALLOWED_ORIGINS: Joi.when('NODE_ENV', {
+          is: 'production',
+          then: Joi.string().required(),
+          otherwise: Joi.string().optional(),
+        }),
         PORT: Joi.number().default(3333),
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
       }),
@@ -63,7 +78,17 @@ import { AnomalyDetectionModule } from './common/anomaly-detection.module';
             return { statusCode: res.statusCode };
           },
         },
-        redact: { paths: ['req.headers.authorization', 'req.headers.cookie'], remove: true },
+        redact: {
+          paths: [
+            'req.headers.authorization',
+            'req.headers.cookie',
+            // PII — RGPD: redactar campos sensíveis em qualquer objecto logado
+            '*.password', '*.passwordHash', '*.mfaSecret', '*.secret',
+            '*.contacto', '*.morada', '*.nif', '*.dataNascimento',
+            '[*].contacto', '[*].morada', '[*].nif',
+          ],
+          censor: '[REDACTED]',
+        },
         autoLogging: { ignore: (req) => req.url === '/v1/health' },
       },
     }),
@@ -83,6 +108,11 @@ import { AnomalyDetectionModule } from './common/anomaly-detection.module';
     Hl7Module,
     DashboardConfigModule,
     AnomalyDetectionModule,
+    MailerModule,
+    RelatoriosAgendadosModule,
+    Icd10Module,
+    OutcomesModule,
+    WebhooksModule,
 
     // ─── Domínios ─────────────────────────────────────────────────────────────
     ClinicalModule,
@@ -100,6 +130,9 @@ import { AnomalyDetectionModule } from './common/anomaly-detection.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TenantMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
     consumer
       .apply(CsrfMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });

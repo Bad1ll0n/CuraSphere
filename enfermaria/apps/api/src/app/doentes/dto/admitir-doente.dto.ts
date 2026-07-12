@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsNotEmpty, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class AdmitirDoenteDto {
@@ -15,6 +15,12 @@ export class AdmitirDoenteDto {
   @IsString()
   @IsNotEmpty()
   diagnosticoPrincipal: string;
+
+  @ApiPropertyOptional({ description: 'Código ICD-10-CM (ex: J18.9)' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(20)
+  icd10Code?: string;
 
   @ApiPropertyOptional()
   @IsString()

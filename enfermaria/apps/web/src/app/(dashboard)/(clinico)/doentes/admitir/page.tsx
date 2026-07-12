@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
 import type { Cama } from '@org/shared';
+import Icd10Autocomplete from '@/components/Icd10Autocomplete';
 
 export default function AdmitirDoentesPagina() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function AdmitirDoentesPagina() {
     nome: '',
     dataNascimento: '',
     diagnosticoPrincipal: '',
+    icd10Code: '',
     camaId: '',
     dataAltaPrevista: '',
     nif: '',
@@ -39,6 +41,7 @@ export default function AdmitirDoentesPagina() {
         nome: form.nome,
         dataNascimento: new Date(form.dataNascimento),
         diagnosticoPrincipal: form.diagnosticoPrincipal,
+        ...(form.icd10Code && { icd10Code: form.icd10Code }),
         camaId: form.camaId,
         dataAltaPrevista: form.dataAltaPrevista ? new Date(form.dataAltaPrevista) : undefined,
       };
@@ -152,6 +155,16 @@ export default function AdmitirDoentesPagina() {
               style={{ padding: '11px 16px' }}
             />
           </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>
+              Código ICD-10 <span className="text-slate-400 normal-case font-normal">(opcional)</span>
+            </label>
+            <Icd10Autocomplete
+              value={form.icd10Code}
+              onChange={(code) => setForm(f => ({ ...f, icd10Code: code }))}
+              className={inputClass}
+              style={{ width: '100%' }}
+            /></div>
         </div>
 
         {/* Secção — Dados Administrativos */}

@@ -50,7 +50,7 @@ function decryptResult(model: string, result: any): void {
 }
 
 export function aplicarEncriptacaoPrisma(prisma: any): void {
-  if (!KEY) return; // Skip if no key configured — safe default
+  if (!KEY) throw new Error('ENCRYPTION_KEY is required but not configured or invalid');
 
   prisma.$use(async (params: any, next: any) => {
     const model: string = params.model ?? '';

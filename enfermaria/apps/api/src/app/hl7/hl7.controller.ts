@@ -22,7 +22,7 @@ export class Hl7Controller {
     @Headers('x-hl7-token') token: string,
     @Headers('content-type') contentType: string,
   ) {
-    if (this.hl7Token && token !== this.hl7Token) {
+    if (!this.hl7Token || token !== this.hl7Token) {
       throw new UnauthorizedException('Token HL7 inválido');
     }
     const raw = Buffer.isBuffer(body) ? body.toString('utf-8') : String(body);

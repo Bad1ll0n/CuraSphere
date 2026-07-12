@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const WS_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000').replace('/api', '');
+const WS_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace('/api', '');
 
 let sharedSocket: Socket | null = null;
 let refCount = 0;

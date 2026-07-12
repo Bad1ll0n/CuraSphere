@@ -180,4 +180,21 @@ export class RhController {
   cancelarTrocaFolga(@Param('id') id: string, @Request() req: any) {
     return this.rh.cancelarTrocaFolga(id, req.user.sub);
   }
+
+  // ── Staff Wellbeing ───────────────────────────────────────────────────────
+
+  @Post('wellbeing/submeter')
+  submeterWellbeing(
+    @Body() dto: { respostas: Record<string, number>; anonimo?: boolean },
+    @Request() req: any,
+  ) {
+    const utilizadorId = dto.anonimo ? null : (req.user.sub as string);
+    return this.rh.submeterWellbeing(utilizadorId, dto.respostas);
+  }
+
+  @Get('wellbeing/dashboard')
+  @Roles('direcao', 'chefe_enfermeiros', 'ti')
+  dashboardWellbeing(@Query('semanas') semanas?: string) {
+    return this.rh.dashboardWellbeing(semanas ? parseInt(semanas, 10) : 4);
+  }
 }

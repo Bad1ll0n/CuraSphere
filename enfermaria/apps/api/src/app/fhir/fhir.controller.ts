@@ -53,4 +53,13 @@ export class FhirController {
   exportarFhir(@Param('id') id: string) {
     return this.service.exportarBundleDoente(id);
   }
+
+  // ── SPMS Integration ────────────────────────────────────────────────────────
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('spms/:nsns')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
+  buscarDadosSPMS(@Param('nsns') nsns: string) {
+    return this.service.buscarDadosSPMS(nsns);
+  }
 }

@@ -1,6 +1,10 @@
 import { PrismaClient } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
-const prisma = new PrismaClient();
+try { process.loadEnvFile(); } catch {}
+const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
+const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 
 const ROLES = [
   { chave: 'medico',         label: 'Médico',          categoria: 'clinico', ordem: 1 },
