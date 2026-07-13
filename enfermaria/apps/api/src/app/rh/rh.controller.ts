@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import { IsObject, IsOptional, IsBoolean } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -11,6 +12,11 @@ import { CriarContratoDto } from './dto/criar-contrato.dto';
 import { CriarTrocaFolgaDto } from './dto/criar-troca-folga.dto';
 
 const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
+
+class SubmeterWellbeingDto {
+  @IsObject() respostas!: Record<string, number>;
+  @IsOptional() @IsBoolean() anonimo?: boolean;
+}
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('rh')
@@ -52,12 +58,12 @@ export class RhController {
 
   @Patch('ausencias/:id/aprovar')
   aprovarAusencia(@Param('id') id: string, @Request() req: any) {
-    return this.rh.aprovarAusencia(id, req.user.sub);
+    return this.rh.aprovarAusencia(id, req.user.sub, req.user.role);
   }
 
   @Patch('ausencias/:id/rejeitar')
   rejeitarAusencia(@Param('id') id: string, @Request() req: any) {
-    return this.rh.rejeitarAusencia(id, req.user.sub);
+    return this.rh.rejeitarAusencia(id, req.user.sub, req.user.role);
   }
 
   @Delete('ausencias/:id')
@@ -66,6 +72,7 @@ export class RhController {
   }
 
   @Get('ausencias/:id/saldo-ferias')
+  @Roles(...RH_ROLES)
   saldoFerias(@Param('id') id: string) {
     return this.rh.calcularSaldoFerias(id);
   }
@@ -173,7 +180,7 @@ export class RhController {
 
   @Patch('trocas-folga/:id/aprovar')
   aprovarTrocaFolga(@Param('id') id: string, @Request() req: any) {
-    return this.rh.aprovarTrocaFolga(id, req.user.sub);
+    return this.rh.aprovarTrocaFolga(id, req.user.sub, req.user.role);
   }
 
   @Patch('trocas-folga/:id/cancelar')
@@ -185,7 +192,7 @@ export class RhController {
 
   @Post('wellbeing/submeter')
   submeterWellbeing(
-    @Body() dto: { respostas: Record<string, number>; anonimo?: boolean },
+    @Body() dto: SubmeterWellbeingDto,
     @Request() req: any,
   ) {
     const utilizadorId = dto.anonimo ? null : (req.user.sub as string);

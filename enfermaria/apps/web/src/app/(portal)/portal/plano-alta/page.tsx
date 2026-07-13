@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { PortalAuthProvider, usePortalAuth, portalFetch } from '../portal-auth-context';
+import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function PlanoAltaContent() {
   const { token } = usePortalAuth();

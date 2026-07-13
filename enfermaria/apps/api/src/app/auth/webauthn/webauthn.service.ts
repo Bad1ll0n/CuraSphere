@@ -180,9 +180,9 @@ export class WebAuthnService {
     return cred.utilizador;
   }
 
-  async generateAuthChallengeForUser(utilizadorId: string) {
+  async generateAuthChallengeForUser(numeroFuncionario: string) {
     const utilizador = await this.prisma.utilizador.findUnique({
-      where: { id: utilizadorId },
+      where: { numeroFuncionario },
       select: { id: true, webAuthnCredentials: { select: { credentialId: true, transports: true } } },
     });
     if (!utilizador || utilizador.webAuthnCredentials.length === 0) {
@@ -199,7 +199,7 @@ export class WebAuthnService {
       })),
     });
 
-    await this.redis.set(`webauthn:auth:challenge:${utilizadorId}`, options.challenge, 60);
+    await this.redis.set(`webauthn:auth:challenge:${utilizador.id}`, options.challenge, 60);
     return options;
   }
 

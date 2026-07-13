@@ -287,6 +287,22 @@ export class AuthService {
     return { sub: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
   }
 
+  /**
+   * Emite uma sessão (access + refresh token) usando exactamente o mesmo mecanismo
+   * do login por password: access token JWT curto + refresh token opaco persistido
+   * em BD (revogável, com reuse-detection). Deve ser usado por QUALQUER via de
+   * autenticação alternativa (WebAuthn, SSO, etc.) para não contornar a
+   * infraestrutura de revogação/expiração de sessões.
+   */
+  async emitirSessaoExterna(utilizador: {
+    id: string; nome: string; numeroFuncionario: string; role: string;
+    subRole?: string | null; servico: string; tenantId?: string | null;
+  }) {
+    const accessToken = this.jwtService.sign(this.buildPayload(utilizador));
+    const refreshToken = await this.criarRefreshToken(utilizador.id);
+    return { accessToken, refreshToken, utilizador: this.buildUtilizadorDto(utilizador) };
+  }
+
   private buildUtilizadorDto(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {
     return { id: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
   }

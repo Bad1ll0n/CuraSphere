@@ -4,8 +4,7 @@ import { IsString, IsOptional, MaxLength } from 'class-validator';
 import type { Response } from 'express';
 import { WebAuthnService } from './webauthn.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { AuthService } from '../auth.service';
 
 class RegistarVerificarDto {
   @IsString() response: any;
@@ -24,8 +23,7 @@ const COOKIE_MAX_AGE_REFRESH = 7 * 24 * 60 * 60 * 1000;
 export class WebAuthnController {
   constructor(
     private readonly webAuthn: WebAuthnService,
-    private readonly jwtService: JwtService,
-    private readonly config: ConfigService,
+    private readonly authService: AuthService,
   ) {}
 
   // ─── Registo (utiliz. autenticado) ────────────────────────────────────────
@@ -54,9 +52,8 @@ export class WebAuthnController {
       const { generateAuthenticationOptions } = await import('@simplewebauthn/server');
       return generateAuthenticationOptions({ rpID: 'localhost', userVerification: 'preferred' });
     }
-    const { PrismaService } = await import('../../prisma/prisma.service');
     // Delegar ao serviço que conhece o utilizador
-    return this.webAuthn.generateAuthChallengeForUser(body.numeroFuncionario as any);
+    return this.webAuthn.generateAuthChallengeForUser(body.numeroFuncionario);
   }
 
   @UseGuards(ThrottlerGuard)
@@ -68,10 +65,9 @@ export class WebAuthnController {
   ) {
     const utilizador = await this.webAuthn.verifyAuthentication(dto.response);
 
-    // Emitir tokens JWT CuraSphere
-    const payload = { sub: utilizador.id, role: utilizador.role, subRole: utilizador.subRole };
-    const accessToken  = this.jwtService.sign(payload, { expiresIn: '1h' as any });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' as any });
+    // Emitir sessão pelo mesmo mecanismo do login por password (access token JWT +
+    // refresh token opaco persistido em BD, revogável) — não duplicar lógica de emissão.
+    const { accessToken, refreshToken } = await this.authService.emitirSessaoExterna(utilizador);
 
     const isProd = process.env['NODE_ENV'] === 'production';
     const base = { httpOnly: true, secure: isProd, sameSite: 'strict' as const, path: '/' };

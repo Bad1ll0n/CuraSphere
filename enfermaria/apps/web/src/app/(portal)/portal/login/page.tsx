@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { PortalAuthProvider, usePortalAuth } from '../portal-auth-context';
+import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 
 function LoginForm() {
   const { login } = usePortalAuth();

@@ -4244,4 +4244,106 @@ pnpm exec jest --config jest.config.js --coverage
 
 ---
 
+## Sessão 66 — Frota de Agentes Autónomos + Correcção de Bypass de Autenticação SSO Crítico
+
+### 30.1 Objectivo
+
+O utilizador pediu uma frota de agentes especializados para desenvolver e vigiar o CuraSphere de forma autónoma em todas as áreas (backend, frontend, mobile, segurança, QA, DevOps), seguida de uma auditoria real de segurança/funcionalidade sobre o grande merge da sessão anterior (commit `b89677d`, 129 ficheiros — Sprints A-D do plano de melhoria 10/10).
+
+### 30.2 Frota de Agentes Criada
+
+`enfermaria/.claude/agents/` (6 agentes) + `enfermaria/.claude/skills/` (7 skills):
+
+| Agente | Âmbito |
+|---|---|
+| `backend-nestjs` | apps/api — novos módulos, Prisma, lógica de negócio |
+| `frontend-web` | apps/web — páginas, i18n, acessibilidade |
+| `mobile-app` | apps/mobile — Expo/React Native |
+| `security-auditor` | auditoria transversal (auth, IDOR, PII, CORS/CSP) |
+| `qa-test-engineer` | gate de verificação (typecheck/build/testes) |
+| `devops-release` | CI/CD, `.env.example`, Dependabot, Docker |
+
+Skills: `curasphere-full-verify`, `curasphere-nestjs-module`, `curasphere-prisma-schema`, `curasphere-i18n-audit`, `curasphere-security-checklist`, `curasphere-e2e-conventions`, `curasphere-web-conventions` — cada uma documenta convenções reais do repositório (ex: workflow `prisma db push` sem migrations, padrão de guardas JWT+Roles, o IDOR já reincidente em escalas/tarefas).
+
+**Nota:** os `subagent_type` personalizados só ficam disponíveis para o `Agent` tool a partir da sessão seguinte (o harness carrega `.claude/agents` no arranque). Nesta sessão os agentes de auditoria correram via `general-purpose` com a persona embutida no prompt.
+
+### 30.3 Achado Crítico — SSO SAML sem Verificação de Assinatura (CVSS crítico)
+
+`sso.controller.ts#samlCallback` fazia parsing manual do XML da `SAMLResponse` com `xml2js` **sem verificar a assinatura digital** — qualquer pessoa não autenticada podia forjar uma `SAMLResponse` (incluindo atributos `role`) e obter uma sessão válida como qualquer utilizador, potencialmente com role administrativa. O fluxo `samlLogin` nem sequer gerava um `AuthnRequest` real (`SAMLRequest=...` era um placeholder literal).
+
+**Correcção aplicada:**
+- Substituída a dependência `passport-saml@3.2.4` (tinha um bypass de assinatura crítico não corrigido, GHSA-4mxg-3p6v-xgq3, e nem sequer estava a ser usada) por **`@node-saml/node-saml@5.1.0`** (fork mantido, mesma equipa, CVEs corrigidos).
+- `samlLogin` agora gera um `AuthnRequest` real via `saml.getAuthorizeUrlAsync()`.
+- `samlCallback` agora valida assinatura, `NotBefore/NotOnOrAfter` e `InResponseTo` via `saml.validatePostResponseAsync()` antes de confiar em qualquer atributo da assertion. Providers SAML passam a exigir `config.cert` (certificado público de assinatura do IdP) — sem ele, o provider é recusado em vez de aceitar assertions não verificadas.
+- OIDC (`oidcCallback`) também reforçado: o `id_token` agora tem a assinatura verificada via JWKS (`jwks-rsa`, RS256, `aud`/`iss` validados) e o `nonce` gerado em `oidcLogin` é comparado (protecção replay) — antes só se descodificava o payload sem verificar nada.
+- Mantida a mitigação defensiva em `sso.service.ts#deduzirRole` (claims nunca mapeiam para `ti`/`direcao`, promoção continua manual) como defesa em profundidade.
+
+### 30.4 Outros Achados de Segurança/DevOps (auditoria paralela)
+
+**IDOR corrigidos:**
+- `transferencias.controller.ts` — qualquer `medico` podia criar/ver/actualizar transferências de doentes fora da sua responsabilidade; adicionado `assertAcessoDoente()`.
+- `rh.controller.ts`/`rh.service.ts` — `aprovarAusencia`/`rejeitarAusencia`/`aprovarTrocaFolga` sem verificação de autoridade (RH ou chefe directo); `saldoFerias/:id` expunha o saldo de férias de qualquer colaborador. Ambos corrigidos.
+
+**Sessões externas unificadas:** WebAuthn e SSO emitiam tokens de refresh ad-hoc fora do sistema de refresh tokens revogáveis da app. Agora ambos usam `AuthService.emitirSessaoExterna()` — uma sessão SSO/passkey passa a ser revogável tal como o login por password.
+
+**Bug funcional:** login por passkey nunca funcionava (`generateAuthChallengeForUser` pesquisava por `id` usando um valor de `numeroFuncionario`) — corrigido.
+
+**Bloqueador de todo o workspace Nx:** o plugin `next-intl` em `next.config.js` resolvia o caminho de config relativo a `process.cwd()` em vez do directório do ficheiro, partindo a construção do project graph do Nx **para o workspace inteiro** (não só `web`). Corrigido com `chdir`/restore temporário.
+
+**Módulos "mortos":** `PopulationHealthModule`, `TransferenciasModule`, `RegrasCliniciasModule` estavam importados em `app.module.ts` mas nunca listados no array `imports: [...]` — os endpoints existiam mas eram inalcançáveis. Corrigido.
+
+**DevOps:** `.env.example` (api + web) actualizados com variáveis em falta (`ANTHROPIC_API_KEY`, `JWT_SECRET`, `QUIOSQUE_SECRET`, storage S3/MinIO, `SENTRY_AUTH_TOKEN`); `docker-compose.prod.yml` corrigido — faltava `JWT_SECRET` no serviço web (bloquearia login de todos os utilizadores em produção) e `ENCRYPTION_KEY` no serviço api (PII ficaria em texto simples sem aviso); `dependabot.yml` corrigido (path docker apontava para directório errado); removido `apps/web/pnpm-lock.yaml` órfão.
+
+**Prisma client desactualizado:** `npx prisma generate` não tinha sido corrido após os novos modelos (`AiStaffingPrevisao`, `AiPromptInsight`, `CohortDefinition`) — causava dezenas de erros de tipo em `ai-clinico.service.ts` e `population-health.service.ts`. Regenerado.
+
+**Por resolver (assinalado, não corrigido nesta sessão):** possível SSRF em `webhooks` (URL arbitrário, gated a admin); `SsoProvider.config`/segredo de webhook guardados em texto simples na BD; ~55 erros TS pré-existentes em `ai-clinico.service.ts` (tipos do SDK Anthropic em streaming), `webauthn.service.ts` e outros, catalogados por ficheiro para a próxima sessão.
+
+---
+
+## Sessão 67 — Mobile: Correcção da Identidade Expo (branding placeholder)
+
+### 31.1 Objectivo
+
+`apps/mobile/app.json` ainda tinha a identidade Expo de placeholder do scaffold inicial (`name: "Mobile"`, `slug: "@org/mobile"`, `scheme: "@org/mobile"`) — não estava com a marca CuraSphere, e o `slug`/`scheme` continham `@`/`/`, caracteres inválidos para estes campos no schema do Expo.
+
+### 31.2 Alteração
+
+`apps/mobile/app.json`:
+- `name`: `"Mobile"` → `"CuraSphere"` (nome mostrado sob o ícone no ecrã principal do dispositivo).
+- `slug`: `"@org/mobile"` → `"curasphere-mobile"` (identificador interno do projecto Expo/EAS).
+- `scheme`: `"@org/mobile"` → `"curasphere"` (esquema de deep link, `curasphere://...`).
+
+Não foi encontrada nenhuma outra referência ao scheme antigo no código (sem `eas.json`, sem `app.config.js`, sem uso de `Linking.createURL`/prefixes de navegação no repo) — apenas o próprio `app.json` precisava de alteração.
+
+**Deliberadamente não alterado** (fora do âmbito, avaliado e rejeitado):
+- `apps/mobile/package.json` (`"name": "@org/mobile"`) e `metro.config.js` (`cacheVersion: '@org/mobile'`) — confirmado que `@org/*` é a convenção de nomeação de pacotes Nx/pnpm em todo o monorepo (`@org/web`, `@org/api`, `@org/shared`, `@org/ui`, `@org/source`), não uma marca específica da app mobile. Alterar só o mobile criaria inconsistência com o resto do workspace; renomear o scope `@org` inteiro é uma tarefa maior e não pedida.
+- `ios.deploymentTarget`/`android.minSdkVersion` — não adicionados. Estas chaves não são lidas directamente pelo `app.json` do Expo (SDK 54); precisam do plugin `expo-build-properties` (não instalado) para terem efeito real. Adicionar as chaves sem o plugin seria ruído silenciosamente ignorado — fica como item de seguimento.
+
+### 31.3 Verificação
+
+`npx nx typecheck mobile` mantém os mesmos erros pré-existentes (confirmado com/sem a alteração via `git stash`): `@expo/vector-icons` em falta como dependência, `window` não definido em vários screens, `useAuth` não exportado de `lib/auth`, um mismatch de `ViewStyle` em `NotificacoesScreen.tsx` — nenhum relacionado com `app.json`, todos pré-existentes e fora do âmbito desta correcção.
+
+---
+
+## Sessão 68 — Segurança: Correcção SSRF no módulo Webhooks
+
+### 32.1 Achado (já sinalizado na Sessão 30.4, agora corrigido)
+
+`webhooks.service.ts#dispatcharEvento` fazia `fetch(hook.url, ...)` com um URL fornecido pelo administrador na criação do webhook (`CriarWebhookDto` só validava `@IsUrl()`, sem qualquer verificação do destino resolvido). Um utilizador `ti`/`direcao` (ou uma conta admin comprometida) podia registar um webhook apontado a `http://169.254.169.254/...` (metadata da cloud), a um serviço interno, ou a `localhost:6379` (Redis), e o servidor fazia esse pedido com payloads reais de eventos hospitalares sempre que o evento correspondente disparasse — um primitivo de SSRF real contra a rede interna do hospital.
+
+### 32.2 Correcção aplicada
+
+- **Novo helper `apps/api/src/app/common/ssrf-guard.ts`**: `assertUrlDestinoPublico(url)` faz `new URL()`, exige protocolo `http:`/`https:`, rejeita `localhost` e literais IP privados/loopback/link-local directamente, e para hostnames normais resolve via `dns/promises.lookup(hostname, { all: true })` e rejeita se **qualquer** endereço resolvido cair em `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.0/8`, `169.254.0.0/16`, `100.64.0.0/10` (CGNAT), ou os equivalentes IPv6 `::1`, `fc00::/7`, `fe80::/10` (incluindo desembrulhar endereços IPv4-mapeados `::ffff:a.b.c.d`). Não foi adicionada nenhuma dependência nova — usa apenas `net.isIP` e `dns/promises`, já nativos do Node.
+- **`webhooks.service.ts#dispatcharEvento`** (linha ~29-57): chama `assertUrlDestinoPublico(hook.url)` **a cada disparo**, antes do `fetch` — não só na criação — porque a resolução DNS de um hostname pode mudar entre o registo do webhook e o momento do disparo (DNS rebinding); validar só uma vez na criação não fecha o SSRF. Um hook bloqueado regista um aviso (`Logger.warn`) e falha isoladamente dentro do `Promise.allSettled`, sem impedir o disparo para os restantes webhooks válidos. A assinatura HMAC existente foi mantida sem alterações.
+- **`webhooks.service.ts#criar`** (linha ~12-19): validação preventiva adicional no momento da criação (defesa em profundidade) — rejeita URLs obviamente internos logo no registo, mas isto é complementar à validação em `dispatcharEvento`, não um substituto.
+- **Novo `webhooks.service.spec.ts`**: 7 testes — dispatch para URL que resolve a IP público tem sucesso; dispatch bloqueado quando resolve a IP privado (metadata `169.254.169.254`) ou loopback (`127.0.0.1`) sem chamar `fetch`; um hook bloqueado não impede o disparo dos restantes; `criar()` rejeita/aceita conforme a mesma validação. DNS mockado via `jest.mock('dns/promises')`.
+
+### 32.3 Verificação
+
+`npx tsc -p apps/api/tsconfig.app.json --noEmit`: 55 erros, todos pré-existentes e fora do âmbito (`ai-clinico.service.ts`, `webauthn.service.ts`, `sso.controller.ts`, `auth.service.ts`, `exception.filter.ts`, `quiosque.controller.ts`, `portal-doente.service.ts`, `relatorios-agendados.service.ts`, `ai-response-schemas.ts`) — nenhum novo. `npx nx test api -- --config=jest.config.js --testPathPatterns=webhooks`: 7/7 testes passam.
+
+**Item da Sessão 30.4 agora resolvido:** "possível SSRF em `webhooks`" deixa de estar na lista de pendentes.
+
+---
+
 *Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*

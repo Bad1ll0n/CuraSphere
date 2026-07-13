@@ -48,6 +48,11 @@ async function bootstrap() {
   // Esconder fingerprint Express
   app.disable('x-powered-by');
 
+  // Graceful shutdown: garante que SIGTERM/SIGINT (ex.: `docker stop` durante um deploy)
+  // drena pedidos em curso e chama onModuleDestroy/beforeApplicationShutdown (Prisma, Redis)
+  // antes do processo terminar, em vez de derrubar ligações a meio.
+  app.enableShutdownHooks();
+
   // Servir uploads como anexos (nunca inline) para evitar XSS via SVG/HTML/PDF embutido
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
     prefix: '/uploads',

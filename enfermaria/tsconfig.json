@@ -10,13 +10,13 @@
       "path": "./apps/api"
     },
     {
-      "path": "./apps/web"
-    },
-    {
       "path": "./apps/mobile"
     },
     {
       "path": "./libs/shared"
+    },
+    {
+      "path": "./libs/ui"
     }
   ]
 }

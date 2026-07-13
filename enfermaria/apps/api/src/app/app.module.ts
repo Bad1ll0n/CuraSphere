@@ -113,6 +113,9 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     Icd10Module,
     OutcomesModule,
     WebhooksModule,
+    PopulationHealthModule,
+    TransferenciasModule,
+    RegrasCliniciasModule,
 
     // ─── Domínios ─────────────────────────────────────────────────────────────
     ClinicalModule,

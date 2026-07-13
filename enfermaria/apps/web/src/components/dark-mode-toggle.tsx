@@ -14,8 +14,16 @@ export function DarkModeToggle() {
 
   useEffect(() => {
     const saved = localStorage.getItem('curasphere-theme') as Tema | null;
-    if (saved === 'dark' || saved === 'high-contrast') setTema(saved);
-    else setTema('light');
+    if (saved === 'dark' || saved === 'high-contrast' || saved === 'light') {
+      setTema(saved);
+      return;
+    }
+    // Sem preferência guardada: respeitar o tema do sistema operativo/browser.
+    // 'high-contrast' não tem equivalente directo em prefers-color-scheme, por isso
+    // fica sempre opt-in (só via toggle manual).
+    const prefersDark = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTema(prefersDark ? 'dark' : 'light');
   }, []);
 
   const toggle = () => {

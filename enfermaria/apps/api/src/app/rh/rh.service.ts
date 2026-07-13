@@ -1,9 +1,24 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
+const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
+
 @Injectable()
 export class RhService {
   constructor(private readonly prisma: PrismaService) {}
+
+  /**
+   * IDOR guard: só RH (RH_ROLES) ou o chefe directo do colaborador visado podem
+   * aprovar/rejeitar as suas ausências ou trocas de folga. Sem esta verificação,
+   * qualquer utilizador autenticado conseguia aprovar/rejeitar pedidos de terceiros
+   * apenas por conhecer o ID do registo.
+   */
+  private async assertAutoridadeSobreColaborador(utilizadorAlvoId: string, actorId: string, actorRole: string) {
+    if (RH_ROLES.includes(actorRole)) return;
+    const alvo = await this.prisma.utilizador.findUnique({ where: { id: utilizadorAlvoId }, select: { chefeId: true } });
+    if (alvo?.chefeId === actorId) return;
+    throw new ForbiddenException('Sem permissão para aprovar/rejeitar este pedido');
+  }
 
   // ── Ausências ─────────────────────────────────────────────────────────────
 
@@ -62,8 +77,9 @@ export class RhService {
     });
   }
 
-  async aprovarAusencia(id: string, aprovadoPorId: string) {
-    await this.buscarAusencia(id);
+  async aprovarAusencia(id: string, aprovadoPorId: string, aprovadoPorRole: string) {
+    const ausencia = await this.buscarAusencia(id);
+    await this.assertAutoridadeSobreColaborador(ausencia.utilizadorId, aprovadoPorId, aprovadoPorRole);
     return this.prisma.ausencia.update({
       where: { id },
       data: { estado: 'aprovada', aprovadoPorId },
@@ -71,8 +87,9 @@ export class RhService {
     });
   }
 
-  async rejeitarAusencia(id: string, aprovadoPorId: string) {
-    await this.buscarAusencia(id);
+  async rejeitarAusencia(id: string, aprovadoPorId: string, aprovadoPorRole: string) {
+    const ausencia = await this.buscarAusencia(id);
+    await this.assertAutoridadeSobreColaborador(ausencia.utilizadorId, aprovadoPorId, aprovadoPorRole);
     return this.prisma.ausencia.update({
       where: { id },
       data: { estado: 'rejeitada', aprovadoPorId },
@@ -440,10 +457,19 @@ export class RhService {
     });
   }
 
-  async aprovarTrocaFolga(id: string, aprovadoPorId: string) {
+  async aprovarTrocaFolga(id: string, aprovadoPorId: string, aprovadoPorRole: string) {
     const troca = await this.prisma.trocaFolga.findUnique({ where: { id } });
     if (!troca) throw new NotFoundException('Troca não encontrada');
     if (troca.estado !== 'aceite') throw new ForbiddenException('A troca ainda não foi aceite pelas duas partes');
+    if (!RH_ROLES.includes(aprovadoPorRole)) {
+      // Manager directo de qualquer uma das partes pode aprovar
+      const [solicitante, destinatario] = await Promise.all([
+        this.prisma.utilizador.findUnique({ where: { id: troca.solicitanteId }, select: { chefeId: true } }),
+        this.prisma.utilizador.findUnique({ where: { id: troca.destinatarioId }, select: { chefeId: true } }),
+      ]);
+      const ehChefe = solicitante?.chefeId === aprovadoPorId || destinatario?.chefeId === aprovadoPorId;
+      if (!ehChefe) throw new ForbiddenException('Sem permissão para aprovar esta troca');
+    }
     return this.prisma.trocaFolga.update({
       where: { id },
       data: { estado: 'aprovado', aprovadoPorId },

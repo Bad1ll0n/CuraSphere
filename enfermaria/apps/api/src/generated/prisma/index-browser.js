@@ -1445,6 +1445,30 @@ exports.Prisma.GuidelineClinicaScalarFieldEnum = {
   embeddingJson: 'embeddingJson'
 };
 
+exports.Prisma.CohortDefinitionScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  filtros: 'filtros',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.TemplatePROScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  campos: 'campos',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.RegistoPROScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  templateId: 'templateId',
+  respostas: 'respostas',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.PortalDoenteScalarFieldEnum = {
   id: 'id',
   doenteId: 'doenteId',
@@ -1507,6 +1531,63 @@ exports.Prisma.WebAuthnCredentialScalarFieldEnum = {
   utilizadorId: 'utilizadorId',
   criadoEm: 'criadoEm',
   ultimoUsoEm: 'ultimoUsoEm'
+};
+
+exports.Prisma.AiPromptInsightScalarFieldEnum = {
+  id: 'id',
+  semana: 'semana',
+  tipo: 'tipo',
+  taxaRejeicao: 'taxaRejeicao',
+  padroes: 'padroes',
+  sugestao: 'sugestao',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AiStaffingPrevisaoScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  turno: 'turno',
+  servicoId: 'servicoId',
+  pessoalAtual: 'pessoalAtual',
+  pessoalRecomendado: 'pessoalRecomendado',
+  motivo: 'motivo',
+  confianca: 'confianca',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.WellbeingSurveyScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  respostas: 'respostas',
+  scoreGlobal: 'scoreGlobal',
+  semana: 'semana',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.TransferenciaExternaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  hospitalDestino: 'hospitalDestino',
+  servicoDestino: 'servicoDestino',
+  motivoTransfer: 'motivoTransfer',
+  estado: 'estado',
+  solicitadoPorId: 'solicitadoPorId',
+  aceitoPorId: 'aceitoPorId',
+  notas: 'notas',
+  documentos: 'documentos',
+  criadoEm: 'criadoEm',
+  concluidaEm: 'concluidaEm'
+};
+
+exports.Prisma.RegraClinicaScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  condicao: 'condicao',
+  acoes: 'acoes',
+  ativa: 'ativa',
+  servicoId: 'servicoId',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
 };
 
 exports.Prisma.SsoProviderScalarFieldEnum = {
@@ -1900,12 +1981,20 @@ exports.Prisma.ModelName = {
   ResultadoAnalise: 'ResultadoAnalise',
   FotoFerida: 'FotoFerida',
   GuidelineClinica: 'GuidelineClinica',
+  CohortDefinition: 'CohortDefinition',
+  TemplatePRO: 'TemplatePRO',
+  RegistoPRO: 'RegistoPRO',
   PortalDoente: 'PortalDoente',
   Hl7Mensagem: 'Hl7Mensagem',
   DashboardConfig: 'DashboardConfig',
   FollowUpAgendado: 'FollowUpAgendado',
   Webhook: 'Webhook',
   WebAuthnCredential: 'WebAuthnCredential',
+  AiPromptInsight: 'AiPromptInsight',
+  AiStaffingPrevisao: 'AiStaffingPrevisao',
+  WellbeingSurvey: 'WellbeingSurvey',
+  TransferenciaExterna: 'TransferenciaExterna',
+  RegraClinica: 'RegraClinica',
   SsoProvider: 'SsoProvider'
 };
 

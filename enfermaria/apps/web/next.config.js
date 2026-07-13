@@ -6,7 +6,23 @@ const { composePlugins, withNx } = require('@nx/next');
 const { withSentryConfig } = require('@sentry/nextjs');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const createNextIntlPlugin = require('next-intl/plugin');
+// next-intl exige um caminho relativo (não suporta caminhos absolutos com
+// Turbopack) e resolve-o em relação ao process.cwd() de quem invoca este
+// ficheiro — não ao diretório deste ficheiro. O `next` CLI já corre com
+// cwd = apps/web, mas o Nx computa o project graph a partir da raiz do
+// workspace, o que faz a resolução falhar aí. Ver uso de `withCwd` abaixo.
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+
+/** Corre `fn` com process.cwd() temporariamente definido para __dirname. */
+function withCwd(fn) {
+  const originalCwd = process.cwd();
+  process.chdir(__dirname);
+  try {
+    return fn();
+  } finally {
+    process.chdir(originalCwd);
+  }
+}
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -61,7 +77,9 @@ const plugins = [withNx];
 
 const baseConfig = composePlugins(...plugins)(nextConfig);
 
-module.exports = withSentryConfig(withNextIntl(baseConfig), {
+const configWithIntl = withCwd(() => withNextIntl(baseConfig));
+
+module.exports = withSentryConfig(configWithIntl, {
   silent: true,
   // Desactivar upload de source maps se não houver auth token configurado
   disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,

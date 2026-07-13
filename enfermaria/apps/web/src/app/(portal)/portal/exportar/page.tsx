@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { PortalAuthProvider, usePortalAuth } from '../portal-auth-context';
+import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 
 const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333/api').replace(/\/$/, '');
 

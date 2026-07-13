@@ -195,6 +195,10 @@ model Utilizador {
   followUpsResponsavel           FollowUpAgendado[]
   outcomesRegistados             OutcomeClinico[]            @relation("OutcomesRegistados")
   webhooksCriados                Webhook[]                   @relation("WebhooksCriados")
+  cohortsCriadas                 CohortDefinition[]          @relation("CohortsCriadas")
+  transExternasSolicitadas       TransferenciaExterna[]      @relation("TransferenciasSolicitadas")
+  transExternasAceites           TransferenciaExterna[]      @relation("TransferenciasAceites")
+  regrasCliniasCriadas           RegraClinica[]              @relation("RegrasCliniasCriadas")
   webAuthnCredentials            WebAuthnCredential[]
 
   @@index([tenantId, role, ativo])
@@ -314,6 +318,8 @@ model Doente {
   documentosSaude         DocumentoSaude[]
   identificadoresExternos IdentificadorExterno[]
   portalDoente            PortalDoente?
+  registosPro             RegistoPRO[]
+  transferenciasExternas  TransferenciaExterna[]
   stewardshipAntibioticos StewardshipAntibiotico[]
   followUps               FollowUpAgendado[]
   outcomesClinicos        OutcomeClinico[]
@@ -2548,6 +2554,49 @@ model GuidelineClinica {
   @@map("guidelines_clinicas")
 }
 
+// ─── Cohort Analysis / Population Health ─────────────────────────────────────
+
+model CohortDefinition {
+  id          String   @id @default(uuid())
+  nome        String
+  filtros     Json // { diagnostico?, idadeMin?, idadeMax?, servico?, icd10Code? }
+  criadoPorId String
+  criadoEm    DateTime @default(now())
+
+  criadoPor Utilizador @relation("CohortsCriadas", fields: [criadoPorId], references: [id])
+
+  @@index([criadoPorId])
+  @@map("cohort_definitions")
+}
+
+// ─── Patient-Reported Outcomes (PROs) ────────────────────────────────────────
+
+model TemplatePRO {
+  id       String   @id @default(uuid())
+  nome     String
+  campos   Json // [{ id, label, tipo:'scale'|'bool'|'text', min?, max? }]
+  ativo    Boolean  @default(true)
+  criadoEm DateTime @default(now())
+
+  registos RegistoPRO[]
+
+  @@map("templates_pro")
+}
+
+model RegistoPRO {
+  id         String   @id @default(uuid())
+  doenteId   String
+  templateId String
+  respostas  Json // { campoId: valor }
+  criadoEm   DateTime @default(now())
+
+  doente   Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  template TemplatePRO @relation(fields: [templateId], references: [id])
+
+  @@index([doenteId, criadoEm])
+  @@map("registos_pro")
+}
+
 // ─── Portal do Doente ─────────────────────────────────────────────────────────
 
 model PortalDoente {
@@ -2649,6 +2698,95 @@ model WebAuthnCredential {
 
   @@index([utilizadorId])
   @@map("webauthn_credentials")
+}
+
+// ─── AI Prompt Insights (feedback analysis) ──────────────────────────────────
+
+model AiPromptInsight {
+  id           String   @id @default(uuid())
+  semana       DateTime @db.Date
+  tipo         String
+  taxaRejeicao Float
+  padroes      String   @db.Text
+  sugestao     String   @db.Text
+  criadoEm     DateTime @default(now())
+
+  @@index([semana])
+  @@map("ai_prompt_insights")
+}
+
+// ─── AI Staffing Previsão ────────────────────────────────────────────────────
+
+model AiStaffingPrevisao {
+  id                 String   @id @default(uuid())
+  data               DateTime @db.Date
+  turno              String // 'manha' | 'tarde' | 'noite'
+  servicoId          String?
+  pessoalAtual       Int?
+  pessoalRecomendado Int
+  motivo             String   @db.Text
+  confianca          String // 'alta' | 'media' | 'baixa'
+  criadoEm           DateTime @default(now())
+
+  @@index([data])
+  @@map("ai_staffing_previsoes")
+}
+
+// ─── Staff Wellbeing ─────────────────────────────────────────────────────────
+
+model WellbeingSurvey {
+  id           String   @id @default(uuid())
+  utilizadorId String? // null = anónimo
+  respostas    Json // { q1: 1-5, q2: 1-5, ... }
+  scoreGlobal  Int // 1-100
+  semana       DateTime @db.Date
+  criadoEm     DateTime @default(now())
+
+  @@index([semana])
+  @@map("wellbeing_surveys")
+}
+
+// ─── Inter-hospital Transfer ──────────────────────────────────────────────────
+
+model TransferenciaExterna {
+  id              String    @id @default(uuid())
+  doenteId        String
+  hospitalDestino String
+  servicoDestino  String
+  motivoTransfer  String    @db.Text
+  estado          String    @default("pendente")
+  solicitadoPorId String
+  aceitoPorId     String?
+  notas           String?   @db.Text
+  documentos      Json?
+  criadoEm        DateTime  @default(now())
+  concluidaEm     DateTime?
+
+  doente        Doente      @relation(fields: [doenteId], references: [id])
+  solicitadoPor Utilizador  @relation("TransferenciasSolicitadas", fields: [solicitadoPorId], references: [id])
+  aceitoPor     Utilizador? @relation("TransferenciasAceites", fields: [aceitoPorId], references: [id])
+
+  @@index([doenteId])
+  @@index([estado])
+  @@map("transferencias_externas")
+}
+
+// ─── Clinical Rules Engine ────────────────────────────────────────────────────
+
+model RegraClinica {
+  id          String   @id @default(uuid())
+  nome        String
+  condicao    Json // { parametro:'spo2', operador:'<', valor:90 }
+  acoes       Json // [{ tipo:'notificar', role:'medico' }]
+  ativa       Boolean  @default(true)
+  servicoId   String?
+  criadoPorId String
+  criadoEm    DateTime @default(now())
+
+  criadoPor Utilizador @relation("RegrasCliniasCriadas", fields: [criadoPorId], references: [id])
+
+  @@index([ativa])
+  @@map("regras_clinicas")
 }
 
 // ─── SSO Providers ────────────────────────────────────────────────────────────

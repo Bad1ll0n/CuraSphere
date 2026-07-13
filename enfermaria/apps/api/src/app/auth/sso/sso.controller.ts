@@ -1,12 +1,14 @@
 import {
   Controller, Get, Post, Put, Delete,
   Param, Body, Res, Req, Query,
-  UseGuards, Logger,
+  UseGuards, Logger, BadRequestException,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { IsString, IsIn, IsObject, IsOptional, IsBoolean, MaxLength } from 'class-validator';
 import type { Request, Response } from 'express';
-import * as xml2js from 'xml2js';
+import { SAML, ValidateInResponseTo } from '@node-saml/node-saml';
+import * as jwksRsa from 'jwks-rsa';
+import * as jwt from 'jsonwebtoken';
 import { SsoService } from './sso.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
 import { Roles } from '../roles.decorator';
@@ -89,69 +91,82 @@ export class SsoController {
     res.type('text/xml').send(metadata);
   }
 
+  /**
+   * Constrói uma instância SAML real (@node-saml/node-saml) para um provider.
+   * `config.cert` (certificado público de assinatura do IdP, PEM) é obrigatório —
+   * é o que torna a assinatura da Response/Assertion verificável. Sem ele, recusamos
+   * o provider em vez de aceitar assertions não verificadas (ver histórico: o fluxo
+   * anterior fazia parsing manual do XML sem validar a assinatura, permitindo que
+   * qualquer pessoa forjasse uma SAMLResponse e autenticasse como qualquer utilizador).
+   */
+  private buildSaml(config: Record<string, string>): SAML {
+    const cert = config['cert'];
+    if (!cert) {
+      throw new BadRequestException('Provider SAML sem certificado do IdP configurado (config.cert)');
+    }
+    const apiUrl = process.env['API_URL'] ?? 'http://localhost:3333';
+    return new SAML({
+      idpCert: cert,
+      issuer: config['issuer'] || apiUrl,
+      callbackUrl: `${apiUrl}/v1/auth/sso/saml/callback`,
+      entryPoint: config['entryPoint'],
+      wantAssertionsSigned: true,
+      validateInResponseTo: ValidateInResponseTo.ifPresent,
+    });
+  }
+
   @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 60000, limit: 10 } })
   @Get('saml/login')
   async samlLogin(@Query('providerId') providerId: string, @Res() res: Response) {
     const provider = await this.sso.getProvider(providerId);
-    const config = provider.config as Record<string, string>;
 
     if (provider.tipo !== 'saml') {
       return res.status(400).json({ mensagem: 'Provider não é SAML' });
     }
 
-    // Construir AuthnRequest simplificado
+    const config = provider.config as Record<string, string>;
+    const saml = this.buildSaml(config);
+
+    // RelayState identifica o provider a usar quando a Response voltar no callback
     const state = crypto.randomBytes(16).toString('hex');
     await this.redis.set(`sso:saml:state:${state}`, providerId, 300);
 
-    const apiUrl = process.env['API_URL'] ?? 'http://localhost:3333';
-    const acsUrl = encodeURIComponent(`${apiUrl}/v1/auth/sso/saml/callback`);
-    const issuer = encodeURIComponent(apiUrl);
-    const entryPoint = config['entryPoint'] ?? '';
-
-    // Redirect para IdP com AuthnRequest básico (sem assinatura — simplificado)
-    res.redirect(`${entryPoint}?SAMLRequest=...&RelayState=${state}&ACSUrl=${acsUrl}&Issuer=${issuer}`);
+    const url = await saml.getAuthorizeUrlAsync(state, undefined, {});
+    return res.redirect(url);
   }
 
   @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Post('saml/callback')
-  async samlCallback(@Body() body: any, @Res() res: Response) {
+  async samlCallback(@Body() body: Record<string, string>, @Res() res: Response) {
+    const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';
     try {
-      const samlResponse = Buffer.from(body.SAMLResponse, 'base64').toString('utf-8');
-      const parsed = await xml2js.parseStringPromise(samlResponse);
+      const relayState = body.RelayState;
+      const providerId = relayState ? await this.redis.get<string>(`sso:saml:state:${relayState}`) : null;
+      if (!providerId) throw new Error('RelayState inválido ou expirado');
+      await this.redis.del(`sso:saml:state:${relayState}`);
 
-      // Extrair atributos da assertion
-      const assertion = parsed?.['samlp:Response']?.['saml:Assertion']?.[0]
-        ?? parsed?.['saml:Assertion']?.[0]
-        ?? parsed?.['Response']?.['Assertion']?.[0];
+      const provider = await this.sso.getProvider(providerId);
+      const config = provider.config as Record<string, string>;
+      const saml = this.buildSaml(config);
 
-      const subject = assertion?.['saml:Subject']?.[0]?.['saml:NameID']?.[0]?._ ??
-        assertion?.['Subject']?.[0]?.['NameID']?.[0]?._;
-
-      const attrs: Record<string, string> = {};
-      const attrStmts = assertion?.['saml:AttributeStatement']?.[0]?.['saml:Attribute'] ?? [];
-      for (const attr of attrStmts) {
-        const name = attr.$?.Name ?? '';
-        const value = attr['saml:AttributeValue']?.[0]?._ ?? attr['saml:AttributeValue']?.[0] ?? '';
-        attrs[name] = String(value);
-      }
+      // Verifica assinatura, validade temporal (NotBefore/NotOnOrAfter) e InResponseTo
+      const { profile } = await saml.validatePostResponseAsync(body);
+      if (!profile) throw new Error('Assertion SAML inválida ou sessão de logout');
 
       const utilizador = await this.sso.provisionarUtilizador({
-        id: subject ?? `saml:${Date.now()}`,
-        email: attrs['email'] ?? attrs['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
-        nome: attrs['displayName'] ?? attrs['name'] ?? attrs['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
-        role: attrs['role'] ?? attrs['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
+        id: profile.nameID,
+        email: (profile['email'] ?? profile['mail']) as string | undefined,
+        nome: (profile['displayName'] ?? profile['name']) as string | undefined,
+        role: (profile['role'] ?? profile['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) as string | undefined,
       });
 
-      const { accessToken, refreshToken } = this.sso.emitirTokens(utilizador);
+      const { accessToken, refreshToken } = await this.sso.emitirTokens(utilizador);
       this.setCookies(res, accessToken, refreshToken);
-
-      const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';
       res.redirect(webUrl);
     } catch (err) {
       this.logger.error('SAML callback error', err);
-      const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';
       res.redirect(`${webUrl}/login?erro=sso_failed`);
     }
   }
@@ -197,7 +212,7 @@ export class SsoController {
       const stateData = await this.redis.get<string>(`sso:oidc:state:${state}`);
       if (!stateData) throw new Error('State inválido ou expirado');
 
-      const { providerId } = JSON.parse(stateData);
+      const { providerId, nonce } = JSON.parse(stateData);
       const provider = await this.sso.getProvider(providerId);
       const config = provider.config as Record<string, string>;
 
@@ -219,12 +234,30 @@ export class SsoController {
       });
 
       if (!tokenResponse.ok) throw new Error('Falha ao trocar code por tokens');
-      const tokens = await tokenResponse.json();
+      const tokens = await tokenResponse.json() as Record<string, any>;
 
-      // Decode id_token (JWT — verificação simplificada de claims)
+      // Verifica a assinatura do id_token via JWKS do IdP (RS256) — a troca do
+      // authorization code já passa por client_secret, mas o id_token em si tem
+      // de ser validado (assinatura + iss/aud/exp) antes de confiar nas claims,
+      // e o nonce gerado em oidcLogin tem de bater certo para impedir replay.
       const idToken = tokens.id_token;
-      const [, payloadB64] = idToken.split('.');
-      const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8'));
+      const decodedHeader = jwt.decode(idToken, { complete: true }) as { header: { kid?: string } } | null;
+      if (!decodedHeader) throw new Error('id_token inválido');
+
+      const issuer = config['issuer'] ?? '';
+      const jwksUri = config['jwksUri'] || `${issuer.replace(/\/$/, '')}/.well-known/jwks.json`;
+      const jwksClient = new jwksRsa.JwksClient({ jwksUri, cache: true, cacheMaxAge: 600000 });
+      const signingKey = await jwksClient.getSigningKey(decodedHeader.header.kid);
+
+      const payload = jwt.verify(idToken, signingKey.getPublicKey(), {
+        algorithms: ['RS256'],
+        audience: config['clientId'],
+        issuer,
+      }) as Record<string, any>;
+
+      if (!nonce || payload['nonce'] !== nonce) {
+        throw new Error('nonce do id_token não corresponde ao esperado — possível replay');
+      }
 
       const utilizador = await this.sso.provisionarUtilizador({
         id: payload.sub ?? payload.oid,
@@ -234,7 +267,7 @@ export class SsoController {
       });
 
       await this.redis.del(`sso:oidc:state:${state}`);
-      const { accessToken, refreshToken } = this.sso.emitirTokens(utilizador);
+      const { accessToken, refreshToken } = await this.sso.emitirTokens(utilizador);
       this.setCookies(res, accessToken, refreshToken);
 
       const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';

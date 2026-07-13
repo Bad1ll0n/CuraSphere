@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Mobile",
-    "slug": "@org/mobile",
+    "name": "CuraSphere",
+    "slug": "curasphere-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "@org/mobile",
+    "scheme": "curasphere",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

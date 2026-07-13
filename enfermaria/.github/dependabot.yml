@@ -26,10 +26,29 @@ updates:
       - dependency-name: "next"
         update-types: ["version-update:semver-major"]
 
+  # Dockerfiles live under each app, not at the workspace root — directory must
+  # point exactly at the Dockerfile's folder (Dependabot does not scan recursively)
   - package-ecosystem: docker
-    directory: /enfermaria
+    directory: /enfermaria/apps/api
     schedule:
       interval: monthly
     labels:
       - dependencies
       - docker
+
+  - package-ecosystem: docker
+    directory: /enfermaria/apps/web
+    schedule:
+      interval: monthly
+    labels:
+      - dependencies
+      - docker
+
+  - package-ecosystem: github-actions
+    directory: /enfermaria
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - ci

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { usePortalAuth } from '../portal-auth-context';
+import { usePortalAuth } from '../../portal-auth-context';
 import { useRouter } from 'next/navigation';
 
 const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333/api').replace(/\/$/, '');
@@ -39,7 +39,7 @@ export default function PROPage() {
   const [tab, setTab] = useState<'registar' | 'historico'>('registar');
 
   useEffect(() => {
-    if (!token) { router.push('/login'); return; }
+    if (!token) { router.push('/portal/login'); return; }
     const h = { Authorization: `Bearer ${token}` };
     fetch(`${API}/portal/pro/templates`, { headers: h })
       .then(r => r.json()).then(setTemplates).catch(() => {});

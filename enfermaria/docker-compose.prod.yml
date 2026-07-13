@@ -80,6 +80,12 @@ services:
       PORT:                    3333
       ANTHROPIC_API_KEY:       ${ANTHROPIC_API_KEY}
       SENTRY_DSN:              ${SENTRY_DSN:-}
+      # OBRIGATÓRIO — sem isto o middleware de encriptação faz no-op silencioso e
+      # guarda PII (nome/contacto/morada de doentes) em texto simples na BD
+      ENCRYPTION_KEY:          ${ENCRYPTION_KEY}
+      # OBRIGATÓRIO se o quiosque de doente estiver activo — a API lança erro
+      # ao gerar/validar tokens de quiosque sem isto
+      QUIOSQUE_SECRET:         ${QUIOSQUE_SECRET:-}
     depends_on:
       postgres:
         condition: service_healthy
@@ -106,6 +112,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      # TEM de ser o mesmo valor que a API — src/middleware.ts verifica a assinatura
+      # JWT (HS256) server-side; sem isto o secret resolve para a string "undefined"
+      # e todos os utilizadores autenticados são redirecionados para /login
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
       api:
         condition: service_healthy

@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
+import { AuthService } from '../auth.service';
 import * as crypto from 'crypto';
 
 export interface SsoProfile {
@@ -17,7 +17,7 @@ export class SsoService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
   ) {}
 
   async listarProviders() {
@@ -81,21 +81,33 @@ export class SsoService {
     return utilizador;
   }
 
+  /**
+   * Emite a sessão pelo mesmo mecanismo do login por password (access token JWT +
+   * refresh token opaco persistido em BD, revogável) — evita duplicar lógica de
+   * emissão de tokens e contornar a infraestrutura de revogação de sessões.
+   */
   emitirTokens(utilizador: any) {
-    const payload = { sub: utilizador.id, role: utilizador.role, subRole: utilizador.subRole };
-    const accessToken  = this.jwtService.sign(payload, { expiresIn: '1h' as any });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' as any });
-    return { accessToken, refreshToken, utilizador };
+    return this.authService.emitirSessaoExterna(utilizador);
   }
 
+  /**
+   * SEGURANÇA: mesmo com a Response/Assertion SAML (@node-saml/node-saml) e o
+   * id_token OIDC (JWKS + nonce) agora verificados criptograficamente em
+   * sso.controller.ts, mantemos esta camada de defesa em profundidade: claims que
+   * mapeariam para roles administrativas ('ti', 'direcao') continuam deliberadamente
+   * rebaixadas para 'administrativo'. Um IdP mal configurado (ou um atacante com
+   * acesso legítimo mas limitado ao IdP) não deve conseguir auto-provisionar uma
+   * conta com privilégios de administrador só por controlar um valor de claim —
+   * promoção a 'ti'/'direcao' deve continuar a ser um acto manual de um admin
+   * existente após a criação da conta.
+   */
   private deduzirRole(claimRole?: string): string {
     if (!claimRole) return 'administrativo';
     const mapa: Record<string, string> = {
       doctor: 'medico', physician: 'medico', medico: 'medico',
       nurse: 'enfermeiro', enfermeiro: 'enfermeiro',
       pharmacist: 'farmaceutico', farmaceutico: 'farmaceutico',
-      admin: 'ti', it: 'ti', ti: 'ti',
-      management: 'direcao', director: 'direcao', direcao: 'direcao',
+      // 'admin'/'it'/'management'/'director' NÃO mapeiam para 'ti'/'direcao' — ver nota acima.
     };
     return mapa[claimRole.toLowerCase()] ?? 'administrativo';
   }
