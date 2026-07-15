@@ -4,7 +4,11 @@ import { Resend } from 'resend';
 @Injectable()
 export class MailerService {
   private readonly logger = new Logger(MailerService.name);
-  private readonly client = new Resend(process.env['RESEND_API_KEY']);
+  // Resend's constructor throws synchronously if given an undefined/empty key —
+  // only construct it when the key is actually configured, so this app doesn't
+  // crash at boot in environments (like local dev) where email sending is
+  // simply not set up. `enviar()` no-ops when `client` is null.
+  private readonly client = process.env['RESEND_API_KEY'] ? new Resend(process.env['RESEND_API_KEY']) : null;
   private readonly from = `CuraSphere <noreply@${process.env['MAIL_DOMAIN'] ?? 'curasphere.pt'}>`;
 
   async enviar(opts: {
@@ -13,7 +17,7 @@ export class MailerService {
     html: string;
     anexos?: { nome: string; conteudo: Buffer }[];
   }): Promise<void> {
-    if (!process.env['RESEND_API_KEY']) {
+    if (!this.client) {
       this.logger.warn('RESEND_API_KEY não configurado — email ignorado');
       return;
     }

@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Body, Patch, UseGuards, Request, Req, Res } from '@nestjs/common';
-import { Throttle, ThrottlerGuard, SkipThrottle } from '@nestjs/throttler';
+import { Throttle, SkipThrottle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { AuthService } from './auth.service';
@@ -29,7 +29,6 @@ const COOKIE_MAX_AGE_REFRESH = 7 * 24 * 60 * 60 * 1000;
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Post('login')
   async login(
@@ -41,11 +40,16 @@ export class AuthController {
     if (result.mfaPendente) {
       return { mfaPendente: true, mfaChallengeToken: result.mfaChallengeToken };
     }
+    if (result.mfaSetupObrigatorio) {
+      return { mfaSetupObrigatorio: true, mfaSetupToken: result.mfaSetupToken };
+    }
+    if (result.passwordExpirada) {
+      return { passwordExpirada: true, passwordExpiredToken: result.passwordExpiredToken };
+    }
     this.setTokenCookies(res, result.accessToken!, result.refreshToken!);
-    return { utilizador: result.utilizador };
+    return { utilizador: result.utilizador, passwordExpiradoAviso: result.passwordExpiradoAviso, diasRestantesSenha: result.diasRestantesSenha };
   }
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 10 } })
   @Post('mfa/verificar')
   async mfaVerificar(
@@ -64,14 +68,14 @@ export class AuthController {
     return this.authService.setupMfa(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
   mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
     return this.authService.ativarMfa(req.user.sub, dto.secret, dto.code, dto.setupToken);
   }
 
-  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/desativar')
   mfaDesativar(@Request() req: any, @Body() dto: MfaDesativarDto) {
@@ -122,7 +126,7 @@ export class AuthController {
     return this.authService.passwordStatus(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 3600000, limit: 3 } })
   @Patch('alterar-password')
   async alterarPassword(

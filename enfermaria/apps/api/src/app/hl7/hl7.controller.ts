@@ -30,7 +30,7 @@ export class Hl7Controller {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('it_admin', 'direcao', 'admin')
+  @Roles('ti', 'direcao')
   @Get('mensagens')
   listar(
     @Query('skip') skip?: string,

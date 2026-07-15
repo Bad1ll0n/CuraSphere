@@ -93,7 +93,7 @@ async function bootstrap() {
       },
     },
   }));
-  app.use((cookieParser as any)());
+  app.use((cookieParser as any).default());
   app.use(json({ limit: '500kb' }));
   app.use(urlencoded({ limit: '500kb', extended: true }));
   // Raw text for HL7 v2 messages (MLLP transport over HTTP)
@@ -122,7 +122,7 @@ async function bootstrap() {
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Correlation-ID', 'X-CSRF-Token'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Correlation-ID', 'X-CSRF-Token', 'X-Break-Glass-Reason'],
     exposedHeaders: ['X-Correlation-ID'],
   });
 

@@ -41,7 +41,12 @@ export class TrocasService {
     // Merge sem duplicados
     const vistos = new Set(meusPedidos.map((p) => p.id));
     const extras = paraAprovar.filter((p) => !vistos.has(p.id));
-    return [...meusPedidos, ...extras];
+    const todos = [...meusPedidos, ...extras];
+
+    // podeAprovar é calculado aqui (não inferido no frontend) para cobrir o caso em que o
+    // próprio solicitante/destinatário é também o chefe do turno (ex: turno com um só profissional)
+    const turnoIdsSet = new Set(turnoIds);
+    return todos.map((p) => ({ ...p, podeAprovar: p.estado === 'pendente_chefe' && turnoIdsSet.has(p.turnoId) }));
   }
 
   // Devolve os turnos onde o utilizador tem menor ordemExperiencia no seu grupo (role)

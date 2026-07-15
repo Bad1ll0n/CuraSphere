@@ -14,6 +14,7 @@ interface Pedido {
   destinatario: Utilizador;
   turno: HorarioTurno;
   aprovadoPor?: Utilizador;
+  podeAprovar: boolean;
 }
 
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
@@ -41,10 +42,7 @@ export default function TrocasPage() {
   const { utilizador } = useAuth();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
-  // O servidor já filtra — se há pendente_chefe que o user não é parte, é porque é chefe desse turno
-  const isChefe = pedidos.some(
-    (p) => p.estado === 'pendente_chefe' && p.solicitante.id !== utilizador?.id && p.destinatario.id !== utilizador?.id
-  );
+  const isChefe = pedidos.some((p) => p.podeAprovar);
 
   // Modal
   const [modalAberto, setModalAberto] = useState(false);
@@ -105,7 +103,7 @@ export default function TrocasPage() {
 
   const pendentesResposta = pedidos.filter((p) => p.estado === 'pendente_destinatario' && p.destinatario.id === utilizador?.id);
   const meusEnviados = pedidos.filter((p) => p.solicitante.id === utilizador?.id && !['aprovado', 'rejeitado'].includes(p.estado));
-  const pendentesAprovacao = pedidos.filter((p) => p.estado === 'pendente_chefe');
+  const pendentesAprovacao = pedidos.filter((p) => p.podeAprovar);
   const historico = pedidos.filter((p) => ['aprovado', 'rejeitado'].includes(p.estado));
 
   return (

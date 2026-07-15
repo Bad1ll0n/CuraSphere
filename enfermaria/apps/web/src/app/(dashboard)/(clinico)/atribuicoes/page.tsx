@@ -83,7 +83,7 @@ export default function AtribuicoesPage() {
       ]);
       const lista: HorarioTurno[] = turnosR.data;
       setTurnos(lista);
-      setDoentes(doentesR.data);
+      setDoentes(doentesR.data?.data ?? []);
       if (lista.length > 0 && !turnoSelecionado) {
         // Seleccionar o turno activo actual do grupo do utilizador
         const agora = new Date();

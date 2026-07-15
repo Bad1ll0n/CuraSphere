@@ -158,7 +158,7 @@ export class DashboardService {
       this.prisma.cama.count({ where: { estado: 'reservada' } }),
       this.prisma.episodioFaturacao.findMany({ where: { criadoEm: { gte: inicioMes } }, select: { totalCobrado: true, estado: true, tipoCobertura: true } }),
       this.prisma.consulta.findMany({ where: { dataHora: { gte: hoje, lt: amanha } }, select: { estado: true } }),
-      this.prisma.pedidoTrocaTurno.count({ where: { estado: 'pendente' as any } }),
+      this.prisma.pedidoTrocaTurno.count({ where: { estado: { in: ['pendente_destinatario', 'pendente_chefe'] } } }),
       this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
       this.prisma.episodioUrgencia.groupBy({ by: ['estadoEpisodio'], where: { dataEntrada: { gte: hoje } }, _count: { id: true } }).catch(() => []),
       this.prisma.cirurgiaProgramada.groupBy({ by: ['estado'], where: { dataHora: { gte: inicioMes } }, _count: { id: true } }).catch(() => []),

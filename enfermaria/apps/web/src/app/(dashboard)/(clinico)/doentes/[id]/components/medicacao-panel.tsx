@@ -312,7 +312,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           )}
           <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL ?? ''}/medicacao/doente/${doenteId}/mar/pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1/medicacao/doente/${doenteId}/mar/pdf`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Descarregar MAR PDF"

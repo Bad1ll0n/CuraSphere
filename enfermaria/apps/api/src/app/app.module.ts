@@ -8,8 +8,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { randomUUID } from 'crypto';
 import { LoggerModule } from 'nestjs-pino';
-import { TerminusModule } from '@nestjs/terminus';
-import { PrismaHealthIndicator } from '@nestjs/terminus';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
 import { AuthModule } from './auth/auth.module';
@@ -66,7 +64,14 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
       pinoHttp: {
         genReqId: (req) => (req.headers['x-correlation-id'] as string) ?? randomUUID(),
         level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
-        transport: process.env['NODE_ENV'] !== 'production'
+        // pino's pretty-print transport spawns a worker thread that does its own
+        // require.resolve('pino-pretty') — this doesn't work once the app is
+        // bundled into a single file (webpack build, Docker image), where it
+        // throws "unable to determine transport target" at boot. Explicit
+        // opt-in via LOG_PRETTY, not implicit on NODE_ENV, so local
+        // (non-bundled) dev can still turn it on without every bundled
+        // environment inheriting the same crash.
+        transport: process.env['LOG_PRETTY'] === 'true'
           ? { target: 'pino-pretty', options: { colorize: true, translateTime: 'SYS:standard', ignore: 'pid,hostname' } }
           : undefined,
         // Não logar passwords ou tokens no body
@@ -94,7 +99,6 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     ScheduleModule.forRoot(),
-    TerminusModule,
     PrismaModule,
     RedisModule,
     AuthModule,
@@ -126,7 +130,6 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
   providers: [
     AppService,
     AuditService,
-    PrismaHealthIndicator,
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

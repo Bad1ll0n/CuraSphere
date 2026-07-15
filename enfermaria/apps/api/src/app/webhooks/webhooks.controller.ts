@@ -10,7 +10,7 @@ class CriarWebhookDto {
   @IsArray() @ArrayMinSize(1) @IsString({ each: true }) eventos!: string[];
 }
 
-@Controller('v1/webhooks')
+@Controller('webhooks')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('ti', 'direcao')
 export class WebhooksController {

@@ -45,10 +45,16 @@ export class TurnosService {
     });
     if (jaFezCheckIn) throw new BadRequestException('Check-in já realizado para este turno');
 
+    // HorarioTurno.data é sempre a meia-noite UTC do dia (ver horarios.service.ts) — nunca cai
+    // dentro da janela horária precisa do Turno (ex: 08:00-16:30), por isso comparamos por dia + tipo.
+    const diaInicio = new Date(turno.dataInicio);
+    diaInicio.setUTCHours(0, 0, 0, 0);
+    const diaFim = new Date(diaInicio);
+    diaFim.setUTCHours(23, 59, 59, 999);
     const noHorario = await this.prisma.horarioTurnoProfissional.findFirst({
       where: {
         utilizadorId,
-        horarioTurno: { data: { gte: turno.dataInicio, lte: turno.dataFim } },
+        horarioTurno: { tipo: turno.tipo, data: { gte: diaInicio, lte: diaFim } },
       },
     });
     if (!noHorario) throw new ForbiddenException('Não está escalado para este turno');

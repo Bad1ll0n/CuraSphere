@@ -19,21 +19,21 @@ export class FhirController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('dispositivos')
-  @Roles('admin', 'it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   listar() {
     return this.service.listarDispositivos();
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('dispositivos')
-  @Roles('admin', 'it_admin')
+  @Roles('ti')
   criar(@Body() dto: CriarDispositivoDto) {
     return this.service.criarDispositivo(dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete('dispositivos/:id')
-  @Roles('admin', 'it_admin')
+  @Roles('ti')
   remover(@Param('id') id: string) {
     return this.service.removerDispositivo(id);
   }
@@ -42,14 +42,14 @@ export class FhirController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('doentes/lookup-sns')
-  @Roles('medico', 'enfermeiro', 'admin', 'direcao', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'ti', 'direcao', 'chefe_enfermeiros')
   lookupSns(@Query('numeroSNS') numeroSNS: string) {
     return this.service.lookupSns(numeroSNS);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('doentes/:id/exportar-fhir')
-  @Roles('medico', 'enfermeiro', 'admin', 'direcao', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'ti', 'direcao', 'chefe_enfermeiros')
   exportarFhir(@Param('id') id: string) {
     return this.service.exportarBundleDoente(id);
   }

@@ -137,7 +137,7 @@ export default function DashboardExecutivo() {
           <a
             href="/api/doentes/export"
             download="doentes.csv"
-            onClick={(e) => { e.preventDefault(); window.location.href = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/doentes/export`; }}
+            onClick={(e) => { e.preventDefault(); window.location.href = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1/doentes/export`; }}
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
             style={{ padding: '6px 12px' }}
           >

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Query, UseGuards, Request } from '@nestjs/common';
-import { ThrottlerGuard, Throttle } from '@nestjs/throttler';
+import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -10,7 +10,6 @@ export class QuiosqueController {
   constructor(private readonly doenteService: DoenteService) {}
 
   @Get('quiosque-dados')
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 30000, limit: 2 } })
   dadosQuiosque(@Query('token') token: string, @Query('servicoId') servicoId: string) {
     return this.doenteService.dadosQuiosque(token, servicoId);

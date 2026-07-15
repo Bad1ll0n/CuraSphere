@@ -104,7 +104,7 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
     setStreaming(true);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
-    const es = new EventSource(`${apiUrl}/ai-clinico/${doenteId}/stream`, { withCredentials: true });
+    const es = new EventSource(`${apiUrl}/v1/ai-clinico/${doenteId}/stream`, { withCredentials: true });
     esRef.current = es;
 
     es.onmessage = (e) => {
@@ -190,9 +190,12 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
       )}
 
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginBottom: '24px' }}>
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={handleAbrir}
-          className="w-full flex items-center justify-between text-left hover:bg-slate-50/50 rounded-2xl transition-colors"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleAbrir(); } }}
+          className="w-full flex items-center justify-between text-left hover:bg-slate-50/50 rounded-2xl transition-colors cursor-pointer"
           style={{ padding: '16px 24px' }}>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
@@ -209,7 +212,7 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
           <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </button>
+        </div>
 
         {aberto && (
           <div style={{ padding: '0 24px 20px' }}>

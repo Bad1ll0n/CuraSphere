@@ -14,12 +14,12 @@ export class IncidentesTIController {
 
   @Post()
   criar(@Body() dto: CriarIncidenteDto, @Request() req: any) {
-    return this.service.criar(dto, req.user.id);
+    return this.service.criar(dto, req.user.sub);
   }
 
   @Get()
   listar(@Request() req: any) {
-    return this.service.listar(req.user.id, req.user.role);
+    return this.service.listar(req.user.sub, req.user.role);
   }
 
   @Get(':id')
@@ -39,7 +39,7 @@ export class IncidentesTIController {
 
   @Post(':id/notas')
   adicionarNota(@Param('id') id: string, @Body() dto: AdicionarNotaDto, @Request() req: any) {
-    return this.service.adicionarNota(id, req.user.id, dto);
+    return this.service.adicionarNota(id, req.user.sub, dto);
   }
 
   @Delete(':id')

@@ -1,5 +1,5 @@
 # ─── Stage 1: Instalar dependências ──────────────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /workspace
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -11,7 +11,7 @@ COPY apps/web/package.json ./apps/web/
 RUN pnpm install --frozen-lockfile
 
 # ─── Stage 2: Build ───────────────────────────────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /workspace
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -26,11 +26,12 @@ ENV NODE_ENV=production
 COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
 
-# Build do Next.js (cwd: apps/web)
-RUN cd apps/web && npx next build
+# Build do Next.js (cwd: apps/web) — pnpm exec, não npx, para usar o next já
+# instalado no workspace em vez de o npx tentar buscar uma versão do registry
+RUN cd apps/web && pnpm exec next build
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

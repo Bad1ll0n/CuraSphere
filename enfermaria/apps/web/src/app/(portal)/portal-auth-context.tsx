@@ -10,24 +10,28 @@ interface PortalUser {
 interface PortalAuthCtx {
   user: PortalUser | null;
   token: string | null;
+  loading: boolean;
   login: (email: string, senha: string) => Promise<void>;
   logout: () => void;
 }
 
 const Ctx = createContext<PortalAuthCtx | null>(null);
 
-const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333/api').replace(/\/$/, '');
+const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
 export function PortalAuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<PortalUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const t = localStorage.getItem('portal_token');
     if (t) {
       setToken(t);
-      fetchMe(t);
+      fetchMe(t).finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -66,7 +70,7 @@ export function PortalAuthProvider({ children }: { children: React.ReactNode }) 
     router.push('/portal/login');
   };
 
-  return <Ctx.Provider value={{ user, token, login, logout }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ user, token, loading, login, logout }}>{children}</Ctx.Provider>;
 }
 
 export function usePortalAuth() {

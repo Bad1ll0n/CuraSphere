@@ -28,49 +28,49 @@ export class SistemasExternosController {
   constructor(private readonly service: SistemasExternosService) {}
 
   @Get()
-  @Roles('it_admin', 'direcao', 'medico', 'chefe_enfermeiros')
+  @Roles('ti', 'direcao', 'medico', 'chefe_enfermeiros')
   listar() {
     return this.service.listar();
   }
 
   @Get(':id')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   obter(@Param('id') id: string) {
     return this.service.obter(id);
   }
 
   @Post()
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   criar(@Body() dto: CriarSistemaDto) {
     return this.service.criar(dto);
   }
 
   @Patch(':id')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   atualizar(@Param('id') id: string, @Body() dto: Partial<CriarSistemaDto>) {
     return this.service.atualizar(id, dto);
   }
 
   @Delete(':id')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   remover(@Param('id') id: string) {
     return this.service.remover(id);
   }
 
   @Post(':id/testar')
-  @Roles('it_admin', 'direcao', 'medico')
+  @Roles('ti', 'direcao', 'medico')
   testar(@Param('id') id: string) {
     return this.service.testarConectividade(id);
   }
 
   @Get('doente/:doenteId/identificadores')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'it_admin')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'ti')
   listarIdentificadores(@Param('doenteId') doenteId: string) {
     return this.service.listarIdentificadoresDoente(doenteId);
   }
 
   @Post('doente/:doenteId/identificadores')
-  @Roles('medico', 'chefe_enfermeiros', 'it_admin')
+  @Roles('medico', 'chefe_enfermeiros', 'ti')
   adicionarIdentificador(
     @Param('doenteId') doenteId: string,
     @Body() dto: IdentificadorDto,

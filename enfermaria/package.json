@@ -70,7 +70,17 @@
       "@nestjs/core",
       "@prisma/client",
       "@prisma/engines",
-      "prisma"
+      "prisma",
+      "@parcel/watcher",
+      "@scarf/scarf",
+      "@sentry/cli",
+      "@swc/core",
+      "detox",
+      "dtrace-provider",
+      "less",
+      "nx",
+      "sharp",
+      "unrs-resolver"
     ]
   },
   "dependencies": {

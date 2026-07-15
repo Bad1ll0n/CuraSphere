@@ -42,7 +42,8 @@ export default function DietasPage() {
   const [observacoes, setObservacoes] = useState('');
 
   const podePrescrever = ['medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador?.role ?? '');
-  const podeCozinha = ['cozinha', 'nutricao', 'direcao', 'ti', 'administrativo'].includes(utilizador?.role ?? '') || podePrescrever;
+  // Tem de reflectir exactamente o @Roles() de GET /dietas/hoje (dietas.controller.ts)
+  const podeCozinha = ['medico', 'enfermeiro', 'auxiliar', 'administrativo', 'operacional'].includes(utilizador?.role ?? '');
 
   const { data: dietasHoje, isLoading } = useQuery({
     queryKey: ['dietas-hoje'],

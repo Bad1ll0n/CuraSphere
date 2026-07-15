@@ -577,9 +577,19 @@ export class MedicacaoService {
       medicacoes,
     }));
 
+    const doentesMap = new Map<string, { id: string; nome: string; cama: string | null; medicacoesPendentes: number }>();
+    for (const entries of slotsMap.values()) {
+      for (const e of entries) {
+        const atual = doentesMap.get(e.doenteId) ?? { id: e.doenteId, nome: e.doenteName, cama: e.cama, medicacoesPendentes: 0 };
+        if (!e.administrada) atual.medicacoesPendentes++;
+        doentesMap.set(e.doenteId, atual);
+      }
+    }
+
     return {
       turno: { inicio: `${String(inicio).padStart(2, '0')}:00`, fim: `${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00` },
       slots,
+      doentes: [...doentesMap.values()],
     };
   }
 

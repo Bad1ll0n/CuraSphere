@@ -106,6 +106,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
       medico: 'medico', chefe_medicos: 'medico',
       enfermeiro: 'enfermeiro', chefe_enfermeiros: 'enfermeiro', chefe_turno: 'enfermeiro',
       auxiliar: 'auxiliar',
+      operacional: 'operacional',
     };
     const utilizador = await this.prisma.utilizador.findUnique({
       where: { id: utilizadorId },

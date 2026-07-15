@@ -60,7 +60,7 @@ export default function CamasPagina() {
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
-    const es = new EventSource(`${apiUrl}/camas/eventos`, { withCredentials: true });
+    const es = new EventSource(`${apiUrl}/v1/camas/eventos`, { withCredentials: true });
 
     es.addEventListener('cama_atualizada', (e: MessageEvent) => {
       const cama: Cama = JSON.parse(e.data);

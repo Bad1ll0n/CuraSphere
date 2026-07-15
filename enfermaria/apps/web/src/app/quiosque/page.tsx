@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
 const SERVICOS = [
   { tipo: 'admissao', letra: 'A', label: 'Admissão', cor: '#3b82f6' },

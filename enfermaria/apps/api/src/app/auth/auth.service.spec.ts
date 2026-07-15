@@ -9,21 +9,19 @@ import { RedisService } from '../redis/redis.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 
 jest.mock('otplib', () => ({
-  authenticator: {
-    verify: jest.fn().mockReturnValue(true),
-    generateSecret: jest.fn().mockReturnValue('JBSWY3DPEHPK3PXP'),
-    keyuri: jest.fn().mockReturnValue('otpauth://totp/CuraSphere:00001?secret=JBSWY3DPEHPK3PXP'),
-  },
+  verify: jest.fn().mockResolvedValue({ valid: true, delta: 0 }),
+  generateSecret: jest.fn().mockReturnValue('JBSWY3DPEHPK3PXP'),
+  generateURI: jest.fn().mockReturnValue('otpauth://totp/CuraSphere:00001?secret=JBSWY3DPEHPK3PXP'),
 }));
 jest.mock('qrcode', () => ({
   toDataURL: jest.fn().mockResolvedValue('data:image/png;base64,fake'),
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const mockAuthenticator = require('otplib').authenticator as {
+const mockAuthenticator = require('otplib') as {
   verify: jest.Mock;
   generateSecret: jest.Mock;
-  keyuri: jest.Mock;
+  generateURI: jest.Mock;
 };
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const mockQrcode = require('qrcode') as { toDataURL: jest.Mock };
@@ -85,9 +83,9 @@ describe('AuthService', () => {
     mockRedis.set.mockResolvedValue('OK');
     mockRedis.del.mockResolvedValue(1);
     mockRedis.setIfNotExists.mockResolvedValue(true);
-    mockAuthenticator.verify.mockReturnValue(true);
+    mockAuthenticator.verify.mockResolvedValue({ valid: true, delta: 0 });
     mockAuthenticator.generateSecret.mockReturnValue('JBSWY3DPEHPK3PXP');
-    mockAuthenticator.keyuri.mockReturnValue('otpauth://totp/CuraSphere:00001?secret=JBSWY3DPEHPK3PXP');
+    mockAuthenticator.generateURI.mockReturnValue('otpauth://totp/CuraSphere:00001?secret=JBSWY3DPEHPK3PXP');
     mockQrcode.toDataURL.mockResolvedValue('data:image/png;base64,fake');
 
     const module: TestingModule = await Test.createTestingModule({
@@ -285,7 +283,7 @@ describe('AuthService', () => {
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
         role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
       });
-      mockAuthenticator.verify.mockReturnValue(false);
+      mockAuthenticator.verify.mockResolvedValue({ valid: false, delta: 0 });
 
       await expect(service.verificarMfaLogin('token', '000000')).rejects.toThrow(
         /Código MFA inválido/i,
@@ -353,7 +351,7 @@ describe('AuthService', () => {
 
   describe('ativarMfa()', () => {
     it('lança BadRequestException para código TOTP inválido', async () => {
-      mockAuthenticator.verify.mockReturnValue(false);
+      mockAuthenticator.verify.mockResolvedValue({ valid: false, delta: 0 });
 
       await expect(service.ativarMfa('user-id-1', 'SECRET', '000000')).rejects.toThrow(
         BadRequestException,
@@ -361,7 +359,7 @@ describe('AuthService', () => {
     });
 
     it('lança BadRequestException quando código é replay', async () => {
-      mockAuthenticator.verify.mockReturnValue(true);
+      mockAuthenticator.verify.mockResolvedValue({ valid: true, delta: 0 });
       mockRedis.setIfNotExists.mockResolvedValue(false);
 
       await expect(service.ativarMfa('user-id-1', 'SECRET', '123456')).rejects.toThrow(
@@ -370,7 +368,7 @@ describe('AuthService', () => {
     });
 
     it('actualiza utilizador com mfaSecret e mfaAtivo=true', async () => {
-      mockAuthenticator.verify.mockReturnValue(true);
+      mockAuthenticator.verify.mockResolvedValue({ valid: true, delta: 0 });
       mockRedis.setIfNotExists.mockResolvedValue(true);
       mockPrisma.utilizador.update.mockResolvedValue({});
 
@@ -403,7 +401,7 @@ describe('AuthService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
       });
-      mockAuthenticator.verify.mockReturnValue(false);
+      mockAuthenticator.verify.mockResolvedValue({ valid: false, delta: 0 });
 
       await expect(service.desativarMfa('user-id-1', '000000')).rejects.toThrow(BadRequestException);
     });
@@ -412,7 +410,7 @@ describe('AuthService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
       });
-      mockAuthenticator.verify.mockReturnValue(true);
+      mockAuthenticator.verify.mockResolvedValue({ valid: true, delta: 0 });
       mockRedis.setIfNotExists.mockResolvedValue(true);
       mockPrisma.utilizador.update.mockResolvedValue({});
 

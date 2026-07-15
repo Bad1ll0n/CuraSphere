@@ -52,14 +52,16 @@ const fmtData = (iso: string) =>
 
 export function FaturacaoPanel({ doenteId, utilizador }: Props) {
   const [faturacao, setFaturacao] = useState<EpisodioFaturacao[]>([]);
+  const podeVer = ['administrativo', 'direcao'].includes(utilizador?.role ?? '');
 
   useEffect(() => {
+    if (!podeVer) return;
     api.get(`/faturacao/doente/${doenteId}`)
       .then(r => setFaturacao(r.data ?? []))
       .catch(() => setFaturacao([]));
-  }, [doenteId]);
+  }, [doenteId, podeVer]);
 
-  if (!['administrativo', 'direcao'].includes(utilizador?.role ?? '')) return null;
+  if (!podeVer) return null;
 
   const pendentes = faturacao.filter(e => ['pendente', 'emitida'].includes(e.estado));
   const totalPendente = pendentes.reduce((acc, e) => {

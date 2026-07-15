@@ -3,7 +3,7 @@ import {
   Param, Body, Res, Req, Query,
   UseGuards, Logger, BadRequestException,
 } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle } from '@nestjs/throttler';
 import { IsString, IsIn, IsObject, IsOptional, IsBoolean, MaxLength } from 'class-validator';
 import type { Request, Response } from 'express';
 import { SAML, ValidateInResponseTo } from '@node-saml/node-saml';
@@ -115,7 +115,6 @@ export class SsoController {
     });
   }
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 60000, limit: 10 } })
   @Get('saml/login')
   async samlLogin(@Query('providerId') providerId: string, @Res() res: Response) {
@@ -136,7 +135,6 @@ export class SsoController {
     return res.redirect(url);
   }
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Post('saml/callback')
   async samlCallback(@Body() body: Record<string, string>, @Res() res: Response) {
@@ -173,7 +171,6 @@ export class SsoController {
 
   // ─── Fluxo OIDC ──────────────────────────────────────────────────────────
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 60000, limit: 10 } })
   @Get('oidc/login')
   async oidcLogin(@Query('providerId') providerId: string, @Res() res: Response) {
@@ -199,7 +196,6 @@ export class SsoController {
     );
   }
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Get('oidc/callback')
   async oidcCallback(

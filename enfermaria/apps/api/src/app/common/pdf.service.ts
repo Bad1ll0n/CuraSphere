@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-// pdfmake server-side with built-in standard PDF fonts
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const PdfPrinter = require('pdfmake/src/printer');
+// pdfmake server-side with built-in standard PDF fonts. Required lazily (inside
+// `build()`, not at module load) because pdfmake's own internal `printer.js`
+// does an extensionless `require('./PDFDocument')` that Node's module loader
+// fails to resolve in some execution contexts — deferring the require means
+// that only breaks PDF generation itself, not the whole app's bootstrap.
+let PdfPrinter: any;
 
 const FONTS = {
   Helvetica: {
@@ -30,6 +33,8 @@ export class PdfService {
   private build(docDefinition: any): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        PdfPrinter ??= require('pdfmake/src/printer');
         const printer = new PdfPrinter(FONTS);
         const chunks: Buffer[] = [];
         const pdfDoc = printer.createPdfKitDocument(docDefinition);

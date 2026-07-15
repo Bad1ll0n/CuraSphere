@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const PUBLIC_PATHS = ['/login', '/quiosque', '/painel'];
+// /portal and /familia have their own auth (patient Bearer token / family access token,
+// both enforced API-side) — the staff access_token cookie check below doesn't apply to them.
+const PUBLIC_PATHS = ['/login', '/quiosque', '/painel', '/portal', '/familia'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
 const TIPO_LABEL: Record<string, string> = {
   admissao: 'Admissão',

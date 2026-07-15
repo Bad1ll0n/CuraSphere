@@ -67,6 +67,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ? (rawMessage as any).message
       : undefined;
 
+    const customErrorCode = typeof rawMessage === 'object' ? (rawMessage as any).errorCode : undefined;
     const errorCode = HTTP_CODE_MAP[status] ?? 'UNKNOWN_ERROR';
 
     if (status >= 500) {
@@ -89,6 +90,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     };
 
     if (errors) body.errors = errors;
+    if (customErrorCode) body.errorCode = customErrorCode;
 
     response.status(status).json(body);
   }

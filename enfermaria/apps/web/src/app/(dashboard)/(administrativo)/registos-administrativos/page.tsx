@@ -2,8 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+import api from '@/lib/api';
 
 const TIPOS_VISITA: Record<string, { label: string; icon: string; cor: string }> = {
   consulta:     { label: 'Consulta',     icon: '👨‍⚕️', cor: '#8b5cf6' },
@@ -55,7 +54,6 @@ const formVazio = {
 
 export default function RegistosAdministrativosPage() {
   const { utilizador } = useAuth();
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const podeVer = utilizador?.role === 'administrativo';
 
   const [registos, setRegistos] = useState<RegistoAdmin[]>([]);
@@ -93,18 +91,15 @@ export default function RegistosAdministrativosPage() {
   }
 
   const carregar = useCallback(async () => {
-    if (!token) return;
     setLoading(true);
     try {
       const q = search ? `?search=${encodeURIComponent(search)}` : '';
-      const res = await fetch(`${API}/doentes/registos-administrativos${q}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) setRegistos(await res.json());
+      const res = await api.get(`/doentes/registos-administrativos${q}`);
+      setRegistos(res.data?.doentes ?? []);
     } finally {
       setLoading(false);
     }
-  }, [token, search]);
+  }, [search]);
 
   useEffect(() => {
     if (podeVer) carregar();
@@ -118,31 +113,26 @@ export default function RegistosAdministrativosPage() {
     setCriando(true);
     setErro('');
     try {
-      const res = await fetch(`${API}/doentes/registro-rapido`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          nome: form.nome,
-          tipoVisita: form.tipoVisita,
-          dataNascimento: form.dataNascimento || undefined,
-          nif: form.nif || undefined,
-          numeroSNS: form.numeroSNS || undefined,
-          telefone: form.telefone || undefined,
-          email: form.email || undefined,
-          tipoCobertura: form.tipoCobertura,
-          morada: form.morada || undefined,
-          codigoPostal: form.codigoPostal || undefined,
-          localidade: form.localidade || undefined,
-          entidadeSeguradora: form.entidadeSeguradora || undefined,
-          numeroApolice: form.numeroApolice || undefined,
-        }),
+      const res = await api.post('/doentes/registro-rapido', {
+        nome: form.nome,
+        tipoVisita: form.tipoVisita,
+        dataNascimento: form.dataNascimento || undefined,
+        nif: form.nif || undefined,
+        numeroSNS: form.numeroSNS || undefined,
+        telefone: form.telefone || undefined,
+        email: form.email || undefined,
+        tipoCobertura: form.tipoCobertura,
+        morada: form.morada || undefined,
+        codigoPostal: form.codigoPostal || undefined,
+        localidade: form.localidade || undefined,
+        entidadeSeguradora: form.entidadeSeguradora || undefined,
+        numeroApolice: form.numeroApolice || undefined,
+      }).catch((e) => {
+        setErro(e?.response?.data?.message ?? 'Erro ao registar utente');
+        return null;
       });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        setErro(err.message ?? 'Erro ao registar utente');
-        return;
-      }
-      const doente = await res.json();
+      if (!res) return;
+      const doente = res.data;
       setSucesso({ nome: doente.nome, numeroProcesso: doente.numeroProcesso, tipoVisita: form.tipoVisita });
       setForm(formVazio);
       carregar();

@@ -651,8 +651,10 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
 // ─── Vista 4: Enfermeiro ──────────────────────────────────────────────────────
 
 function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
+  // auxiliar partilha este dashboard mas não tem acesso a /dashboard/news2 (clínico) — evitar o pedido
+  const podeNews2 = utilizador.role === 'enfermeiro';
   const { data = {}, isLoading } = useQuery({
-    queryKey: ['dash-enfermeiro'],
+    queryKey: ['dash-enfermeiro', podeNews2],
     queryFn: async () => {
       const [d, t, turnoR, msg, wl, news2] = await Promise.all([
         api.get('/doentes').catch(() => ({ data: [] })),
@@ -660,7 +662,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
         api.get('/turnos/ativo').catch(() => ({ data: null })),
         api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
         api.get('/dashboard/workload-turno').catch(() => ({ data: [] })),
-        api.get('/dashboard/news2').catch(() => ({ data: null })),
+        podeNews2 ? api.get('/dashboard/news2').catch(() => ({ data: null })) : Promise.resolve({ data: null }),
       ]);
       return {
         doentes: d.data?.data ?? [],
@@ -965,18 +967,21 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
     queryKey: ['dash-farmacia'],
     queryFn: async () => {
       const [a, p] = await Promise.all([
-        api.get('/farmacia/alertas').catch(() => ({ data: [] })),
+        api.get('/farmacia/alertas').catch(() => ({ data: { stockMinimo: [], validadeProxima: [] } })),
         api.get('/farmacia/pedidos').catch(() => ({ data: [] })),
       ]);
-      return { alertas: a.data ?? [], pedidos: (p.data ?? []).filter((x: any) => x.estado === 'pendente') };
+      return {
+        stockMinimo: a.data?.stockMinimo ?? [],
+        aExpirar: a.data?.validadeProxima ?? [],
+        pedidos: (p.data ?? []).filter((x: any) => x.estado === 'pendente'),
+      };
     },
     staleTime: 60_000,
   });
 
-  const alertas: any[] = (data as any).alertas ?? [];
+  const stockMinimo: any[] = (data as any).stockMinimo ?? [];
+  const aExpirar: any[] = (data as any).aExpirar ?? [];
   const pedidos: any[] = (data as any).pedidos ?? [];
-  const stockMinimo = alertas.filter((a: any) => a.tipo === 'stock_minimo' || a.quantidade <= a.quantidadeMinima);
-  const aExpirar = alertas.filter((a: any) => a.tipo === 'validade' || (a.validade && new Date(a.validade) < new Date(Date.now() + 30 * 86400000)));
 
   if (isLoading) return <Spinner />;
 

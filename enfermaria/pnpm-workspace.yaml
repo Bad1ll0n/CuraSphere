@@ -4,5 +4,16 @@ packages:
   - 'libs/*'
 allowBuilds:
   '@nestjs/core': true
+  '@prisma/client': true
   '@prisma/engines': true
   prisma: true
+  '@parcel/watcher': true
+  '@scarf/scarf': true
+  '@sentry/cli': true
+  '@swc/core': true
+  detox: true
+  dtrace-provider: true
+  less: true
+  nx: true
+  sharp: true
+  unrs-resolver: true

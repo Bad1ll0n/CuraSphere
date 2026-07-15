@@ -2,13 +2,14 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
-import { aplicarEncriptacaoPrisma } from './encryption.middleware';
+import { criarClienteComEncriptacao } from './encryption.middleware';
 
 const SLOW_QUERY_MS = 500;
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger('SlowQuery');
+  private readonly encClient: any;
 
   constructor() {
     const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
@@ -19,7 +20,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         this.logger.warn(`${e.duration}ms — ${e.query.slice(0, 200)}`);
       }
     });
-    aplicarEncriptacaoPrisma(this);
+    // `$extends` returns a new client rather than mutating `this` — reassigned
+    // onto `this.doente`/`this.contacto` below (plain runtime property swap,
+    // not a class member override, to sidestep TS's override-checking on
+    // Prisma's heavily-generic base class type) so every existing
+    // `this.prisma.doente...`/`.contacto...` call site elsewhere in the app
+    // keeps working unchanged while getting encrypt/decrypt behavior.
+    this.encClient = criarClienteComEncriptacao(this);
+    (this as any).doente = this.encClient.doente;
+    (this as any).contacto = this.encClient.contacto;
   }
 
   async onModuleInit() {

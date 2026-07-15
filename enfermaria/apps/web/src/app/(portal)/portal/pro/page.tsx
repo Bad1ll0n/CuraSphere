@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { usePortalAuth } from '../../portal-auth-context';
+import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 import { useRouter } from 'next/navigation';
 
-const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333/api').replace(/\/$/, '');
+const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
 interface CampoPRO {
   id: string;
@@ -26,8 +26,8 @@ interface Registo {
   template: { nome: string; campos: CampoPRO[] };
 }
 
-export default function PROPage() {
-  const { user, token } = usePortalAuth();
+function PROContent() {
+  const { user, token, loading: authLoading } = usePortalAuth();
   const router = useRouter();
 
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -39,13 +39,14 @@ export default function PROPage() {
   const [tab, setTab] = useState<'registar' | 'historico'>('registar');
 
   useEffect(() => {
+    if (authLoading) return;
     if (!token) { router.push('/portal/login'); return; }
     const h = { Authorization: `Bearer ${token}` };
     fetch(`${API}/portal/pro/templates`, { headers: h })
       .then(r => r.json()).then(setTemplates).catch(() => {});
     fetch(`${API}/portal/pro/historico`, { headers: h })
       .then(r => r.json()).then(setHistorico).catch(() => {});
-  }, [token, router]);
+  }, [token, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +72,7 @@ export default function PROPage() {
     }
   };
 
+  if (authLoading) return null;
   if (!user) return null;
 
   return (
@@ -206,4 +208,8 @@ export default function PROPage() {
       )}
     </div>
   );
+}
+
+export default function PROPage() {
+  return <PortalAuthProvider><PROContent /></PortalAuthProvider>;
 }

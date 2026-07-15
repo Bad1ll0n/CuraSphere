@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 
-@Controller('v1/outcomes')
+@Controller('outcomes')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class OutcomesController {
   constructor(private readonly service: OutcomesService) {}

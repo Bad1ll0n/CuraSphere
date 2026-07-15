@@ -35,7 +35,7 @@ export class DocumentosSaudeController {
   constructor(private readonly service: DocumentosSaudeService) {}
 
   @Get('doente/:id')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno', 'it_admin')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno', 'ti')
   listar(@Param('id') id: string, @Query('tipo') tipo?: string) {
     return this.service.listar(id, tipo);
   }
@@ -61,30 +61,30 @@ export class DocumentosSaudeController {
     if (!file) throw new BadRequestException('Ficheiro obrigatório');
     const valido = await validarMagicBytes(file.buffer, file.mimetype);
     if (!valido) throw new BadRequestException('Conteúdo do ficheiro inválido');
-    return this.service.upload(doenteId, file, dto, req.user.id);
+    return this.service.upload(doenteId, file, dto, req.user.sub);
   }
 
   @Get(':id/download')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno', 'tecnico_saude')
   getDownloadUrl(@Param('id') docId: string, @Request() req: any) {
-    return this.service.getDownloadUrl(docId, req.user.id);
+    return this.service.getDownloadUrl(docId, req.user.sub);
   }
 
   @Post('doente/:id/sincronizar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   sincronizar(@Param('id') doenteId: string, @Request() req: any) {
-    return this.service.sincronizar(doenteId, req.user.id);
+    return this.service.sincronizar(doenteId, req.user.sub);
   }
 
   @Post(':id/assinar')
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   assinar(@Param('id') docId: string, @Request() req: any) {
-    return this.service.assinar(docId, req.user.id);
+    return this.service.assinar(docId, req.user.sub);
   }
 
   @Delete(':id')
-  @Roles('medico', 'chefe_enfermeiros', 'it_admin')
+  @Roles('medico', 'chefe_enfermeiros', 'ti')
   remover(@Param('id') docId: string, @Request() req: any) {
-    return this.service.remover(docId, req.user.id, req.user.role);
+    return this.service.remover(docId, req.user.sub, req.user.role);
   }
 }

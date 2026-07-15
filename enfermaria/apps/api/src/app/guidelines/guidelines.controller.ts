@@ -15,19 +15,19 @@ export class GuidelinesController {
   constructor(private readonly service: GuidelinesService) {}
 
   @Get()
-  @Roles('it_admin', 'direcao', 'medico', 'chefe_enfermeiros')
+  @Roles('ti', 'direcao', 'medico', 'chefe_enfermeiros')
   listar(@Query('categoria') categoria?: string) {
     return this.service.listar(categoria);
   }
 
   @Post()
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   criar(@Body() dto: { titulo: string; categoria: string; conteudo: string; fonte: string; versao?: string }) {
     return this.service.criar(dto);
   }
 
   @Post('upload-pdf')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: memoryStorage(),
@@ -51,13 +51,13 @@ export class GuidelinesController {
   }
 
   @Post('reindexar')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   reindexar() {
     return this.service.reindexarTodos();
   }
 
   @Delete(':id')
-  @Roles('it_admin', 'direcao')
+  @Roles('ti', 'direcao')
   remover(@Param('id') id: string) {
     return this.service.remover(id);
   }

@@ -59,10 +59,29 @@ export class DoenteController {
     res.send(csv);
   }
 
+  // Rotas de caminho estático (ex.: 'registos-administrativos', 'risco-clinico') têm de ser
+  // declaradas antes de ':id' — caso contrário o Express interpreta-as como o valor do
+  // parâmetro dinâmico e nunca chegam ao handler certo (ver também 'risco-clinico' abaixo).
+  @Roles('administrativo')
+  @Get('registos-administrativos')
+  listarRegistosAdministrativos(@Query('search') search?: string) {
+    return this.doenteService.listarRegistosAdministrativos(search);
+  }
+
+  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Get('risco-clinico')
+  listarRiscoClinoco() {
+    return this.doenteService.listarRiscoClinoco();
+  }
+
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id')
   async buscarPorId(@Param('id') id: string, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    // Endpoint de entrada principal do doente — único ponto que activa break-glass a partir do header;
+    // uma vez concedido, assertAcessoDoente reconhece o acesso em todos os restantes endpoints deste doente.
+    const motivoHeader = req.headers['x-break-glass-reason'];
+    const motivoBreakGlass = motivoHeader ? decodeURIComponent(motivoHeader) : undefined;
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, motivoBreakGlass);
     return this.doenteService.buscarPorId(id);
   }
 
@@ -71,12 +90,6 @@ export class DoenteController {
   async historico(@Param('id') id: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.historico(id);
-  }
-
-  @Roles('administrativo')
-  @Get('registos-administrativos')
-  listarRegistosAdministrativos(@Query('search') search?: string) {
-    return this.doenteService.listarRegistosAdministrativos(search);
   }
 
   @Roles('administrativo')
@@ -209,12 +222,6 @@ export class DoenteController {
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.criarTarefa(doenteId, req.user.sub, dto as any);
-  }
-
-  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
-  @Get('risco-clinico')
-  listarRiscoClinoco() {
-    return this.doenteService.listarRiscoClinoco();
   }
 
   @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')

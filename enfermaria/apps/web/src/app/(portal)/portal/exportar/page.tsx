@@ -3,13 +3,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 
-const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333/api').replace(/\/$/, '');
+const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
 function ExportarPage() {
-  const { token } = usePortalAuth();
+  const { token, loading: authLoading } = usePortalAuth();
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [downloadingJson, setDownloadingJson] = useState(false);
   const [erro, setErro] = useState('');
+
+  if (authLoading) return null;
 
   if (!token) {
     if (typeof window !== 'undefined') window.location.href = '/portal/login';

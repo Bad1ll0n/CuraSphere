@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Delete, Body, Param, Request, UseGuards, Res } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle } from '@nestjs/throttler';
 import { IsString, IsOptional, MaxLength } from 'class-validator';
 import type { Response } from 'express';
 import { WebAuthnService } from './webauthn.service';
@@ -34,7 +34,7 @@ export class WebAuthnController {
     return this.webAuthn.generateRegistrationOptions(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('register/verify')
   registerVerify(@Request() req: any, @Body() dto: RegistarVerificarDto) {
@@ -43,7 +43,6 @@ export class WebAuthnController {
 
   // ─── Autenticação (sem sessão) ────────────────────────────────────────────
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 60000, limit: 10 } })
   @Post('auth/options')
   async authOptions(@Body() body: { numeroFuncionario?: string }) {
@@ -56,7 +55,6 @@ export class WebAuthnController {
     return this.webAuthn.generateAuthChallengeForUser(body.numeroFuncionario);
   }
 
-  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Post('auth/verify')
   async authVerify(
@@ -93,7 +91,7 @@ export class WebAuthnController {
     return this.webAuthn.listarCredenciais(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Delete('credentials/:id')
   remover(@Param('id') id: string, @Request() req: any) {

@@ -51,11 +51,11 @@ export class AnomalyDetectionService {
   }
 
   // Chamado após login bem-sucedido para detectar IP diferente do habitual
-  verificarIpLogin(userId: string, novoIp: string): void {
+  verificarIpLogin(userId: string, novoIp: string | undefined): void {
     this.detectarIpDiferente(userId, novoIp).catch(() => {});
   }
 
-  private async detectarIpDiferente(userId: string, novoIp: string): Promise<void> {
+  private async detectarIpDiferente(userId: string, novoIp: string | undefined): Promise<void> {
     if (!novoIp || novoIp === '::1' || novoIp === '127.0.0.1') return; // ignorar localhost
 
     const key = `anomaly:ip:${userId}`;

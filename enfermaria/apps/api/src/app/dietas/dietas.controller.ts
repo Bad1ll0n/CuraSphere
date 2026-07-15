@@ -35,7 +35,7 @@ export class DietasController {
     return this.service.historico(doenteId);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'administrativo')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'administrativo', 'operacional')
   @Get('hoje')
   dietasHoje() {
     return this.service.dietasHoje();

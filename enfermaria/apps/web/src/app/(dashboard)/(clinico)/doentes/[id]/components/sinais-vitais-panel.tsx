@@ -388,9 +388,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
       {/* Baseline Individual */}
       {baseline && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginBottom: '24px' }}>
-          <button
+          <div
+            role="button"
+            tabIndex={0}
             onClick={() => setBaselineAberto(a => !a)}
-            className="w-full flex items-center justify-between text-left hover:bg-slate-50/50 rounded-2xl transition-colors"
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setBaselineAberto(a => !a); } }}
+            className="w-full flex items-center justify-between text-left hover:bg-slate-50/50 rounded-2xl transition-colors cursor-pointer"
             style={{ padding: '16px 24px' }}>
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
@@ -409,7 +412,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             <svg className={`w-4 h-4 text-slate-400 transition-transform ${baselineAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </div>
 
           {baselineAberto && (
             <div style={{ padding: '0 24px 20px' }}>

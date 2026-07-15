@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../portal-auth-context';
 
 function Dashboard() {
-  const { token, logout } = usePortalAuth();
+  const { token, loading, logout } = usePortalAuth();
   const [doente, setDoente] = useState<any>(null);
 
   useEffect(() => {
     if (!token) return;
     portalFetch('/portal/me', token).then(setDoente).catch(() => null);
   }, [token]);
+
+  if (loading) return null;
 
   if (!token) {
     if (typeof window !== 'undefined') window.location.href = '/portal/login';

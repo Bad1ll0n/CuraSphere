@@ -92,7 +92,7 @@ export default function TarefasPage() {
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
-    const es = new EventSource(`${apiUrl}/tarefas/eventos`, { withCredentials: true });
+    const es = new EventSource(`${apiUrl}/v1/tarefas/eventos`, { withCredentials: true });
 
     es.addEventListener('tarefa_criada', (e: MessageEvent) => {
       const payload = JSON.parse(e.data);

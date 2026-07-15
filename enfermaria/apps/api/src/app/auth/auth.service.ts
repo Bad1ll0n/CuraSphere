@@ -6,8 +6,7 @@ import { RedisService } from '../redis/redis.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
-const { authenticator } = require('otplib') as any;
+import { generateSecret, generateURI, verify } from 'otplib';
 import { toDataURL } from 'qrcode';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta
@@ -131,7 +130,7 @@ export class AuthService {
       throw new UnauthorizedException('MFA não configurado para este utilizador');
     }
 
-    const isValid = authenticator.verify({ token: code, secret: utilizador.mfaSecret });
+    const { valid: isValid } = await verify({ token: code, secret: utilizador.mfaSecret });
     if (!isValid) throw new UnauthorizedException('Código MFA inválido');
 
     // Anti-replay: cada código TOTP só pode ser usado uma vez na janela de 90 s
@@ -162,14 +161,14 @@ export class AuthService {
     if (!utilizador) throw new UnauthorizedException('Utilizador não encontrado');
     if (utilizador.mfaAtivo) throw new BadRequestException('MFA já está ativo. Desative primeiro.');
 
-    const secret = authenticator.generateSecret();
-    const otpAuthUrl = authenticator.keyuri(utilizador.numeroFuncionario, 'CuraSphere', secret);
+    const secret = generateSecret();
+    const otpAuthUrl = generateURI({ issuer: 'CuraSphere', label: utilizador.numeroFuncionario, secret });
     const qrCodeDataUrl = await toDataURL(otpAuthUrl);
     return { secret, qrCodeDataUrl };
   }
 
   async ativarMfa(utilizadorId: string, secret: string, code: string, setupToken?: string) {
-    const isValid = authenticator.verify({ token: code, secret });
+    const { valid: isValid } = await verify({ token: code, secret });
     if (!isValid) throw new BadRequestException('Código inválido. Verifique a aplicação autenticadora.');
 
     const primeiraVez = await this.consumirTotpUmaVez(`mfa-ativar:${utilizadorId}`, secret, code);
@@ -195,7 +194,7 @@ export class AuthService {
     if (!utilizador?.mfaAtivo || !utilizador?.mfaSecret) {
       throw new BadRequestException('MFA não está ativo');
     }
-    const isValid = authenticator.verify({ token: code, secret: utilizador.mfaSecret });
+    const { valid: isValid } = await verify({ token: code, secret: utilizador.mfaSecret });
     if (!isValid) throw new BadRequestException('Código inválido');
 
     const primeiraVez = await this.consumirTotpUmaVez(`mfa-desativar:${utilizadorId}`, utilizador.mfaSecret, code);

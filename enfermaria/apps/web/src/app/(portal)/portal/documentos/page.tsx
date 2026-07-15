@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function DocumentosContent() {
-  const { token } = usePortalAuth();
+  const { token, loading: authLoading } = usePortalAuth();
   const [docs, setDocs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,6 +12,8 @@ function DocumentosContent() {
     if (!token) return;
     portalFetch('/portal/documentos', token).then(setDocs).catch(() => setDocs([])).finally(() => setLoading(false));
   }, [token]);
+
+  if (authLoading) return null;
 
   if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 

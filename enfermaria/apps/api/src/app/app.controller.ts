@@ -1,19 +1,18 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Res, ServiceUnavailableException } from '@nestjs/common';
 import type { Response } from 'express';
 import { randomBytes } from 'crypto';
-import { HealthCheck, HealthCheckService, PrismaHealthIndicator } from '@nestjs/terminus';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from './prisma/prisma.service';
-import { RedisHealthIndicator } from './redis/redis.health';
+import { RedisService } from './redis/redis.service';
+
+type ComponentStatus = { status: 'up' | 'down' };
 
 @SkipThrottle()
 @Controller()
 export class AppController {
   constructor(
-    private readonly health: HealthCheckService,
-    private readonly prismaIndicator: PrismaHealthIndicator,
-    private readonly redisIndicator: RedisHealthIndicator,
     private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
   ) {}
 
   @Get()
@@ -32,12 +31,39 @@ export class AppController {
     res.json({ token });
   }
 
+  // Hand-rolled — not @nestjs/terminus. Its published dist ships .js.map files
+  // that a bug in this workspace's Nx/webpack production build tries to parse
+  // as real modules and fails on; terminus was only used here for two simple
+  // pings, not worth the broken build for.
   @Get('health')
-  @HealthCheck()
-  check() {
-    return this.health.check([
-      () => this.prismaIndicator.pingCheck('database', this.prisma),
-      () => this.redisIndicator.isHealthy('redis'),
-    ]);
+  async check() {
+    const info: Record<string, ComponentStatus> = {};
+    const error: Record<string, ComponentStatus> = {};
+
+    try {
+      await this.prisma.$queryRaw`SELECT 1`;
+      info['database'] = { status: 'up' };
+    } catch {
+      error['database'] = { status: 'down' };
+    }
+
+    try {
+      await this.redis.set('__health__', '1', 5);
+      const val = await this.redis.get<string>('__health__');
+      if (val === '1') info['redis'] = { status: 'up' };
+      else error['redis'] = { status: 'down' };
+    } catch {
+      error['redis'] = { status: 'down' };
+    }
+
+    const body = {
+      status: Object.keys(error).length === 0 ? ('ok' as const) : ('error' as const),
+      info,
+      error,
+      details: { ...info, ...error },
+    };
+
+    if (body.status === 'error') throw new ServiceUnavailableException(body);
+    return body;
   }
 }

@@ -186,7 +186,7 @@ export default function UrgenciaPage() {
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
-    const es = new EventSource(`${apiUrl}/urgencia/eventos`, { withCredentials: true });
+    const es = new EventSource(`${apiUrl}/v1/urgencia/eventos`, { withCredentials: true });
     es.onopen = () => setSseConectado(true);
     es.onerror = () => setSseConectado(false);
     es.addEventListener('urgencia_nova', (e: MessageEvent) => {

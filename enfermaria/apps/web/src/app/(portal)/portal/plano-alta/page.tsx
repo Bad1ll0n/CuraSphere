@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function PlanoAltaContent() {
-  const { token } = usePortalAuth();
+  const { token, loading: authLoading } = usePortalAuth();
   const [plano, setPlano] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,6 +12,8 @@ function PlanoAltaContent() {
     if (!token) return;
     portalFetch('/portal/plano-alta', token).then(setPlano).catch(() => setPlano(null)).finally(() => setLoading(false));
   }, [token]);
+
+  if (authLoading) return null;
 
   if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 

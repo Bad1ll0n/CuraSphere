@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 
-const SSE_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const SSE_BASE = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
 const TIPO_LABEL: Record<string, string> = {
   admissao: 'Admissão',

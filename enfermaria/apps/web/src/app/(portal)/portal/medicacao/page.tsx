@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function MedicacaoContent() {
-  const { token } = usePortalAuth();
+  const { token, loading: authLoading } = usePortalAuth();
   const [medicacao, setMedicacao] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,6 +12,8 @@ function MedicacaoContent() {
     if (!token) return;
     portalFetch('/portal/medicacao', token).then(setMedicacao).catch(() => setMedicacao([])).finally(() => setLoading(false));
   }, [token]);
+
+  if (authLoading) return null;
 
   if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 

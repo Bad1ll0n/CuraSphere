@@ -135,8 +135,8 @@ export default function MarPage() {
     setAdministrando(modalId);
     try {
       await api.post(`/medicacao/${modalId}/administrar`, {
+        doenteId: modalMed?.doente.id,
         observacoes: obs || undefined,
-        verificacao5Certas: true,
       });
       toast.success('Medicação administrada');
       setModalId(null);

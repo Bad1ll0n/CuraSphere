@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -44,7 +44,9 @@ export default function AusenciasPage() {
   const qc = useQueryClient();
   const toast = useToast();
   const searchParams = useSearchParams();
-  const [aba, setAba] = useState<'todas' | 'minhas'>('todas');
+  // 'todas' faz GET /rh/ausencias, que só administrativo/direcao podem ver — todas as outras
+  // roles ficariam presas num 403 silencioso (sem tabs para mudar) se isto arrancasse em 'todas'.
+  const [aba, setAba] = useState<'todas' | 'minhas'>('minhas');
   const [filtroEstado, setFiltroEstado] = useState(searchParams.get('estado') ?? '');
   const [modalNova, setModalNova] = useState(false);
   const [novaTipo, setNovaTipo] = useState('ferias');
@@ -55,6 +57,8 @@ export default function AusenciasPage() {
 
   const role = utilizador?.role ?? '';
   const isGestor = ['administrativo', 'direcao'].includes(role);
+
+  useEffect(() => { if (isGestor) setAba('todas'); }, [isGestor]);
 
   const { data: ausencias = [], isLoading: loading } = useQuery<Ausencia[]>({
     queryKey: ['ausencias', aba, filtroEstado],

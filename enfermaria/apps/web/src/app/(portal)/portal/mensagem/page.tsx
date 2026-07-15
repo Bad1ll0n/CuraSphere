@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function MensagemContent() {
-  const { token } = usePortalAuth();
+  const { token, loading: authLoading } = usePortalAuth();
   const [conteudo, setConteudo] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [erro, setErro] = useState('');
+
+  if (authLoading) return null;
 
   if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 

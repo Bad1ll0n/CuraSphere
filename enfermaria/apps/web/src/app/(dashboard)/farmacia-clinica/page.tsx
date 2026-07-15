@@ -10,9 +10,9 @@ import { Breadcrumb } from '@/components/breadcrumb';
 type Tab = 'prescricoes' | 'interacoes' | 'reconciliacao';
 
 interface PrescricaoAtiva {
-  doenteId: string;
-  doente: { nome: string; cama: { numero: string } | null };
-  servico: string;
+  id: string;
+  nome: string;
+  cama: { numero: string; quarto?: string } | null;
   medicacoes: { id: string; nome: string; dose: string; via: string; ultimaAdmin: string | null }[];
 }
 
@@ -166,16 +166,14 @@ export default function FarmaciaPage() {
               <tr className="border-b border-slate-100 bg-slate-50">
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Doente</th>
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Cama</th>
-                <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Serviço</th>
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Medicações Activas</th>
               </tr>
             </thead>
             <tbody>
               {prescricoes.map(p => (
-                <tr key={p.doenteId} className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => router.push(`/doentes/${p.doenteId}`)}>
-                  <td className="font-medium text-slate-800" style={{ padding: '14px 20px' }}>{p.doente.nome}</td>
-                  <td className="text-slate-500" style={{ padding: '14px 16px' }}>{p.doente.cama?.numero ?? '—'}</td>
-                  <td className="text-slate-500" style={{ padding: '14px 16px' }}>{p.servico}</td>
+                <tr key={p.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => router.push(`/doentes/${p.id}`)}>
+                  <td className="font-medium text-slate-800" style={{ padding: '14px 20px' }}>{p.nome}</td>
+                  <td className="text-slate-500" style={{ padding: '14px 16px' }}>{p.cama?.numero ?? '—'}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <div className="flex flex-wrap gap-1">
                       {p.medicacoes.slice(0, 4).map(m => (
@@ -191,7 +189,7 @@ export default function FarmaciaPage() {
                 </tr>
               ))}
               {prescricoes.length === 0 && (
-                <tr><td colSpan={4} className="text-center text-slate-400 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
+                <tr><td colSpan={3} className="text-center text-slate-400 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
               )}
             </tbody>
           </table>

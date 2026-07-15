@@ -104,17 +104,17 @@ export default function IacsPage() {
 
   const carregarIsolados = () => {
     setLoading(true);
-    api.get('/doentes/iacs/isolados').then(r => setIsolados(r.data)).finally(() => setLoading(false));
+    api.get('/doentes/iacs/isolados').then(r => setIsolados(r.data)).catch(() => setIsolados([])).finally(() => setLoading(false));
   };
 
   const carregarCulturas = () => {
     setLoadingCulturas(true);
-    api.get('/iacs/culturas').then(r => setCulturas(r.data)).finally(() => setLoadingCulturas(false));
+    api.get('/iacs/culturas').then(r => setCulturas(r.data)).catch(() => setCulturas([])).finally(() => setLoadingCulturas(false));
   };
 
   const carregarSurtos = () => {
     setLoadingSurtos(true);
-    api.get('/iacs/surtos').then(r => setSurtos(r.data)).finally(() => setLoadingSurtos(false));
+    api.get('/iacs/surtos').then(r => setSurtos(r.data)).catch(() => setSurtos([])).finally(() => setLoadingSurtos(false));
   };
 
   useEffect(() => { carregarIsolados(); }, []);

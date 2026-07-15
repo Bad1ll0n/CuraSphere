@@ -39,7 +39,8 @@ api.interceptors.response.use(
       );
       if (motivo && motivo.trim().length >= 20) {
         err.config._breakGlass = true;
-        err.config.headers['X-Break-Glass-Reason'] = motivo.trim();
+        // Headers HTTP só aceitam ISO-8859-1 — texto livre (acentos, travessões, aspas curvas) tem de ser codificado
+        err.config.headers['X-Break-Glass-Reason'] = encodeURIComponent(motivo.trim());
         return api(err.config);
       }
     }
@@ -64,7 +65,8 @@ api.interceptors.response.use(
       typeof window === 'undefined' ||
       original._retry ||
       original.url?.includes('/auth/refresh') ||
-      original.url?.includes('/auth/login')
+      original.url?.includes('/auth/login') ||
+      original.url?.includes('/auth/me')
     ) {
       return Promise.reject(err);
     }

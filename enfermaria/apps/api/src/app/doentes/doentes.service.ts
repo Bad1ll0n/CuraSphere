@@ -9,6 +9,7 @@ import { StorageService } from '../common/storage.service';
 import { EstadoDoente } from '../common/enums';
 import * as jwt from 'jsonwebtoken';
 import { WebhooksService } from '../webhooks/webhooks.service';
+import { BreakGlassService } from '../break-glass/break-glass.service';
 
 @Injectable()
 export class DoenteService {
@@ -22,6 +23,7 @@ export class DoenteService {
     private readonly storage: StorageService,
     private readonly config: ConfigService,
     private readonly webhooks: WebhooksService,
+    private readonly breakGlass: BreakGlassService,
   ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
@@ -111,7 +113,7 @@ export class DoenteService {
    *     (via Atribuicao OU AtribuicaoHorarioTurno alguma vez)
    * Esta verificação fecha o vector IDOR principal (PHI cross-patient leak).
    */
-  async assertAcessoDoente(utilizadorId: string, role: string, doenteId: string): Promise<void> {
+  async assertAcessoDoente(utilizadorId: string, role: string, doenteId: string, motivoBreakGlass?: string): Promise<void> {
     const rolesOversight = ['direcao', 'qualidade', 'ti', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'administrativo', 'farmaceutico'];
     if (rolesOversight.includes(role)) return;
 
@@ -132,8 +134,16 @@ export class DoenteService {
     });
     if (atribuicaoTurno) return;
 
+    // Acesso de emergência (break-glass) já activo cobre todos os endpoints deste doente+utilizador
+    if (await this.breakGlass.verificarAtivoParaDoente(utilizadorId, doenteId)) return;
+
+    if (motivoBreakGlass && motivoBreakGlass.trim().length >= 20) {
+      await this.breakGlass.ativar(utilizadorId, doenteId, motivoBreakGlass.trim());
+      return;
+    }
+
     this.logger.warn(`IDOR negado: utilizador ${utilizadorId} (${role}) tentou aceder a doente ${doenteId}`);
-    throw new ForbiddenException('Sem permissão para aceder a este doente');
+    throw new ForbiddenException({ message: 'Sem permissão para aceder a este doente', errorCode: 'BREAK_GLASS_REQUIRED' });
   }
 
   async buscarPorId(id: string) {

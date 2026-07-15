@@ -4,8 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../lib/auth-context';
+import api from '../../../lib/api';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '../../../components/language-switcher';
+
+const API_BASE = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
 export default function LoginPage() {
   const { login, loginMfa, loginPasskey } = useAuth();
@@ -27,9 +30,8 @@ export default function LoginPage() {
         .catch(() => {});
     }
     // Carregar providers SSO disponíveis
-    fetch('/api/auth/sso/providers')
-      .then(r => r.json())
-      .then(setSsoProviders)
+    api.get('/auth/sso/providers')
+      .then(({ data }) => setSsoProviders(data))
       .catch(() => {});
   }, []);
 
@@ -218,7 +220,7 @@ export default function LoginPage() {
                     {ssoProviders.map((p: { id: string; nome: string; tipo: string }) => (
                       <a
                         key={p.id}
-                        href={`/api/auth/sso/${p.tipo}/login?providerId=${p.id}`}
+                        href={`${API_BASE}/auth/sso/${p.tipo}/login?providerId=${p.id}`}
                         className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 font-medium py-3 rounded-lg transition-all text-sm"
                       >
                         <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

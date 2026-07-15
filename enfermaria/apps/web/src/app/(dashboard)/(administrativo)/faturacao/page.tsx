@@ -71,7 +71,7 @@ export default function FaturacaoPage() {
   const carregarResumo = async () => {
     try {
       const r = await api.get('/faturacao/resumo');
-      setResumo(r.data);
+      setResumo(r.data.stats);
     } catch { /* silencioso */ }
   };
 

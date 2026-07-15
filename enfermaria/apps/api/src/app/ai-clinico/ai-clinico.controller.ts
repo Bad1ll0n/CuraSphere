@@ -18,30 +18,30 @@ export class AiClinicoController {
   @Post('triagem')
   @Roles('medico', 'enfermeiro')
   analisarTriagem(@Body() episodio: EpisodioTriagem, @Request() req: any) {
-    return this.service.analisarTriagem(episodio, req.user.id);
+    return this.service.analisarTriagem(episodio, req.user.sub);
   }
 
   @Post('sumarizar-turno')
   @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
   sumarizarTurno(@Body() body: { doentes: DoenteTurno[] }, @Request() req: any) {
-    return this.service.sumarizarTurno(body.doentes, req.user.id);
+    return this.service.sumarizarTurno(body.doentes, req.user.sub);
   }
 
   @Post('sumarizar-turno-servico')
   @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
   sumarizarTurnoServico(@Body() body: { servico: string }, @Request() req: any) {
-    return this.service.sumarizarTurnoServico(body.servico, req.user.id);
+    return this.service.sumarizarTurnoServico(body.servico, req.user.sub);
   }
 
   @Post('nlq')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'direcao')
   executarNLQ(@Body() body: { query: string }, @Request() req: any) {
-    return this.service.executarNLQ(body.query, req.user.id);
+    return this.service.executarNLQ(body.query, req.user.sub);
   }
 
   // Relatório de auditoria IA (antes de /:doenteId para evitar conflito de rota)
   @Get('relatorio-auditoria')
-  @Roles('direcao', 'it_admin', 'chefe_enfermeiros')
+  @Roles('direcao', 'ti', 'chefe_enfermeiros')
   async relatorioAuditoria(
     @Query('from') from: string,
     @Query('to') to: string,
@@ -96,13 +96,13 @@ export class AiClinicoController {
   @Get(':doenteId/protocolo')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   verificarProtocolos(@Param('doenteId') doenteId: string, @Request() req: any) {
-    return this.service.verificarProtocolos(doenteId, req.user.id);
+    return this.service.verificarProtocolos(doenteId, req.user.sub);
   }
 
   @Get(':doenteId/los')
   @Roles('medico', 'chefe_enfermeiros', 'chefe_turno')
   preverLOS(@Param('doenteId') doenteId: string, @Request() req: any) {
-    return this.service.preverLOS(doenteId, req.user.id);
+    return this.service.preverLOS(doenteId, req.user.sub);
   }
 
   @Patch('decisao/:id/feedback')
@@ -117,13 +117,13 @@ export class AiClinicoController {
   @Sse(':doenteId/stream')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   analisarStream(@Param('doenteId') doenteId: string, @Request() req: any): Observable<MessageEvent> {
-    return this.service.analisarStream(doenteId, req.user.role, req.user.id) as unknown as Observable<MessageEvent>;
+    return this.service.analisarStream(doenteId, req.user.role, req.user.sub) as unknown as Observable<MessageEvent>;
   }
 
   @Get(':doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   analisar(@Param('doenteId') doenteId: string, @Request() req: any) {
-    return this.service.analisar(doenteId, req.user.role, req.user.id);
+    return this.service.analisar(doenteId, req.user.role, req.user.sub);
   }
 
   @Post(':doenteId/diagnostico-diferencial')

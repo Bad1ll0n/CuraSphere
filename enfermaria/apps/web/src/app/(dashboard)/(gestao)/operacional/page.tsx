@@ -91,7 +91,7 @@ export default function OperacionalPage() {
 
   const { data: tarefas = [], isLoading: loadTarefas } = useQuery<Tarefa[]>({
     queryKey: ['tarefas-operacional'],
-    queryFn: () => api.get('/tarefas').then(r => (Array.isArray(r.data) ? r.data : r.data.tarefas ?? [])).catch(() => []),
+    queryFn: () => api.get('/tarefas/minhas').then(r => (Array.isArray(r.data) ? r.data : r.data.tarefas ?? [])).catch(() => []),
     staleTime: 30_000,
   });
 

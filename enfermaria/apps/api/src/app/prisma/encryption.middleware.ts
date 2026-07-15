@@ -35,7 +35,7 @@ function decrypt(text: string): string {
 
 function encryptData(model: string, data: Record<string, any>): void {
   const fields = ENCRYPTED_FIELDS[model];
-  if (!fields) return;
+  if (!fields || !data) return;
   for (const f of fields) {
     if (data[f] && typeof data[f] === 'string') data[f] = encrypt(data[f]);
   }
@@ -49,36 +49,51 @@ function decryptResult(model: string, result: any): void {
   }
 }
 
-export function aplicarEncriptacaoPrisma(prisma: any): void {
+function decryptAny(model: string, result: any): any {
+  if (Array.isArray(result)) result.forEach((r) => decryptResult(model, r));
+  else if (result) decryptResult(model, result);
+  return result;
+}
+
+// Prisma 7 removed the `$use` middleware API this used to run on ($use was
+// deprecated in Prisma 4.16 and dropped entirely by 7 — calling it throws
+// `prisma.$use is not a function` and crashes the app at boot, since
+// PrismaService's constructor calls this unconditionally). Migrated to the
+// Client Extensions API (`$extends`): returns an extended client whose
+// `doente`/`contacto` model delegates encrypt on write and decrypt on read;
+// every other model delegate is untouched. PrismaService exposes this via
+// getters so `this.prisma.doente...` call sites elsewhere in the app don't change.
+export function criarClienteComEncriptacao(prisma: any) {
   if (!KEY) throw new Error('ENCRYPTION_KEY is required but not configured or invalid');
 
-  prisma.$use(async (params: any, next: any) => {
-    const model: string = params.model ?? '';
-    const fields = ENCRYPTED_FIELDS[model];
-    if (!fields) return next(params);
-
-    // Encrypt on write
-    if (['create', 'update', 'upsert'].includes(params.action)) {
-      const data = params.args?.data ?? {};
-      encryptData(model, data);
-      // upsert has nested create/update
-      if (params.action === 'upsert') {
-        if (params.args?.create) encryptData(model, params.args.create);
-        if (params.args?.update) encryptData(model, params.args.update);
-      }
-    }
-
-    const result = await next(params);
-
-    // Decrypt on read
-    if (result) {
-      if (Array.isArray(result)) {
-        result.forEach(r => decryptResult(model, r));
-      } else {
-        decryptResult(model, result);
-      }
-    }
-
-    return result;
+  return prisma.$extends({
+    query: {
+      doente: {
+        async $allOperations({ operation, args, query }: { operation: string; args: any; query: (a: any) => Promise<any> }) {
+          if (['create', 'update', 'upsert'].includes(operation)) {
+            encryptData('Doente', args.data);
+            if (operation === 'upsert') {
+              encryptData('Doente', args.create);
+              encryptData('Doente', args.update);
+            }
+          }
+          const result = await query(args);
+          return decryptAny('Doente', result);
+        },
+      },
+      contacto: {
+        async $allOperations({ operation, args, query }: { operation: string; args: any; query: (a: any) => Promise<any> }) {
+          if (['create', 'update', 'upsert'].includes(operation)) {
+            encryptData('Contacto', args.data);
+            if (operation === 'upsert') {
+              encryptData('Contacto', args.create);
+              encryptData('Contacto', args.update);
+            }
+          }
+          const result = await query(args);
+          return decryptAny('Contacto', result);
+        },
+      },
+    },
   });
 }
