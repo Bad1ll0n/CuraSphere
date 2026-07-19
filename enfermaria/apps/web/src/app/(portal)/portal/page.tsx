@@ -34,7 +34,7 @@ function Dashboard() {
         <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>
           Olá{doente?.nome ? `, ${doente.nome.split(' ')[0]}` : ''}
         </h1>
-        <p style={{ fontSize: '13px', color: '#64748b' }}>
+        <p style={{ fontSize: '13px', color: 'var(--text-soft)' }}>
           {doente?.diagnosticoPrincipal ? `Diagnóstico: ${doente.diagnosticoPrincipal}` : 'Bem-vindo ao seu portal de saúde'}
         </p>
       </div>
@@ -45,7 +45,7 @@ function Dashboard() {
             <div style={{ background: card.color, border: `1px solid ${card.border}`, borderRadius: '16px', padding: '20px', cursor: 'pointer', transition: 'transform 0.1s' }}>
               <div style={{ fontSize: '28px', marginBottom: '10px' }}>{card.icon}</div>
               <p style={{ fontWeight: 700, fontSize: '13px', color: card.text, marginBottom: '4px' }}>{card.label}</p>
-              <p style={{ fontSize: '11px', color: '#64748b' }}>{card.desc}</p>
+              <p style={{ fontSize: '11px', color: 'var(--text-soft)' }}>{card.desc}</p>
             </div>
           </Link>
         ))}
@@ -53,7 +53,7 @@ function Dashboard() {
 
       <button
         onClick={logout}
-        style={{ width: '100%', background: 'transparent', border: '1px solid #e2e8f0', color: '#64748b', borderRadius: '12px', padding: '11px', fontSize: '13px', cursor: 'pointer' }}>
+        style={{ width: '100%', background: 'transparent', border: '1px solid #e2e8f0', color: 'var(--text-soft)', borderRadius: '12px', padding: '11px', fontSize: '13px', cursor: 'pointer' }}>
         Terminar Sessão
       </button>
     </div>

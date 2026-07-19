@@ -11,7 +11,7 @@ export class SinalizacoesController {
   constructor(private readonly service: SinalizacoesService) {}
 
   @Post(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'tecnico_saude')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'tecnico_saude')
   criar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarSinalizacaoDto,
@@ -21,19 +21,19 @@ export class SinalizacoesController {
   }
 
   @Patch(':id/resolver')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   resolver(@Param('id') id: string, @Request() req: any) {
     return this.service.resolver(id, req.user.sub);
   }
 
   @Get(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'administrativo', 'direcao', 'tecnico_saude')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo', 'direcao', 'tecnico_saude')
   listar(@Param('doenteId') doenteId: string) {
     return this.service.listarTodas(doenteId);
   }
 
   @Get(':doenteId/ativas')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'administrativo', 'direcao', 'tecnico_saude')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo', 'direcao', 'tecnico_saude')
   listarAtivas(@Param('doenteId') doenteId: string) {
     return this.service.listarAtivas(doenteId);
   }

@@ -20,14 +20,14 @@ function PlanoAltaContent() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-        <Link href="/portal" style={{ textDecoration: 'none', color: '#64748b', fontSize: '13px' }}>← Voltar</Link>
+        <Link href="/portal" style={{ textDecoration: 'none', color: 'var(--text-soft)', fontSize: '13px' }}>← Voltar</Link>
         <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b' }}>Plano de Alta</h1>
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8', fontSize: '14px' }}>A carregar...</div>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)', fontSize: '14px' }}>A carregar...</div>
       ) : !plano ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8', fontSize: '14px' }}>Plano de alta ainda não definido</div>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)', fontSize: '14px' }}>Plano de alta ainda não definido</div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {plano.dataAltaPrevista && (
@@ -41,20 +41,20 @@ function PlanoAltaContent() {
             </div>
           )}
           {plano.resumo && (
-            <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
-              <p style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Resumo</p>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Resumo</p>
               <p style={{ fontSize: '14px', color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{plano.resumo}</p>
             </div>
           )}
           {plano.criteriosAlta && (
-            <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
-              <p style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Critérios de Alta</p>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Critérios de Alta</p>
               <p style={{ fontSize: '14px', color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{plano.criteriosAlta}</p>
             </div>
           )}
           {plano.instrucoes && (
-            <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
-              <p style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Instruções Pós-Alta</p>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Instruções Pós-Alta</p>
               <p style={{ fontSize: '14px', color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{plano.instrucoes}</p>
             </div>
           )}

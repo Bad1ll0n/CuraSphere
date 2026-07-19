@@ -65,14 +65,14 @@ function ExportarPage() {
 
   return (
     <div>
-      <Link href="/portal" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#64748b', textDecoration: 'none', marginBottom: '24px' }}>
+      <Link href="/portal" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-soft)', textDecoration: 'none', marginBottom: '24px' }}>
         ← Voltar ao portal
       </Link>
 
       <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
         Os Meus Dados Clínicos
       </h1>
-      <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '24px', lineHeight: '1.6' }}>
+      <p style={{ fontSize: '13px', color: 'var(--text-soft)', marginBottom: '24px', lineHeight: '1.6' }}>
         Ao abrigo do <strong>Art. 20 do RGPD</strong> (Regulamento Geral sobre a Protecção de Dados), tem direito a receber os seus dados de saúde em formato legível e a transmiti-los a outra instituição.
       </p>
 
@@ -104,12 +104,12 @@ function ExportarPage() {
 
       {erro && (
         <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '12px', marginBottom: '16px' }}>
-          <p style={{ fontSize: '13px', color: '#dc2626' }}>{erro}</p>
+          <p style={{ fontSize: '13px', color: 'var(--danger)' }}>{erro}</p>
         </div>
       )}
 
       <div style={{ background: '#fafafa', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>
-        <p style={{ fontSize: '12px', color: '#94a3b8', lineHeight: '1.6' }}>
+        <p style={{ fontSize: '12px', color: 'var(--text-dim)', lineHeight: '1.6' }}>
           Para exercer o seu <strong>direito ao apagamento</strong> (Art. 17 RGPD) ou para questões relacionadas com a privacidade dos seus dados, contacte o <strong>Encarregado de Protecção de Dados (DPO)</strong> da instituição hospitalar.
         </p>
       </div>

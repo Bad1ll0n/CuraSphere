@@ -32,6 +32,9 @@ import { DashboardConfigModule } from './dashboard-config/dashboard-config.modul
 import { AnomalyDetectionModule } from './common/anomaly-detection.module';
 import { MailerModule } from './mailer/mailer.module';
 import { RelatoriosAgendadosModule } from './relatorios-agendados/relatorios-agendados.module';
+import { AgendaFluxoModule } from './agenda-fluxo/agenda-fluxo.module';
+import { TriagemPortalModule } from './triagem-portal/triagem-portal.module';
+import { ObservabilidadeModule } from './observabilidade/observabilidade.module';
 import { Icd10Module } from './codificacao/icd10.module';
 import { OutcomesModule } from './outcomes/outcomes.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
@@ -114,6 +117,9 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     AnomalyDetectionModule,
     MailerModule,
     RelatoriosAgendadosModule,
+    AgendaFluxoModule,
+    TriagemPortalModule,
+    ObservabilidadeModule,
     Icd10Module,
     OutcomesModule,
     WebhooksModule,

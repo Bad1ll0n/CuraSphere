@@ -12,7 +12,7 @@ export class BreakGlassController {
   constructor(private readonly service: BreakGlassService) {}
 
   @Throttle({ default: { ttl: 86400000, limit: 10 } })
-  @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_enfermeiros')
   @Post()
   ativar(
     @Body() dto: AtivarBreakGlassDto,
@@ -22,7 +22,7 @@ export class BreakGlassController {
     return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
   }
 
-  @Roles('direcao', 'ti', 'chefe_turno')
+  @Roles('direcao', 'ti')
   @Get()
   listar(@Query('doenteId') doenteId?: string) {
     return this.service.listar(doenteId);

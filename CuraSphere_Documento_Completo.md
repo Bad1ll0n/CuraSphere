@@ -4466,4 +4466,39 @@ Testados: avaliações de desempenho, formações, manutenção de equipamentos 
 
 ---
 
+## Sessão 71 — Roteiro 10/10: 9 iniciativas implementadas (avaliação do produto → execução)
+
+Na sequência de uma avaliação do produto (média **8.7/10** em 6 critérios), foram identificadas 10 melhorias verificadas como **inexistentes** no código. O utilizador **retirou** uma por princípio — a "plataforma/command-center de decisão" — porque **a IA apoia o clínico (sinaliza, prevê, resume, verifica), nunca decide por ele**. As restantes **9 iniciativas** foram implementadas em 6 vagas. Princípio transversal: toda a saída de IA clínica mantém disclaimer, o clínico como decisor final, e trilho de auditoria.
+
+### Vaga 1 — rápidas, alto valor
+1. **Modelo de IA → Sonnet 5** em tudo o clínico. Criado [`common/ai-models.ts`](enfermaria/apps/api/src/app/common/ai-models.ts) como fonte única (`CLINICAL: 'claude-sonnet-5'`, `FAST: 'claude-haiku-4-5-20251001'`), eliminando o *model drift* em ai-clinico/feridas/stewardship/medicacao/guidelines.
+2. **Roles-fantasma** — [`roles.guard.ts`](enfermaria/apps/api/src/app/auth/roles.guard.ts) passou a honrar também o `subRole` no `@Roles()`, desbloqueando **28 endpoints** onde `chefe_enfermeiros` estava listado sem `enfermeiro` (chefias de enfermagem ficavam com 403 indevido). Verificado ao vivo (200 vs 403).
+3. **SAST/DAST no CI** — [`security.yml`](enfermaria/.github/workflows/security.yml): jobs Semgrep (SAST, SARIF) e OWASP ZAP baseline (DAST, gated no schedule).
+
+### Vaga 2 — fundações UX/design (sem schema)
+- **Dark mode 100% por tokens** — expandidos os tokens semânticos em `global.css` (`--text-hi/muted/soft/dim`, `--surface`, `--surface-2`, `--accent`, `--success/warning/danger`) + ~90 overrides de tints; **i18n da navegação** — `sidebar-nav` totalmente traduzido (namespace `navItems`, 52 chaves pt/en).
+
+### Vaga 3 — design system
+- **Storybook + biblioteca `components/ui/`** — primitivos [`Button`](enfermaria/apps/web/src/components/ui/button.tsx), `Card`, `Badge`, `Input` construídos sobre os tokens (adaptam-se a claro/escuro/alto-contraste), com stories CSF3 + página *Foundations* dos tokens. Config `@storybook/nextjs-vite` + `addon-themes` a reutilizar o `global.css`. Verificado: `pnpm build-storybook` compila o site estático (5 stories).
+
+### Vaga 4 — novos módulos clínicos (schema)
+- **Sangue/Transfusão** — módulo [`transfusao/`](enfermaria/apps/api/src/app/transfusao/) com verificação de compatibilidade **ABO/Rh** + tripla-verificação à cabeceira (análogo aos "5 certos" do MAR), reação transfusional ligada a `AlertasService`, guards IDOR. Modelos `BolsaSangue`/`PedidoTransfusao`/`RegistoTransfusao`/`ReacaoTransfusional` + painel no detalhe do doente + página de banco de sangue. Verificado ao vivo (AB+ bloqueado para doente O-).
+- **Ingestão de vitais contínuos** — módulo [`monitorizacao/`](enfermaria/apps/api/src/app/monitorizacao/): registo de dispositivos com API-key (bcrypt), endpoint de ingestão que **reutiliza** `sinais-vitais._processarVital()` → NEWS2 + sépsis + alertas automáticos. Simulador `scripts/simulador-monitor.js`. Verificado (NEWS2=17 crítico a partir do simulador).
+
+### Vaga 5 — integração nacional + portal
+- **SNS/PEM pronto-para-sandbox** — módulo [`sns-pem/`](enfermaria/apps/api/src/app/sns-pem/) com `PemClient` plugável (`MockPemClient` por omissão, `SpmsPemClient` atrás de `SNS_PEM_MODE`), modelo `ReceitaEletronica`. Verificado ponta-a-ponta: médico (via break-glass) emite e-receita → número PEM mock `6056 4828…` + código de dispensa + estado `emitida`/ambiente `sandbox`, persistida e listável.
+- **Symptom checker do portal (orientação, não diagnóstico)** — módulo [`triagem-portal/`](enfermaria/apps/api/src/app/triagem-portal/), Sonnet 5, prompt "NUNCA diagnostica", disclaimer obrigatório, *fallback* seguro (conservador + sinais de alarme) quando a IA está indisponível.
+
+### Vaga 6 — operações & qualidade
+- **Lembretes de consulta + lista de espera** — [`agenda-fluxo/`](enfermaria/apps/api/src/app/agenda-fluxo/): cron horário que notifica (push + email) consultas nas próximas 24h e marca `lembreteEnviadoEm`; CRUD de `ListaEspera` com prioridade. Verificado (adicionar/listar/atualizar estado).
+- **Observabilidade** — módulo [`observabilidade/`](enfermaria/apps/api/src/app/observabilidade/) com `prom-client`: `/metrics` (Prometheus, **version-neutral** — sem o prefixo `/v1`), histograma de duração + contador de pedidos por rota-padrão (sem explosão de cardinalidade). Verificado (200).
+- **Harness de avaliação de IA** — [`ai-eval.spec.ts`](enfermaria/apps/api/src/app/ai-clinico/ai-eval.spec.ts): testa as guardrails de schema (rejeita nível de triagem inventado, LOS negativo, take excessivo, JSON malformado) + fallback do symptom checker; secção live-model *gated* por `ANTHROPIC_API_KEY`. **7 passam, 1 skipped.**
+- **Suíte de regressão de persona** — [`regressao-persona.spec.ts`](enfermaria/apps/web-e2e/e2e/regressao-persona.spec.ts): specs Playwright a nível de API que travam os bugs sistémicos das 7 vagas de teste (guard base-vs-subRole, `req.user.sub`, break-glass `errorCode`, prefixo `/v1`, ordem de rotas, login MFA-pendente). TOTP inline (sem otplib), 1 login por role (respeita o rate-limit de 5/10min).
+
+### Notas de infra/build (aprendizagens desta sessão)
+- **`.dockerignore`** passou a excluir `.nx` (a cache Nx do host poluía os builds) e o Dockerfile usa `nx build api --skip-nx-cache` (evita restaurar um `main.js` stale).
+- **Bloqueio de rebuild resolvido**: as devDeps do Storybook puxaram o `esbuild`, cujo build-script fazia `pnpm install --frozen-lockfile` falhar (`ERR_PNPM_IGNORED_BUILDS`) dentro do Docker. Corrigido acrescentando `esbuild` a `pnpm.onlyBuiltDependencies` no `package.json` raiz.
+
+---
+
 *Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*

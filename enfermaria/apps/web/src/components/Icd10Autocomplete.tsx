@@ -133,7 +133,7 @@ export default function Icd10Autocomplete({ value, onChange, placeholder = 'Ex: 
                   className="hover:bg-slate-50 transition-colors"
                 >
                   <span style={{ fontWeight: 600, color: '#3b82f6', whiteSpace: 'nowrap' }}>{r.code}</span>
-                  <span style={{ color: '#475569' }}>{r.descricao}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>{r.descricao}</span>
                 </li>
               ))}
             </ul>
@@ -178,7 +178,7 @@ export default function Icd10Autocomplete({ value, onChange, placeholder = 'Ex: 
             <p style={{ fontSize: '12px', color: '#6366f1' }}>A analisar nota clínica...</p>
           )}
           {!loadingAi && aiResults.length === 0 && (
-            <p style={{ fontSize: '12px', color: '#64748b' }}>Sem sugestões disponíveis.</p>
+            <p style={{ fontSize: '12px', color: 'var(--text-soft)' }}>Sem sugestões disponíveis.</p>
           )}
           {!loadingAi && aiResults.map(r => (
             <button

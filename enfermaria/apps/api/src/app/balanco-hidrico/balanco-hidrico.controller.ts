@@ -14,7 +14,7 @@ export class BalancoHidricoController {
     private readonly doenteService: DoenteService,
   ) {}
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Post(':doenteId')
   async registar(
     @Param('doenteId') doenteId: string,
@@ -45,7 +45,7 @@ export class BalancoHidricoController {
     return this.service.historico(doenteId, dias ? parseInt(dias, 10) : 7);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Delete(':id')
   apagar(@Param('id') id: string, @Request() req: any) {
     return this.service.apagar(id, req.user.sub, req.user.role);

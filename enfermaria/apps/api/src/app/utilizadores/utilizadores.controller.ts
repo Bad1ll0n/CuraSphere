@@ -18,7 +18,7 @@ export class UtilizadoresController {
     return this.utilizadoresService.criar(body);
   }
 
-  @Roles('ti', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'administrativo', 'operacional', 'qualidade')
+  @Roles('ti', 'chefe_enfermeiros', 'direcao', 'administrativo', 'operacional', 'qualidade')
   @Get()
   listar(
     @Query('role') role?: string,

@@ -27,6 +27,9 @@ import { FisioterapiaModule } from './fisioterapia/fisioterapia.module';
 import { IacsModule } from './iacs/iacs.module';
 import { BalancoHidricoModule } from './balanco-hidrico/balanco-hidrico.module';
 import { FeridasModule } from './feridas/feridas.module';
+import { TransfusaoModule } from './transfusao/transfusao.module';
+import { MonitorizacaoModule } from './monitorizacao/monitorizacao.module';
+import { SnsPemModule } from './sns-pem/sns-pem.module';
 // Session 49
 import { SinalizacoesModule } from './sinalizacoes/sinalizacoes.module';
 import { SepsisModule } from './sepsis/sepsis.module';
@@ -60,7 +63,7 @@ const clinicalModules = [
   // Vigilância
   IacsModule,
   // Session 48
-  BalancoHidricoModule, FeridasModule,
+  BalancoHidricoModule, FeridasModule, TransfusaoModule, MonitorizacaoModule, SnsPemModule,
   // Session 49 — Inteligência Clínica
   SinalizacoesModule, SepsisModule, BaselinesModule, ReconciliacaoMedicacaoModule,
   RelatorioPassagemTurnoModule, PlanoAltaModule, FamiliaModule, FhirModule,

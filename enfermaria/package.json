@@ -75,6 +75,7 @@
       "@scarf/scarf",
       "@sentry/cli",
       "@swc/core",
+      "esbuild",
       "detox",
       "dtrace-provider",
       "less",

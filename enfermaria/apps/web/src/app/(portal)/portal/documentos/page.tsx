@@ -20,21 +20,21 @@ function DocumentosContent() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-        <Link href="/portal" style={{ textDecoration: 'none', color: '#64748b', fontSize: '13px' }}>← Voltar</Link>
+        <Link href="/portal" style={{ textDecoration: 'none', color: 'var(--text-soft)', fontSize: '13px' }}>← Voltar</Link>
         <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b' }}>Os Meus Documentos</h1>
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8', fontSize: '14px' }}>A carregar...</div>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)', fontSize: '14px' }}>A carregar...</div>
       ) : docs.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8', fontSize: '14px' }}>Sem documentos disponíveis</div>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)', fontSize: '14px' }}>Sem documentos disponíveis</div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {docs.map((doc: any) => (
-            <div key={doc.id} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div key={doc.id} style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <p style={{ fontWeight: 600, fontSize: '14px', color: '#1e293b', marginBottom: '2px' }}>{doc.titulo ?? doc.tipo}</p>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-dim)' }}>
                   {doc.dataDocumento ? new Date(doc.dataDocumento).toLocaleDateString('pt-PT') : '—'}
                   {doc.especialidade ? ` · ${doc.especialidade}` : ''}
                 </p>

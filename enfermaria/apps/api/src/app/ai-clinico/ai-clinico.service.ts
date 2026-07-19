@@ -9,6 +9,7 @@ import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { sanitizeForPrompt } from './prompt-sanitizer';
 import { AiMetricsService } from './ai-metrics.service';
+import { AI_MODELS } from '../common/ai-models';
 import {
   parseWithSchema,
   AnaliseClinicoSchema,
@@ -53,8 +54,8 @@ export class AiClinicoService {
   private readonly cache = new Map<string, { data: any; ts: number }>();
   private readonly TTL_MS = 5 * 60 * 1000;
   private readonly TTL_LOS_MS = 2 * 60 * 60 * 1000;
-  private readonly MODEL_FAST = 'claude-haiku-4-5-20251001';
-  private readonly MODEL_CLINICAL = 'claude-sonnet-4-6';
+  private readonly MODEL_FAST = AI_MODELS.FAST;
+  private readonly MODEL_CLINICAL = AI_MODELS.CLINICAL;
 
   constructor(
     private readonly prisma: PrismaService,

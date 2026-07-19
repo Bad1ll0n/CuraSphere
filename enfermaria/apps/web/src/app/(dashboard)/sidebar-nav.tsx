@@ -3,7 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Avatar, navItems, roleLabel, subRoleLabel, servicoLabel, roleColor } from './nav-data';
+
+// Deriva a chave de tradução a partir do href (ex.: '/dashboard-executivo' -> 'dashboardExecutivo').
+// Igual à chave usada no namespace navItems dos catálogos pt/en.
+function navKey(href: string): string {
+  return href.replace(/^\//, '').replace(/[/-]([a-z])/g, (_, c: string) => c.toUpperCase()).replace(/[/-]/g, '');
+}
 
 interface SidebarUtilizador {
   nome: string;
@@ -35,10 +42,16 @@ export function SidebarNav({
   onLogout,
   onOpenPalette,
 }: SidebarNavProps) {
+  const t = useTranslations('navItems');
+  const n = useTranslations('nav');
+  const label = (item: { href: string; label: string }) => {
+    const k = navKey(item.href);
+    return t.has(k) ? t(k) : item.label;
+  };
   return (
     <aside
       id="sidebar-nav"
-      aria-label="Navegação principal"
+      aria-label={n('mainNav')}
       className={`w-64 shrink-0 bg-[#0f172a] flex flex-col border-r border-white/5 fixed md:relative inset-y-0 left-0 z-40 transform transition-transform duration-200 ${
         sidebarAberta ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0`}
@@ -65,7 +78,7 @@ export function SidebarNav({
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="flex-1 text-left text-slate-500">Pesquisar...</span>
+            <span className="flex-1 text-left text-slate-500">{n('search')}</span>
             <kbd className="hidden md:flex items-center gap-0.5 text-[10px] text-slate-600 font-mono">
               <span>⌘</span><span>K</span>
             </kbd>
@@ -76,8 +89,8 @@ export function SidebarNav({
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto" style={{ paddingTop: '16px', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' }}>
         {(['A', 'B', 'C', 'D'] as const).reduce<React.ReactNode[]>((acc, grupo) => {
-          const GRUPO_LABELS: Record<string, string> = { A: 'Dashboards', B: 'Trabalho', C: 'Pessoal', D: 'Comunicação' };
-          const items = itemsVisiveis.filter(i => i.grupo === grupo).sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+          const GRUPO_LABELS: Record<string, string> = { A: n('groupDashboards'), B: n('groupWork'), C: n('groupPersonal'), D: n('groupComms') };
+          const items = itemsVisiveis.filter(i => i.grupo === grupo).sort((a, b) => label(a).localeCompare(label(b)));
           if (items.length === 0) return acc;
           acc.push(
             <p
@@ -106,7 +119,7 @@ export function SidebarNav({
                 <span className={`transition-colors ${active ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
                   {item.icon}
                 </span>
-                {item.label}
+                {label(item)}
                 {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white/60" />}
               </Link>
             );
@@ -156,7 +169,7 @@ export function SidebarNav({
               </span>
             )}
           </div>
-          Notificações {naoLidas > 0 && <span className="ml-auto text-[10px] font-bold text-red-500">{naoLidas}</span>}
+          {n('notifications')} {naoLidas > 0 && <span className="ml-auto text-[10px] font-bold text-red-500">{naoLidas}</span>}
         </Link>
 
         <Link
@@ -167,7 +180,7 @@ export function SidebarNav({
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Meu Perfil
+          {n('profile')}
         </Link>
 
         <button
@@ -177,7 +190,7 @@ export function SidebarNav({
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          Configurações
+          {n('settings')}
         </button>
 
         <button
@@ -187,7 +200,7 @@ export function SidebarNav({
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Terminar sessão
+          {n('logout')}
         </button>
       </div>
     </aside>

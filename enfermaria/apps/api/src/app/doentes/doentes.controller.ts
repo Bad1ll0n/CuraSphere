@@ -6,6 +6,7 @@ import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { temPapel } from '../common/roles.util';
 import { AtualizarEstadoDto } from './dto/atualizar-estado.dto';
 import { AtualizarFichaPessoalDto } from './dto/atualizar-ficha-pessoal.dto';
 import { CriarProblemaDto } from './dto/criar-problema.dto';
@@ -35,8 +36,10 @@ export class DoenteController {
   ) {
     // O bypass `todos=true` só é permitido para roles de supervisão.
     // Antes qualquer utilizador autenticado podia ignorar o filtro de atribuição via querystring.
-    const rolesPodemVerTodos = ['direcao', 'qualidade', 'ti', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'administrativo'];
-    const ignorarFiltro = todos === 'true' && rolesPodemVerTodos.includes(req.user.role);
+    // temPapel() considera o sub-papel, para a chefia de enfermagem (role=enfermeiro,
+    // subRole=chefe_enfermeiros) poder supervisionar toda a ala como se pretendia.
+    const rolesPodemVerTodos = ['direcao', 'qualidade', 'ti', 'chefe_enfermeiros', 'administrativo'];
+    const ignorarFiltro = todos === 'true' && temPapel(req.user, rolesPodemVerTodos);
 
     const pageNum = Math.max(1, page ? parseInt(page, 10) || 1 : 1);
     // Limite máximo defensivo — evita DoS com listagens gigantes
@@ -50,7 +53,7 @@ export class DoenteController {
     );
   }
 
-  @Roles('direcao', 'chefe_turno', 'chefe_enfermeiros', 'qualidade')
+  @Roles('direcao', 'chefe_enfermeiros', 'qualidade')
   @Header('Content-Type', 'text/csv; charset=utf-8')
   @Header('Content-Disposition', 'attachment; filename="doentes.csv"')
   @Get('export')
@@ -68,13 +71,13 @@ export class DoenteController {
     return this.doenteService.listarRegistosAdministrativos(search);
   }
 
-  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get('risco-clinico')
   listarRiscoClinoco() {
     return this.doenteService.listarRiscoClinoco();
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id')
   async buscarPorId(@Param('id') id: string, @Request() req: any) {
     // Endpoint de entrada principal do doente — único ponto que activa break-glass a partir do header;
@@ -85,7 +88,7 @@ export class DoenteController {
     return this.doenteService.buscarPorId(id);
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/historico')
   async historico(@Param('id') id: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
@@ -171,7 +174,7 @@ export class DoenteController {
     return this.doenteService.altaEstruturada(doenteId, req.user.sub, req.user.role, dto);
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/sumario-alta')
   async getSumarioAlta(@Param('id') doenteId: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
@@ -185,14 +188,14 @@ export class DoenteController {
     return this.doenteService.gerarResumoAlta(doenteId);
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/timeline')
   async getTimeline(@Param('id') doenteId: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.timeline(doenteId);
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/alta/pdf')
   async pdfAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
@@ -224,7 +227,7 @@ export class DoenteController {
     return this.doenteService.criarTarefa(doenteId, req.user.sub, dto as any);
   }
 
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get('iacs/isolados')
   listarIsolados() {
     return this.doenteService.listarIsolados();

@@ -172,14 +172,14 @@ export default function EquipamentosPage() {
   const manutencoesFiltradas = (manutencoes as Manutencao[]).filter(m => !filtroManEstado || m.estado === filtroManEstado);
 
   const inputStyle = { width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '9px 12px', color: 'var(--text-main)', fontSize: 14, boxSizing: 'border-box' as const };
-  const labelStyle = { display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase' as const, letterSpacing: 1 };
+  const labelStyle = { display: 'block', color: 'var(--text-dim)', fontSize: 11, marginBottom: 5, textTransform: 'uppercase' as const, letterSpacing: 1 };
 
   return (
     <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-main)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Equipamentos</h1>
-          <p style={{ color: '#64748b', marginTop: 4, fontSize: 14 }}>Inventário hospitalar e gestão de manutenções</p>
+          <p style={{ color: 'var(--text-soft)', marginTop: 4, fontSize: 14 }}>Inventário hospitalar e gestão de manutenções</p>
         </div>
         {podeGerirEquip && (
           <button onClick={() => setModalEq(true)}
@@ -204,7 +204,7 @@ export default function EquipamentosPage() {
       </div>
 
       {isLoading && aba === 'inventario' ? (
-        <div style={{ color: '#64748b', textAlign: 'center', padding: 48 }}>A carregar...</div>
+        <div style={{ color: 'var(--text-soft)', textAlign: 'center', padding: 48 }}>A carregar...</div>
       ) : aba === 'inventario' ? (
         <>
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
@@ -234,22 +234,22 @@ export default function EquipamentosPage() {
                         <span style={{ fontSize: 24 }}>{ti.icon}</span>
                         <div>
                           <p style={{ fontWeight: 700, fontSize: 15, margin: 0 }}>{eq.nome}</p>
-                          <p style={{ color: '#64748b', fontSize: 12, marginTop: 2 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
+                          <p style={{ color: 'var(--text-soft)', fontSize: 12, marginTop: 2 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
                         </div>
                       </div>
                       <span style={{ background: `${es.cor}20`, color: es.cor, borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap' }}>{es.dot} {es.label}</span>
                     </div>
-                    {eq.numeroSerie && <p style={{ color: '#475569', fontSize: 11, margin: '4px 0' }}>S/N: {eq.numeroSerie}</p>}
+                    {eq.numeroSerie && <p style={{ color: 'var(--text-muted)', fontSize: 11, margin: '4px 0' }}>S/N: {eq.numeroSerie}</p>}
                     {eq.proximaManutencao && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '4px 0' }}>
-                        <p style={{ color: '#94a3b8', fontSize: 11, margin: 0 }}>Próxima manutenção: {new Date(eq.proximaManutencao).toLocaleDateString('pt-PT')}</p>
+                        <p style={{ color: 'var(--text-dim)', fontSize: 11, margin: 0 }}>Próxima manutenção: {new Date(eq.proximaManutencao).toLocaleDateString('pt-PT')}</p>
                         {alerta && <span style={{ background: `${alerta.cor}20`, color: alerta.cor, borderRadius: 10, padding: '1px 6px', fontSize: 10, fontWeight: 700 }}>{alerta.label}</span>}
                       </div>
                     )}
                     {manAtiva && (
                       <div style={{ background: 'var(--bg-input)', borderRadius: 8, padding: '6px 10px', marginTop: 8, fontSize: 12 }}>
                         <span style={{ color: PRIORIDADE_COR[manAtiva.prioridade] ?? '#6b7280', fontWeight: 600 }}>{manAtiva.tipo === 'corretiva' ? '🔴 Corretiva' : '🟡 Preventiva'}</span>
-                        <span style={{ color: '#64748b', marginLeft: 6 }}>{manAtiva.descricao}</span>
+                        <span style={{ color: 'var(--text-soft)', marginLeft: 6 }}>{manAtiva.descricao}</span>
                       </div>
                     )}
                     {podeGerirEquip && (
@@ -291,7 +291,7 @@ export default function EquipamentosPage() {
             ))}
           </div>
           {manutencoesFiltradas.length === 0 ? (
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: 'var(--text-muted)' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>🔧</div>
               <p>Sem manutenções registadas.</p>
             </div>
@@ -310,8 +310,8 @@ export default function EquipamentosPage() {
                         {m.estado.replace('_', ' ')}
                       </span>
                     </div>
-                    <p style={{ color: '#94a3b8', fontSize: 13, margin: 0 }}>{m.descricao}</p>
-                    <p style={{ color: '#475569', fontSize: 11, marginTop: 2 }}>
+                    <p style={{ color: 'var(--text-dim)', fontSize: 13, margin: 0 }}>{m.descricao}</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 11, marginTop: 2 }}>
                       {m.equipamento.localizacao && `${m.equipamento.localizacao} · `}
                       {new Date(m.dataReporte).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
                       {m.reportadoPor && ` · ${m.reportadoPor.nome}`}
@@ -342,7 +342,7 @@ export default function EquipamentosPage() {
             Equipamentos com manutenção preventiva a vencer nos próximos 30 dias ou já vencida.
           </div>
           {(alertasManutencao as Equipamento[]).length === 0 ? (
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: 'var(--text-muted)' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
               <p>Sem manutenções preventivas a vencer nos próximos 30 dias.</p>
             </div>
@@ -361,8 +361,8 @@ export default function EquipamentosPage() {
                         <span style={{ fontWeight: 700, fontSize: 15 }}>{eq.nome}</span>
                         <span style={{ background: `${alerta.cor}20`, color: alerta.cor, borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 700 }}>{alerta.label}</span>
                       </div>
-                      <p style={{ color: '#64748b', fontSize: 12, margin: 0 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
-                      <p style={{ color: '#94a3b8', fontSize: 12, marginTop: 4 }}>
+                      <p style={{ color: 'var(--text-soft)', fontSize: 12, margin: 0 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
+                      <p style={{ color: 'var(--text-dim)', fontSize: 12, marginTop: 4 }}>
                         Próxima manutenção: <strong style={{ color: alerta.cor }}>{new Date(eq.proximaManutencao!).toLocaleDateString('pt-PT')}</strong>
                       </p>
                     </div>
@@ -386,7 +386,7 @@ export default function EquipamentosPage() {
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Novo Equipamento</h2>
-              <button onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -415,7 +415,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEq(false)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-dim)', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutCriarEq.mutate(formEq)} disabled={mutCriarEq.isPending || !formEq.nome.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarEq.isPending || !formEq.nome.trim() ? 0.5 : 1 }}>
                   {mutCriarEq.isPending ? 'A criar...' : 'Criar Equipamento'}
@@ -433,9 +433,9 @@ export default function EquipamentosPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Editar Equipamento</h2>
-                <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>{modalEditarEq.nome}</p>
+                <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalEditarEq.nome}</p>
               </div>
-              <button onClick={() => setModalEditarEq(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setModalEditarEq(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -472,7 +472,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEditarEq(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-dim)', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutEditarEq.mutate({ id: modalEditarEq.id, body: formEditarEq })} disabled={mutEditarEq.isPending || !formEditarEq.nome.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutEditarEq.isPending || !formEditarEq.nome.trim() ? 0.5 : 1 }}>
                   {mutEditarEq.isPending ? 'A guardar...' : 'Guardar Alterações'}
@@ -492,9 +492,9 @@ export default function EquipamentosPage() {
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>
                   {modalAtualizarMan.novoEstado === 'em_curso' ? '▶️ Iniciar Manutenção' : '✅ Concluir Manutenção'}
                 </h2>
-                <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>{modalAtualizarMan.equipamentoNome}</p>
+                <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalAtualizarMan.equipamentoNome}</p>
               </div>
-              <button onClick={() => setModalAtualizarMan(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setModalAtualizarMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -508,7 +508,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalAtualizarMan(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-dim)', cursor: 'pointer' }}>Cancelar</button>
                 <button
                   onClick={() => mutAtualizarMan.mutate({ id: modalAtualizarMan.id, estado: modalAtualizarMan.novoEstado, tecnicoIdVal: tecnicoId || undefined })}
                   disabled={mutAtualizarMan.isPending}
@@ -528,9 +528,9 @@ export default function EquipamentosPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Reportar Ocorrência</h2>
-                <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>{modalMan.nome}</p>
+                <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalMan.nome}</p>
               </div>
-              <button onClick={() => setModalMan(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setModalMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -564,7 +564,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalMan(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-dim)', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutCriarMan.mutate(formMan)} disabled={mutCriarMan.isPending || !formMan.descricao.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarMan.isPending || !formMan.descricao.trim() ? 0.5 : 1 }}>
                   {mutCriarMan.isPending ? 'A reportar...' : 'Reportar'}

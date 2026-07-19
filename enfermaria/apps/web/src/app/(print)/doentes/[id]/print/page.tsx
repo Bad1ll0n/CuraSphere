@@ -112,7 +112,7 @@ export default function PrintPage() {
 
   if (!pronto || !doente) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'sans-serif', color: '#64748b' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'sans-serif', color: 'var(--text-soft)' }}>
         A preparar documento...
       </div>
     );
@@ -147,7 +147,7 @@ export default function PrintPage() {
           <button onClick={() => window.print()} style={{ background: '#2563eb', color: '#fff', border: 'none', borderRadius: '8px', padding: '8px 18px', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}>
             Imprimir / Guardar PDF
           </button>
-          <button onClick={() => window.close()} style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: '8px', padding: '8px 18px', cursor: 'pointer', fontSize: '13px', color: '#64748b' }}>
+          <button onClick={() => window.close()} style={{ border: '1px solid #e2e8f0', background: 'var(--bg-card)', borderRadius: '8px', padding: '8px 18px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-soft)' }}>
             Fechar
           </button>
         </div>
@@ -160,11 +160,11 @@ export default function PrintPage() {
               <span style={{ fontWeight: 700, color: '#2563eb', fontSize: '12px', letterSpacing: '0.08em' }}>CURASPHERE — FICHA CLÍNICA</span>
             </div>
             <div style={{ fontSize: '22px', fontWeight: 700, margin: 0 }}>{doente.nome}</div>
-            <div style={{ marginTop: '4px', color: '#64748b', fontSize: '13px' }}>
+            <div style={{ marginTop: '4px', color: 'var(--text-soft)', fontSize: '13px' }}>
               Processo Nº {doente.numeroProcesso} · Cama {doente.cama.quarto}/{doente.cama.numero}
             </div>
           </div>
-          <div style={{ textAlign: 'right', fontSize: '12px', color: '#94a3b8' }}>
+          <div style={{ textAlign: 'right', fontSize: '12px', color: 'var(--text-dim)' }}>
             <div>{new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             <div style={{ marginTop: '4px', fontWeight: 600, color: '#1e293b' }}>{estadoLabel[doente.estado] ?? doente.estado}</div>
           </div>
@@ -274,19 +274,19 @@ export default function PrintPage() {
             </div>
             <div style={{ marginBottom: '12px' }}>
               <div className="info-label">Resumo Clínico</div>
-              <div style={{ marginTop: '6px', padding: '12px', background: '#f8fafc', borderRadius: '6px', fontSize: '13px', lineHeight: 1.6 }}>{sumarioAlta.resumoClinical}</div>
+              <div style={{ marginTop: '6px', padding: '12px', background: 'var(--bg-page)', borderRadius: '6px', fontSize: '13px', lineHeight: 1.6 }}>{sumarioAlta.resumoClinical}</div>
             </div>
             {sumarioAlta.prescricaoSaida && (
               <div>
                 <div className="info-label">Prescrição de Saída</div>
-                <div style={{ marginTop: '6px', padding: '12px', background: '#f8fafc', borderRadius: '6px', fontSize: '13px', lineHeight: 1.6 }}>{sumarioAlta.prescricaoSaida}</div>
+                <div style={{ marginTop: '6px', padding: '12px', background: 'var(--bg-page)', borderRadius: '6px', fontSize: '13px', lineHeight: 1.6 }}>{sumarioAlta.prescricaoSaida}</div>
               </div>
             )}
           </>
         )}
 
         {/* Rodapé */}
-        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#94a3b8' }}>
+        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-dim)' }}>
           <span>CuraSphere — Gestão Hospitalar</span>
           <span>Documento gerado automaticamente · Confidencial</span>
         </div>

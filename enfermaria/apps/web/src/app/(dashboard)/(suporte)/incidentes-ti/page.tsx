@@ -329,7 +329,7 @@ export default function IncidentesTIPage() {
 
                 {/* Detalhe expandido */}
                 {aberto && (
-                  <div className="border-t border-slate-100" style={{ padding: '20px 24px', backgroundColor: '#f8fafc' }}>
+                  <div className="border-t border-slate-100" style={{ padding: '20px 24px', backgroundColor: 'var(--bg-page)' }}>
                     <div className="grid grid-cols-3 gap-6">
                       {/* Descrição completa + Notas */}
                       <div className="col-span-2">

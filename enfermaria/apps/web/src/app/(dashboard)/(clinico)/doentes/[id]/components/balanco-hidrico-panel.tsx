@@ -231,7 +231,7 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
         <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid #e2e8f0', marginBottom: '20px' }}>
           <table className="w-full text-sm">
             <thead>
-              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+              <tr style={{ background: 'var(--bg-page)', borderBottom: '1px solid #e2e8f0' }}>
                 <th className="text-left text-xs font-semibold text-slate-500 py-2 px-3">Hora</th>
                 <th className="text-left text-xs font-semibold text-slate-500 py-2 px-3">Tipo</th>
                 <th className="text-left text-xs font-semibold text-slate-500 py-2 px-3">Categoria</th>

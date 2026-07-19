@@ -104,7 +104,7 @@ export class MedicacaoController {
   }
 
   @Get('doente/:id/mar/pdf')
-  @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros')
   async marPdf(
     @Param('id') id: string,
     @Query('data') data: string | undefined,
@@ -160,13 +160,13 @@ export class MedicacaoController {
   }
 
   @Post('verificar-5-certos')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar', 'tecnico_saude')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'auxiliar', 'tecnico_saude')
   verificar5Certos(@Body() body: { qrPayload: string; doenteIdEsperado: string }) {
     return this.medicacaoService.verificar5Certos(body.qrPayload, body.doenteIdEsperado);
   }
 
   @Get('timeline')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'farmaceutico')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   timeline(
     @Query('servico') servico: string,
     @Query('turno') turno: 'manha' | 'tarde' | 'noite',

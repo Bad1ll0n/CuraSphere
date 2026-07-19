@@ -190,12 +190,12 @@ export default function ConsultasPage() {
 
   // ─── Render ───────────────────────────────────────────────────────────────
   return (
-    <div style={{ padding: '32px 40px', minHeight: '100vh', background: '#f8fafc' }}>
+    <div style={{ padding: '32px 40px', minHeight: '100vh', background: 'var(--bg-page)' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', margin: 0 }}>Consultas Externas</h1>
-          <p style={{ color: '#64748b', fontSize: 14, marginTop: 4 }}>Agenda e marcações por especialidade</p>
+          <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Consultas Externas</h1>
+          <p style={{ color: 'var(--text-soft)', fontSize: 14, marginTop: 4 }}>Agenda e marcações por especialidade</p>
         </div>
         {podeAgendar && tab === 'marcacoes' && (
           <button
@@ -240,24 +240,24 @@ export default function ConsultasPage() {
         <>
           {/* Filtro data */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <label style={{ fontSize: 14, color: '#64748b', fontWeight: 600 }}>Dia:</label>
+            <label style={{ fontSize: 14, color: 'var(--text-soft)', fontWeight: 600 }}>Dia:</label>
             <input
               type="date" value={dataFiltro}
               onChange={e => setDataFiltro(e.target.value)}
-              style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '8px 14px', fontSize: 14, background: '#fff' }}
+              style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '8px 14px', fontSize: 14, background: 'var(--bg-card)' }}
             />
-            <span style={{ fontSize: 14, color: '#94a3b8' }}>
+            <span style={{ fontSize: 14, color: 'var(--text-dim)' }}>
               {new Date(dataFiltro + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
             </span>
           </div>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8' }}>A carregar...</div>
+            <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-dim)' }}>A carregar...</div>
           ) : consultas.length === 0 ? (
-            <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center', padding: '64px 40px' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center', padding: '64px 40px' }}>
               <div style={{ fontSize: 48 }}>📭</div>
-              <p style={{ color: '#475569', fontWeight: 600, marginTop: 12 }}>Sem consultas para este dia</p>
-              <p style={{ color: '#94a3b8', fontSize: 14, marginTop: 4 }}>Use o botão "Nova Marcação" para agendar.</p>
+              <p style={{ color: 'var(--text-muted)', fontWeight: 600, marginTop: 12 }}>Sem consultas para este dia</p>
+              <p style={{ color: 'var(--text-dim)', fontSize: 14, marginTop: 4 }}>Use o botão "Nova Marcação" para agendar.</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -265,23 +265,23 @@ export default function ConsultasPage() {
                 const cfg = ESTADO_CONFIG[c.estado] ?? ESTADO_CONFIG.agendada;
                 const hora = new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
                 return (
-                  <div key={c.id} style={{ background: '#fff', borderRadius: 16, border: '1px solid #e2e8f0', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+                  <div key={c.id} style={{ background: 'var(--bg-card)', borderRadius: 16, border: '1px solid #e2e8f0', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 20, flex: 1 }}>
                       <div style={{ textAlign: 'center', minWidth: 52 }}>
-                        <div style={{ fontSize: 20, fontWeight: 800, color: '#0f172a' }}>{hora}</div>
-                        <div style={{ fontSize: 11, color: '#94a3b8' }}>{c.duracao}min</div>
+                        <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-hi)' }}>{hora}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{c.duracao}min</div>
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, color: '#0f172a', fontSize: 15 }}>
+                        <div style={{ fontWeight: 700, color: 'var(--text-hi)', fontSize: 15 }}>
                           {c.doente?.nome ?? c.nomeDoente ?? 'Utente externo'}
                         </div>
-                        <div style={{ color: '#64748b', fontSize: 13, marginTop: 2 }}>{c.especialidade} · Dr. {c.medico?.nome}</div>
+                        <div style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 2 }}>{c.especialidade} · Dr. {c.medico?.nome}</div>
                         <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap', alignItems: 'center' }}>
                           <span style={{ background: `${cfg.cor}15`, color: cfg.cor, borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 600 }}>
                             {cfg.label}
                           </span>
                           {c.codigo && (
-                            <span style={{ background: '#f1f5f9', color: '#475569', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
+                            <span style={{ background: '#f1f5f9', color: 'var(--text-muted)', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
                               {c.codigo}
                             </span>
                           )}
@@ -370,11 +370,11 @@ export default function ConsultasPage() {
       {tab === 'agenda' && (
         <div>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 24 }}>
-            <label style={{ fontSize: 14, fontWeight: 600, color: '#64748b' }}>Médico:</label>
+            <label style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-soft)' }}>Médico:</label>
             <select
               value={agendaMedicoId}
               onChange={e => setAgendaMedicoId(e.target.value)}
-              style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 14px', fontSize: 14, background: '#fff', minWidth: 280 }}
+              style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 14px', fontSize: 14, background: 'var(--bg-card)', minWidth: 280 }}
             >
               <option value="">Seleccionar médico...</option>
               {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}{m.subRole ? ` (${m.subRole})` : ''}</option>)}
@@ -382,7 +382,7 @@ export default function ConsultasPage() {
           </div>
 
           {!agendaMedicoId ? (
-            <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center', padding: '64px 40px', color: '#94a3b8' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center', padding: '64px 40px', color: 'var(--text-dim)' }}>
               <div style={{ fontSize: 48 }}>👨‍⚕️</div>
               <p style={{ marginTop: 12 }}>Seleccione um médico para ver ou editar a disponibilidade semanal</p>
             </div>
@@ -403,8 +403,8 @@ export default function ConsultasPage() {
                         textAlign: 'center',
                       }}
                     >
-                      <div style={{ fontWeight: 700, fontSize: 13, color: '#475569', marginBottom: 8 }}>{DIAS[idx]}</div>
-                      <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 4 }}>{dia}</div>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-muted)', marginBottom: 8 }}>{DIAS[idx]}</div>
+                      <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>{dia}</div>
                       {regra?.ativo ? (
                         <>
                           <div style={{ fontSize: 14, fontWeight: 700, color: '#166534', margin: '8px 0' }}>
@@ -413,7 +413,7 @@ export default function ConsultasPage() {
                           <div style={{ fontSize: 11, color: '#15803d', marginBottom: 10 }}>
                             Slots de {regra.duracaoSlot}min
                           </div>
-                          <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 8 }}>
+                          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8 }}>
                             ~{Math.floor((parseInt(regra.horaFim.split(':')[0]) * 60 + parseInt(regra.horaFim.split(':')[1]) - parseInt(regra.horaInicio.split(':')[0]) * 60 - parseInt(regra.horaInicio.split(':')[1])) / regra.duracaoSlot)} consultas/dia
                           </div>
                           <button
@@ -431,8 +431,8 @@ export default function ConsultasPage() {
                 })}
               </div>
 
-              <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #e2e8f0', padding: '16px 20px' }}>
-                <p style={{ color: '#64748b', fontSize: 13 }}>
+              <div style={{ background: 'var(--bg-card)', borderRadius: 14, border: '1px solid #e2e8f0', padding: '16px 20px' }}>
+                <p style={{ color: 'var(--text-soft)', fontSize: 13 }}>
                   Use o botão <strong>"Definir Disponibilidade"</strong> para adicionar ou actualizar um dia da semana.
                   Os slots são gerados automaticamente com base no horário e duração configurados.
                 </p>
@@ -445,19 +445,19 @@ export default function ConsultasPage() {
       {/* ══════ Modal: Nova Marcação ══════════════════════════════════════════ */}
       {modalNova && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 560, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 560, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: 0 }}>Nova Marcação</h2>
-              <button onClick={() => setModalNova(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#94a3b8' }}>✕</button>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Nova Marcação</h2>
+              <button onClick={() => setModalNova(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
 
             {/* Médico */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>
               <select
                 value={novaForm.medicoId}
                 onChange={e => setNovaForm(f => ({ ...f, medicoId: e.target.value }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc' }}
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}
               >
                 <option value="">Seleccionar médico...</option>
                 {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}{m.subRole ? ` — ${m.subRole}` : ''}</option>)}
@@ -466,31 +466,31 @@ export default function ConsultasPage() {
 
             {/* Especialidade */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Especialidade *</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Especialidade *</label>
               <input
                 type="text"
                 value={novaForm.especialidade}
                 onChange={e => setNovaForm(f => ({ ...f, especialidade: e.target.value }))}
                 placeholder="Ex: Cardiologia"
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }}
               />
             </div>
 
             {/* Nome do utente */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Nome do Utente (opcional)</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Nome do Utente (opcional)</label>
               <input
                 type="text"
                 value={novaForm.nomeDoente}
                 onChange={e => setNovaForm(f => ({ ...f, nomeDoente: e.target.value }))}
                 placeholder="Para utentes sem registo no sistema"
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }}
               />
             </div>
 
             {/* Tipo de consulta */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Tipo</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Tipo</label>
               <div style={{ display: 'flex', gap: 8 }}>
                 {(['presencial', 'teleconsulta'] as const).map(t => (
                   <button
@@ -512,23 +512,23 @@ export default function ConsultasPage() {
 
             {/* Data */}
             <div style={{ marginBottom: 20 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Data *</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Data *</label>
               <input
                 type="date"
                 value={novaForm.dataMarcacao}
                 onChange={e => setNovaForm(f => ({ ...f, dataMarcacao: e.target.value }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }}
               />
             </div>
 
             {/* Slots disponíveis */}
             {novaForm.medicoId && novaForm.dataMarcacao && (
               <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>
                   Horário disponível *
                 </label>
                 {carregandoSlots ? (
-                  <div style={{ color: '#94a3b8', fontSize: 14 }}>A carregar slots...</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 14 }}>A carregar slots...</div>
                 ) : slots.length === 0 ? (
                   <div style={{ background: '#fef9ec', border: '1px solid #fde68a', borderRadius: 10, padding: '12px 16px', color: '#92400e', fontSize: 13 }}>
                     Médico sem agenda definida para este dia. Configure a disponibilidade na tab "Agenda dos Médicos".
@@ -564,7 +564,7 @@ export default function ConsultasPage() {
             <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
               <button
                 onClick={() => setModalNova(false)}
-                style={{ flex: 1, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}
+                style={{ flex: 1, border: '1px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-soft)', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}
               >
                 Cancelar
               </button>
@@ -583,12 +583,12 @@ export default function ConsultasPage() {
       {/* ══════ Modal: Realizar ══════════════════════════════════════════════ */}
       {realizarModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 520, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 520, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: 0 }}>Registar Consulta Realizada</h2>
-              <button onClick={() => setRealizarModal(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#94a3b8' }}>✕</button>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Registar Consulta Realizada</h2>
+              <button onClick={() => setRealizarModal(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
-            <p style={{ color: '#64748b', fontSize: 14, marginBottom: 20 }}>
+            <p style={{ color: 'var(--text-soft)', fontSize: 14, marginBottom: 20 }}>
               {realizarModal.doente?.nome ?? realizarModal.nomeDoente} — {realizarModal.especialidade}
             </p>
             {[
@@ -596,34 +596,34 @@ export default function ConsultasPage() {
               { label: 'Diagnóstico', key: 'diagnostico', rows: 2, placeholder: 'Diagnóstico registado...' },
             ].map(({ label, key, rows, placeholder }) => (
               <div key={key} style={{ marginBottom: 14 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</label>
                 <textarea
                   value={(realizarForm as any)[key]}
                   onChange={e => setRealizarForm(f => ({ ...f, [key]: e.target.value }))}
                   rows={rows}
-                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, resize: 'none', background: '#f8fafc', boxSizing: 'border-box' }}
+                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, resize: 'none', background: 'var(--bg-page)', boxSizing: 'border-box' }}
                   placeholder={placeholder}
                 />
               </div>
             ))}
             <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Próxima Consulta</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Próxima Consulta</label>
               <input
                 type="datetime-local"
                 value={realizarForm.proximaConsulta}
                 onChange={e => setRealizarForm(f => ({ ...f, proximaConsulta: e.target.value }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }}
               />
             </div>
             {/* Atos Clínicos */}
             <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 20, marginBottom: 20 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Atos Clínicos</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Atos Clínicos</p>
               {/* Adicionar ato */}
               <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
                 <select
                   value={atoSelecionado}
                   onChange={e => setAtoSelecionado(e.target.value)}
-                  style={{ flex: 1, border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 12px', fontSize: 13, background: '#f8fafc', color: atoSelecionado ? '#0f172a' : '#94a3b8' }}
+                  style={{ flex: 1, border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 12px', fontSize: 13, background: 'var(--bg-page)', color: atoSelecionado ? '#0f172a' : '#94a3b8' }}
                 >
                   <option value="">Selecionar ato...</option>
                   {atosDisponiveis.map((a: any) => (
@@ -648,12 +648,12 @@ export default function ConsultasPage() {
               </div>
               {/* Lista de atos adicionados */}
               {atosAdicionados.length > 0 && (
-                <div style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: 10, overflow: 'hidden', marginBottom: 8 }}>
+                <div style={{ background: 'var(--bg-page)', border: '1px solid #f1f5f9', borderRadius: 10, overflow: 'hidden', marginBottom: 8 }}>
                   {atosAdicionados.map((ac: any) => (
                     <div key={ac.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderBottom: '1px solid #f1f5f9' }}>
                       <span style={{ fontSize: 13, color: '#334155' }}>{ac.ato?.descricao ?? ac.descricao}</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>{(ac.precoUnitario ?? 0).toFixed(2)} €</span>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-hi)' }}>{(ac.precoUnitario ?? 0).toFixed(2)} €</span>
                         <button
                           onClick={async () => {
                             try {
@@ -661,23 +661,23 @@ export default function ConsultasPage() {
                               setAtosAdicionados(prev => prev.filter(a => a.id !== ac.id));
                             } catch {}
                           }}
-                          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0, fontSize: 16, lineHeight: 1 }}
+                          style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: 0, fontSize: 16, lineHeight: 1 }}
                         >✕</button>
                       </div>
                     </div>
                   ))}
                   <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px 14px', background: '#f1f5f9' }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-hi)' }}>
                       Total: {atosAdicionados.reduce((s: number, a: any) => s + (a.precoUnitario ?? 0) * (a.quantidade ?? 1), 0).toFixed(2)} €
                     </span>
                   </div>
                 </div>
               )}
-              <p style={{ fontSize: 12, color: '#94a3b8' }}>ℹ️ Estes atos serão adicionados automaticamente à fatura.</p>
+              <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>ℹ️ Estes atos serão adicionados automaticamente à fatura.</p>
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-              <button onClick={() => setRealizarModal(null)} style={{ flex: 1, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={() => setRealizarModal(null)} style={{ flex: 1, border: '1px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-soft)', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
               <button onClick={realizar} disabled={salvando} style={{ flex: 1, background: '#10b981', color: '#fff', border: 'none', borderRadius: 12, padding: '12px', fontWeight: 700, cursor: 'pointer', opacity: salvando ? 0.6 : 1 }}>
                 {salvando ? 'A guardar...' : 'Guardar'}
               </button>
@@ -689,47 +689,47 @@ export default function ConsultasPage() {
       {/* ══════ Modal: Definir Agenda ════════════════════════════════════════ */}
       {modalAgenda && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 440, padding: '32px', margin: '0 16px' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 440, padding: '32px', margin: '0 16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: 0 }}>Definir Disponibilidade</h2>
-              <button onClick={() => setModalAgenda(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#94a3b8' }}>✕</button>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Definir Disponibilidade</h2>
+              <button onClick={() => setModalAgenda(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>
               <select value={agendaForm.medicoId} onChange={e => setAgendaForm(f => ({ ...f, medicoId: e.target.value }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc' }}>
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}>
                 <option value="">Seleccionar...</option>
                 {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Dia da Semana *</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Dia da Semana *</label>
               <select value={agendaForm.diaSemana} onChange={e => setAgendaForm(f => ({ ...f, diaSemana: Number(e.target.value) }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc' }}>
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}>
                 {DIAS_FULL.map((d, i) => <option key={i} value={i}>{d}</option>)}
               </select>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Hora Início</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Hora Início</label>
                 <input type="time" value={agendaForm.horaInicio} onChange={e => setAgendaForm(f => ({ ...f, horaInicio: e.target.value }))}
-                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }} />
+                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }} />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Hora Fim</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Hora Fim</label>
                 <input type="time" value={agendaForm.horaFim} onChange={e => setAgendaForm(f => ({ ...f, horaFim: e.target.value }))}
-                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }} />
+                  style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)', boxSizing: 'border-box' }} />
               </div>
             </div>
             <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Duração por Slot (minutos)</label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Duração por Slot (minutos)</label>
               <select value={agendaForm.duracaoSlot} onChange={e => setAgendaForm(f => ({ ...f, duracaoSlot: Number(e.target.value) }))}
-                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc' }}>
+                style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}>
                 {[10, 15, 20, 30, 45, 60].map(n => <option key={n} value={n}>{n} minutos</option>)}
               </select>
             </div>
             <div style={{ display: 'flex', gap: 12 }}>
-              <button onClick={() => setModalAgenda(false)} style={{ flex: 1, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={() => setModalAgenda(false)} style={{ flex: 1, border: '1px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-soft)', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
               <button onClick={guardarAgenda} disabled={salvando || !agendaForm.medicoId}
                 style={{ flex: 1, background: '#8b5cf6', color: '#fff', border: 'none', borderRadius: 12, padding: '12px', fontWeight: 700, cursor: 'pointer', opacity: salvando || !agendaForm.medicoId ? 0.5 : 1 }}>
                 {salvando ? 'A guardar...' : 'Guardar'}

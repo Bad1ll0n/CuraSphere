@@ -109,7 +109,7 @@ export default function TeleconsultaPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 20 }}>📹</span>
             <span style={{ color: '#f1f5f9', fontWeight: 700, fontSize: 15 }}>Teleconsulta CuraSphere</span>
-            {roomId && <span style={{ color: '#64748b', fontSize: 12, fontFamily: 'monospace' }}>#{roomId}</span>}
+            {roomId && <span style={{ color: 'var(--text-soft)', fontSize: 12, fontFamily: 'monospace' }}>#{roomId}</span>}
           </div>
           <button
             onClick={handleTerminar}
@@ -125,7 +125,7 @@ export default function TeleconsultaPage() {
           {(!jitsiPronto || !roomId) && (
             <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
               <div style={{ width: 40, height: 40, borderRadius: '50%', border: '3px solid #3b82f6', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
-              <p style={{ color: '#94a3b8', fontSize: 14 }}>A carregar videochamada...</p>
+              <p style={{ color: 'var(--text-dim)', fontSize: 14 }}>A carregar videochamada...</p>
             </div>
           )}
         </div>

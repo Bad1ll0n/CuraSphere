@@ -45,7 +45,7 @@ export class DashboardController {
   }
 
   @Get('news2')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao', 'qualidade')
   news2Distribuicao() {
     return this.service.news2Distribuicao();
   }

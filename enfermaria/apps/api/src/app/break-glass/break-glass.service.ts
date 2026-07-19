@@ -41,8 +41,17 @@ export class BreakGlassService {
       { breakGlassId: acesso.id, doenteId },
     ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
+    // Liderança a notificar: direcao (papel base) + chefia de enfermagem (sub-papel, pois têm
+    // role='enfermeiro'). Antes a query filtrava por role='chefe_enfermeiros', que nenhum
+    // utilizador tem — logo só a direcao recebia os alertas de emergência.
     const chefesTurno = await this.prisma.utilizador.findMany({
-      where: { role: { in: ['chefe_turno', 'chefe_enfermeiros', 'direcao'] }, ativo: true },
+      where: {
+        ativo: true,
+        OR: [
+          { role: 'direcao' },
+          { subRole: { in: ['chefe_enfermeiros', 'supervisor_enfermagem'] } },
+        ],
+      },
       select: { id: true },
     });
     await Promise.all(chefesTurno.map((u) =>

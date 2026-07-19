@@ -12,5 +12,6 @@ import { BaselinesModule } from '../baselines/baselines.module';
   imports: [AlertasModule, NotificacoesModule, ProtocolosModule, DoenteModule, SepsisModule, BaselinesModule],
   controllers: [SinaisVitaisController],
   providers: [SinaisVitaisService],
+  exports: [SinaisVitaisService],
 })
 export class SinaisVitaisModule {}

@@ -227,7 +227,7 @@ export default function PassagemTurnoPage() {
 
   if (loading) return (
     <div style={{ padding: '40px 48px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#94a3b8', paddingTop: 60 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-dim)', paddingTop: 60 }}>
         <SpinnerInline />
         <span style={{ fontSize: 14 }}>A carregar passagem de turno...</span>
       </div>
@@ -269,17 +269,17 @@ export default function PassagemTurnoPage() {
             <span style={{ fontSize: 13, background: tipoCores.bg, color: tipoCores.text, borderRadius: 20, padding: '3px 12px', fontWeight: 600 }}>
               {TIPO_LABEL[turno.tipo] ?? turno.tipo}
             </span>
-            <span style={{ fontSize: 13, color: '#64748b' }}>
+            <span style={{ fontSize: 13, color: 'var(--text-soft)' }}>
               {horaFmt(turno.dataInicio)} – {horaFmt(turno.dataFim)}
             </span>
             {turno.chefeTurno && (
-              <span style={{ fontSize: 13, color: '#94a3b8' }}>· Chefe: {turno.chefeTurno.nome}</span>
+              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>· Chefe: {turno.chefeTurno.nome}</span>
             )}
           </div>
         )}
 
         {!turno && (
-          <p style={{ fontSize: 13, color: '#64748b', marginLeft: 52, marginTop: 6 }}>Sem turno ativo neste momento</p>
+          <p style={{ fontSize: 13, color: 'var(--text-soft)', marginLeft: 52, marginTop: 6 }}>Sem turno ativo neste momento</p>
         )}
       </div>
 
@@ -321,7 +321,7 @@ export default function PassagemTurnoPage() {
               </div>
               <div>
                 <p style={{ fontSize: 22, fontWeight: 800, color: k.cor, margin: 0, lineHeight: 1 }}>{k.valor}</p>
-                <p style={{ fontSize: 11, color: '#64748b', margin: 0, marginTop: 2 }}>{k.label}</p>
+                <p style={{ fontSize: 11, color: 'var(--text-soft)', margin: 0, marginTop: 2 }}>{k.label}</p>
               </div>
             </div>
           ))}
@@ -329,20 +329,20 @@ export default function PassagemTurnoPage() {
       )}
 
       {erroGeral && (
-        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '12px 16px', marginBottom: 20, fontSize: 14, color: '#dc2626' }}>
+        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '12px 16px', marginBottom: 20, fontSize: 14, color: 'var(--danger)' }}>
           {erroGeral}
         </div>
       )}
 
       {!turno && (
-        <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 14, padding: '60px 40px', textAlign: 'center' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: 14, padding: '60px 40px', textAlign: 'center' }}>
           <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
             <svg width={22} height={22} fill="none" stroke="#94a3b8" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p style={{ fontWeight: 600, color: '#475569', marginBottom: 6 }}>Sem turno ativo</p>
-          <p style={{ fontSize: 13, color: '#94a3b8' }}>Não existe nenhum turno em curso de momento.</p>
+          <p style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6 }}>Sem turno ativo</p>
+          <p style={{ fontSize: 13, color: 'var(--text-dim)' }}>Não existe nenhum turno em curso de momento.</p>
         </div>
       )}
 
@@ -350,11 +350,11 @@ export default function PassagemTurnoPage() {
         <>
           {/* Check-in */}
           {!fezCheckin && (
-            <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 14, padding: '24px 28px', marginBottom: 20 }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: 14, padding: '24px 28px', marginBottom: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
                 <div>
                   <p style={{ fontWeight: 600, fontSize: 15, margin: 0 }}>Fazer Check-in no Turno</p>
-                  <p style={{ fontSize: 13, color: '#64748b', marginTop: 4 }}>
+                  <p style={{ fontSize: 13, color: 'var(--text-soft)', marginTop: 4 }}>
                     Regista a tua entrada e recebe a passagem de turno dos doentes atribuídos.
                   </p>
                 </div>
@@ -368,7 +368,7 @@ export default function PassagemTurnoPage() {
                 </button>
               </div>
               {erroCheckin && (
-                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: '10px 14px', marginTop: 12, fontSize: 13, color: '#dc2626' }}>
+                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: '10px 14px', marginTop: 12, fontSize: 13, color: 'var(--danger)' }}>
                   {erroCheckin}
                 </div>
               )}
@@ -402,14 +402,14 @@ export default function PassagemTurnoPage() {
           )}
 
           {dados.length === 0 && (
-            <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 14, padding: '60px 40px', textAlign: 'center' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: 14, padding: '60px 40px', textAlign: 'center' }}>
               <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
                 <svg width={22} height={22} fill="none" stroke="#94a3b8" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <p style={{ fontWeight: 600, color: '#475569', marginBottom: 6 }}>Sem doentes atribuídos</p>
-              <p style={{ fontSize: 13, color: '#94a3b8' }}>Não tens doentes atribuídos neste turno.</p>
+              <p style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6 }}>Sem doentes atribuídos</p>
+              <p style={{ fontSize: 13, color: 'var(--text-dim)' }}>Não tens doentes atribuídos neste turno.</p>
             </div>
           )}
 
@@ -421,7 +421,7 @@ export default function PassagemTurnoPage() {
               const pendentesCount = tarefasPendentes.filter(t => t.estado !== 'concluida').length;
 
               return (
-                <div key={doente.id} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 14, overflow: 'hidden' }}>
+                <div key={doente.id} style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: 14, overflow: 'hidden' }}>
 
                   {/* Header */}
                   <div
@@ -443,12 +443,12 @@ export default function PassagemTurnoPage() {
                         </div>
                         <div style={{ display: 'flex', gap: 10, marginTop: 3 }}>
                           {doente.cama && (
-                            <span style={{ fontSize: 12, color: '#64748b' }}>
+                            <span style={{ fontSize: 12, color: 'var(--text-soft)' }}>
                               Cama {doente.cama.numero} · {doente.cama.quarto}
                             </span>
                           )}
                           {doente.diagnosticoPrincipal && (
-                            <span style={{ fontSize: 12, color: '#94a3b8' }}>{doente.diagnosticoPrincipal}</span>
+                            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{doente.diagnosticoPrincipal}</span>
                           )}
                         </div>
                       </div>
@@ -482,17 +482,17 @@ export default function PassagemTurnoPage() {
 
                       {/* Tarefas pendentes */}
                       <div>
-                        <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
                           Tarefas
                         </p>
                         {tarefasPendentes.length === 0 ? (
-                          <p style={{ fontSize: 13, color: '#94a3b8', fontStyle: 'italic' }}>Sem tarefas pendentes.</p>
+                          <p style={{ fontSize: 13, color: 'var(--text-dim)', fontStyle: 'italic' }}>Sem tarefas pendentes.</p>
                         ) : (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                             {tarefasPendentes.map(t => {
                               const cfg = ESTADO_TAREFA[t.estado] ?? ESTADO_TAREFA['pendente'];
                               return (
-                                <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', background: '#f8fafc', borderRadius: 8, border: '1px solid #f1f5f9' }}>
+                                <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', background: 'var(--bg-page)', borderRadius: 8, border: '1px solid #f1f5f9' }}>
                                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: PRIORIDADE_COR[t.prioridade ?? 'normal'] ?? '#94a3b8', flexShrink: 0 }} />
                                   <span style={{ fontSize: 13, color: '#334155', flex: 1 }}>{t.titulo}</span>
                                   <span style={{ fontSize: 11, background: cfg.bg, color: cfg.text, borderRadius: 20, padding: '2px 8px', fontWeight: 600 }}>
@@ -508,7 +508,7 @@ export default function PassagemTurnoPage() {
                       {/* Medicações ativas */}
                       {medicacoesAtivas.length > 0 && (
                         <div>
-                          <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                          <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
                             Medicações Ativas
                           </p>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -524,18 +524,18 @@ export default function PassagemTurnoPage() {
 
                       {/* Notas do turno anterior */}
                       <div>
-                        <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
                           Notas do Turno Anterior
                         </p>
                         {notasAnteriores.length === 0 ? (
-                          <p style={{ fontSize: 13, color: '#94a3b8', fontStyle: 'italic' }}>Sem notas do turno anterior.</p>
+                          <p style={{ fontSize: 13, color: 'var(--text-dim)', fontStyle: 'italic' }}>Sem notas do turno anterior.</p>
                         ) : (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                             {notasAnteriores.map(nota => (
-                              <div key={nota.id} style={{ background: '#f8fafc', borderRadius: 10, padding: '12px 14px', borderLeft: '3px solid #cbd5e1' }}>
+                              <div key={nota.id} style={{ background: 'var(--bg-page)', borderRadius: 10, padding: '12px 14px', borderLeft: '3px solid #cbd5e1' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                                  <span style={{ fontSize: 12, fontWeight: 600, color: '#475569' }}>{nota.autor.nome}</span>
-                                  <span style={{ fontSize: 11, color: '#94a3b8' }}>
+                                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>{nota.autor.nome}</span>
+                                  <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
                                     {new Date(nota.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                                   </span>
                                 </div>
@@ -557,7 +557,7 @@ export default function PassagemTurnoPage() {
                             />
                             <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                               <button onClick={() => { setNotaAberta(null); setTextoNota(''); }}
-                                style={{ border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', borderRadius: 8, padding: '7px 14px', fontSize: 13, cursor: 'pointer' }}>
+                                style={{ border: '1px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-soft)', borderRadius: 8, padding: '7px 14px', fontSize: 13, cursor: 'pointer' }}>
                                 Cancelar
                               </button>
                               <button onClick={() => adicionarNota(doente.id, turno.id)}
@@ -570,7 +570,7 @@ export default function PassagemTurnoPage() {
                           </div>
                         ) : (
                           <button onClick={() => { setNotaAberta(doente.id); setTextoNota(''); }}
-                            style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px dashed #cbd5e1', borderRadius: 8, padding: '7px 14px', fontSize: 13, color: '#64748b', cursor: 'pointer' }}>
+                            style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px dashed #cbd5e1', borderRadius: 8, padding: '7px 14px', fontSize: 13, color: 'var(--text-soft)', cursor: 'pointer' }}>
                             <svg width={14} height={14} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
@@ -592,15 +592,15 @@ export default function PassagemTurnoPage() {
       {modalFechar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
              onClick={(e) => e.target === e.currentTarget && setModalFechar(false)}>
-          <div style={{ background: '#fff', borderRadius: 20, boxShadow: '0 25px 50px rgba(0,0,0,0.25)', width: '100%', maxWidth: 600, maxHeight: '90vh', display: 'flex', flexDirection: 'column', margin: '0 16px' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, boxShadow: '0 25px 50px rgba(0,0,0,0.25)', width: '100%', maxWidth: 600, maxHeight: '90vh', display: 'flex', flexDirection: 'column', margin: '0 16px' }}>
 
             {/* Header modal */}
             <div style={{ padding: '24px 28px 16px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>Resumo do Turno</h2>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0, marginTop: 4 }}>{totalDoentes} doentes · {totalTarefasPendentes} tarefas pendentes · {totalMedicacoes} medicações</p>
+                <p style={{ fontSize: 13, color: 'var(--text-soft)', margin: 0, marginTop: 4 }}>{totalDoentes} doentes · {totalTarefasPendentes} tarefas pendentes · {totalMedicacoes} medicações</p>
               </div>
-              <button onClick={() => setModalFechar(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: 4 }}>
+              <button onClick={() => setModalFechar(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', padding: 4 }}>
                 <svg width={20} height={20} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -616,12 +616,12 @@ export default function PassagemTurnoPage() {
                   <div key={doente.id} style={{ borderBottom: '1px solid #f1f5f9', padding: '12px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                       <span style={{ fontWeight: 700, fontSize: 14 }}>{doente.nome}</span>
-                      {doente.cama && <span style={{ fontSize: 12, color: '#64748b' }}>— Cama {doente.cama.numero}</span>}
+                      {doente.cama && <span style={{ fontSize: 12, color: 'var(--text-soft)' }}>— Cama {doente.cama.numero}</span>}
                       <span style={{ fontSize: 11, background: estadoCfg.bg, color: estadoCfg.text, borderRadius: 20, padding: '1px 8px', fontWeight: 600, marginLeft: 'auto' }}>{estadoCfg.label}</span>
                     </div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12 }}>
                       {pendentes.length > 0 ? (
-                        <span style={{ color: '#dc2626', background: '#fef2f2', borderRadius: 6, padding: '2px 8px' }}>
+                        <span style={{ color: 'var(--danger)', background: '#fef2f2', borderRadius: 6, padding: '2px 8px' }}>
                           {pendentes.length} tarefa{pendentes.length > 1 ? 's' : ''} pendente{pendentes.length > 1 ? 's' : ''}
                         </span>
                       ) : (

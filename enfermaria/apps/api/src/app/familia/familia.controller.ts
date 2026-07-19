@@ -16,7 +16,7 @@ export class FamiliaController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('acesso/:doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   criarAcesso(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarAcessoFamiliarDto,
@@ -27,14 +27,14 @@ export class FamiliaController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('acessos/:doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
   listarAcessos(@Param('doenteId') doenteId: string) {
     return this.service.listarAcessos(doenteId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   revogarAcesso(@Param('id') id: string) {
     return this.service.revogarAcesso(id);
   }

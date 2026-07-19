@@ -200,6 +200,9 @@ model Utilizador {
   transExternasAceites           TransferenciaExterna[]      @relation("TransferenciasAceites")
   regrasCliniasCriadas           RegraClinica[]              @relation("RegrasCliniasCriadas")
   webAuthnCredentials            WebAuthnCredential[]
+  transfusoesPrescritas          PedidoTransfusao[]          @relation("TransfusoesPrescritas")
+  transfusoesAdministradas       RegistoTransfusao[]         @relation("TransfusoesAdministradas")
+  reacoesTransfusionaisRegisto   ReacaoTransfusional[]       @relation("ReacoesTransfusRegisto")
 
   @@index([tenantId, role, ativo])
   @@index([role, ativo])
@@ -250,6 +253,7 @@ model Doente {
   estado               EstadoDoente @default(estavel)
   diagnosticoPrincipal String?
   icd10Code            String?
+  grupoSanguineo       String? // grupo ABO/Rh do doente (ex.: 'A+', 'O-') — do type & screen
   estadoRegisto        String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
   tipoVisita           String? // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
   dataAdmissao         DateTime     @default(now())
@@ -323,6 +327,9 @@ model Doente {
   stewardshipAntibioticos StewardshipAntibiotico[]
   followUps               FollowUpAgendado[]
   outcomesClinicos        OutcomeClinico[]
+  pedidosTransfusao       PedidoTransfusao[]
+  registosTransfusao      RegistoTransfusao[]
+  reacoesTransfusionais   ReacaoTransfusional[]
 
   @@index([tenantId, estado])
   @@index([ativo])
@@ -755,9 +762,28 @@ model SinalVital {
   glasgow                Int? // Glasgow Coma Scale 3-15 (para SOFA SNC)
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)
+  origem                 String?  @default("manual") // 'manual' | 'monitor' (proveniência do registo)
 
   @@index([doenteId, data])
   @@map("sinais_vitais")
+}
+
+// ─── Monitorização contínua (dispositivos de cabeceira / wearables) ──────────
+// Um dispositivo autentica-se por API-key própria (não JWT) e injeta vitais que
+// passam pela MESMA pipeline (NEWS2 + watchdog de sépsis + alertas) do registo manual.
+model DispositivoMonitor {
+  id            String    @id @default(uuid())
+  nome          String
+  localizacao   String?
+  apiKeyHash    String // hash (bcrypt) da chave do dispositivo
+  responsavelId String // utilizador que fica como registadoPor dos vitais ingeridos
+  doenteId      String? // opcional: dispositivo ligado a um doente/cama
+  ativo         Boolean   @default(true)
+  ultimaLeitura DateTime?
+  criadaEm      DateTime  @default(now())
+
+  @@index([ativo])
+  @@map("dispositivos_monitor")
 }
 
 // ─── Balanço Hídrico ──────────────────────────────────────────────────────────
@@ -815,6 +841,146 @@ model AvaliacaoFerida {
 
   @@index([doenteId, criadaEm])
   @@map("avaliacoes_feridas")
+}
+
+// ─── Sangue / Transfusão ─────────────────────────────────────────────────────
+// Segue o estilo dos modelos clínicos: valores enum-like como String com comentário.
+// Compatibilidade ABO/Rh é validada em serviço (dupla-verificação, análoga aos "5 certos").
+
+model BolsaSangue {
+  id              String    @id @default(uuid())
+  tenantId        String    @default("default")
+  numeroUnidade   String    @unique // código da bolsa (etiqueta do banco de sangue / ISBT 128)
+  componente      String // 'concentrado_eritrocitos'|'plasma_fresco_congelado'|'concentrado_plaquetas'|'crioprecipitado'|'sangue_total'
+  grupoABO        String // 'A'|'B'|'AB'|'O'
+  rhD             String // 'positivo'|'negativo'
+  volumeMl        Int?
+  dataColheita    DateTime?
+  dataValidade    DateTime
+  estado          String    @default("disponivel") // 'disponivel'|'reservada'|'transfundida'|'expirada'|'descartada'
+  reservadaParaId String?
+  criadaEm        DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  reservadaPara     PedidoTransfusao?  @relation(fields: [reservadaParaId], references: [id], onDelete: SetNull)
+  registoTransfusao RegistoTransfusao?
+
+  @@index([tenantId, estado])
+  @@index([componente, grupoABO, rhD, estado])
+  @@index([dataValidade])
+  @@map("bolsas_sangue")
+}
+
+model PedidoTransfusao {
+  id             String    @id @default(uuid())
+  doenteId       String
+  prescritoPorId String
+  criadaEm       DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  componente         String // idem BolsaSangue.componente
+  numeroUnidades     Int     @default(1)
+  grupoABO           String? // grupo do doente (type & screen); pode ainda não estar determinado
+  rhD                String?
+  urgencia           String  @default("rotina") // 'rotina'|'urgente'|'emergencia'
+  indicacao          String  @db.VarChar(500)
+  estado             String  @default("pendente") // 'pendente'|'reservado'|'administrado'|'cancelado'
+  motivoCancelamento String? @db.VarChar(500)
+
+  doente           Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  prescritoPor     Utilizador          @relation("TransfusoesPrescritas", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  bolsasReservadas BolsaSangue[]
+  registos         RegistoTransfusao[]
+
+  @@index([doenteId, criadaEm])
+  @@index([estado])
+  @@map("pedidos_transfusao")
+}
+
+model RegistoTransfusao {
+  id                 String    @id @default(uuid())
+  pedidoTransfusaoId String
+  bolsaId            String    @unique
+  doenteId           String
+  administradoPorId  String
+  iniciadoEm         DateTime  @default(now())
+  terminadoEm        DateTime?
+
+  // Dupla verificação de segurança à cabeceira (análogo aos "5 certos" do MAR)
+  verificacaoABO      Boolean @default(false) // doente certo + grupo ABO/Rh compatível conferido
+  verificacaoUnidade  Boolean @default(false) // nº da unidade confere com a etiqueta
+  verificacaoValidade Boolean @default(false) // dentro da validade
+  compativel          Boolean // resultado do check de compatibilidade ABO/Rh (calculado em serviço)
+  observacoes         String? @db.VarChar(1000)
+
+  pedido          PedidoTransfusao     @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
+  bolsa           BolsaSangue          @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
+  doente          Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  administradoPor Utilizador           @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
+  reacao          ReacaoTransfusional?
+
+  @@index([doenteId, iniciadoEm])
+  @@map("registos_transfusao")
+}
+
+model ReacaoTransfusional {
+  id                  String   @id @default(uuid())
+  registoTransfusaoId String   @unique
+  doenteId            String
+  registadoPorId      String
+  criadaEm            DateTime @default(now())
+
+  tipo                     String // 'febril_nao_hemolitica'|'alergica'|'hemolitica_aguda'|'trali'|'taco'|'contaminacao_bacteriana'|'outra'
+  gravidade                String // 'ligeira'|'moderada'|'grave'|'fatal'
+  sintomas                 String  @db.VarChar(1000)
+  medidas                  String? @db.VarChar(1000)
+  notificadoHemovigilancia Boolean @default(false)
+
+  registo      RegistoTransfusao @relation(fields: [registoTransfusaoId], references: [id], onDelete: Cascade)
+  doente       Doente            @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador        @relation("ReacoesTransfusRegisto", fields: [registadoPorId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, criadaEm])
+  @@map("reacoes_transfusionais")
+}
+
+// ─── Lista de espera de consultas ────────────────────────────────────────────
+model ListaEspera {
+  id               String   @id @default(uuid())
+  doenteId         String?
+  nomeDoente       String?
+  medicoId         String?
+  especialidade    String
+  prioridade       String   @default("normal") // 'urgente' | 'alta' | 'normal'
+  estado           String   @default("em_espera") // 'em_espera' | 'contactado' | 'agendado' | 'cancelado'
+  contactoTelefone String?
+  notas            String?  @db.VarChar(500)
+  criadaEm         DateTime @default(now())
+  atualizadaEm     DateTime @updatedAt
+
+  @@index([especialidade, estado, prioridade])
+  @@map("lista_espera")
+}
+
+// ─── Receita eletrónica (SNS / PEM — pronto-para-sandbox) ─────────────────────
+// Registo da submissão de uma prescrição ao sistema nacional (PEM). O cliente é
+// plugável: por defeito usa um mock/simulador; a ligação real à SPMS entra por config.
+model ReceitaEletronica {
+  id             String   @id @default(uuid())
+  doenteId       String
+  prescritoPorId String
+  numeroReceita  String?  @unique // nº atribuído pelo PEM
+  codigoDispensa String? // código de acesso/dispensa (PEM)
+  estado         String   @default("emitida") // 'emitida' | 'dispensada' | 'anulada' | 'erro'
+  ambiente       String   @default("sandbox") // 'sandbox' | 'producao'
+  medicamentos   Json // snapshot dos itens prescritos
+  erro           String?
+  dataEmissao    DateTime @default(now())
+  criadaEm       DateTime @default(now())
+
+  @@index([doenteId, criadaEm])
+  @@map("receitas_eletronicas")
 }
 
 // ─── Audit Log ───────────────────────────────────────────────────────────────
@@ -1192,6 +1358,7 @@ model Consulta {
   videoRoomId       String?
   videoIniciadaEm   DateTime?
   videoTerminouEm   DateTime?
+  lembreteEnviadoEm DateTime? // quando o lembrete pré-consulta foi enviado (evita duplicados)
   criadoEm          DateTime           @default(now())
   atosConsulta      AtoConsulta[]
   episodioFaturacao EpisodioFaturacao?

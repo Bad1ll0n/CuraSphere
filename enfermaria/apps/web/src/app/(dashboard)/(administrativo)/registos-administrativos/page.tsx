@@ -155,7 +155,7 @@ export default function RegistosAdministrativosPage() {
 
   if (!podeVer) {
     return (
-      <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+      <div style={{ padding: 48, textAlign: 'center', color: 'var(--text-soft)' }}>
         <div style={{ fontSize: 48 }}>🔒</div>
         <p style={{ marginTop: 16, fontSize: 18 }}>Acesso restrito ao departamento administrativo.</p>
       </div>
@@ -168,7 +168,7 @@ export default function RegistosAdministrativosPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Registos Administrativos</h1>
-          <p style={{ color: '#64748b', marginTop: 4, fontSize: 14 }}>
+          <p style={{ color: 'var(--text-soft)', marginTop: 4, fontSize: 14 }}>
             Utentes registados administrativamente — aguardam encaminhamento clínico
           </p>
         </div>
@@ -191,7 +191,7 @@ export default function RegistosAdministrativosPage() {
           style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8, padding: '8px 14px', color: '#fff', fontSize: 14, width: 240 }}
         />
         <button onClick={carregar}
-          style={{ background: '#1e293b', border: '1px solid #334155', color: '#94a3b8', padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 14 }}>
+          style={{ background: '#1e293b', border: '1px solid #334155', color: 'var(--text-dim)', padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 14 }}>
           Pesquisar
         </button>
         <div style={{ display: 'flex', gap: 6 }}>
@@ -215,9 +215,9 @@ export default function RegistosAdministrativosPage() {
 
       {/* Lista */}
       {loading ? (
-        <div style={{ color: '#64748b', textAlign: 'center', padding: 48 }}>A carregar...</div>
+        <div style={{ color: 'var(--text-soft)', textAlign: 'center', padding: 48 }}>A carregar...</div>
       ) : registosFiltrados.length === 0 ? (
-        <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: '48px', textAlign: 'center', color: '#475569' }}>
+        <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>📋</div>
           <p>Sem registos administrativos pendentes.</p>
         </div>
@@ -244,8 +244,8 @@ export default function RegistosAdministrativosPage() {
                       {estado.label}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', gap: 16, color: '#64748b', fontSize: 13 }}>
-                    <span>Processo: <strong style={{ color: '#94a3b8' }}>{r.numeroProcesso}</strong></span>
+                  <div style={{ display: 'flex', gap: 16, color: 'var(--text-soft)', fontSize: 13 }}>
+                    <span>Processo: <strong style={{ color: 'var(--text-dim)' }}>{r.numeroProcesso}</strong></span>
                     {r.ficheiroPessoal?.nif && <span>NIF: {r.ficheiroPessoal.nif}</span>}
                     {r.ficheiroPessoal?.telefone && <span>📞 {r.ficheiroPessoal.telefone}</span>}
                     {r.dataNascimento && (
@@ -258,11 +258,11 @@ export default function RegistosAdministrativosPage() {
 
                 {/* Data registo + cobertura */}
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <div style={{ color: '#64748b', fontSize: 12 }}>
+                  <div style={{ color: 'var(--text-soft)', fontSize: 12 }}>
                     {new Date(r.dataAdmissao).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                   </div>
                   {r.ficheiroPessoal?.tipoCobertura && (
-                    <span style={{ background: '#0f172a', color: '#94a3b8', borderRadius: 6, padding: '2px 8px', fontSize: 11, marginTop: 4, display: 'inline-block' }}>
+                    <span style={{ background: '#0f172a', color: 'var(--text-dim)', borderRadius: 6, padding: '2px 8px', fontSize: 11, marginTop: 4, display: 'inline-block' }}>
                       {r.ficheiroPessoal.tipoCobertura.toUpperCase()}
                     </span>
                   )}
@@ -285,8 +285,8 @@ export default function RegistosAdministrativosPage() {
                 <div style={{ fontSize: 56, marginBottom: 16 }}>✅</div>
                 <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 8 }}>Registo Concluído</h2>
                 <p style={{ color: '#6ee7b7', fontSize: 18, fontWeight: 700 }}>{sucesso.nome}</p>
-                <p style={{ color: '#64748b', fontSize: 14, marginBottom: 16 }}>
-                  Processo nº <strong style={{ color: '#94a3b8' }}>{sucesso.numeroProcesso}</strong>
+                <p style={{ color: 'var(--text-soft)', fontSize: 14, marginBottom: 16 }}>
+                  Processo nº <strong style={{ color: 'var(--text-dim)' }}>{sucesso.numeroProcesso}</strong>
                 </p>
                 {(() => {
                   const tv = TIPOS_VISITA_FORM.find(t => t.value === sucesso.tipoVisita);
@@ -300,7 +300,7 @@ export default function RegistosAdministrativosPage() {
                   };
                   return (
                     <div style={{ background: '#0f172a', borderRadius: 10, padding: '12px 16px', marginBottom: 24 }}>
-                      <p style={{ color: '#94a3b8', margin: 0, fontSize: 14 }}>
+                      <p style={{ color: 'var(--text-dim)', margin: 0, fontSize: 14 }}>
                         {tv?.icon} <strong>{tv?.label}</strong> — {msgs[sucesso.tipoVisita] ?? ''}
                       </p>
                     </div>
@@ -316,10 +316,10 @@ export default function RegistosAdministrativosPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <div>
                     <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Novo Registo Administrativo</h2>
-                    <p style={{ margin: '4px 0 0 0', color: '#64748b', fontSize: 13 }}>Dados legais e de identificação do utente</p>
+                    <p style={{ margin: '4px 0 0 0', color: 'var(--text-soft)', fontSize: 13 }}>Dados legais e de identificação do utente</p>
                   </div>
                   <button type="button" onClick={fecharModal}
-                    style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer', padding: 4 }}>✕</button>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }}>✕</button>
                 </div>
 
                 {erro && (
@@ -332,7 +332,7 @@ export default function RegistosAdministrativosPage() {
 
                   {/* Motivo da visita */}
                   <div>
-                    <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 8px 0' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 8px 0' }}>
                       Motivo da Visita <span style={{ color: '#ef4444' }}>*</span>
                     </p>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
@@ -343,17 +343,17 @@ export default function RegistosAdministrativosPage() {
                         >
                           <div style={{ fontSize: 22, marginBottom: 4 }}>{tv.icon}</div>
                           <div>{tv.label}</div>
-                          <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{tv.desc}</div>
+                          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{tv.desc}</div>
                         </button>
                       ))}
                     </div>
                     {erros.tipoVisita && <p style={{ color: '#f87171', fontSize: 12, marginTop: 6 }}>{erros.tipoVisita}</p>}
                   </div>
 
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nome Completo <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input value={form.nome}
@@ -365,7 +365,7 @@ export default function RegistosAdministrativosPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Data de Nascimento <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input type="date" value={form.dataNascimento}
@@ -374,7 +374,7 @@ export default function RegistosAdministrativosPage() {
                       {erros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.dataNascimento}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         NIF <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input value={form.nif}
@@ -387,7 +387,7 @@ export default function RegistosAdministrativosPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nº SNS <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input value={form.numeroSNS}
@@ -398,11 +398,11 @@ export default function RegistosAdministrativosPage() {
                     {erros.numeroSNS && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.numeroSNS}</p>}
                   </div>
 
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Telefone <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input type="tel" value={form.telefone}
@@ -412,7 +412,7 @@ export default function RegistosAdministrativosPage() {
                       {erros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.telefone}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
                       <input type="email" value={form.email}
                         onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErros(p => ({ ...p, email: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.email ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -422,7 +422,7 @@ export default function RegistosAdministrativosPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
                     <input value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
                       style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="Rua, nº, andar" />
@@ -430,7 +430,7 @@ export default function RegistosAdministrativosPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
                       <input value={form.codigoPostal}
                         onChange={e => { setForm(f => ({ ...f, codigoPostal: e.target.value })); setErros(p => ({ ...p, codigoPostal: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.codigoPostal ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -438,17 +438,17 @@ export default function RegistosAdministrativosPage() {
                       {erros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.codigoPostal}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
                       <input value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
                         style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="Cidade" />
                     </div>
                   </div>
 
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo de Cobertura</label>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo de Cobertura</label>
                     <select value={form.tipoCobertura} onChange={e => { setForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
                       style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}>
                       <option value="sns">SNS</option>
@@ -460,7 +460,7 @@ export default function RegistosAdministrativosPage() {
                   {form.tipoCobertura === 'seguro' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Entidade Seguradora <span style={{ color: '#ef4444' }}>*</span>
                         </label>
                         <input value={form.entidadeSeguradora}
@@ -470,7 +470,7 @@ export default function RegistosAdministrativosPage() {
                         {erros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.entidadeSeguradora}</p>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Nº Apólice <span style={{ color: '#ef4444' }}>*</span>
                         </label>
                         <input value={form.numeroApolice}
@@ -484,7 +484,7 @@ export default function RegistosAdministrativosPage() {
 
                   <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
                     <button type="button" onClick={fecharModal}
-                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #334155', background: 'transparent', color: 'var(--text-dim)', fontSize: 15, cursor: 'pointer' }}>
                       Cancelar
                     </button>
                     <button type="submit" disabled={criando}
