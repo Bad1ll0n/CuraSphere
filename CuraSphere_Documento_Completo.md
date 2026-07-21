@@ -4501,4 +4501,22 @@ Na sequência de uma avaliação do produto (média **8.7/10** em 6 critérios),
 
 ---
 
+## Sessão 72 — Segunda ronda 10/10: 8 melhorias (pós-avaliação 9.0)
+
+Nova avaliação (média **9.0**, ↑ de 8.7) identificou 8 melhorias verificadas como inexistentes.
+Implementadas todas, agrupadas por eficiência (schema junto → 1 rebuild).
+
+- **#6 Audit log tamper-evidente** — [`audit.service.ts`](enfermaria/apps/api/src/app/common/audit.service.ts): cadeia de hash encadeada (`prevHash`+`hash` sha256), escrita **serializada por `pg_advisory_xact_lock`** (cadeia linear mesmo com escritores concorrentes). Endpoint `GET /audit/integridade` recalcula a cadeia e aponta a primeira quebra. Todos os escritores centralizados num `AuditModule` @Global (break-glass, anomaly-detection, documentos-saude). **Verificado**: `ok:true`.
+- **#8 Feature flags** — [`feature-flags/`](enfermaria/apps/api/src/app/feature-flags/): modelo `FeatureFlag` (enabled + `rolloutPercent` por hash determinístico de `key+userId` + allowlist role/serviço), `FeatureFlagsService` com cache TTL, admin (ti/direção), `@RequireFeature`+`FeatureGuard` (404 se off), `GET /feature-flags/me` + hook web [`use-feature-flags.ts`](enfermaria/apps/web/src/lib/hooks/use-feature-flags.ts). **Verificado**: upsert/rollout 0%→false.
+- **#5 OpenTelemetry** — [`tracing.ts`](enfermaria/apps/api/src/tracing.ts) iniciado antes de tudo, **gated por `OTEL_EXPORTER_OTLP_ENDPOINT`** (no-op sem colector). Auto-instrumentação HTTP/pg/redis (deps externalizadas no webpack → instrumentação funciona). Complementa o `/metrics` (Prometheus) e o Sentry.
+- **#4 E2E dos módulos novos** — unit determinístico da compatibilidade ABO/Rh [`transfusao.service.spec.ts`](enfermaria/apps/api/src/app/transfusao/transfusao.service.spec.ts) (**10/10**: dador/recetor universal, incompatibilidade ABO, Rh−/Rh+, plasma invertido) + E2E de wiring [`modulos-clinicos.spec.ts`](enfermaria/apps/web-e2e/e2e/modulos-clinicos.spec.ts) (transfusão O− nos compatíveis, e-receita PEM, ingestão monitor→NEWS2) — **3/3**.
+- **#7 Testes de carga k6** — [`load/`](enfermaria/load/): `smoke.js` (thresholds p95<500ms) + `ramp.js` (até 50 VUs) + README + workflow [`load.yml`](enfermaria/.github/workflows/load.yml) (gated, Postgres+Redis+seed).
+- **#3 Storybook** — 9 stories (primitivos `ui/` + Foundations + componentes skeleton/confirm-modal/empty-state/breadcrumb); `build-storybook` compila. Migração das restantes páginas para primitivos fica incremental.
+- **#1 i18n** — página `banco-sangue` migrada (namespace `bloodBank` pt/en) como exemplar + guardrail de paridade de chaves [`i18n-parity.mjs`](enfermaria/apps/web/scripts/i18n-parity.mjs) (`pnpm --filter @org/web i18n:check`, **381 chaves em paridade**). Migração das ~77 páginas restantes é trabalho incremental sobre este padrão.
+- **#2 Paridade mobile** — ecrã [`BancoSangueScreen.tsx`](enfermaria/apps/mobile/src/screens/BancoSangueScreen.tsx) (stock por grupo + lista), ligado ao `MaisScreen`. Mobile typecheck limpo. Restantes módulos novos no mobile ficam incrementais.
+
+**Infra**: throttle de login/MFA configurável por `LOGIN_THROTTLE_LIMIT` (default seguro 5/10; alto em teste); `protobufjs` acrescentado a `allowBuilds` (OTLP exporter). tsc limpo em api/web/mobile (baselines mantidos).
+
+---
+
 *Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*

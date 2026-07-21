@@ -1,3 +1,4 @@
+import './tracing'; // deve ser o PRIMEIRO import — inicia o OpenTelemetry antes de tudo
 import * as Sentry from '@sentry/node';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';

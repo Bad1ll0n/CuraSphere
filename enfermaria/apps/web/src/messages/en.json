@@ -407,5 +407,29 @@
     "relatorios": "DGS Reports",
     "dietas": "Diets",
     "bancoSangue": "Blood Bank"
+  },
+  "bloodBank": {
+    "title": "Blood Bank",
+    "subtitle": "Blood component stock · {count} available",
+    "addBag": "Add Unit",
+    "allComponents": "All components",
+    "allGroups": "All groups",
+    "empty": "No units in stock with this filter",
+    "colUnit": "Unit",
+    "colComponent": "Component",
+    "colGroup": "Group",
+    "colExpiry": "Expiry",
+    "colStatus": "Status",
+    "modalTitle": "Add Unit to Bank",
+    "fieldUnit": "Unit no. *",
+    "fieldComponent": "Component *",
+    "fieldAbo": "ABO *",
+    "fieldRh": "Rh *",
+    "fieldVolume": "Vol (mL)",
+    "fieldExpiry": "Expiry *",
+    "add": "Add",
+    "saving": "Saving...",
+    "toastSaved": "Unit registered in the bank",
+    "toastError": "Error registering unit"
   }
 }

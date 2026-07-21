@@ -1,0 +1,79 @@
+name: Load Test (k6)
+
+# Carga é ruidosa e lenta — não corre por PR. Gate periódico + sob demanda.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1' # Segunda 05:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  k6-smoke:
+    name: k6 smoke (p95 leituras < 500ms)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: enfermaria
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: ci-load-throwaway-secret-0000000000000000000000000000000000000
+      JWT_EXPIRES_IN: 1h
+      JWT_REFRESH_EXPIRES_IN: 7d
+      ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      NODE_ENV: production
+      LOG_PRETTY: 'false'
+      LOGIN_THROTTLE_LIMIT: '100'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Prisma db push + generate
+        run: |
+          npx prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          npx prisma generate --schema apps/api/prisma/schema.prisma
+
+      - name: Seed utilizadores de teste
+        run: cd apps/api && npx ts-node src/prisma/seed-test-users.ts
+
+      - name: Build API
+        run: npx nx build @org/api
+
+      - name: Arrancar API em background
+        run: |
+          node apps/api/dist/main.js &
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:3333/v1/health >/dev/null 2>&1; then echo "API pronta"; exit 0; fi
+            sleep 5
+          done
+          echo "API não respondeu a tempo"; exit 1
+
+      - name: k6 smoke
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: load/smoke.js
+        env:
+          BASE_URL: http://localhost:3333

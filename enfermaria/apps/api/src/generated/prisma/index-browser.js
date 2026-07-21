@@ -545,6 +545,7 @@ exports.Prisma.ReceitaEletronicaScalarFieldEnum = {
 
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
+  seq: 'seq',
   utilizadorId: 'utilizadorId',
   acao: 'acao',
   entidadeId: 'entidadeId',
@@ -552,7 +553,22 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   detalhes: 'detalhes',
   ip: 'ip',
   userAgent: 'userAgent',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  prevHash: 'prevHash',
+  hash: 'hash'
+};
+
+exports.Prisma.FeatureFlagScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  descricao: 'descricao',
+  enabled: 'enabled',
+  rolloutPercent: 'rolloutPercent',
+  roles: 'roles',
+  servicos: 'servicos',
+  atualizadoPorId: 'atualizadoPorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AlergiaScalarFieldEnum = {
@@ -2015,6 +2031,7 @@ exports.Prisma.ModelName = {
   ListaEspera: 'ListaEspera',
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  FeatureFlag: 'FeatureFlag',
   Alergia: 'Alergia',
   ContactoEmergencia: 'ContactoEmergencia',
   AlertaClinico: 'AlertaClinico',

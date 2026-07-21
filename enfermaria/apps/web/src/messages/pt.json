@@ -407,5 +407,29 @@
     "relatorios": "Relatórios DGS",
     "dietas": "Dietas",
     "bancoSangue": "Banco de Sangue"
+  },
+  "bloodBank": {
+    "title": "Banco de Sangue",
+    "subtitle": "Stock de componentes sanguíneos · {count} disponível(is)",
+    "addBag": "Adicionar Bolsa",
+    "allComponents": "Todos os componentes",
+    "allGroups": "Todos os grupos",
+    "empty": "Sem bolsas em stock com este filtro",
+    "colUnit": "Unidade",
+    "colComponent": "Componente",
+    "colGroup": "Grupo",
+    "colExpiry": "Validade",
+    "colStatus": "Estado",
+    "modalTitle": "Adicionar Bolsa ao Banco",
+    "fieldUnit": "Nº da unidade *",
+    "fieldComponent": "Componente *",
+    "fieldAbo": "ABO *",
+    "fieldRh": "Rh *",
+    "fieldVolume": "Vol (mL)",
+    "fieldExpiry": "Validade *",
+    "add": "Adicionar",
+    "saving": "A guardar...",
+    "toastSaved": "Bolsa registada no banco",
+    "toastError": "Erro ao registar bolsa"
   }
 }

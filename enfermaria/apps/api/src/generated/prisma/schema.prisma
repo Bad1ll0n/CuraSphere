@@ -987,6 +987,7 @@ model ReceitaEletronica {
 
 model AuditLog {
   id           String     @id @default(uuid())
+  seq          Int        @unique @default(autoincrement())
   utilizadorId String
   utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
   acao         String
@@ -997,9 +998,31 @@ model AuditLog {
   userAgent    String?
   createdAt    DateTime   @default(now())
 
+  // Tamper-evidence: cadeia de hash encadeada (prevHash = hash da entrada anterior).
+  // Escrita serializada por advisory-lock do Postgres → cadeia linear e verificável.
+  prevHash String?
+  hash     String?
+
   @@index([utilizadorId, createdAt])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+// ─── Feature Flags ────────────────────────────────────────────────────────────
+
+model FeatureFlag {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  descricao       String?
+  enabled         Boolean  @default(false) // desliga tudo se false
+  rolloutPercent  Int      @default(100) // % de utilizadores (hash determinístico) quando enabled
+  roles           String[] @default([]) // allowlist de roles (vazio = todas)
+  servicos        String[] @default([]) // allowlist de serviços (vazio = todos)
+  atualizadoPorId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("feature_flags")
 }
 
 // ─── Alergias ─────────────────────────────────────────────────────────────────

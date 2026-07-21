@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, Logger } from '@nest
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../common/storage.service';
 import { FhirService } from '../fhir/fhir.service';
+import { AuditService } from '../common/audit.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
 import { createHash, randomUUID } from 'crypto';
 
@@ -13,6 +14,7 @@ export class DocumentosSaudeService {
     private readonly prisma: PrismaService,
     private readonly storage: StorageService,
     private readonly fhir: FhirService,
+    private readonly audit: AuditService,
   ) {}
 
   async listar(doenteId: string, tipo?: string) {
@@ -155,14 +157,12 @@ export class DocumentosSaudeService {
       include: { assinadoPor: { select: { id: true, nome: true } } },
     });
 
-    await (this.prisma as any).auditLog.create({
-      data: {
-        utilizadorId: userId,
-        acao: 'assinar_documento',
-        entidade: 'DocumentoSaude',
-        entidadeId: docId,
-        detalhes: { hashSHA256 },
-      },
+    this.audit.registar({
+      utilizadorId: userId,
+      acao: 'assinar_documento',
+      entidadeTipo: 'DocumentoSaude',
+      entidadeId: docId,
+      detalhes: JSON.stringify({ hashSHA256 }),
     });
 
     return updated;

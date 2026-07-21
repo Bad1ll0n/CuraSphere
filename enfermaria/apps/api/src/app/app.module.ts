@@ -16,7 +16,7 @@ import { GatewayModule } from './gateway/gateway.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuditService } from './common/audit.service';
+import { AuditModule } from './common/audit.module';
 import { AuditController } from './common/audit.controller';
 import { AuditInterceptor } from './common/audit.interceptor';
 import { CspReportController } from './common/csp-report.controller';
@@ -35,6 +35,7 @@ import { RelatoriosAgendadosModule } from './relatorios-agendados/relatorios-age
 import { AgendaFluxoModule } from './agenda-fluxo/agenda-fluxo.module';
 import { TriagemPortalModule } from './triagem-portal/triagem-portal.module';
 import { ObservabilidadeModule } from './observabilidade/observabilidade.module';
+import { FeatureFlagsModule } from './feature-flags/feature-flags.module';
 import { Icd10Module } from './codificacao/icd10.module';
 import { OutcomesModule } from './outcomes/outcomes.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
@@ -103,6 +104,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     ScheduleModule.forRoot(),
     PrismaModule,
+    AuditModule,
     RedisModule,
     AuthModule,
     NotificacoesModule,
@@ -120,6 +122,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     AgendaFluxoModule,
     TriagemPortalModule,
     ObservabilidadeModule,
+    FeatureFlagsModule,
     Icd10Module,
     OutcomesModule,
     WebhooksModule,
@@ -135,7 +138,6 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
   controllers: [AppController, AuditController, CspReportController],
   providers: [
     AppService,
-    AuditService,
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

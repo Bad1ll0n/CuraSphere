@@ -12,6 +12,7 @@ allowBuilds:
   '@sentry/cli': true
   '@swc/core': true
   esbuild: true
+  protobufjs: true
   detox: true
   dtrace-provider: true
   less: true

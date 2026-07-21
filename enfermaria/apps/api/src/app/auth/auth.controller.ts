@@ -25,11 +25,17 @@ class MfaDesativarDto {
 const COOKIE_MAX_AGE_ACCESS  = 60 * 60 * 1000;
 const COOKIE_MAX_AGE_REFRESH = 7 * 24 * 60 * 60 * 1000;
 
+// Tentativas de login por IP em 10 min. 5 em produção (anti brute-force); configurável por env
+// para ambientes de teste/E2E que autenticam várias personas em sequência.
+const LOGIN_THROTTLE_LIMIT = Number(process.env['LOGIN_THROTTLE_LIMIT'] ?? 5);
+// Verificações MFA por IP em 10 min. Elevar em teste (várias personas clínicas em sequência).
+const MFA_THROTTLE_LIMIT = Number(process.env['LOGIN_THROTTLE_LIMIT'] ?? 10);
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Throttle({ default: { ttl: 600000, limit: 5 } })
+  @Throttle({ default: { ttl: 600000, limit: LOGIN_THROTTLE_LIMIT } })
   @Post('login')
   async login(
     @Body() dto: LoginDto,
@@ -50,7 +56,7 @@ export class AuthController {
     return { utilizador: result.utilizador, passwordExpiradoAviso: result.passwordExpiradoAviso, diasRestantesSenha: result.diasRestantesSenha };
   }
 
-  @Throttle({ default: { ttl: 600000, limit: 10 } })
+  @Throttle({ default: { ttl: 600000, limit: MFA_THROTTLE_LIMIT } })
   @Post('mfa/verificar')
   async mfaVerificar(
     @Body() dto: MfaVerificarDto,

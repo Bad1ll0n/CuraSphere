@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RedisService } from '../redis/redis.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { AuditService } from './audit.service';
 
 interface AcessoEntry {
   id: string;
@@ -18,7 +18,7 @@ export class AnomalyDetectionService {
 
   constructor(
     private readonly redis: RedisService,
-    private readonly prisma: PrismaService,
+    private readonly audit: AuditService,
   ) {}
 
   // Chamado pelo AuditInterceptor para GET /doentes/:id — fire-and-forget
@@ -39,13 +39,11 @@ export class AnomalyDetectionService {
 
     const distintos = new Set(filtrada.map(a => a.id)).size;
     if (distintos > BULK_THRESHOLD) {
-      this.prisma.auditLog.create({
-        data: {
-          utilizadorId: userId,
-          acao: 'anomalia_acesso_bulk',
-          detalhes: JSON.stringify({ suspeito: true, tipo: 'acesso_bulk', doenteCount: distintos, janelaMinutos: 10 }),
-        },
-      }).catch(() => {});
+      this.audit.registar({
+        utilizadorId: userId,
+        acao: 'anomalia_acesso_bulk',
+        detalhes: JSON.stringify({ suspeito: true, tipo: 'acesso_bulk', doenteCount: distintos, janelaMinutos: 10 }),
+      });
       this.logger.warn(`Anomalia: utilizador ${userId} acedeu a ${distintos} doentes distintos em 10 minutos`);
     }
   }
@@ -62,14 +60,12 @@ export class AnomalyDetectionService {
     const ipAnterior = await this.redis.get<string>(key);
 
     if (ipAnterior && ipAnterior !== novoIp) {
-      this.prisma.auditLog.create({
-        data: {
-          utilizadorId: userId,
-          acao: 'anomalia_login_ip_diferente',
-          ip: novoIp,
-          detalhes: JSON.stringify({ suspeito: true, tipo: 'ip_diferente', ipAnterior, novoIp }),
-        },
-      }).catch(() => {});
+      this.audit.registar({
+        utilizadorId: userId,
+        acao: 'anomalia_login_ip_diferente',
+        ip: novoIp,
+        detalhes: JSON.stringify({ suspeito: true, tipo: 'ip_diferente', ipAnterior, novoIp }),
+      });
       this.logger.warn(`Anomalia: utilizador ${userId} fez login de IP diferente: ${ipAnterior} → ${novoIp}`);
     }
 
