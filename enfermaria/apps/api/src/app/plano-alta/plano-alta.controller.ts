@@ -10,13 +10,13 @@ export class PlanoAltaController {
   constructor(private readonly service: PlanoAltaService) {}
 
   @Get(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
   buscar(@Param('doenteId') doenteId: string) {
     return this.service.buscar(doenteId);
   }
 
   @Patch(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   atualizar(@Param('doenteId') doenteId: string, @Body() dto: AtualizarPlanoAltaDto) {
     return this.service.atualizar(doenteId, dto);
   }

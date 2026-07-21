@@ -4,6 +4,7 @@ const { authenticator } = require('otplib') as any;
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
+import { AI_MODELS } from '../common/ai-models';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { RedisService } from '../redis/redis.service';
@@ -63,7 +64,7 @@ export class MedicacaoService {
     if (ativas.length === 0) return { bloqueante: false, aviso: null };
     try {
       const msg = await this.anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.FAST,
         max_tokens: 200,
         temperature: 0.05 as any,
         system: [{ type: 'text' as const, text: 'És um sistema de verificação de interações medicamentosas clínicas. Responde APENAS com JSON válido: { "interacao": boolean, "severidade": "nenhuma|minor|moderada|grave|contraindicada", "descricao": "string curta ou null" }. Sê conservador — só assinala interações clinicamente documentadas.', cache_control: { type: 'ephemeral' as const } }],
@@ -722,7 +723,7 @@ export class MedicacaoService {
     );
 
     const msg = await this.anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.FAST,
       max_tokens: 400,
       system: 'És um farmacêutico clínico especialista em insuficiência renal. Responde apenas com JSON no formato: {"doseRecomendada":"...","intervalo":"...","classificacao":"normal|ligeira|moderada|grave|terminal","observacoes":"..."}',
       messages: [{ role: 'user', content: `Medicamento: ${nomeMedicamento}\nGFR estimado (CKD-EPI): ${gfr} mL/min/1.73m²\nCreatinina sérica: ${cr} ${creatinina.unidade ?? 'mg/dL'}` }],

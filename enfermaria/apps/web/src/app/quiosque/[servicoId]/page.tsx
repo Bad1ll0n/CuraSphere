@@ -17,7 +17,7 @@ interface DadosQuiosque {
 
 function DonutChart({ counts }: { counts: DadosQuiosque['news2Counts'] }) {
   const total = counts.normal + counts.medio + counts.alto + counts.critico;
-  if (total === 0) return <div style={{ color: '#475569', fontSize: 14, textAlign: 'center' }}>Sem dados NEWS2</div>;
+  if (total === 0) return <div style={{ color: 'var(--text-muted)', fontSize: 14, textAlign: 'center' }}>Sem dados NEWS2</div>;
 
   const segmentos = [
     { label: 'Normal', valor: counts.normal, cor: '#22c55e' },
@@ -65,7 +65,7 @@ function DonutChart({ counts }: { counts: DadosQuiosque['news2Counts'] }) {
         {segmentos.map(s => (
           <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 10, height: 10, borderRadius: 3, background: s.cor, flexShrink: 0 }} />
-            <span style={{ color: '#94a3b8', fontSize: 13 }}>{s.label}: <strong style={{ color: '#fff' }}>{s.valor}</strong></span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{s.label}: <strong style={{ color: '#fff' }}>{s.valor}</strong></span>
           </div>
         ))}
       </div>
@@ -117,13 +117,13 @@ export default function QuiosqueServico() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
         <div>
           <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 700, margin: 0, letterSpacing: -0.5 }}>CuraSphere</h1>
-          <p style={{ color: '#475569', fontSize: 14, margin: '4px 0 0' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14, margin: '4px 0 0' }}>
             Serviço: <span style={{ color: '#60a5fa', fontWeight: 600 }}>{servicoId}</span>
           </p>
         </div>
         <div style={{ textAlign: 'right' }}>
           {ultimaAtualizacao && (
-            <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: 0 }}>
               Atualizado às {ultimaAtualizacao.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </p>
           )}
@@ -142,10 +142,10 @@ export default function QuiosqueServico() {
 
           {/* Camas Ocupadas */}
           <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '28px 32px' }}>
-            <p style={{ color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Ocupação</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Ocupação</p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16 }}>
               <span style={{ fontSize: 56, fontWeight: 800, color: taxaOcupacao >= 90 ? '#ef4444' : taxaOcupacao >= 75 ? '#f97316' : '#22c55e', lineHeight: 1 }}>{taxaOcupacao}%</span>
-              <span style={{ color: '#475569', fontSize: 16 }}>{dados.camasOcupadas}/{dados.camasTotal}</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: 16 }}>{dados.camasOcupadas}/{dados.camasTotal}</span>
             </div>
             {/* barra */}
             <div style={{ height: 8, background: 'rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
@@ -155,10 +155,10 @@ export default function QuiosqueServico() {
 
           {/* Camas Livres */}
           <div style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 20, padding: '28px 32px' }}>
-            <p style={{ color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Camas Livres</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Camas Livres</p>
             <span style={{ fontSize: 56, fontWeight: 800, color: '#22c55e', lineHeight: 1 }}>{dados.camasLivres}</span>
             {dados.camasLimpeza > 0 && (
-              <p style={{ color: '#64748b', fontSize: 13, margin: '8px 0 0' }}>{dados.camasLimpeza} em limpeza</p>
+              <p style={{ color: 'var(--text-soft)', fontSize: 13, margin: '8px 0 0' }}>{dados.camasLimpeza} em limpeza</p>
             )}
           </div>
 
@@ -168,7 +168,7 @@ export default function QuiosqueServico() {
             border: `1px solid ${dados.alertasCriticosCount > 0 ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.08)'}`,
             borderRadius: 20, padding: '28px 32px'
           }}>
-            <p style={{ color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Alertas Activos</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Alertas Activos</p>
             <span style={{ fontSize: 56, fontWeight: 800, color: dados.alertasCriticosCount > 0 ? '#ef4444' : '#475569', lineHeight: 1 }}>
               {dados.alertasCriticosCount}
             </span>
@@ -179,14 +179,14 @@ export default function QuiosqueServico() {
 
           {/* Donut NEWS2 */}
           <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '28px 32px', gridColumn: 'span 1' }}>
-            <p style={{ color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 20px' }}>NEWS2 — Últimas 12h</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 20px' }}>NEWS2 — Últimas 12h</p>
             <DonutChart counts={dados.news2Counts} />
           </div>
 
         </div>
       ) : (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p style={{ color: '#475569', fontSize: 16 }}>A carregar dados...</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>A carregar dados...</p>
         </div>
       )}
     </div>

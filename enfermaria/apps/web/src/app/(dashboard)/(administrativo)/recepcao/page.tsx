@@ -258,7 +258,7 @@ export default function RecepcaoPage() {
 
   if (!podeVer) {
     return (
-      <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+      <div style={{ padding: 48, textAlign: 'center', color: 'var(--text-soft)' }}>
         <div style={{ fontSize: 48 }}>🔒</div>
         <p style={{ marginTop: 16, fontSize: 18 }}>Acesso restrito ao departamento administrativo.</p>
       </div>
@@ -277,7 +277,7 @@ export default function RecepcaoPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0 }}>Receção — Gestão de Filas</h1>
-          <p style={{ color: '#64748b', marginTop: 4 }}>
+          <p style={{ color: 'var(--text-soft)', marginTop: 4 }}>
             {new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
@@ -306,7 +306,7 @@ export default function RecepcaoPage() {
             style={{
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
-              color: '#94a3b8',
+              color: 'var(--text-dim)',
               padding: '8px 16px',
               borderRadius: 8,
               textDecoration: 'none',
@@ -322,7 +322,7 @@ export default function RecepcaoPage() {
             style={{
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
-              color: '#94a3b8',
+              color: 'var(--text-dim)',
               padding: '8px 16px',
               borderRadius: 8,
               textDecoration: 'none',
@@ -351,7 +351,7 @@ export default function RecepcaoPage() {
               padding: '20px 24px',
             }}
           >
-            <p style={{ color: '#64748b', fontSize: 13, marginBottom: 8 }}>{k.label}</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 13, marginBottom: 8 }}>{k.label}</p>
             <p style={{ fontSize: 36, fontWeight: 800, color: k.cor, margin: 0 }}>{k.value}</p>
           </div>
         ))}
@@ -375,7 +375,7 @@ export default function RecepcaoPage() {
               <div style={{ flex: 1, minWidth: 200 }}>
                 {ultimoChamado ? (
                   <div>
-                    <p style={{ color: '#64748b', fontSize: 13, marginBottom: 4 }}>Última chamada</p>
+                    <p style={{ color: 'var(--text-soft)', fontSize: 13, marginBottom: 4 }}>Última chamada</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <span style={{ fontSize: 40, fontWeight: 900, color: flash ? '#60a5fa' : '#fff' }}>
                         {ultimoChamado.numero}
@@ -390,7 +390,7 @@ export default function RecepcaoPage() {
                         style={{
                           background: 'transparent',
                           border: '1px solid var(--border)',
-                          color: '#94a3b8',
+                          color: 'var(--text-dim)',
                           borderRadius: 8,
                           padding: '4px 12px',
                           cursor: 'pointer',
@@ -416,13 +416,13 @@ export default function RecepcaoPage() {
                     </div>
                   </div>
                 ) : (
-                  <p style={{ color: '#475569' }}>Nenhuma chamada activa</p>
+                  <p style={{ color: 'var(--text-muted)' }}>Nenhuma chamada activa</p>
                 )}
               </div>
 
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                 <div>
-                  <label style={{ color: '#64748b', fontSize: 12, display: 'block', marginBottom: 4 }}>Balcão</label>
+                  <label style={{ color: 'var(--text-soft)', fontSize: 12, display: 'block', marginBottom: 4 }}>Balcão</label>
                   <input
                     type="text"
                     value={balcao}
@@ -468,7 +468,7 @@ export default function RecepcaoPage() {
               </h2>
             </div>
             {fila.length === 0 ? (
-              <div style={{ padding: 40, textAlign: 'center', color: '#475569' }}>
+              <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)' }}>
                 <div style={{ fontSize: 40 }}>✅</div>
                 <p style={{ marginTop: 8 }}>Fila vazia — todos atendidos!</p>
               </div>
@@ -522,7 +522,7 @@ export default function RecepcaoPage() {
                             )}
                           </div>
                           <div style={{ display: 'flex', gap: 12, marginTop: 2 }}>
-                            {t.nomeUtente && <span style={{ color: '#64748b', fontSize: 12 }}>{t.nomeUtente}</span>}
+                            {t.nomeUtente && <span style={{ color: 'var(--text-soft)', fontSize: 12 }}>{t.nomeUtente}</span>}
                             <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>
                               {new Date(t.criadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                             </span>
@@ -573,7 +573,7 @@ export default function RecepcaoPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Stats por tipo */}
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20 }}>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Hoje por Serviço
             </h3>
             {stats?.por_tipo.length ? (
@@ -602,14 +602,14 @@ export default function RecepcaoPage() {
               <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Sem dados</p>
             )}
             <div style={{ borderTop: '1px solid var(--border)', marginTop: 12, paddingTop: 12, display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#64748b', fontSize: 13 }}>Total Hoje</span>
+              <span style={{ color: 'var(--text-soft)', fontSize: 13 }}>Total Hoje</span>
               <span style={{ fontWeight: 800, fontSize: 18, color: '#fff' }}>{totalHoje}</span>
             </div>
           </div>
 
           {/* Histórico de chamadas */}
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20, flex: 1 }}>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Histórico
             </h3>
             {ultimos.length === 0 ? (
@@ -630,10 +630,10 @@ export default function RecepcaoPage() {
                   >
                     <div>
                       <span style={{ fontWeight: 700, color: i === 0 ? '#60a5fa' : '#94a3b8', fontSize: 16 }}>{t.numero}</span>
-                      <span style={{ color: '#475569', fontSize: 12, marginLeft: 8 }}>{TIPO_LABEL[t.tipo] ?? t.tipo}</span>
+                      <span style={{ color: 'var(--text-muted)', fontSize: 12, marginLeft: 8 }}>{TIPO_LABEL[t.tipo] ?? t.tipo}</span>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      {t.balcao && <div style={{ color: '#475569', fontSize: 12 }}>B.{t.balcao}</div>}
+                      {t.balcao && <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>B.{t.balcao}</div>}
                       <div style={{ color: 'var(--text-muted)', fontSize: 11 }}>
                         {t.chamadoEm ? new Date(t.chamadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) : '—'}
                       </div>
@@ -664,8 +664,8 @@ export default function RecepcaoPage() {
                 <div style={{ fontSize: 56, marginBottom: 16 }}>✅</div>
                 <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 8 }}>Registo Concluído</h2>
                 <p style={{ color: '#6ee7b7', fontSize: 18, fontWeight: 700 }}>{novoUtenteSucesso.nome}</p>
-                <p style={{ color: '#64748b', fontSize: 14, marginBottom: 16 }}>
-                  Nº de processo: <strong style={{ color: '#94a3b8' }}>{novoUtenteSucesso.numeroProcesso}</strong>
+                <p style={{ color: 'var(--text-soft)', fontSize: 14, marginBottom: 16 }}>
+                  Nº de processo: <strong style={{ color: 'var(--text-dim)' }}>{novoUtenteSucesso.numeroProcesso}</strong>
                 </p>
                 {(() => {
                   const tv = TIPOS_VISITA.find(t => t.value === novoUtenteSucesso.tipoVisita);
@@ -679,7 +679,7 @@ export default function RecepcaoPage() {
                   };
                   return (
                     <div style={{ background: 'var(--bg-input)', borderRadius: 10, padding: '12px 16px', marginBottom: 24 }}>
-                      <p style={{ color: '#94a3b8', margin: 0, fontSize: 14 }}>
+                      <p style={{ color: 'var(--text-dim)', margin: 0, fontSize: 14 }}>
                         {tv?.icon} <strong>{tv?.label}</strong> — {msgs[novoUtenteSucesso.tipoVisita] ?? ''}
                       </p>
                     </div>
@@ -697,10 +697,10 @@ export default function RecepcaoPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <div>
                     <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Registo Administrativo</h2>
-                    <p style={{ margin: '4px 0 0 0', color: '#64748b', fontSize: 13 }}>Dados legais e de identificação do utente</p>
+                    <p style={{ margin: '4px 0 0 0', color: 'var(--text-soft)', fontSize: 13 }}>Dados legais e de identificação do utente</p>
                   </div>
                   <button type="button" onClick={fecharModalNovoUtente}
-                    style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer', padding: 4 }}>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }}>
                     ✕
                   </button>
                 </div>
@@ -715,7 +715,7 @@ export default function RecepcaoPage() {
 
                   {/* Secção: Tipo de visita */}
                   <div>
-                    <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 8px 0' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 8px 0' }}>
                       Motivo da Visita <span style={{ color: '#ef4444' }}>*</span>
                     </p>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
@@ -738,7 +738,7 @@ export default function RecepcaoPage() {
                         >
                           <div style={{ fontSize: 22, marginBottom: 4 }}>{tv.icon}</div>
                           <div>{tv.label}</div>
-                          <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{tv.desc}</div>
+                          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{tv.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -746,10 +746,10 @@ export default function RecepcaoPage() {
                   </div>
 
                   {/* Secção: Identificação */}
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nome Completo <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input
@@ -763,7 +763,7 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Data de Nascimento <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input
@@ -775,7 +775,7 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.dataNascimento}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         NIF <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input
@@ -790,7 +790,7 @@ export default function RecepcaoPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nº SNS <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input
@@ -804,11 +804,11 @@ export default function RecepcaoPage() {
                   </div>
 
                   {/* Secção: Contactos */}
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Telefone <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input
@@ -821,7 +821,7 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.telefone}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
                       <input
                         type="email"
                         value={novoUtenteForm.email}
@@ -834,7 +834,7 @@ export default function RecepcaoPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
                     <input
                       value={novoUtenteForm.morada}
                       onChange={e => setNovoUtenteForm(f => ({ ...f, morada: e.target.value }))}
@@ -845,7 +845,7 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
                       <input
                         value={novoUtenteForm.codigoPostal}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value })); setNovoUtenteErros(p => ({ ...p, codigoPostal: '' })); }}
@@ -855,7 +855,7 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.codigoPostal}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
+                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
                       <input
                         value={novoUtenteForm.localidade}
                         onChange={e => setNovoUtenteForm(f => ({ ...f, localidade: e.target.value }))}
@@ -866,10 +866,10 @@ export default function RecepcaoPage() {
                   </div>
 
                   {/* Secção: Cobertura */}
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Tipo de Cobertura
                     </label>
                     <select
@@ -886,7 +886,7 @@ export default function RecepcaoPage() {
                   {novoUtenteForm.tipoCobertura === 'seguro' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Entidade Seguradora <span style={{ color: '#ef4444' }}>*</span>
                         </label>
                         <input
@@ -898,7 +898,7 @@ export default function RecepcaoPage() {
                         {novoUtenteErros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.entidadeSeguradora}</p>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Nº Apólice <span style={{ color: '#ef4444' }}>*</span>
                         </label>
                         <input
@@ -914,7 +914,7 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
                     <button type="button" onClick={fecharModalNovoUtente}
-                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-dim)', fontSize: 15, cursor: 'pointer' }}>
                       Cancelar
                     </button>
                     <button type="submit" disabled={criandoUtente}

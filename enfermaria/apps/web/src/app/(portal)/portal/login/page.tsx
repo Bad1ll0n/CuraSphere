@@ -26,13 +26,13 @@ function LoginForm() {
     <div>
       <div style={{ marginBottom: '32px', textAlign: 'center' }}>
         <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>Aceder ao Meu Portal</h1>
-        <p style={{ fontSize: '13px', color: '#64748b' }}>Consulte os seus documentos, medicação e informações de saúde</p>
+        <p style={{ fontSize: '13px', color: 'var(--text-soft)' }}>Consulte os seus documentos, medicação e informações de saúde</p>
       </div>
 
-      <div style={{ background: '#fff', borderRadius: '16px', padding: '32px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #e2e8f0' }}>
+      <div style={{ background: 'var(--bg-card)', borderRadius: '16px', padding: '32px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #e2e8f0' }}>
         <form onSubmit={submeter}>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
               Email
             </label>
             <input
@@ -45,7 +45,7 @@ function LoginForm() {
             />
           </div>
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
               Password
             </label>
             <input
@@ -58,7 +58,7 @@ function LoginForm() {
             />
           </div>
           {erro && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px', color: '#dc2626', fontSize: '13px', marginBottom: '16px' }}>
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px', color: 'var(--danger)', fontSize: '13px', marginBottom: '16px' }}>
               {erro}
             </div>
           )}
@@ -71,7 +71,7 @@ function LoginForm() {
         </form>
       </div>
 
-      <p style={{ textAlign: 'center', fontSize: '12px', color: '#94a3b8', marginTop: '20px' }}>
+      <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--text-dim)', marginTop: '20px' }}>
         As suas credenciais foram fornecidas pela equipa clínica.<br />Em caso de dúvida, contacte o hospital.
       </p>
     </div>

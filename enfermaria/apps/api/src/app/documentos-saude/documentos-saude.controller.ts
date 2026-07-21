@@ -35,7 +35,7 @@ export class DocumentosSaudeController {
   constructor(private readonly service: DocumentosSaudeService) {}
 
   @Get('doente/:id')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno', 'ti')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'ti')
   listar(@Param('id') id: string, @Query('tipo') tipo?: string) {
     return this.service.listar(id, tipo);
   }
@@ -65,7 +65,7 @@ export class DocumentosSaudeController {
   }
 
   @Get(':id/download')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno', 'tecnico_saude')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'tecnico_saude')
   getDownloadUrl(@Param('id') docId: string, @Request() req: any) {
     return this.service.getDownloadUrl(docId, req.user.sub);
   }

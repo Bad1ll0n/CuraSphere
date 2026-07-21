@@ -24,6 +24,7 @@ import { ConsultasPanel } from './components/consultas-panel';
 import { FaturacaoPanel } from './components/faturacao-panel';
 import { BalancoHidricoPanel } from './components/balanco-hidrico-panel';
 import { FeridasPanel } from './components/feridas-panel';
+import { TransfusaoPanel } from './components/transfusao-panel';
 import { SepsisPanel } from './components/sepsis-panel';
 import { PlanoAltaPanel } from './components/plano-alta-panel';
 import { AiClinicoPanel } from './components/ai-clinico-panel';
@@ -839,6 +840,11 @@ export default function DoenteDetalhe() {
       {/* Feridas e Curativos */}
       <PanelErrorBoundary name="Feridas e Curativos">
         <FeridasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Sangue e Transfusão */}
+      <PanelErrorBoundary name="Sangue e Transfusão">
+        <TransfusaoPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Plano de Alta */}

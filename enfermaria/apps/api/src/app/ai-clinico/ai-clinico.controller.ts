@@ -22,19 +22,19 @@ export class AiClinicoController {
   }
 
   @Post('sumarizar-turno')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   sumarizarTurno(@Body() body: { doentes: DoenteTurno[] }, @Request() req: any) {
     return this.service.sumarizarTurno(body.doentes, req.user.sub);
   }
 
   @Post('sumarizar-turno-servico')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   sumarizarTurnoServico(@Body() body: { servico: string }, @Request() req: any) {
     return this.service.sumarizarTurnoServico(body.servico, req.user.sub);
   }
 
   @Post('nlq')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'direcao')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
   executarNLQ(@Body() body: { query: string }, @Request() req: any) {
     return this.service.executarNLQ(body.query, req.user.sub);
   }
@@ -70,13 +70,13 @@ export class AiClinicoController {
   }
 
   @Post('icd10/sugerir')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo')
   sugerirIcd10(@Body('nota') nota: string) {
     return this.service.sugerirIcd10(nota ?? '');
   }
 
   @Get('staffing/previsoes')
-  @Roles('direcao', 'chefe_enfermeiros', 'chefe_turno', 'ti')
+  @Roles('direcao', 'chefe_enfermeiros', 'ti')
   listarStaffingPrevisoes(@Query('dias') dias?: string) {
     return this.service.listarStaffingPrevisoes(dias ? parseInt(dias, 10) : 7);
   }
@@ -88,7 +88,7 @@ export class AiClinicoController {
   }
 
   @Post(':doenteId/readmissao')
-  @Roles('medico', 'chefe_enfermeiros', 'administrativo', 'chefe_turno')
+  @Roles('medico', 'chefe_enfermeiros', 'administrativo')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {
     return this.service.calcularRiscoReadmissao(doenteId);
   }
@@ -100,13 +100,13 @@ export class AiClinicoController {
   }
 
   @Get(':doenteId/los')
-  @Roles('medico', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('medico', 'chefe_enfermeiros')
   preverLOS(@Param('doenteId') doenteId: string, @Request() req: any) {
     return this.service.preverLOS(doenteId, req.user.sub);
   }
 
   @Patch('decisao/:id/feedback')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'farmaceutico')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   registarFeedback(
     @Param('id') id: string,
     @Body() body: { aceite: boolean; overrideMotivo?: string },
@@ -115,19 +115,19 @@ export class AiClinicoController {
   }
 
   @Sse(':doenteId/stream')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   analisarStream(@Param('doenteId') doenteId: string, @Request() req: any): Observable<MessageEvent> {
     return this.service.analisarStream(doenteId, req.user.role, req.user.sub) as unknown as Observable<MessageEvent>;
   }
 
   @Get(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   analisar(@Param('doenteId') doenteId: string, @Request() req: any) {
     return this.service.analisar(doenteId, req.user.role, req.user.sub);
   }
 
   @Post(':doenteId/diagnostico-diferencial')
-  @Roles('medico', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('medico', 'chefe_enfermeiros')
   diagnosticoDiferencial(
     @Param('doenteId') doenteId: string,
     @Body('sintomas') sintomas: string,

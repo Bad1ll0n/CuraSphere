@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { AuditService } from '../common/audit.service';
 
 @Injectable()
 export class BreakGlassService {
@@ -9,6 +10,7 @@ export class BreakGlassService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
+    private readonly audit: AuditService,
   ) {}
 
   async ativar(utilizadorId: string, doenteId: string, motivo: string, ip?: string) {
@@ -25,24 +27,31 @@ export class BreakGlassService {
       },
     });
 
-    await this.prisma.auditLog.create({
-      data: {
-        utilizadorId,
-        acao: 'BREAK_GLASS_ACTIVADO',
-        entidadeTipo: 'Doente',
-        entidadeId: doenteId,
-        detalhes: JSON.stringify({ motivo, ip, expiradoEm }),
-        ip: ip ?? null,
-      },
-    }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+    this.audit.registar({
+      utilizadorId,
+      acao: 'BREAK_GLASS_ACTIVADO',
+      entidadeTipo: 'Doente',
+      entidadeId: doenteId,
+      detalhes: JSON.stringify({ motivo, ip, expiradoEm }),
+      ip: ip ?? null,
+    });
 
     this.notificacoes.enviarParaRole('ti', '🚨 Break-Glass Activado',
       `${acesso.utilizador.nome} (${acesso.utilizador.role}) acedeu em emergência ao doente ${doente.nome}. Motivo: ${motivo}`,
       { breakGlassId: acesso.id, doenteId },
     ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
+    // Liderança a notificar: direcao (papel base) + chefia de enfermagem (sub-papel, pois têm
+    // role='enfermeiro'). Antes a query filtrava por role='chefe_enfermeiros', que nenhum
+    // utilizador tem — logo só a direcao recebia os alertas de emergência.
     const chefesTurno = await this.prisma.utilizador.findMany({
-      where: { role: { in: ['chefe_turno', 'chefe_enfermeiros', 'direcao'] }, ativo: true },
+      where: {
+        ativo: true,
+        OR: [
+          { role: 'direcao' },
+          { subRole: { in: ['chefe_enfermeiros', 'supervisor_enfermagem'] } },
+        ],
+      },
       select: { id: true },
     });
     await Promise.all(chefesTurno.map((u) =>

@@ -11,13 +11,13 @@ export class SepsisController {
   constructor(private readonly service: SepsisService) {}
 
   @Get(':doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
   listarAtivos(@Param('doenteId') doenteId: string) {
     return this.service.listarAtivos(doenteId);
   }
 
   @Patch(':id/bundle')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   atualizarBundle(@Param('id') id: string, @Body() dto: AtualizarBundleDto) {
     return this.service.atualizarBundle(id, dto.campo);
   }

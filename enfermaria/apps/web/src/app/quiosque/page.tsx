@@ -321,7 +321,7 @@ export default function QuiosquePage() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 40 }}>
         <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: 0, letterSpacing: -1 }}>CuraSphere</h1>
-        <p style={{ color: '#94a3b8', fontSize: 18, marginTop: 8 }}>Sistema de Gestão de Filas</p>
+        <p style={{ color: 'var(--text-dim)', fontSize: 18, marginTop: 8 }}>Sistema de Gestão de Filas</p>
       </div>
 
       {/* ESTADO: Selecionar serviço */}
@@ -392,7 +392,7 @@ export default function QuiosquePage() {
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: 12,
                 padding: '14px 28px',
-                color: '#94a3b8',
+                color: 'var(--text-dim)',
                 fontSize: 16,
                 cursor: 'pointer',
                 transition: 'all 0.15s',
@@ -409,7 +409,7 @@ export default function QuiosquePage() {
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: 12,
                 padding: '14px 28px',
-                color: '#94a3b8',
+                color: 'var(--text-dim)',
                 fontSize: 16,
                 cursor: 'pointer',
                 transition: 'all 0.15s',
@@ -427,7 +427,7 @@ export default function QuiosquePage() {
       {estado === 'nif' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
           <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Identificar pelo NIF</h2>
-          <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 32 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 32 }}>
             Introduza o seu Número de Identificação Fiscal para ser identificado automaticamente.
           </p>
           <input
@@ -447,7 +447,7 @@ export default function QuiosquePage() {
           {nifErro && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{nifErro}</p>}
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={reiniciar}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
             <button onClick={buscarPacientePorNif} disabled={buscandoNif || nifInput.length < 9}
@@ -477,7 +477,7 @@ export default function QuiosquePage() {
               Tirar Senha
             </button>
             <button onClick={reiniciar}
-              style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+              style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'transparent', color: 'var(--text-dim)', fontSize: 15, cursor: 'pointer' }}>
               ← Voltar
             </button>
           </div>
@@ -491,7 +491,7 @@ export default function QuiosquePage() {
             {marcacoesHoje.length > 0 ? 'As suas consultas de hoje' : 'Sem marcações para hoje'}
           </h2>
           {marcacoesHoje.length === 0 ? (
-            <p style={{ color: '#94a3b8', fontSize: 16, marginBottom: 32 }}>
+            <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32 }}>
               Não tem consultas agendadas para hoje. Pode tirar uma senha normal abaixo.
             </p>
           ) : (
@@ -505,7 +505,7 @@ export default function QuiosquePage() {
                       </div>
                       <div style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>Dr. {m.medico.nome}</div>
                       {m.medico.especialidade && (
-                        <div style={{ color: '#94a3b8', fontSize: 13 }}>{m.medico.especialidade}</div>
+                        <div style={{ color: 'var(--text-dim)', fontSize: 13 }}>{m.medico.especialidade}</div>
                       )}
                     </div>
                     {m.checkinEm ? (
@@ -525,7 +525,7 @@ export default function QuiosquePage() {
           )}
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('nif_resultado')}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
             <button onClick={tirarSenhaNif}
@@ -540,7 +540,7 @@ export default function QuiosquePage() {
       {estado === 'marcacao' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
           <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Confirmar Marcação</h2>
-          <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 32 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 32 }}>
             Introduza o código que recebeu quando fez a marcação.
           </p>
           <input
@@ -560,7 +560,7 @@ export default function QuiosquePage() {
           {marcacaoErro && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{marcacaoErro}</p>}
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={reiniciar}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
             <button onClick={buscarMarcacao} disabled={buscandoMarcacao || codigoInput.length < 8}
@@ -577,19 +577,19 @@ export default function QuiosquePage() {
           <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>Marcação Encontrada</h2>
           <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '20px', marginBottom: 28, textAlign: 'left' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Código</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Código</span>
               <span style={{ color: '#fff', fontWeight: 700, fontFamily: 'monospace', fontSize: 16 }}>{marcacaoEncontrada.codigo}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Médico</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Médico</span>
               <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>Dr. {marcacaoEncontrada.medico?.nome}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Especialidade</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Especialidade</span>
               <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>{marcacaoEncontrada.especialidade}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Hora</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Hora</span>
               <span style={{ color: '#60a5fa', fontWeight: 700, fontSize: 16 }}>
                 {new Date(marcacaoEncontrada.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
               </span>
@@ -597,7 +597,7 @@ export default function QuiosquePage() {
           </div>
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('marcacao')}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
             <button onClick={confirmarCheckin} disabled={emissao}
@@ -615,7 +615,7 @@ export default function QuiosquePage() {
           <div style={{ fontSize: 96, fontWeight: 900, color: '#fff', letterSpacing: -2, lineHeight: 1, marginBottom: 20 }}>
             {ticket.numero}
           </div>
-          <p style={{ color: '#94a3b8', fontSize: 16, marginBottom: 32 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32 }}>
             Aguarde ser chamado. Siga o ecrã de chamadas.
           </p>
           <button onClick={reiniciar}
@@ -640,13 +640,13 @@ export default function QuiosquePage() {
         >
           <div style={{ fontSize: 64, fontWeight: 900, color: tipoSelecionado.cor, fontFamily: 'monospace', marginBottom: 12 }}>{tipoSelecionado.letra}</div>
           <h2 style={{ color: '#fff', fontSize: 26, marginBottom: 6 }}>{tipoSelecionado.label}</h2>
-          <p style={{ color: '#94a3b8', marginBottom: 32, fontSize: 15 }}>
+          <p style={{ color: 'var(--text-dim)', marginBottom: 32, fontSize: 15 }}>
             Senhas da série <strong style={{ color: tipoSelecionado.cor }}>{tipoSelecionado.letra}</strong>
           </p>
 
           {/* Prioridade */}
           <div style={{ textAlign: 'left', marginBottom: 24 }}>
-            <p style={{ color: '#94a3b8', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1 }}>
+            <p style={{ color: 'var(--text-dim)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1 }}>
               Tipo de atendimento
             </p>
             <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', marginBottom: 12 }}>
@@ -675,7 +675,7 @@ export default function QuiosquePage() {
 
           {/* Nome opcional */}
           <div style={{ marginBottom: 32 }}>
-            <label style={{ display: 'block', color: '#94a3b8', fontSize: 13, marginBottom: 8, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 13, marginBottom: 8, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
               Nome (opcional)
             </label>
             <input
@@ -705,7 +705,7 @@ export default function QuiosquePage() {
                 borderRadius: 12,
                 border: '1px solid rgba(255,255,255,0.2)',
                 background: 'transparent',
-                color: '#94a3b8',
+                color: 'var(--text-dim)',
                 fontSize: 16,
                 cursor: 'pointer',
               }}
@@ -776,7 +776,7 @@ export default function QuiosquePage() {
               {ticket.prioridade === 'prioritario' ? 'Prioritário' : 'Sénior'}
             </span>
           )}
-          <p style={{ color: '#94a3b8', fontSize: 16, marginBottom: 32, marginTop: ticket.prioridade === 'normal' ? 16 : 0 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32, marginTop: ticket.prioridade === 'normal' ? 16 : 0 }}>
             Aguarde ser chamado. Siga o ecrã de chamadas.
           </p>
           <button
@@ -802,11 +802,11 @@ export default function QuiosquePage() {
       {estado === 'nova_especialidade' && (
         <div style={{ width: '100%', maxWidth: 600 }}>
           <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 24, marginBottom: 8 }}>Escolha a especialidade</h2>
-          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
+          <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
             Selecione a área médica para a sua consulta
           </p>
           {medicos.length === 0 ? (
-            <div style={{ textAlign: 'center', color: '#94a3b8', padding: '40px 0' }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>
               <p style={{ fontSize: 16 }}>Sem médicos com agenda disponível de momento.</p>
               <p style={{ fontSize: 14, marginTop: 8 }}>Dirija-se à receção para marcação assistida.</p>
             </div>
@@ -820,7 +820,7 @@ export default function QuiosquePage() {
                     style={{ width: '100%', padding: '22px 28px', borderRadius: 14, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                   >
                     <span>{SUBROLE_ICONE[subRole] ?? '👨‍⚕️'} {SUBROLE_LABEL[subRole] ?? subRole}</span>
-                    <span style={{ color: '#94a3b8', fontSize: 14, fontWeight: 400 }}>
+                    <span style={{ color: 'var(--text-dim)', fontSize: 14, fontWeight: 400 }}>
                       {count} {count === 1 ? 'médico' : 'médicos'} →
                     </span>
                   </button>
@@ -829,7 +829,7 @@ export default function QuiosquePage() {
             </div>
           )}
           <button onClick={() => setEstado('nif_resultado')}
-            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
             ← Voltar
           </button>
         </div>
@@ -841,7 +841,7 @@ export default function QuiosquePage() {
           <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 4 }}>
             {SUBROLE_ICONE[especialidadeSelecionada] ?? '👨‍⚕️'} {SUBROLE_LABEL[especialidadeSelecionada] ?? especialidadeSelecionada}
           </h2>
-          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
+          <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
             Escolha o profissional pretendido
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -854,7 +854,7 @@ export default function QuiosquePage() {
             ))}
           </div>
           <button onClick={() => setEstado('nova_especialidade')}
-            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
             ← Voltar
           </button>
         </div>
@@ -887,7 +887,7 @@ export default function QuiosquePage() {
               ].map(l => (
                 <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{ width: 14, height: 14, borderRadius: 4, background: l.cor }} />
-                  <span style={{ color: '#94a3b8', fontSize: 13 }}>{l.label}</span>
+                  <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{l.label}</span>
                 </div>
               ))}
             </div>
@@ -895,7 +895,7 @@ export default function QuiosquePage() {
             {/* Cabeçalho dias da semana */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 6 }}>
               {DIAS_SEMANA.map(d => (
-                <div key={d} style={{ textAlign: 'center', color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
+                <div key={d} style={{ textAlign: 'center', color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
               ))}
             </div>
 
@@ -946,7 +946,7 @@ export default function QuiosquePage() {
             {/* Slots inline quando dia selecionado */}
             {dataSelecionada && slotsInline.length > 0 && (
               <div style={{ marginTop: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 14, padding: '20px 24px' }}>
-                <p style={{ color: '#94a3b8', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14 }}>
+                <p style={{ color: 'var(--text-dim)', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14 }}>
                   {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
@@ -964,13 +964,13 @@ export default function QuiosquePage() {
             )}
 
             {dataSelecionada && slotsInline.length === 0 && slotCache[dataSelecionada] !== null && (
-              <p style={{ color: '#64748b', textAlign: 'center', marginTop: 20, fontSize: 14 }}>
+              <p style={{ color: 'var(--text-soft)', textAlign: 'center', marginTop: 20, fontSize: 14 }}>
                 Sem horários disponíveis neste dia. Selecione outro.
               </p>
             )}
 
             <button onClick={() => setEstado('nova_medico')}
-              style={{ marginTop: 24, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ marginTop: 24, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
           </div>
@@ -983,11 +983,11 @@ export default function QuiosquePage() {
           <h2 style={{ color: '#fff', fontSize: 20, textAlign: 'center', marginBottom: 6 }}>
             {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
           </h2>
-          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
+          <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
             {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()} — {SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}
           </p>
           {slots.filter(s => s.disponivel).length === 0 ? (
-            <p style={{ color: '#94a3b8', textAlign: 'center', padding: '20px 0' }}>Sem horários disponíveis neste dia.</p>
+            <p style={{ color: 'var(--text-dim)', textAlign: 'center', padding: '20px 0' }}>Sem horários disponíveis neste dia.</p>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
               {slots.filter(s => s.disponivel).map(s => (
@@ -1000,7 +1000,7 @@ export default function QuiosquePage() {
             </div>
           )}
           <button onClick={() => setEstado('nova_data')}
-            style={{ width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            style={{ width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
             ← Voltar
           </button>
         </div>
@@ -1019,7 +1019,7 @@ export default function QuiosquePage() {
               { label: 'Hora', valor: new Date(slotSelecionado.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) },
             ].map(({ label, valor }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                <span style={{ color: '#94a3b8', fontSize: 14 }}>{label}</span>
+                <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{label}</span>
                 <span style={{ color: '#fff', fontWeight: 600, fontSize: 14, textAlign: 'right', maxWidth: '60%' }}>{valor}</span>
               </div>
             ))}
@@ -1027,7 +1027,7 @@ export default function QuiosquePage() {
           {erroMarcacao && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{erroMarcacao}</p>}
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('nova_data')}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
             <button onClick={confirmarMarcacao} disabled={emissao}
@@ -1042,18 +1042,18 @@ export default function QuiosquePage() {
       {estado === 'nova_sucesso' && novaConsulta && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b981', borderRadius: 20, padding: '48px 56px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
           <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 8 }}>Marcação Confirmada</h2>
-          <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 24 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 24 }}>
             {new Date(novaConsulta.dataHora).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
             {' às '}
             {new Date(novaConsulta.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
             {' com '}
             {novaConsulta.medico.nome}
           </p>
-          <p style={{ color: '#94a3b8', fontSize: 14, marginBottom: 8 }}>Guarde o seu código de marcação:</p>
+          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: 8 }}>Guarde o seu código de marcação:</p>
           <div style={{ fontSize: 36, fontWeight: 900, color: '#fff', letterSpacing: 4, fontFamily: 'monospace', background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: '20px', marginBottom: 24 }}>
             {novaConsulta.codigo}
           </div>
-          <p style={{ color: '#64748b', fontSize: 13, marginBottom: 32 }}>
+          <p style={{ color: 'var(--text-soft)', fontSize: 13, marginBottom: 32 }}>
             No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.
           </p>
           <button onClick={reiniciar}
@@ -1063,7 +1063,7 @@ export default function QuiosquePage() {
         </div>
       )}
 
-      <p style={{ color: '#475569', marginTop: 40, fontSize: 13 }}>CuraSphere — Sistema de Gestão Hospitalar</p>
+      <p style={{ color: 'var(--text-muted)', marginTop: 40, fontSize: 13 }}>CuraSphere — Sistema de Gestão Hospitalar</p>
     </div>
   );
 }

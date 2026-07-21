@@ -10,19 +10,19 @@ export class RelatorioPassagemTurnoController {
   constructor(private readonly service: RelatorioPassagemTurnoService) {}
 
   @Post('gerar')
-  @Roles('enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'medico')
+  @Roles('enfermeiro', 'chefe_enfermeiros', 'medico')
   gerar(@Body() dto: GerarRelatorioDto, @Request() req: any) {
     return this.service.gerarRascunho(dto, req.user.sub);
   }
 
   @Post(':id/confirmar')
-  @Roles('enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'medico')
+  @Roles('enfermeiro', 'chefe_enfermeiros', 'medico')
   confirmar(@Param('id') id: string, @Body() dto: ConfirmarRelatorioDto, @Request() req: any) {
     return this.service.confirmar(id, dto, req.user.sub);
   }
 
   @Get('historico')
-  @Roles('enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'medico', 'direcao')
+  @Roles('enfermeiro', 'chefe_enfermeiros', 'medico', 'direcao')
   historico(@Query('servico') servico: string) {
     return this.service.historico(servico);
   }

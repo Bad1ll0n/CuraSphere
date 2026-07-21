@@ -58,12 +58,24 @@ export class SinaisVitaisService {
     if (!ROLES_PODEM_REGISTAR.includes(role)) {
       throw new ForbiddenException('Sem permissão para registar sinais vitais');
     }
+    return this._processarVital(doenteId, utilizadorId, dto, 'manual');
+  }
 
+  /**
+   * Ingestão de um vital a partir de um dispositivo de monitorização contínua.
+   * Passa pela MESMA pipeline (NEWS2 + alertas + watchdog de sépsis + baselines) do
+   * registo manual — sem verificação de role (a autenticação é por chave de dispositivo).
+   */
+  async ingerirDeMonitor(doenteId: string, responsavelId: string, dto: CriarSinalVitalDto) {
+    return this._processarVital(doenteId, responsavelId, dto, 'monitor');
+  }
+
+  private async _processarVital(doenteId: string, registadoPorId: string, dto: CriarSinalVitalDto, origem: 'manual' | 'monitor') {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
     if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     const news2 = calcularNEWS2(dto);
-    const data: any = { doenteId, registadoPorId: utilizadorId, ...dto };
+    const data: any = { doenteId, registadoPorId, origem, ...dto };
     if (news2 != null) data.news2 = news2;
 
     const registo = await this.prisma.sinalVital.create({

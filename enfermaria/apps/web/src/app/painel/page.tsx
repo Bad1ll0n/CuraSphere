@@ -141,7 +141,7 @@ export default function PainelPage() {
           <span style={{ fontSize: 28 }}>🏥</span>
           <div>
             <div style={{ fontWeight: 700, fontSize: 20 }}>CuraSphere</div>
-            <div style={{ color: '#64748b', fontSize: 13 }}>Painel de Chamadas</div>
+            <div style={{ color: 'var(--text-soft)', fontSize: 13 }}>Painel de Chamadas</div>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -153,8 +153,8 @@ export default function PainelPage() {
               background: conectado ? '#10b981' : '#ef4444',
             }}
           />
-          <span style={{ color: '#64748b', fontSize: 13 }}>{conectado ? 'Ligado' : 'A reconectar...'}</span>
-          <span style={{ color: '#475569', fontSize: 13, marginLeft: 16 }}>
+          <span style={{ color: 'var(--text-soft)', fontSize: 13 }}>{conectado ? 'Ligado' : 'A reconectar...'}</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 13, marginLeft: 16 }}>
             {new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
           </span>
         </div>
@@ -180,7 +180,7 @@ export default function PainelPage() {
         >
           {ultimoChamado ? (
             <>
-              <p style={{ color: '#64748b', fontSize: 20, marginBottom: 16, letterSpacing: 2, textTransform: 'uppercase' }}>
+              <p style={{ color: 'var(--text-soft)', fontSize: 20, marginBottom: 16, letterSpacing: 2, textTransform: 'uppercase' }}>
                 A chamar
               </p>
 
@@ -249,7 +249,7 @@ export default function PainelPage() {
               </div>
 
               {ultimoChamado.nomeUtente && (
-                <p style={{ color: '#94a3b8', marginTop: 16, fontSize: 18 }}>{ultimoChamado.nomeUtente}</p>
+                <p style={{ color: 'var(--text-dim)', marginTop: 16, fontSize: 18 }}>{ultimoChamado.nomeUtente}</p>
               )}
             </>
           ) : (
@@ -271,7 +271,7 @@ export default function PainelPage() {
         >
           {/* Fila em espera */}
           <div style={{ flex: 1, padding: '24px', overflowY: 'auto', borderBottom: '1px solid #1e293b' }}>
-            <h3 style={{ color: '#64748b', fontSize: 13, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16, margin: '0 0 16px 0' }}>
+            <h3 style={{ color: 'var(--text-soft)', fontSize: 13, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16, margin: '0 0 16px 0' }}>
               Em Espera ({fila.length})
             </h3>
             {fila.length === 0 ? (
@@ -304,7 +304,7 @@ export default function PainelPage() {
                       </span>
                       <div>
                         <div style={{ color: '#cbd5e1', fontSize: 13 }}>{TIPO_LABEL[t.tipo] ?? t.tipo}</div>
-                        {t.nomeUtente && <div style={{ color: '#475569', fontSize: 12 }}>{t.nomeUtente}</div>}
+                        {t.nomeUtente && <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>{t.nomeUtente}</div>}
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -318,7 +318,7 @@ export default function PainelPage() {
                   </div>
                 ))}
                 {fila.length > 12 && (
-                  <p style={{ color: '#475569', fontSize: 13, textAlign: 'center' }}>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center' }}>
                     +{fila.length - 12} em espera
                   </p>
                 )}
@@ -328,7 +328,7 @@ export default function PainelPage() {
 
           {/* Histórico de chamadas */}
           <div style={{ flex: '0 0 auto', padding: '16px 24px', maxHeight: '280px', overflowY: 'auto' }}>
-            <h3 style={{ color: '#64748b', fontSize: 13, textTransform: 'uppercase', letterSpacing: 2, margin: '0 0 12px 0' }}>
+            <h3 style={{ color: 'var(--text-soft)', fontSize: 13, textTransform: 'uppercase', letterSpacing: 2, margin: '0 0 12px 0' }}>
               Chamadas Anteriores
             </h3>
             {ultimos.slice(1, 8).length === 0 ? (
@@ -346,7 +346,7 @@ export default function PainelPage() {
                       borderBottom: '1px solid #1e293b',
                     }}
                   >
-                    <span style={{ fontWeight: 700, color: '#475569', fontSize: 18, minWidth: 56 }}>{t.numero}</span>
+                    <span style={{ fontWeight: 700, color: 'var(--text-muted)', fontSize: 18, minWidth: 56 }}>{t.numero}</span>
                     <span style={{ color: '#334155', fontSize: 12 }}>{TIPO_LABEL[t.tipo] ?? t.tipo}</span>
                     <span style={{ color: '#334155', fontSize: 12 }}>
                       {t.balcao ? `Balcão ${t.balcao}` : '—'}

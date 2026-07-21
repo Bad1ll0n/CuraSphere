@@ -28,7 +28,7 @@ export class FeridasController {
     private readonly doenteService: DoenteService,
   ) {}
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Post(':doenteId')
   async criar(
     @Param('doenteId') doenteId: string,
@@ -51,7 +51,7 @@ export class FeridasController {
     return this.service.buscarUltima(doenteId);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Post(':avaliacaoId/fotos')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -89,13 +89,13 @@ export class FeridasController {
     return this.service.analisarFoto(fotoId, avaliacaoId, req.user.sub);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Delete('fotos/:fotoId')
   removerFoto(@Param('fotoId') fotoId: string, @Request() req: any) {
     return this.service.removerFoto(fotoId, req.user.sub, req.user.role);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Delete(':id')
   apagar(@Param('id') id: string, @Request() req: any) {
     return this.service.apagar(id, req.user.sub, req.user.role);

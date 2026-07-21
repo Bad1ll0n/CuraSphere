@@ -141,7 +141,7 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
 
   return (
     <>
-      <div className="rounded-2xl shadow-sm border" style={{ padding: '20px 24px', background: '#fff', borderColor: '#e2e8f0', marginBottom: '20px' }}>
+      <div className="rounded-2xl shadow-sm border" style={{ padding: '20px 24px', background: 'var(--bg-card)', borderColor: 'var(--border)', marginBottom: '20px' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: ativos.length + cronicos.length + resolvidos.length === 0 ? 0 : '14px' }}>
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-slate-700">Lista de Problemas</span>
@@ -162,7 +162,7 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {[...ativos, ...cronicos].map((p: any) => (
-              <div key={p.id} className="flex items-center justify-between rounded-lg" style={{ padding: '8px 12px', background: '#f8fafc' }}>
+              <div key={p.id} className="flex items-center justify-between rounded-lg" style={{ padding: '8px 12px', background: 'var(--bg-page)' }}>
                 <div className="flex items-center gap-2 min-w-0">
                   <span className={`text-xs rounded-full badge-pad py-0.5 font-medium shrink-0 ${TIPO_COR[p.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
                     {TIPO_LABEL[p.tipo] ?? p.tipo}

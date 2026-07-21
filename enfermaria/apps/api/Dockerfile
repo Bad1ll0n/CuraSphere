@@ -26,8 +26,10 @@ COPY . .
 # uma versão nova do registry, que não reconhece o prisma.config.ts do projecto
 RUN cd apps/api && pnpm exec prisma generate --schema prisma/schema.prisma
 
-# Build da API via Nx
-RUN pnpm exec nx build api
+# Build da API via Nx.
+# --skip-nx-cache: sem isto, o Nx pode restaurar um artefacto de build em cache (local ou
+# Nx Cloud) em vez de recompilar, servindo um main.js stale que não reflecte o código atual.
+RUN pnpm exec nx build api --skip-nx-cache
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
 FROM node:22-alpine AS runner

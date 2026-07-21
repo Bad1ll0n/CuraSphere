@@ -14,7 +14,7 @@ export class AlertasController {
   ) {}
 
   @Get()
-  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Roles('medico', 'chefe_enfermeiros', 'direcao', 'qualidade')
   listarGlobal(
     @Query('tipo') tipo?: string,
     @Query('lido') lido?: string,

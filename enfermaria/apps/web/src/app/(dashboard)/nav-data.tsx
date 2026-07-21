@@ -280,6 +280,18 @@ export const navItems = [
     ),
   },
   {
+    href: '/banco-sangue',
+    label: 'Banco de Sangue',
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_FARMACIA, ...ROLES_TI],
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 3v1m0 0C9 7 6 10 6 14a6 6 0 0012 0c0-4-3-7-6-10z" />
+      </svg>
+    ),
+  },
+  {
     href: '/catalogo',
     label: 'Catálogo',
     servicos: null,

@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
+import { AuditService } from './audit.service';
 import { AtualizarChecklistDto } from './dto/atualizar-checklist.dto';
 
 const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
@@ -11,7 +12,16 @@ const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acs
 @Roles('ti', 'qualidade', 'direcao')
 @Controller('audit')
 export class AuditController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly audit: AuditService,
+  ) {}
+
+  /** Verifica a integridade da cadeia de hash do log de auditoria (tamper-evidence). */
+  @Get('integridade')
+  async integridade() {
+    return this.audit.verificarIntegridade();
+  }
 
   @Get('logs')
   async logs(

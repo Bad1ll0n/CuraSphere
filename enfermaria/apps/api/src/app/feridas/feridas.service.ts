@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { AI_MODELS } from '../common/ai-models';
 import { StorageService } from '../common/storage.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
 import { randomUUID as uuid } from 'crypto';
@@ -132,7 +133,7 @@ export class FeridasService {
 
     const base64 = buffer.toString('base64');
     const response = await this.claude.messages.create({
-      model: 'claude-opus-4-7',
+      model: AI_MODELS.CLINICAL,
       max_tokens: 600,
       messages: [{
         role: 'user',

@@ -9,6 +9,7 @@ import { logout, Utilizador } from '../lib/auth';
 import HorariosScreen from './HorariosScreen';
 import AtribuicoesScreen from './AtribuicoesScreen';
 import CamasScreen from './CamasScreen';
+import BancoSangueScreen from './BancoSangueScreen';
 import TrocasScreen from './TrocasScreen';
 import UtilizadoresScreen from './UtilizadoresScreen';
 import TurnoScreen from './TurnoScreen';
@@ -45,7 +46,7 @@ import ConformidadeScreen from './ConformidadeScreen';
 
 type SubTela =
   | null
-  | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores'
+  | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'bancosangue'
   | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti'
   | 'farmacia' | 'fisioterapia' | 'consultas' | 'urgencia'
   | 'salaespera' | 'iacs' | 'mar' | 'comunicacao'
@@ -90,6 +91,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'horarios')     return <HorariosScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'atribuicoes')  return <AtribuicoesScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'camas')        return <CamasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'bancosangue')  return <BancoSangueScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'trocas')       return <TrocasScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'utilizadores') return <UtilizadoresScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'turno')        return <TurnoScreen utilizador={utilizador} onVoltar={voltar} />;
@@ -162,6 +164,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     { key: 'horarios',     icon: 'calendar-outline',         cor: '#6366f1', titulo: 'Horários',           sub: 'Escala mensal de turnos',          visivel: eClinical || eAdmin },
     { key: 'atribuicoes',  icon: 'clipboard-outline',        cor: '#0ea5e9', titulo: 'Atribuições',        sub: 'Doentes por profissional',         visivel: eMedico || eEnfermagem },
     { key: 'camas',        icon: 'bed-outline',              cor: '#22c55e', titulo: 'Camas',              sub: 'Mapa de camas e quartos',          visivel: eMedico || eEnfermagem || eAdmin },
+    { key: 'bancosangue',  icon: 'water-outline',            cor: '#dc2626', titulo: 'Banco de Sangue',    sub: 'Stock de bolsas e grupos',         visivel: eMedico || eEnfermagem || eFarmaceutico || eTI },
     { key: 'trocas',       icon: 'swap-horizontal-outline',  cor: '#f59e0b', titulo: 'Trocas de Turno',    sub: 'Pedidos de cobertura',             visivel: eClinical },
     // — Clínico especializado
     { key: 'iacs',         icon: 'shield-outline',           cor: '#7c3aed', titulo: 'IACS',               sub: 'Doentes em isolamento',            visivel: eMedico || eEnfermagem || ROLES_QUALIDADE.includes(role) },

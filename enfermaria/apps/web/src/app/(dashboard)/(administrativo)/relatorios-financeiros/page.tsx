@@ -176,7 +176,7 @@ export default function RelatoriosFinanceirosPage() {
       </div>
 
       {erro && (
-        <div style={{ background: '#fee2e2', color: '#dc2626', borderRadius: 8, padding: '10px 16px', marginBottom: 20, fontSize: 14 }}>
+        <div style={{ background: '#fee2e2', color: 'var(--danger)', borderRadius: 8, padding: '10px 16px', marginBottom: 20, fontSize: 14 }}>
           {erro}
         </div>
       )}

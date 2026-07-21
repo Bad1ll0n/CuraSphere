@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
+import { AI_MODELS } from '../common/ai-models';
 
 const ANTIBIOTICOS_BROAD: string[] = [
   'meropenem', 'imipenem', 'ertapenem', 'doripenem',
@@ -110,7 +111,7 @@ Como farmacêutico clínico especialista em stewardship antibiótico:
 Resposta concisa (máx 150 palavras). Disclaimer: sugestão de apoio, decisão final cabe ao médico.`;
 
       const resp = await this.claude.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.FAST,
         max_tokens: 300,
         messages: [{ role: 'user', content: prompt }],
       });

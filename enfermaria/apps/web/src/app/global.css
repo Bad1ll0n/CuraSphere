@@ -10,26 +10,47 @@
   padding: 0;
 }
 
-/* ── Theme CSS variables ────────────────────────────────── */
+/* ── Theme CSS variables (tokens semânticos) ───────────────
+   Fonte de verdade das cores da app. Preferir estes tokens a hex fixo em
+   style inline (que não responde ao dark mode). Ex.: style={{ background:
+   'var(--bg-card)', color: 'var(--text-muted)', borderColor: 'var(--border)' }} */
 :root {
   --bg-page:       #f8fafc;
   --bg-card:       #ffffff;
+  --bg-surface:    #ffffff;   /* alias de --bg-card, para cartões/painéis */
+  --bg-surface-2:  #f8fafc;   /* superfície subtil (linhas alternadas, hover) */
   --bg-input:      #f1f5f9;
   --bg-tabs:       #f1f5f9;
   --bg-tab-active: #ffffff;
   --text-main:     #0f172a;
-  --text-muted:    #475569;
+  --text-hi:       #0f172a;   /* títulos / texto forte */
+  --text-muted:    #475569;   /* slate-600 */
+  --text-soft:     #64748b;   /* slate-500 — texto secundário */
+  --text-dim:      #94a3b8;   /* slate-400 — legendas / placeholder */
   --border:        #e2e8f0;
+  --accent:        #6366f1;
+  --success:       #16a34a;
+  --warning:       #d97706;
+  --danger:        #dc2626;
 }
 html.dark {
   --bg-page:       #0f172a;
   --bg-card:       #1e293b;
+  --bg-surface:    #1e293b;
+  --bg-surface-2:  #0f172a;
   --bg-input:      #0f172a;
   --bg-tabs:       #1e293b;
   --bg-tab-active: #334155;
   --text-main:     #f8fafc;
+  --text-hi:       #f8fafc;
   --text-muted:    #94a3b8;
+  --text-soft:     #94a3b8;
+  --text-dim:      #64748b;
   --border:        #334155;
+  --accent:        #818cf8;
+  --success:       #4ade80;
+  --warning:       #fbbf24;
+  --danger:        #f87171;
 }
 
 /* ── Badge padding ──────────────────────────────────────── */
@@ -147,6 +168,91 @@ html.dark .hover\:bg-slate-50:hover  { background-color: #1e293b !important; }
 html.dark .hover\:bg-gray-50:hover   { background-color: #1e293b !important; }
 html.dark .hover\:bg-slate-100:hover { background-color: #334155 !important; }
 html.dark .hover\:bg-gray-100:hover  { background-color: #334155 !important; }
+
+/* ── Dark Mode — superfícies e texto de COR (badges, alertas, chips) ─────────
+   Antes só as neutras (white/slate/gray) eram remapeadas; as tintas de cor
+   (bg-red-50, bg-blue-50, bg-amber-50…, usadas centenas de vezes) ficavam
+   claras e berrantes sobre fundo escuro. Aqui remapeiam-se para versões
+   translúcidas escuras, e o texto de acento -600/700/800 para tons -300,
+   legíveis sobre escuro (contraste WCAG AA). Cobre toda a app sem editar
+   ficheiro a ficheiro. */
+html.dark .bg-red-50  { background-color: rgba(239,68,68,0.14) !important; }
+html.dark .bg-red-100 { background-color: rgba(239,68,68,0.24) !important; }
+html.dark .bg-blue-50  { background-color: rgba(59,130,246,0.14) !important; }
+html.dark .bg-blue-100 { background-color: rgba(59,130,246,0.24) !important; }
+html.dark .bg-amber-50  { background-color: rgba(245,158,11,0.14) !important; }
+html.dark .bg-amber-100 { background-color: rgba(245,158,11,0.24) !important; }
+html.dark .bg-green-50  { background-color: rgba(34,197,94,0.14) !important; }
+html.dark .bg-green-100 { background-color: rgba(34,197,94,0.24) !important; }
+html.dark .bg-emerald-50  { background-color: rgba(16,185,129,0.14) !important; }
+html.dark .bg-emerald-100 { background-color: rgba(16,185,129,0.24) !important; }
+html.dark .bg-orange-50  { background-color: rgba(249,115,22,0.14) !important; }
+html.dark .bg-orange-100 { background-color: rgba(249,115,22,0.24) !important; }
+html.dark .bg-indigo-50  { background-color: rgba(99,102,241,0.14) !important; }
+html.dark .bg-indigo-100 { background-color: rgba(99,102,241,0.24) !important; }
+html.dark .bg-violet-50  { background-color: rgba(139,92,246,0.14) !important; }
+html.dark .bg-violet-100 { background-color: rgba(139,92,246,0.24) !important; }
+html.dark .bg-yellow-50  { background-color: rgba(234,179,8,0.14) !important; }
+html.dark .bg-yellow-100 { background-color: rgba(234,179,8,0.24) !important; }
+html.dark .bg-teal-50  { background-color: rgba(20,184,166,0.14) !important; }
+html.dark .bg-teal-100 { background-color: rgba(20,184,166,0.24) !important; }
+html.dark .bg-purple-50  { background-color: rgba(168,85,247,0.14) !important; }
+html.dark .bg-purple-100 { background-color: rgba(168,85,247,0.24) !important; }
+html.dark .bg-sky-50  { background-color: rgba(14,165,233,0.14) !important; }
+html.dark .bg-sky-100 { background-color: rgba(14,165,233,0.24) !important; }
+html.dark .bg-pink-50  { background-color: rgba(236,72,153,0.14) !important; }
+html.dark .bg-pink-100 { background-color: rgba(236,72,153,0.24) !important; }
+html.dark .bg-rose-50  { background-color: rgba(244,63,94,0.14) !important; }
+html.dark .bg-rose-100 { background-color: rgba(244,63,94,0.24) !important; }
+html.dark .bg-cyan-50  { background-color: rgba(6,182,212,0.14) !important; }
+html.dark .bg-cyan-100 { background-color: rgba(6,182,212,0.24) !important; }
+
+html.dark .text-red-600, html.dark .text-red-700, html.dark .text-red-800 { color: #fca5a5 !important; }
+html.dark .text-blue-600, html.dark .text-blue-700, html.dark .text-blue-800 { color: #93c5fd !important; }
+html.dark .text-amber-600, html.dark .text-amber-700, html.dark .text-amber-800 { color: #fcd34d !important; }
+html.dark .text-green-600, html.dark .text-green-700, html.dark .text-green-800 { color: #86efac !important; }
+html.dark .text-emerald-600, html.dark .text-emerald-700, html.dark .text-emerald-800 { color: #6ee7b7 !important; }
+html.dark .text-orange-600, html.dark .text-orange-700, html.dark .text-orange-800 { color: #fdba74 !important; }
+html.dark .text-indigo-600, html.dark .text-indigo-700, html.dark .text-indigo-800 { color: #a5b4fc !important; }
+html.dark .text-violet-600, html.dark .text-violet-700, html.dark .text-violet-800 { color: #c4b5fd !important; }
+html.dark .text-yellow-600, html.dark .text-yellow-700, html.dark .text-yellow-800 { color: #fde047 !important; }
+html.dark .text-teal-600, html.dark .text-teal-700, html.dark .text-teal-800 { color: #5eead4 !important; }
+html.dark .text-purple-600, html.dark .text-purple-700, html.dark .text-purple-800 { color: #d8b4fe !important; }
+html.dark .text-sky-600, html.dark .text-sky-700, html.dark .text-sky-800 { color: #7dd3fc !important; }
+html.dark .text-pink-600, html.dark .text-pink-700, html.dark .text-pink-800 { color: #f9a8d4 !important; }
+html.dark .text-rose-600, html.dark .text-rose-700, html.dark .text-rose-800 { color: #fda4af !important; }
+html.dark .text-cyan-600, html.dark .text-cyan-700, html.dark .text-cyan-800 { color: #67e8f9 !important; }
+
+html.dark .border-red-100 { border-color: rgba(239,68,68,0.22) !important; }
+html.dark .border-red-200 { border-color: rgba(239,68,68,0.33) !important; }
+html.dark .border-blue-100 { border-color: rgba(59,130,246,0.22) !important; }
+html.dark .border-blue-200 { border-color: rgba(59,130,246,0.33) !important; }
+html.dark .border-amber-100 { border-color: rgba(245,158,11,0.22) !important; }
+html.dark .border-amber-200 { border-color: rgba(245,158,11,0.33) !important; }
+html.dark .border-green-100 { border-color: rgba(34,197,94,0.22) !important; }
+html.dark .border-green-200 { border-color: rgba(34,197,94,0.33) !important; }
+html.dark .border-emerald-100 { border-color: rgba(16,185,129,0.22) !important; }
+html.dark .border-emerald-200 { border-color: rgba(16,185,129,0.33) !important; }
+html.dark .border-orange-100 { border-color: rgba(249,115,22,0.22) !important; }
+html.dark .border-orange-200 { border-color: rgba(249,115,22,0.33) !important; }
+html.dark .border-indigo-100 { border-color: rgba(99,102,241,0.22) !important; }
+html.dark .border-indigo-200 { border-color: rgba(99,102,241,0.33) !important; }
+html.dark .border-violet-100 { border-color: rgba(139,92,246,0.22) !important; }
+html.dark .border-violet-200 { border-color: rgba(139,92,246,0.33) !important; }
+html.dark .border-yellow-100 { border-color: rgba(234,179,8,0.22) !important; }
+html.dark .border-yellow-200 { border-color: rgba(234,179,8,0.33) !important; }
+html.dark .border-teal-100 { border-color: rgba(20,184,166,0.22) !important; }
+html.dark .border-teal-200 { border-color: rgba(20,184,166,0.33) !important; }
+html.dark .border-purple-100 { border-color: rgba(168,85,247,0.22) !important; }
+html.dark .border-purple-200 { border-color: rgba(168,85,247,0.33) !important; }
+html.dark .border-sky-100 { border-color: rgba(14,165,233,0.22) !important; }
+html.dark .border-sky-200 { border-color: rgba(14,165,233,0.33) !important; }
+html.dark .border-pink-100 { border-color: rgba(236,72,153,0.22) !important; }
+html.dark .border-pink-200 { border-color: rgba(236,72,153,0.33) !important; }
+html.dark .border-rose-100 { border-color: rgba(244,63,94,0.22) !important; }
+html.dark .border-rose-200 { border-color: rgba(244,63,94,0.33) !important; }
+html.dark .border-cyan-100 { border-color: rgba(6,182,212,0.22) !important; }
+html.dark .border-cyan-200 { border-color: rgba(6,182,212,0.33) !important; }
 
 /* ── WCAG 2.1 AA — Focus visível ────────────────────────── */
 :focus-visible {

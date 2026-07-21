@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { PrismaService } from '../prisma/prisma.service';
+import { AI_MODELS } from '../common/ai-models';
 
 interface CriarGuidelineDto {
   titulo: string;
@@ -63,7 +64,7 @@ export class GuidelinesService implements OnModuleInit {
   // Fallback: keyword extraction via Claude
   private async extrairTermosClinicos(texto: string): Promise<string[]> {
     const msg = await this.anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.FAST,
       max_tokens: 150,
       system: 'Extrai os termos clínicos e médicos mais relevantes do texto. Responde APENAS com JSON: ["termo1","termo2",...] (máx 20 termos, em português, em minúsculas).',
       messages: [{ role: 'user', content: texto.slice(0, 1500) }],

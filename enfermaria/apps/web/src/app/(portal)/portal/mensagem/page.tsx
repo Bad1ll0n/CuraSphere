@@ -37,16 +37,16 @@ function MensagemContent() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-        <Link href="/portal" style={{ textDecoration: 'none', color: '#64748b', fontSize: '13px' }}>← Voltar</Link>
+        <Link href="/portal" style={{ textDecoration: 'none', color: 'var(--text-soft)', fontSize: '13px' }}>← Voltar</Link>
         <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b' }}>Contactar Equipa</h1>
       </div>
 
-      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px' }}>
+      <div style={{ background: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px' }}>
         {enviado ? (
           <div style={{ textAlign: 'center', padding: '20px 0' }}>
             <div style={{ fontSize: '40px', marginBottom: '12px' }}>✅</div>
             <p style={{ fontWeight: 600, fontSize: '15px', color: '#1e293b', marginBottom: '6px' }}>Mensagem enviada</p>
-            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '20px' }}>A equipa clínica irá ler a sua mensagem em breve.</p>
+            <p style={{ fontSize: '13px', color: 'var(--text-soft)', marginBottom: '20px' }}>A equipa clínica irá ler a sua mensagem em breve.</p>
             <button
               onClick={() => setEnviado(false)}
               style={{ background: '#eff6ff', color: '#3b82f6', fontWeight: 600, borderRadius: '10px', padding: '10px 20px', border: 'none', cursor: 'pointer', fontSize: '13px' }}>
@@ -55,7 +55,7 @@ function MensagemContent() {
           </div>
         ) : (
           <form onSubmit={enviar}>
-            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-soft)', marginBottom: '16px' }}>
               Escreva a sua mensagem para a equipa clínica. Esta será entregue ao enfermeiro responsável.
             </p>
             <textarea
@@ -67,10 +67,10 @@ function MensagemContent() {
               style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '12px 14px', fontSize: '14px', resize: 'vertical', outline: 'none', boxSizing: 'border-box', color: '#1e293b' }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-              <p style={{ fontSize: '12px', color: '#94a3b8' }}>{conteudo.length}/1000</p>
+              <p style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{conteudo.length}/1000</p>
             </div>
             {erro && (
-              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px', color: '#dc2626', fontSize: '13px', marginTop: '12px' }}>
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px', color: 'var(--danger)', fontSize: '13px', marginTop: '12px' }}>
                 {erro}
               </div>
             )}

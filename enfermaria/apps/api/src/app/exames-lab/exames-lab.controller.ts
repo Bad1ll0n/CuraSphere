@@ -11,7 +11,7 @@ export class ExamesLabController {
   constructor(private readonly service: ExamesLabService) {}
 
   @Get('doente/:doenteId')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   listar(
     @Param('doenteId') doenteId: string,
     @Query('painel') painel?: string,
@@ -20,7 +20,7 @@ export class ExamesLabController {
   }
 
   @Get('doente/:doenteId/resumo')
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'chefe_turno')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   resumo(@Param('doenteId') doenteId: string) {
     return this.service.obterResumo(doenteId);
   }

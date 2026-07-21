@@ -177,6 +177,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   estado: 'estado',
   diagnosticoPrincipal: 'diagnosticoPrincipal',
   icd10Code: 'icd10Code',
+  grupoSanguineo: 'grupoSanguineo',
   estadoRegisto: 'estadoRegisto',
   tipoVisita: 'tipoVisita',
   dataAdmissao: 'dataAdmissao',
@@ -402,7 +403,20 @@ exports.Prisma.SinalVitalScalarFieldEnum = {
   news2: 'news2',
   glasgow: 'glasgow',
   pamMedia: 'pamMedia',
-  vasopressores: 'vasopressores'
+  vasopressores: 'vasopressores',
+  origem: 'origem'
+};
+
+exports.Prisma.DispositivoMonitorScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  localizacao: 'localizacao',
+  apiKeyHash: 'apiKeyHash',
+  responsavelId: 'responsavelId',
+  doenteId: 'doenteId',
+  ativo: 'ativo',
+  ultimaLeitura: 'ultimaLeitura',
+  criadaEm: 'criadaEm'
 };
 
 exports.Prisma.BalancoHidricoScalarFieldEnum = {
@@ -440,8 +454,98 @@ exports.Prisma.AvaliacaoFeridaScalarFieldEnum = {
   notas: 'notas'
 };
 
+exports.Prisma.BolsaSangueScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  numeroUnidade: 'numeroUnidade',
+  componente: 'componente',
+  grupoABO: 'grupoABO',
+  rhD: 'rhD',
+  volumeMl: 'volumeMl',
+  dataColheita: 'dataColheita',
+  dataValidade: 'dataValidade',
+  estado: 'estado',
+  reservadaParaId: 'reservadaParaId',
+  criadaEm: 'criadaEm',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PedidoTransfusaoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  prescritoPorId: 'prescritoPorId',
+  criadaEm: 'criadaEm',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  componente: 'componente',
+  numeroUnidades: 'numeroUnidades',
+  grupoABO: 'grupoABO',
+  rhD: 'rhD',
+  urgencia: 'urgencia',
+  indicacao: 'indicacao',
+  estado: 'estado',
+  motivoCancelamento: 'motivoCancelamento'
+};
+
+exports.Prisma.RegistoTransfusaoScalarFieldEnum = {
+  id: 'id',
+  pedidoTransfusaoId: 'pedidoTransfusaoId',
+  bolsaId: 'bolsaId',
+  doenteId: 'doenteId',
+  administradoPorId: 'administradoPorId',
+  iniciadoEm: 'iniciadoEm',
+  terminadoEm: 'terminadoEm',
+  verificacaoABO: 'verificacaoABO',
+  verificacaoUnidade: 'verificacaoUnidade',
+  verificacaoValidade: 'verificacaoValidade',
+  compativel: 'compativel',
+  observacoes: 'observacoes'
+};
+
+exports.Prisma.ReacaoTransfusionalScalarFieldEnum = {
+  id: 'id',
+  registoTransfusaoId: 'registoTransfusaoId',
+  doenteId: 'doenteId',
+  registadoPorId: 'registadoPorId',
+  criadaEm: 'criadaEm',
+  tipo: 'tipo',
+  gravidade: 'gravidade',
+  sintomas: 'sintomas',
+  medidas: 'medidas',
+  notificadoHemovigilancia: 'notificadoHemovigilancia'
+};
+
+exports.Prisma.ListaEsperaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  nomeDoente: 'nomeDoente',
+  medicoId: 'medicoId',
+  especialidade: 'especialidade',
+  prioridade: 'prioridade',
+  estado: 'estado',
+  contactoTelefone: 'contactoTelefone',
+  notas: 'notas',
+  criadaEm: 'criadaEm',
+  atualizadaEm: 'atualizadaEm'
+};
+
+exports.Prisma.ReceitaEletronicaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  prescritoPorId: 'prescritoPorId',
+  numeroReceita: 'numeroReceita',
+  codigoDispensa: 'codigoDispensa',
+  estado: 'estado',
+  ambiente: 'ambiente',
+  medicamentos: 'medicamentos',
+  erro: 'erro',
+  dataEmissao: 'dataEmissao',
+  criadaEm: 'criadaEm'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
+  seq: 'seq',
   utilizadorId: 'utilizadorId',
   acao: 'acao',
   entidadeId: 'entidadeId',
@@ -449,7 +553,22 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   detalhes: 'detalhes',
   ip: 'ip',
   userAgent: 'userAgent',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  prevHash: 'prevHash',
+  hash: 'hash'
+};
+
+exports.Prisma.FeatureFlagScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  descricao: 'descricao',
+  enabled: 'enabled',
+  rolloutPercent: 'rolloutPercent',
+  roles: 'roles',
+  servicos: 'servicos',
+  atualizadoPorId: 'atualizadoPorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AlergiaScalarFieldEnum = {
@@ -647,6 +766,7 @@ exports.Prisma.ConsultaScalarFieldEnum = {
   videoRoomId: 'videoRoomId',
   videoIniciadaEm: 'videoIniciadaEm',
   videoTerminouEm: 'videoTerminouEm',
+  lembreteEnviadoEm: 'lembreteEnviadoEm',
   criadoEm: 'criadoEm'
 };
 
@@ -1901,9 +2021,17 @@ exports.Prisma.ModelName = {
   PedidoTrocaTurno: 'PedidoTrocaTurno',
   AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno',
   SinalVital: 'SinalVital',
+  DispositivoMonitor: 'DispositivoMonitor',
   BalancoHidrico: 'BalancoHidrico',
   AvaliacaoFerida: 'AvaliacaoFerida',
+  BolsaSangue: 'BolsaSangue',
+  PedidoTransfusao: 'PedidoTransfusao',
+  RegistoTransfusao: 'RegistoTransfusao',
+  ReacaoTransfusional: 'ReacaoTransfusional',
+  ListaEspera: 'ListaEspera',
+  ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  FeatureFlag: 'FeatureFlag',
   Alergia: 'Alergia',
   ContactoEmergencia: 'ContactoEmergencia',
   AlertaClinico: 'AlertaClinico',
