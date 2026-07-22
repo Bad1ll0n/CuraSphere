@@ -1,6 +1,7 @@
+// virtual: true — ver nota em doentes.controller.spec.ts (resolução inconsistente do caminho).
 jest.mock('pdfmake/src/printer', () => {
   return function() { return { createPdfKitDocument: jest.fn().mockReturnValue({ pipe: jest.fn(), end: jest.fn(), on: jest.fn() }) }; };
-});
+}, { virtual: true });
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { MedicacaoController } from './medicacao.controller';

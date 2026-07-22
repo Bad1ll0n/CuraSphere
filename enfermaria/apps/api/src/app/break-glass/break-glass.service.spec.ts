@@ -3,6 +3,7 @@ import { NotFoundException } from '@nestjs/common';
 import { BreakGlassService } from './break-glass.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { AuditService } from '../common/audit.service';
 
 const mockPrisma = {
   doente: {
@@ -26,6 +27,8 @@ const mockNotificacoes = {
   enviarParaUtilizador: jest.fn().mockResolvedValue(undefined),
 };
 
+const mockAudit = { registar: jest.fn() };
+
 describe('BreakGlassService', () => {
   let service: BreakGlassService;
 
@@ -41,6 +44,7 @@ describe('BreakGlassService', () => {
         BreakGlassService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
+        { provide: AuditService, useValue: mockAudit },
       ],
     }).compile();
 
@@ -85,7 +89,7 @@ describe('BreakGlassService', () => {
       expect(resultado).toHaveProperty('id', 'bg-1');
     });
 
-    it('regista audit log (prisma.auditLog.create é chamado)', async () => {
+    it('regista audit log (AuditService.registar é chamado — cadeia encadeada)', async () => {
       mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João Silva' });
       mockPrisma.breakGlassAccess.create.mockResolvedValue({
         id: 'bg-1',
@@ -95,14 +99,12 @@ describe('BreakGlassService', () => {
 
       await service.ativar('user-1', 'doente-1', 'emergência cirúrgica');
 
-      expect(mockPrisma.auditLog.create).toHaveBeenCalledWith(
+      expect(mockAudit.registar).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({
-            utilizadorId: 'user-1',
-            acao: 'BREAK_GLASS_ACTIVADO',
-            entidadeTipo: 'Doente',
-            entidadeId: 'doente-1',
-          }),
+          utilizadorId: 'user-1',
+          acao: 'BREAK_GLASS_ACTIVADO',
+          entidadeTipo: 'Doente',
+          entidadeId: 'doente-1',
         }),
       );
     });

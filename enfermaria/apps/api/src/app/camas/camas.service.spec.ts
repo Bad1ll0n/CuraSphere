@@ -3,6 +3,7 @@ import { NotFoundException, ConflictException } from '@nestjs/common';
 import { CamasService } from './camas.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
 import { EstadoCama } from '../common/enums';
 
 const mockPrisma = {
@@ -35,6 +36,7 @@ describe('CamasService', () => {
         CamasService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: RedisService, useValue: mockRedis },
+        { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
       ],
     }).compile();
 

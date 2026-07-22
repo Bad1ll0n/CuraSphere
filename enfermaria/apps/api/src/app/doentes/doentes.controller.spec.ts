@@ -1,6 +1,8 @@
+// virtual: true — o caminho `pdfmake/src/printer` é resolvido de forma inconsistente entre
+// ambientes (pnpm estrito no CI vs local); virtual evita exigir a resolução do módulo real.
 jest.mock('pdfmake/src/printer', () => {
   return function() { return { createPdfKitDocument: jest.fn().mockReturnValue({ pipe: jest.fn(), end: jest.fn(), on: jest.fn() }) }; };
-});
+}, { virtual: true });
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { DoenteController } from './doentes.controller';
@@ -102,7 +104,7 @@ describe('DoenteController', () => {
       mockDoenteService.assertAcessoDoente.mockImplementation(async () => { callOrder.push('assert'); });
       mockDoenteService.buscarPorId.mockImplementation(async () => { callOrder.push('buscar'); return { id: 'doente-1' }; });
 
-      await controller.buscarPorId('doente-1', { user: { sub: 'u1', role: 'medico' } } as any);
+      await controller.buscarPorId('doente-1', { user: { sub: 'u1', role: 'medico' }, headers: {} } as any);
 
       expect(callOrder).toEqual(['assert', 'buscar']);
     });

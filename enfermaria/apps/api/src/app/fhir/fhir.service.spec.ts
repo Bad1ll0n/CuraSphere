@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { FhirService } from './fhir.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 const mockPrisma = {
   dispositivoFhir: { findUnique: jest.fn(), update: jest.fn(), create: jest.fn(), findMany: jest.fn() },
@@ -23,7 +24,11 @@ describe('FhirService', () => {
     mockPrisma.dispositivoFhir.update.mockResolvedValue(dispositivoBase);
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FhirService, { provide: PrismaService, useValue: mockPrisma }],
+      providers: [
+        FhirService,
+        { provide: PrismaService, useValue: mockPrisma },
+        { provide: RedisService, useValue: { get: jest.fn(), set: jest.fn() } },
+      ],
     }).compile();
     service = module.get<FhirService>(FhirService);
   });

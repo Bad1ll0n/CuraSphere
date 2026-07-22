@@ -1,18 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnomalyDetectionService } from './anomaly-detection.service';
 import { RedisService } from '../redis/redis.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { AuditService } from './audit.service';
 
 const mockRedis = {
   get: jest.fn(),
   set: jest.fn().mockResolvedValue(undefined),
 };
 
-const mockPrisma = {
-  auditLog: {
-    create: jest.fn().mockResolvedValue({}),
-  },
-};
+const mockAudit = { registar: jest.fn() };
 
 describe('AnomalyDetectionService', () => {
   let service: AnomalyDetectionService;
@@ -20,13 +16,12 @@ describe('AnomalyDetectionService', () => {
   beforeEach(async () => {
     jest.resetAllMocks();
     mockRedis.set.mockResolvedValue(undefined);
-    mockPrisma.auditLog.create.mockResolvedValue({});
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AnomalyDetectionService,
         { provide: RedisService, useValue: mockRedis },
-        { provide: PrismaService, useValue: mockPrisma },
+        { provide: AuditService, useValue: mockAudit },
       ],
     }).compile();
 
@@ -47,7 +42,7 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarAcessoBulk('user-1', 'doente-10');
 
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
     });
 
     it('cria audit log com tipo anomalia_acesso_bulk quando >15 doentes distintos', async () => {
@@ -61,12 +56,10 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarAcessoBulk('user-1', 'doente-15');
 
-      expect(mockPrisma.auditLog.create).toHaveBeenCalledWith(
+      expect(mockAudit.registar).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({
-            acao: 'anomalia_acesso_bulk',
-            utilizadorId: 'user-1',
-          }),
+          acao: 'anomalia_acesso_bulk',
+          utilizadorId: 'user-1',
         }),
       );
     });
@@ -84,7 +77,7 @@ describe('AnomalyDetectionService', () => {
       await (service as any).detectarAcessoBulk('user-1', 'doente-novo');
 
       // Apenas 1 doente na janela válida → sem anomalia
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
     });
 
     it('usa lista vazia quando Redis não tem histórico para o utilizador', async () => {
@@ -93,7 +86,7 @@ describe('AnomalyDetectionService', () => {
       await (service as any).detectarAcessoBulk('user-novo', 'doente-1');
 
       // 1 doente → sem anomalia
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
       expect(mockRedis.set).toHaveBeenCalledWith(
         'anomaly:doentes:user-novo',
         expect.arrayContaining([expect.objectContaining({ id: 'doente-1' })]),
@@ -116,13 +109,11 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarIpDiferente('user-1', '10.0.0.50');
 
-      expect(mockPrisma.auditLog.create).toHaveBeenCalledWith(
+      expect(mockAudit.registar).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({
-            acao: 'anomalia_login_ip_diferente',
-            utilizadorId: 'user-1',
-            ip: '10.0.0.50',
-          }),
+          acao: 'anomalia_login_ip_diferente',
+          utilizadorId: 'user-1',
+          ip: '10.0.0.50',
         }),
       );
     });
@@ -132,7 +123,7 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarIpDiferente('user-1', '192.168.1.100');
 
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
     });
 
     it('não cria audit log quando é primeiro login (sem IP anterior)', async () => {
@@ -140,7 +131,7 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarIpDiferente('user-1', '192.168.1.100');
 
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
       // Mas deve guardar o novo IP
       expect(mockRedis.set).toHaveBeenCalledWith(
         'anomaly:ip:user-1',
@@ -154,7 +145,7 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarIpDiferente('user-1', '127.0.0.1');
 
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
       expect(mockRedis.set).not.toHaveBeenCalled();
     });
 
@@ -163,7 +154,7 @@ describe('AnomalyDetectionService', () => {
 
       await (service as any).detectarIpDiferente('user-1', '::1');
 
-      expect(mockPrisma.auditLog.create).not.toHaveBeenCalled();
+      expect(mockAudit.registar).not.toHaveBeenCalled();
     });
 
     it('verificarIpLogin dispara detectarIpDiferente sem bloquear', () => {
