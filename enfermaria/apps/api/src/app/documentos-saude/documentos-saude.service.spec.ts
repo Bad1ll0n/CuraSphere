@@ -11,6 +11,7 @@ import { DocumentosSaudeService } from './documentos-saude.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../common/storage.service';
 import { FhirService } from '../fhir/fhir.service';
+import { AuditService } from '../common/audit.service';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },
@@ -52,6 +53,7 @@ describe('DocumentosSaudeService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: StorageService, useValue: mockStorage },
         { provide: FhirService, useValue: mockFhir },
+        { provide: AuditService, useValue: { registar: jest.fn() } },
       ],
     }).compile();
 
