@@ -101,7 +101,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         autoLogging: { ignore: (req) => req.url === '/v1/health' },
       },
     }),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 60) }]),
     ScheduleModule.forRoot(),
     PrismaModule,
     AuditModule,
