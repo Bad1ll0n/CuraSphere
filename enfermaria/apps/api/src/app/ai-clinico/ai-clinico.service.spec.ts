@@ -17,6 +17,8 @@ jest.mock('@anthropic-ai/sdk', () => {
 import Anthropic from '@anthropic-ai/sdk';
 import { GuidelinesService } from '../guidelines/guidelines.service';
 import { AlertasService } from '../alertas/alertas.service';
+import { AiMetricsService } from './ai-metrics.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 const mockGuidelines = { buscarSimilares: jest.fn().mockResolvedValue([]) };
 const mockAlertasAI = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
@@ -58,6 +60,8 @@ describe('AiClinicoService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: GuidelinesService, useValue: mockGuidelines },
         { provide: AlertasService, useValue: mockAlertasAI },
+        { provide: AiMetricsService, useValue: { registar: jest.fn().mockResolvedValue(undefined) } },
+        { provide: NotificacoesService, useValue: { enviarParaRole: jest.fn().mockResolvedValue(undefined), enviarParaUtilizador: jest.fn().mockResolvedValue(undefined) } },
       ],
     }).compile();
 

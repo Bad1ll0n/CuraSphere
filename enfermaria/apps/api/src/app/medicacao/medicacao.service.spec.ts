@@ -5,6 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { RedisService } from '../redis/redis.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
+import { WebhooksService } from '../webhooks/webhooks.service';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -65,6 +67,8 @@ describe('MedicacaoService', () => {
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: RedisService, useValue: mockRedis },
         { provide: StewardshipService, useValue: mockStewardship },
+        { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
+        { provide: WebhooksService, useValue: { dispatcharEvento: jest.fn().mockResolvedValue(undefined) } },
       ],
     }).compile();
 

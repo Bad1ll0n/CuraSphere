@@ -6,6 +6,9 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { StorageService } from '../common/storage.service';
 import { ConfigService } from '@nestjs/config';
+import { TenantContextService } from '../prisma/tenant-context.service';
+import { WebhooksService } from '../webhooks/webhooks.service';
+import { BreakGlassService } from '../break-glass/break-glass.service';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -109,6 +112,9 @@ describe('DoenteService', () => {
         { provide: AiClinicoService, useValue: mockAiClinico },
         { provide: StorageService, useValue: mockStorage },
         { provide: ConfigService, useValue: mockConfig },
+        { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
+        { provide: WebhooksService, useValue: { dispatcharEvento: jest.fn().mockResolvedValue(undefined) } },
+        { provide: BreakGlassService, useValue: { ativar: jest.fn().mockResolvedValue(undefined), verificarAtivoParaDoente: jest.fn().mockResolvedValue(false) } },
       ],
     }).compile();
 

@@ -102,7 +102,7 @@ describe('DoenteController', () => {
       mockDoenteService.assertAcessoDoente.mockImplementation(async () => { callOrder.push('assert'); });
       mockDoenteService.buscarPorId.mockImplementation(async () => { callOrder.push('buscar'); return { id: 'doente-1' }; });
 
-      await controller.buscarPorId('doente-1', { user: { sub: 'u1', role: 'medico' } } as any);
+      await controller.buscarPorId('doente-1', { user: { sub: 'u1', role: 'medico' }, headers: {} } as any);
 
       expect(callOrder).toEqual(['assert', 'buscar']);
     });
