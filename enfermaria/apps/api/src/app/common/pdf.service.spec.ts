@@ -9,7 +9,7 @@ jest.mock('pdfmake/src/printer', () => {
   return jest.fn().mockImplementation(() => ({
     createPdfKitDocument: jest.fn().mockReturnValue(mockDoc),
   }));
-});
+}, { virtual: true }); // caminho resolvido de forma inconsistente entre ambientes (pnpm estrito)
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { PdfService } from './pdf.service';
