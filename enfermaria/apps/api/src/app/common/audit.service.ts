@@ -128,12 +128,12 @@ export class AuditService implements OnModuleDestroy {
 
   /** Conteúdo canónico → sha256. Tem de ser idêntico na escrita e na verificação. */
   private static calcularHash(
-    p: Pick<AuditParams, 'utilizadorId' | 'acao' | 'entidadeId' | 'entidadeTipo' | 'detalhes' | 'ip' | 'userAgent'>,
+    p: { utilizadorId: string | null; acao: string; entidadeId?: string | null; entidadeTipo?: string | null; detalhes?: string | null; ip?: string | null; userAgent?: string | null },
     createdAt: Date,
     prevHash: string | null,
   ): string {
     const canonico = JSON.stringify({
-      utilizadorId: p.utilizadorId,
+      utilizadorId: p.utilizadorId ?? null,
       acao: p.acao,
       entidadeId: p.entidadeId ?? null,
       entidadeTipo: p.entidadeTipo ?? null,

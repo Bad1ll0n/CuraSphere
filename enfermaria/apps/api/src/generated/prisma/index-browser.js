@@ -547,15 +547,45 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   seq: 'seq',
   utilizadorId: 'utilizadorId',
+  utilizadorNome: 'utilizadorNome',
+  utilizadorRole: 'utilizadorRole',
   acao: 'acao',
   entidadeId: 'entidadeId',
   entidadeTipo: 'entidadeTipo',
   detalhes: 'detalhes',
   ip: 'ip',
   userAgent: 'userAgent',
+  correlationId: 'correlationId',
+  origem: 'origem',
   createdAt: 'createdAt',
+  contentHash: 'contentHash',
   prevHash: 'prevHash',
   hash: 'hash'
+};
+
+exports.Prisma.AuditCheckpointScalarFieldEnum = {
+  id: 'id',
+  seqInicio: 'seqInicio',
+  seqFim: 'seqFim',
+  raiz: 'raiz',
+  prevCheckpointHash: 'prevCheckpointHash',
+  assinatura: 'assinatura',
+  totalEntradas: 'totalEntradas',
+  ancoradoEm: 'ancoradoEm',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AcessoLeituraScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  utilizadorNome: 'utilizadorNome',
+  utilizadorRole: 'utilizadorRole',
+  entidadeTipo: 'entidadeTipo',
+  entidadeId: 'entidadeId',
+  rota: 'rota',
+  ip: 'ip',
+  correlationId: 'correlationId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.FeatureFlagScalarFieldEnum = {
@@ -2031,6 +2061,8 @@ exports.Prisma.ModelName = {
   ListaEspera: 'ListaEspera',
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  AuditCheckpoint: 'AuditCheckpoint',
+  AcessoLeitura: 'AcessoLeitura',
   FeatureFlag: 'FeatureFlag',
   Alergia: 'Alergia',
   ContactoEmergencia: 'ContactoEmergencia',

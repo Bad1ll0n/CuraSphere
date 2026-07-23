@@ -184,6 +184,16 @@ export type ReceitaEletronica = $Result.DefaultSelection<Prisma.$ReceitaEletroni
  */
 export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
 /**
+ * Model AuditCheckpoint
+ * 
+ */
+export type AuditCheckpoint = $Result.DefaultSelection<Prisma.$AuditCheckpointPayload>
+/**
+ * Model AcessoLeitura
+ * 
+ */
+export type AcessoLeitura = $Result.DefaultSelection<Prisma.$AcessoLeituraPayload>
+/**
  * Model FeatureFlag
  * 
  */
@@ -1579,6 +1589,26 @@ export class PrismaClient<
     * ```
     */
   get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditCheckpoint`: Exposes CRUD operations for the **AuditCheckpoint** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditCheckpoints
+    * const auditCheckpoints = await prisma.auditCheckpoint.findMany()
+    * ```
+    */
+  get auditCheckpoint(): Prisma.AuditCheckpointDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.acessoLeitura`: Exposes CRUD operations for the **AcessoLeitura** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcessoLeituras
+    * const acessoLeituras = await prisma.acessoLeitura.findMany()
+    * ```
+    */
+  get acessoLeitura(): Prisma.AcessoLeituraDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.featureFlag`: Exposes CRUD operations for the **FeatureFlag** model.
@@ -2977,6 +3007,8 @@ export namespace Prisma {
     ListaEspera: 'ListaEspera',
     ReceitaEletronica: 'ReceitaEletronica',
     AuditLog: 'AuditLog',
+    AuditCheckpoint: 'AuditCheckpoint',
+    AcessoLeitura: 'AcessoLeitura',
     FeatureFlag: 'FeatureFlag',
     Alergia: 'Alergia',
     ContactoEmergencia: 'ContactoEmergencia',
@@ -3085,7 +3117,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5602,6 +5634,154 @@ export namespace Prisma {
           count: {
             args: Prisma.AuditLogCountArgs<ExtArgs>
             result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuditCheckpoint: {
+        payload: Prisma.$AuditCheckpointPayload<ExtArgs>
+        fields: Prisma.AuditCheckpointFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditCheckpointFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditCheckpointFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditCheckpointFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditCheckpointFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          findMany: {
+            args: Prisma.AuditCheckpointFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>[]
+          }
+          create: {
+            args: Prisma.AuditCheckpointCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          createMany: {
+            args: Prisma.AuditCheckpointCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditCheckpointCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditCheckpointDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          update: {
+            args: Prisma.AuditCheckpointUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditCheckpointDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditCheckpointUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditCheckpointUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditCheckpointUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditCheckpointPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditCheckpointAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditCheckpoint>
+          }
+          groupBy: {
+            args: Prisma.AuditCheckpointGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditCheckpointGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditCheckpointCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditCheckpointCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcessoLeitura: {
+        payload: Prisma.$AcessoLeituraPayload<ExtArgs>
+        fields: Prisma.AcessoLeituraFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcessoLeituraFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcessoLeituraFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          findFirst: {
+            args: Prisma.AcessoLeituraFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcessoLeituraFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          findMany: {
+            args: Prisma.AcessoLeituraFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>[]
+          }
+          create: {
+            args: Prisma.AcessoLeituraCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          createMany: {
+            args: Prisma.AcessoLeituraCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcessoLeituraCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>[]
+          }
+          delete: {
+            args: Prisma.AcessoLeituraDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          update: {
+            args: Prisma.AcessoLeituraUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcessoLeituraDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcessoLeituraUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcessoLeituraUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcessoLeituraUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcessoLeituraPayload>
+          }
+          aggregate: {
+            args: Prisma.AcessoLeituraAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcessoLeitura>
+          }
+          groupBy: {
+            args: Prisma.AcessoLeituraGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcessoLeituraGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcessoLeituraCountArgs<ExtArgs>
+            result: $Utils.Optional<AcessoLeituraCountAggregateOutputType> | number
           }
         }
       }
@@ -12629,6 +12809,8 @@ export namespace Prisma {
     listaEspera?: ListaEsperaOmit
     receitaEletronica?: ReceitaEletronicaOmit
     auditLog?: AuditLogOmit
+    auditCheckpoint?: AuditCheckpointOmit
+    acessoLeitura?: AcessoLeituraOmit
     featureFlag?: FeatureFlagOmit
     alergia?: AlergiaOmit
     contactoEmergencia?: ContactoEmergenciaOmit
@@ -58464,13 +58646,18 @@ export namespace Prisma {
     id: string | null
     seq: number | null
     utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
     acao: string | null
     entidadeId: string | null
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
     userAgent: string | null
+    correlationId: string | null
+    origem: string | null
     createdAt: Date | null
+    contentHash: string | null
     prevHash: string | null
     hash: string | null
   }
@@ -58479,13 +58666,18 @@ export namespace Prisma {
     id: string | null
     seq: number | null
     utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
     acao: string | null
     entidadeId: string | null
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
     userAgent: string | null
+    correlationId: string | null
+    origem: string | null
     createdAt: Date | null
+    contentHash: string | null
     prevHash: string | null
     hash: string | null
   }
@@ -58494,13 +58686,18 @@ export namespace Prisma {
     id: number
     seq: number
     utilizadorId: number
+    utilizadorNome: number
+    utilizadorRole: number
     acao: number
     entidadeId: number
     entidadeTipo: number
     detalhes: number
     ip: number
     userAgent: number
+    correlationId: number
+    origem: number
     createdAt: number
+    contentHash: number
     prevHash: number
     hash: number
     _all: number
@@ -58519,13 +58716,18 @@ export namespace Prisma {
     id?: true
     seq?: true
     utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
     acao?: true
     entidadeId?: true
     entidadeTipo?: true
     detalhes?: true
     ip?: true
     userAgent?: true
+    correlationId?: true
+    origem?: true
     createdAt?: true
+    contentHash?: true
     prevHash?: true
     hash?: true
   }
@@ -58534,13 +58736,18 @@ export namespace Prisma {
     id?: true
     seq?: true
     utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
     acao?: true
     entidadeId?: true
     entidadeTipo?: true
     detalhes?: true
     ip?: true
     userAgent?: true
+    correlationId?: true
+    origem?: true
     createdAt?: true
+    contentHash?: true
     prevHash?: true
     hash?: true
   }
@@ -58549,13 +58756,18 @@ export namespace Prisma {
     id?: true
     seq?: true
     utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
     acao?: true
     entidadeId?: true
     entidadeTipo?: true
     detalhes?: true
     ip?: true
     userAgent?: true
+    correlationId?: true
+    origem?: true
     createdAt?: true
+    contentHash?: true
     prevHash?: true
     hash?: true
     _all?: true
@@ -58650,14 +58862,19 @@ export namespace Prisma {
   export type AuditLogGroupByOutputType = {
     id: string
     seq: number
-    utilizadorId: string
+    utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
     acao: string
     entidadeId: string | null
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
     userAgent: string | null
+    correlationId: string | null
+    origem: string
     createdAt: Date
+    contentHash: string | null
     prevHash: string | null
     hash: string | null
     _count: AuditLogCountAggregateOutputType | null
@@ -58685,92 +58902,117 @@ export namespace Prisma {
     id?: boolean
     seq?: boolean
     utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
     acao?: boolean
     entidadeId?: boolean
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
     userAgent?: boolean
+    correlationId?: boolean
+    origem?: boolean
     createdAt?: boolean
+    contentHash?: boolean
     prevHash?: boolean
     hash?: boolean
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     seq?: boolean
     utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
     acao?: boolean
     entidadeId?: boolean
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
     userAgent?: boolean
+    correlationId?: boolean
+    origem?: boolean
     createdAt?: boolean
+    contentHash?: boolean
     prevHash?: boolean
     hash?: boolean
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     seq?: boolean
     utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
     acao?: boolean
     entidadeId?: boolean
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
     userAgent?: boolean
+    correlationId?: boolean
+    origem?: boolean
     createdAt?: boolean
+    contentHash?: boolean
     prevHash?: boolean
     hash?: boolean
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectScalar = {
     id?: boolean
     seq?: boolean
     utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
     acao?: boolean
     entidadeId?: boolean
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
     userAgent?: boolean
+    correlationId?: boolean
+    origem?: boolean
     createdAt?: boolean
+    contentHash?: boolean
     prevHash?: boolean
     hash?: boolean
   }
 
-  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "seq" | "utilizadorId" | "acao" | "entidadeId" | "entidadeTipo" | "detalhes" | "ip" | "userAgent" | "createdAt" | "prevHash" | "hash", ExtArgs["result"]["auditLog"]>
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "seq" | "utilizadorId" | "utilizadorNome" | "utilizadorRole" | "acao" | "entidadeId" | "entidadeTipo" | "detalhes" | "ip" | "userAgent" | "correlationId" | "origem" | "createdAt" | "contentHash" | "prevHash" | "hash", ExtArgs["result"]["auditLog"]>
   export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }
   export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }
   export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    utilizador?: boolean | AuditLog$utilizadorArgs<ExtArgs>
   }
 
   export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AuditLog"
     objects: {
-      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       seq: number
-      utilizadorId: string
+      utilizadorId: string | null
+      utilizadorNome: string | null
+      utilizadorRole: string | null
       acao: string
       entidadeId: string | null
       entidadeTipo: string | null
       detalhes: string | null
       ip: string | null
       userAgent: string | null
+      correlationId: string | null
+      origem: string
       createdAt: Date
+      contentHash: string | null
       prevHash: string | null
       hash: string | null
     }, ExtArgs["result"]["auditLog"]>
@@ -59167,7 +59409,7 @@ export namespace Prisma {
    */
   export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilizador<T extends AuditLog$utilizadorArgs<ExtArgs> = {}>(args?: Subset<T, AuditLog$utilizadorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -59200,13 +59442,18 @@ export namespace Prisma {
     readonly id: FieldRef<"AuditLog", 'String'>
     readonly seq: FieldRef<"AuditLog", 'Int'>
     readonly utilizadorId: FieldRef<"AuditLog", 'String'>
+    readonly utilizadorNome: FieldRef<"AuditLog", 'String'>
+    readonly utilizadorRole: FieldRef<"AuditLog", 'String'>
     readonly acao: FieldRef<"AuditLog", 'String'>
     readonly entidadeId: FieldRef<"AuditLog", 'String'>
     readonly entidadeTipo: FieldRef<"AuditLog", 'String'>
     readonly detalhes: FieldRef<"AuditLog", 'String'>
     readonly ip: FieldRef<"AuditLog", 'String'>
     readonly userAgent: FieldRef<"AuditLog", 'String'>
+    readonly correlationId: FieldRef<"AuditLog", 'String'>
+    readonly origem: FieldRef<"AuditLog", 'String'>
     readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+    readonly contentHash: FieldRef<"AuditLog", 'String'>
     readonly prevHash: FieldRef<"AuditLog", 'String'>
     readonly hash: FieldRef<"AuditLog", 'String'>
   }
@@ -59610,6 +59857,25 @@ export namespace Prisma {
   }
 
   /**
+   * AuditLog.utilizador
+   */
+  export type AuditLog$utilizadorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
    * AuditLog without action
    */
   export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -59625,6 +59891,2165 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuditCheckpoint
+   */
+
+  export type AggregateAuditCheckpoint = {
+    _count: AuditCheckpointCountAggregateOutputType | null
+    _avg: AuditCheckpointAvgAggregateOutputType | null
+    _sum: AuditCheckpointSumAggregateOutputType | null
+    _min: AuditCheckpointMinAggregateOutputType | null
+    _max: AuditCheckpointMaxAggregateOutputType | null
+  }
+
+  export type AuditCheckpointAvgAggregateOutputType = {
+    seqInicio: number | null
+    seqFim: number | null
+    totalEntradas: number | null
+  }
+
+  export type AuditCheckpointSumAggregateOutputType = {
+    seqInicio: number | null
+    seqFim: number | null
+    totalEntradas: number | null
+  }
+
+  export type AuditCheckpointMinAggregateOutputType = {
+    id: string | null
+    seqInicio: number | null
+    seqFim: number | null
+    raiz: string | null
+    prevCheckpointHash: string | null
+    assinatura: string | null
+    totalEntradas: number | null
+    ancoradoEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type AuditCheckpointMaxAggregateOutputType = {
+    id: string | null
+    seqInicio: number | null
+    seqFim: number | null
+    raiz: string | null
+    prevCheckpointHash: string | null
+    assinatura: string | null
+    totalEntradas: number | null
+    ancoradoEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type AuditCheckpointCountAggregateOutputType = {
+    id: number
+    seqInicio: number
+    seqFim: number
+    raiz: number
+    prevCheckpointHash: number
+    assinatura: number
+    totalEntradas: number
+    ancoradoEm: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AuditCheckpointAvgAggregateInputType = {
+    seqInicio?: true
+    seqFim?: true
+    totalEntradas?: true
+  }
+
+  export type AuditCheckpointSumAggregateInputType = {
+    seqInicio?: true
+    seqFim?: true
+    totalEntradas?: true
+  }
+
+  export type AuditCheckpointMinAggregateInputType = {
+    id?: true
+    seqInicio?: true
+    seqFim?: true
+    raiz?: true
+    prevCheckpointHash?: true
+    assinatura?: true
+    totalEntradas?: true
+    ancoradoEm?: true
+    criadoEm?: true
+  }
+
+  export type AuditCheckpointMaxAggregateInputType = {
+    id?: true
+    seqInicio?: true
+    seqFim?: true
+    raiz?: true
+    prevCheckpointHash?: true
+    assinatura?: true
+    totalEntradas?: true
+    ancoradoEm?: true
+    criadoEm?: true
+  }
+
+  export type AuditCheckpointCountAggregateInputType = {
+    id?: true
+    seqInicio?: true
+    seqFim?: true
+    raiz?: true
+    prevCheckpointHash?: true
+    assinatura?: true
+    totalEntradas?: true
+    ancoradoEm?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AuditCheckpointAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditCheckpoint to aggregate.
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditCheckpoints to fetch.
+     */
+    orderBy?: AuditCheckpointOrderByWithRelationInput | AuditCheckpointOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditCheckpointWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditCheckpoints from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditCheckpoints.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditCheckpoints
+    **/
+    _count?: true | AuditCheckpointCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AuditCheckpointAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AuditCheckpointSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditCheckpointMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditCheckpointMaxAggregateInputType
+  }
+
+  export type GetAuditCheckpointAggregateType<T extends AuditCheckpointAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditCheckpoint]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditCheckpoint[P]>
+      : GetScalarType<T[P], AggregateAuditCheckpoint[P]>
+  }
+
+
+
+
+  export type AuditCheckpointGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditCheckpointWhereInput
+    orderBy?: AuditCheckpointOrderByWithAggregationInput | AuditCheckpointOrderByWithAggregationInput[]
+    by: AuditCheckpointScalarFieldEnum[] | AuditCheckpointScalarFieldEnum
+    having?: AuditCheckpointScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditCheckpointCountAggregateInputType | true
+    _avg?: AuditCheckpointAvgAggregateInputType
+    _sum?: AuditCheckpointSumAggregateInputType
+    _min?: AuditCheckpointMinAggregateInputType
+    _max?: AuditCheckpointMaxAggregateInputType
+  }
+
+  export type AuditCheckpointGroupByOutputType = {
+    id: string
+    seqInicio: number
+    seqFim: number
+    raiz: string
+    prevCheckpointHash: string | null
+    assinatura: string | null
+    totalEntradas: number
+    ancoradoEm: Date | null
+    criadoEm: Date
+    _count: AuditCheckpointCountAggregateOutputType | null
+    _avg: AuditCheckpointAvgAggregateOutputType | null
+    _sum: AuditCheckpointSumAggregateOutputType | null
+    _min: AuditCheckpointMinAggregateOutputType | null
+    _max: AuditCheckpointMaxAggregateOutputType | null
+  }
+
+  type GetAuditCheckpointGroupByPayload<T extends AuditCheckpointGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditCheckpointGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditCheckpointGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditCheckpointGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditCheckpointGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditCheckpointSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    seqInicio?: boolean
+    seqFim?: boolean
+    raiz?: boolean
+    prevCheckpointHash?: boolean
+    assinatura?: boolean
+    totalEntradas?: boolean
+    ancoradoEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["auditCheckpoint"]>
+
+  export type AuditCheckpointSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    seqInicio?: boolean
+    seqFim?: boolean
+    raiz?: boolean
+    prevCheckpointHash?: boolean
+    assinatura?: boolean
+    totalEntradas?: boolean
+    ancoradoEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["auditCheckpoint"]>
+
+  export type AuditCheckpointSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    seqInicio?: boolean
+    seqFim?: boolean
+    raiz?: boolean
+    prevCheckpointHash?: boolean
+    assinatura?: boolean
+    totalEntradas?: boolean
+    ancoradoEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["auditCheckpoint"]>
+
+  export type AuditCheckpointSelectScalar = {
+    id?: boolean
+    seqInicio?: boolean
+    seqFim?: boolean
+    raiz?: boolean
+    prevCheckpointHash?: boolean
+    assinatura?: boolean
+    totalEntradas?: boolean
+    ancoradoEm?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AuditCheckpointOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "seqInicio" | "seqFim" | "raiz" | "prevCheckpointHash" | "assinatura" | "totalEntradas" | "ancoradoEm" | "criadoEm", ExtArgs["result"]["auditCheckpoint"]>
+
+  export type $AuditCheckpointPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditCheckpoint"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      seqInicio: number
+      seqFim: number
+      raiz: string
+      prevCheckpointHash: string | null
+      assinatura: string | null
+      totalEntradas: number
+      ancoradoEm: Date | null
+      criadoEm: Date
+    }, ExtArgs["result"]["auditCheckpoint"]>
+    composites: {}
+  }
+
+  type AuditCheckpointGetPayload<S extends boolean | null | undefined | AuditCheckpointDefaultArgs> = $Result.GetResult<Prisma.$AuditCheckpointPayload, S>
+
+  type AuditCheckpointCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditCheckpointFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditCheckpointCountAggregateInputType | true
+    }
+
+  export interface AuditCheckpointDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditCheckpoint'], meta: { name: 'AuditCheckpoint' } }
+    /**
+     * Find zero or one AuditCheckpoint that matches the filter.
+     * @param {AuditCheckpointFindUniqueArgs} args - Arguments to find a AuditCheckpoint
+     * @example
+     * // Get one AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditCheckpointFindUniqueArgs>(args: SelectSubset<T, AuditCheckpointFindUniqueArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditCheckpoint that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditCheckpointFindUniqueOrThrowArgs} args - Arguments to find a AuditCheckpoint
+     * @example
+     * // Get one AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditCheckpointFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditCheckpointFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditCheckpoint that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointFindFirstArgs} args - Arguments to find a AuditCheckpoint
+     * @example
+     * // Get one AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditCheckpointFindFirstArgs>(args?: SelectSubset<T, AuditCheckpointFindFirstArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditCheckpoint that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointFindFirstOrThrowArgs} args - Arguments to find a AuditCheckpoint
+     * @example
+     * // Get one AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditCheckpointFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditCheckpointFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditCheckpoints that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditCheckpoints
+     * const auditCheckpoints = await prisma.auditCheckpoint.findMany()
+     * 
+     * // Get first 10 AuditCheckpoints
+     * const auditCheckpoints = await prisma.auditCheckpoint.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditCheckpointWithIdOnly = await prisma.auditCheckpoint.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditCheckpointFindManyArgs>(args?: SelectSubset<T, AuditCheckpointFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditCheckpoint.
+     * @param {AuditCheckpointCreateArgs} args - Arguments to create a AuditCheckpoint.
+     * @example
+     * // Create one AuditCheckpoint
+     * const AuditCheckpoint = await prisma.auditCheckpoint.create({
+     *   data: {
+     *     // ... data to create a AuditCheckpoint
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditCheckpointCreateArgs>(args: SelectSubset<T, AuditCheckpointCreateArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditCheckpoints.
+     * @param {AuditCheckpointCreateManyArgs} args - Arguments to create many AuditCheckpoints.
+     * @example
+     * // Create many AuditCheckpoints
+     * const auditCheckpoint = await prisma.auditCheckpoint.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditCheckpointCreateManyArgs>(args?: SelectSubset<T, AuditCheckpointCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditCheckpoints and returns the data saved in the database.
+     * @param {AuditCheckpointCreateManyAndReturnArgs} args - Arguments to create many AuditCheckpoints.
+     * @example
+     * // Create many AuditCheckpoints
+     * const auditCheckpoint = await prisma.auditCheckpoint.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditCheckpoints and only return the `id`
+     * const auditCheckpointWithIdOnly = await prisma.auditCheckpoint.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditCheckpointCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditCheckpointCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditCheckpoint.
+     * @param {AuditCheckpointDeleteArgs} args - Arguments to delete one AuditCheckpoint.
+     * @example
+     * // Delete one AuditCheckpoint
+     * const AuditCheckpoint = await prisma.auditCheckpoint.delete({
+     *   where: {
+     *     // ... filter to delete one AuditCheckpoint
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditCheckpointDeleteArgs>(args: SelectSubset<T, AuditCheckpointDeleteArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditCheckpoint.
+     * @param {AuditCheckpointUpdateArgs} args - Arguments to update one AuditCheckpoint.
+     * @example
+     * // Update one AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditCheckpointUpdateArgs>(args: SelectSubset<T, AuditCheckpointUpdateArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditCheckpoints.
+     * @param {AuditCheckpointDeleteManyArgs} args - Arguments to filter AuditCheckpoints to delete.
+     * @example
+     * // Delete a few AuditCheckpoints
+     * const { count } = await prisma.auditCheckpoint.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditCheckpointDeleteManyArgs>(args?: SelectSubset<T, AuditCheckpointDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditCheckpoints.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditCheckpoints
+     * const auditCheckpoint = await prisma.auditCheckpoint.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditCheckpointUpdateManyArgs>(args: SelectSubset<T, AuditCheckpointUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditCheckpoints and returns the data updated in the database.
+     * @param {AuditCheckpointUpdateManyAndReturnArgs} args - Arguments to update many AuditCheckpoints.
+     * @example
+     * // Update many AuditCheckpoints
+     * const auditCheckpoint = await prisma.auditCheckpoint.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditCheckpoints and only return the `id`
+     * const auditCheckpointWithIdOnly = await prisma.auditCheckpoint.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditCheckpointUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditCheckpointUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditCheckpoint.
+     * @param {AuditCheckpointUpsertArgs} args - Arguments to update or create a AuditCheckpoint.
+     * @example
+     * // Update or create a AuditCheckpoint
+     * const auditCheckpoint = await prisma.auditCheckpoint.upsert({
+     *   create: {
+     *     // ... data to create a AuditCheckpoint
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditCheckpoint we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditCheckpointUpsertArgs>(args: SelectSubset<T, AuditCheckpointUpsertArgs<ExtArgs>>): Prisma__AuditCheckpointClient<$Result.GetResult<Prisma.$AuditCheckpointPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditCheckpoints.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointCountArgs} args - Arguments to filter AuditCheckpoints to count.
+     * @example
+     * // Count the number of AuditCheckpoints
+     * const count = await prisma.auditCheckpoint.count({
+     *   where: {
+     *     // ... the filter for the AuditCheckpoints we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditCheckpointCountArgs>(
+      args?: Subset<T, AuditCheckpointCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditCheckpointCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditCheckpoint.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditCheckpointAggregateArgs>(args: Subset<T, AuditCheckpointAggregateArgs>): Prisma.PrismaPromise<GetAuditCheckpointAggregateType<T>>
+
+    /**
+     * Group by AuditCheckpoint.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditCheckpointGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditCheckpointGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditCheckpointGroupByArgs['orderBy'] }
+        : { orderBy?: AuditCheckpointGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditCheckpointGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditCheckpointGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditCheckpoint model
+   */
+  readonly fields: AuditCheckpointFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditCheckpoint.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditCheckpointClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditCheckpoint model
+   */
+  interface AuditCheckpointFieldRefs {
+    readonly id: FieldRef<"AuditCheckpoint", 'String'>
+    readonly seqInicio: FieldRef<"AuditCheckpoint", 'Int'>
+    readonly seqFim: FieldRef<"AuditCheckpoint", 'Int'>
+    readonly raiz: FieldRef<"AuditCheckpoint", 'String'>
+    readonly prevCheckpointHash: FieldRef<"AuditCheckpoint", 'String'>
+    readonly assinatura: FieldRef<"AuditCheckpoint", 'String'>
+    readonly totalEntradas: FieldRef<"AuditCheckpoint", 'Int'>
+    readonly ancoradoEm: FieldRef<"AuditCheckpoint", 'DateTime'>
+    readonly criadoEm: FieldRef<"AuditCheckpoint", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditCheckpoint findUnique
+   */
+  export type AuditCheckpointFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditCheckpoint to fetch.
+     */
+    where: AuditCheckpointWhereUniqueInput
+  }
+
+  /**
+   * AuditCheckpoint findUniqueOrThrow
+   */
+  export type AuditCheckpointFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditCheckpoint to fetch.
+     */
+    where: AuditCheckpointWhereUniqueInput
+  }
+
+  /**
+   * AuditCheckpoint findFirst
+   */
+  export type AuditCheckpointFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditCheckpoint to fetch.
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditCheckpoints to fetch.
+     */
+    orderBy?: AuditCheckpointOrderByWithRelationInput | AuditCheckpointOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditCheckpoints.
+     */
+    cursor?: AuditCheckpointWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditCheckpoints from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditCheckpoints.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditCheckpoints.
+     */
+    distinct?: AuditCheckpointScalarFieldEnum | AuditCheckpointScalarFieldEnum[]
+  }
+
+  /**
+   * AuditCheckpoint findFirstOrThrow
+   */
+  export type AuditCheckpointFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditCheckpoint to fetch.
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditCheckpoints to fetch.
+     */
+    orderBy?: AuditCheckpointOrderByWithRelationInput | AuditCheckpointOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditCheckpoints.
+     */
+    cursor?: AuditCheckpointWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditCheckpoints from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditCheckpoints.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditCheckpoints.
+     */
+    distinct?: AuditCheckpointScalarFieldEnum | AuditCheckpointScalarFieldEnum[]
+  }
+
+  /**
+   * AuditCheckpoint findMany
+   */
+  export type AuditCheckpointFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditCheckpoints to fetch.
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditCheckpoints to fetch.
+     */
+    orderBy?: AuditCheckpointOrderByWithRelationInput | AuditCheckpointOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditCheckpoints.
+     */
+    cursor?: AuditCheckpointWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditCheckpoints from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditCheckpoints.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditCheckpoints.
+     */
+    distinct?: AuditCheckpointScalarFieldEnum | AuditCheckpointScalarFieldEnum[]
+  }
+
+  /**
+   * AuditCheckpoint create
+   */
+  export type AuditCheckpointCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AuditCheckpoint.
+     */
+    data: XOR<AuditCheckpointCreateInput, AuditCheckpointUncheckedCreateInput>
+  }
+
+  /**
+   * AuditCheckpoint createMany
+   */
+  export type AuditCheckpointCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditCheckpoints.
+     */
+    data: AuditCheckpointCreateManyInput | AuditCheckpointCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditCheckpoint createManyAndReturn
+   */
+  export type AuditCheckpointCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditCheckpoints.
+     */
+    data: AuditCheckpointCreateManyInput | AuditCheckpointCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditCheckpoint update
+   */
+  export type AuditCheckpointUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AuditCheckpoint.
+     */
+    data: XOR<AuditCheckpointUpdateInput, AuditCheckpointUncheckedUpdateInput>
+    /**
+     * Choose, which AuditCheckpoint to update.
+     */
+    where: AuditCheckpointWhereUniqueInput
+  }
+
+  /**
+   * AuditCheckpoint updateMany
+   */
+  export type AuditCheckpointUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditCheckpoints.
+     */
+    data: XOR<AuditCheckpointUpdateManyMutationInput, AuditCheckpointUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditCheckpoints to update
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * Limit how many AuditCheckpoints to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditCheckpoint updateManyAndReturn
+   */
+  export type AuditCheckpointUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditCheckpoints.
+     */
+    data: XOR<AuditCheckpointUpdateManyMutationInput, AuditCheckpointUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditCheckpoints to update
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * Limit how many AuditCheckpoints to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditCheckpoint upsert
+   */
+  export type AuditCheckpointUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AuditCheckpoint to update in case it exists.
+     */
+    where: AuditCheckpointWhereUniqueInput
+    /**
+     * In case the AuditCheckpoint found by the `where` argument doesn't exist, create a new AuditCheckpoint with this data.
+     */
+    create: XOR<AuditCheckpointCreateInput, AuditCheckpointUncheckedCreateInput>
+    /**
+     * In case the AuditCheckpoint was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditCheckpointUpdateInput, AuditCheckpointUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditCheckpoint delete
+   */
+  export type AuditCheckpointDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+    /**
+     * Filter which AuditCheckpoint to delete.
+     */
+    where: AuditCheckpointWhereUniqueInput
+  }
+
+  /**
+   * AuditCheckpoint deleteMany
+   */
+  export type AuditCheckpointDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditCheckpoints to delete
+     */
+    where?: AuditCheckpointWhereInput
+    /**
+     * Limit how many AuditCheckpoints to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditCheckpoint without action
+   */
+  export type AuditCheckpointDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditCheckpoint
+     */
+    select?: AuditCheckpointSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditCheckpoint
+     */
+    omit?: AuditCheckpointOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcessoLeitura
+   */
+
+  export type AggregateAcessoLeitura = {
+    _count: AcessoLeituraCountAggregateOutputType | null
+    _min: AcessoLeituraMinAggregateOutputType | null
+    _max: AcessoLeituraMaxAggregateOutputType | null
+  }
+
+  export type AcessoLeituraMinAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
+    entidadeTipo: string | null
+    entidadeId: string | null
+    rota: string | null
+    ip: string | null
+    correlationId: string | null
+    createdAt: Date | null
+  }
+
+  export type AcessoLeituraMaxAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
+    entidadeTipo: string | null
+    entidadeId: string | null
+    rota: string | null
+    ip: string | null
+    correlationId: string | null
+    createdAt: Date | null
+  }
+
+  export type AcessoLeituraCountAggregateOutputType = {
+    id: number
+    utilizadorId: number
+    utilizadorNome: number
+    utilizadorRole: number
+    entidadeTipo: number
+    entidadeId: number
+    rota: number
+    ip: number
+    correlationId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AcessoLeituraMinAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
+    entidadeTipo?: true
+    entidadeId?: true
+    rota?: true
+    ip?: true
+    correlationId?: true
+    createdAt?: true
+  }
+
+  export type AcessoLeituraMaxAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
+    entidadeTipo?: true
+    entidadeId?: true
+    rota?: true
+    ip?: true
+    correlationId?: true
+    createdAt?: true
+  }
+
+  export type AcessoLeituraCountAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    utilizadorNome?: true
+    utilizadorRole?: true
+    entidadeTipo?: true
+    entidadeId?: true
+    rota?: true
+    ip?: true
+    correlationId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AcessoLeituraAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcessoLeitura to aggregate.
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcessoLeituras to fetch.
+     */
+    orderBy?: AcessoLeituraOrderByWithRelationInput | AcessoLeituraOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcessoLeituraWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcessoLeituras from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcessoLeituras.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcessoLeituras
+    **/
+    _count?: true | AcessoLeituraCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcessoLeituraMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcessoLeituraMaxAggregateInputType
+  }
+
+  export type GetAcessoLeituraAggregateType<T extends AcessoLeituraAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcessoLeitura]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcessoLeitura[P]>
+      : GetScalarType<T[P], AggregateAcessoLeitura[P]>
+  }
+
+
+
+
+  export type AcessoLeituraGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcessoLeituraWhereInput
+    orderBy?: AcessoLeituraOrderByWithAggregationInput | AcessoLeituraOrderByWithAggregationInput[]
+    by: AcessoLeituraScalarFieldEnum[] | AcessoLeituraScalarFieldEnum
+    having?: AcessoLeituraScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcessoLeituraCountAggregateInputType | true
+    _min?: AcessoLeituraMinAggregateInputType
+    _max?: AcessoLeituraMaxAggregateInputType
+  }
+
+  export type AcessoLeituraGroupByOutputType = {
+    id: string
+    utilizadorId: string | null
+    utilizadorNome: string | null
+    utilizadorRole: string | null
+    entidadeTipo: string
+    entidadeId: string | null
+    rota: string | null
+    ip: string | null
+    correlationId: string | null
+    createdAt: Date
+    _count: AcessoLeituraCountAggregateOutputType | null
+    _min: AcessoLeituraMinAggregateOutputType | null
+    _max: AcessoLeituraMaxAggregateOutputType | null
+  }
+
+  type GetAcessoLeituraGroupByPayload<T extends AcessoLeituraGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcessoLeituraGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcessoLeituraGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcessoLeituraGroupByOutputType[P]>
+            : GetScalarType<T[P], AcessoLeituraGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcessoLeituraSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
+    entidadeTipo?: boolean
+    entidadeId?: boolean
+    rota?: boolean
+    ip?: boolean
+    correlationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["acessoLeitura"]>
+
+  export type AcessoLeituraSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
+    entidadeTipo?: boolean
+    entidadeId?: boolean
+    rota?: boolean
+    ip?: boolean
+    correlationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["acessoLeitura"]>
+
+  export type AcessoLeituraSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
+    entidadeTipo?: boolean
+    entidadeId?: boolean
+    rota?: boolean
+    ip?: boolean
+    correlationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["acessoLeitura"]>
+
+  export type AcessoLeituraSelectScalar = {
+    id?: boolean
+    utilizadorId?: boolean
+    utilizadorNome?: boolean
+    utilizadorRole?: boolean
+    entidadeTipo?: boolean
+    entidadeId?: boolean
+    rota?: boolean
+    ip?: boolean
+    correlationId?: boolean
+    createdAt?: boolean
+  }
+
+  export type AcessoLeituraOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "utilizadorNome" | "utilizadorRole" | "entidadeTipo" | "entidadeId" | "rota" | "ip" | "correlationId" | "createdAt", ExtArgs["result"]["acessoLeitura"]>
+
+  export type $AcessoLeituraPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcessoLeitura"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      utilizadorId: string | null
+      utilizadorNome: string | null
+      utilizadorRole: string | null
+      entidadeTipo: string
+      entidadeId: string | null
+      rota: string | null
+      ip: string | null
+      correlationId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["acessoLeitura"]>
+    composites: {}
+  }
+
+  type AcessoLeituraGetPayload<S extends boolean | null | undefined | AcessoLeituraDefaultArgs> = $Result.GetResult<Prisma.$AcessoLeituraPayload, S>
+
+  type AcessoLeituraCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcessoLeituraFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcessoLeituraCountAggregateInputType | true
+    }
+
+  export interface AcessoLeituraDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcessoLeitura'], meta: { name: 'AcessoLeitura' } }
+    /**
+     * Find zero or one AcessoLeitura that matches the filter.
+     * @param {AcessoLeituraFindUniqueArgs} args - Arguments to find a AcessoLeitura
+     * @example
+     * // Get one AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcessoLeituraFindUniqueArgs>(args: SelectSubset<T, AcessoLeituraFindUniqueArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcessoLeitura that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcessoLeituraFindUniqueOrThrowArgs} args - Arguments to find a AcessoLeitura
+     * @example
+     * // Get one AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcessoLeituraFindUniqueOrThrowArgs>(args: SelectSubset<T, AcessoLeituraFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcessoLeitura that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraFindFirstArgs} args - Arguments to find a AcessoLeitura
+     * @example
+     * // Get one AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcessoLeituraFindFirstArgs>(args?: SelectSubset<T, AcessoLeituraFindFirstArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcessoLeitura that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraFindFirstOrThrowArgs} args - Arguments to find a AcessoLeitura
+     * @example
+     * // Get one AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcessoLeituraFindFirstOrThrowArgs>(args?: SelectSubset<T, AcessoLeituraFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcessoLeituras that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcessoLeituras
+     * const acessoLeituras = await prisma.acessoLeitura.findMany()
+     * 
+     * // Get first 10 AcessoLeituras
+     * const acessoLeituras = await prisma.acessoLeitura.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const acessoLeituraWithIdOnly = await prisma.acessoLeitura.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcessoLeituraFindManyArgs>(args?: SelectSubset<T, AcessoLeituraFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcessoLeitura.
+     * @param {AcessoLeituraCreateArgs} args - Arguments to create a AcessoLeitura.
+     * @example
+     * // Create one AcessoLeitura
+     * const AcessoLeitura = await prisma.acessoLeitura.create({
+     *   data: {
+     *     // ... data to create a AcessoLeitura
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcessoLeituraCreateArgs>(args: SelectSubset<T, AcessoLeituraCreateArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcessoLeituras.
+     * @param {AcessoLeituraCreateManyArgs} args - Arguments to create many AcessoLeituras.
+     * @example
+     * // Create many AcessoLeituras
+     * const acessoLeitura = await prisma.acessoLeitura.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcessoLeituraCreateManyArgs>(args?: SelectSubset<T, AcessoLeituraCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcessoLeituras and returns the data saved in the database.
+     * @param {AcessoLeituraCreateManyAndReturnArgs} args - Arguments to create many AcessoLeituras.
+     * @example
+     * // Create many AcessoLeituras
+     * const acessoLeitura = await prisma.acessoLeitura.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcessoLeituras and only return the `id`
+     * const acessoLeituraWithIdOnly = await prisma.acessoLeitura.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcessoLeituraCreateManyAndReturnArgs>(args?: SelectSubset<T, AcessoLeituraCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcessoLeitura.
+     * @param {AcessoLeituraDeleteArgs} args - Arguments to delete one AcessoLeitura.
+     * @example
+     * // Delete one AcessoLeitura
+     * const AcessoLeitura = await prisma.acessoLeitura.delete({
+     *   where: {
+     *     // ... filter to delete one AcessoLeitura
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcessoLeituraDeleteArgs>(args: SelectSubset<T, AcessoLeituraDeleteArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcessoLeitura.
+     * @param {AcessoLeituraUpdateArgs} args - Arguments to update one AcessoLeitura.
+     * @example
+     * // Update one AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcessoLeituraUpdateArgs>(args: SelectSubset<T, AcessoLeituraUpdateArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcessoLeituras.
+     * @param {AcessoLeituraDeleteManyArgs} args - Arguments to filter AcessoLeituras to delete.
+     * @example
+     * // Delete a few AcessoLeituras
+     * const { count } = await prisma.acessoLeitura.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcessoLeituraDeleteManyArgs>(args?: SelectSubset<T, AcessoLeituraDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcessoLeituras.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcessoLeituras
+     * const acessoLeitura = await prisma.acessoLeitura.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcessoLeituraUpdateManyArgs>(args: SelectSubset<T, AcessoLeituraUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcessoLeituras and returns the data updated in the database.
+     * @param {AcessoLeituraUpdateManyAndReturnArgs} args - Arguments to update many AcessoLeituras.
+     * @example
+     * // Update many AcessoLeituras
+     * const acessoLeitura = await prisma.acessoLeitura.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcessoLeituras and only return the `id`
+     * const acessoLeituraWithIdOnly = await prisma.acessoLeitura.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcessoLeituraUpdateManyAndReturnArgs>(args: SelectSubset<T, AcessoLeituraUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcessoLeitura.
+     * @param {AcessoLeituraUpsertArgs} args - Arguments to update or create a AcessoLeitura.
+     * @example
+     * // Update or create a AcessoLeitura
+     * const acessoLeitura = await prisma.acessoLeitura.upsert({
+     *   create: {
+     *     // ... data to create a AcessoLeitura
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcessoLeitura we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcessoLeituraUpsertArgs>(args: SelectSubset<T, AcessoLeituraUpsertArgs<ExtArgs>>): Prisma__AcessoLeituraClient<$Result.GetResult<Prisma.$AcessoLeituraPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcessoLeituras.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraCountArgs} args - Arguments to filter AcessoLeituras to count.
+     * @example
+     * // Count the number of AcessoLeituras
+     * const count = await prisma.acessoLeitura.count({
+     *   where: {
+     *     // ... the filter for the AcessoLeituras we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcessoLeituraCountArgs>(
+      args?: Subset<T, AcessoLeituraCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcessoLeituraCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcessoLeitura.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcessoLeituraAggregateArgs>(args: Subset<T, AcessoLeituraAggregateArgs>): Prisma.PrismaPromise<GetAcessoLeituraAggregateType<T>>
+
+    /**
+     * Group by AcessoLeitura.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcessoLeituraGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcessoLeituraGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcessoLeituraGroupByArgs['orderBy'] }
+        : { orderBy?: AcessoLeituraGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcessoLeituraGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcessoLeituraGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcessoLeitura model
+   */
+  readonly fields: AcessoLeituraFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcessoLeitura.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcessoLeituraClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcessoLeitura model
+   */
+  interface AcessoLeituraFieldRefs {
+    readonly id: FieldRef<"AcessoLeitura", 'String'>
+    readonly utilizadorId: FieldRef<"AcessoLeitura", 'String'>
+    readonly utilizadorNome: FieldRef<"AcessoLeitura", 'String'>
+    readonly utilizadorRole: FieldRef<"AcessoLeitura", 'String'>
+    readonly entidadeTipo: FieldRef<"AcessoLeitura", 'String'>
+    readonly entidadeId: FieldRef<"AcessoLeitura", 'String'>
+    readonly rota: FieldRef<"AcessoLeitura", 'String'>
+    readonly ip: FieldRef<"AcessoLeitura", 'String'>
+    readonly correlationId: FieldRef<"AcessoLeitura", 'String'>
+    readonly createdAt: FieldRef<"AcessoLeitura", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcessoLeitura findUnique
+   */
+  export type AcessoLeituraFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter, which AcessoLeitura to fetch.
+     */
+    where: AcessoLeituraWhereUniqueInput
+  }
+
+  /**
+   * AcessoLeitura findUniqueOrThrow
+   */
+  export type AcessoLeituraFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter, which AcessoLeitura to fetch.
+     */
+    where: AcessoLeituraWhereUniqueInput
+  }
+
+  /**
+   * AcessoLeitura findFirst
+   */
+  export type AcessoLeituraFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter, which AcessoLeitura to fetch.
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcessoLeituras to fetch.
+     */
+    orderBy?: AcessoLeituraOrderByWithRelationInput | AcessoLeituraOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcessoLeituras.
+     */
+    cursor?: AcessoLeituraWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcessoLeituras from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcessoLeituras.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcessoLeituras.
+     */
+    distinct?: AcessoLeituraScalarFieldEnum | AcessoLeituraScalarFieldEnum[]
+  }
+
+  /**
+   * AcessoLeitura findFirstOrThrow
+   */
+  export type AcessoLeituraFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter, which AcessoLeitura to fetch.
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcessoLeituras to fetch.
+     */
+    orderBy?: AcessoLeituraOrderByWithRelationInput | AcessoLeituraOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcessoLeituras.
+     */
+    cursor?: AcessoLeituraWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcessoLeituras from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcessoLeituras.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcessoLeituras.
+     */
+    distinct?: AcessoLeituraScalarFieldEnum | AcessoLeituraScalarFieldEnum[]
+  }
+
+  /**
+   * AcessoLeitura findMany
+   */
+  export type AcessoLeituraFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter, which AcessoLeituras to fetch.
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcessoLeituras to fetch.
+     */
+    orderBy?: AcessoLeituraOrderByWithRelationInput | AcessoLeituraOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcessoLeituras.
+     */
+    cursor?: AcessoLeituraWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcessoLeituras from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcessoLeituras.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcessoLeituras.
+     */
+    distinct?: AcessoLeituraScalarFieldEnum | AcessoLeituraScalarFieldEnum[]
+  }
+
+  /**
+   * AcessoLeitura create
+   */
+  export type AcessoLeituraCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcessoLeitura.
+     */
+    data: XOR<AcessoLeituraCreateInput, AcessoLeituraUncheckedCreateInput>
+  }
+
+  /**
+   * AcessoLeitura createMany
+   */
+  export type AcessoLeituraCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcessoLeituras.
+     */
+    data: AcessoLeituraCreateManyInput | AcessoLeituraCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcessoLeitura createManyAndReturn
+   */
+  export type AcessoLeituraCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcessoLeituras.
+     */
+    data: AcessoLeituraCreateManyInput | AcessoLeituraCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcessoLeitura update
+   */
+  export type AcessoLeituraUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcessoLeitura.
+     */
+    data: XOR<AcessoLeituraUpdateInput, AcessoLeituraUncheckedUpdateInput>
+    /**
+     * Choose, which AcessoLeitura to update.
+     */
+    where: AcessoLeituraWhereUniqueInput
+  }
+
+  /**
+   * AcessoLeitura updateMany
+   */
+  export type AcessoLeituraUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcessoLeituras.
+     */
+    data: XOR<AcessoLeituraUpdateManyMutationInput, AcessoLeituraUncheckedUpdateManyInput>
+    /**
+     * Filter which AcessoLeituras to update
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * Limit how many AcessoLeituras to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcessoLeitura updateManyAndReturn
+   */
+  export type AcessoLeituraUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * The data used to update AcessoLeituras.
+     */
+    data: XOR<AcessoLeituraUpdateManyMutationInput, AcessoLeituraUncheckedUpdateManyInput>
+    /**
+     * Filter which AcessoLeituras to update
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * Limit how many AcessoLeituras to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcessoLeitura upsert
+   */
+  export type AcessoLeituraUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcessoLeitura to update in case it exists.
+     */
+    where: AcessoLeituraWhereUniqueInput
+    /**
+     * In case the AcessoLeitura found by the `where` argument doesn't exist, create a new AcessoLeitura with this data.
+     */
+    create: XOR<AcessoLeituraCreateInput, AcessoLeituraUncheckedCreateInput>
+    /**
+     * In case the AcessoLeitura was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcessoLeituraUpdateInput, AcessoLeituraUncheckedUpdateInput>
+  }
+
+  /**
+   * AcessoLeitura delete
+   */
+  export type AcessoLeituraDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
+    /**
+     * Filter which AcessoLeitura to delete.
+     */
+    where: AcessoLeituraWhereUniqueInput
+  }
+
+  /**
+   * AcessoLeitura deleteMany
+   */
+  export type AcessoLeituraDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcessoLeituras to delete
+     */
+    where?: AcessoLeituraWhereInput
+    /**
+     * Limit how many AcessoLeituras to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcessoLeitura without action
+   */
+  export type AcessoLeituraDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcessoLeitura
+     */
+    select?: AcessoLeituraSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcessoLeitura
+     */
+    omit?: AcessoLeituraOmit<ExtArgs> | null
   }
 
 
@@ -166929,18 +169354,54 @@ export namespace Prisma {
     id: 'id',
     seq: 'seq',
     utilizadorId: 'utilizadorId',
+    utilizadorNome: 'utilizadorNome',
+    utilizadorRole: 'utilizadorRole',
     acao: 'acao',
     entidadeId: 'entidadeId',
     entidadeTipo: 'entidadeTipo',
     detalhes: 'detalhes',
     ip: 'ip',
     userAgent: 'userAgent',
+    correlationId: 'correlationId',
+    origem: 'origem',
     createdAt: 'createdAt',
+    contentHash: 'contentHash',
     prevHash: 'prevHash',
     hash: 'hash'
   };
 
   export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+  export const AuditCheckpointScalarFieldEnum: {
+    id: 'id',
+    seqInicio: 'seqInicio',
+    seqFim: 'seqFim',
+    raiz: 'raiz',
+    prevCheckpointHash: 'prevCheckpointHash',
+    assinatura: 'assinatura',
+    totalEntradas: 'totalEntradas',
+    ancoradoEm: 'ancoradoEm',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AuditCheckpointScalarFieldEnum = (typeof AuditCheckpointScalarFieldEnum)[keyof typeof AuditCheckpointScalarFieldEnum]
+
+
+  export const AcessoLeituraScalarFieldEnum: {
+    id: 'id',
+    utilizadorId: 'utilizadorId',
+    utilizadorNome: 'utilizadorNome',
+    utilizadorRole: 'utilizadorRole',
+    entidadeTipo: 'entidadeTipo',
+    entidadeId: 'entidadeId',
+    rota: 'rota',
+    ip: 'ip',
+    correlationId: 'correlationId',
+    createdAt: 'createdAt'
+  };
+
+  export type AcessoLeituraScalarFieldEnum = (typeof AcessoLeituraScalarFieldEnum)[keyof typeof AcessoLeituraScalarFieldEnum]
 
 
   export const FeatureFlagScalarFieldEnum: {
@@ -172300,30 +174761,40 @@ export namespace Prisma {
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
     id?: StringFilter<"AuditLog"> | string
     seq?: IntFilter<"AuditLog"> | number
-    utilizadorId?: StringFilter<"AuditLog"> | string
+    utilizadorId?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorNome?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorRole?: StringNullableFilter<"AuditLog"> | string | null
     acao?: StringFilter<"AuditLog"> | string
     entidadeId?: StringNullableFilter<"AuditLog"> | string | null
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
+    origem?: StringFilter<"AuditLog"> | string
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    contentHash?: StringNullableFilter<"AuditLog"> | string | null
     prevHash?: StringNullableFilter<"AuditLog"> | string | null
     hash?: StringNullableFilter<"AuditLog"> | string | null
-    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    utilizador?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }
 
   export type AuditLogOrderByWithRelationInput = {
     id?: SortOrder
     seq?: SortOrder
-    utilizadorId?: SortOrder
+    utilizadorId?: SortOrderInput | SortOrder
+    utilizadorNome?: SortOrderInput | SortOrder
+    utilizadorRole?: SortOrderInput | SortOrder
     acao?: SortOrder
     entidadeId?: SortOrderInput | SortOrder
     entidadeTipo?: SortOrderInput | SortOrder
     detalhes?: SortOrderInput | SortOrder
     ip?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    origem?: SortOrder
     createdAt?: SortOrder
+    contentHash?: SortOrderInput | SortOrder
     prevHash?: SortOrderInput | SortOrder
     hash?: SortOrderInput | SortOrder
     utilizador?: UtilizadorOrderByWithRelationInput
@@ -172335,30 +174806,40 @@ export namespace Prisma {
     AND?: AuditLogWhereInput | AuditLogWhereInput[]
     OR?: AuditLogWhereInput[]
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
-    utilizadorId?: StringFilter<"AuditLog"> | string
+    utilizadorId?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorNome?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorRole?: StringNullableFilter<"AuditLog"> | string | null
     acao?: StringFilter<"AuditLog"> | string
     entidadeId?: StringNullableFilter<"AuditLog"> | string | null
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
+    origem?: StringFilter<"AuditLog"> | string
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    contentHash?: StringNullableFilter<"AuditLog"> | string | null
     prevHash?: StringNullableFilter<"AuditLog"> | string | null
     hash?: StringNullableFilter<"AuditLog"> | string | null
-    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    utilizador?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }, "id" | "seq">
 
   export type AuditLogOrderByWithAggregationInput = {
     id?: SortOrder
     seq?: SortOrder
-    utilizadorId?: SortOrder
+    utilizadorId?: SortOrderInput | SortOrder
+    utilizadorNome?: SortOrderInput | SortOrder
+    utilizadorRole?: SortOrderInput | SortOrder
     acao?: SortOrder
     entidadeId?: SortOrderInput | SortOrder
     entidadeTipo?: SortOrderInput | SortOrder
     detalhes?: SortOrderInput | SortOrder
     ip?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    origem?: SortOrder
     createdAt?: SortOrder
+    contentHash?: SortOrderInput | SortOrder
     prevHash?: SortOrderInput | SortOrder
     hash?: SortOrderInput | SortOrder
     _count?: AuditLogCountOrderByAggregateInput
@@ -172374,16 +174855,172 @@ export namespace Prisma {
     NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AuditLog"> | string
     seq?: IntWithAggregatesFilter<"AuditLog"> | number
-    utilizadorId?: StringWithAggregatesFilter<"AuditLog"> | string
+    utilizadorId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    utilizadorNome?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    utilizadorRole?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     acao?: StringWithAggregatesFilter<"AuditLog"> | string
     entidadeId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     entidadeTipo?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     detalhes?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     ip?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     userAgent?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    correlationId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    origem?: StringWithAggregatesFilter<"AuditLog"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
+    contentHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     prevHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     hash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+  }
+
+  export type AuditCheckpointWhereInput = {
+    AND?: AuditCheckpointWhereInput | AuditCheckpointWhereInput[]
+    OR?: AuditCheckpointWhereInput[]
+    NOT?: AuditCheckpointWhereInput | AuditCheckpointWhereInput[]
+    id?: StringFilter<"AuditCheckpoint"> | string
+    seqInicio?: IntFilter<"AuditCheckpoint"> | number
+    seqFim?: IntFilter<"AuditCheckpoint"> | number
+    raiz?: StringFilter<"AuditCheckpoint"> | string
+    prevCheckpointHash?: StringNullableFilter<"AuditCheckpoint"> | string | null
+    assinatura?: StringNullableFilter<"AuditCheckpoint"> | string | null
+    totalEntradas?: IntFilter<"AuditCheckpoint"> | number
+    ancoradoEm?: DateTimeNullableFilter<"AuditCheckpoint"> | Date | string | null
+    criadoEm?: DateTimeFilter<"AuditCheckpoint"> | Date | string
+  }
+
+  export type AuditCheckpointOrderByWithRelationInput = {
+    id?: SortOrder
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    raiz?: SortOrder
+    prevCheckpointHash?: SortOrderInput | SortOrder
+    assinatura?: SortOrderInput | SortOrder
+    totalEntradas?: SortOrder
+    ancoradoEm?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AuditCheckpointWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditCheckpointWhereInput | AuditCheckpointWhereInput[]
+    OR?: AuditCheckpointWhereInput[]
+    NOT?: AuditCheckpointWhereInput | AuditCheckpointWhereInput[]
+    seqInicio?: IntFilter<"AuditCheckpoint"> | number
+    seqFim?: IntFilter<"AuditCheckpoint"> | number
+    raiz?: StringFilter<"AuditCheckpoint"> | string
+    prevCheckpointHash?: StringNullableFilter<"AuditCheckpoint"> | string | null
+    assinatura?: StringNullableFilter<"AuditCheckpoint"> | string | null
+    totalEntradas?: IntFilter<"AuditCheckpoint"> | number
+    ancoradoEm?: DateTimeNullableFilter<"AuditCheckpoint"> | Date | string | null
+    criadoEm?: DateTimeFilter<"AuditCheckpoint"> | Date | string
+  }, "id">
+
+  export type AuditCheckpointOrderByWithAggregationInput = {
+    id?: SortOrder
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    raiz?: SortOrder
+    prevCheckpointHash?: SortOrderInput | SortOrder
+    assinatura?: SortOrderInput | SortOrder
+    totalEntradas?: SortOrder
+    ancoradoEm?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    _count?: AuditCheckpointCountOrderByAggregateInput
+    _avg?: AuditCheckpointAvgOrderByAggregateInput
+    _max?: AuditCheckpointMaxOrderByAggregateInput
+    _min?: AuditCheckpointMinOrderByAggregateInput
+    _sum?: AuditCheckpointSumOrderByAggregateInput
+  }
+
+  export type AuditCheckpointScalarWhereWithAggregatesInput = {
+    AND?: AuditCheckpointScalarWhereWithAggregatesInput | AuditCheckpointScalarWhereWithAggregatesInput[]
+    OR?: AuditCheckpointScalarWhereWithAggregatesInput[]
+    NOT?: AuditCheckpointScalarWhereWithAggregatesInput | AuditCheckpointScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditCheckpoint"> | string
+    seqInicio?: IntWithAggregatesFilter<"AuditCheckpoint"> | number
+    seqFim?: IntWithAggregatesFilter<"AuditCheckpoint"> | number
+    raiz?: StringWithAggregatesFilter<"AuditCheckpoint"> | string
+    prevCheckpointHash?: StringNullableWithAggregatesFilter<"AuditCheckpoint"> | string | null
+    assinatura?: StringNullableWithAggregatesFilter<"AuditCheckpoint"> | string | null
+    totalEntradas?: IntWithAggregatesFilter<"AuditCheckpoint"> | number
+    ancoradoEm?: DateTimeNullableWithAggregatesFilter<"AuditCheckpoint"> | Date | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"AuditCheckpoint"> | Date | string
+  }
+
+  export type AcessoLeituraWhereInput = {
+    AND?: AcessoLeituraWhereInput | AcessoLeituraWhereInput[]
+    OR?: AcessoLeituraWhereInput[]
+    NOT?: AcessoLeituraWhereInput | AcessoLeituraWhereInput[]
+    id?: StringFilter<"AcessoLeitura"> | string
+    utilizadorId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    utilizadorNome?: StringNullableFilter<"AcessoLeitura"> | string | null
+    utilizadorRole?: StringNullableFilter<"AcessoLeitura"> | string | null
+    entidadeTipo?: StringFilter<"AcessoLeitura"> | string
+    entidadeId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    rota?: StringNullableFilter<"AcessoLeitura"> | string | null
+    ip?: StringNullableFilter<"AcessoLeitura"> | string | null
+    correlationId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    createdAt?: DateTimeFilter<"AcessoLeitura"> | Date | string
+  }
+
+  export type AcessoLeituraOrderByWithRelationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrderInput | SortOrder
+    utilizadorNome?: SortOrderInput | SortOrder
+    utilizadorRole?: SortOrderInput | SortOrder
+    entidadeTipo?: SortOrder
+    entidadeId?: SortOrderInput | SortOrder
+    rota?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcessoLeituraWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AcessoLeituraWhereInput | AcessoLeituraWhereInput[]
+    OR?: AcessoLeituraWhereInput[]
+    NOT?: AcessoLeituraWhereInput | AcessoLeituraWhereInput[]
+    utilizadorId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    utilizadorNome?: StringNullableFilter<"AcessoLeitura"> | string | null
+    utilizadorRole?: StringNullableFilter<"AcessoLeitura"> | string | null
+    entidadeTipo?: StringFilter<"AcessoLeitura"> | string
+    entidadeId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    rota?: StringNullableFilter<"AcessoLeitura"> | string | null
+    ip?: StringNullableFilter<"AcessoLeitura"> | string | null
+    correlationId?: StringNullableFilter<"AcessoLeitura"> | string | null
+    createdAt?: DateTimeFilter<"AcessoLeitura"> | Date | string
+  }, "id">
+
+  export type AcessoLeituraOrderByWithAggregationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrderInput | SortOrder
+    utilizadorNome?: SortOrderInput | SortOrder
+    utilizadorRole?: SortOrderInput | SortOrder
+    entidadeTipo?: SortOrder
+    entidadeId?: SortOrderInput | SortOrder
+    rota?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AcessoLeituraCountOrderByAggregateInput
+    _max?: AcessoLeituraMaxOrderByAggregateInput
+    _min?: AcessoLeituraMinOrderByAggregateInput
+  }
+
+  export type AcessoLeituraScalarWhereWithAggregatesInput = {
+    AND?: AcessoLeituraScalarWhereWithAggregatesInput | AcessoLeituraScalarWhereWithAggregatesInput[]
+    OR?: AcessoLeituraScalarWhereWithAggregatesInput[]
+    NOT?: AcessoLeituraScalarWhereWithAggregatesInput | AcessoLeituraScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcessoLeitura"> | string
+    utilizadorId?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    utilizadorNome?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    utilizadorRole?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    entidadeTipo?: StringWithAggregatesFilter<"AcessoLeitura"> | string
+    entidadeId?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    rota?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    ip?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    correlationId?: StringNullableWithAggregatesFilter<"AcessoLeitura"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AcessoLeitura"> | Date | string
   }
 
   export type FeatureFlagWhereInput = {
@@ -183571,58 +186208,78 @@ export namespace Prisma {
   export type AuditLogCreateInput = {
     id?: string
     seq?: number
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
-    utilizador: UtilizadorCreateNestedOneWithoutAuditLogsInput
+    utilizador?: UtilizadorCreateNestedOneWithoutAuditLogsInput
   }
 
   export type AuditLogUncheckedCreateInput = {
     id?: string
     seq?: number
-    utilizadorId: string
+    utilizadorId?: string | null
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
   }
 
   export type AuditLogUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
-    utilizador?: UtilizadorUpdateOneRequiredWithoutAuditLogsNestedInput
+    utilizador?: UtilizadorUpdateOneWithoutAuditLogsNestedInput
   }
 
   export type AuditLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
-    utilizadorId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -183630,27 +186287,37 @@ export namespace Prisma {
   export type AuditLogCreateManyInput = {
     id?: string
     seq?: number
-    utilizadorId: string
+    utilizadorId?: string | null
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
   }
 
   export type AuditLogUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -183658,16 +186325,196 @@ export namespace Prisma {
   export type AuditLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
-    utilizadorId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AuditCheckpointCreateInput = {
+    id?: string
+    seqInicio: number
+    seqFim: number
+    raiz: string
+    prevCheckpointHash?: string | null
+    assinatura?: string | null
+    totalEntradas: number
+    ancoradoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type AuditCheckpointUncheckedCreateInput = {
+    id?: string
+    seqInicio: number
+    seqFim: number
+    raiz: string
+    prevCheckpointHash?: string | null
+    assinatura?: string | null
+    totalEntradas: number
+    ancoradoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type AuditCheckpointUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    seqInicio?: IntFieldUpdateOperationsInput | number
+    seqFim?: IntFieldUpdateOperationsInput | number
+    raiz?: StringFieldUpdateOperationsInput | string
+    prevCheckpointHash?: NullableStringFieldUpdateOperationsInput | string | null
+    assinatura?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEntradas?: IntFieldUpdateOperationsInput | number
+    ancoradoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditCheckpointUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    seqInicio?: IntFieldUpdateOperationsInput | number
+    seqFim?: IntFieldUpdateOperationsInput | number
+    raiz?: StringFieldUpdateOperationsInput | string
+    prevCheckpointHash?: NullableStringFieldUpdateOperationsInput | string | null
+    assinatura?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEntradas?: IntFieldUpdateOperationsInput | number
+    ancoradoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditCheckpointCreateManyInput = {
+    id?: string
+    seqInicio: number
+    seqFim: number
+    raiz: string
+    prevCheckpointHash?: string | null
+    assinatura?: string | null
+    totalEntradas: number
+    ancoradoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type AuditCheckpointUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    seqInicio?: IntFieldUpdateOperationsInput | number
+    seqFim?: IntFieldUpdateOperationsInput | number
+    raiz?: StringFieldUpdateOperationsInput | string
+    prevCheckpointHash?: NullableStringFieldUpdateOperationsInput | string | null
+    assinatura?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEntradas?: IntFieldUpdateOperationsInput | number
+    ancoradoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditCheckpointUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    seqInicio?: IntFieldUpdateOperationsInput | number
+    seqFim?: IntFieldUpdateOperationsInput | number
+    raiz?: StringFieldUpdateOperationsInput | string
+    prevCheckpointHash?: NullableStringFieldUpdateOperationsInput | string | null
+    assinatura?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEntradas?: IntFieldUpdateOperationsInput | number
+    ancoradoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcessoLeituraCreateInput = {
+    id?: string
+    utilizadorId?: string | null
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
+    entidadeTipo: string
+    entidadeId?: string | null
+    rota?: string | null
+    ip?: string | null
+    correlationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AcessoLeituraUncheckedCreateInput = {
+    id?: string
+    utilizadorId?: string | null
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
+    entidadeTipo: string
+    entidadeId?: string | null
+    rota?: string | null
+    ip?: string | null
+    correlationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AcessoLeituraUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    rota?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcessoLeituraUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    rota?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcessoLeituraCreateManyInput = {
+    id?: string
+    utilizadorId?: string | null
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
+    entidadeTipo: string
+    entidadeId?: string | null
+    rota?: string | null
+    ip?: string | null
+    correlationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AcessoLeituraUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    rota?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcessoLeituraUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    rota?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FeatureFlagCreateInput = {
@@ -194681,13 +197528,18 @@ export namespace Prisma {
     id?: SortOrder
     seq?: SortOrder
     utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
     acao?: SortOrder
     entidadeId?: SortOrder
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
     userAgent?: SortOrder
+    correlationId?: SortOrder
+    origem?: SortOrder
     createdAt?: SortOrder
+    contentHash?: SortOrder
     prevHash?: SortOrder
     hash?: SortOrder
   }
@@ -194700,13 +197552,18 @@ export namespace Prisma {
     id?: SortOrder
     seq?: SortOrder
     utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
     acao?: SortOrder
     entidadeId?: SortOrder
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
     userAgent?: SortOrder
+    correlationId?: SortOrder
+    origem?: SortOrder
     createdAt?: SortOrder
+    contentHash?: SortOrder
     prevHash?: SortOrder
     hash?: SortOrder
   }
@@ -194715,19 +197572,111 @@ export namespace Prisma {
     id?: SortOrder
     seq?: SortOrder
     utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
     acao?: SortOrder
     entidadeId?: SortOrder
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
     userAgent?: SortOrder
+    correlationId?: SortOrder
+    origem?: SortOrder
     createdAt?: SortOrder
+    contentHash?: SortOrder
     prevHash?: SortOrder
     hash?: SortOrder
   }
 
   export type AuditLogSumOrderByAggregateInput = {
     seq?: SortOrder
+  }
+
+  export type AuditCheckpointCountOrderByAggregateInput = {
+    id?: SortOrder
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    raiz?: SortOrder
+    prevCheckpointHash?: SortOrder
+    assinatura?: SortOrder
+    totalEntradas?: SortOrder
+    ancoradoEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AuditCheckpointAvgOrderByAggregateInput = {
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    totalEntradas?: SortOrder
+  }
+
+  export type AuditCheckpointMaxOrderByAggregateInput = {
+    id?: SortOrder
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    raiz?: SortOrder
+    prevCheckpointHash?: SortOrder
+    assinatura?: SortOrder
+    totalEntradas?: SortOrder
+    ancoradoEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AuditCheckpointMinOrderByAggregateInput = {
+    id?: SortOrder
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    raiz?: SortOrder
+    prevCheckpointHash?: SortOrder
+    assinatura?: SortOrder
+    totalEntradas?: SortOrder
+    ancoradoEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AuditCheckpointSumOrderByAggregateInput = {
+    seqInicio?: SortOrder
+    seqFim?: SortOrder
+    totalEntradas?: SortOrder
+  }
+
+  export type AcessoLeituraCountOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
+    entidadeTipo?: SortOrder
+    entidadeId?: SortOrder
+    rota?: SortOrder
+    ip?: SortOrder
+    correlationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcessoLeituraMaxOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
+    entidadeTipo?: SortOrder
+    entidadeId?: SortOrder
+    rota?: SortOrder
+    ip?: SortOrder
+    correlationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcessoLeituraMinOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    utilizadorNome?: SortOrder
+    utilizadorRole?: SortOrder
+    entidadeTipo?: SortOrder
+    entidadeId?: SortOrder
+    rota?: SortOrder
+    ip?: SortOrder
+    correlationId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -208212,10 +211161,12 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
-  export type UtilizadorUpdateOneRequiredWithoutAuditLogsNestedInput = {
+  export type UtilizadorUpdateOneWithoutAuditLogsNestedInput = {
     create?: XOR<UtilizadorCreateWithoutAuditLogsInput, UtilizadorUncheckedCreateWithoutAuditLogsInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutAuditLogsInput
     upsert?: UtilizadorUpsertWithoutAuditLogsInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAuditLogsInput, UtilizadorUpdateWithoutAuditLogsInput>, UtilizadorUncheckedUpdateWithoutAuditLogsInput>
   }
@@ -213024,13 +215975,18 @@ export namespace Prisma {
   export type AuditLogCreateWithoutUtilizadorInput = {
     id?: string
     seq?: number
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
   }
@@ -213038,13 +215994,18 @@ export namespace Prisma {
   export type AuditLogUncheckedCreateWithoutUtilizadorInput = {
     id?: string
     seq?: number
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
   }
@@ -217834,14 +220795,19 @@ export namespace Prisma {
     NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
     id?: StringFilter<"AuditLog"> | string
     seq?: IntFilter<"AuditLog"> | number
-    utilizadorId?: StringFilter<"AuditLog"> | string
+    utilizadorId?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorNome?: StringNullableFilter<"AuditLog"> | string | null
+    utilizadorRole?: StringNullableFilter<"AuditLog"> | string | null
     acao?: StringFilter<"AuditLog"> | string
     entidadeId?: StringNullableFilter<"AuditLog"> | string | null
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
+    origem?: StringFilter<"AuditLog"> | string
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    contentHash?: StringNullableFilter<"AuditLog"> | string | null
     prevHash?: StringNullableFilter<"AuditLog"> | string | null
     hash?: StringNullableFilter<"AuditLog"> | string | null
   }
@@ -316176,13 +319142,18 @@ export namespace Prisma {
   export type AuditLogCreateManyUtilizadorInput = {
     id?: string
     seq?: number
+    utilizadorNome?: string | null
+    utilizadorRole?: string | null
     acao: string
     entidadeId?: string | null
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
     userAgent?: string | null
+    correlationId?: string | null
+    origem?: string
     createdAt?: Date | string
+    contentHash?: string | null
     prevHash?: string | null
     hash?: string | null
   }
@@ -318162,13 +321133,18 @@ export namespace Prisma {
 
   export type AuditLogUpdateWithoutUtilizadorInput = {
     id?: StringFieldUpdateOperationsInput | string
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -318176,13 +321152,18 @@ export namespace Prisma {
   export type AuditLogUncheckedUpdateWithoutUtilizadorInput = {
     id?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -318190,13 +321171,18 @@ export namespace Prisma {
   export type AuditLogUncheckedUpdateManyWithoutUtilizadorInput = {
     id?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
+    utilizadorNome?: NullableStringFieldUpdateOperationsInput | string | null
+    utilizadorRole?: NullableStringFieldUpdateOperationsInput | string | null
     acao?: StringFieldUpdateOperationsInput | string
     entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
