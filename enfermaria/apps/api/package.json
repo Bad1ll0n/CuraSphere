@@ -2,6 +2,9 @@
   "name": "@org/api",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "audit:triggers": "node scripts/apply-audit-triggers.mjs"
+  },
   "nx": {
     "targets": {
       "build": {

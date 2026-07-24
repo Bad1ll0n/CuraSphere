@@ -57,6 +57,13 @@ describe('AuditCheckpointService', () => {
     });
   });
 
+  describe('ancorar()', () => {
+    it('sem AUDIT_ANCHOR_FILE configurado → não ancora (devolve false)', async () => {
+      const r = await (service as any).ancorar({ seqInicio: 1, seqFim: 2, raiz: 'r', assinatura: 's', criadoEm: new Date() });
+      expect(r).toBe(false);
+    });
+  });
+
   describe('verificar()', () => {
     it('cadeia íntegra → ok', async () => {
       const raiz = raizDe(['a', 'b']);

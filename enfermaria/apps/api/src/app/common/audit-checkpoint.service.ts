@@ -1,10 +1,16 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { createHash, createHmac } from 'crypto';
+import { appendFile } from 'fs/promises';
 import { PrismaService } from '../prisma/prisma.service';
 
 // Chave de assinatura das raízes. Em produção TEM de ser definida e guardada FORA da BD
 // (secret manager) — é o que impede um DBA de forjar um checkpoint que valide dados adulterados.
-const SIGNING_KEY = process.env['AUDIT_SIGNING_KEY'] ?? 'dev-insecure-audit-signing-key-change-me';
+const DEFAULT_KEY = 'dev-insecure-audit-signing-key-change-me';
+const SIGNING_KEY = process.env['AUDIT_SIGNING_KEY'] ?? DEFAULT_KEY;
+// Sink de ancoragem externa (append-only, FORA da BD) — em produção deve apontar para
+// armazenamento WORM (S3 object-lock, log imutável). Sem isto, é tamper-evident mas não à prova
+// de um DBA que apague também os checkpoints. Ficheiro local por omissão (para ops enviarem p/ WORM).
+const ANCHOR_FILE = process.env['AUDIT_ANCHOR_FILE'] ?? null;
 // Advisory lock (leader-election): só uma instância sela de cada vez.
 const CHECKPOINT_LOCK = 918273646;
 const INTERVALO_MS = Number(process.env['AUDIT_CHECKPOINT_MS'] ?? 60_000);
@@ -20,11 +26,32 @@ export class AuditCheckpointService implements OnModuleDestroy {
   private aCorrer = false;
 
   constructor(private readonly prisma: PrismaService) {
+    if (SIGNING_KEY === DEFAULT_KEY && process.env['NODE_ENV'] === 'production') {
+      this.logger.error('SEGURANÇA: AUDIT_SIGNING_KEY não configurada — checkpoints assinados com chave-default PÚBLICA. O tamper-proof contra insider NÃO está ativo. Definir AUDIT_SIGNING_KEY (fora da BD).');
+    } else if (SIGNING_KEY === DEFAULT_KEY) {
+      this.logger.warn('AUDIT_SIGNING_KEY não definida — a usar chave-default (dev). Definir em produção.');
+    }
     this.timer = setInterval(() => { this.selar().catch(() => { /* logado dentro */ }); }, INTERVALO_MS);
     this.timer.unref?.();
   }
 
   onModuleDestroy() { clearInterval(this.timer); }
+
+  /**
+   * Ancora um checkpoint num sink append-only FORA da BD (o que impede um DBA de apagar também os
+   * checkpoints). Impl. base: append a um ficheiro JSONL (para ops enviarem para WORM). Produção:
+   * substituir por S3 object-lock / log imutável. Falha de ancoragem não impede a selagem.
+   */
+  private async ancorar(cp: { seqInicio: number; seqFim: number; raiz: string; assinatura: string; criadoEm: Date }): Promise<boolean> {
+    if (!ANCHOR_FILE) return false;
+    try {
+      await appendFile(ANCHOR_FILE, JSON.stringify({ ...cp, criadoEm: cp.criadoEm.toISOString() }) + '\n', 'utf8');
+      return true;
+    } catch (err) {
+      this.logger.warn(`Ancoragem externa falhou: ${(err as Error)?.message ?? String(err)}`);
+      return false;
+    }
+  }
 
   private static assinar(raiz: string): string {
     return createHmac('sha256', SIGNING_KEY).update(raiz).digest('hex');
@@ -62,14 +89,13 @@ export class AuditCheckpointService implements OnModuleDestroy {
 
         const seqInicio = rows[0].seq;
         const seqFim = rows[rows.length - 1].seq;
+        const assinatura = AuditCheckpointService.assinar(raiz);
+        const criadoEm = new Date();
         await tx.auditCheckpoint.create({
-          data: {
-            seqInicio, seqFim, raiz,
-            prevCheckpointHash: ultimo?.raiz ?? null,
-            assinatura: AuditCheckpointService.assinar(raiz),
-            totalEntradas: rows.length,
-          },
+          data: { seqInicio, seqFim, raiz, prevCheckpointHash: ultimo?.raiz ?? null, assinatura, totalEntradas: rows.length, ancoradoEm: ANCHOR_FILE ? criadoEm : null },
         });
+        // Ancoragem externa (fora da transação — best-effort, não segura o lock/ligação).
+        void this.ancorar({ seqInicio, seqFim, raiz, assinatura, criadoEm });
         this.logger.log(`Checkpoint de auditoria selado: seq ${seqInicio}–${seqFim} (${rows.length} entradas)`);
         return { selado: true, seqInicio, seqFim, total: rows.length };
       });
