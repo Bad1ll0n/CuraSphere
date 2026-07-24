@@ -83,7 +83,7 @@ describe('SinaisVitaisService', () => {
     });
 
     it('NEWS2 = 0 para parâmetros todos normais (FR=15, SpO2=98, Temp=37, PA=120, FC=70)', async () => {
-      const result = await service.criar('d1', 'u1', 'enfermeiro', {
+      await service.criar('d1', 'u1', 'enfermeiro', {
         frequenciaRespiratoria: 15,
         saturacaoO2: 98,
         temperatura: 37,

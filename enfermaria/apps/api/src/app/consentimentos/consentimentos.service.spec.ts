@@ -63,7 +63,7 @@ describe('ConsentimentosService', () => {
 
       const resultado = await service.assinar('con-1');
 
-      expect(resultado.estado).toBe('assinado');
+      expect((resultado as any).estado).toBe('assinado');
     });
   });
 
@@ -74,7 +74,7 @@ describe('ConsentimentosService', () => {
 
       const resultado = await service.recusar('con-1', 'Doente não concorda');
 
-      expect(resultado.estado).toBe('recusado');
+      expect((resultado as any).estado).toBe('recusado');
     });
   });
 });

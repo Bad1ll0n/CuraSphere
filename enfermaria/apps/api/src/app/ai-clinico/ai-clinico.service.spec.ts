@@ -68,7 +68,7 @@ describe('AiClinicoService', () => {
     service = module.get<AiClinicoService>(AiClinicoService);
 
     // Obter referência ao mock do método create
-    const instance = (Anthropic as jest.Mock).mock.results[0]?.value;
+    const instance = (Anthropic as unknown as jest.Mock).mock.results[0]?.value;
     mockMessagesCreate = instance?.messages?.create ?? jest.fn();
 
     // Dados base para os testes

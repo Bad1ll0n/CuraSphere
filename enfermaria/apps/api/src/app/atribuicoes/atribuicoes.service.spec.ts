@@ -44,7 +44,7 @@ describe('AtribuicoesService', () => {
 
       const resultado = await service.turnoAtivo();
 
-      expect(resultado.id).toBe('turno-1');
+      expect(resultado!.id).toBe('turno-1');
     });
 
     it('devolve null quando não há turno activo', async () => {
@@ -62,7 +62,7 @@ describe('AtribuicoesService', () => {
 
       const resultado = await service.buscarTurno('turno-1');
 
-      expect(resultado.nome).toBe('Manhã');
+      expect((resultado as any).nome).toBe('Manhã');
     });
   });
 

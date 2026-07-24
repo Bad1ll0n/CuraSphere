@@ -50,7 +50,7 @@ describe('DietasService', () => {
     it('devolve dieta activa', async () => {
       mockPrisma.prescricaoDieta.findFirst.mockResolvedValue(dietaBase);
       const r = await service.dietaAtual('d1');
-      expect(r.tipo).toBe('normal');
+      expect(r!.tipo).toBe('normal');
     });
   });
 

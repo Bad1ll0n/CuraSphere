@@ -7,20 +7,20 @@ describe('PemClient', () => {
     it('ambiente é sandbox', () => expect(client.ambiente).toBe('sandbox'));
 
     it('emite receita com número PEM (19 dígitos) + código de dispensa', async () => {
-      const r = await client.emitir({ medicamentos: [{ nome: 'Paracetamol' }] });
+      const r = await client.emitir({ medicamentos: [{ nome: 'Paracetamol' }] } as any);
       expect(r.estado).toBe('emitida');
       expect(r.numeroReceita.replace(/\s/g, '')).toHaveLength(19);
       expect(r.codigoDispensa).toHaveLength(6);
     });
 
     it('rejeita receita sem medicamentos', async () => {
-      await expect(client.emitir({ medicamentos: [] })).rejects.toThrow(/sem medicamentos/i);
+      await expect(client.emitir({ medicamentos: [] } as any)).rejects.toThrow(/sem medicamentos/i);
     });
   });
 
   describe('SpmsPemClient', () => {
     it('sem endpoint configurado → erro claro (não falha em silêncio)', async () => {
-      await expect(new SpmsPemClient().emitir({ medicamentos: [{ nome: 'X' }] })).rejects.toThrow(/não configurada/i);
+      await expect(new SpmsPemClient().emitir({ medicamentos: [{ nome: 'X' }] } as any)).rejects.toThrow(/não configurada/i);
     });
   });
 
