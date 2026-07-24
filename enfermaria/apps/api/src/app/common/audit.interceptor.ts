@@ -6,96 +6,55 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
-import { AuditService } from './audit.service';
 import { AnomalyDetectionService } from './anomaly-detection.service';
+import { AcessoLeituraService } from './acesso-leitura.service';
 
-const METODOS_AUDITADOS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
 const DOENTE_ID_RE = /^\/(?:v\d+\/)?doentes\/([0-9a-f-]{8,})/i;
 
-const CAMPOS_SENSIVEIS = new Set([
-  'password', 'passwordAtual', 'novaPassword', 'passwordHash',
-  'mfaSecret', 'secret', 'code', 'token', 'passwordExpiredToken', 'mfaSetupToken',
-  // PII — RGPD: não guardar em audit log
-  'contacto', 'morada', 'nif', 'dataNascimento',
-]);
-
-function redactirBody(body: unknown): string | undefined {
-  if (!body || typeof body !== 'object') return undefined;
-  const redacted: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(body as Record<string, unknown>)) {
-    redacted[k] = CAMPOS_SENSIVEIS.has(k) ? '[REDACTED]' : v;
-  }
-  try { return JSON.stringify(redacted); } catch { return undefined; }
-}
-
-function extrairEntidadeId(url: string): string | undefined {
-  const partes = url.split('?')[0].split('/').filter(Boolean);
-  for (let i = 1; i < partes.length; i++) {
-    if (/^[0-9a-f-]{8,}$/i.test(partes[i])) return partes[i];
-  }
-  return undefined;
-}
-
-function extrairEntidadeTipo(url: string): string | undefined {
-  return url.split('?')[0].split('/').filter(Boolean)[0] ?? undefined;
-}
-
-function anonimizarAcao(method: string, url: string): string {
-  const tipo = extrairEntidadeTipo(url) ?? 'recurso';
-  const mapa: Record<string, string> = {
-    POST: `criar_${tipo}`,
-    PATCH: `editar_${tipo}`,
-    PUT: `editar_${tipo}`,
-    DELETE: `eliminar_${tipo}`,
-  };
-  return mapa[method] ?? `${method.toLowerCase()}_${tipo}`;
-}
-
+/**
+ * A auditoria de ESCRITAS deixou de ser feita aqui: passou para triggers na BD
+ * (curasphere_fn_audit), que registam cada INSERT/UPDATE/DELETE na mesma transação —
+ * bypass-proof, atribuído via SET LOCAL, append-only. O interceptor guardava uma
+ * aproximação ao nível HTTP (adivinhava entidade/ação pela rota) que duplicaria os triggers.
+ *
+ * O interceptor mantém: deteção de anomalias em leituras (acesso bulk a doentes) e o log de
+ * operações falhadas. Eventos que NÃO são escritas na BD (ex.: login falhado) são auditados
+ * explicitamente onde ocorrem (AuditService.registar), não aqui.
+ */
 @Injectable()
 export class AuditInterceptor implements NestInterceptor {
   private readonly logger = new Logger(AuditInterceptor.name);
 
   constructor(
-    private audit: AuditService,
     private anomaly: AnomalyDetectionService,
+    private acessoLeitura: AcessoLeituraService,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const { method, url, user, ip, headers } = req;
-    const userAgent: string | undefined = headers['user-agent'];
 
-    // Detecção de anomalia: acesso bulk a doentes via GET
+    // Leitura de dados sensíveis (ver ficha de doente) → trilho de acessos (assíncrono).
     if (method === 'GET' && user?.sub) {
       const m = DOENTE_ID_RE.exec(url.split('?')[0]);
       if (m) {
         this.anomaly.rastrearAcessoDoente(user.sub, m[1]);
+        this.acessoLeitura.registar({
+          utilizadorId: user.sub, utilizadorNome: user.nome ?? null, utilizadorRole: user.role ?? null,
+          entidadeTipo: 'doentes', entidadeId: m[1], rota: url.split('?')[0],
+          ip: ip ?? null, correlationId: (headers?.['x-correlation-id'] as string) ?? null,
+        });
       }
     }
 
-    if (!METODOS_AUDITADOS.has(method) || !user?.sub) {
-      return next.handle();
-    }
-
-    const detalhes = redactirBody(req.body);
-
     return next.handle().pipe(
       tap({
-        next: () => {
-          this.audit.registar({
-            utilizadorId: user.sub,
-            acao: anonimizarAcao(method, url),
-            entidadeId: extrairEntidadeId(url),
-            entidadeTipo: extrairEntidadeTipo(url),
-            detalhes,
-            ip: ip ?? undefined,
-            userAgent,
-          });
-        },
         error: (err) => {
-          this.logger.warn(
-            `Operação falhada — ${method} ${url} | utilizador: ${user.sub} | status: ${err?.status ?? 'erro'} | ip: ${ip}`,
-          );
+          if (['POST', 'PATCH', 'PUT', 'DELETE'].includes(method) && user?.sub) {
+            this.logger.warn(
+              `Operação falhada — ${method} ${url} | utilizador: ${user.sub} | status: ${err?.status ?? 'erro'} | ip: ${ip}`,
+            );
+          }
         },
       }),
     );

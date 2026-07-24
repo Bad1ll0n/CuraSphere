@@ -2,6 +2,7 @@ import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/c
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { CsrfMiddleware } from './common/csrf.middleware';
 import { TenantMiddleware } from './prisma/tenant.middleware';
+import { RequestContextMiddleware } from './prisma/request-context.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -101,7 +102,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         autoLogging: { ignore: (req) => req.url === '/v1/health' },
       },
     }),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 60) }]),
     ScheduleModule.forRoot(),
     PrismaModule,
     AuditModule,
@@ -145,7 +146,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(TenantMiddleware)
+      .apply(RequestContextMiddleware, TenantMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
     consumer
       .apply(CsrfMiddleware)

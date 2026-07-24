@@ -986,26 +986,76 @@ model ReceitaEletronica {
 // ─── Audit Log ───────────────────────────────────────────────────────────────
 
 model AuditLog {
-  id           String     @id @default(uuid())
-  seq          Int        @unique @default(autoincrement())
-  utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
-  acao         String
-  entidadeId   String?
-  entidadeTipo String?
-  detalhes     String?
-  ip           String?
-  userAgent    String?
-  createdAt    DateTime   @default(now())
+  id             String      @id @default(uuid())
+  seq            Int         @unique @default(autoincrement())
+  // Nullable + SetNull: uma escrita registada por trigger pode não ter utilizador da app
+  // (ex.: SQL direto → 'system'), e o log de 6 anos tem de sobreviver à remoção do utilizador.
+  // NUNCA pode uma FK do audit fazer falhar a escrita de negócio.
+  utilizadorId   String?
+  utilizador     Utilizador? @relation(fields: [utilizadorId], references: [id], onDelete: SetNull)
+  // Snapshot da identidade no momento (papéis mudam; utilizador pode ser apagado).
+  utilizadorNome String?
+  utilizadorRole String?
+  acao           String
+  entidadeId     String?
+  entidadeTipo   String?
+  detalhes       String?
+  ip             String?
+  userAgent      String?
+  correlationId  String?
+  origem         String      @default("app") // 'app' | 'trigger' | 'system'
+  createdAt      DateTime    @default(now())
 
-  // Tamper-evidence: cadeia de hash encadeada (prevHash = hash da entrada anterior).
-  // Escrita serializada por advisory-lock do Postgres → cadeia linear e verificável.
-  prevHash String?
-  hash     String?
+  // Hash-de-conteúdo por-linha (independente, sem ordem/lock) — calculado na captura.
+  // A prova de integridade global vive em AuditCheckpoint (append-only + assinado).
+  contentHash String?
+  // Legado da 1.ª iteração (cadeia encadeada) — mantido para as linhas antigas.
+  prevHash    String?
+  hash        String?
 
   @@index([utilizadorId, createdAt])
   @@index([createdAt])
+  @@index([entidadeTipo, entidadeId])
+  @@index([correlationId])
   @@map("audit_logs")
+}
+
+// Prova de integridade tamper-evident: raízes (Merkle/encadeadas) assinadas sobre intervalos
+// de audit_logs, seladas em diferido pelo checkpointer (com watermark de commit) e ancoradas
+// fora da BD. As linhas de audit_logs nunca são alteradas (WORM) — a prova está aqui.
+model AuditCheckpoint {
+  id                 String    @id @default(uuid())
+  seqInicio          Int
+  seqFim             Int
+  raiz               String // raiz Merkle ou hash encadeado dos contentHash do intervalo
+  prevCheckpointHash String? // encadeia os checkpoints entre si
+  assinatura         String? // assinatura da raiz com chave que o DBA não tem
+  totalEntradas      Int
+  ancoradoEm         DateTime? // quando foi replicado para armazenamento externo/WORM
+  criadoEm           DateTime  @default(now())
+
+  @@index([seqFim])
+  @@map("audit_checkpoints")
+}
+
+// Trilho de acessos (LEITURAS) de dados sensíveis. Escrito de forma assíncrona e em lote,
+// SEPARADO do audit de escritas, para não afetar a performance das leituras. Sem cadeia.
+model AcessoLeitura {
+  id             String   @id @default(uuid())
+  utilizadorId   String?
+  utilizadorNome String?
+  utilizadorRole String?
+  entidadeTipo   String
+  entidadeId     String?
+  rota           String?
+  ip             String?
+  correlationId  String?
+  createdAt      DateTime @default(now())
+
+  @@index([utilizadorId, createdAt])
+  @@index([entidadeTipo, entidadeId])
+  @@index([createdAt])
+  @@map("acessos_leitura")
 }
 
 // ─── Feature Flags ────────────────────────────────────────────────────────────
