@@ -47,7 +47,7 @@ describe('TicketsService', () => {
       mockPrisma.ticket.count.mockResolvedValue(3);
       mockPrisma.ticket.create.mockResolvedValue({ ...ticketBase, numero: 'P004', prioridade: 10 });
 
-      const resultado = await service.tirarSenha({ tipo: 'urgencia', prioridade: 10 });
+      const resultado = await service.tirarSenha({ tipo: 'urgencia', prioridade: 10 } as any);
 
       expect(resultado.numero).toBe('P004');
     });
@@ -71,7 +71,7 @@ describe('TicketsService', () => {
       expect(mockPrisma.ticket.update).toHaveBeenCalledWith(
         expect.objectContaining({ data: expect.objectContaining({ estado: 'chamado', balcao: 'Balcão 1' }) }),
       );
-      expect(resultado.estado).toBe('em_atendimento');
+      expect(resultado!.estado).toBe('em_atendimento');
     });
   });
 

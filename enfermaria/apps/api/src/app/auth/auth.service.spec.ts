@@ -156,7 +156,7 @@ describe('AuthService', () => {
       expect(resultado.mfaPendente).toBe(false);
       expect(resultado).toHaveProperty('accessToken', 'jwt-access-token');
       expect(typeof resultado.refreshToken).toBe('string');
-      expect(resultado.refreshToken.length).toBeGreaterThan(0);
+      expect(resultado.refreshToken!.length).toBeGreaterThan(0);
     });
 
     it('sinaliza passwordExpiradoAviso quando expira em ≤10 dias', async () => {

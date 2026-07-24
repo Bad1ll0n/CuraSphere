@@ -27,17 +27,17 @@ export class RelatoriosAgendadosService {
         return;
       }
 
-      const [pdfBuffer, destinatarios] = await Promise.all([
-        this.pdf.gerarRelatorioTurno(turno.id),
-        this.prisma.utilizador.findMany({
-          where: { ativo: true, role: { in: ['direcao', 'chefe_medicos'] }, email: { not: null } },
-          select: { email: true },
-        }),
-      ]);
+      const pdfBuffer = await this.pdf.gerarRelatorioTurno(turno.id);
 
-      const emails = destinatarios.map(u => u.email as string).filter(Boolean);
+      // Destinatários configurados por ambiente (lista separada por vírgulas). O modelo de
+      // utilizador não tem email; os relatórios de gestão vão para uma lista de ops definida
+      // em RELATORIO_TURNO_EMAILS (ex.: "direcao@hosp.pt,chefia@hosp.pt").
+      const emails = (process.env['RELATORIO_TURNO_EMAILS'] ?? '')
+        .split(',')
+        .map(e => e.trim())
+        .filter(Boolean);
       if (emails.length === 0) {
-        this.logger.log('Relatório agendado: sem destinatários com email configurado');
+        this.logger.log('Relatório agendado: RELATORIO_TURNO_EMAILS não configurado — sem destinatários');
         return;
       }
 

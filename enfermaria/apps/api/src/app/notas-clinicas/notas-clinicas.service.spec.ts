@@ -4,7 +4,7 @@ jest.mock('otplib', () => ({
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
-import { authenticator } from 'otplib';
+const { authenticator } = require('otplib') as { authenticator: { verify: jest.Mock } };
 import { NotasClinicasService } from './notas-clinicas.service';
 import { PrismaService } from '../prisma/prisma.service';
 

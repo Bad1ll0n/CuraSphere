@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../common/storage.service';
 import { PdfService } from '../common/pdf.service';
@@ -211,7 +212,7 @@ export class PortalDoenteService {
 
   async submeterPRO(doenteId: string, templateId: string, respostas: Record<string, unknown>) {
     return this.prisma.registoPRO.create({
-      data: { doenteId, templateId, respostas },
+      data: { doenteId, templateId, respostas: respostas as Prisma.InputJsonValue },
       include: { template: { select: { nome: true } } },
     });
   }

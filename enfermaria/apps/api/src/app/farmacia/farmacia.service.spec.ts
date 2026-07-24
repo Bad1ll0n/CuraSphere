@@ -72,7 +72,7 @@ describe('FarmaciaService', () => {
 
       const resultado = await service.atualizarQuantidade('item-1', 60, 'Reposição', 'entrada', 'u1');
 
-      expect(resultado.quantidade).toBe(60);
+      expect(resultado!.quantidade).toBe(60);
     });
   });
 

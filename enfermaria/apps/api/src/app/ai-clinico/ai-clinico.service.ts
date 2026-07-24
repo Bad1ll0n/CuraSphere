@@ -90,7 +90,8 @@ export class AiClinicoService {
     let success = true;
     let erro: string | undefined;
     try {
-      const msg = await this.client.messages.create(params);
+      // As chamadas são todas não-streaming → estreitar do tipo-união (Message | Stream) para Message.
+      const msg = (await this.client.messages.create(params)) as Anthropic.Message;
       this.aiMetrics.registar({
         feature,
         modelo: params.model,
@@ -168,15 +169,6 @@ export class AiClinicoService {
     ).join('\n');
 
     return cabecalho + linhas;
-  }
-
-  private parseJson(texto: string, fallback: any): any {
-    try {
-      const match = texto.match(/\{[\s\S]*\}/);
-      return match ? JSON.parse(match[0]) : fallback;
-    } catch {
-      return fallback;
-    }
   }
 
   // ── 1. Análise Clínica do Doente ────────────────────────────────────────────
@@ -335,7 +327,7 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
       this.store(cacheKey, resultado);
       if (utilizadorId) {
         this.logDecisao('analise', resultado, utilizadorId, doenteId, { contexto, systemPrompt }).then(id => {
-          if (id) resultado._decisaoId = id;
+          if (id) (resultado as any)._decisaoId = id;
         });
       }
       return resultado;
@@ -376,7 +368,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
       this.store(cacheKey, resultado);
       if (utilizadorId) {
         this.logDecisao('triagem', resultado, utilizadorId, undefined, { contexto }).then(id => {
-          if (id) resultado._decisaoId = id;
+          if (id) (resultado as any)._decisaoId = id;
         });
       }
       return resultado;
@@ -492,7 +484,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
       const resultado: any = parseWithSchema(texto, TurnoSchema, { narrativa: texto, destaques: [], disclaimer: 'Gerado por IA. Verificar com equipa clínica.' });
       if (utilizadorId) {
         this.logDecisao('turno', resultado, utilizadorId, undefined, { contexto }).then(id => {
-          if (id) resultado._decisaoId = id;
+          if (id) (resultado as any)._decisaoId = id;
         });
       }
       return resultado;
@@ -590,7 +582,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
       this.store(cacheKey, resultado);
       if (utilizadorId) {
         this.logDecisao('los', resultado, utilizadorId, doenteId, { contexto }).then(id => {
-          if (id) resultado._decisaoId = id;
+          if (id) (resultado as any)._decisaoId = id;
         });
       }
       return resultado;

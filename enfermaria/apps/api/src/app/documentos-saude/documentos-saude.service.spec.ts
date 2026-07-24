@@ -98,10 +98,10 @@ describe('DocumentosSaudeService', () => {
 
   describe('upload()', () => {
     it('faz upload e cria registo de documento', async () => {
-      const mockFile = { buffer: Buffer.from('pdf'), originalname: 'rx.pdf', mimetype: 'application/pdf', size: 1024 } as Express.Multer.File;
+      const mockFile = { buffer: Buffer.from('pdf'), originalname: 'rx.pdf', mimetype: 'application/pdf', size: 1024 } as any;
       mockPrisma.documentoSaude.create.mockResolvedValue(docBase);
 
-      const resultado = await service.upload('d1', mockFile, { titulo: 'RX Tórax', tipo: 'imagem' }, 'u1');
+      const resultado = await service.upload('d1', mockFile, { titulo: 'RX Tórax', tipo: 'imagem' } as any, 'u1');
 
       expect(mockStorage.upload).toHaveBeenCalled();
       expect(resultado.titulo).toBe('RX Tórax');

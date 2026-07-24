@@ -53,8 +53,8 @@ export const ReadmissaoSchema = z.object({
 });
 
 export const NLQSchema = z.object({
-  where: z.record(z.unknown()).optional(),
-  include: z.record(z.unknown()).optional(),
+  where: z.record(z.string(), z.unknown()).optional(),
+  include: z.record(z.string(), z.unknown()).optional(),
   take: z.number().min(1).max(20).optional(),
   explicacao: z.string().optional(),
 });

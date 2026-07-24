@@ -40,7 +40,7 @@ describe('FisioterapiaService', () => {
 
       const resultado = await service.criarPlano(
         'd1',
-        { objetivos: 'Recuperar mobilidade', dataInicio: new Date() },
+        { objetivos: 'Recuperar mobilidade', dataInicio: new Date().toISOString() },
         'ft-1',
       );
 
@@ -63,7 +63,7 @@ describe('FisioterapiaService', () => {
       mockPrisma.sessaoFisioterapia.create.mockResolvedValue(sessaoBase);
 
       const resultado = await service.agendarSessao(
-        { planoId: 'pl-1', doenteId: 'd1', data: new Date(), duracao: 45, descricao: 'Exercícios' },
+        { planoId: 'pl-1', doenteId: 'd1', data: new Date().toISOString(), duracao: 45, descricao: 'Exercícios' },
         'ft-1',
       );
 

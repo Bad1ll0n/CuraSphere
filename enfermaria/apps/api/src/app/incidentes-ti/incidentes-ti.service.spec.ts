@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
 import { IncidentesTIService } from './incidentes-ti.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -35,7 +34,7 @@ describe('IncidentesTIService', () => {
   describe('listar()', () => {
     it('devolve incidentes', async () => {
       mockPrisma.incidenteTI.findMany.mockResolvedValue([incidenteBase]);
-      const r = await service.listar({} as any);
+      const r = await service.listar('u1', 'ti');
       expect(r).toHaveLength(1);
     });
   });

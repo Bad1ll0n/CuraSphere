@@ -191,7 +191,7 @@ describe('MedicacaoService', () => {
         medicacaoId: 'med-1',
         administradoPorId: 'enf-1',
         verificacao5Certas: true,
-      });
+      } as any);
 
       expect(resultado.id).toBe('reg-1');
       expect(mockPrisma.registoMedicacao.create).toHaveBeenCalledWith(
@@ -267,7 +267,7 @@ describe('MedicacaoService', () => {
 
       expect(r.valido).toBe(true);
       expect(r.falhas).toHaveLength(0);
-      expect(r.medicacao.nome).toBe('Paracetamol 1g');
+      expect(r.medicacao!.nome).toBe('Paracetamol 1g');
     });
 
     it('falha no Certo 1 quando doenteId do QR não corresponde ao esperado', async () => {

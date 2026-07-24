@@ -41,7 +41,7 @@ describe('PlanoAltaService', () => {
     it('devolve plano existente', async () => {
       const resultado = await service.buscar('d1');
 
-      expect(resultado.doenteId).toBe('d1');
+      expect(resultado!.doenteId).toBe('d1');
     });
   });
 

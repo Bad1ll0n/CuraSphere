@@ -46,7 +46,7 @@ describe('ExamesLabService', () => {
       mockPrisma.resultadoAnalise.create.mockResolvedValue(resultadoBase);
 
       const resultado = await service.criar(
-        { doenteId: 'd1', painel: 'hemograma', parametro: 'Hemoglobina', valor: '12.5', unidade: 'g/dL' },
+        { doenteId: 'd1', painel: 'hemograma', parametro: 'Hemoglobina', valor: 12.5, unidade: 'g/dL' },
         'enf-1',
       );
 
@@ -58,7 +58,7 @@ describe('ExamesLabService', () => {
       mockPrisma.resultadoAnalise.create.mockResolvedValue(resultadoCritico);
 
       await service.criar(
-        { doenteId: 'd1', painel: 'hemograma', parametro: 'Potássio', valor: '7.2', unidade: 'mEq/L', critico: true },
+        { doenteId: 'd1', painel: 'hemograma', parametro: 'Potássio', valor: 7.2, unidade: 'mEq/L', critico: true },
         'enf-1',
       );
 
@@ -95,8 +95,8 @@ describe('ExamesLabService', () => {
 
       const resultados = await service.criarLote(
         [
-          { doenteId: 'd1', painel: 'hemograma', parametro: 'Hemoglobina', valor: '12.5', unidade: 'g/dL' },
-          { doenteId: 'd1', painel: 'hemograma', parametro: 'Hematócrito', valor: '38', unidade: '%' },
+          { doenteId: 'd1', painel: 'hemograma', parametro: 'Hemoglobina', valor: 12.5, unidade: 'g/dL' },
+          { doenteId: 'd1', painel: 'hemograma', parametro: 'Hematócrito', valor: 38, unidade: '%' },
         ],
         'enf-1',
       );
