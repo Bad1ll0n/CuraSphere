@@ -1,9 +1,10 @@
-import { Controller, Get, Query, Patch, Param, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Query, Patch, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from './audit.service';
+import { AuditCheckpointService } from './audit-checkpoint.service';
 import { AtualizarChecklistDto } from './dto/atualizar-checklist.dto';
 
 const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
@@ -15,12 +16,25 @@ export class AuditController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly checkpoint: AuditCheckpointService,
   ) {}
 
-  /** Verifica a integridade da cadeia de hash do log de auditoria (tamper-evidence). */
+  /** Verifica a integridade da cadeia de hash do log de auditoria (legado). */
   @Get('integridade')
   async integridade() {
     return this.audit.verificarIntegridade();
+  }
+
+  /** Verifica os checkpoints assinados (tamper-proof: deteta remoção/alteração/forja). */
+  @Get('checkpoints/verificar')
+  async verificarCheckpoints() {
+    return this.checkpoint.verificar();
+  }
+
+  /** Força a selagem de um checkpoint agora (normalmente corre periodicamente em background). */
+  @Post('checkpoints/selar')
+  async selarCheckpoint() {
+    return this.checkpoint.selar();
   }
 
   @Get('logs')

@@ -1,14 +1,14 @@
 import { Global, Module } from '@nestjs/common';
 import { AuditService } from './audit.service';
+import { AuditCheckpointService } from './audit-checkpoint.service';
 
 /**
- * Torna o AuditService injetável em toda a app (@Global), para que TODOS os escritores de
- * auditoria passem pelo mesmo ponto encadeado por hash — condição para uma cadeia linear e
- * verificável (tamper-evidence).
+ * Torna o AuditService injetável em toda a app (@Global). Inclui o AuditCheckpointService, que
+ * sela periodicamente raízes assinadas sobre os hashes-de-conteúdo (prova tamper-proof).
  */
 @Global()
 @Module({
-  providers: [AuditService],
-  exports: [AuditService],
+  providers: [AuditService, AuditCheckpointService],
+  exports: [AuditService, AuditCheckpointService],
 })
 export class AuditModule {}
