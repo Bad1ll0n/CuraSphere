@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { AnomalyDetectionService } from './anomaly-detection.service';
+import { AcessoLeituraService } from './acesso-leitura.service';
 
 const DOENTE_ID_RE = /^\/(?:v\d+\/)?doentes\/([0-9a-f-]{8,})/i;
 
@@ -24,16 +25,26 @@ const DOENTE_ID_RE = /^\/(?:v\d+\/)?doentes\/([0-9a-f-]{8,})/i;
 export class AuditInterceptor implements NestInterceptor {
   private readonly logger = new Logger(AuditInterceptor.name);
 
-  constructor(private anomaly: AnomalyDetectionService) {}
+  constructor(
+    private anomaly: AnomalyDetectionService,
+    private acessoLeitura: AcessoLeituraService,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
-    const { method, url, user, ip } = req;
+    const { method, url, user, ip, headers } = req;
 
-    // Deteção de anomalia: acesso bulk a doentes via GET.
+    // Leitura de dados sensíveis (ver ficha de doente) → trilho de acessos (assíncrono).
     if (method === 'GET' && user?.sub) {
       const m = DOENTE_ID_RE.exec(url.split('?')[0]);
-      if (m) this.anomaly.rastrearAcessoDoente(user.sub, m[1]);
+      if (m) {
+        this.anomaly.rastrearAcessoDoente(user.sub, m[1]);
+        this.acessoLeitura.registar({
+          utilizadorId: user.sub, utilizadorNome: user.nome ?? null, utilizadorRole: user.role ?? null,
+          entidadeTipo: 'doentes', entidadeId: m[1], rota: url.split('?')[0],
+          ip: ip ?? null, correlationId: (headers?.['x-correlation-id'] as string) ?? null,
+        });
+      }
     }
 
     return next.handle().pipe(
