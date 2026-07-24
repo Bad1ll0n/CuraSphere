@@ -9,11 +9,10 @@ import {
 import type {
   RegistrationResponseJSON,
   AuthenticationResponseJSON,
-} from '@simplewebauthn/server/script/deps';
+  AuthenticatorTransportFuture,
+} from '@simplewebauthn/server';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RedisService } from '../../redis/redis.service';
-import { JwtService } from '@nestjs/jwt';
-import { AuthService } from '../auth.service';
 
 @Injectable()
 export class WebAuthnService {
@@ -23,9 +22,7 @@ export class WebAuthnService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
-    private readonly jwtService: JwtService,
     private readonly config: ConfigService,
-    private readonly authService: AuthService,
   ) {}
 
   private get rpId(): string {
@@ -52,7 +49,7 @@ export class WebAuthnService {
     const options = await generateRegistrationOptions({
       rpName: this.rpName,
       rpID: this.rpId,
-      userID: new TextEncoder().encode(utilizador.id),
+      userID: new TextEncoder().encode(utilizador.id) as Uint8Array<ArrayBuffer>,
       userName: utilizador.numeroFuncionario,
       userDisplayName: utilizador.nome,
       attestationType: 'none',
@@ -77,7 +74,7 @@ export class WebAuthnService {
     response: RegistrationResponseJSON,
     nome: string,
   ) {
-    const expectedChallenge = await this.redis.get(`webauthn:reg:${utilizadorId}`);
+    const expectedChallenge = await this.redis.get<string>(`webauthn:reg:${utilizadorId}`);
     if (!expectedChallenge) throw new BadRequestException('Challenge expirado ou inválido');
 
     let verification;
@@ -132,8 +129,6 @@ export class WebAuthnService {
   }
 
   async verifyAuthentication(response: AuthenticationResponseJSON) {
-    const expectedChallenge = await this.redis.get(`webauthn:auth:${response.response.clientDataJSON}`);
-
     // Buscar credencial pelo credentialId
     const cred = await this.prisma.webAuthnCredential.findUnique({
       where: { credentialId: response.id },
@@ -143,7 +138,7 @@ export class WebAuthnService {
 
     // Re-buscar o challenge correcto
     const challengeKey = `webauthn:auth:challenge:${cred.utilizadorId}`;
-    const challenge = await this.redis.get(challengeKey);
+    const challenge = await this.redis.get<string>(challengeKey);
     if (!challenge) throw new UnauthorizedException('Challenge expirado');
 
     let verification;
@@ -157,7 +152,7 @@ export class WebAuthnService {
           id: cred.credentialId,
           publicKey: new Uint8Array(cred.publicKey),
           counter: Number(cred.counter),
-          transports: cred.transports as AuthenticatorTransport[],
+          transports: cred.transports as AuthenticatorTransportFuture[],
         },
       });
     } catch (err) {
@@ -195,7 +190,7 @@ export class WebAuthnService {
       allowCredentials: utilizador.webAuthnCredentials.map((c) => ({
         id: c.credentialId,
         type: 'public-key' as const,
-        transports: c.transports as AuthenticatorTransport[],
+        transports: c.transports as AuthenticatorTransportFuture[],
       })),
     });
 

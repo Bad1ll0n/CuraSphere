@@ -13,7 +13,6 @@ import { SsoService } from './sso.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
-import { PrismaService } from '../../prisma/prisma.service';
 import { RedisService } from '../../redis/redis.service';
 import * as crypto from 'crypto';
 
@@ -38,7 +37,6 @@ export class SsoController {
 
   constructor(
     private readonly sso: SsoService,
-    private readonly prisma: PrismaService,
     private readonly redis: RedisService,
   ) {}
 
@@ -191,7 +189,7 @@ export class SsoController {
     const scope = encodeURIComponent('openid profile email');
     const authEndpoint = config['authorizationEndpoint'] ?? `${config['issuer']}/oauth2/v2.0/authorize`;
 
-    res.redirect(
+    return res.redirect(
       `${authEndpoint}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&nonce=${nonce}`,
     );
   }
