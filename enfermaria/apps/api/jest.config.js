@@ -25,6 +25,9 @@ module.exports = {
     'src/app/**/*.service.ts',
     '!src/app/**/index.ts',
     '!src/generated/**',
+    // Infra do cliente de BD (adapter pg + encriptação + plumbing de transação/GUC). Só é
+    // testável com uma BD real — validado por testes de integração/provas, não por unit.
+    '!src/app/prisma/prisma.service.ts',
   ],
   coverageThreshold: {
     global: { statements: 50, branches: 28, functions: 45, lines: 52 },
