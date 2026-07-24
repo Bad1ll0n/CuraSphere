@@ -29,6 +29,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     this.encClient = criarClienteComEncriptacao(this);
     (this as any).doente = this.encClient.doente;
     (this as any).contacto = this.encClient.contacto;
+    // CRÍTICO (PII): o swap acima só encripta `this.doente.create()` DIRETO. Dentro de uma
+    // transação interativa, `tx.doente` era o delegate CRU → nomes de doentes gravados EM CLARO
+    // (ver doentes.service admitir/darAlta). Encaminhar `$transaction` para o cliente estendido
+    // faz o `tx` da callback ser encriptado — fecha essa fuga e torna a auditoria por triggers
+    // (que precisa de transações) segura para PII.
+    (this as any).$transaction = this.encClient.$transaction.bind(this.encClient);
   }
 
   async onModuleInit() {
