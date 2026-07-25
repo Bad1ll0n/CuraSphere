@@ -159,8 +159,10 @@ export default function LoginPage() {
 
               <form onSubmit={handleSubmitCredenciais}>
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-semibold text-slate-700">{t('employeeNumber')}</label>
+                  <label htmlFor="login-numero-funcionario" className="block text-sm font-semibold text-slate-700">{t('employeeNumber')}</label>
                   <input
+                    id="login-numero-funcionario"
+                    name="numeroFuncionario"
                     type="text"
                     value={numeroFuncionario}
                     onChange={(e) => setNumeroFuncionario(e.target.value)}
@@ -172,8 +174,10 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-1.5" style={{ marginTop: '28px' }}>
-                  <label className="block text-sm font-semibold text-slate-700">{t('password')}</label>
+                  <label htmlFor="login-password" className="block text-sm font-semibold text-slate-700">{t('password')}</label>
                   <input
+                    id="login-password"
+                    name="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -247,8 +251,9 @@ export default function LoginPage() {
 
               <form onSubmit={handleSubmitMfa}>
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-semibold text-slate-700">Código de verificação</label>
+                  <label htmlFor="login-mfa-code" className="block text-sm font-semibold text-slate-700">Código de verificação</label>
                   <input
+                    id="login-mfa-code"
                     ref={mfaInputRef}
                     type="text"
                     inputMode="numeric"
