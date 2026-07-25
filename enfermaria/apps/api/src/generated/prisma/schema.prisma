@@ -1020,6 +1020,18 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+// Anti-replay de códigos TOTP, durável em Postgres (não em Redis). O Postgres já é dependência
+// dura do login (lê o utilizador, escreve o refresh token), pelo que ancorar aqui NÃO acrescenta
+// ponto único de falha — ao contrário do Redis, cuja indisponibilidade bloqueava TODO o staff
+// clínico (fail-closed). `chave` = sha256(scope:secret:code); nunca guarda secret/código em claro.
+model TotpConsumido {
+  chave    String   @id
+  expiraEm DateTime
+
+  @@index([expiraEm])
+  @@map("totp_consumidos")
+}
+
 // Prova de integridade tamper-evident: raízes (Merkle/encadeadas) assinadas sobre intervalos
 // de audit_logs, seladas em diferido pelo checkpointer (com watermark de commit) e ancoradas
 // fora da BD. As linhas de audit_logs nunca são alteradas (WORM) — a prova está aqui.

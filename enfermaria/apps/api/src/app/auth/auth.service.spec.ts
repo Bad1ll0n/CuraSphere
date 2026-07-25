@@ -39,6 +39,11 @@ const mockPrisma = {
     updateMany: jest.fn(),
     deleteMany: jest.fn(),
   },
+  // Anti-replay de TOTP: durável em Postgres. Decisão por LEITURA: $queryRaw devolve as linhas
+  // AINDA ATIVAS desta chave (vazio = primeira vez → permite; não-vazio = replay). $executeRaw
+  // grava (upsert) e serve o DELETE de expirados (cron).
+  $queryRaw: jest.fn().mockResolvedValue([]),
+  $executeRaw: jest.fn().mockResolvedValue(0),
 };
 
 const mockJwt = {
@@ -79,6 +84,8 @@ describe('AuthService', () => {
     jest.resetAllMocks();
     mockJwt.sign.mockReturnValue('jwt-access-token');
     mockPrisma.refreshToken.create.mockResolvedValue({ token: 'refresh-token-xyz' });
+    mockPrisma.$queryRaw.mockResolvedValue([]);
+    mockPrisma.$executeRaw.mockResolvedValue(0);
     mockRedis.get.mockResolvedValue(null);
     mockRedis.set.mockResolvedValue('OK');
     mockRedis.del.mockResolvedValue(1);
@@ -296,8 +303,8 @@ describe('AuthService', () => {
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
         role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
       });
-      // código válido mas já foi usado → setIfNotExists devolve false
-      mockRedis.setIfNotExists.mockResolvedValue(false);
+      // código válido mas já usado → existe uma linha ainda ativa para esta chave (replay)
+      mockPrisma.$queryRaw.mockResolvedValue([{ existe: 1 }]);
 
       await expect(service.verificarMfaLogin('token', '123456')).rejects.toThrow(
         /já utilizado/i,
@@ -315,6 +322,20 @@ describe('AuthService', () => {
 
       expect(resultado).toHaveProperty('accessToken', 'jwt-access-token');
       expect(typeof resultado.refreshToken).toBe('string');
+    });
+  });
+
+  // ── limparTotpExpirados() (housekeeping) ─────────────────────────────────────
+
+  describe('limparTotpExpirados()', () => {
+    it('apaga os TOTP expirados via $executeRaw', async () => {
+      await service.limparTotpExpirados();
+      expect(mockPrisma.$executeRaw).toHaveBeenCalled();
+    });
+
+    it('não propaga erro se a limpeza falhar', async () => {
+      mockPrisma.$executeRaw.mockRejectedValueOnce(new Error('BD offline'));
+      await expect(service.limparTotpExpirados()).resolves.toBeUndefined();
     });
   });
 
@@ -360,7 +381,7 @@ describe('AuthService', () => {
 
     it('lança BadRequestException quando código é replay', async () => {
       mockAuthenticator.verify.mockResolvedValue({ valid: true, delta: 0 });
-      mockRedis.setIfNotExists.mockResolvedValue(false);
+      mockPrisma.$queryRaw.mockResolvedValue([{ existe: 1 }]);
 
       await expect(service.ativarMfa('user-id-1', 'SECRET', '123456')).rejects.toThrow(
         /Código já utilizado/i,

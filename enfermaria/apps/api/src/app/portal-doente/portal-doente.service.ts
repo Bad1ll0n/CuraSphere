@@ -4,7 +4,7 @@ import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../common/storage.service';
 import { PdfService } from '../common/pdf.service';
-import * as bcrypt from 'bcryptjs';
+import { hashPassword, verifyPassword } from '../common/password';
 
 @Injectable()
 export class PortalDoenteService {
@@ -24,7 +24,7 @@ export class PortalDoenteService {
       throw new ConflictException('Email já utilizado por outro doente');
     }
 
-    const passwordHash = await bcrypt.hash(senha, 12);
+    const passwordHash = await hashPassword(senha, 12);
     return this.prisma.portalDoente.upsert({
       where: { doenteId },
       create: { doenteId, email, passwordHash, criadoPorId },
@@ -41,7 +41,7 @@ export class PortalDoenteService {
     if (!portal || !portal.ativo) throw new UnauthorizedException('Credenciais inválidas');
     if (!portal.doente.ativo) throw new UnauthorizedException('Conta desactivada');
 
-    const valido = await bcrypt.compare(senha, portal.passwordHash);
+    const valido = await verifyPassword(senha, portal.passwordHash);
     if (!valido) throw new UnauthorizedException('Credenciais inválidas');
 
     const accessToken = this.jwt.sign(
