@@ -563,6 +563,11 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   hash: 'hash'
 };
 
+exports.Prisma.TotpConsumidoScalarFieldEnum = {
+  chave: 'chave',
+  expiraEm: 'expiraEm'
+};
+
 exports.Prisma.AuditCheckpointScalarFieldEnum = {
   id: 'id',
   seqInicio: 'seqInicio',
@@ -2061,6 +2066,7 @@ exports.Prisma.ModelName = {
   ListaEspera: 'ListaEspera',
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  TotpConsumido: 'TotpConsumido',
   AuditCheckpoint: 'AuditCheckpoint',
   AcessoLeitura: 'AcessoLeitura',
   FeatureFlag: 'FeatureFlag',

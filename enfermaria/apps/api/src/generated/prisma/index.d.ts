@@ -184,6 +184,11 @@ export type ReceitaEletronica = $Result.DefaultSelection<Prisma.$ReceitaEletroni
  */
 export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
 /**
+ * Model TotpConsumido
+ * 
+ */
+export type TotpConsumido = $Result.DefaultSelection<Prisma.$TotpConsumidoPayload>
+/**
  * Model AuditCheckpoint
  * 
  */
@@ -1589,6 +1594,16 @@ export class PrismaClient<
     * ```
     */
   get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.totpConsumido`: Exposes CRUD operations for the **TotpConsumido** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TotpConsumidos
+    * const totpConsumidos = await prisma.totpConsumido.findMany()
+    * ```
+    */
+  get totpConsumido(): Prisma.TotpConsumidoDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.auditCheckpoint`: Exposes CRUD operations for the **AuditCheckpoint** model.
@@ -3007,6 +3022,7 @@ export namespace Prisma {
     ListaEspera: 'ListaEspera',
     ReceitaEletronica: 'ReceitaEletronica',
     AuditLog: 'AuditLog',
+    TotpConsumido: 'TotpConsumido',
     AuditCheckpoint: 'AuditCheckpoint',
     AcessoLeitura: 'AcessoLeitura',
     FeatureFlag: 'FeatureFlag',
@@ -3117,7 +3133,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5634,6 +5650,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AuditLogCountArgs<ExtArgs>
             result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      TotpConsumido: {
+        payload: Prisma.$TotpConsumidoPayload<ExtArgs>
+        fields: Prisma.TotpConsumidoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TotpConsumidoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TotpConsumidoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          findFirst: {
+            args: Prisma.TotpConsumidoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TotpConsumidoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          findMany: {
+            args: Prisma.TotpConsumidoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>[]
+          }
+          create: {
+            args: Prisma.TotpConsumidoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          createMany: {
+            args: Prisma.TotpConsumidoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TotpConsumidoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>[]
+          }
+          delete: {
+            args: Prisma.TotpConsumidoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          update: {
+            args: Prisma.TotpConsumidoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          deleteMany: {
+            args: Prisma.TotpConsumidoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TotpConsumidoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TotpConsumidoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>[]
+          }
+          upsert: {
+            args: Prisma.TotpConsumidoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TotpConsumidoPayload>
+          }
+          aggregate: {
+            args: Prisma.TotpConsumidoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTotpConsumido>
+          }
+          groupBy: {
+            args: Prisma.TotpConsumidoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TotpConsumidoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TotpConsumidoCountArgs<ExtArgs>
+            result: $Utils.Optional<TotpConsumidoCountAggregateOutputType> | number
           }
         }
       }
@@ -12809,6 +12899,7 @@ export namespace Prisma {
     listaEspera?: ListaEsperaOmit
     receitaEletronica?: ReceitaEletronicaOmit
     auditLog?: AuditLogOmit
+    totpConsumido?: TotpConsumidoOmit
     auditCheckpoint?: AuditCheckpointOmit
     acessoLeitura?: AcessoLeituraOmit
     featureFlag?: FeatureFlagOmit
@@ -59891,6 +59982,967 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TotpConsumido
+   */
+
+  export type AggregateTotpConsumido = {
+    _count: TotpConsumidoCountAggregateOutputType | null
+    _min: TotpConsumidoMinAggregateOutputType | null
+    _max: TotpConsumidoMaxAggregateOutputType | null
+  }
+
+  export type TotpConsumidoMinAggregateOutputType = {
+    chave: string | null
+    expiraEm: Date | null
+  }
+
+  export type TotpConsumidoMaxAggregateOutputType = {
+    chave: string | null
+    expiraEm: Date | null
+  }
+
+  export type TotpConsumidoCountAggregateOutputType = {
+    chave: number
+    expiraEm: number
+    _all: number
+  }
+
+
+  export type TotpConsumidoMinAggregateInputType = {
+    chave?: true
+    expiraEm?: true
+  }
+
+  export type TotpConsumidoMaxAggregateInputType = {
+    chave?: true
+    expiraEm?: true
+  }
+
+  export type TotpConsumidoCountAggregateInputType = {
+    chave?: true
+    expiraEm?: true
+    _all?: true
+  }
+
+  export type TotpConsumidoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TotpConsumido to aggregate.
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TotpConsumidos to fetch.
+     */
+    orderBy?: TotpConsumidoOrderByWithRelationInput | TotpConsumidoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TotpConsumidoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TotpConsumidos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TotpConsumidos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TotpConsumidos
+    **/
+    _count?: true | TotpConsumidoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TotpConsumidoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TotpConsumidoMaxAggregateInputType
+  }
+
+  export type GetTotpConsumidoAggregateType<T extends TotpConsumidoAggregateArgs> = {
+        [P in keyof T & keyof AggregateTotpConsumido]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTotpConsumido[P]>
+      : GetScalarType<T[P], AggregateTotpConsumido[P]>
+  }
+
+
+
+
+  export type TotpConsumidoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TotpConsumidoWhereInput
+    orderBy?: TotpConsumidoOrderByWithAggregationInput | TotpConsumidoOrderByWithAggregationInput[]
+    by: TotpConsumidoScalarFieldEnum[] | TotpConsumidoScalarFieldEnum
+    having?: TotpConsumidoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TotpConsumidoCountAggregateInputType | true
+    _min?: TotpConsumidoMinAggregateInputType
+    _max?: TotpConsumidoMaxAggregateInputType
+  }
+
+  export type TotpConsumidoGroupByOutputType = {
+    chave: string
+    expiraEm: Date
+    _count: TotpConsumidoCountAggregateOutputType | null
+    _min: TotpConsumidoMinAggregateOutputType | null
+    _max: TotpConsumidoMaxAggregateOutputType | null
+  }
+
+  type GetTotpConsumidoGroupByPayload<T extends TotpConsumidoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TotpConsumidoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TotpConsumidoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TotpConsumidoGroupByOutputType[P]>
+            : GetScalarType<T[P], TotpConsumidoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TotpConsumidoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    chave?: boolean
+    expiraEm?: boolean
+  }, ExtArgs["result"]["totpConsumido"]>
+
+  export type TotpConsumidoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    chave?: boolean
+    expiraEm?: boolean
+  }, ExtArgs["result"]["totpConsumido"]>
+
+  export type TotpConsumidoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    chave?: boolean
+    expiraEm?: boolean
+  }, ExtArgs["result"]["totpConsumido"]>
+
+  export type TotpConsumidoSelectScalar = {
+    chave?: boolean
+    expiraEm?: boolean
+  }
+
+  export type TotpConsumidoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"chave" | "expiraEm", ExtArgs["result"]["totpConsumido"]>
+
+  export type $TotpConsumidoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TotpConsumido"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      chave: string
+      expiraEm: Date
+    }, ExtArgs["result"]["totpConsumido"]>
+    composites: {}
+  }
+
+  type TotpConsumidoGetPayload<S extends boolean | null | undefined | TotpConsumidoDefaultArgs> = $Result.GetResult<Prisma.$TotpConsumidoPayload, S>
+
+  type TotpConsumidoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TotpConsumidoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TotpConsumidoCountAggregateInputType | true
+    }
+
+  export interface TotpConsumidoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TotpConsumido'], meta: { name: 'TotpConsumido' } }
+    /**
+     * Find zero or one TotpConsumido that matches the filter.
+     * @param {TotpConsumidoFindUniqueArgs} args - Arguments to find a TotpConsumido
+     * @example
+     * // Get one TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TotpConsumidoFindUniqueArgs>(args: SelectSubset<T, TotpConsumidoFindUniqueArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TotpConsumido that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TotpConsumidoFindUniqueOrThrowArgs} args - Arguments to find a TotpConsumido
+     * @example
+     * // Get one TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TotpConsumidoFindUniqueOrThrowArgs>(args: SelectSubset<T, TotpConsumidoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TotpConsumido that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoFindFirstArgs} args - Arguments to find a TotpConsumido
+     * @example
+     * // Get one TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TotpConsumidoFindFirstArgs>(args?: SelectSubset<T, TotpConsumidoFindFirstArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TotpConsumido that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoFindFirstOrThrowArgs} args - Arguments to find a TotpConsumido
+     * @example
+     * // Get one TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TotpConsumidoFindFirstOrThrowArgs>(args?: SelectSubset<T, TotpConsumidoFindFirstOrThrowArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TotpConsumidos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TotpConsumidos
+     * const totpConsumidos = await prisma.totpConsumido.findMany()
+     * 
+     * // Get first 10 TotpConsumidos
+     * const totpConsumidos = await prisma.totpConsumido.findMany({ take: 10 })
+     * 
+     * // Only select the `chave`
+     * const totpConsumidoWithChaveOnly = await prisma.totpConsumido.findMany({ select: { chave: true } })
+     * 
+     */
+    findMany<T extends TotpConsumidoFindManyArgs>(args?: SelectSubset<T, TotpConsumidoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TotpConsumido.
+     * @param {TotpConsumidoCreateArgs} args - Arguments to create a TotpConsumido.
+     * @example
+     * // Create one TotpConsumido
+     * const TotpConsumido = await prisma.totpConsumido.create({
+     *   data: {
+     *     // ... data to create a TotpConsumido
+     *   }
+     * })
+     * 
+     */
+    create<T extends TotpConsumidoCreateArgs>(args: SelectSubset<T, TotpConsumidoCreateArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TotpConsumidos.
+     * @param {TotpConsumidoCreateManyArgs} args - Arguments to create many TotpConsumidos.
+     * @example
+     * // Create many TotpConsumidos
+     * const totpConsumido = await prisma.totpConsumido.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TotpConsumidoCreateManyArgs>(args?: SelectSubset<T, TotpConsumidoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TotpConsumidos and returns the data saved in the database.
+     * @param {TotpConsumidoCreateManyAndReturnArgs} args - Arguments to create many TotpConsumidos.
+     * @example
+     * // Create many TotpConsumidos
+     * const totpConsumido = await prisma.totpConsumido.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TotpConsumidos and only return the `chave`
+     * const totpConsumidoWithChaveOnly = await prisma.totpConsumido.createManyAndReturn({
+     *   select: { chave: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TotpConsumidoCreateManyAndReturnArgs>(args?: SelectSubset<T, TotpConsumidoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TotpConsumido.
+     * @param {TotpConsumidoDeleteArgs} args - Arguments to delete one TotpConsumido.
+     * @example
+     * // Delete one TotpConsumido
+     * const TotpConsumido = await prisma.totpConsumido.delete({
+     *   where: {
+     *     // ... filter to delete one TotpConsumido
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TotpConsumidoDeleteArgs>(args: SelectSubset<T, TotpConsumidoDeleteArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TotpConsumido.
+     * @param {TotpConsumidoUpdateArgs} args - Arguments to update one TotpConsumido.
+     * @example
+     * // Update one TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TotpConsumidoUpdateArgs>(args: SelectSubset<T, TotpConsumidoUpdateArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TotpConsumidos.
+     * @param {TotpConsumidoDeleteManyArgs} args - Arguments to filter TotpConsumidos to delete.
+     * @example
+     * // Delete a few TotpConsumidos
+     * const { count } = await prisma.totpConsumido.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TotpConsumidoDeleteManyArgs>(args?: SelectSubset<T, TotpConsumidoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TotpConsumidos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TotpConsumidos
+     * const totpConsumido = await prisma.totpConsumido.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TotpConsumidoUpdateManyArgs>(args: SelectSubset<T, TotpConsumidoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TotpConsumidos and returns the data updated in the database.
+     * @param {TotpConsumidoUpdateManyAndReturnArgs} args - Arguments to update many TotpConsumidos.
+     * @example
+     * // Update many TotpConsumidos
+     * const totpConsumido = await prisma.totpConsumido.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TotpConsumidos and only return the `chave`
+     * const totpConsumidoWithChaveOnly = await prisma.totpConsumido.updateManyAndReturn({
+     *   select: { chave: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TotpConsumidoUpdateManyAndReturnArgs>(args: SelectSubset<T, TotpConsumidoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TotpConsumido.
+     * @param {TotpConsumidoUpsertArgs} args - Arguments to update or create a TotpConsumido.
+     * @example
+     * // Update or create a TotpConsumido
+     * const totpConsumido = await prisma.totpConsumido.upsert({
+     *   create: {
+     *     // ... data to create a TotpConsumido
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TotpConsumido we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TotpConsumidoUpsertArgs>(args: SelectSubset<T, TotpConsumidoUpsertArgs<ExtArgs>>): Prisma__TotpConsumidoClient<$Result.GetResult<Prisma.$TotpConsumidoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TotpConsumidos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoCountArgs} args - Arguments to filter TotpConsumidos to count.
+     * @example
+     * // Count the number of TotpConsumidos
+     * const count = await prisma.totpConsumido.count({
+     *   where: {
+     *     // ... the filter for the TotpConsumidos we want to count
+     *   }
+     * })
+    **/
+    count<T extends TotpConsumidoCountArgs>(
+      args?: Subset<T, TotpConsumidoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TotpConsumidoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TotpConsumido.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TotpConsumidoAggregateArgs>(args: Subset<T, TotpConsumidoAggregateArgs>): Prisma.PrismaPromise<GetTotpConsumidoAggregateType<T>>
+
+    /**
+     * Group by TotpConsumido.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TotpConsumidoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TotpConsumidoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TotpConsumidoGroupByArgs['orderBy'] }
+        : { orderBy?: TotpConsumidoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TotpConsumidoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTotpConsumidoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TotpConsumido model
+   */
+  readonly fields: TotpConsumidoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TotpConsumido.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TotpConsumidoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TotpConsumido model
+   */
+  interface TotpConsumidoFieldRefs {
+    readonly chave: FieldRef<"TotpConsumido", 'String'>
+    readonly expiraEm: FieldRef<"TotpConsumido", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TotpConsumido findUnique
+   */
+  export type TotpConsumidoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter, which TotpConsumido to fetch.
+     */
+    where: TotpConsumidoWhereUniqueInput
+  }
+
+  /**
+   * TotpConsumido findUniqueOrThrow
+   */
+  export type TotpConsumidoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter, which TotpConsumido to fetch.
+     */
+    where: TotpConsumidoWhereUniqueInput
+  }
+
+  /**
+   * TotpConsumido findFirst
+   */
+  export type TotpConsumidoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter, which TotpConsumido to fetch.
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TotpConsumidos to fetch.
+     */
+    orderBy?: TotpConsumidoOrderByWithRelationInput | TotpConsumidoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TotpConsumidos.
+     */
+    cursor?: TotpConsumidoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TotpConsumidos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TotpConsumidos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TotpConsumidos.
+     */
+    distinct?: TotpConsumidoScalarFieldEnum | TotpConsumidoScalarFieldEnum[]
+  }
+
+  /**
+   * TotpConsumido findFirstOrThrow
+   */
+  export type TotpConsumidoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter, which TotpConsumido to fetch.
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TotpConsumidos to fetch.
+     */
+    orderBy?: TotpConsumidoOrderByWithRelationInput | TotpConsumidoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TotpConsumidos.
+     */
+    cursor?: TotpConsumidoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TotpConsumidos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TotpConsumidos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TotpConsumidos.
+     */
+    distinct?: TotpConsumidoScalarFieldEnum | TotpConsumidoScalarFieldEnum[]
+  }
+
+  /**
+   * TotpConsumido findMany
+   */
+  export type TotpConsumidoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter, which TotpConsumidos to fetch.
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TotpConsumidos to fetch.
+     */
+    orderBy?: TotpConsumidoOrderByWithRelationInput | TotpConsumidoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TotpConsumidos.
+     */
+    cursor?: TotpConsumidoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TotpConsumidos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TotpConsumidos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TotpConsumidos.
+     */
+    distinct?: TotpConsumidoScalarFieldEnum | TotpConsumidoScalarFieldEnum[]
+  }
+
+  /**
+   * TotpConsumido create
+   */
+  export type TotpConsumidoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TotpConsumido.
+     */
+    data: XOR<TotpConsumidoCreateInput, TotpConsumidoUncheckedCreateInput>
+  }
+
+  /**
+   * TotpConsumido createMany
+   */
+  export type TotpConsumidoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TotpConsumidos.
+     */
+    data: TotpConsumidoCreateManyInput | TotpConsumidoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TotpConsumido createManyAndReturn
+   */
+  export type TotpConsumidoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * The data used to create many TotpConsumidos.
+     */
+    data: TotpConsumidoCreateManyInput | TotpConsumidoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TotpConsumido update
+   */
+  export type TotpConsumidoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TotpConsumido.
+     */
+    data: XOR<TotpConsumidoUpdateInput, TotpConsumidoUncheckedUpdateInput>
+    /**
+     * Choose, which TotpConsumido to update.
+     */
+    where: TotpConsumidoWhereUniqueInput
+  }
+
+  /**
+   * TotpConsumido updateMany
+   */
+  export type TotpConsumidoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TotpConsumidos.
+     */
+    data: XOR<TotpConsumidoUpdateManyMutationInput, TotpConsumidoUncheckedUpdateManyInput>
+    /**
+     * Filter which TotpConsumidos to update
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * Limit how many TotpConsumidos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TotpConsumido updateManyAndReturn
+   */
+  export type TotpConsumidoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * The data used to update TotpConsumidos.
+     */
+    data: XOR<TotpConsumidoUpdateManyMutationInput, TotpConsumidoUncheckedUpdateManyInput>
+    /**
+     * Filter which TotpConsumidos to update
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * Limit how many TotpConsumidos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TotpConsumido upsert
+   */
+  export type TotpConsumidoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TotpConsumido to update in case it exists.
+     */
+    where: TotpConsumidoWhereUniqueInput
+    /**
+     * In case the TotpConsumido found by the `where` argument doesn't exist, create a new TotpConsumido with this data.
+     */
+    create: XOR<TotpConsumidoCreateInput, TotpConsumidoUncheckedCreateInput>
+    /**
+     * In case the TotpConsumido was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TotpConsumidoUpdateInput, TotpConsumidoUncheckedUpdateInput>
+  }
+
+  /**
+   * TotpConsumido delete
+   */
+  export type TotpConsumidoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
+    /**
+     * Filter which TotpConsumido to delete.
+     */
+    where: TotpConsumidoWhereUniqueInput
+  }
+
+  /**
+   * TotpConsumido deleteMany
+   */
+  export type TotpConsumidoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TotpConsumidos to delete
+     */
+    where?: TotpConsumidoWhereInput
+    /**
+     * Limit how many TotpConsumidos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TotpConsumido without action
+   */
+  export type TotpConsumidoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TotpConsumido
+     */
+    select?: TotpConsumidoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TotpConsumido
+     */
+    omit?: TotpConsumidoOmit<ExtArgs> | null
   }
 
 
@@ -169373,6 +170425,14 @@ export namespace Prisma {
   export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+  export const TotpConsumidoScalarFieldEnum: {
+    chave: 'chave',
+    expiraEm: 'expiraEm'
+  };
+
+  export type TotpConsumidoScalarFieldEnum = (typeof TotpConsumidoScalarFieldEnum)[keyof typeof TotpConsumidoScalarFieldEnum]
+
+
   export const AuditCheckpointScalarFieldEnum: {
     id: 'id',
     seqInicio: 'seqInicio',
@@ -174870,6 +175930,43 @@ export namespace Prisma {
     contentHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     prevHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     hash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+  }
+
+  export type TotpConsumidoWhereInput = {
+    AND?: TotpConsumidoWhereInput | TotpConsumidoWhereInput[]
+    OR?: TotpConsumidoWhereInput[]
+    NOT?: TotpConsumidoWhereInput | TotpConsumidoWhereInput[]
+    chave?: StringFilter<"TotpConsumido"> | string
+    expiraEm?: DateTimeFilter<"TotpConsumido"> | Date | string
+  }
+
+  export type TotpConsumidoOrderByWithRelationInput = {
+    chave?: SortOrder
+    expiraEm?: SortOrder
+  }
+
+  export type TotpConsumidoWhereUniqueInput = Prisma.AtLeast<{
+    chave?: string
+    AND?: TotpConsumidoWhereInput | TotpConsumidoWhereInput[]
+    OR?: TotpConsumidoWhereInput[]
+    NOT?: TotpConsumidoWhereInput | TotpConsumidoWhereInput[]
+    expiraEm?: DateTimeFilter<"TotpConsumido"> | Date | string
+  }, "chave">
+
+  export type TotpConsumidoOrderByWithAggregationInput = {
+    chave?: SortOrder
+    expiraEm?: SortOrder
+    _count?: TotpConsumidoCountOrderByAggregateInput
+    _max?: TotpConsumidoMaxOrderByAggregateInput
+    _min?: TotpConsumidoMinOrderByAggregateInput
+  }
+
+  export type TotpConsumidoScalarWhereWithAggregatesInput = {
+    AND?: TotpConsumidoScalarWhereWithAggregatesInput | TotpConsumidoScalarWhereWithAggregatesInput[]
+    OR?: TotpConsumidoScalarWhereWithAggregatesInput[]
+    NOT?: TotpConsumidoScalarWhereWithAggregatesInput | TotpConsumidoScalarWhereWithAggregatesInput[]
+    chave?: StringWithAggregatesFilter<"TotpConsumido"> | string
+    expiraEm?: DateTimeWithAggregatesFilter<"TotpConsumido"> | Date | string
   }
 
   export type AuditCheckpointWhereInput = {
@@ -186342,6 +187439,41 @@ export namespace Prisma {
     hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type TotpConsumidoCreateInput = {
+    chave: string
+    expiraEm: Date | string
+  }
+
+  export type TotpConsumidoUncheckedCreateInput = {
+    chave: string
+    expiraEm: Date | string
+  }
+
+  export type TotpConsumidoUpdateInput = {
+    chave?: StringFieldUpdateOperationsInput | string
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TotpConsumidoUncheckedUpdateInput = {
+    chave?: StringFieldUpdateOperationsInput | string
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TotpConsumidoCreateManyInput = {
+    chave: string
+    expiraEm: Date | string
+  }
+
+  export type TotpConsumidoUpdateManyMutationInput = {
+    chave?: StringFieldUpdateOperationsInput | string
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TotpConsumidoUncheckedUpdateManyInput = {
+    chave?: StringFieldUpdateOperationsInput | string
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AuditCheckpointCreateInput = {
     id?: string
     seqInicio: number
@@ -197590,6 +198722,21 @@ export namespace Prisma {
 
   export type AuditLogSumOrderByAggregateInput = {
     seq?: SortOrder
+  }
+
+  export type TotpConsumidoCountOrderByAggregateInput = {
+    chave?: SortOrder
+    expiraEm?: SortOrder
+  }
+
+  export type TotpConsumidoMaxOrderByAggregateInput = {
+    chave?: SortOrder
+    expiraEm?: SortOrder
+  }
+
+  export type TotpConsumidoMinOrderByAggregateInput = {
+    chave?: SortOrder
+    expiraEm?: SortOrder
   }
 
   export type AuditCheckpointCountOrderByAggregateInput = {

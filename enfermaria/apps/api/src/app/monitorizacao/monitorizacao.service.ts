@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import { hashPassword, verifyPassword } from '../common/password';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
@@ -22,7 +22,7 @@ export class MonitorizacaoService {
     }
     // Gera a chave uma única vez (o segredo só é devolvido agora; guardamos o hash).
     const secret = crypto.randomBytes(24).toString('hex');
-    const apiKeyHash = await bcrypt.hash(secret, 10);
+    const apiKeyHash = await hashPassword(secret, 10);
     const disp = await this.prisma.dispositivoMonitor.create({
       data: { nome: dto.nome, localizacao: dto.localizacao, responsavelId: dto.responsavelId, doenteId: dto.doenteId, apiKeyHash },
     });
@@ -49,7 +49,7 @@ export class MonitorizacaoService {
     const [id, secret] = apiKey.split('.', 2);
     const disp = await this.prisma.dispositivoMonitor.findUnique({ where: { id } });
     if (!disp || !disp.ativo) throw new UnauthorizedException('Dispositivo não autorizado');
-    const ok = await bcrypt.compare(secret, disp.apiKeyHash);
+    const ok = await verifyPassword(secret, disp.apiKeyHash);
     if (!ok) throw new UnauthorizedException('Chave de dispositivo inválida');
     return disp;
   }

@@ -38,7 +38,8 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
+      // Copiar o cliente Prisma gerado para o dist (é externalizado acima, não empacotado).
+      assets: ['./src/assets', { input: './src/generated/prisma', glob: '**/*', output: 'generated/prisma' }],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: false,
@@ -46,5 +47,31 @@ module.exports = {
       externalDependencies: 'all',
     }),
     ...OPTIONAL_UNUSED_PEERS.map((resourceRegExp) => new webpack.IgnorePlugin({ resourceRegExp })),
+    // Externalizar o cliente Prisma GERADO (não o empacotar). Empacotar o runtime pré-minificado do
+    // Prisma faz o webpack reordenar `this`/`super` das suas classes de erro → em runtime rebenta com
+    // "Must call super constructor in derived class…", pelo que P2002/P2025 nunca são instâncias de
+    // PrismaClientKnownRequestError e o exception.filter não os mapeia (409/404 viram 500). É
+    // require()d em runtime de dist/generated/prisma (copiado via `assets`), onde funciona como no
+    // node direto. Corre DEPOIS do NxAppWebpackPlugin e faz prepend para combinar (não substituir) a
+    // externalização de node_modules feita por `externalDependencies:'all'`.
+    {
+      apply(compiler) {
+        const anterior = compiler.options.externals;
+        const externaisExtra = function ({ request }, callback) {
+          // Cliente Prisma gerado → require em runtime de dist/generated/prisma (ver acima).
+          if (request && /(^|[\\/])generated[\\/]prisma($|[\\/])/.test(request)) {
+            return callback(null, 'commonjs ./generated/prisma');
+          }
+          // @node-rs/bcrypt (napi + binário .node por plataforma) NÃO pode ser empacotado — o
+          // webpack tentaria fazer parse do binário nativo. Externalizar → require do node_modules
+          // em runtime (o binário certo é resolvido pelo próprio pacote, como o pg/ioredis).
+          if (request && /^@node-rs\/bcrypt/.test(request)) {
+            return callback(null, 'commonjs ' + request);
+          }
+          return callback();
+        };
+        compiler.options.externals = [externaisExtra].concat(anterior ?? []);
+      },
+    },
   ],
 };

@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuthService } from '../auth.service';
+import { hashPassword } from '../../common/password';
 import * as crypto from 'crypto';
 
 export interface SsoProfile {
@@ -64,7 +65,7 @@ export class SsoService {
         data: {
           numeroFuncionario: ssoId,
           nome,
-          passwordHash: await import('bcryptjs').then(b => b.hash(crypto.randomBytes(32).toString('hex'), 12)),
+          passwordHash: await hashPassword(crypto.randomBytes(32).toString('hex'), 12),
           role,
           subRole: profile.subRole ?? null,
           mfaAtivo: false,

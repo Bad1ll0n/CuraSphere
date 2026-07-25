@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException, BadRequestException, Logger } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
-import * as bcrypt from 'bcryptjs';
+import { hashPassword, verifyPassword } from '../common/password';
 import * as crypto from 'crypto';
 import { generateSecret, generateURI, verify } from 'otplib';
 import { toDataURL } from 'qrcode';
@@ -25,24 +26,54 @@ export class AuthService {
     private readonly anomaly: AnomalyDetectionService,
   ) {}
 
+  // Janela do otplib (30 s + 1 step de tolerância). 90 s cobre-a com margem.
+  private static readonly TOTP_JANELA_MS = 90_000;
+
   /**
-   * Marca um código TOTP como já-utilizado em Redis com TTL > janela de validade.
-   * Devolve `true` se o código pode prosseguir (primeira vez), `false` se já foi usado.
+   * Anti-replay de um código TOTP, DURÁVEL em Postgres (antes vivia no Redis).
+   * Devolve `true` na primeira utilização do código dentro da janela; `false` se for replay.
    *
-   * Se Redis estiver indisponível, devolvemos `false` (fail-closed) para operações
-   * críticas — preferimos negar do que permitir um replay silencioso.
+   * Racional (ver análise da Sessão 74): o Postgres já é dependência dura do login — lê o
+   * utilizador e grava o refresh token — por isso ancorar aqui NÃO cria ponto único de falha
+   * novo. O Redis, esse, era um SPOF: em baixo, o `setIfNotExists` devolvia `null` e o método
+   * negava (fail-closed) TODOS os códigos → bloqueava por completo o login de staff clínico.
+   *
+   * Semântica atómica "usar-uma-vez": INSERT; em conflito, só re-atribui (permite) se a linha
+   * anterior já EXPIROU — caso contrário 0 linhas afetadas = replay dentro da janela. Um erro
+   * real de BD propaga (sem Postgres o login já é impossível), em vez de negar um código válido.
    */
   private async consumirTotpUmaVez(scope: string, secret: string, code: string): Promise<boolean> {
-    // Hash do secret + code para nunca persistir o secret cleartext em Redis
-    const hash = crypto.createHash('sha256').update(`${secret}:${code}`).digest('hex');
-    const key = `totp:used:${scope}:${hash}`;
-    // TTL = 90 s cobre a janela do otplib (default 30 s + 1 step de tolerância)
-    const ok = await this.redis.setIfNotExists(key, '1', 90);
-    if (ok === null) {
-      this.logger.warn(`Redis indisponível — anti-replay TOTP fail-closed (scope=${scope})`);
-      return false;
+    // Hash do scope+secret+code — nunca persiste o secret/código em claro.
+    const chave = crypto.createHash('sha256').update(`${scope}:${secret}:${code}`).digest('hex');
+    const expiraEm = new Date(Date.now() + AuthService.TOTP_JANELA_MS);
+    // Decisão de replay por LEITURA (o único caminho 100% fiável no query-engine do Prisma+adapter:
+    // a semântica de `ON CONFLICT … RETURNING`/contagem diverge no bundle, e apanhar a exceção de
+    // constraint não é opção porque o bundler parte a classe de erro do Prisma). Existe uma linha
+    // AINDA ATIVA para esta chave? → replay.
+    // IMPORTANTE: comparar com uma Date PARAMETRIZADA, não com `now()` do SQL — via $queryRaw+adapter
+    // o `now()` (timestamptz) compara mal com a coluna `timestamp` e dá o resultado errado; a Date
+    // parametrizada usa a mesma serialização da gravação (comprovado empiricamente).
+    const agora = new Date();
+    const ativos = await this.prisma.$queryRaw<Array<{ existe: number }>>`
+      SELECT 1 AS existe FROM totp_consumidos WHERE chave = ${chave} AND "expiraEm" > ${agora} LIMIT 1`;
+    if (ativos.length > 0) return false;
+    // Regista (durável). O upsert sobrescreve uma eventual linha já expirada da mesma chave, o que
+    // permite a reutilização legítima de um código que só volte a coincidir fora da janela.
+    await this.prisma.$executeRaw`
+      INSERT INTO totp_consumidos (chave, "expiraEm") VALUES (${chave}, ${expiraEm})
+      ON CONFLICT (chave) DO UPDATE SET "expiraEm" = EXCLUDED."expiraEm"`;
+    return true;
+  }
+
+  /** Housekeeping: remove os TOTP já expirados (mantém `totp_consumidos` minúscula). */
+  @Cron('*/10 * * * *')
+  async limparTotpExpirados(): Promise<void> {
+    try {
+      // Date parametrizada (não `now()`) — ver nota em consumirTotpUmaVez sobre a comparação de tipos.
+      await this.prisma.$executeRaw`DELETE FROM totp_consumidos WHERE "expiraEm" < ${new Date()}`;
+    } catch (e) {
+      this.logger.warn(`Limpeza de TOTP expirados falhou: ${(e as Error)?.message ?? String(e)}`);
     }
-    return ok;
   }
 
   async login(numeroFuncionario: string, password: string, ip?: string) {
@@ -52,7 +83,7 @@ export class AuthService {
 
     // Equalizar tempo de resposta — corre bcrypt mesmo quando o utilizador não existe
     if (!utilizador || !utilizador.ativo) {
-      await bcrypt.compare(password, DUMMY_BCRYPT_HASH).catch(() => false);
+      await verifyPassword(password, DUMMY_BCRYPT_HASH).catch(() => false);
       this.logger.warn(`Tentativa de login falhada para funcionário: ${numeroFuncionario}`);
       throw new UnauthorizedException('Credenciais inválidas');
     }
@@ -64,7 +95,7 @@ export class AuthService {
       throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
     }
 
-    const passwordValida = await bcrypt.compare(password, utilizador.passwordHash);
+    const passwordValida = await verifyPassword(password, utilizador.passwordHash);
     if (!passwordValida) {
       const falhas = (await this.redis.get<number>(failKey) ?? 0) + 1;
       if (falhas >= 5) {
@@ -257,10 +288,10 @@ export class AuthService {
     const utilizador = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId } });
     if (!utilizador) throw new UnauthorizedException('Utilizador não encontrado');
 
-    const passwordValida = await bcrypt.compare(passwordAtual, utilizador.passwordHash);
+    const passwordValida = await verifyPassword(passwordAtual, utilizador.passwordHash);
     if (!passwordValida) throw new UnauthorizedException('Password atual incorreta');
 
-    const novaPasswordHash = await bcrypt.hash(novaPassword, 12);
+    const novaPasswordHash = await hashPassword(novaPassword, 12);
     await this.prisma.utilizador.update({
       where: { id: utilizadorId },
       data: {

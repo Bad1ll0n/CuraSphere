@@ -19,7 +19,12 @@ interface AuditLog {
   detalhes: string | null;
   ip: string | null;
   createdAt: string;
-  utilizador: LogUtilizador;
+  // Nullable: linhas registadas por trigger/SQL direto ('system') ou de um utilizador
+  // entretanto removido (onDelete: SetNull) não têm relação. Ver schema.prisma AuditLog.
+  utilizador: LogUtilizador | null;
+  // Snapshot da identidade no momento da ação — sobrevive à remoção do utilizador.
+  utilizadorNome: string | null;
+  utilizadorRole: string | null;
 }
 
 interface Resposta {
@@ -47,6 +52,20 @@ const roleLabel: Record<string, string> = {
   qualidade:     'Qualidade',
   direcao:       'Direção',
 };
+
+// Autor de um log, com degradação segura: a relação viva tem prioridade (nome atual); se o
+// utilizador foi removido ou a linha veio de trigger/SQL direto, recorre-se ao snapshot gravado
+// no momento; por fim 'Sistema' para escritas sem identidade de utilizador da app.
+function autorNome(log: AuditLog): string {
+  return log.utilizador?.nome ?? log.utilizadorNome ?? 'Sistema';
+}
+function autorRole(log: AuditLog): string | null {
+  return log.utilizador?.role ?? log.utilizadorRole ?? null;
+}
+function autorRoleLabel(log: AuditLog): string {
+  const role = autorRole(log);
+  return role ? (roleLabel[role] ?? role) : '—';
+}
 
 function formatarData(iso: string) {
   const d = new Date(iso);
@@ -148,8 +167,8 @@ export default function AuditoriaPagina() {
       ['Data', 'Utilizador', 'Role', 'Ação', 'Entidade', 'ID Entidade', 'IP'],
       ...logs.map(l => [
         formatarData(l.createdAt),
-        l.utilizador?.nome ?? '—',
-        l.utilizador?.role ?? '—',
+        autorNome(l),
+        autorRole(l) ?? '—',
         l.acao,
         l.entidadeTipo ?? '—',
         l.entidadeId ?? '—',
@@ -355,8 +374,8 @@ export default function AuditoriaPagina() {
 
                 {/* Utilizador */}
                 <div>
-                  <p className="text-sm font-medium text-slate-700">{log.utilizador.nome}</p>
-                  <p className="text-xs text-slate-400">{roleLabel[log.utilizador.role] ?? log.utilizador.role}</p>
+                  <p className="text-sm font-medium text-slate-700">{autorNome(log)}</p>
+                  <p className="text-xs text-slate-400">{autorRoleLabel(log)}</p>
                 </div>
 
                 {/* Entidade */}

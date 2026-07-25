@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Servico } from '../common/enums';
-import * as bcrypt from 'bcryptjs';
+import { hashPassword } from '../common/password';
 
 @Injectable()
 export class UtilizadoresService {
@@ -16,7 +16,7 @@ export class UtilizadoresService {
     servico?: Servico;
     ordemExperiencia?: number;
   }) {
-    const passwordHash = await bcrypt.hash(data.password, 12);
+    const passwordHash = await hashPassword(data.password, 12);
 
     return this.prisma.$transaction(async (tx) => {
       const existe = await tx.utilizador.findUnique({

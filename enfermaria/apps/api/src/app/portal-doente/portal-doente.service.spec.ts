@@ -14,12 +14,12 @@ import { StorageService } from '../common/storage.service';
 import { PdfService } from '../common/pdf.service';
 
 // Evitar hashing real nos testes
-jest.mock('bcryptjs', () => ({
-  hash: jest.fn().mockResolvedValue('hash-simulado'),
-  compare: jest.fn(),
+jest.mock('../common/password', () => ({
+  hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
+  verifyPassword: jest.fn(),
 }));
 
-import * as bcrypt from 'bcryptjs';
+import { hashPassword, verifyPassword } from '../common/password';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },
@@ -42,8 +42,8 @@ describe('PortalDoenteService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    (bcrypt.hash as jest.Mock).mockResolvedValue('hash-simulado');
-    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+    (hashPassword as jest.Mock).mockResolvedValue('hash-simulado');
+    (verifyPassword as jest.Mock).mockResolvedValue(true);
     mockJwt.sign.mockReturnValue('jwt-token-simulado');
     mockStorage.getSignedUrl.mockResolvedValue('https://signed.url/doc');
     mockPdf.gerarSumarioAlta.mockResolvedValue(Buffer.from('pdf'));
@@ -90,7 +90,7 @@ describe('PortalDoenteService', () => {
 
       const resultado = await service.criarAcesso('d1', 'test@test.com', 'senha123', 'admin-1');
 
-      expect(bcrypt.hash).toHaveBeenCalledWith('senha123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('senha123', 12);
       expect(mockPrisma.portalDoente.upsert).toHaveBeenCalledWith(
         expect.objectContaining({ create: expect.objectContaining({ passwordHash: 'hash-simulado' }) }),
       );
@@ -119,7 +119,7 @@ describe('PortalDoenteService', () => {
 
     it('lança UnauthorizedException quando senha é inválida', async () => {
       mockPrisma.portalDoente.findUnique.mockResolvedValue(portalAtivo);
-      (bcrypt.compare as jest.Mock).mockResolvedValue(false);
+      (verifyPassword as jest.Mock).mockResolvedValue(false);
 
       await expect(service.login('test@test.com', 'senha-errada')).rejects.toThrow(UnauthorizedException);
     });

@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+jest.mock('../common/password', () => ({
+  hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
+  verifyPassword: jest.fn(),
+}));
+import { hashPassword } from '../common/password';
 import { UtilizadoresService } from './utilizadores.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { Servico } from '../common/enums';
@@ -64,8 +68,6 @@ describe('UtilizadoresService', () => {
         return fn(mockTx);
       });
 
-      const spyHash = jest.spyOn(bcrypt, 'hash');
-
       await service.criar({
         numeroFuncionario: '12345',
         nome: 'Dr. Ana',
@@ -73,7 +75,7 @@ describe('UtilizadoresService', () => {
         role: 'medico',
       });
 
-      expect(spyHash).toHaveBeenCalledWith('senhaSegura123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('senhaSegura123', 12);
     });
 
     it('define passwordExpiresAt ~90 dias no futuro', async () => {
