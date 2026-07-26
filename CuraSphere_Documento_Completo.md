@@ -4565,7 +4565,19 @@ uma, cada uma verificada (typecheck + testes + E2E runtime) e commitada isoladam
   exames. **E2E runtime**: pedido RX→worklist→laudo→assinar→resultado+sai da worklist+alerta.
 - **Suite**: 103 suites / 730 testes verde; tsc/eslint limpos em api/web.
 
-**Pendente nesta vaga**: cobertura clínica adicional / auditoria WCAG / runbook DR-backup.
+**Vaga 5 — qualidade & ops (concluída):**
+- **Runbook DR** — [`DR-RUNBOOK.md`](DR-RUNBOOK.md): consolida backup-db.sh/restore-db.sh/compose
+  numa sequência testável; RPO/RTO, os 3 pilares (BD/object storage/segredos), criticidade da
+  `ENCRYPTION_KEY`, ordem de recuperação, checklist, drills trimestrais, cenários (incl. ransomware/PITR).
+- **Auditoria WCAG 2.1 AA** — [`WCAG-AUDIT.md`](WCAG-AUDIT.md): corrigido o defeito transversal
+  4.1.2 (nomes acessíveis) — `aria-label="Fechar"` em **75 botões de ícone** (34 ficheiros);
+  backlog priorizado (labels de inputs, foco/Esc nos modais, contraste, skip-link, reduced-motion).
+- **Cobertura E2E das especialidades** — [`especialidades.spec.ts`](apps/web-e2e/e2e/especialidades.spec.ts):
+  5 specs de regressão API-level que travam a segurança clínica (dose pediátrica, DPP Naegele +
+  conclusão de gravidez, BSA + dose-máxima de quimio, ganho interdialítico, laudo→resultado). 5/5 verde.
+
+**Roteiro BA — concluído.** Restam apenas dependências externas (credenciais SPMS reais, pen-test
+humano, SMS/Twilio) e o backlog incremental do WCAG.
 **Deploy**: `prisma db push` (gravidezes/registos_partograma/partos + planos_quimioterapia/
 ciclos_quimioterapia + sessoes_dialise) + re-seed dos 3 cargos + variáveis
 `UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria re-aplicam-se às tabelas
