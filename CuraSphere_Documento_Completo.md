@@ -4545,12 +4545,23 @@ uma, cada uma verificada (typecheck + testes + E2E runtime) e commitada isoladam
   com alerta de FC fetal fora de 110–160 bpm (via `AlertasService`); registo de parto conclui a
   gravidez; painel obstétrico no detalhe do doente (auto-fino sem gravidez ativa, gráfico duplo
   dilatação/FC fetal). **E2E runtime**: gravidez→partograma(alerta bradicardia)→parto→conclusão.
-- **Suite**: 98 suites / 707 testes verde; tsc limpo em api/web.
+- **Oncologia / Quimioterapia** (backend + frontend) — modelos `PlanoQuimioterapia` +
+  `CicloQuimioterapia`; superfície corporal (Mosteller) e dose por m² (com dose máxima) em
+  [`oncologia.helper.ts`](enfermaria/apps/api/src/app/common/oncologia.helper.ts); ciclos com
+  numeração automática, verificação de intervalo do protocolo (aviso não-bloqueante) e alerta
+  de toxicidade CTCAE ≥3 (via `AlertasService`); painel com tabela de doses + ciclos + registo
+  de administração. **E2E runtime**: FOLFOX→BSA 1.82→doses (5-FU limitada a 600 mg)→toxicidade→alerta.
+- **Diálise / Nefrologia** (backend + frontend) — modelo `SessaoDialise`; ganho interdialítico
+  e UF objetivo ([`dialise.helper.ts`](enfermaria/apps/api/src/app/common/dialise.helper.ts));
+  ganho ponderal excessivo (>2.5 kg ou >4% do peso seco) gera alerta clínico; painel com
+  tendência de peso pré/pós + lista + registo de sessão. **E2E runtime**: ganho 3 kg→UF 3000 mL→alerta.
+- **Suite**: 102 suites / 724 testes verde; tsc/eslint limpos em api/web.
 
-**Pendente nesta vaga**: especialidades Oncologia (quimioterapia) e Diálise; RIS/PACS; cobertura
-clínica/WCAG/DR. **Deploy**: `prisma db push` (gravidezes/registos_partograma/partos) + re-seed
-dos 3 cargos + variáveis `UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria
-re-aplicam-se às tabelas novas (append-only).
+**Pendente nesta vaga**: RIS/PACS (pedido→laudo de imagiologia); cobertura clínica/WCAG/DR.
+**Deploy**: `prisma db push` (gravidezes/registos_partograma/partos + planos_quimioterapia/
+ciclos_quimioterapia + sessoes_dialise) + re-seed dos 3 cargos + variáveis
+`UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria re-aplicam-se às tabelas
+novas (append-only, clínicas → auditadas).
 
 ---
 
