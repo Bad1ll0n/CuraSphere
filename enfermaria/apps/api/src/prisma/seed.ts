@@ -32,6 +32,7 @@ const SUBROLES: Array<{ chave: string; label: string; roleChave: string; ordem: 
   { chave: 'supervisor_enfermagem',   label: 'Supervisor de Enfermagem', roleChave: 'enfermeiro', ordem: 2 },
   { chave: 'triador',                 label: 'Triador',                 roleChave: 'enfermeiro', ordem: 3 },
   { chave: 'instrumentista',          label: 'Instrumentista',          roleChave: 'enfermeiro', ordem: 4 },
+  { chave: 'gestor_caso',             label: 'Gestor de Caso',          roleChave: 'enfermeiro', ordem: 5 },
   // auxiliar
   { chave: 'apoio_geral', label: 'Apoio Geral', roleChave: 'auxiliar', ordem: 1 },
   // tecnico_saude
@@ -40,6 +41,8 @@ const SUBROLES: Array<{ chave: string; label: string; roleChave: string; ordem: 
   { chave: 'reabilitacao_fala',  label: 'Terapeuta da Fala',   roleChave: 'tecnico_saude', ordem: 3 },
   { chave: 'nutricao_clinica',   label: 'Nutricionista',        roleChave: 'tecnico_saude', ordem: 4 },
   { chave: 'psicologia_clinica', label: 'Psicólogo Clínico',   roleChave: 'tecnico_saude', ordem: 5 },
+  { chave: 'reabilitacao_ocupacional', label: 'Terapeuta Ocupacional', roleChave: 'tecnico_saude', ordem: 6 },
+  { chave: 'servico_social',           label: 'Assistente Social',     roleChave: 'tecnico_saude', ordem: 7 },
   // farmaceutico
   { chave: 'farmaceutico_hospitalar',  label: 'Farmacêutico Hospitalar',  roleChave: 'farmaceutico', ordem: 1 },
   { chave: 'farmaceutico_oncologico',  label: 'Farmacêutico Oncológico',  roleChave: 'farmaceutico', ordem: 2 },
