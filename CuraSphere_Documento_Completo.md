@@ -4519,4 +4519,39 @@ Implementadas todas, agrupadas por eficiência (schema junto → 1 rebuild).
 
 ---
 
+## Sessão 74 — Vaga de melhorias pós-avaliação BA (cargos, escala, especialidades)
+
+Avaliação como business analyst confirmou cobertura de papéis excelente (~50 sub-roles no
+catálogo DB) e apontou lacunas concretas: 3 cargos em falta, gaps de escala horizontal, e
+ausência de módulos de especialidade (só valores de enum, sem modelos). Implementadas uma a
+uma, cada uma verificada (typecheck + testes + E2E runtime) e commitada isoladamente.
+
+- **Cargos em falta** — seed idempotente ([`seed.ts`](enfermaria/apps/api/src/prisma/seed.ts)):
+  `gestor_caso` (enfermeiro), `reabilitacao_ocupacional` (Terapeuta Ocupacional) e
+  `servico_social` (Assistente Social) no `tecnico_saude`.
+- **Escala horizontal** — leader-election nos 11 crons via `pg_try_advisory_xact_lock` +
+  lease em `cron_locks` ([`prisma.service.ts`](enfermaria/apps/api/src/app/prisma/prisma.service.ts)
+  `tryBecomeLeader`), fail-safe; adaptador Redis no socket.io
+  ([`redis-io.adapter.ts`](enfermaria/apps/api/src/app/gateway/redis-io.adapter.ts)) para
+  broadcast entre instâncias, também fail-safe (Redis em baixo → broadcast local, sem bloquear
+  o boot). Throttler per-instância mantido (justificado: account-lockout já é partilhado no Redis).
+- **Pediatria** (backend + frontend) — PEWS por faixa etária calculado automaticamente na
+  pipeline de vitais para <16 anos ([`pews.helper.ts`](enfermaria/apps/api/src/app/common/pews.helper.ts)),
+  calculadora de dose por peso ([`dosing.helper.ts`](enfermaria/apps/api/src/app/common/dosing.helper.ts)),
+  painel no detalhe do doente (PEWS + tendência + dose). **E2E**: pediátrico real → PEWS=9.
+- **Maternidade / Obstetrícia** (backend + frontend) — modelos `Gravidez`,
+  `RegistoPartograma`, `Parto`; idade gestacional + DPP (Naegele) em
+  [`obstetricia.helper.ts`](enfermaria/apps/api/src/app/common/obstetricia.helper.ts); partograma
+  com alerta de FC fetal fora de 110–160 bpm (via `AlertasService`); registo de parto conclui a
+  gravidez; painel obstétrico no detalhe do doente (auto-fino sem gravidez ativa, gráfico duplo
+  dilatação/FC fetal). **E2E runtime**: gravidez→partograma(alerta bradicardia)→parto→conclusão.
+- **Suite**: 98 suites / 707 testes verde; tsc limpo em api/web.
+
+**Pendente nesta vaga**: especialidades Oncologia (quimioterapia) e Diálise; RIS/PACS; cobertura
+clínica/WCAG/DR. **Deploy**: `prisma db push` (gravidezes/registos_partograma/partos) + re-seed
+dos 3 cargos + variáveis `UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria
+re-aplicam-se às tabelas novas (append-only).
+
+---
+
 *Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*
