@@ -12,12 +12,17 @@ manual das páginas de maior tráfego e dos painéis clínicos.
 ## 1. O que já está bom (verificado)
 
 - **Modo de alto contraste** — `html.high-contrast` em [`global.css`](apps/web/src/app/global.css)
-  (rotulado WCAG AAA): fundo preto, texto branco, override das superfícies. Escape hatch de
-  contraste já disponível ao utilizador.
+  (rotulado WCAG AAA): fundo preto, texto branco, override das superfícies.
+- **`prefers-reduced-motion`** (WCAG 2.3.3) — bloco já presente em `global.css` (l.284): reduz
+  animações/transições a ~0. **(Já feito; corrige a impressão inicial desta auditoria.)**
+- **Skip-to-content** (WCAG 2.4.1) — `<a href="#main-content" class="skip-to-content">` no
+  `client-layout.tsx` (i18n `skipToContent`), com alvo `<main id="main-content" tabIndex={-1}>`. **(Já feito.)**
 - **Internacionalização** — pt/en completos via `next-intl` (guardrail de paridade de chaves).
 - **Imagens** — 3/3 `<img>` têm `alt`.
 - **Dark mode** por tokens CSS.
-- **Alguns modais** já têm `role="dialog"`/`aria-modal`/tratamento de `Escape` (~31 ocorrências).
+- **Modais acessíveis** — o `confirm-modal.tsx` já tinha `role="dialog"`+`aria-modal`+Escape+focus-trap;
+  agora existe um **primitivo genérico** [`components/ui/modal.tsx`](apps/web/src/components/ui/modal.tsx)
+  para conteúdo arbitrário (ver §2.2).
 
 ---
 
@@ -31,6 +36,16 @@ Um leitor de ecrã anunciava "✕" (ou nada útil), deixando o utilizador sem sa
 (65 numa linha + 6 multi-linha + 4 que já estavam corretos, deduplicados). Verificado:
 `tsc` limpo, diff = 70 linhas, todas exclusivamente a adicionar o `aria-label`.
 
+### 2.2 — WCAG 2.1.2 / 2.4.3 (Foco) · Primitivo de modal acessível — **CRIADO + demonstrado**
+**Contexto**: existiam ~52 ficheiros com modais ad-hoc (`fixed inset-0`) sem `role="dialog"`,
+armadilha de foco, `Esc` nem devolução de foco — ao contrário do `confirm-modal` (usado só em 6 sítios).
+
+**Ação**: criado o primitivo genérico [`ui/modal.tsx`](apps/web/src/components/ui/modal.tsx)
+(`role="dialog"`+`aria-modal`, `aria-labelledby`, Escape, armadilha de foco sobre **todos** os
+focáveis, foco inicial e devolução ao gatilho, fecho por backdrop) + story. Os 2 modais da
+**worklist de imagiologia** (resultado + laudo) foram migrados para ele como demonstração.
+A migração dos restantes ~50 modais para este primitivo é o item #2 do backlog.
+
 ---
 
 ## 3. Backlog priorizado (não corrigido nesta ronda)
@@ -38,12 +53,13 @@ Um leitor de ecrã anunciava "✕" (ou nada útil), deixando o utilizador sem sa
 | # | Critério WCAG | Achado | Severidade | Ação recomendada |
 |---|---|---|---|---|
 | 1 | **1.3.1 / 4.1.2** Info & Relationships | ~192 `<input>` sem `aria-label`/`id`+`<label htmlFor>` associados programaticamente (heurística; muitos têm label visível mas não ligado). | Alta | Associar `<label htmlFor>` ou `aria-label` a cada campo. Priorizar formulários clínicos (medicação, sinais vitais, prescrição). |
-| 2 | **2.1.2 / 2.4.3 / 4.1.2** Modais | Nem todos os modais têm `role="dialog"`+`aria-modal`, armadilha de foco, `Esc` para fechar e retorno de foco ao gatilho. | Alta | Extrair um primitivo `Modal` acessível (o shell já existe no Storybook, Sessão 72) e migrar os modais para ele. |
+| 2 | **2.1.2 / 2.4.3** Modais | ~50 modais ad-hoc ainda não usam o primitivo acessível (o `ui/modal.tsx` já existe; worklist já migrada — ver §2.2). | Alta | Migrar os restantes modais para `<Modal>`, ficheiro a ficheiro, verificando o layout. |
 | 3 | **1.4.3** Contraste | Tema por defeito pode ter texto cinza-claro (`text-slate-400`) abaixo de 4.5:1 sobre branco. Alto-contraste mitiga, mas o tema base deve cumprir AA sozinho. | Média | Auditar os tokens de cor com uma ferramenta de rácio; subir os cinzas de texto que falhem. |
-| 4 | **2.4.1** Bypass Blocks | Sem link "saltar para o conteúdo". | Média | Adicionar skip-link no layout do dashboard, visível ao focar. |
-| 5 | **2.3.3** Animação | Sem bloco `@media (prefers-reduced-motion)` no `global.css`; transições/spinners sempre animam. | Baixa | Envolver transições/animações num guard `prefers-reduced-motion: reduce`. |
-| 6 | **1.3.1** Cabeçalhos | Verificar hierarquia de `<h1>`→`<h6>` por rota (sem saltos de nível). | Baixa | Revisão manual por rota; usar heading único por página. |
-| 7 | **1.4.1** Cor como único meio | Alguns estados (ex.: severidade) dependem de cor. Muitos já têm rótulo textual (ex.: "CRÍTICO"), confirmar cobertura total. | Baixa | Garantir ícone/texto além da cor em todos os indicadores de estado. |
+| 4 | **1.3.1** Cabeçalhos | Verificar hierarquia de `<h1>`→`<h6>` por rota (sem saltos de nível). | Baixa | Revisão manual por rota; usar heading único por página. |
+| 5 | **1.4.1** Cor como único meio | Alguns estados (ex.: severidade) dependem de cor. Muitos já têm rótulo textual (ex.: "CRÍTICO"), confirmar cobertura total. | Baixa | Garantir ícone/texto além da cor em todos os indicadores de estado. |
+
+> **Já resolvidos** (verificados no código, corrigindo a 1ª impressão desta auditoria): skip-to-content
+> (2.4.1) e `prefers-reduced-motion` (2.3.3) — ver §1.
 
 ---
 
