@@ -331,6 +331,7 @@ model Doente {
   registosTransfusao      RegistoTransfusao[]
   reacoesTransfusionais   ReacaoTransfusional[]
   gravidezes              Gravidez[]
+  planosQuimioterapia     PlanoQuimioterapia[]
 
   @@index([tenantId, estado])
   @@index([ativo])
@@ -3120,4 +3121,42 @@ model Parto {
   registadoPorId String
 
   @@map("partos")
+}
+
+// ─── Oncologia / Quimioterapia ──────────────────────────────────────────────
+
+model PlanoQuimioterapia {
+  id                   String   @id @default(uuid())
+  doenteId             String
+  doente               Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  protocoloNome        String
+  ciclosPrevistos      Int
+  intervaloDias        Int      @default(21)
+  alturaCm             Float?
+  pesoKg               Float?
+  superficieCorporalM2 Float? // BSA (Mosteller)
+  farmacos             Json // [{ nome, mgPorM2, doseMaximaMg? }]
+  estado               String   @default("ativo") // ativo | concluido | suspenso
+  criadoPorId          String
+  criadoEm             DateTime @default(now())
+  ciclos               CicloQuimioterapia[]
+
+  @@index([doenteId, estado])
+  @@map("planos_quimioterapia")
+}
+
+model CicloQuimioterapia {
+  id                String             @id @default(uuid())
+  planoId           String
+  plano             PlanoQuimioterapia @relation(fields: [planoId], references: [id], onDelete: Cascade)
+  numero            Int
+  dataPrevista      DateTime?
+  dataAdministracao DateTime?
+  estado            String             @default("agendado") // agendado | administrado | adiado | cancelado
+  toxicidadeGrau    Int? // CTCAE 0-4
+  notas             String?
+  registadoPorId    String?
+
+  @@index([planoId, numero])
+  @@map("ciclos_quimioterapia")
 }

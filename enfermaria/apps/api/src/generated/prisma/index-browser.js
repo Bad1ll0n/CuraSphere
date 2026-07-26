@@ -1799,6 +1799,33 @@ exports.Prisma.PartoScalarFieldEnum = {
   registadoPorId: 'registadoPorId'
 };
 
+exports.Prisma.PlanoQuimioterapiaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  protocoloNome: 'protocoloNome',
+  ciclosPrevistos: 'ciclosPrevistos',
+  intervaloDias: 'intervaloDias',
+  alturaCm: 'alturaCm',
+  pesoKg: 'pesoKg',
+  superficieCorporalM2: 'superficieCorporalM2',
+  farmacos: 'farmacos',
+  estado: 'estado',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.CicloQuimioterapiaScalarFieldEnum = {
+  id: 'id',
+  planoId: 'planoId',
+  numero: 'numero',
+  dataPrevista: 'dataPrevista',
+  dataAdministracao: 'dataAdministracao',
+  estado: 'estado',
+  toxicidadeGrau: 'toxicidadeGrau',
+  notas: 'notas',
+  registadoPorId: 'registadoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2210,7 +2237,9 @@ exports.Prisma.ModelName = {
   SsoProvider: 'SsoProvider',
   Gravidez: 'Gravidez',
   RegistoPartograma: 'RegistoPartograma',
-  Parto: 'Parto'
+  Parto: 'Parto',
+  PlanoQuimioterapia: 'PlanoQuimioterapia',
+  CicloQuimioterapia: 'CicloQuimioterapia'
 };
 
 /**
