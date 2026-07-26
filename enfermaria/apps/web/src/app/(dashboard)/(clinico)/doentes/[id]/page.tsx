@@ -9,6 +9,7 @@ import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { SinaisVitaisPanel } from './components/sinais-vitais-panel';
+import { PediatriaPanel } from './components/pediatria-panel';
 import { RiscoEscalasPanel } from './components/risco-escalas-panel';
 import { ExamesPanel } from './components/exames-panel';
 import { NotasClinicasPanel } from './components/notas-clinicas-panel';
@@ -831,6 +832,13 @@ export default function DoenteDetalhe() {
       <PanelErrorBoundary name="Sinais Vitais">
         <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
+
+      {/* Pediatria — só para doentes < 16 anos (PEWS + calculadora de dose por peso) */}
+      {doente.dataNascimento && calcIdade(doente.dataNascimento) < 16 && (
+        <PanelErrorBoundary name="Pediatria">
+          <PediatriaPanel doenteId={id!} utilizador={utilizador} />
+        </PanelErrorBoundary>
+      )}
 
       {/* Balanço Hídrico */}
       <PanelErrorBoundary name="Balanço Hídrico">
