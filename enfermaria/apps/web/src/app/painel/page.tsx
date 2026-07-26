@@ -69,7 +69,7 @@ export default function PainelPage() {
         setUltimos(u);
       }
       if (Array.isArray(f)) setFila(f);
-    }).catch(() => {});
+    }).catch(() => { /* vazio */ });
 
     // SSE
     function conectar() {

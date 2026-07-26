@@ -65,7 +65,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       ]);
       setResultados(rRes.data);
       setResumo(rResumo.data);
-    } catch {}
+    } catch { /* vazio */ }
     finally { setLoading(false); }
   }, [doenteId, painelAtivo]);
 
@@ -99,7 +99,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       setModalNovo(false);
       setForm({ parametro: '', valor: '', unidade: '', refMin: '', refMax: '', critico: false, painel: '', observacoes: '' });
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
     finally { setSalvando(false); }
   };
 

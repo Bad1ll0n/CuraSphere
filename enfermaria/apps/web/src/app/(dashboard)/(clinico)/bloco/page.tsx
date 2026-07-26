@@ -161,7 +161,7 @@ export default function BlocoPage() {
     setLoadingCal(true);
     api.get('/bloco/agenda/mes', { params: { mes: calMes, ano: calAno } })
       .then(r => setCalDados(r.data ?? []))
-      .catch(() => {})
+      .catch(() => { /* vazio */ })
       .finally(() => setLoadingCal(false));
   }, [vistaAtiva, calMes, calAno]);
 

@@ -63,11 +63,11 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
       setPlano(r.data);
       setDataAlvo(r.data?.dataAlvoDia ? r.data.dataAlvoDia.split('T')[0] : '');
       setNotas(r.data?.notas ?? '');
-    }).catch(() => {});
+    }).catch(() => { /* vazio */ });
     api.get(`/doentes/${doenteId}/sumario-alta`).then(r => {
       if (r.data) setSumario(r.data);
-    }).catch(() => {});
-    api.get(`/doentes/${doenteId}/followups`).then(r => setFollowUps(r.data ?? [])).catch(() => {});
+    }).catch(() => { /* vazio */ });
+    api.get(`/doentes/${doenteId}/followups`).then(r => setFollowUps(r.data ?? [])).catch(() => { /* vazio */ });
   };
 
   useEffect(() => { carregar(); }, [doenteId]);

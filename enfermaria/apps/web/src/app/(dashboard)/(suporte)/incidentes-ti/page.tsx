@@ -125,7 +125,7 @@ export default function IncidentesTIPage() {
       if (!notas[expandido]) {
         api.get(`/incidentes-ti/${expandido}/notas`)
           .then(r => setNotas(prev => ({ ...prev, [expandido]: r.data })))
-          .catch(() => {});
+          .catch(() => { /* vazio */ });
       }
     }
   }, [expandido]);

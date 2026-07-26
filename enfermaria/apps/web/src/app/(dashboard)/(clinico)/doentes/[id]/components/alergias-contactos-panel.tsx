@@ -318,7 +318,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
     </>

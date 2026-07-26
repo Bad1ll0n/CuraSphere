@@ -171,7 +171,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     try {
       const { data } = await api.get(`/medicacao/pendentes-aprovacao-medico`);
       setPropostasPendentes((data ?? []).filter((p: any) => p.doenteId === doenteId));
-    } catch {}
+    } catch { /* vazio */ }
   }, [doenteId, role]);
 
   useEffect(() => { carregarPropostas(); }, [carregarPropostas]);
@@ -179,7 +179,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   useEffect(() => {
     api.get(`/stewardship/${doenteId}`)
       .then(r => setStewardship(r.data ?? []))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [doenteId]);
 
   useEffect(() => {
@@ -713,7 +713,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
 

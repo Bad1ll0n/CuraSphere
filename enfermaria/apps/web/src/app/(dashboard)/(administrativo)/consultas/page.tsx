@@ -100,7 +100,7 @@ export default function ConsultasPage() {
   useEffect(() => {
     api.get('/utilizadores', { params: { role: 'medico', limit: 200 } })
       .then(({ data }) => setMedicos(Array.isArray(data) ? data : data.data ?? []))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, []);
 
   // ─── Carregar slots quando médico + data mudam ────────────────────────────
@@ -344,7 +344,7 @@ export default function ConsultasPage() {
     ]);
     setAtosDisponiveis(atosRes.data);
     setAtosAdicionados(adicionadosRes.data);
-  } catch {}
+  } catch { /* vazio */ }
 }}
                           style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                         >
@@ -659,7 +659,7 @@ export default function ConsultasPage() {
                             try {
                               await api.delete(`/consultas/${realizarModal!.id}/atos/${ac.id}`);
                               setAtosAdicionados(prev => prev.filter(a => a.id !== ac.id));
-                            } catch {}
+                            } catch { /* vazio */ }
                           }}
                           style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: 0, fontSize: 16, lineHeight: 1 }}
                          aria-label="Fechar">✕</button>

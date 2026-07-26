@@ -86,7 +86,7 @@ export default function PerfilPage() {
   useEffect(() => {
     api.get('/auth/webauthn/credentials')
       .then(({ data }) => setPasskeys(data))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, []);
 
   const adicionarPasskey = async () => {

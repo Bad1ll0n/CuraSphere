@@ -61,7 +61,7 @@ export default function TabelaAtosPage() {
     try {
       const res = await api.get('/atos-clinicos?todos=true');
       setAtos(res.data);
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   useEffect(() => { carregar(); }, []);
@@ -121,14 +121,14 @@ export default function TabelaAtosPage() {
     try {
       await api.delete(`/atos-clinicos/${ato.id}`);
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   const reativar = async (ato: AtoClinico) => {
     try {
       await api.patch(`/atos-clinicos/${ato.id}`, { ativo: true });
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   const atosFiltrados = atos.filter(a => tab === 'todos' || a.categoria === tab);

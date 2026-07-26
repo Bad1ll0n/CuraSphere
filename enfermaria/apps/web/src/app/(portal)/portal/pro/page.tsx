@@ -43,9 +43,9 @@ function PROContent() {
     if (!token) { router.push('/portal/login'); return; }
     const h = { Authorization: `Bearer ${token}` };
     fetch(`${API}/portal/pro/templates`, { headers: h })
-      .then(r => r.json()).then(setTemplates).catch(() => {});
+      .then(r => r.json()).then(setTemplates).catch(() => { /* vazio */ });
     fetch(`${API}/portal/pro/historico`, { headers: h })
-      .then(r => r.json()).then(setHistorico).catch(() => {});
+      .then(r => r.json()).then(setHistorico).catch(() => { /* vazio */ });
   }, [token, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,7 +64,7 @@ function PROContent() {
       setRespostas({});
       setTemplateSel(null);
       const h = { Authorization: `Bearer ${token}` };
-      fetch(`${API}/portal/pro/historico`, { headers: h }).then(r2 => r2.json()).then(setHistorico).catch(() => {});
+      fetch(`${API}/portal/pro/historico`, { headers: h }).then(r2 => r2.json()).then(setHistorico).catch(() => { /* vazio */ });
     } catch {
       setMensagem('Erro ao guardar. Tente novamente.');
     } finally {

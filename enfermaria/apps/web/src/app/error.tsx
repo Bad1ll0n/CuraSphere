@@ -9,7 +9,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
   }, [error]);
 
   return (
-    <html>
+    <html lang="pt">
       <body style={{ margin: 0, fontFamily: 'system-ui, sans-serif', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         <div style={{ textAlign: 'center', maxWidth: '480px', padding: '40px 24px' }}>
           <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>

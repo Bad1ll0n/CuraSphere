@@ -190,7 +190,7 @@ export default function HorariosPagina() {
           grupoDoChefe.includes(u.role) &&
           (utilizador?.role === 'administrativo' || u.servico === utilizador?.servico)
         ));
-      }).catch(() => {});
+      }).catch(() => { /* vazio */ });
     }
   }, [isChefe]);
 

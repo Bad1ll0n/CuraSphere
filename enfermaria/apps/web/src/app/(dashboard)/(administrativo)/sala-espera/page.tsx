@@ -123,7 +123,7 @@ export default function SalaEsperaPage() {
           tipoCobertura: form.tipoCobertura || undefined,
           entidadeSeguradora: form.entidadeSeguradora || undefined,
           numeroApolice: form.numeroApolice || undefined,
-        }).catch(() => {});
+        }).catch(() => { /* vazio */ });
       }
       setModal(false);
       resetForm();

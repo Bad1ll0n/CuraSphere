@@ -199,7 +199,6 @@ export default function UrgenciaPage() {
     });
     es.addEventListener('urgencia_atualizada', () => invalidar());
     return () => { es.close(); setSseConectado(false); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const invalidar = () => {
@@ -289,7 +288,7 @@ export default function UrgenciaPage() {
       setAiTriagem(r.data);
       const corSugerida = AI_NIVEL_COR[r.data.nivelSugerido];
       if (corSugerida) setFormAmb(f => ({ ...f, triagem: corSugerida }));
-    } catch {}
+    } catch { /* vazio */ }
     finally { setPedindoAiTriagem(false); }
   };
 

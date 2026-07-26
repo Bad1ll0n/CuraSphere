@@ -27,12 +27,12 @@ export default function LoginPage() {
     if (typeof window !== 'undefined' && window.PublicKeyCredential) {
       window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.()
         .then(setPasskeySuportada)
-        .catch(() => {});
+        .catch(() => { /* vazio */ });
     }
     // Carregar providers SSO disponíveis
     api.get('/auth/sso/providers')
       .then(({ data }) => setSsoProviders(data))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, []);
 
   const handlePasskeyLogin = async () => {

@@ -33,7 +33,7 @@ export default function SistemasExternosPage() {
   const [resultadoTeste, setResultadoTeste] = useState<Record<string, { sucesso: boolean; latenciaMs?: number; erro?: string }>>({});
 
   const carregar = () =>
-    api.get('/sistemas-externos').then(r => setSistemas(r.data)).catch(() => {});
+    api.get('/sistemas-externos').then(r => setSistemas(r.data)).catch(() => { /* vazio */ });
 
   useEffect(() => { carregar(); }, []);
 

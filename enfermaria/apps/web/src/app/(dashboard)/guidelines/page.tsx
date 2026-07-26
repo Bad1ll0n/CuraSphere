@@ -46,7 +46,7 @@ export default function GuidelinesPage() {
   const carregar = (categoria?: string) =>
     api.get('/guidelines', { params: categoria ? { categoria } : {} })
       .then(r => setGuidelines(r.data))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
 
   useEffect(() => { carregar(filtroCategoria || undefined); }, [filtroCategoria]);
 

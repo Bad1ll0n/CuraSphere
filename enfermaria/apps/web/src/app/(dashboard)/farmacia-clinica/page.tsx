@@ -242,8 +242,8 @@ export default function FarmaciaPage() {
           {reconciliacoes.map(r => {
             let medsCasaParsed: any[] = [];
             let discParsed: any[] = [];
-            try { medsCasaParsed = JSON.parse(r.medicacaoCasa); } catch {}
-            try { discParsed = JSON.parse(r.discrepancias); } catch {}
+            try { medsCasaParsed = JSON.parse(r.medicacaoCasa); } catch { /* vazio */ }
+            try { discParsed = JSON.parse(r.discrepancias); } catch { /* vazio */ }
             return (
               <div key={r.id} className="bg-white rounded-2xl border border-amber-200 shadow-sm" style={{ padding: '20px 24px' }}>
                 <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>

@@ -76,7 +76,7 @@ export default function TeleconsultaPage() {
       if (utilizador?.role === 'medico') {
         await api.post(`/consultas/${consultaId}/video/terminar`);
       }
-    } catch {}
+    } catch { /* vazio */ }
     apiRef.current?.dispose();
     router.push('/consultas');
   };

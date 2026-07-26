@@ -254,7 +254,7 @@ export default function DoenteDetalhe() {
   const carregarSinalizacao = useCallback(() => {
     api.get(`/sinalizacoes/${id}/ativas`)
       .then(r => setSinalizacaoAtiva(r.data?.length > 0 ? r.data[0] : null))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [id]);
 
   const carregar = useCallback(() => {
@@ -268,7 +268,7 @@ export default function DoenteDetalhe() {
     if (!eAdmin) return;
     api.get(`/doentes/${id}/ficha-pessoal`)
       .then((r) => { setFicheiroPessoal(r.data); setFichaForm(r.data); })
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [id, eAdmin]);
 
   const verificarTurnoAtivo = async () => {
@@ -1026,8 +1026,8 @@ export default function DoenteDetalhe() {
 <div id="qr"></div>
 <p class="nome">${esc(doente.nome)}</p>
 <p class="sub">${esc(doente.numeroProcesso)} · Cama ${esc(String(doente.cama.quarto))}/${esc(String(doente.cama.numero))}</p>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"><\/script>
-<script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})<\/script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})</script>
 </body></html>`;
                   const blob = new Blob([html], { type: 'text/html' });
                   const url = URL.createObjectURL(blob);
@@ -1202,7 +1202,7 @@ export default function DoenteDetalhe() {
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
 

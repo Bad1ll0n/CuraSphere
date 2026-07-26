@@ -17,7 +17,7 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
   const [salvando, setSalvando] = useState(false);
 
   const carregarEscalas = () =>
-    api.get(`/escalas/${doenteId}`).then((r) => setEscalas(r.data)).catch(() => {});
+    api.get(`/escalas/${doenteId}`).then((r) => setEscalas(r.data)).catch(() => { /* vazio */ });
 
   useEffect(() => {
     carregarEscalas();

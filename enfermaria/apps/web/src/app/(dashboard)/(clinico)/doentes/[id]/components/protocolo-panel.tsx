@@ -40,7 +40,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
       setResultado(r.data);
       setUltimaVerificacao(new Date());
       setAberto(true);
-    } catch {}
+    } catch { /* vazio */ }
     finally { setLoading(false); }
   }, [doenteId, podeVer]);
 

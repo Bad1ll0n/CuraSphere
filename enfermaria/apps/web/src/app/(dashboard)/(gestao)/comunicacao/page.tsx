@@ -95,7 +95,7 @@ export default function ComunicacaoPage() {
 
   useEffect(() => {
     if (mensagemModal && utilizadores.length === 0) {
-      api.get('/utilizadores?limit=200').then(r => setUtilizadores(r.data.data ?? [])).catch(() => {});
+      api.get('/utilizadores?limit=200').then(r => setUtilizadores(r.data.data ?? [])).catch(() => { /* vazio */ });
     }
     if (!mensagemModal) {
       setMensagemForm({ destinatarioId: '', assunto: '', texto: '' });
