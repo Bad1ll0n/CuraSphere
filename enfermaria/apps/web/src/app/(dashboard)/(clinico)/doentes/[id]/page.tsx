@@ -28,6 +28,7 @@ import { FeridasPanel } from './components/feridas-panel';
 import { TransfusaoPanel } from './components/transfusao-panel';
 import { MaternidadePanel } from './components/maternidade-panel';
 import { OncologiaPanel } from './components/oncologia-panel';
+import { DialisePanel } from './components/dialise-panel';
 import { SepsisPanel } from './components/sepsis-panel';
 import { PlanoAltaPanel } from './components/plano-alta-panel';
 import { AiClinicoPanel } from './components/ai-clinico-panel';
@@ -865,6 +866,11 @@ export default function DoenteDetalhe() {
       {/* Oncologia / Quimioterapia — auto-fino/oculto se não houver plano ativo */}
       <PanelErrorBoundary name="Oncologia">
         <OncologiaPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Diálise / Nefrologia — sessões de hemodiálise + ganho interdialítico */}
+      <PanelErrorBoundary name="Diálise">
+        <DialisePanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Plano de Alta */}
