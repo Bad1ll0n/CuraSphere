@@ -4555,9 +4555,17 @@ uma, cada uma verificada (typecheck + testes + E2E runtime) e commitada isoladam
   e UF objetivo ([`dialise.helper.ts`](enfermaria/apps/api/src/app/common/dialise.helper.ts));
   ganho ponderal excessivo (>2.5 kg ou >4% do peso seco) gera alerta clínico; painel com
   tendência de peso pré/pós + lista + registo de sessão. **E2E runtime**: ganho 3 kg→UF 3000 mL→alerta.
-- **Suite**: 102 suites / 724 testes verde; tsc/eslint limpos em api/web.
+- **RIS / Radiologia** (backend + frontend) — modelo `LaudoRadiologico` (1:1 com o `Exame`
+  existente, **sem duplicar** o pedido/worklist/ficheiros já implementados);
+  [`radiologia.service.ts`](enfermaria/apps/api/src/app/radiologia/radiologia.service.ts) com
+  worklist de reporting (exames rx/eco/tc/rmn sem laudo assinado), rascunho editável e
+  **assinatura** que bloqueia o laudo, alimenta `Exame.resultado`/estado e alerta em laudos
+  urgentes; editor de laudo estruturado (técnica/achados/conclusão) na worklist de imagiologia.
+  Role-gated (radiologista=médico), sem `assertAcessoDoente` — igual à worklist/resultado de
+  exames. **E2E runtime**: pedido RX→worklist→laudo→assinar→resultado+sai da worklist+alerta.
+- **Suite**: 103 suites / 730 testes verde; tsc/eslint limpos em api/web.
 
-**Pendente nesta vaga**: RIS/PACS (pedido→laudo de imagiologia); cobertura clínica/WCAG/DR.
+**Pendente nesta vaga**: cobertura clínica adicional / auditoria WCAG / runbook DR-backup.
 **Deploy**: `prisma db push` (gravidezes/registos_partograma/partos + planos_quimioterapia/
 ciclos_quimioterapia + sessoes_dialise) + re-seed dos 3 cargos + variáveis
 `UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria re-aplicam-se às tabelas
