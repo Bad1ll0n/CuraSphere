@@ -26,6 +26,7 @@ import { FaturacaoPanel } from './components/faturacao-panel';
 import { BalancoHidricoPanel } from './components/balanco-hidrico-panel';
 import { FeridasPanel } from './components/feridas-panel';
 import { TransfusaoPanel } from './components/transfusao-panel';
+import { MaternidadePanel } from './components/maternidade-panel';
 import { SepsisPanel } from './components/sepsis-panel';
 import { PlanoAltaPanel } from './components/plano-alta-panel';
 import { AiClinicoPanel } from './components/ai-clinico-panel';
@@ -853,6 +854,11 @@ export default function DoenteDetalhe() {
       {/* Sangue e Transfusão */}
       <PanelErrorBoundary name="Sangue e Transfusão">
         <TransfusaoPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Maternidade / Obstetrícia — auto-fino se não houver gravidez ativa */}
+      <PanelErrorBoundary name="Maternidade">
+        <MaternidadePanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Plano de Alta */}
