@@ -10,6 +10,7 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'express';
 import { join } from 'path';
+import { RedisIoAdapter } from './app/gateway/redis-io.adapter';
 import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
@@ -140,6 +141,11 @@ async function bootstrap() {
   } else {
     Logger.log('Swagger desativado em produção');
   }
+
+  // socket.io com adaptador Redis (broadcast entre instâncias em produção; fail-safe se Redis down).
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis(process.env.REDIS_URL ?? 'redis://localhost:6379');
+  app.useWebSocketAdapter(redisIoAdapter);
 
   const port = process.env.PORT || 3333;
   await app.listen(port);
