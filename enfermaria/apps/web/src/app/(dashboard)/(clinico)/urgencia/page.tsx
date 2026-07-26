@@ -613,7 +613,7 @@ export default function UrgenciaPage() {
                 style={{ padding: '10px 14px' }} placeholder="Descreva a queixa principal..." />
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Triagem de Manchester *</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Triagem de Manchester *</span>
               <div className="grid grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
@@ -662,7 +662,7 @@ export default function UrgenciaPage() {
               <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</span>
               <div className="grid grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
@@ -784,7 +784,7 @@ export default function UrgenciaPage() {
                         style={{ padding: '10px 14px' }} placeholder="Ex: 65" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sexo</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sexo</span>
                       <div className="flex gap-2">
                         {[{ v: 'masculino', l: '♂ M' }, { v: 'feminino', l: '♀ F' }, { v: 'desconhecido', l: '?' }].map(({ v, l }) => (
                           <button key={v} type="button" onClick={() => setFormAmb(f => ({ ...f, sexo: v }))}
@@ -797,7 +797,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Consciência</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Consciência</span>
                     <div className="flex gap-2">
                       <button type="button" onClick={() => setFormAmb(f => ({ ...f, consciente: true, glasgow: '' }))}
                         className={`flex-1 text-sm font-semibold rounded-xl border transition-all ${formAmb.consciente ? 'bg-green-600 text-white border-green-600' : 'border-slate-200 text-slate-600'}`}
@@ -833,7 +833,7 @@ export default function UrgenciaPage() {
                       style={{ padding: '10px 14px' }} placeholder="Ex: PCR recuperada, dor torácica, trauma..." maxLength={500} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Triagem Estimada *</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Triagem Estimada *</span>
                     <div className="grid grid-cols-5 gap-2">
                       {ORDEM_CORES.map(cor => {
                         const cfg = CORES_TRIAGEM[cor];
@@ -848,7 +848,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Mecanismo</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Mecanismo</span>
                     <div className="flex flex-wrap gap-2">
                       {[
                         { v: 'medico', l: 'Médico' }, { v: 'trauma', l: 'Trauma' },
@@ -948,7 +948,7 @@ export default function UrgenciaPage() {
               {ambStep === 3 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sinais Vitais en route</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sinais Vitais en route</span>
                     <div className="grid grid-cols-5 gap-2">
                       {[
                         { key: 'vitalsPASistolica', label: 'PAS', placeholder: '120' },
@@ -968,7 +968,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Intervenções INEM</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Intervenções INEM</span>
                     <div className="flex flex-wrap gap-2">
                       {INTERVENCOES_INEM.map(({ key, label }) => {
                         const active = formAmb.intervencoes.includes(key);

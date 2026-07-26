@@ -187,9 +187,9 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
 
           <div className="flex gap-3" style={{ marginBottom: '12px' }}>
             <div className="flex-1">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
                 Data Alvo de Alta
-              </label>
+              </span>
               <input
                 type="date"
                 value={dataAlvo}

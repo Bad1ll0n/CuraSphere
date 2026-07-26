@@ -490,7 +490,7 @@ export default function ConsultasPage() {
 
             {/* Tipo de consulta */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Tipo</label>
+              <span style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Tipo</span>
               <div style={{ display: 'flex', gap: 8 }}>
                 {(['presencial', 'teleconsulta'] as const).map(t => (
                   <button
@@ -524,9 +524,9 @@ export default function ConsultasPage() {
             {/* Slots disponíveis */}
             {novaForm.medicoId && novaForm.dataMarcacao && (
               <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>
+                <span style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>
                   Horário disponível *
-                </label>
+                </span>
                 {carregandoSlots ? (
                   <div style={{ color: 'var(--text-dim)', fontSize: 14 }}>A carregar slots...</div>
                 ) : slots.length === 0 ? (

@@ -379,7 +379,7 @@ export default function TarefasPage() {
             </div>
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</span>
                 <div className="flex gap-2">
                   {(['clinica', 'logistica'] as const).map((t) => (
                     <button key={t} onClick={() => setTTipo(t)}

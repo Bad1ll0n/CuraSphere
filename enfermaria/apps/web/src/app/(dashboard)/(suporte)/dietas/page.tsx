@@ -210,7 +210,7 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Tipo de Dieta</label>
+                <span className="block text-sm font-medium text-slate-700 mb-1">Tipo de Dieta</span>
                 <div className="grid grid-cols-3 gap-2">
                   {Object.entries(TIPOS_DIETA).map(([key, { label, cor }]) => (
                     <button
@@ -229,7 +229,7 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Restrições Alimentares</label>
+                <span className="block text-sm font-medium text-slate-700 mb-1">Restrições Alimentares</span>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(RESTRICOES_LABELS).map(([key, label]) => (
                     <button

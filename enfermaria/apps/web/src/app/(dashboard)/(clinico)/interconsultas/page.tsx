@@ -189,9 +189,9 @@ export default function InterconsultasPage() {
               <h2 className="text-lg font-bold text-slate-900">Responder à Interconsulta</h2>
               <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
               Resposta / Parecer Clínico
-            </label>
+            </span>
             <textarea
               value={textoResposta}
               onChange={e => setTextoResposta(e.target.value)}

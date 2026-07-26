@@ -481,7 +481,7 @@ export default function ComunicacaoPage() {
 
             {/* Destinatário com pesquisa */}
             <div style={{ marginBottom: '14px', position: 'relative' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Destinatário *</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Destinatário *</span>
               {mensagemForm.destinatarioId ? (
                 <div className="flex items-center justify-between border border-blue-300 bg-blue-50 rounded-xl"
                   style={{ padding: '10px 14px' }}>

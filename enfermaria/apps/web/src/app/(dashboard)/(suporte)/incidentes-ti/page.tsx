@@ -504,7 +504,7 @@ export default function IncidentesTIPage() {
             <div style={{ padding: '24px 28px' }}>
               {/* Prioridade selector visual */}
               <div style={{ marginBottom: '18px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</span>
                 <div className="grid grid-cols-4 gap-2">
                   {PRIORIDADES.map(p => (
                     <button

@@ -231,7 +231,7 @@ export default function AvaliacoesPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</label>
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
                     <button key={n} type="button" onClick={() => setForm(f => ({ ...f, pontuacaoGeral: n }))}
@@ -286,7 +286,7 @@ export default function AvaliacoesPage() {
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editando.utilizador.nome} · {editando.periodo}</p>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</label>
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
                     <button key={n} type="button"

@@ -204,9 +204,9 @@ export default function AuditoriaPagina() {
           <div className="grid grid-cols-5 gap-4" style={{ marginBottom: '16px' }}>
             {/* Utilizador */}
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
                 Utilizador
-              </label>
+              </span>
               <select
                 value={filtroUtilizador}
                 onChange={(e) => setFiltroUtilizador(e.target.value)}
@@ -222,9 +222,9 @@ export default function AuditoriaPagina() {
 
             {/* Ação */}
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
                 Ação (contém)
-              </label>
+              </span>
               <input
                 value={filtroAcao}
                 onChange={(e) => setFiltroAcao(e.target.value)}
@@ -236,9 +236,9 @@ export default function AuditoriaPagina() {
 
             {/* De */}
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
                 De
-              </label>
+              </span>
               <input
                 type="date"
                 value={filtroDe}
@@ -250,9 +250,9 @@ export default function AuditoriaPagina() {
 
             {/* Até */}
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
                 Até
-              </label>
+              </span>
               <input
                 type="date"
                 value={filtroAte}
@@ -264,9 +264,9 @@ export default function AuditoriaPagina() {
 
             {/* Entidade */}
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
                 Entidade
-              </label>
+              </span>
               <select
                 value={filtroEntidade}
                 onChange={(e) => setFiltroEntidade(e.target.value)}

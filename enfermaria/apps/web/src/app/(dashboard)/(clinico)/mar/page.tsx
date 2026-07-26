@@ -339,6 +339,7 @@ export default function MarPage() {
             {/* Checklist */}
             <div className="flex flex-col gap-3" style={{ marginBottom: '20px' }}>
               {CERTAS_LABELS.map((label, i) => (
+                // eslint-disable-next-line jsx-a11y/label-has-associated-control -- checkbox envolvido pela label (associação implícita)
                 <label
                   key={i}
                   className={`flex items-start gap-3 rounded-xl border cursor-pointer transition-colors ${certas[i] ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
@@ -359,9 +360,9 @@ export default function MarPage() {
             </div>
 
             {/* Observações */}
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
               Observações (opcional)
-            </label>
+            </span>
             <textarea
               value={obs}
               onChange={(e) => setObs(e.target.value)}

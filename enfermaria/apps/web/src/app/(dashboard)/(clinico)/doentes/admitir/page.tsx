@@ -121,7 +121,7 @@ export default function AdmitirDoentesPagina() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Número de Processo</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Número de Processo</span>
               <div className="w-full bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-400 flex items-center gap-2" style={{ padding: '11px 16px' }}>
                 <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -156,9 +156,9 @@ export default function AdmitirDoentesPagina() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>
               Código ICD-10 <span className="text-slate-400 normal-case font-normal">(opcional)</span>
-            </label>
+            </span>
             <Icd10Autocomplete
               value={form.icd10Code}
               onChange={(code) => setForm(f => ({ ...f, icd10Code: code }))}

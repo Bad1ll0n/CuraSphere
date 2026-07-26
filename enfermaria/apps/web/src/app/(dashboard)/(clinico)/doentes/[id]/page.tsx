@@ -1058,7 +1058,7 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo de Alta</label>
+              <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo de Alta</span>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { value: 'melhoria', label: 'Melhoria Clínica' },
@@ -1078,7 +1078,7 @@ export default function DoenteDetalhe() {
 
             {altaMotivo !== 'obito' && (
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Destino</label>
+                <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Destino</span>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'domicilio', label: 'Domicílio' },
@@ -1099,9 +1099,9 @@ export default function DoenteDetalhe() {
 
             <div style={{ marginBottom: '20px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
-                <label className="block text-sm font-semibold text-slate-700">
+                <span className="block text-sm font-semibold text-slate-700">
                   Resumo Clínico <span className="text-red-500">*</span>
-                </label>
+                </span>
                 {carregandoResumo && (
                   <span className="text-xs text-blue-500 animate-pulse">A gerar resumo automático...</span>
                 )}
@@ -1175,7 +1175,7 @@ export default function DoenteDetalhe() {
                 placeholder="Descreva a preocupação clínica observada..." />
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nível de Urgência</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nível de Urgência</span>
               <div className="flex gap-2">
                 {(['normal', 'urgente'] as const).map(n => (
                   <button key={n} onClick={() => setNivelUrgencia(n)}

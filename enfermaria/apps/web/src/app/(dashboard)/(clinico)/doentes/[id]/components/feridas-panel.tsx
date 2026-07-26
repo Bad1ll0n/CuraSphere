@@ -620,7 +620,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </FormField>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Estado de Cicatrização *</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Estado de Cicatrização *</span>
                     <div className="grid grid-cols-2 gap-2">
                       {ESTADOS_CICATRIZACAO.map((e) => (
                         <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, estadoCicatrizacao: e.value }))}
@@ -657,7 +657,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'caracteristicas' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Leito da Ferida</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Leito da Ferida</span>
                     <div className="flex flex-wrap gap-2">
                       {LEITO_OPTIONS.map((l) => (
                         <button key={l.value} type="button" onClick={() => setForm(f => ({ ...f, leito: f.leito === l.value ? '' : l.value }))}
@@ -671,7 +671,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Volume de Exsudado</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Volume de Exsudado</span>
                       <div className="flex flex-col gap-1.5">
                         {EXSUDADO_VOLUME.map((e) => (
                           <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, exsudadoVolume: f.exsudadoVolume === e.value ? '' : e.value }))}
@@ -683,7 +683,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Exsudado</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Exsudado</span>
                       <div className="flex flex-col gap-1.5">
                         {EXSUDADO_TIPO.map((e) => (
                           <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, exsudadoTipo: f.exsudadoTipo === e.value ? '' : e.value }))}
@@ -697,7 +697,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Periferia</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Periferia</span>
                     <div className="flex flex-wrap gap-2">
                       {PERIFERIA_OPTIONS.map((p) => (
                         <button key={p.value} type="button" onClick={() => setForm(f => ({ ...f, periferia: f.periferia === p.value ? '' : p.value }))}
@@ -719,7 +719,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                         style={{ padding: '10px 14px' }} />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Odor</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Odor</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setForm(f => ({ ...f, odor: false }))}
                           className={`flex-1 text-xs font-semibold rounded-lg border transition-all ${!form.odor ? 'bg-green-600 text-white border-green-600' : 'border-slate-200 text-slate-600'}`}

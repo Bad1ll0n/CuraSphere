@@ -170,7 +170,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
               <button aria-label="Fechar" onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</span>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(TIPO_EXAME_LABELS).map(([v, l]) => (
                   <button key={v} onClick={() => setExameForm(f => ({ ...f, tipo: v }))}

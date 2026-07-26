@@ -351,7 +351,7 @@ export default function PedidosTIPage() {
               />
             </div>
 
-            <label className="flex items-center gap-3 cursor-pointer" style={{ marginBottom: '24px' }}>
+            <span className="flex items-center gap-3 cursor-pointer" style={{ marginBottom: '24px' }}>
               <div
                 onClick={() => setUrgente(!urgente)}
                 className={`w-10 h-6 rounded-full transition-colors relative ${urgente ? 'bg-red-500' : 'bg-slate-200'}`}
@@ -359,7 +359,7 @@ export default function PedidosTIPage() {
                 <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all ${urgente ? 'left-5' : 'left-1'}`} />
               </div>
               <span className="text-sm font-medium text-slate-700">Urgente</span>
-            </label>
+            </span>
 
             {erroModal && (
               <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '16px' }}>

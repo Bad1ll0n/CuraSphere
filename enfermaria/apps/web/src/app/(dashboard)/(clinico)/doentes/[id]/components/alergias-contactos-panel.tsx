@@ -263,7 +263,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             <input id="alergia-alergenio" type="text" value={alergenio} onChange={(e) => setAlergenio(e.target.value)} placeholder="Ex: Penicilina, Ibuprofeno..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</span>
             <div className="flex gap-2 flex-wrap">
               {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
                 <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
@@ -294,7 +294,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             <input id="falergias-2" type="text" value={ctNome} onChange={(e) => setCtNome(e.target.value)} placeholder="Nome completo" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</label>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</span>
             <div className="flex gap-2 flex-wrap">
               {['cônjuge', 'filho/a', 'pai/mãe', 'outro'].map((r) => (
                 <button key={r} onClick={() => setCtRelacao(r)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>

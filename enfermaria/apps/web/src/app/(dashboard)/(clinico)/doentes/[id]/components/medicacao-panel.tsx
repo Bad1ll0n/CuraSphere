@@ -543,9 +543,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               })}
               {temInteracaoGrave && (
                 <div style={{ marginTop: '8px' }}>
-                  <label className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+                  <span className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
                     Justificação clínica obrigatória *
-                  </label>
+                  </span>
                   <textarea
                     rows={2}
                     value={justificativaInteracao}

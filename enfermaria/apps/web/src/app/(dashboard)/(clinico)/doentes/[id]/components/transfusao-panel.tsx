@@ -244,7 +244,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '4px' }}>Administrar Transfusão</h2>
             <p className="text-xs text-slate-500" style={{ marginBottom: '18px' }}>{COMPONENTES[modalAdmin.componente]} · {modalAdmin.numeroUnidades} un.</p>
 
-            <label htmlFor="ftransfus-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Bolsa compatível *</label>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Bolsa compatível *</span>
             {compativeis.length === 0 ? (
               <div className="bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700" style={{ padding: '12px 14px', marginBottom: '18px' }}>
                 Sem bolsas compatíveis disponíveis no banco de sangue para este doente/componente.
@@ -252,8 +252,9 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             ) : (
               <div className="flex flex-col gap-2" style={{ marginBottom: '18px' }}>
                 {compativeis.map((b) => (
+                  // eslint-disable-next-line jsx-a11y/label-has-associated-control -- radio envolvido pela label (associação implícita)
                   <label key={b.id} className={`flex items-center gap-3 rounded-xl border cursor-pointer transition-colors ${bolsaSel === b.id ? 'border-red-300 bg-red-50' : 'border-slate-200 hover:bg-slate-50'}`} style={{ padding: '10px 14px' }}>
-                    <input id="ftransfus-6" type="radio" name="bolsa" checked={bolsaSel === b.id} onChange={() => setBolsaSel(b.id)} className="accent-red-600" />
+                    <input type="radio" name="bolsa" checked={bolsaSel === b.id} onChange={() => setBolsaSel(b.id)} className="accent-red-600" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-800">Unidade {b.numeroUnidade} · {b.grupoABO}{b.rhD === 'negativo' ? '-' : '+'}</p>
                       <p className="text-xs text-slate-400">Validade {new Date(b.dataValidade).toLocaleDateString('pt-PT')}{b.compat?.motivo ? ` · ${b.compat.motivo}` : ''}</p>

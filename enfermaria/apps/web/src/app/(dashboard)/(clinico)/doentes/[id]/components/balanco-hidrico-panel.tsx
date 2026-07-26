@@ -295,7 +295,7 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
           <div className="flex flex-col gap-4">
             {/* Tipo */}
             <div>
-              <label className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Tipo</label>
+              <span className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Tipo</span>
               <div className="flex gap-2">
                 {(['entrada', 'saida'] as const).map((t) => (
                   <button key={t} onClick={() => handleTipoChange(t)}

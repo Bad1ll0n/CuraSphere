@@ -675,9 +675,9 @@ export default function QuiosquePage() {
 
           {/* Nome opcional */}
           <div style={{ marginBottom: 32 }}>
-            <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 13, marginBottom: 8, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 13, marginBottom: 8, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
               Nome (opcional)
-            </label>
+            </span>
             <input
               type="text"
               value={nome}
