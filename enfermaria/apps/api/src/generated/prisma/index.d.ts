@@ -46931,6 +46931,7 @@ export namespace Prisma {
     frequenciaRespiratoria: number | null
     peso: number | null
     news2: number | null
+    pews: number | null
     glasgow: number | null
     pamMedia: number | null
   }
@@ -46944,6 +46945,7 @@ export namespace Prisma {
     frequenciaRespiratoria: number | null
     peso: number | null
     news2: number | null
+    pews: number | null
     glasgow: number | null
     pamMedia: number | null
   }
@@ -46964,6 +46966,7 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    pews: number | null
     glasgow: number | null
     pamMedia: number | null
     vasopressores: boolean | null
@@ -46986,6 +46989,7 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    pews: number | null
     glasgow: number | null
     pamMedia: number | null
     vasopressores: boolean | null
@@ -47008,6 +47012,7 @@ export namespace Prisma {
     avpu: number
     o2Suplementar: number
     news2: number
+    pews: number
     glasgow: number
     pamMedia: number
     vasopressores: number
@@ -47025,6 +47030,7 @@ export namespace Prisma {
     frequenciaRespiratoria?: true
     peso?: true
     news2?: true
+    pews?: true
     glasgow?: true
     pamMedia?: true
   }
@@ -47038,6 +47044,7 @@ export namespace Prisma {
     frequenciaRespiratoria?: true
     peso?: true
     news2?: true
+    pews?: true
     glasgow?: true
     pamMedia?: true
   }
@@ -47058,6 +47065,7 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    pews?: true
     glasgow?: true
     pamMedia?: true
     vasopressores?: true
@@ -47080,6 +47088,7 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    pews?: true
     glasgow?: true
     pamMedia?: true
     vasopressores?: true
@@ -47102,6 +47111,7 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    pews?: true
     glasgow?: true
     pamMedia?: true
     vasopressores?: true
@@ -47211,6 +47221,7 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    pews: number | null
     glasgow: number | null
     pamMedia: number | null
     vasopressores: boolean | null
@@ -47252,6 +47263,7 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
     vasopressores?: boolean
@@ -47276,6 +47288,7 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
     vasopressores?: boolean
@@ -47300,6 +47313,7 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
     vasopressores?: boolean
@@ -47324,13 +47338,14 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
     vasopressores?: boolean
     origem?: boolean
   }
 
-  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas" | "avpu" | "o2Suplementar" | "news2" | "glasgow" | "pamMedia" | "vasopressores" | "origem", ExtArgs["result"]["sinalVital"]>
+  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas" | "avpu" | "o2Suplementar" | "news2" | "pews" | "glasgow" | "pamMedia" | "vasopressores" | "origem", ExtArgs["result"]["sinalVital"]>
   export type SinalVitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -47366,6 +47381,7 @@ export namespace Prisma {
       avpu: string | null
       o2Suplementar: boolean | null
       news2: number | null
+      pews: number | null
       glasgow: number | null
       pamMedia: number | null
       vasopressores: boolean | null
@@ -47810,6 +47826,7 @@ export namespace Prisma {
     readonly avpu: FieldRef<"SinalVital", 'String'>
     readonly o2Suplementar: FieldRef<"SinalVital", 'Boolean'>
     readonly news2: FieldRef<"SinalVital", 'Int'>
+    readonly pews: FieldRef<"SinalVital", 'Int'>
     readonly glasgow: FieldRef<"SinalVital", 'Int'>
     readonly pamMedia: FieldRef<"SinalVital", 'Float'>
     readonly vasopressores: FieldRef<"SinalVital", 'Boolean'>
@@ -171282,6 +171299,7 @@ export namespace Prisma {
     avpu: 'avpu',
     o2Suplementar: 'o2Suplementar',
     news2: 'news2',
+    pews: 'pews',
     glasgow: 'glasgow',
     pamMedia: 'pamMedia',
     vasopressores: 'vasopressores',
@@ -175911,6 +175929,7 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
     vasopressores?: BoolNullableFilter<"SinalVital"> | boolean | null
@@ -175935,6 +175954,7 @@ export namespace Prisma {
     avpu?: SortOrderInput | SortOrder
     o2Suplementar?: SortOrderInput | SortOrder
     news2?: SortOrderInput | SortOrder
+    pews?: SortOrderInput | SortOrder
     glasgow?: SortOrderInput | SortOrder
     pamMedia?: SortOrderInput | SortOrder
     vasopressores?: SortOrderInput | SortOrder
@@ -175962,6 +175982,7 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
     vasopressores?: BoolNullableFilter<"SinalVital"> | boolean | null
@@ -175986,6 +176007,7 @@ export namespace Prisma {
     avpu?: SortOrderInput | SortOrder
     o2Suplementar?: SortOrderInput | SortOrder
     news2?: SortOrderInput | SortOrder
+    pews?: SortOrderInput | SortOrder
     glasgow?: SortOrderInput | SortOrder
     pamMedia?: SortOrderInput | SortOrder
     vasopressores?: SortOrderInput | SortOrder
@@ -176016,6 +176038,7 @@ export namespace Prisma {
     avpu?: StringNullableWithAggregatesFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableWithAggregatesFilter<"SinalVital"> | boolean | null
     news2?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    pews?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
     glasgow?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableWithAggregatesFilter<"SinalVital"> | number | null
     vasopressores?: BoolNullableWithAggregatesFilter<"SinalVital"> | boolean | null
@@ -187303,6 +187326,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -187327,6 +187351,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -187347,6 +187372,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -187371,6 +187397,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -187393,6 +187420,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -187413,6 +187441,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -187435,6 +187464,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -199220,6 +199250,7 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
     vasopressores?: SortOrder
@@ -199235,6 +199266,7 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
     news2?: SortOrder
+    pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
   }
@@ -199255,6 +199287,7 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
     vasopressores?: SortOrder
@@ -199277,6 +199310,7 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
     vasopressores?: SortOrder
@@ -199292,6 +199326,7 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
     news2?: SortOrder
+    pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
   }
@@ -218328,6 +218363,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -218350,6 +218386,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -223141,6 +223178,7 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
     vasopressores?: BoolNullableFilter<"SinalVital"> | boolean | null
@@ -227175,6 +227213,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -227197,6 +227236,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -321467,6 +321507,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -323495,6 +323536,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -323517,6 +323559,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -323538,6 +323581,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -327876,6 +327920,7 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
     vasopressores?: boolean | null
@@ -328673,6 +328718,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -328695,6 +328741,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -328716,6 +328763,7 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
     vasopressores?: NullableBoolFieldUpdateOperationsInput | boolean | null

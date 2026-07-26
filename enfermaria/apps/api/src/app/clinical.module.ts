@@ -3,6 +3,7 @@ import { DoenteModule } from './doentes/doentes.module';
 import { CamasModule } from './camas/camas.module';
 import { TarefasModule } from './tarefas/tarefas.module';
 import { SinaisVitaisModule } from './sinais-vitais/sinais-vitais.module';
+import { PediatriaModule } from './pediatria/pediatria.module';
 import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
@@ -50,7 +51,7 @@ import { StewardshipModule } from './stewardship/stewardship.module';
 
 const clinicalModules = [
   // Doente & Cama
-  DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule,
+  DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule, PediatriaModule,
   AlergiasModule, ContactosModule, AlertasModule, NotasClinicasModule,
   EscalasClinicasModule, DispositivosInvasivosModule, AtosClinicosModule,
   BreakGlassModule, ConsentimentosModule, EventosAdversosModule,

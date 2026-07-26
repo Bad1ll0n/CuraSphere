@@ -758,7 +758,8 @@ model SinalVital {
   notas                  String?
   avpu                   String? // A=Alert V=Voice P=Pain U=Unresponsive (NEWS2)
   o2Suplementar          Boolean? // parâmetro NEWS2 Scale 2
-  news2                  Int? // score NEWS2 calculado automaticamente
+  news2                  Int? // score NEWS2 calculado automaticamente (adulto)
+  pews                   Int? // score PEWS calculado automaticamente (pediátrico, por faixa etária)
   glasgow                Int? // Glasgow Coma Scale 3-15 (para SOFA SNC)
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)

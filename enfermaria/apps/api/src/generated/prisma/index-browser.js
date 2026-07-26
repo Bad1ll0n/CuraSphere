@@ -401,6 +401,7 @@ exports.Prisma.SinalVitalScalarFieldEnum = {
   avpu: 'avpu',
   o2Suplementar: 'o2Suplementar',
   news2: 'news2',
+  pews: 'pews',
   glasgow: 'glasgow',
   pamMedia: 'pamMedia',
   vasopressores: 'vasopressores',

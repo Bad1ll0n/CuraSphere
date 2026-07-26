@@ -6,6 +6,7 @@ import { ProtocolosService } from '../protocolos/protocolos.service';
 import { SepsisService } from '../sepsis/sepsis.service';
 import { BaselinesService } from '../baselines/baselines.service';
 import { calcularNEWS2 } from '../common/news2.helper';
+import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -78,6 +79,19 @@ export class SinaisVitaisService {
     const data: any = { doenteId, registadoPorId, origem, ...dto };
     if (news2 != null) data.news2 = news2;
 
+    // PEWS (pediátrico) — calculado por faixa etária quando o doente tem < 16 anos.
+    let pews: number | null = null;
+    if (doente.dataNascimento) {
+      const meses = idadeEmMeses(doente.dataNascimento);
+      if (meses < PEWS_IDADE_MAX_MESES) {
+        pews = calcularPEWS(
+          { frequenciaRespiratoria: dto.frequenciaRespiratoria, saturacaoO2: dto.saturacaoO2, pulso: dto.pulso, temperatura: dto.temperatura, avpu: dto.avpu },
+          meses,
+        );
+        if (pews != null) data.pews = pews;
+      }
+    }
+
     const registo = await this.prisma.sinalVital.create({
       data,
       include: { registadoPor: { select: { id: true, nome: true } } },
@@ -109,6 +123,14 @@ export class SinaisVitaisService {
       if (news2 >= 7) {
         this.protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis').catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
+    }
+
+    // Alerta PEWS (pediátrico) — a criança deteriora rápido, por isso limiares sensíveis.
+    if (pews != null && pews >= 4) {
+      const nivel = pews >= 6 ? 'CRÍTICO' : 'ALTO';
+      const msg = `PEWS ${nivel} — Score ${pews} (pediátrico). Reavaliação ${pews >= 6 ? 'imediata' : 'urgente'} necessária.`;
+      this.alertasService.criarAlerta(doenteId, pews >= 6 ? 'pews_critico' : 'pews_alto', msg);
+      this.notificacoesService.enviarParaDoente(doenteId, `🔴 PEWS ${nivel} — ${doente.nome}`, msg);
     }
 
     // Hooks assíncronos: Sépsis Sentinel + Baselines Individuais
