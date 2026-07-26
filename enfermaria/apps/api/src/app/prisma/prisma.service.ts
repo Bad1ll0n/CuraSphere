@@ -67,6 +67,37 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     return (this as any).$transaction(fn);
   }
 
+  /**
+   * Eleição de líder para tarefas @Cron: com várias instâncias da API, sem isto cada tarefa
+   * dispararia em TODAS (relatórios/lembretes/IA duplicados). Devolve `true` só a UMA instância por
+   * disparo. O claim é atómico (advisory-lock transacional, como o checkpointer) + uma lease temporal
+   * (`cron_locks`) que evita re-execução dentro do TTL, mesmo com as instâncias a disparar em
+   * simultâneo. Uso: `if (!(await this.prisma.tryBecomeLeader('nome', ttlMs))) return;` no topo do cron.
+   * `ttlMs` deve ser < intervalo do cron (barra o disparo simultâneo, liberta para o próximo).
+   */
+  async tryBecomeLeader(nome: string, ttlMs: number): Promise<boolean> {
+    try {
+      return await (this as any).$transaction(async (tx: any) => {
+        const [{ locked }] = (await tx.$queryRawUnsafe(
+          'SELECT pg_try_advisory_xact_lock(hashtext($1)::int8) AS locked', nome,
+        )) as { locked: boolean }[];
+        if (!locked) return false; // outra instância está a reclamar neste instante
+        const rows = (await tx.$queryRawUnsafe(
+          'SELECT "expiraEm" FROM cron_locks WHERE nome = $1', nome,
+        )) as { expiraEm: Date }[];
+        if (rows[0] && new Date(rows[0].expiraEm) > new Date()) return false; // já corrido no disparo
+        await tx.$executeRawUnsafe(
+          'INSERT INTO cron_locks (nome, "expiraEm") VALUES ($1, $2) ON CONFLICT (nome) DO UPDATE SET "expiraEm" = $2',
+          nome, new Date(Date.now() + ttlMs),
+        );
+        return true;
+      });
+    } catch (e) {
+      this.logger.warn(`tryBecomeLeader(${nome}) falhou: ${(e as Error)?.message ?? String(e)}`);
+      return false; // sem BD → não é líder (não corre, em vez de correr em todas às cegas)
+    }
+  }
+
   async onModuleInit() {
     await this.$connect();
   }

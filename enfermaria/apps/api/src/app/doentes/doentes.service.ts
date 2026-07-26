@@ -375,6 +375,8 @@ export class DoenteService {
 
   @Cron(CronExpression.EVERY_DAY_AT_8AM)
   async lembrarFollowUps(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('follow-ups', 3_600_000))) return;
+
     this.logger.log('Follow-up: verificar lembretes diários');
     const amanha = new Date(Date.now() + 86_400_000);
     const pendentes = await this.prisma.followUpAgendado.findMany({

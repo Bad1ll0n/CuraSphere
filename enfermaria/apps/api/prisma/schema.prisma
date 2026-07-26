@@ -1032,6 +1032,17 @@ model TotpConsumido {
   @@map("totp_consumidos")
 }
 
+// Eleição de líder para tarefas @Cron: em produção com várias instâncias da API, cada @Cron
+// dispararia em TODAS (relatórios/lembretes/IA duplicados). Uma lease temporal (por nome) garante
+// que só uma instância corre cada tarefa em cada disparo. Alta-escrita de coordenação → sem valor
+// de auditoria (deny-list dos triggers).
+model CronLock {
+  nome     String   @id
+  expiraEm DateTime
+
+  @@map("cron_locks")
+}
+
 // Prova de integridade tamper-evident: raízes (Merkle/encadeadas) assinadas sobre intervalos
 // de audit_logs, seladas em diferido pelo checkpointer (com watermark de commit) e ancoradas
 // fora da BD. As linhas de audit_logs nunca são alteradas (WORM) — a prova está aqui.

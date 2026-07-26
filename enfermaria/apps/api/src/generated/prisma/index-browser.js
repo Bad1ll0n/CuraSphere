@@ -568,6 +568,11 @@ exports.Prisma.TotpConsumidoScalarFieldEnum = {
   expiraEm: 'expiraEm'
 };
 
+exports.Prisma.CronLockScalarFieldEnum = {
+  nome: 'nome',
+  expiraEm: 'expiraEm'
+};
+
 exports.Prisma.AuditCheckpointScalarFieldEnum = {
   id: 'id',
   seqInicio: 'seqInicio',
@@ -2067,6 +2072,7 @@ exports.Prisma.ModelName = {
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
   TotpConsumido: 'TotpConsumido',
+  CronLock: 'CronLock',
   AuditCheckpoint: 'AuditCheckpoint',
   AcessoLeitura: 'AcessoLeitura',
   FeatureFlag: 'FeatureFlag',

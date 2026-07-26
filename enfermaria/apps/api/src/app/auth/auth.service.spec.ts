@@ -27,6 +27,7 @@ const mockAuthenticator = require('otplib') as {
 const mockQrcode = require('qrcode') as { toDataURL: jest.Mock };
 
 const mockPrisma = {
+  tryBecomeLeader: jest.fn().mockResolvedValue(true), // líder por omissão → o corpo do cron corre
   utilizador: {
     findUnique: jest.fn(),
     update: jest.fn(),
@@ -84,6 +85,7 @@ describe('AuthService', () => {
     jest.resetAllMocks();
     mockJwt.sign.mockReturnValue('jwt-access-token');
     mockPrisma.refreshToken.create.mockResolvedValue({ token: 'refresh-token-xyz' });
+    mockPrisma.tryBecomeLeader.mockResolvedValue(true);
     mockPrisma.$queryRaw.mockResolvedValue([]);
     mockPrisma.$executeRaw.mockResolvedValue(0);
     mockRedis.get.mockResolvedValue(null);

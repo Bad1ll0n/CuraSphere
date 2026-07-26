@@ -68,6 +68,7 @@ export class AuthService {
   /** Housekeeping: remove os TOTP já expirados (mantém `totp_consumidos` minúscula). */
   @Cron('*/10 * * * *')
   async limparTotpExpirados(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('totp-limpeza', 480_000))) return; // 8min < 10min
     try {
       // Date parametrizada (não `now()`) — ver nota em consumirTotpUmaVez sobre a comparação de tipos.
       await this.prisma.$executeRaw`DELETE FROM totp_consumidos WHERE "expiraEm" < ${new Date()}`;

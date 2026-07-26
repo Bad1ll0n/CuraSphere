@@ -17,6 +17,8 @@ export class LembretesService {
   /** De hora a hora: envia lembrete das consultas nas próximas 24h ainda não lembradas. */
   @Cron('0 * * * *')
   async enviarLembretes() {
+    if (!(await this.prisma.tryBecomeLeader('lembretes-consultas', 3_300_000))) return; // 55min < 1h
+
     const agora = new Date();
     const em24h = new Date(agora.getTime() + 24 * 60 * 60 * 1000);
     const consultas = await this.prisma.consulta.findMany({
