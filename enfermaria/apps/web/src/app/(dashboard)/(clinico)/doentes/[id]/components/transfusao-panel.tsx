@@ -195,38 +195,38 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Pedir Transfusão</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Componente *</label>
-                <select value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                <label htmlFor="ftransfus-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Componente *</label>
+                <select id="ftransfus-0" value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                   {Object.entries(COMPONENTES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidades *</label>
-                  <input type="number" min={1} max={20} value={form.numeroUnidades} onChange={e => setForm(f => ({ ...f, numeroUnidades: Number(e.target.value) }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                  <label htmlFor="ftransfus-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidades *</label>
+                  <input id="ftransfus-1" type="number" min={1} max={20} value={form.numeroUnidades} onChange={e => setForm(f => ({ ...f, numeroUnidades: Number(e.target.value) }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo ABO</label>
-                  <select value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                  <label htmlFor="ftransfus-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo ABO</label>
+                  <select id="ftransfus-2" value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                     <option value="">—</option>{['A', 'B', 'AB', 'O'].map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Rh</label>
-                  <select value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                  <label htmlFor="ftransfus-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Rh</label>
+                  <select id="ftransfus-3" value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                     <option value="">—</option><option value="positivo">+</option><option value="negativo">−</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Urgência</label>
-                <select value={form.urgencia} onChange={e => setForm(f => ({ ...f, urgencia: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                <label htmlFor="ftransfus-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Urgência</label>
+                <select id="ftransfus-4" value={form.urgencia} onChange={e => setForm(f => ({ ...f, urgencia: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                   <option value="rotina">Rotina</option><option value="urgente">Urgente</option><option value="emergencia">Emergência</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Indicação clínica *</label>
-                <textarea value={form.indicacao} onChange={e => setForm(f => ({ ...f, indicacao: e.target.value }))} rows={2} placeholder="Ex: Anemia sintomática, Hb 6.8 g/dL" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 resize-none" style={{ padding: '10px 14px' }} />
+                <label htmlFor="ftransfus-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Indicação clínica *</label>
+                <textarea id="ftransfus-5" value={form.indicacao} onChange={e => setForm(f => ({ ...f, indicacao: e.target.value }))} rows={2} placeholder="Ex: Anemia sintomática, Hb 6.8 g/dL" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 resize-none" style={{ padding: '10px 14px' }} />
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
@@ -244,7 +244,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '4px' }}>Administrar Transfusão</h2>
             <p className="text-xs text-slate-500" style={{ marginBottom: '18px' }}>{COMPONENTES[modalAdmin.componente]} · {modalAdmin.numeroUnidades} un.</p>
 
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Bolsa compatível *</label>
+            <label htmlFor="ftransfus-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Bolsa compatível *</label>
             {compativeis.length === 0 ? (
               <div className="bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700" style={{ padding: '12px 14px', marginBottom: '18px' }}>
                 Sem bolsas compatíveis disponíveis no banco de sangue para este doente/componente.
@@ -253,7 +253,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
               <div className="flex flex-col gap-2" style={{ marginBottom: '18px' }}>
                 {compativeis.map((b) => (
                   <label key={b.id} className={`flex items-center gap-3 rounded-xl border cursor-pointer transition-colors ${bolsaSel === b.id ? 'border-red-300 bg-red-50' : 'border-slate-200 hover:bg-slate-50'}`} style={{ padding: '10px 14px' }}>
-                    <input type="radio" name="bolsa" checked={bolsaSel === b.id} onChange={() => setBolsaSel(b.id)} className="accent-red-600" />
+                    <input id="ftransfus-6" type="radio" name="bolsa" checked={bolsaSel === b.id} onChange={() => setBolsaSel(b.id)} className="accent-red-600" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-800">Unidade {b.numeroUnidade} · {b.grupoABO}{b.rhD === 'negativo' ? '-' : '+'}</p>
                       <p className="text-xs text-slate-400">Validade {new Date(b.dataValidade).toLocaleDateString('pt-PT')}{b.compat?.motivo ? ` · ${b.compat.motivo}` : ''}</p>
@@ -263,11 +263,11 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
               </div>
             )}
 
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dupla-verificação à cabeceira *</label>
+            <label htmlFor="ftransfus-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dupla-verificação à cabeceira *</label>
             <div className="flex flex-col gap-2" style={{ marginBottom: '20px' }}>
               {CERTOS.map((c, i) => (
                 <label key={i} className={`flex items-start gap-3 rounded-xl border cursor-pointer transition-colors ${certos[i] ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`} style={{ padding: '10px 14px' }}>
-                  <input type="checkbox" checked={certos[i]} onChange={e => setCertos(prev => prev.map((v, idx) => idx === i ? e.target.checked : v))} className="mt-0.5 accent-emerald-600" />
+                  <input id="ftransfus-7" type="checkbox" checked={certos[i]} onChange={e => setCertos(prev => prev.map((v, idx) => idx === i ? e.target.checked : v))} className="mt-0.5 accent-emerald-600" />
                   <span className="text-sm text-slate-700">{c}</span>
                 </label>
               ))}
@@ -291,25 +291,25 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-                  <select value={reacao.tipo} onChange={e => setReacao(r => ({ ...r, tipo: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }}>
+                  <label htmlFor="ftransfus-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                  <select id="ftransfus-8" value={reacao.tipo} onChange={e => setReacao(r => ({ ...r, tipo: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }}>
                     {['febril_nao_hemolitica', 'alergica', 'hemolitica_aguda', 'trali', 'taco', 'contaminacao_bacteriana', 'outra'].map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Gravidade</label>
-                  <select value={reacao.gravidade} onChange={e => setReacao(r => ({ ...r, gravidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }}>
+                  <label htmlFor="ftransfus-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Gravidade</label>
+                  <select id="ftransfus-9" value={reacao.gravidade} onChange={e => setReacao(r => ({ ...r, gravidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }}>
                     {['ligeira', 'moderada', 'grave', 'fatal'].map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sintomas *</label>
-                <textarea value={reacao.sintomas} onChange={e => setReacao(r => ({ ...r, sintomas: e.target.value }))} rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 resize-none" style={{ padding: '10px 12px' }} />
+                <label htmlFor="ftransfus-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sintomas *</label>
+                <textarea id="ftransfus-10" value={reacao.sintomas} onChange={e => setReacao(r => ({ ...r, sintomas: e.target.value }))} rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 resize-none" style={{ padding: '10px 12px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medidas tomadas</label>
-                <input value={reacao.medidas} onChange={e => setReacao(r => ({ ...r, medidas: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }} />
+                <label htmlFor="ftransfus-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medidas tomadas</label>
+                <input id="ftransfus-11" value={reacao.medidas} onChange={e => setReacao(r => ({ ...r, medidas: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 12px' }} />
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '22px' }}>

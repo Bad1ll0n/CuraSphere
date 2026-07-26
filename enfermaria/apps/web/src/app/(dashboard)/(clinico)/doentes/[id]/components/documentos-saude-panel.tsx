@@ -425,8 +425,8 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
-              <input
+              <label htmlFor="fdocument-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
+              <input id="fdocument-0"
                 value={uploadForm.titulo}
                 onChange={e => setUploadForm(f => ({ ...f, titulo: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
@@ -435,8 +435,8 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
             </div>
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-                <select value={uploadForm.tipo} onChange={e => setUploadForm(f => ({ ...f, tipo: e.target.value }))}
+                <label htmlFor="fdocument-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <select id="fdocument-1" value={uploadForm.tipo} onChange={e => setUploadForm(f => ({ ...f, tipo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                   style={{ padding: '10px 12px' }}>
                   <option value="rx">RX</option>
@@ -453,8 +453,8 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data</label>
-                <input
+                <label htmlFor="fdocument-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data</label>
+                <input id="fdocument-2"
                   type="date"
                   value={uploadForm.dataDocumento}
                   onChange={e => setUploadForm(f => ({ ...f, dataDocumento: e.target.value }))}
@@ -464,8 +464,8 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
               </div>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Origem</label>
-              <input
+              <label htmlFor="fdocument-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Origem</label>
+              <input id="fdocument-3"
                 value={uploadForm.origem}
                 onChange={e => setUploadForm(f => ({ ...f, origem: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"

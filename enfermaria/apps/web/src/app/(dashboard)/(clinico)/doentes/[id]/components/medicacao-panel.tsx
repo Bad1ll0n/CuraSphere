@@ -454,8 +454,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         <Modal titulo="Prescrever Medicação" onClose={() => setModalMed(false)}>
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
-              <input autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
+              <label htmlFor="fmedicaca-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
+              <input id="fmedicaca-0" autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
                 placeholder="Ex: Paracetamol"
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
@@ -487,15 +487,15 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
-                <input type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
+                <label htmlFor="fmedicaca-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
+                <input id="fmedicaca-1" type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
                   placeholder="Ex: 500mg"
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
-                <select value={medVia} onChange={(e) => setMedVia(e.target.value)}
+                <label htmlFor="fmedicaca-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
+                <select id="fmedicaca-2" value={medVia} onChange={(e) => setMedVia(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Selecionar...</option>
@@ -509,8 +509,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Frequência *</label>
-              <select value={medFreq} onChange={(e) => setMedFreq(e.target.value)}
+              <label htmlFor="fmedicaca-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Frequência *</label>
+              <select id="fmedicaca-3" value={medFreq} onChange={(e) => setMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Selecionar...</option>
@@ -576,20 +576,20 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
-              <input autoFocus type="text" value={propostaMedNome} onChange={e => setPropostaMedNome(e.target.value)}
+              <label htmlFor="fmedicaca-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
+              <input id="fmedicaca-4" autoFocus type="text" value={propostaMedNome} onChange={e => setPropostaMedNome(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Paracetamol 500mg" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dose *</label>
-              <input type="text" value={propostaMedDose} onChange={e => setPropostaMedDose(e.target.value)}
+              <label htmlFor="fmedicaca-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dose *</label>
+              <input id="fmedicaca-5" type="text" value={propostaMedDose} onChange={e => setPropostaMedDose(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: 500mg" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Via *</label>
-              <select value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
+              <label htmlFor="fmedicaca-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Via *</label>
+              <select id="fmedicaca-6" value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -597,8 +597,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Frequência *</label>
-              <select value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
+              <label htmlFor="fmedicaca-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Frequência *</label>
+              <select id="fmedicaca-7" value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -606,8 +606,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações clínicas</label>
-              <textarea value={propostaObs} onChange={e => setPropostaObs(e.target.value)} rows={2}
+              <label htmlFor="fmedicaca-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações clínicas</label>
+              <textarea id="fmedicaca-8" value={propostaObs} onChange={e => setPropostaObs(e.target.value)} rows={2}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Justificação clínica, alergias conhecidas..." />
             </div>
@@ -631,8 +631,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={motivoRejProposta} onChange={e => setMotivoRejProposta(e.target.value)} rows={3}
+              <label htmlFor="fmedicaca-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fmedicaca-9" value={motivoRejProposta} onChange={e => setMotivoRejProposta(e.target.value)} rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>

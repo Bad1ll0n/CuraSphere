@@ -361,8 +361,8 @@ export default function ComunicacaoPage() {
 
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
-                <select value={broadcastForm.servicoAlvo} onChange={e => setBroadcastForm(f => ({ ...f, servicoAlvo: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+                <select id="fpage-0" value={broadcastForm.servicoAlvo} onChange={e => setBroadcastForm(f => ({ ...f, servicoAlvo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Todos os serviços</option>
@@ -370,8 +370,8 @@ export default function ComunicacaoPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Função</label>
-                <select value={broadcastForm.roleAlvo} onChange={e => setBroadcastForm(f => ({ ...f, roleAlvo: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Função</label>
+                <select id="fpage-1" value={broadcastForm.roleAlvo} onChange={e => setBroadcastForm(f => ({ ...f, roleAlvo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Todas as funções</option>
@@ -381,14 +381,14 @@ export default function ComunicacaoPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Assunto</label>
-              <input value={broadcastForm.assunto} onChange={e => setBroadcastForm(f => ({ ...f, assunto: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Assunto</label>
+              <input id="fpage-2" value={broadcastForm.assunto} onChange={e => setBroadcastForm(f => ({ ...f, assunto: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 style={{ padding: '10px 14px' }} placeholder="Assunto (opcional)" />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
-              <textarea value={broadcastForm.texto} onChange={e => setBroadcastForm(f => ({ ...f, texto: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
+              <textarea id="fpage-3" value={broadcastForm.texto} onChange={e => setBroadcastForm(f => ({ ...f, texto: e.target.value }))}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Escreva a mensagem a difundir..." />
             </div>
@@ -426,20 +426,20 @@ export default function ComunicacaoPage() {
               <button aria-label="Fechar" onClick={() => setAnuncioModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
-              <input value={anuncioForm.titulo} onChange={e => setAnuncioForm(f => ({ ...f, titulo: e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
+              <input id="fpage-4" value={anuncioForm.titulo} onChange={e => setAnuncioForm(f => ({ ...f, titulo: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} placeholder="Título do anúncio" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
-              <textarea value={anuncioForm.texto} onChange={e => setAnuncioForm(f => ({ ...f, texto: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
+              <textarea id="fpage-5" value={anuncioForm.texto} onChange={e => setAnuncioForm(f => ({ ...f, texto: e.target.value }))}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Conteúdo do anúncio..." />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço (vazio = todos)</label>
-              <select value={anuncioForm.servico} onChange={e => setAnuncioForm(f => ({ ...f, servico: e.target.value }))}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço (vazio = todos)</label>
+              <select id="fpage-6" value={anuncioForm.servico} onChange={e => setAnuncioForm(f => ({ ...f, servico: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Todos os serviços</option>
@@ -449,8 +449,8 @@ export default function ComunicacaoPage() {
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Expira em (opcional)</label>
-              <input type="datetime-local" value={anuncioForm.expiraEm} onChange={e => setAnuncioForm(f => ({ ...f, expiraEm: e.target.value }))}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Expira em (opcional)</label>
+              <input id="fpage-7" type="datetime-local" value={anuncioForm.expiraEm} onChange={e => setAnuncioForm(f => ({ ...f, expiraEm: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -543,22 +543,22 @@ export default function ComunicacaoPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Assunto</label>
-              <input value={mensagemForm.assunto} onChange={e => setMensagemForm(f => ({ ...f, assunto: e.target.value }))}
+              <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Assunto</label>
+              <input id="fpage-9" value={mensagemForm.assunto} onChange={e => setMensagemForm(f => ({ ...f, assunto: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} placeholder="Assunto da mensagem (opcional)" />
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
-              <textarea value={mensagemForm.texto} onChange={e => setMensagemForm(f => ({ ...f, texto: e.target.value }))}
+              <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Mensagem *</label>
+              <textarea id="fpage-10" value={mensagemForm.texto} onChange={e => setMensagemForm(f => ({ ...f, texto: e.target.value }))}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Escreva a sua mensagem..." />
             </div>
 
             {/* Anexo */}
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Anexo (opcional)</label>
-              <input ref={anexoInputRef} type="file" className="hidden"
+              <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Anexo (opcional)</label>
+              <input id="fpage-11" ref={anexoInputRef} type="file" className="hidden"
                 accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.txt"
                 onChange={e => setAnexoFile(e.target.files?.[0] ?? null)} />
               {anexoFile ? (

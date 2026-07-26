@@ -195,8 +195,8 @@ export default function SistemasExternosPage() {
               { key: 'authConfig', label: 'Credenciais (JSON)', placeholder: '{"token": "Bearer xyz"}' },
             ].map(({ key, label, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                <input id="fpage-0"
                   value={(form as any)[key]}
                   onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder}
@@ -207,8 +207,8 @@ export default function SistemasExternosPage() {
             ))}
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-                <select value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <select id="fpage-1" value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                   style={{ padding: '10px 12px' }}>
                   <option value="fhir_r4">FHIR R4</option>
@@ -218,8 +218,8 @@ export default function SistemasExternosPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Autenticação</label>
-                <select value={form.authTipo} onChange={e => setForm(f => ({ ...f, authTipo: e.target.value }))}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Autenticação</label>
+                <select id="fpage-2" value={form.authTipo} onChange={e => setForm(f => ({ ...f, authTipo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                   style={{ padding: '10px 12px' }}>
                   <option value="api_key">API Key</option>

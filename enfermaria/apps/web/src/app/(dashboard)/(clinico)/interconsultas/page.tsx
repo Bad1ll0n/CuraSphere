@@ -225,8 +225,8 @@ export default function InterconsultasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente</label>
-              <select value={novaDoenteId} onChange={e => setNovaDoenteId(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente</label>
+              <select id="fpage-0" value={novaDoenteId} onChange={e => setNovaDoenteId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar doente...</option>
@@ -235,8 +235,8 @@ export default function InterconsultasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade Alvo</label>
-              <select value={novaEspecialidade} onChange={e => setNovaEspecialidade(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade Alvo</label>
+              <select id="fpage-1" value={novaEspecialidade} onChange={e => setNovaEspecialidade(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 {ESPECIALIDADES.map(e => <option key={e} value={e}>{e}</option>)}
@@ -244,8 +244,8 @@ export default function InterconsultasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Pedido</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Pedido</label>
+              <textarea id="fpage-2"
                 value={novaMotivo}
                 onChange={e => setNovaMotivo(e.target.value)}
                 placeholder="Descreva o motivo da interconsulta..."

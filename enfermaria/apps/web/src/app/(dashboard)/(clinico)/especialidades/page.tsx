@@ -211,8 +211,8 @@ export default function EspecialidadesPage() {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Nova Sessão — {titulo}</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Doente</label>
-                <select
+                <label htmlFor="fpage-0" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Doente</label>
+                <select id="fpage-0"
                   value={form.doenteId}
                   onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -223,23 +223,23 @@ export default function EspecialidadesPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data e Hora</label>
-                  <input type="datetime-local" value={form.data}
+                  <label htmlFor="fpage-1" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data e Hora</label>
+                  <input id="fpage-1" type="datetime-local" value={form.data}
                     onChange={e => setForm(f => ({ ...f, data: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Duração (min)</label>
-                  <input type="number" value={form.duracao} min={15} max={180} step={15}
+                  <label htmlFor="fpage-2" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Duração (min)</label>
+                  <input id="fpage-2" type="number" value={form.duracao} min={15} max={180} step={15}
                     onChange={e => setForm(f => ({ ...f, duracao: +e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Descrição / Objectivos</label>
-                <textarea value={form.descricao} rows={3}
+                <label htmlFor="fpage-3" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Descrição / Objectivos</label>
+                <textarea id="fpage-3" value={form.descricao} rows={3}
                   onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
@@ -270,8 +270,8 @@ export default function EspecialidadesPage() {
               {sessaoSel.doente?.nome} · {new Date(sessaoSel.data).toLocaleDateString('pt-PT')}
             </p>
             <div>
-              <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Notas de Evolução</label>
-              <textarea value={evolucaoText} rows={5}
+              <label htmlFor="fpage-4" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Notas de Evolução</label>
+              <textarea id="fpage-4" value={evolucaoText} rows={5}
                 onChange={e => setEvolucaoText(e.target.value)}
                 placeholder="Descreva a evolução clínica, resposta ao tratamento, próximos objectivos..."
                 className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"

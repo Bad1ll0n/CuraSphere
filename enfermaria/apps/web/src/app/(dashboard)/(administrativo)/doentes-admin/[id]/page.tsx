@@ -60,8 +60,8 @@ function Input({ label, value, onChange, type = 'text' }: {
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-      <input
+      <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
+      <input id="fpage-0"
         type={type}
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -78,8 +78,8 @@ function Select({ label, value, onChange, options }: {
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-      <select
+      <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
+      <select id="fpage-1"
         value={value}
         onChange={e => onChange(e.target.value)}
         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 bg-white"

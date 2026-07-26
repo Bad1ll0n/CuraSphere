@@ -1230,8 +1230,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Com quem quer trocar?</label>
-              <select
+              <label htmlFor="fpage-2" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Com quem quer trocar?</label>
+              <select id="fpage-2"
                 value={trocaDestId}
                 onChange={e => setTrocaDestId(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
@@ -1244,8 +1244,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Dia da folga do colega (a receber)</label>
-              <input
+              <label htmlFor="fpage-3" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Dia da folga do colega (a receber)</label>
+              <input id="fpage-3"
                 type="date"
                 value={trocaDiaDest}
                 onChange={e => setTrocaDiaDest(e.target.value)}
@@ -1255,8 +1255,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo (opcional)</label>
-              <input
+              <label htmlFor="fpage-4" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo (opcional)</label>
+              <input id="fpage-4"
                 type="text"
                 value={trocaMotivo}
                 onChange={e => setTrocaMotivo(e.target.value)}

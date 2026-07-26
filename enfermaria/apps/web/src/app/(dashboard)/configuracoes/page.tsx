@@ -53,8 +53,8 @@ function QuiosqueSection() {
       </div>
       <div className="flex items-end gap-3" style={{ marginBottom: link ? '16px' : '0' }}>
         <div className="flex-1">
-          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
-          <input
+          <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+          <input id="fpage-0"
             value={servicoId}
             onChange={e => { setServicoPId(e.target.value); setLink(''); }}
             placeholder="ex: internamento"
@@ -319,8 +319,8 @@ export default function ConfiguracoesPage() {
             <div className="flex flex-col gap-4">
               {(isCriarRole || isCriarSub) && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Chave (identificador único)</label>
-                  <input
+                  <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Chave (identificador único)</label>
+                  <input id="fpage-1"
                     value={fChave} onChange={(e) => setFChave(e.target.value.toLowerCase().replace(/\s/g, '_'))}
                     placeholder="ex: cardio_sénior"
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -330,8 +330,8 @@ export default function ConfiguracoesPage() {
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Label (nome visível)</label>
-                <input
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Label (nome visível)</label>
+                <input id="fpage-2"
                   value={fLabel} onChange={(e) => setFLabel(e.target.value)}
                   placeholder="ex: Cardiologista Sénior"
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -341,8 +341,8 @@ export default function ConfiguracoesPage() {
 
               {(isCriarRole || isEditarRole) && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria</label>
-                  <select
+                  <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria</label>
+                  <select id="fpage-3"
                     value={fCategoria} onChange={(e) => setFCategoria(e.target.value)}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 14px' }}
@@ -357,14 +357,14 @@ export default function ConfiguracoesPage() {
 
               {isCriarSub && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Role-pai</label>
-                  <input value={fRoleChave} readOnly className="w-full border border-slate-100 rounded-xl text-sm bg-slate-100 text-slate-500" style={{ padding: '10px 14px' }} />
+                  <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Role-pai</label>
+                  <input id="fpage-4" value={fRoleChave} readOnly className="w-full border border-slate-100 rounded-xl text-sm bg-slate-100 text-slate-500" style={{ padding: '10px 14px' }} />
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ordem (opcional)</label>
-                <input
+                <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ordem (opcional)</label>
+                <input id="fpage-5"
                   type="number" value={fOrdem} onChange={(e) => setFOrdem(e.target.value)}
                   placeholder="0"
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"

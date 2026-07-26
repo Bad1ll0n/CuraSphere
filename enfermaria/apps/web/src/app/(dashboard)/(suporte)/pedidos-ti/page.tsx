@@ -315,8 +315,8 @@ export default function PedidosTIPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
-              <input
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
+              <input id="fpage-0"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 placeholder="Ex: Acesso ao sistema de faturação"
@@ -326,8 +326,8 @@ export default function PedidosTIPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-              <select
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+              <select id="fpage-1"
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
@@ -340,8 +340,8 @@ export default function PedidosTIPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
+              <textarea id="fpage-2"
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 placeholder="Descreve o pedido em detalhe..."

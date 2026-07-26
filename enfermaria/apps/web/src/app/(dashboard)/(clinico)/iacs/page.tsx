@@ -439,8 +439,8 @@ export default function IacsPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '4px' }}>Ativar Isolamento IACS</h2>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{modalIsolamento.nome}</p>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo de Isolamento</label>
-            <select value={motivo} onChange={e => setMotivo(e.target.value)}
+            <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo de Isolamento</label>
+            <select id="fpage-0" value={motivo} onChange={e => setMotivo(e.target.value)}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
               style={{ padding: '10px 14px', marginBottom: '10px' }}>
               <option value="">Selecionar motivo...</option>
@@ -473,27 +473,27 @@ export default function IacsPage() {
               { label: 'Data da Colheita *', key: 'dataColheita', type: 'date', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type={type} value={(formCultura as any)[key]} onChange={e => setFormCultura(f => ({ ...f, [key]: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                <input id="fpage-1" type={type} value={(formCultura as any)[key]} onChange={e => setFormCultura(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Amostra *</label>
-              <select value={formCultura.tipoAmostra} onChange={e => setFormCultura(f => ({ ...f, tipoAmostra: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Amostra *</label>
+              <select id="fpage-2" value={formCultura.tipoAmostra} onChange={e => setFormCultura(f => ({ ...f, tipoAmostra: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
                 {Object.entries(TIPO_AMOSTRA_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente suspeito (opcional)</label>
-              <input type="text" value={formCultura.agente} onChange={e => setFormCultura(f => ({ ...f, agente: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente suspeito (opcional)</label>
+              <input id="fpage-3" type="text" value={formCultura.agente} onChange={e => setFormCultura(f => ({ ...f, agente: e.target.value }))}
                 placeholder="Ex: MRSA, Klebsiella pneumoniae..."
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-              <textarea value={formCultura.observacoes} onChange={e => setFormCultura(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <textarea id="fpage-4" value={formCultura.observacoes} onChange={e => setFormCultura(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
@@ -516,8 +516,8 @@ export default function IacsPage() {
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editCultura.doente.nome} · {TIPO_AMOSTRA_LABELS[editCultura.tipoAmostra] ?? editCultura.tipoAmostra}</p>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
-              <select value={formEditCultura.resultado} onChange={e => setFormEditCultura(f => ({ ...f, resultado: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
+              <select id="fpage-5" value={formEditCultura.resultado} onChange={e => setFormEditCultura(f => ({ ...f, resultado: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
                 <option value="positivo">Positivo</option>
                 <option value="negativo">Negativo</option>
@@ -525,14 +525,14 @@ export default function IacsPage() {
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente identificado</label>
-              <input type="text" value={formEditCultura.agente} onChange={e => setFormEditCultura(f => ({ ...f, agente: e.target.value }))}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente identificado</label>
+              <input id="fpage-6" type="text" value={formEditCultura.agente} onChange={e => setFormEditCultura(f => ({ ...f, agente: e.target.value }))}
                 placeholder="Ex: MRSA, E. coli ESBL..."
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-              <textarea value={formEditCultura.observacoes} onChange={e => setFormEditCultura(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <textarea id="fpage-7" value={formEditCultura.observacoes} onChange={e => setFormEditCultura(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
@@ -558,26 +558,26 @@ export default function IacsPage() {
               { label: 'Serviço *', key: 'servico', placeholder: 'Ex: Internamento, UCI, Cirurgia...' },
             ].map(({ label, key, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type="text" value={(formSurto as any)[key]} onChange={e => setFormSurto(f => ({ ...f, [key]: e.target.value }))}
+                <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                <input id="fpage-8" type="text" value={(formSurto as any)[key]} onChange={e => setFormSurto(f => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" style={{ padding: '10px 14px' }} />
               </div>
             ))}
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data Início *</label>
-                <input type="date" value={formSurto.dataInicio} onChange={e => setFormSurto(f => ({ ...f, dataInicio: e.target.value }))}
+                <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data Início *</label>
+                <input id="fpage-9" type="date" value={formSurto.dataInicio} onChange={e => setFormSurto(f => ({ ...f, dataInicio: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nº de Casos</label>
-                <input type="number" min={1} value={formSurto.numCasos} onChange={e => setFormSurto(f => ({ ...f, numCasos: Number(e.target.value) }))}
+                <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nº de Casos</label>
+                <input id="fpage-10" type="number" min={1} value={formSurto.numCasos} onChange={e => setFormSurto(f => ({ ...f, numCasos: Number(e.target.value) }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" style={{ padding: '10px 14px' }} />
               </div>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-              <textarea value={formSurto.observacoes} onChange={e => setFormSurto(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <textarea id="fpage-11" value={formSurto.observacoes} onChange={e => setFormSurto(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
@@ -601,8 +601,8 @@ export default function IacsPage() {
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editSurto.agente} · {editSurto.servico}</p>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Estado</label>
-              <select value={formEditSurto.estado} onChange={e => setFormEditSurto(f => ({ ...f, estado: e.target.value }))}
+              <label htmlFor="fpage-12" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Estado</label>
+              <select id="fpage-12" value={formEditSurto.estado} onChange={e => setFormEditSurto(f => ({ ...f, estado: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
                 <option value="activo">Activo</option>
                 <option value="controlado">Controlado</option>
@@ -610,13 +610,13 @@ export default function IacsPage() {
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nº de Casos</label>
-              <input type="number" min={1} value={formEditSurto.numCasos} onChange={e => setFormEditSurto(f => ({ ...f, numCasos: Number(e.target.value) }))}
+              <label htmlFor="fpage-13" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nº de Casos</label>
+              <input id="fpage-13" type="number" min={1} value={formEditSurto.numCasos} onChange={e => setFormEditSurto(f => ({ ...f, numCasos: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-              <textarea value={formEditSurto.observacoes} onChange={e => setFormEditSurto(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-14" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <textarea id="fpage-14" value={formEditSurto.observacoes} onChange={e => setFormEditSurto(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">

@@ -272,8 +272,8 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
       {modalNota && (
         <Modal titulo="Adicionar Nota de Turno" onClose={() => setModalNota(false)}>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nota</label>
-            <textarea
+            <label htmlFor="fnotastur-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nota</label>
+            <textarea id="fnotastur-0"
               autoFocus
               rows={5}
               value={notaTexto}

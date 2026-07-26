@@ -230,8 +230,8 @@ export default function CamasPagina() {
             <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '24px' }}>Nova Cama</h2>
             <form onSubmit={criarCama}>
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Número</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Número</label>
+                <input id="fpage-0"
                   required
                   value={novaCama.numero}
                   onChange={(e) => setNovaCama((n) => ({ ...n, numero: e.target.value }))}
@@ -240,8 +240,8 @@ export default function CamasPagina() {
                 />
               </div>
               <div style={{ marginBottom: '28px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Quarto</label>
-                <input
+                <label htmlFor="fpage-1" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Quarto</label>
+                <input id="fpage-1"
                   required
                   value={novaCama.quarto}
                   onChange={(e) => setNovaCama((n) => ({ ...n, quarto: e.target.value }))}

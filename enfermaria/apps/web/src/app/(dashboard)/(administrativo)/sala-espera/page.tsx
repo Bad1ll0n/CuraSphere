@@ -269,8 +269,8 @@ export default function SalaEsperaPage() {
               { label: 'Motivo da Entrada *', key: 'motivo', type: 'text', placeholder: 'Ex: Dor abdominal, Febre alta...' },
             ] as { label: string; key: string; type: string; placeholder: string }[]).map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '12px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-                <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
+                <input id="fpage-0" type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
                 {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}
@@ -278,8 +278,8 @@ export default function SalaEsperaPage() {
             ))}
 
             <div style={{ marginBottom: '12px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Prioridade</label>
-              <select value={form.prioridade} onChange={e => setForm(f => ({ ...f, prioridade: Number(e.target.value) }))}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Prioridade</label>
+              <select id="fpage-1" value={form.prioridade} onChange={e => setForm(f => ({ ...f, prioridade: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
                 {Object.entries(PRIORIDADE_CONFIG).map(([v, c]) => (
@@ -289,8 +289,8 @@ export default function SalaEsperaPage() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Observações</label>
-              <textarea value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Observações</label>
+              <textarea id="fpage-2" value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} placeholder="Informações adicionais..."
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
@@ -308,8 +308,8 @@ export default function SalaEsperaPage() {
                 { label: 'Telefone', key: 'telefone', placeholder: '912345678' },
               ] as { label: string; key: string; placeholder: string }[]).map(({ label, key, placeholder }) => (
                 <div key={key} style={{ marginBottom: '12px' }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-                  <input type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                  <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
+                  <input id="fpage-3" type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                     className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
                     style={{ padding: '10px 14px' }} placeholder={placeholder} />
                   {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}
@@ -318,39 +318,39 @@ export default function SalaEsperaPage() {
             </div>
 
             <div style={{ marginBottom: '12px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Email</label>
-              <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Email</label>
+              <input id="fpage-4" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                 className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.email ? 'border-red-400' : 'border-slate-200'}`}
                 style={{ padding: '10px 14px' }} placeholder="exemplo@email.com" />
               {erros.email && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.email}</p>}
             </div>
 
             <div style={{ marginBottom: '12px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Morada</label>
-              <input type="text" value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Morada</label>
+              <input id="fpage-5" type="text" value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} placeholder="Rua, número, andar" />
             </div>
 
             <div className="grid grid-cols-2 gap-x-4" style={{ marginBottom: '12px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Código Postal</label>
-                <input type="text" value={form.codigoPostal} onChange={e => setForm(f => ({ ...f, codigoPostal: e.target.value }))}
+                <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Código Postal</label>
+                <input id="fpage-6" type="text" value={form.codigoPostal} onChange={e => setForm(f => ({ ...f, codigoPostal: e.target.value }))}
                   className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.codigoPostal ? 'border-red-400' : 'border-slate-200'}`}
                   style={{ padding: '10px 14px' }} placeholder="0000-000" />
                 {erros.codigoPostal && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.codigoPostal}</p>}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Localidade</label>
-                <input type="text" value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
+                <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Localidade</label>
+                <input id="fpage-7" type="text" value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }} placeholder="Lisboa" />
               </div>
             </div>
 
             <div style={{ marginBottom: '12px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Tipo de Cobertura</label>
-              <select value={form.tipoCobertura} onChange={e => setForm(f => ({ ...f, tipoCobertura: e.target.value }))}
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Tipo de Cobertura</label>
+              <select id="fpage-8" value={form.tipoCobertura} onChange={e => setForm(f => ({ ...f, tipoCobertura: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="sns">SNS</option>
@@ -363,15 +363,15 @@ export default function SalaEsperaPage() {
             {form.tipoCobertura === 'seguro' && (
               <div className="grid grid-cols-2 gap-x-4" style={{ marginBottom: '12px' }}>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Entidade Seguradora *</label>
-                  <input type="text" value={form.entidadeSeguradora} onChange={e => setForm(f => ({ ...f, entidadeSeguradora: e.target.value }))}
+                  <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Entidade Seguradora *</label>
+                  <input id="fpage-9" type="text" value={form.entidadeSeguradora} onChange={e => setForm(f => ({ ...f, entidadeSeguradora: e.target.value }))}
                     className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.entidadeSeguradora ? 'border-red-400' : 'border-slate-200'}`}
                     style={{ padding: '10px 14px' }} placeholder="Ex: Fidelidade" />
                   {erros.entidadeSeguradora && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.entidadeSeguradora}</p>}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>N.º Apólice *</label>
-                  <input type="text" value={form.numeroApolice} onChange={e => setForm(f => ({ ...f, numeroApolice: e.target.value }))}
+                  <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>N.º Apólice *</label>
+                  <input id="fpage-10" type="text" value={form.numeroApolice} onChange={e => setForm(f => ({ ...f, numeroApolice: e.target.value }))}
                     className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.numeroApolice ? 'border-red-400' : 'border-slate-200'}`}
                     style={{ padding: '10px 14px' }} placeholder="Ex: AP12345678" />
                   {erros.numeroApolice && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.numeroApolice}</p>}

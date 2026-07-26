@@ -99,8 +99,8 @@ export default function AdmitirDoentesPagina() {
 
           <div className="grid grid-cols-2 gap-5">
             <div className="col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome completo</label>
-              <input
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome completo</label>
+              <input id="fpage-0"
                 required
                 value={form.nome}
                 onChange={set('nome')}
@@ -110,8 +110,8 @@ export default function AdmitirDoentesPagina() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Data de Nascimento</label>
-              <input
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Data de Nascimento</label>
+              <input id="fpage-1"
                 type="date"
                 required
                 value={form.dataNascimento}
@@ -144,8 +144,8 @@ export default function AdmitirDoentesPagina() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Diagnóstico Principal</label>
-            <textarea
+            <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Diagnóstico Principal</label>
+            <textarea id="fpage-3"
               required
               value={form.diagnosticoPrincipal}
               onChange={set('diagnosticoPrincipal')}
@@ -183,33 +183,33 @@ export default function AdmitirDoentesPagina() {
 
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>NIF <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.nif} onChange={set('nif')} placeholder="123456789"
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>NIF <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-4" value={form.nif} onChange={set('nif')} placeholder="123456789"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Número SNS <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.numeroSNS} onChange={set('numeroSNS')} placeholder="123456789"
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Número SNS <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-5" value={form.numeroSNS} onChange={set('numeroSNS')} placeholder="123456789"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Telefone <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.telefone} onChange={set('telefone')} placeholder="912 345 678"
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Telefone <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-6" value={form.telefone} onChange={set('telefone')} placeholder="912 345 678"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Localidade <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.localidade} onChange={set('localidade')} placeholder="Lisboa"
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Localidade <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-7" value={form.localidade} onChange={set('localidade')} placeholder="Lisboa"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
             <div className="col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Morada <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.morada} onChange={set('morada')} placeholder="Rua Exemplo, n.º 1"
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Morada <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-8" value={form.morada} onChange={set('morada')} placeholder="Rua Exemplo, n.º 1"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Código Postal <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
-              <input value={form.codigoPostal} onChange={set('codigoPostal')} placeholder="1000-001"
+              <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Código Postal <span className="font-normal text-slate-300 normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-9" value={form.codigoPostal} onChange={set('codigoPostal')} placeholder="1000-001"
                 className={inputClass} style={{ padding: '11px 16px' }} />
             </div>
           </div>
@@ -252,8 +252,8 @@ export default function AdmitirDoentesPagina() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Alta Prevista <span className="text-slate-300 font-normal normal-case tracking-normal">(opcional)</span></label>
-              <input
+              <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Alta Prevista <span className="text-slate-300 font-normal normal-case tracking-normal">(opcional)</span></label>
+              <input id="fpage-10"
                 type="date"
                 value={form.dataAltaPrevista}
                 onChange={set('dataAltaPrevista')}

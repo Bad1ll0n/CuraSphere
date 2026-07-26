@@ -84,16 +84,16 @@ export default function PassagemTurnoPage() {
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '32px' }}>
           <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '24px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
-              <select value={servico} onChange={e => setServico(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+              <select id="fpage-0" value={servico} onChange={e => setServico(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 style={{ padding: '10px 12px' }}>
                 {SERVICOS.map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Turno a Sair</label>
-              <select value={turno} onChange={e => setTurno(e.target.value as Turno)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Turno a Sair</label>
+              <select id="fpage-1" value={turno} onChange={e => setTurno(e.target.value as Turno)}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 style={{ padding: '10px 12px' }}>
                 <option value="manha">Manhã (08h–16h)</option>

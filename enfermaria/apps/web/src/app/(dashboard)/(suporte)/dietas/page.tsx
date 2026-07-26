@@ -199,8 +199,8 @@ export default function DietasPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">ID do Doente</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-sm font-medium text-slate-700 mb-1">ID do Doente</label>
+                <input id="fpage-0"
                   type="text"
                   value={doenteId}
                   onChange={(e) => setDoenteId(e.target.value)}
@@ -248,8 +248,8 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
-                <textarea
+                <label htmlFor="fpage-3" className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
+                <textarea id="fpage-3"
                   value={observacoes}
                   onChange={(e) => setObservacoes(e.target.value)}
                   rows={3}

@@ -294,8 +294,8 @@ export default function WorklistPage() {
             <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Doente: {resultadoModal.doente?.nome}</p>
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
-            <textarea value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
+            <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
+            <textarea id="fpage-0" value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
               rows={5} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
               style={{ padding: '10px 14px' }} placeholder="Descreva os achados e resultado do exame..." />
           </div>
@@ -321,20 +321,20 @@ export default function WorklistPage() {
             <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Doente: {laudoModal.doente?.nome}</p>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Técnica</label>
-            <input value={laudoTecnica} onChange={e => setLaudoTecnica(e.target.value)}
+            <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Técnica</label>
+            <input id="fpage-1" value={laudoTecnica} onChange={e => setLaudoTecnica(e.target.value)}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
               style={{ padding: '10px 14px' }} placeholder="Ex: RX tórax, incidência PA" />
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Achados *</label>
-            <textarea value={laudoAchados} onChange={e => setLaudoAchados(e.target.value)} rows={4}
+            <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Achados *</label>
+            <textarea id="fpage-2" value={laudoAchados} onChange={e => setLaudoAchados(e.target.value)} rows={4}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
               style={{ padding: '10px 14px' }} placeholder="Descrição dos achados imagiológicos..." />
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Conclusão *</label>
-            <textarea value={laudoConclusao} onChange={e => setLaudoConclusao(e.target.value)} rows={2}
+            <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Conclusão *</label>
+            <textarea id="fpage-3" value={laudoConclusao} onChange={e => setLaudoConclusao(e.target.value)} rows={2}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
               style={{ padding: '10px 14px' }} placeholder="Impressão diagnóstica..." />
           </div>

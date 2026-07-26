@@ -202,8 +202,8 @@ export function InterconsultasPanel({ doenteId, utilizador }: Props) {
       {modalInterconsulta && (
         <Modal titulo="Solicitar Interconsulta" onClose={() => setModalInterconsulta(false)}>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade *</label>
-            <select value={intercEspecialidade} onChange={(e) => setIntercEspecialidade(e.target.value)}
+            <label htmlFor="fintercon-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade *</label>
+            <select id="fintercon-0" value={intercEspecialidade} onChange={(e) => setIntercEspecialidade(e.target.value)}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               style={{ padding: '10px 14px' }}>
               {['Cardiologia','Neurologia','Nefrologia','Gastrenterologia','Pneumologia','Endocrinologia',
@@ -214,8 +214,8 @@ export function InterconsultasPanel({ doenteId, utilizador }: Props) {
             </select>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-            <textarea value={intercMotivo} onChange={(e) => setIntercMotivo(e.target.value)}
+            <label htmlFor="fintercon-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+            <textarea id="fintercon-1" value={intercMotivo} onChange={(e) => setIntercMotivo(e.target.value)}
               placeholder="Descreva o motivo da interconsulta..."
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               style={{ padding: '10px 14px', marginBottom: '0' }} rows={3} />
@@ -233,8 +233,8 @@ export function InterconsultasPanel({ doenteId, utilizador }: Props) {
       {modalIntercResposta && (
         <Modal titulo="Responder Interconsulta" onClose={() => setModalIntercResposta(null)}>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resposta clínica *</label>
-            <textarea value={intercResposta} onChange={(e) => setIntercResposta(e.target.value)}
+            <label htmlFor="fintercon-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resposta clínica *</label>
+            <textarea id="fintercon-2" value={intercResposta} onChange={(e) => setIntercResposta(e.target.value)}
               placeholder="Escreva a sua avaliação e recomendações..."
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               style={{ padding: '10px 14px' }} rows={5} />

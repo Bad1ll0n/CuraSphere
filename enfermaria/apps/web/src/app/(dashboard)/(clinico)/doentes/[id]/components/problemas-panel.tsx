@@ -199,15 +199,15 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
         <Modal titulo="Adicionar Problema Clínico" onClose={() => setModalProblema(false)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div>
-              <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Descrição *</label>
-              <input value={probDescricao} onChange={e => setProbDescricao(e.target.value)} autoFocus
+              <label htmlFor="fproblema-0" className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Descrição *</label>
+              <input id="fproblema-0" value={probDescricao} onChange={e => setProbDescricao(e.target.value)} autoFocus
                 className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 placeholder="Ex: Diabetes mellitus tipo 2, HTA, IRC grau 3..." />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <div>
-                <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Tipo</label>
-                <select value={probTipo} onChange={e => setProbTipo(e.target.value)}
+                <label htmlFor="fproblema-1" className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Tipo</label>
+                <select id="fproblema-1" value={probTipo} onChange={e => setProbTipo(e.target.value)}
                   className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
                   <option value="comorbilidade">Comorbilidade</option>
                   <option value="principal">Principal</option>
@@ -217,8 +217,8 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Data Início</label>
-                <input type="date" value={probDataInicio} onChange={e => setProbDataInicio(e.target.value)}
+                <label htmlFor="fproblema-2" className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Data Início</label>
+                <input id="fproblema-2" type="date" value={probDataInicio} onChange={e => setProbDataInicio(e.target.value)}
                   className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
               </div>
             </div>

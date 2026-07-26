@@ -599,7 +599,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'identificacao' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Ferida *</label>
+                    <label htmlFor="fferidasp-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Ferida *</label>
                     <div className="grid grid-cols-2 gap-2">
                       {TIPOS_FERIDA.map((t) => (
                         <button key={t.value} type="button" onClick={() => setForm(f => ({ ...f, tipo: t.value }))}
@@ -612,7 +612,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <FormField label="Localização" required error={feridasErrors['localizacao']}>
-                    <input type="text" value={form.localizacao}
+                    <input id="fferidasp-0" type="text" value={form.localizacao}
                       onChange={e => { setForm(f => ({ ...f, localizacao: e.target.value })); setFeridasErrors(prev => { const n = { ...prev }; delete n['localizacao']; return n; }); }}
                       placeholder="Ex: Sacro, Calcanhar direito, Maléolo..."
                       className={`w-full border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-400 transition ${feridasErrors['localizacao'] ? 'border-red-400' : 'border-slate-200'}`}
@@ -633,14 +633,14 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dimensões (cm) — opcional</label>
+                    <label htmlFor="fferidasp-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dimensões (cm) — opcional</label>
                     <div className="flex gap-2">
                       {[
                         { key: 'comprimento', placeholder: 'Compr.' },
                         { key: 'largura', placeholder: 'Larg.' },
                         { key: 'profundidade', placeholder: 'Prof.' },
                       ].map(({ key, placeholder }) => (
-                        <input key={key} type="number" min="0" step="0.1"
+                        <input id="fferidasp-2" key={key} type="number" min="0" step="0.1"
                           value={(form as any)[key]}
                           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                           placeholder={placeholder}
@@ -711,8 +711,8 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dor NRS (0–10)</label>
-                      <input type="number" min="0" max="10" value={form.dor as string}
+                      <label htmlFor="fferidasp-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dor NRS (0–10)</label>
+                      <input id="fferidasp-7" type="number" min="0" max="10" value={form.dor as string}
                         onChange={e => setForm(f => ({ ...f, dor: e.target.value }))}
                         placeholder="0-10"
                         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
@@ -741,16 +741,16 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'penso' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Penso Aplicado</label>
-                    <input type="text" value={form.pensoAplicado}
+                    <label htmlFor="fferidasp-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Penso Aplicado</label>
+                    <input id="fferidasp-9" type="text" value={form.pensoAplicado}
                       onChange={e => setForm(f => ({ ...f, pensoAplicado: e.target.value }))}
                       placeholder="Ex: Mepilex Border, Hidrofibra, Alginato..."
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
                       style={{ padding: '10px 14px' }} maxLength={200} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Próxima Troca</label>
-                    <input type="date" value={form.proximaTroca}
+                    <label htmlFor="fferidasp-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Próxima Troca</label>
+                    <input id="fferidasp-10" type="date" value={form.proximaTroca}
                       onChange={e => setForm(f => ({ ...f, proximaTroca: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
                       style={{ padding: '10px 14px' }} />
@@ -761,8 +761,8 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {/* Secção: Notas */}
               {secaoAtiva === 'notas' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Adicionais</label>
-                  <textarea value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
+                  <label htmlFor="fferidasp-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Adicionais</label>
+                  <textarea id="fferidasp-11" value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
                     rows={6} maxLength={2000}
                     placeholder="Observações sobre a evolução, procedimentos realizados, intercorrências..."
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition resize-none"

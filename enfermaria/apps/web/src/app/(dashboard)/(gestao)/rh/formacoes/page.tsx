@@ -194,8 +194,8 @@ export default function FormacoesPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Colaborador</label>
-              <select value={novaUtilizadorId} onChange={e => setNovaUtilizadorId(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Colaborador</label>
+              <select id="fpage-0" value={novaUtilizadorId} onChange={e => setNovaUtilizadorId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -204,8 +204,8 @@ export default function FormacoesPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome da Formação</label>
-              <input type="text" value={novaNome} onChange={e => setNovaNome(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome da Formação</label>
+              <input id="fpage-1" type="text" value={novaNome} onChange={e => setNovaNome(e.target.value)}
                 placeholder="Ex: BLS, Higiene das Mãos, ACLS..."
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }} />
@@ -213,22 +213,22 @@ export default function FormacoesPage() {
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de Realização</label>
-                <input type="date" value={novaData} onChange={e => setNovaData(e.target.value)}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de Realização</label>
+                <input id="fpage-2" type="date" value={novaData} onChange={e => setNovaData(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de Expiração</label>
-                <input type="date" value={novaExpiracao} onChange={e => setNovaExpiracao(e.target.value)}
+                <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de Expiração</label>
+                <input id="fpage-3" type="date" value={novaExpiracao} onChange={e => setNovaExpiracao(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }} />
               </div>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Entidade Formadora (opcional)</label>
-              <input type="text" value={novaEntidade} onChange={e => setNovaEntidade(e.target.value)}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Entidade Formadora (opcional)</label>
+              <input id="fpage-4" type="text" value={novaEntidade} onChange={e => setNovaEntidade(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }} />
             </div>

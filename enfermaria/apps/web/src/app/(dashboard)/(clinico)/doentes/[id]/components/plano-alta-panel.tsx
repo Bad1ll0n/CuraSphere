@@ -202,8 +202,8 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
 
           <div style={{ marginBottom: '12px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
-            <textarea
+            <label htmlFor="fplanoalt-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
+            <textarea id="fplanoalt-0"
               value={notas}
               onChange={e => setNotas(e.target.value)}
               disabled={!podeEditar}

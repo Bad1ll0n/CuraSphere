@@ -197,8 +197,8 @@ export default function ConsentimentosPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Tipo</label>
-                <select
+                <label htmlFor="fpage-0" className="block text-sm font-medium text-slate-700 mb-1">Tipo</label>
+                <select id="fpage-0"
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value)}
                   className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -210,8 +210,8 @@ export default function ConsentimentosPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Descrição do procedimento</label>
-                <textarea
+                <label htmlFor="fpage-1" className="block text-sm font-medium text-slate-700 mb-1">Descrição do procedimento</label>
+                <textarea id="fpage-1"
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   rows={4}
@@ -290,8 +290,8 @@ export default function ConsentimentosPage() {
             </p>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Motivo da recusa</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-sm font-medium text-slate-700 mb-1">Motivo da recusa</label>
+              <textarea id="fpage-2"
                 value={motivoRecusa}
                 onChange={(e) => setMotivoRecusa(e.target.value)}
                 rows={3}

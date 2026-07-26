@@ -216,8 +216,8 @@ export default function GuidelinesPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
-              <input type="text" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
+              <input id="fpage-0" type="text" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))}
                 placeholder="Ex: Protocolo de Sépsis - DGS 2024"
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition"
                 style={{ padding: '10px 14px' }} maxLength={200} />
@@ -225,16 +225,16 @@ export default function GuidelinesPage() {
 
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria *</label>
-                <select value={form.categoria} onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria *</label>
+                <select id="fpage-1" value={form.categoria} onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition"
                   style={{ padding: '10px 14px' }}>
                   {CATEGORIAS.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fonte *</label>
-                <input type="text" value={form.fonte} onChange={e => setForm(f => ({ ...f, fonte: e.target.value }))}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fonte *</label>
+                <input id="fpage-2" type="text" value={form.fonte} onChange={e => setForm(f => ({ ...f, fonte: e.target.value }))}
                   placeholder="DGS 2024, NICE 2023..."
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition"
                   style={{ padding: '10px 14px' }} maxLength={100} />
@@ -242,16 +242,16 @@ export default function GuidelinesPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Versão (opcional)</label>
-              <input type="text" value={form.versao} onChange={e => setForm(f => ({ ...f, versao: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Versão (opcional)</label>
+              <input id="fpage-3" type="text" value={form.versao} onChange={e => setForm(f => ({ ...f, versao: e.target.value }))}
                 placeholder="Ex: 1.2, 2024-Q1"
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition"
                 style={{ padding: '10px 14px' }} maxLength={50} />
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Conteúdo *</label>
-              <textarea value={form.conteudo} onChange={e => setForm(f => ({ ...f, conteudo: e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Conteúdo *</label>
+              <textarea id="fpage-4" value={form.conteudo} onChange={e => setForm(f => ({ ...f, conteudo: e.target.value }))}
                 rows={8} maxLength={3000}
                 placeholder="Texto clínico relevante — máx. 2000 tokens (~3000 caracteres)..."
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 resize-none transition"

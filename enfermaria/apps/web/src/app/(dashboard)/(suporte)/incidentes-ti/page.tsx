@@ -520,8 +520,8 @@ export default function IncidentesTIPage() {
 
               {/* Tipo */}
               <div style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Problema</label>
-                <select
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Problema</label>
+                <select id="fpage-1"
                   value={tipo}
                   onChange={e => setTipo(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -533,8 +533,8 @@ export default function IncidentesTIPage() {
 
               {/* Título */}
               <div style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
-                <input
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
+                <input id="fpage-2"
                   type="text"
                   value={titulo}
                   onChange={e => setTitulo(e.target.value)}
@@ -546,8 +546,8 @@ export default function IncidentesTIPage() {
 
               {/* Descrição */}
               <div style={{ marginBottom: '18px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
-                <textarea
+                <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
+                <textarea id="fpage-3"
                   value={descricao}
                   onChange={e => setDescricao(e.target.value)}
                   placeholder="Descreva o problema: o que aconteceu, quando, impacto..."

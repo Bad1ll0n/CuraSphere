@@ -264,8 +264,8 @@ export default function FornecedoresPage() {
                 { label: 'Morada', key: 'morada', placeholder: 'Rua, Cidade' },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input type="text" value={(formForn as any)[key]} onChange={e => setFormForn(f => ({ ...f, [key]: e.target.value }))}
+                  <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                  <input id="fpage-0" type="text" value={(formForn as any)[key]} onChange={e => setFormForn(f => ({ ...f, [key]: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     style={{ padding: '10px 14px' }} placeholder={placeholder} />
                 </div>
@@ -294,8 +294,8 @@ export default function FornecedoresPage() {
             </div>
             <div className="grid gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fornecedor *</label>
-                <select value={formEnc.fornecedorId} onChange={e => setFormEnc(f => ({ ...f, fornecedorId: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fornecedor *</label>
+                <select id="fpage-1" value={formEnc.fornecedorId} onChange={e => setFormEnc(f => ({ ...f, fornecedorId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Seleccionar...</option>
@@ -303,8 +303,8 @@ export default function FornecedoresPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Item de Stock *</label>
-                <select value={formEnc.stockItemId} onChange={e => setFormEnc(f => ({ ...f, stockItemId: e.target.value }))}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Item de Stock *</label>
+                <select id="fpage-2" value={formEnc.stockItemId} onChange={e => setFormEnc(f => ({ ...f, stockItemId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Seleccionar...</option>
@@ -313,27 +313,27 @@ export default function FornecedoresPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade *</label>
-                  <input type="number" value={formEnc.quantidadeEncomendada} onChange={e => setFormEnc(f => ({ ...f, quantidadeEncomendada: Number(e.target.value) }))}
+                  <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade *</label>
+                  <input id="fpage-3" type="number" value={formEnc.quantidadeEncomendada} onChange={e => setFormEnc(f => ({ ...f, quantidadeEncomendada: Number(e.target.value) }))}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     style={{ padding: '10px 14px' }} min={1} />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço unit. (€)</label>
-                  <input type="number" value={formEnc.precoUnitario} onChange={e => setFormEnc(f => ({ ...f, precoUnitario: e.target.value }))}
+                  <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço unit. (€)</label>
+                  <input id="fpage-4" type="number" value={formEnc.precoUnitario} onChange={e => setFormEnc(f => ({ ...f, precoUnitario: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     style={{ padding: '10px 14px' }} min={0} step="0.01" placeholder="0.00" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de entrega prevista</label>
-                <input type="date" value={formEnc.dataEntregaPrevista} onChange={e => setFormEnc(f => ({ ...f, dataEntregaPrevista: e.target.value }))}
+                <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data de entrega prevista</label>
+                <input id="fpage-5" type="date" value={formEnc.dataEntregaPrevista} onChange={e => setFormEnc(f => ({ ...f, dataEntregaPrevista: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-                <textarea value={formEnc.observacoes} onChange={e => setFormEnc(f => ({ ...f, observacoes: e.target.value }))}
+                <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+                <textarea id="fpage-6" value={formEnc.observacoes} onChange={e => setFormEnc(f => ({ ...f, observacoes: e.target.value }))}
                   rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                   style={{ padding: '10px 14px' }} />
               </div>
@@ -361,8 +361,8 @@ export default function FornecedoresPage() {
             <p className="text-slate-600 text-sm" style={{ marginBottom: '4px' }}>{modalReceber.stockItem?.nome}</p>
             <p className="text-slate-400 text-xs" style={{ marginBottom: '20px' }}>Encomendado: {modalReceber.quantidadeEncomendada} {modalReceber.stockItem?.unidade}</p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade efectivamente recebida *</label>
-              <input type="number" value={qtdRecebida} onChange={e => setQtdRecebida(Number(e.target.value))}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade efectivamente recebida *</label>
+              <input id="fpage-7" type="number" value={qtdRecebida} onChange={e => setQtdRecebida(Number(e.target.value))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} min={1} />
             </div>

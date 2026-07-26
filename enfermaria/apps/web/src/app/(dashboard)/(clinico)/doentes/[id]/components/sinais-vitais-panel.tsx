@@ -488,12 +488,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
-              <input type="number" aria-label="Peso (kg)" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+              <label htmlFor="fsinaisvi-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
+              <input id="fsinaisvi-0" type="number" aria-label="Peso (kg)" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Consciência (AVPU)</label>
-              <select value={svAvpu} aria-label="Consciência (AVPU)" onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
+              <label htmlFor="fsinaisvi-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Consciência (AVPU)</label>
+              <select id="fsinaisvi-1" value={svAvpu} aria-label="Consciência (AVPU)" onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
                 <option value="A">A — Alert (Alerta)</option>
                 <option value="V">V — Voice (Responde à voz)</option>
                 <option value="P">P — Pain (Responde à dor)</option>
@@ -514,8 +514,8 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             </label>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
-            <textarea rows={2} aria-label="Notas" value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
+            <label htmlFor="fsinaisvi-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
+            <textarea id="fsinaisvi-2" rows={2} aria-label="Notas" value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
           </div>
           <div className="rounded-xl text-xs text-slate-500 bg-slate-50 border border-slate-100" style={{ padding: '10px 14px', marginBottom: '16px' }}>
             O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.

@@ -117,10 +117,10 @@ function PROContent() {
               <div className="space-y-6">
                 {templateSel.campos.map(campo => (
                   <div key={campo.id}>
-                    <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>{campo.label}</label>
+                    <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>{campo.label}</label>
                     {campo.tipo === 'scale' && (
                       <div>
-                        <input type="range"
+                        <input id="fpage-0" type="range"
                           min={campo.min ?? 0} max={campo.max ?? 10} step={1}
                           value={(respostas[campo.id] as number) ?? Math.floor(((campo.max ?? 10) + (campo.min ?? 0)) / 2)}
                           onChange={e => setRespostas(r => ({ ...r, [campo.id]: parseInt(e.target.value) }))}

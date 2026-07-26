@@ -310,8 +310,8 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
 
             {/* Categoria */}
             <div>
-              <label className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Categoria</label>
-              <select value={categoria} onChange={(e) => setCategoria(e.target.value)}
+              <label htmlFor="fbalancoh-1" className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Categoria</label>
+              <select id="fbalancoh-1" value={categoria} onChange={(e) => setCategoria(e.target.value)}
                 className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 {(tipo === 'entrada' ? CATEGORIAS_ENTRADA : CATEGORIAS_SAIDA).map((c) => (
                   <option key={c} value={c}>{LABEL_CATEGORIA[c]}</option>
@@ -321,16 +321,16 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
 
             {/* Quantidade */}
             <div>
-              <label className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Quantidade (mL)</label>
-              <input type="number" min={1} max={10000} value={quantidade} onChange={(e) => setQuantidade(e.target.value)}
+              <label htmlFor="fbalancoh-2" className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Quantidade (mL)</label>
+              <input id="fbalancoh-2" type="number" min={1} max={10000} value={quantidade} onChange={(e) => setQuantidade(e.target.value)}
                 className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ex: 500" />
             </div>
 
             {/* Descrição */}
             <div>
-              <label className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Descrição (opcional)</label>
-              <input type="text" maxLength={200} value={descricao} onChange={(e) => setDescricao(e.target.value)}
+              <label htmlFor="fbalancoh-3" className="block text-sm font-medium text-slate-700" style={{ marginBottom: '8px' }}>Descrição (opcional)</label>
+              <input id="fbalancoh-3" type="text" maxLength={200} value={descricao} onChange={(e) => setDescricao(e.target.value)}
                 className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ex: NaCl 0.9% 500mL a 125mL/h" />
             </div>

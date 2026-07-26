@@ -181,8 +181,8 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
               </div>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={exameForm.descricao} onChange={e => setExameForm(f => ({ ...f, descricao: e.target.value }))}
+              <label htmlFor="fexamespa-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fexamespa-1" value={exameForm.descricao} onChange={e => setExameForm(f => ({ ...f, descricao: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o exame solicitado..." />
             </div>
@@ -217,8 +217,8 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
               {TIPO_EXAME_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo} — {resultadoModal.descricao}
             </p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
-              <textarea value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
+              <label htmlFor="fexamespa-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
+              <textarea id="fexamespa-2" value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado do exame..." />
             </div>

@@ -776,8 +776,8 @@ export default function DoenteDetalhe() {
                 { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input
+                  <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                  <input id="fpage-0"
                     value={(fichaForm as any)[key] ?? ''}
                     onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
                     placeholder={placeholder}
@@ -934,14 +934,14 @@ export default function DoenteDetalhe() {
               <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
-              <input type="text" value={editDiagnostico} onChange={(e) => setEditDiagnostico(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
+              <input id="fpage-1" type="text" value={editDiagnostico} onChange={(e) => setEditDiagnostico(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
-              <input type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
+              <input id="fpage-2" type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -968,8 +968,8 @@ export default function DoenteDetalhe() {
               <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
-              <textarea value={motivoIsolamentoInput} onChange={e => setMotivoIsolamentoInput(e.target.value)}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
+              <textarea id="fpage-3" value={motivoIsolamentoInput} onChange={e => setMotivoIsolamentoInput(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3}
                 placeholder="Ex: MRSA, Clostrídio, contacto suspeito COVID..." />
@@ -1121,8 +1121,8 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
-              <textarea
+              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <textarea id="fpage-6"
                 value={altaPrescricao}
                 onChange={(e) => setAltaPrescricao(e.target.value)}
                 rows={2}
@@ -1133,8 +1133,8 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '28px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
-              <input
+              <label htmlFor="fpage-7" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <input id="fpage-7"
                 value={altaMedicoFamilia}
                 onChange={(e) => setAltaMedicoFamilia(e.target.value)}
                 placeholder="Nome ou contacto do médico de família..."
@@ -1168,8 +1168,8 @@ export default function DoenteDetalhe() {
               <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={motivoSinalizar} onChange={e => setMotivoSinalizar(e.target.value)}
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-8" value={motivoSinalizar} onChange={e => setMotivoSinalizar(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3}
                 placeholder="Descreva a preocupação clínica observada..." />
@@ -1246,15 +1246,15 @@ export default function DoenteDetalhe() {
             ) : (
               <>
                 <div style={{ marginBottom: '16px' }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Email do Doente</label>
-                  <input type="email" value={portalEmail} onChange={e => setPortalEmail(e.target.value)}
+                  <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Email do Doente</label>
+                  <input id="fpage-10" type="email" value={portalEmail} onChange={e => setPortalEmail(e.target.value)}
                     placeholder="doente@exemplo.com"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />
                 </div>
                 <div style={{ marginBottom: '24px' }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
-                  <input type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
+                  <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
+                  <input id="fpage-11" type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
                     placeholder="Mínimo 8 caracteres"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />

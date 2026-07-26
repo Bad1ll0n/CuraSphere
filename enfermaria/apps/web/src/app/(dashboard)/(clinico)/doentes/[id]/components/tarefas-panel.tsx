@@ -288,16 +288,16 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
         <Modal titulo="Criar Tarefa" onClose={() => setModalTarefa(false)}>
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição *</label>
-              <input autoFocus type="text" value={tarefaDesc} onChange={(e) => setTarefaDesc(e.target.value)}
+              <label htmlFor="ftarefasp-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição *</label>
+              <input id="ftarefasp-0" autoFocus type="text" value={tarefaDesc} onChange={(e) => setTarefaDesc(e.target.value)}
                 placeholder="Descrição da tarefa..."
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo</label>
-                <select value={tarefaTipo} onChange={(e) => setTarefaTipo(e.target.value)}
+                <label htmlFor="ftarefasp-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo</label>
+                <select id="ftarefasp-1" value={tarefaTipo} onChange={(e) => setTarefaTipo(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="clinica">Clínica</option>
@@ -305,8 +305,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
-                <select value={tarefaPrioridade} onChange={(e) => setTarefaPrioridade(e.target.value)}
+                <label htmlFor="ftarefasp-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
+                <select id="ftarefasp-2" value={tarefaPrioridade} onChange={(e) => setTarefaPrioridade(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="baixa">Baixa</option>
@@ -317,8 +317,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Para</label>
-              <select value={tarefaGrupo} onChange={(e) => setTarefaGrupo(e.target.value)}
+              <label htmlFor="ftarefasp-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Para</label>
+              <select id="ftarefasp-3" value={tarefaGrupo} onChange={(e) => setTarefaGrupo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }}>
                 {gruposDisponiveis.map((g) => (
@@ -327,8 +327,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prazo (opcional)</label>
-              <input type="datetime-local" value={tarefaPrazo} onChange={(e) => setTarefaPrazo(e.target.value)}
+              <label htmlFor="ftarefasp-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prazo (opcional)</label>
+              <input id="ftarefasp-4" type="datetime-local" value={tarefaPrazo} onChange={(e) => setTarefaPrazo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }} />
             </div>

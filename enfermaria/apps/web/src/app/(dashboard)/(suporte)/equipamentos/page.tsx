@@ -390,28 +390,28 @@ export default function EquipamentosPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <label style={labelStyle}>Nome *</label>
-                <input value={formEq.nome} onChange={e => setFormEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} placeholder="Ex: Ventilador UCI-01" />
+                <label htmlFor="fpage-0" style={labelStyle}>Nome *</label>
+                <input id="fpage-0" value={formEq.nome} onChange={e => setFormEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} placeholder="Ex: Ventilador UCI-01" />
               </div>
               <div>
-                <label style={labelStyle}>Tipo *</label>
-                <select value={formEq.tipo} onChange={e => setFormEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
+                <label htmlFor="fpage-1" style={labelStyle}>Tipo *</label>
+                <select id="fpage-1" value={formEq.tipo} onChange={e => setFormEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
                   {Object.entries(TIPOS_EQUIP).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
                 </select>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={labelStyle}>Localização</label>
-                  <input value={formEq.localizacao} onChange={e => setFormEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
+                  <label htmlFor="fpage-2" style={labelStyle}>Localização</label>
+                  <input id="fpage-2" value={formEq.localizacao} onChange={e => setFormEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
                 </div>
                 <div>
-                  <label style={labelStyle}>Nº de Série</label>
-                  <input value={formEq.numeroSerie} onChange={e => setFormEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
+                  <label htmlFor="fpage-3" style={labelStyle}>Nº de Série</label>
+                  <input id="fpage-3" value={formEq.numeroSerie} onChange={e => setFormEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
                 </div>
               </div>
               <div>
-                <label style={labelStyle}>Próxima Manutenção Preventiva</label>
-                <input type="date" value={formEq.proximaManutencao} onChange={e => setFormEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
+                <label htmlFor="fpage-4" style={labelStyle}>Próxima Manutenção Preventiva</label>
+                <input id="fpage-4" type="date" value={formEq.proximaManutencao} onChange={e => setFormEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEq(false)}
@@ -439,36 +439,36 @@ export default function EquipamentosPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <label style={labelStyle}>Nome *</label>
-                <input value={formEditarEq.nome} onChange={e => setFormEditarEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} />
+                <label htmlFor="fpage-5" style={labelStyle}>Nome *</label>
+                <input id="fpage-5" value={formEditarEq.nome} onChange={e => setFormEditarEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} />
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={labelStyle}>Tipo</label>
-                  <select value={formEditarEq.tipo} onChange={e => setFormEditarEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
+                  <label htmlFor="fpage-6" style={labelStyle}>Tipo</label>
+                  <select id="fpage-6" value={formEditarEq.tipo} onChange={e => setFormEditarEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
                     {Object.entries(TIPOS_EQUIP).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Estado</label>
-                  <select value={formEditarEq.estado} onChange={e => setFormEditarEq(f => ({ ...f, estado: e.target.value }))} style={inputStyle}>
+                  <label htmlFor="fpage-7" style={labelStyle}>Estado</label>
+                  <select id="fpage-7" value={formEditarEq.estado} onChange={e => setFormEditarEq(f => ({ ...f, estado: e.target.value }))} style={inputStyle}>
                     {Object.entries(ESTADO_INFO).map(([k, v]) => <option key={k} value={k}>{v.dot} {v.label}</option>)}
                   </select>
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={labelStyle}>Localização</label>
-                  <input value={formEditarEq.localizacao} onChange={e => setFormEditarEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
+                  <label htmlFor="fpage-8" style={labelStyle}>Localização</label>
+                  <input id="fpage-8" value={formEditarEq.localizacao} onChange={e => setFormEditarEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
                 </div>
                 <div>
-                  <label style={labelStyle}>Nº de Série</label>
-                  <input value={formEditarEq.numeroSerie} onChange={e => setFormEditarEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
+                  <label htmlFor="fpage-9" style={labelStyle}>Nº de Série</label>
+                  <input id="fpage-9" value={formEditarEq.numeroSerie} onChange={e => setFormEditarEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
                 </div>
               </div>
               <div>
-                <label style={labelStyle}>Próxima Manutenção Preventiva</label>
-                <input type="date" value={formEditarEq.proximaManutencao} onChange={e => setFormEditarEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
+                <label htmlFor="fpage-10" style={labelStyle}>Próxima Manutenção Preventiva</label>
+                <input id="fpage-10" type="date" value={formEditarEq.proximaManutencao} onChange={e => setFormEditarEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEditarEq(null)}
@@ -498,8 +498,8 @@ export default function EquipamentosPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <label style={labelStyle}>Técnico Responsável</label>
-                <select value={tecnicoId} onChange={e => setTecnicoId(e.target.value)} style={inputStyle}>
+                <label htmlFor="fpage-11" style={labelStyle}>Técnico Responsável</label>
+                <select id="fpage-11" value={tecnicoId} onChange={e => setTecnicoId(e.target.value)} style={inputStyle}>
                   <option value="">— Sem atribuição —</option>
                   {(tecnicos as Tecnico[]).map(t => (
                     <option key={t.id} value={t.id}>{t.nome} ({t.role}{t.subRole ? `/${t.subRole}` : ''})</option>
@@ -535,15 +535,15 @@ export default function EquipamentosPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={labelStyle}>Tipo</label>
-                  <select value={formMan.tipo} onChange={e => setFormMan(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
+                  <label htmlFor="fpage-12" style={labelStyle}>Tipo</label>
+                  <select id="fpage-12" value={formMan.tipo} onChange={e => setFormMan(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
                     <option value="corretiva">🔴 Corretiva</option>
                     <option value="preventiva">🟡 Preventiva</option>
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Prioridade</label>
-                  <select value={formMan.prioridade} onChange={e => setFormMan(f => ({ ...f, prioridade: e.target.value }))} style={inputStyle}>
+                  <label htmlFor="fpage-13" style={labelStyle}>Prioridade</label>
+                  <select id="fpage-13" value={formMan.prioridade} onChange={e => setFormMan(f => ({ ...f, prioridade: e.target.value }))} style={inputStyle}>
                     <option value="urgente">🚨 Urgente</option>
                     <option value="alta">⚠️ Alta</option>
                     <option value="normal">Normal</option>
@@ -552,14 +552,14 @@ export default function EquipamentosPage() {
                 </div>
               </div>
               <div>
-                <label style={labelStyle}>Descrição *</label>
-                <textarea value={formMan.descricao} onChange={e => setFormMan(f => ({ ...f, descricao: e.target.value }))} rows={3}
+                <label htmlFor="fpage-14" style={labelStyle}>Descrição *</label>
+                <textarea id="fpage-14" value={formMan.descricao} onChange={e => setFormMan(f => ({ ...f, descricao: e.target.value }))} rows={3}
                   style={{ ...inputStyle, resize: 'vertical' }}
                   placeholder="Descreva o problema ou intervenção..." />
               </div>
               <div>
-                <label style={labelStyle}>Observações</label>
-                <input value={formMan.observacoes} onChange={e => setFormMan(f => ({ ...f, observacoes: e.target.value }))} style={inputStyle}
+                <label htmlFor="fpage-15" style={labelStyle}>Observações</label>
+                <input id="fpage-15" value={formMan.observacoes} onChange={e => setFormMan(f => ({ ...f, observacoes: e.target.value }))} style={inputStyle}
                   placeholder="Informações adicionais (opcional)" />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>

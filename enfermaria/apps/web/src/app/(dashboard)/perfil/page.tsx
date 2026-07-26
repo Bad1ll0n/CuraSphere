@@ -400,8 +400,8 @@ export default function PerfilPage() {
                 { label: 'Confirmar nova password', value: confirmarPassword, set: setConfirmarPassword, autocomplete: 'new-password' },
               ].map(f => (
                 <div key={f.label}>
-                  <label className="block text-xs font-semibold text-slate-600" style={{ marginBottom: '6px' }}>{f.label}</label>
-                  <input
+                  <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-600" style={{ marginBottom: '6px' }}>{f.label}</label>
+                  <input id="fpage-0"
                     type="password"
                     value={f.value}
                     onChange={e => f.set(e.target.value)}

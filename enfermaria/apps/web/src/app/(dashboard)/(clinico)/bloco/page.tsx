@@ -582,29 +582,29 @@ export default function BlocoPage() {
               { label: 'Data e Hora *', key: 'dataHora', type: 'datetime-local', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                <input id="fpage-0" type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
-              <input type="number" value={form.duracaoPrevista} onChange={e => setForm(f => ({ ...f, duracaoPrevista: Number(e.target.value) }))}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
+              <input id="fpage-1" type="number" value={form.duracaoPrevista} onChange={e => setForm(f => ({ ...f, duracaoPrevista: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} min={15} step={15} />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala</label>
-              <select value={form.sala} onChange={e => setForm(f => ({ ...f, sala: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala</label>
+              <select id="fpage-2" value={form.sala} onChange={e => setForm(f => ({ ...f, sala: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
                 {['Bloco 1', 'Bloco 2', 'Bloco 3', 'Bloco 4'].map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pré-Operatório</label>
-              <textarea value={form.notasPreOperatorio} onChange={e => setForm(f => ({ ...f, notasPreOperatorio: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pré-Operatório</label>
+              <textarea id="fpage-3" value={form.notasPreOperatorio} onChange={e => setForm(f => ({ ...f, notasPreOperatorio: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -632,8 +632,8 @@ export default function BlocoPage() {
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{detalhe.designacao} — {detalhe.doente?.nome}</p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pós-Operatório</label>
-              <textarea value={notasPos} onChange={e => setNotasPos(e.target.value)}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pós-Operatório</label>
+              <textarea id="fpage-4" value={notasPos} onChange={e => setNotasPos(e.target.value)}
                 rows={5} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado da cirurgia, intercorrências, estado do doente..." />
             </div>

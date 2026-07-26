@@ -242,8 +242,8 @@ export default function AusenciasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-              <select value={novaTipo} onChange={e => setNovaTipo(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+              <select id="fpage-0" value={novaTipo} onChange={e => setNovaTipo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 {Object.entries(TIPO_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -252,22 +252,22 @@ export default function AusenciasPage() {
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Início</label>
-                <input type="date" value={novaInicio} onChange={e => setNovaInicio(e.target.value)}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Início</label>
+                <input id="fpage-1" type="date" value={novaInicio} onChange={e => setNovaInicio(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fim</label>
-                <input type="date" value={novaFim} onChange={e => setNovaFim(e.target.value)}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fim</label>
+                <input id="fpage-2" type="date" value={novaFim} onChange={e => setNovaFim(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }} />
               </div>
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações (opcional)</label>
-              <textarea value={novaObs} onChange={e => setNovaObs(e.target.value)} rows={2}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações (opcional)</label>
+              <textarea id="fpage-3" value={novaObs} onChange={e => setNovaObs(e.target.value)} rows={2}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>

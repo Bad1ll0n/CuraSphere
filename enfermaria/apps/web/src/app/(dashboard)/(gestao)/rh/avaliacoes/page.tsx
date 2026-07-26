@@ -206,8 +206,8 @@ export default function AvaliacoesPage() {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Nova Avaliação</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Colaborador</label>
-                <select value={form.utilizadorId} onChange={e => setForm(f => ({ ...f, utilizadorId: e.target.value }))}
+                <label htmlFor="fpage-0" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Colaborador</label>
+                <select id="fpage-0" value={form.utilizadorId} onChange={e => setForm(f => ({ ...f, utilizadorId: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }}>
                   <option value="">Seleccionar...</option>
@@ -216,16 +216,16 @@ export default function AvaliacoesPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Período</label>
-                  <select value={form.periodo} onChange={e => setForm(f => ({ ...f, periodo: e.target.value }))}
+                  <label htmlFor="fpage-1" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Período</label>
+                  <select id="fpage-1" value={form.periodo} onChange={e => setForm(f => ({ ...f, periodo: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }}>
                     {PERIODOS.map(p => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data</label>
-                  <input type="date" value={form.dataAvaliacao} onChange={e => setForm(f => ({ ...f, dataAvaliacao: e.target.value }))}
+                  <label htmlFor="fpage-2" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data</label>
+                  <input id="fpage-2" type="date" value={form.dataAvaliacao} onChange={e => setForm(f => ({ ...f, dataAvaliacao: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
@@ -245,20 +245,20 @@ export default function AvaliacoesPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontos Fortes</label>
-                <textarea value={form.pontosFortes} rows={2} onChange={e => setForm(f => ({ ...f, pontosFortes: e.target.value }))}
+                <label htmlFor="fpage-4" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontos Fortes</label>
+                <textarea id="fpage-4" value={form.pontosFortes} rows={2} onChange={e => setForm(f => ({ ...f, pontosFortes: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Áreas de Melhoria</label>
-                <textarea value={form.areasMelhoria} rows={2} onChange={e => setForm(f => ({ ...f, areasMelhoria: e.target.value }))}
+                <label htmlFor="fpage-5" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Áreas de Melhoria</label>
+                <textarea id="fpage-5" value={form.areasMelhoria} rows={2} onChange={e => setForm(f => ({ ...f, areasMelhoria: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações</label>
-                <textarea value={form.observacoes} rows={2} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
+                <label htmlFor="fpage-6" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações</label>
+                <textarea id="fpage-6" value={form.observacoes} rows={2} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
               </div>
@@ -300,22 +300,22 @@ export default function AvaliacoesPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontos Fortes</label>
-                <textarea value={editando.pontosFortes ?? ''} rows={2}
+                <label htmlFor="fpage-8" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontos Fortes</label>
+                <textarea id="fpage-8" value={editando.pontosFortes ?? ''} rows={2}
                   onChange={e => setEditando(ev => ev ? { ...ev, pontosFortes: e.target.value } : ev)}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Áreas de Melhoria</label>
-                <textarea value={editando.areasMelhoria ?? ''} rows={2}
+                <label htmlFor="fpage-9" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Áreas de Melhoria</label>
+                <textarea id="fpage-9" value={editando.areasMelhoria ?? ''} rows={2}
                   onChange={e => setEditando(ev => ev ? { ...ev, areasMelhoria: e.target.value } : ev)}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações</label>
-                <textarea value={editando.observacoes ?? ''} rows={2}
+                <label htmlFor="fpage-10" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações</label>
+                <textarea id="fpage-10" value={editando.observacoes ?? ''} rows={2}
                   onChange={e => setEditando(ev => ev ? { ...ev, observacoes: e.target.value } : ev)}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />

@@ -148,21 +148,21 @@ export default function FisioterapiaPage() {
               { label: 'Data e Hora *', key: 'data', type: 'datetime-local', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                <input id="fpage-0" type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500"
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
-              <input type="number" value={form.duracao} onChange={e => setForm(f => ({ ...f, duracao: Number(e.target.value) }))}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
+              <input id="fpage-1" type="number" value={form.duracao} onChange={e => setForm(f => ({ ...f, duracao: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500"
                 style={{ padding: '10px 14px' }} min={15} step={15} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fpage-2" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva os exercícios ou técnicas previstos..." />
             </div>
@@ -190,8 +190,8 @@ export default function FisioterapiaPage() {
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{realizarModal.doente?.nome} — {realizarModal.descricao}</p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Evolução / Observações</label>
-              <textarea value={evolucao} onChange={e => setEvolucao(e.target.value)}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Evolução / Observações</label>
+              <textarea id="fpage-3" value={evolucao} onChange={e => setEvolucao(e.target.value)}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva a evolução observada durante a sessão..." />
             </div>

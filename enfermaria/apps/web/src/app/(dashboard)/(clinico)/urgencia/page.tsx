@@ -607,8 +607,8 @@ export default function UrgenciaPage() {
               <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
-              <textarea value={form.queixaPrincipal} onChange={e => setForm(f => ({ ...f, queixaPrincipal: e.target.value }))}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
+              <textarea id="fpage-0" value={form.queixaPrincipal} onChange={e => setForm(f => ({ ...f, queixaPrincipal: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva a queixa principal..." />
             </div>
@@ -628,14 +628,14 @@ export default function UrgenciaPage() {
               </div>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome do Doente (se desconhecido)</label>
-              <input value={form.nomeTemporario} onChange={e => setForm(f => ({ ...f, nomeTemporario: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome do Doente (se desconhecido)</label>
+              <input id="fpage-2" value={form.nomeTemporario} onChange={e => setForm(f => ({ ...f, nomeTemporario: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500"
                 style={{ padding: '10px 14px' }} placeholder="Nome temporário ou 'Desconhecido'" />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
-              <textarea value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
+              <textarea id="fpage-3" value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Notas adicionais..." />
             </div>
@@ -677,8 +677,8 @@ export default function UrgenciaPage() {
               </div>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={reTriagemForm.motivo} onChange={e => setReTriagemForm(f => ({ ...f, motivo: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-5" value={reTriagemForm.motivo} onChange={e => setReTriagemForm(f => ({ ...f, motivo: e.target.value }))}
                 rows={3} maxLength={500}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Justifique a alteração da triagem..." />
@@ -708,8 +708,8 @@ export default function UrgenciaPage() {
               <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
-              <select value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
+              <select id="fpage-6" value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">— Seleccionar médico —</option>
@@ -719,8 +719,8 @@ export default function UrgenciaPage() {
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala / Box de atendimento</label>
-              <input value={salaInput} onChange={e => setSalaInput(e.target.value)}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala / Box de atendimento</label>
+              <input id="fpage-7" value={salaInput} onChange={e => setSalaInput(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Sala 3, Box 2, Reanimação..." maxLength={50} />
             </div>
@@ -770,15 +770,15 @@ export default function UrgenciaPage() {
               {ambStep === 1 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome / Identificação (opcional)</label>
-                    <input value={formAmb.nomeTemporario} onChange={e => setFormAmb(f => ({ ...f, nomeTemporario: e.target.value }))}
+                    <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome / Identificação (opcional)</label>
+                    <input id="fpage-8" value={formAmb.nomeTemporario} onChange={e => setFormAmb(f => ({ ...f, nomeTemporario: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                       style={{ padding: '10px 14px' }} placeholder="Nome temporário ou descrição" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Idade Aproximada</label>
-                      <input type="number" min="0" max="120" value={formAmb.idadeAproximada}
+                      <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Idade Aproximada</label>
+                      <input id="fpage-9" type="number" min="0" max="120" value={formAmb.idadeAproximada}
                         onChange={e => setFormAmb(f => ({ ...f, idadeAproximada: e.target.value }))}
                         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                         style={{ padding: '10px 14px' }} placeholder="Ex: 65" />
@@ -812,8 +812,8 @@ export default function UrgenciaPage() {
                     </div>
                     {!formAmb.consciente && (
                       <div style={{ marginTop: '10px' }}>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Glasgow (3–15)</label>
-                        <input type="number" min="3" max="15" value={formAmb.glasgow}
+                        <label htmlFor="fpage-12" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Glasgow (3–15)</label>
+                        <input id="fpage-12" type="number" min="3" max="15" value={formAmb.glasgow}
                           onChange={e => setFormAmb(f => ({ ...f, glasgow: e.target.value }))}
                           className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                           style={{ padding: '10px 14px' }} placeholder="3-15" />
@@ -827,8 +827,8 @@ export default function UrgenciaPage() {
               {ambStep === 2 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
-                    <textarea value={formAmb.queixaPrincipal} onChange={e => setFormAmb(f => ({ ...f, queixaPrincipal: e.target.value }))}
+                    <label htmlFor="fpage-13" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
+                    <textarea id="fpage-13" value={formAmb.queixaPrincipal} onChange={e => setFormAmb(f => ({ ...f, queixaPrincipal: e.target.value }))}
                       rows={3} className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 resize-none transition"
                       style={{ padding: '10px 14px' }} placeholder="Ex: PCR recuperada, dor torácica, trauma..." maxLength={500} />
                   </div>
@@ -863,14 +863,14 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Condição Prévia</label>
-                    <input value={formAmb.condicaoPrevia} onChange={e => setFormAmb(f => ({ ...f, condicaoPrevia: e.target.value }))}
+                    <label htmlFor="fpage-16" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Condição Prévia</label>
+                    <input id="fpage-16" value={formAmb.condicaoPrevia} onChange={e => setFormAmb(f => ({ ...f, condicaoPrevia: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                       style={{ padding: '10px 14px' }} placeholder="Ex: HTA, DM, AC/FA..." maxLength={200} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ETA — {formAmb.etaMinutos} minutos</label>
-                    <input type="range" min={1} max={60} value={formAmb.etaMinutos}
+                    <label htmlFor="fpage-17" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ETA — {formAmb.etaMinutos} minutos</label>
+                    <input id="fpage-17" type="range" min={1} max={60} value={formAmb.etaMinutos}
                       onChange={e => setFormAmb(f => ({ ...f, etaMinutos: parseInt(e.target.value) }))}
                       className="w-full accent-amber-500" />
                   </div>
@@ -958,8 +958,8 @@ export default function UrgenciaPage() {
                         { key: 'vitalsFR', label: 'FR', placeholder: '16' },
                       ].map(({ key, label, placeholder }) => (
                         <div key={key}>
-                          <label className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</label>
-                          <input type="number" value={(formAmb as any)[key]}
+                          <label htmlFor="fpage-19" className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</label>
+                          <input id="fpage-19" type="number" value={(formAmb as any)[key]}
                             onChange={e => setFormAmb(f => ({ ...f, [key]: e.target.value }))}
                             className="w-full border border-slate-200 rounded-xl text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                             style={{ padding: '8px 4px' }} placeholder={placeholder} />
