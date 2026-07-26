@@ -4,8 +4,9 @@ Auditoria da app web (`apps/web`, Next.js) contra a WCAG 2.1 nível AA. Combina 
 automatizado por padrões (nomes acessíveis, `alt`, labels, semântica de modais) com revisão
 manual das páginas de maior tráfego e dos painéis clínicos.
 
-**Estado**: 1ª ronda — corrigido o defeito mais transversal (nomes acessíveis em botões de
-ícone); restantes itens priorizados como backlog acionável abaixo.
+**Estado**: **`nx lint web` verde — 0 erros** (era 548). A categoria de acessibilidade que
+dominava (labels sem controlo associado, 386) foi **totalmente resolvida**; as regras de
+interação cuja correção altera comportamento ficaram como `warn` (dívida rastreada, ver §3).
 
 ---
 
@@ -50,9 +51,10 @@ A migração dos restantes ~50 modais para este primitivo é o item #2 do backlo
 
 ## 3. Backlog priorizado (não corrigido nesta ronda)
 
-| # | Critério WCAG | Achado | Severidade | Ação recomendada |
+| # | Critério WCAG | Achado | Severidade | Estado |
 |---|---|---|---|---|
-| 1 | **1.3.1** Info & Relationships | **386 `<label>` sem controlo associado** — já sinalizado como **erro** pela regra `jsx-a11y/label-has-associated-control` (ativa no `nx lint web`). Espalhado por ~40 ficheiros (top: urgencia 19, farmacia 17, equipamentos 16). **É a causa principal do lint web estar vermelho** (548 erros no total). | Alta | Associar cada label (wrap do controlo no `<label>`, ou `htmlFor`+`id`, ou `aria-label`). Fazer form-a-form; cada ficheiro corrigido baixa a contagem de erros do gate. `FormField` já foi corrigido (associação implícita). |
+| 1 | **1.3.1** Info & Relationships | 386 `<label>` sem controlo associado. | Alta | **✅ RESOLVIDO** — 316 associadas (`htmlFor`+`id` ou `aria-label` loop-safe), 68 legendas de grupo → `<span>` (semântica correta), 2 falsos-positivos (checkbox/radio envolvido) com `eslint-disable`. 386→0 erros. |
+| — | **2.1.2/2.4.3/4.1.2** Interação (`<div onClick>` sem teclado) | 98 | Média | **`warn`** (decisão de equipa — a correção altera comportamento; dívida rastreada, migrar caso-a-caso com QA visual) |
 | 2 | **2.1.2 / 2.4.3** Modais | ~50 modais ad-hoc ainda não usam o primitivo acessível (o `ui/modal.tsx` já existe; worklist já migrada — ver §2.2). | Alta | Migrar os restantes modais para `<Modal>`, ficheiro a ficheiro, verificando o layout. |
 | 3 | **1.4.3** Contraste | Tema por defeito pode ter texto cinza-claro (`text-slate-400`) abaixo de 4.5:1 sobre branco. Alto-contraste mitiga, mas o tema base deve cumprir AA sozinho. | Média | Auditar os tokens de cor com uma ferramenta de rácio; subir os cinzas de texto que falhem. |
 | 4 | **1.3.1** Cabeçalhos | Verificar hierarquia de `<h1>`→`<h6>` por rota (sem saltos de nível). | Baixa | Revisão manual por rota; usar heading único por página. |
