@@ -249,6 +249,11 @@ export type NotificacaoInApp = $Result.DefaultSelection<Prisma.$NotificacaoInApp
  */
 export type Exame = $Result.DefaultSelection<Prisma.$ExamePayload>
 /**
+ * Model LaudoRadiologico
+ * 
+ */
+export type LaudoRadiologico = $Result.DefaultSelection<Prisma.$LaudoRadiologicoPayload>
+/**
  * Model FicheiroExame
  * 
  */
@@ -1761,6 +1766,16 @@ export class PrismaClient<
   get exame(): Prisma.ExameDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.laudoRadiologico`: Exposes CRUD operations for the **LaudoRadiologico** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LaudoRadiologicos
+    * const laudoRadiologicos = await prisma.laudoRadiologico.findMany()
+    * ```
+    */
+  get laudoRadiologico(): Prisma.LaudoRadiologicoDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.ficheiroExame`: Exposes CRUD operations for the **FicheiroExame** model.
     * Example usage:
     * ```ts
@@ -3140,6 +3155,7 @@ export namespace Prisma {
     DispositivoToken: 'DispositivoToken',
     NotificacaoInApp: 'NotificacaoInApp',
     Exame: 'Exame',
+    LaudoRadiologico: 'LaudoRadiologico',
     FicheiroExame: 'FicheiroExame',
     EpisodioUrgencia: 'EpisodioUrgencia',
     AtualizacaoTransporte: 'AtualizacaoTransporte',
@@ -3245,7 +3261,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "laudoRadiologico" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6724,6 +6740,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ExameCountArgs<ExtArgs>
             result: $Utils.Optional<ExameCountAggregateOutputType> | number
+          }
+        }
+      }
+      LaudoRadiologico: {
+        payload: Prisma.$LaudoRadiologicoPayload<ExtArgs>
+        fields: Prisma.LaudoRadiologicoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LaudoRadiologicoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LaudoRadiologicoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          findFirst: {
+            args: Prisma.LaudoRadiologicoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LaudoRadiologicoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          findMany: {
+            args: Prisma.LaudoRadiologicoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>[]
+          }
+          create: {
+            args: Prisma.LaudoRadiologicoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          createMany: {
+            args: Prisma.LaudoRadiologicoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LaudoRadiologicoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>[]
+          }
+          delete: {
+            args: Prisma.LaudoRadiologicoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          update: {
+            args: Prisma.LaudoRadiologicoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          deleteMany: {
+            args: Prisma.LaudoRadiologicoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LaudoRadiologicoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LaudoRadiologicoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>[]
+          }
+          upsert: {
+            args: Prisma.LaudoRadiologicoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LaudoRadiologicoPayload>
+          }
+          aggregate: {
+            args: Prisma.LaudoRadiologicoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLaudoRadiologico>
+          }
+          groupBy: {
+            args: Prisma.LaudoRadiologicoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LaudoRadiologicoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LaudoRadiologicoCountArgs<ExtArgs>
+            result: $Utils.Optional<LaudoRadiologicoCountAggregateOutputType> | number
           }
         }
       }
@@ -13542,6 +13632,7 @@ export namespace Prisma {
     dispositivoToken?: DispositivoTokenOmit
     notificacaoInApp?: NotificacaoInAppOmit
     exame?: ExameOmit
+    laudoRadiologico?: LaudoRadiologicoOmit
     ficheiroExame?: FicheiroExameOmit
     episodioUrgencia?: EpisodioUrgenciaOmit
     atualizacaoTransporte?: AtualizacaoTransporteOmit
@@ -74008,6 +74099,7 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     ficheiros?: boolean | Exame$ficheirosArgs<ExtArgs>
+    laudo?: boolean | Exame$laudoArgs<ExtArgs>
     _count?: boolean | ExameCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exame"]>
 
@@ -74062,6 +74154,7 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     ficheiros?: boolean | Exame$ficheirosArgs<ExtArgs>
+    laudo?: boolean | Exame$laudoArgs<ExtArgs>
     _count?: boolean | ExameCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ExameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -74079,6 +74172,7 @@ export namespace Prisma {
       doente: Prisma.$DoentePayload<ExtArgs>
       solicitadoPor: Prisma.$UtilizadorPayload<ExtArgs>
       ficheiros: Prisma.$FicheiroExamePayload<ExtArgs>[]
+      laudo: Prisma.$LaudoRadiologicoPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -74489,6 +74583,7 @@ export namespace Prisma {
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     solicitadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ficheiros<T extends Exame$ficheirosArgs<ExtArgs> = {}>(args?: Subset<T, Exame$ficheirosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FicheiroExamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    laudo<T extends Exame$laudoArgs<ExtArgs> = {}>(args?: Subset<T, Exame$laudoArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -74954,6 +75049,25 @@ export namespace Prisma {
   }
 
   /**
+   * Exame.laudo
+   */
+  export type Exame$laudoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    where?: LaudoRadiologicoWhereInput
+  }
+
+  /**
    * Exame without action
    */
   export type ExameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -74969,6 +75083,1121 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ExameInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LaudoRadiologico
+   */
+
+  export type AggregateLaudoRadiologico = {
+    _count: LaudoRadiologicoCountAggregateOutputType | null
+    _min: LaudoRadiologicoMinAggregateOutputType | null
+    _max: LaudoRadiologicoMaxAggregateOutputType | null
+  }
+
+  export type LaudoRadiologicoMinAggregateOutputType = {
+    id: string | null
+    exameId: string | null
+    radiologistaId: string | null
+    tecnica: string | null
+    achados: string | null
+    conclusao: string | null
+    estado: string | null
+    assinadoEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type LaudoRadiologicoMaxAggregateOutputType = {
+    id: string | null
+    exameId: string | null
+    radiologistaId: string | null
+    tecnica: string | null
+    achados: string | null
+    conclusao: string | null
+    estado: string | null
+    assinadoEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type LaudoRadiologicoCountAggregateOutputType = {
+    id: number
+    exameId: number
+    radiologistaId: number
+    tecnica: number
+    achados: number
+    conclusao: number
+    estado: number
+    assinadoEm: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type LaudoRadiologicoMinAggregateInputType = {
+    id?: true
+    exameId?: true
+    radiologistaId?: true
+    tecnica?: true
+    achados?: true
+    conclusao?: true
+    estado?: true
+    assinadoEm?: true
+    criadoEm?: true
+  }
+
+  export type LaudoRadiologicoMaxAggregateInputType = {
+    id?: true
+    exameId?: true
+    radiologistaId?: true
+    tecnica?: true
+    achados?: true
+    conclusao?: true
+    estado?: true
+    assinadoEm?: true
+    criadoEm?: true
+  }
+
+  export type LaudoRadiologicoCountAggregateInputType = {
+    id?: true
+    exameId?: true
+    radiologistaId?: true
+    tecnica?: true
+    achados?: true
+    conclusao?: true
+    estado?: true
+    assinadoEm?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type LaudoRadiologicoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LaudoRadiologico to aggregate.
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LaudoRadiologicos to fetch.
+     */
+    orderBy?: LaudoRadiologicoOrderByWithRelationInput | LaudoRadiologicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LaudoRadiologicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LaudoRadiologicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LaudoRadiologicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LaudoRadiologicos
+    **/
+    _count?: true | LaudoRadiologicoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LaudoRadiologicoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LaudoRadiologicoMaxAggregateInputType
+  }
+
+  export type GetLaudoRadiologicoAggregateType<T extends LaudoRadiologicoAggregateArgs> = {
+        [P in keyof T & keyof AggregateLaudoRadiologico]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLaudoRadiologico[P]>
+      : GetScalarType<T[P], AggregateLaudoRadiologico[P]>
+  }
+
+
+
+
+  export type LaudoRadiologicoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LaudoRadiologicoWhereInput
+    orderBy?: LaudoRadiologicoOrderByWithAggregationInput | LaudoRadiologicoOrderByWithAggregationInput[]
+    by: LaudoRadiologicoScalarFieldEnum[] | LaudoRadiologicoScalarFieldEnum
+    having?: LaudoRadiologicoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LaudoRadiologicoCountAggregateInputType | true
+    _min?: LaudoRadiologicoMinAggregateInputType
+    _max?: LaudoRadiologicoMaxAggregateInputType
+  }
+
+  export type LaudoRadiologicoGroupByOutputType = {
+    id: string
+    exameId: string
+    radiologistaId: string
+    tecnica: string | null
+    achados: string
+    conclusao: string
+    estado: string
+    assinadoEm: Date | null
+    criadoEm: Date
+    _count: LaudoRadiologicoCountAggregateOutputType | null
+    _min: LaudoRadiologicoMinAggregateOutputType | null
+    _max: LaudoRadiologicoMaxAggregateOutputType | null
+  }
+
+  type GetLaudoRadiologicoGroupByPayload<T extends LaudoRadiologicoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LaudoRadiologicoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LaudoRadiologicoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LaudoRadiologicoGroupByOutputType[P]>
+            : GetScalarType<T[P], LaudoRadiologicoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LaudoRadiologicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    exameId?: boolean
+    radiologistaId?: boolean
+    tecnica?: boolean
+    achados?: boolean
+    conclusao?: boolean
+    estado?: boolean
+    assinadoEm?: boolean
+    criadoEm?: boolean
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["laudoRadiologico"]>
+
+  export type LaudoRadiologicoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    exameId?: boolean
+    radiologistaId?: boolean
+    tecnica?: boolean
+    achados?: boolean
+    conclusao?: boolean
+    estado?: boolean
+    assinadoEm?: boolean
+    criadoEm?: boolean
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["laudoRadiologico"]>
+
+  export type LaudoRadiologicoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    exameId?: boolean
+    radiologistaId?: boolean
+    tecnica?: boolean
+    achados?: boolean
+    conclusao?: boolean
+    estado?: boolean
+    assinadoEm?: boolean
+    criadoEm?: boolean
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["laudoRadiologico"]>
+
+  export type LaudoRadiologicoSelectScalar = {
+    id?: boolean
+    exameId?: boolean
+    radiologistaId?: boolean
+    tecnica?: boolean
+    achados?: boolean
+    conclusao?: boolean
+    estado?: boolean
+    assinadoEm?: boolean
+    criadoEm?: boolean
+  }
+
+  export type LaudoRadiologicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "exameId" | "radiologistaId" | "tecnica" | "achados" | "conclusao" | "estado" | "assinadoEm" | "criadoEm", ExtArgs["result"]["laudoRadiologico"]>
+  export type LaudoRadiologicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }
+  export type LaudoRadiologicoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }
+  export type LaudoRadiologicoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exame?: boolean | ExameDefaultArgs<ExtArgs>
+  }
+
+  export type $LaudoRadiologicoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LaudoRadiologico"
+    objects: {
+      exame: Prisma.$ExamePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      exameId: string
+      radiologistaId: string
+      tecnica: string | null
+      achados: string
+      conclusao: string
+      estado: string
+      assinadoEm: Date | null
+      criadoEm: Date
+    }, ExtArgs["result"]["laudoRadiologico"]>
+    composites: {}
+  }
+
+  type LaudoRadiologicoGetPayload<S extends boolean | null | undefined | LaudoRadiologicoDefaultArgs> = $Result.GetResult<Prisma.$LaudoRadiologicoPayload, S>
+
+  type LaudoRadiologicoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LaudoRadiologicoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LaudoRadiologicoCountAggregateInputType | true
+    }
+
+  export interface LaudoRadiologicoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LaudoRadiologico'], meta: { name: 'LaudoRadiologico' } }
+    /**
+     * Find zero or one LaudoRadiologico that matches the filter.
+     * @param {LaudoRadiologicoFindUniqueArgs} args - Arguments to find a LaudoRadiologico
+     * @example
+     * // Get one LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LaudoRadiologicoFindUniqueArgs>(args: SelectSubset<T, LaudoRadiologicoFindUniqueArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LaudoRadiologico that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LaudoRadiologicoFindUniqueOrThrowArgs} args - Arguments to find a LaudoRadiologico
+     * @example
+     * // Get one LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LaudoRadiologicoFindUniqueOrThrowArgs>(args: SelectSubset<T, LaudoRadiologicoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LaudoRadiologico that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoFindFirstArgs} args - Arguments to find a LaudoRadiologico
+     * @example
+     * // Get one LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LaudoRadiologicoFindFirstArgs>(args?: SelectSubset<T, LaudoRadiologicoFindFirstArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LaudoRadiologico that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoFindFirstOrThrowArgs} args - Arguments to find a LaudoRadiologico
+     * @example
+     * // Get one LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LaudoRadiologicoFindFirstOrThrowArgs>(args?: SelectSubset<T, LaudoRadiologicoFindFirstOrThrowArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LaudoRadiologicos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LaudoRadiologicos
+     * const laudoRadiologicos = await prisma.laudoRadiologico.findMany()
+     * 
+     * // Get first 10 LaudoRadiologicos
+     * const laudoRadiologicos = await prisma.laudoRadiologico.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const laudoRadiologicoWithIdOnly = await prisma.laudoRadiologico.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LaudoRadiologicoFindManyArgs>(args?: SelectSubset<T, LaudoRadiologicoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LaudoRadiologico.
+     * @param {LaudoRadiologicoCreateArgs} args - Arguments to create a LaudoRadiologico.
+     * @example
+     * // Create one LaudoRadiologico
+     * const LaudoRadiologico = await prisma.laudoRadiologico.create({
+     *   data: {
+     *     // ... data to create a LaudoRadiologico
+     *   }
+     * })
+     * 
+     */
+    create<T extends LaudoRadiologicoCreateArgs>(args: SelectSubset<T, LaudoRadiologicoCreateArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LaudoRadiologicos.
+     * @param {LaudoRadiologicoCreateManyArgs} args - Arguments to create many LaudoRadiologicos.
+     * @example
+     * // Create many LaudoRadiologicos
+     * const laudoRadiologico = await prisma.laudoRadiologico.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LaudoRadiologicoCreateManyArgs>(args?: SelectSubset<T, LaudoRadiologicoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LaudoRadiologicos and returns the data saved in the database.
+     * @param {LaudoRadiologicoCreateManyAndReturnArgs} args - Arguments to create many LaudoRadiologicos.
+     * @example
+     * // Create many LaudoRadiologicos
+     * const laudoRadiologico = await prisma.laudoRadiologico.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LaudoRadiologicos and only return the `id`
+     * const laudoRadiologicoWithIdOnly = await prisma.laudoRadiologico.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LaudoRadiologicoCreateManyAndReturnArgs>(args?: SelectSubset<T, LaudoRadiologicoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LaudoRadiologico.
+     * @param {LaudoRadiologicoDeleteArgs} args - Arguments to delete one LaudoRadiologico.
+     * @example
+     * // Delete one LaudoRadiologico
+     * const LaudoRadiologico = await prisma.laudoRadiologico.delete({
+     *   where: {
+     *     // ... filter to delete one LaudoRadiologico
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LaudoRadiologicoDeleteArgs>(args: SelectSubset<T, LaudoRadiologicoDeleteArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LaudoRadiologico.
+     * @param {LaudoRadiologicoUpdateArgs} args - Arguments to update one LaudoRadiologico.
+     * @example
+     * // Update one LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LaudoRadiologicoUpdateArgs>(args: SelectSubset<T, LaudoRadiologicoUpdateArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LaudoRadiologicos.
+     * @param {LaudoRadiologicoDeleteManyArgs} args - Arguments to filter LaudoRadiologicos to delete.
+     * @example
+     * // Delete a few LaudoRadiologicos
+     * const { count } = await prisma.laudoRadiologico.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LaudoRadiologicoDeleteManyArgs>(args?: SelectSubset<T, LaudoRadiologicoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LaudoRadiologicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LaudoRadiologicos
+     * const laudoRadiologico = await prisma.laudoRadiologico.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LaudoRadiologicoUpdateManyArgs>(args: SelectSubset<T, LaudoRadiologicoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LaudoRadiologicos and returns the data updated in the database.
+     * @param {LaudoRadiologicoUpdateManyAndReturnArgs} args - Arguments to update many LaudoRadiologicos.
+     * @example
+     * // Update many LaudoRadiologicos
+     * const laudoRadiologico = await prisma.laudoRadiologico.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LaudoRadiologicos and only return the `id`
+     * const laudoRadiologicoWithIdOnly = await prisma.laudoRadiologico.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LaudoRadiologicoUpdateManyAndReturnArgs>(args: SelectSubset<T, LaudoRadiologicoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LaudoRadiologico.
+     * @param {LaudoRadiologicoUpsertArgs} args - Arguments to update or create a LaudoRadiologico.
+     * @example
+     * // Update or create a LaudoRadiologico
+     * const laudoRadiologico = await prisma.laudoRadiologico.upsert({
+     *   create: {
+     *     // ... data to create a LaudoRadiologico
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LaudoRadiologico we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LaudoRadiologicoUpsertArgs>(args: SelectSubset<T, LaudoRadiologicoUpsertArgs<ExtArgs>>): Prisma__LaudoRadiologicoClient<$Result.GetResult<Prisma.$LaudoRadiologicoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LaudoRadiologicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoCountArgs} args - Arguments to filter LaudoRadiologicos to count.
+     * @example
+     * // Count the number of LaudoRadiologicos
+     * const count = await prisma.laudoRadiologico.count({
+     *   where: {
+     *     // ... the filter for the LaudoRadiologicos we want to count
+     *   }
+     * })
+    **/
+    count<T extends LaudoRadiologicoCountArgs>(
+      args?: Subset<T, LaudoRadiologicoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LaudoRadiologicoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LaudoRadiologico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LaudoRadiologicoAggregateArgs>(args: Subset<T, LaudoRadiologicoAggregateArgs>): Prisma.PrismaPromise<GetLaudoRadiologicoAggregateType<T>>
+
+    /**
+     * Group by LaudoRadiologico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LaudoRadiologicoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LaudoRadiologicoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LaudoRadiologicoGroupByArgs['orderBy'] }
+        : { orderBy?: LaudoRadiologicoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LaudoRadiologicoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLaudoRadiologicoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LaudoRadiologico model
+   */
+  readonly fields: LaudoRadiologicoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LaudoRadiologico.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LaudoRadiologicoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    exame<T extends ExameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExameDefaultArgs<ExtArgs>>): Prisma__ExameClient<$Result.GetResult<Prisma.$ExamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LaudoRadiologico model
+   */
+  interface LaudoRadiologicoFieldRefs {
+    readonly id: FieldRef<"LaudoRadiologico", 'String'>
+    readonly exameId: FieldRef<"LaudoRadiologico", 'String'>
+    readonly radiologistaId: FieldRef<"LaudoRadiologico", 'String'>
+    readonly tecnica: FieldRef<"LaudoRadiologico", 'String'>
+    readonly achados: FieldRef<"LaudoRadiologico", 'String'>
+    readonly conclusao: FieldRef<"LaudoRadiologico", 'String'>
+    readonly estado: FieldRef<"LaudoRadiologico", 'String'>
+    readonly assinadoEm: FieldRef<"LaudoRadiologico", 'DateTime'>
+    readonly criadoEm: FieldRef<"LaudoRadiologico", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LaudoRadiologico findUnique
+   */
+  export type LaudoRadiologicoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter, which LaudoRadiologico to fetch.
+     */
+    where: LaudoRadiologicoWhereUniqueInput
+  }
+
+  /**
+   * LaudoRadiologico findUniqueOrThrow
+   */
+  export type LaudoRadiologicoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter, which LaudoRadiologico to fetch.
+     */
+    where: LaudoRadiologicoWhereUniqueInput
+  }
+
+  /**
+   * LaudoRadiologico findFirst
+   */
+  export type LaudoRadiologicoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter, which LaudoRadiologico to fetch.
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LaudoRadiologicos to fetch.
+     */
+    orderBy?: LaudoRadiologicoOrderByWithRelationInput | LaudoRadiologicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LaudoRadiologicos.
+     */
+    cursor?: LaudoRadiologicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LaudoRadiologicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LaudoRadiologicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LaudoRadiologicos.
+     */
+    distinct?: LaudoRadiologicoScalarFieldEnum | LaudoRadiologicoScalarFieldEnum[]
+  }
+
+  /**
+   * LaudoRadiologico findFirstOrThrow
+   */
+  export type LaudoRadiologicoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter, which LaudoRadiologico to fetch.
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LaudoRadiologicos to fetch.
+     */
+    orderBy?: LaudoRadiologicoOrderByWithRelationInput | LaudoRadiologicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LaudoRadiologicos.
+     */
+    cursor?: LaudoRadiologicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LaudoRadiologicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LaudoRadiologicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LaudoRadiologicos.
+     */
+    distinct?: LaudoRadiologicoScalarFieldEnum | LaudoRadiologicoScalarFieldEnum[]
+  }
+
+  /**
+   * LaudoRadiologico findMany
+   */
+  export type LaudoRadiologicoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter, which LaudoRadiologicos to fetch.
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LaudoRadiologicos to fetch.
+     */
+    orderBy?: LaudoRadiologicoOrderByWithRelationInput | LaudoRadiologicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LaudoRadiologicos.
+     */
+    cursor?: LaudoRadiologicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LaudoRadiologicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LaudoRadiologicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LaudoRadiologicos.
+     */
+    distinct?: LaudoRadiologicoScalarFieldEnum | LaudoRadiologicoScalarFieldEnum[]
+  }
+
+  /**
+   * LaudoRadiologico create
+   */
+  export type LaudoRadiologicoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LaudoRadiologico.
+     */
+    data: XOR<LaudoRadiologicoCreateInput, LaudoRadiologicoUncheckedCreateInput>
+  }
+
+  /**
+   * LaudoRadiologico createMany
+   */
+  export type LaudoRadiologicoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LaudoRadiologicos.
+     */
+    data: LaudoRadiologicoCreateManyInput | LaudoRadiologicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LaudoRadiologico createManyAndReturn
+   */
+  export type LaudoRadiologicoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * The data used to create many LaudoRadiologicos.
+     */
+    data: LaudoRadiologicoCreateManyInput | LaudoRadiologicoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LaudoRadiologico update
+   */
+  export type LaudoRadiologicoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LaudoRadiologico.
+     */
+    data: XOR<LaudoRadiologicoUpdateInput, LaudoRadiologicoUncheckedUpdateInput>
+    /**
+     * Choose, which LaudoRadiologico to update.
+     */
+    where: LaudoRadiologicoWhereUniqueInput
+  }
+
+  /**
+   * LaudoRadiologico updateMany
+   */
+  export type LaudoRadiologicoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LaudoRadiologicos.
+     */
+    data: XOR<LaudoRadiologicoUpdateManyMutationInput, LaudoRadiologicoUncheckedUpdateManyInput>
+    /**
+     * Filter which LaudoRadiologicos to update
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * Limit how many LaudoRadiologicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LaudoRadiologico updateManyAndReturn
+   */
+  export type LaudoRadiologicoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * The data used to update LaudoRadiologicos.
+     */
+    data: XOR<LaudoRadiologicoUpdateManyMutationInput, LaudoRadiologicoUncheckedUpdateManyInput>
+    /**
+     * Filter which LaudoRadiologicos to update
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * Limit how many LaudoRadiologicos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LaudoRadiologico upsert
+   */
+  export type LaudoRadiologicoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LaudoRadiologico to update in case it exists.
+     */
+    where: LaudoRadiologicoWhereUniqueInput
+    /**
+     * In case the LaudoRadiologico found by the `where` argument doesn't exist, create a new LaudoRadiologico with this data.
+     */
+    create: XOR<LaudoRadiologicoCreateInput, LaudoRadiologicoUncheckedCreateInput>
+    /**
+     * In case the LaudoRadiologico was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LaudoRadiologicoUpdateInput, LaudoRadiologicoUncheckedUpdateInput>
+  }
+
+  /**
+   * LaudoRadiologico delete
+   */
+  export type LaudoRadiologicoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
+    /**
+     * Filter which LaudoRadiologico to delete.
+     */
+    where: LaudoRadiologicoWhereUniqueInput
+  }
+
+  /**
+   * LaudoRadiologico deleteMany
+   */
+  export type LaudoRadiologicoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LaudoRadiologicos to delete
+     */
+    where?: LaudoRadiologicoWhereInput
+    /**
+     * Limit how many LaudoRadiologicos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LaudoRadiologico without action
+   */
+  export type LaudoRadiologicoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LaudoRadiologico
+     */
+    select?: LaudoRadiologicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LaudoRadiologico
+     */
+    omit?: LaudoRadiologicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaudoRadiologicoInclude<ExtArgs> | null
   }
 
 
@@ -179608,6 +180837,21 @@ export namespace Prisma {
   export type ExameScalarFieldEnum = (typeof ExameScalarFieldEnum)[keyof typeof ExameScalarFieldEnum]
 
 
+  export const LaudoRadiologicoScalarFieldEnum: {
+    id: 'id',
+    exameId: 'exameId',
+    radiologistaId: 'radiologistaId',
+    tecnica: 'tecnica',
+    achados: 'achados',
+    conclusao: 'conclusao',
+    estado: 'estado',
+    assinadoEm: 'assinadoEm',
+    criadoEm: 'criadoEm'
+  };
+
+  export type LaudoRadiologicoScalarFieldEnum = (typeof LaudoRadiologicoScalarFieldEnum)[keyof typeof LaudoRadiologicoScalarFieldEnum]
+
+
   export const FicheiroExameScalarFieldEnum: {
     id: 'id',
     exameId: 'exameId',
@@ -185893,6 +187137,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     ficheiros?: FicheiroExameListRelationFilter
+    laudo?: XOR<LaudoRadiologicoNullableScalarRelationFilter, LaudoRadiologicoWhereInput> | null
   }
 
   export type ExameOrderByWithRelationInput = {
@@ -185910,6 +187155,7 @@ export namespace Prisma {
     doente?: DoenteOrderByWithRelationInput
     solicitadoPor?: UtilizadorOrderByWithRelationInput
     ficheiros?: FicheiroExameOrderByRelationAggregateInput
+    laudo?: LaudoRadiologicoOrderByWithRelationInput
   }
 
   export type ExameWhereUniqueInput = Prisma.AtLeast<{
@@ -185930,6 +187176,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     ficheiros?: FicheiroExameListRelationFilter
+    laudo?: XOR<LaudoRadiologicoNullableScalarRelationFilter, LaudoRadiologicoWhereInput> | null
   }, "id">
 
   export type ExameOrderByWithAggregationInput = {
@@ -185964,6 +187211,81 @@ export namespace Prisma {
     dataResultado?: DateTimeNullableWithAggregatesFilter<"Exame"> | Date | string | null
     observacoes?: StringNullableWithAggregatesFilter<"Exame"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"Exame"> | Date | string
+  }
+
+  export type LaudoRadiologicoWhereInput = {
+    AND?: LaudoRadiologicoWhereInput | LaudoRadiologicoWhereInput[]
+    OR?: LaudoRadiologicoWhereInput[]
+    NOT?: LaudoRadiologicoWhereInput | LaudoRadiologicoWhereInput[]
+    id?: StringFilter<"LaudoRadiologico"> | string
+    exameId?: StringFilter<"LaudoRadiologico"> | string
+    radiologistaId?: StringFilter<"LaudoRadiologico"> | string
+    tecnica?: StringNullableFilter<"LaudoRadiologico"> | string | null
+    achados?: StringFilter<"LaudoRadiologico"> | string
+    conclusao?: StringFilter<"LaudoRadiologico"> | string
+    estado?: StringFilter<"LaudoRadiologico"> | string
+    assinadoEm?: DateTimeNullableFilter<"LaudoRadiologico"> | Date | string | null
+    criadoEm?: DateTimeFilter<"LaudoRadiologico"> | Date | string
+    exame?: XOR<ExameScalarRelationFilter, ExameWhereInput>
+  }
+
+  export type LaudoRadiologicoOrderByWithRelationInput = {
+    id?: SortOrder
+    exameId?: SortOrder
+    radiologistaId?: SortOrder
+    tecnica?: SortOrderInput | SortOrder
+    achados?: SortOrder
+    conclusao?: SortOrder
+    estado?: SortOrder
+    assinadoEm?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    exame?: ExameOrderByWithRelationInput
+  }
+
+  export type LaudoRadiologicoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    exameId?: string
+    AND?: LaudoRadiologicoWhereInput | LaudoRadiologicoWhereInput[]
+    OR?: LaudoRadiologicoWhereInput[]
+    NOT?: LaudoRadiologicoWhereInput | LaudoRadiologicoWhereInput[]
+    radiologistaId?: StringFilter<"LaudoRadiologico"> | string
+    tecnica?: StringNullableFilter<"LaudoRadiologico"> | string | null
+    achados?: StringFilter<"LaudoRadiologico"> | string
+    conclusao?: StringFilter<"LaudoRadiologico"> | string
+    estado?: StringFilter<"LaudoRadiologico"> | string
+    assinadoEm?: DateTimeNullableFilter<"LaudoRadiologico"> | Date | string | null
+    criadoEm?: DateTimeFilter<"LaudoRadiologico"> | Date | string
+    exame?: XOR<ExameScalarRelationFilter, ExameWhereInput>
+  }, "id" | "exameId">
+
+  export type LaudoRadiologicoOrderByWithAggregationInput = {
+    id?: SortOrder
+    exameId?: SortOrder
+    radiologistaId?: SortOrder
+    tecnica?: SortOrderInput | SortOrder
+    achados?: SortOrder
+    conclusao?: SortOrder
+    estado?: SortOrder
+    assinadoEm?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    _count?: LaudoRadiologicoCountOrderByAggregateInput
+    _max?: LaudoRadiologicoMaxOrderByAggregateInput
+    _min?: LaudoRadiologicoMinOrderByAggregateInput
+  }
+
+  export type LaudoRadiologicoScalarWhereWithAggregatesInput = {
+    AND?: LaudoRadiologicoScalarWhereWithAggregatesInput | LaudoRadiologicoScalarWhereWithAggregatesInput[]
+    OR?: LaudoRadiologicoScalarWhereWithAggregatesInput[]
+    NOT?: LaudoRadiologicoScalarWhereWithAggregatesInput | LaudoRadiologicoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    exameId?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    radiologistaId?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    tecnica?: StringNullableWithAggregatesFilter<"LaudoRadiologico"> | string | null
+    achados?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    conclusao?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    estado?: StringWithAggregatesFilter<"LaudoRadiologico"> | string
+    assinadoEm?: DateTimeNullableWithAggregatesFilter<"LaudoRadiologico"> | Date | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"LaudoRadiologico"> | Date | string
   }
 
   export type FicheiroExameWhereInput = {
@@ -198051,6 +199373,7 @@ export namespace Prisma {
     doente: DoenteCreateNestedOneWithoutExamesInput
     solicitadoPor: UtilizadorCreateNestedOneWithoutExamesSolicitadosInput
     ficheiros?: FicheiroExameCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoCreateNestedOneWithoutExameInput
   }
 
   export type ExameUncheckedCreateInput = {
@@ -198066,6 +199389,7 @@ export namespace Prisma {
     observacoes?: string | null
     criadoEm?: Date | string
     ficheiros?: FicheiroExameUncheckedCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoUncheckedCreateNestedOneWithoutExameInput
   }
 
   export type ExameUpdateInput = {
@@ -198081,6 +199405,7 @@ export namespace Prisma {
     doente?: DoenteUpdateOneRequiredWithoutExamesNestedInput
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutExamesSolicitadosNestedInput
     ficheiros?: FicheiroExameUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateInput = {
@@ -198096,6 +199421,7 @@ export namespace Prisma {
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     ficheiros?: FicheiroExameUncheckedUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUncheckedUpdateOneWithoutExameNestedInput
   }
 
   export type ExameCreateManyInput = {
@@ -198135,6 +199461,89 @@ export namespace Prisma {
     resultado?: NullableStringFieldUpdateOperationsInput | string | null
     dataResultado?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LaudoRadiologicoCreateInput = {
+    id?: string
+    radiologistaId: string
+    tecnica?: string | null
+    achados: string
+    conclusao: string
+    estado?: string
+    assinadoEm?: Date | string | null
+    criadoEm?: Date | string
+    exame: ExameCreateNestedOneWithoutLaudoInput
+  }
+
+  export type LaudoRadiologicoUncheckedCreateInput = {
+    id?: string
+    exameId: string
+    radiologistaId: string
+    tecnica?: string | null
+    achados: string
+    conclusao: string
+    estado?: string
+    assinadoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type LaudoRadiologicoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    exame?: ExameUpdateOneRequiredWithoutLaudoNestedInput
+  }
+
+  export type LaudoRadiologicoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exameId?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LaudoRadiologicoCreateManyInput = {
+    id?: string
+    exameId: string
+    radiologistaId: string
+    tecnica?: string | null
+    achados: string
+    conclusao: string
+    estado?: string
+    assinadoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type LaudoRadiologicoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LaudoRadiologicoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exameId?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -209593,6 +211002,11 @@ export namespace Prisma {
     none?: FicheiroExameWhereInput
   }
 
+  export type LaudoRadiologicoNullableScalarRelationFilter = {
+    is?: LaudoRadiologicoWhereInput | null
+    isNot?: LaudoRadiologicoWhereInput | null
+  }
+
   export type FicheiroExameOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -209662,6 +211076,42 @@ export namespace Prisma {
   export type ExameScalarRelationFilter = {
     is?: ExameWhereInput
     isNot?: ExameWhereInput
+  }
+
+  export type LaudoRadiologicoCountOrderByAggregateInput = {
+    id?: SortOrder
+    exameId?: SortOrder
+    radiologistaId?: SortOrder
+    tecnica?: SortOrder
+    achados?: SortOrder
+    conclusao?: SortOrder
+    estado?: SortOrder
+    assinadoEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type LaudoRadiologicoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    exameId?: SortOrder
+    radiologistaId?: SortOrder
+    tecnica?: SortOrder
+    achados?: SortOrder
+    conclusao?: SortOrder
+    estado?: SortOrder
+    assinadoEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type LaudoRadiologicoMinOrderByAggregateInput = {
+    id?: SortOrder
+    exameId?: SortOrder
+    radiologistaId?: SortOrder
+    tecnica?: SortOrder
+    achados?: SortOrder
+    conclusao?: SortOrder
+    estado?: SortOrder
+    assinadoEm?: SortOrder
+    criadoEm?: SortOrder
   }
 
   export type FicheiroExameCountOrderByAggregateInput = {
@@ -223401,11 +224851,23 @@ export namespace Prisma {
     connect?: FicheiroExameWhereUniqueInput | FicheiroExameWhereUniqueInput[]
   }
 
+  export type LaudoRadiologicoCreateNestedOneWithoutExameInput = {
+    create?: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+    connectOrCreate?: LaudoRadiologicoCreateOrConnectWithoutExameInput
+    connect?: LaudoRadiologicoWhereUniqueInput
+  }
+
   export type FicheiroExameUncheckedCreateNestedManyWithoutExameInput = {
     create?: XOR<FicheiroExameCreateWithoutExameInput, FicheiroExameUncheckedCreateWithoutExameInput> | FicheiroExameCreateWithoutExameInput[] | FicheiroExameUncheckedCreateWithoutExameInput[]
     connectOrCreate?: FicheiroExameCreateOrConnectWithoutExameInput | FicheiroExameCreateOrConnectWithoutExameInput[]
     createMany?: FicheiroExameCreateManyExameInputEnvelope
     connect?: FicheiroExameWhereUniqueInput | FicheiroExameWhereUniqueInput[]
+  }
+
+  export type LaudoRadiologicoUncheckedCreateNestedOneWithoutExameInput = {
+    create?: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+    connectOrCreate?: LaudoRadiologicoCreateOrConnectWithoutExameInput
+    connect?: LaudoRadiologicoWhereUniqueInput
   }
 
   export type EnumTipoExameFieldUpdateOperationsInput = {
@@ -223446,6 +224908,16 @@ export namespace Prisma {
     deleteMany?: FicheiroExameScalarWhereInput | FicheiroExameScalarWhereInput[]
   }
 
+  export type LaudoRadiologicoUpdateOneWithoutExameNestedInput = {
+    create?: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+    connectOrCreate?: LaudoRadiologicoCreateOrConnectWithoutExameInput
+    upsert?: LaudoRadiologicoUpsertWithoutExameInput
+    disconnect?: LaudoRadiologicoWhereInput | boolean
+    delete?: LaudoRadiologicoWhereInput | boolean
+    connect?: LaudoRadiologicoWhereUniqueInput
+    update?: XOR<XOR<LaudoRadiologicoUpdateToOneWithWhereWithoutExameInput, LaudoRadiologicoUpdateWithoutExameInput>, LaudoRadiologicoUncheckedUpdateWithoutExameInput>
+  }
+
   export type FicheiroExameUncheckedUpdateManyWithoutExameNestedInput = {
     create?: XOR<FicheiroExameCreateWithoutExameInput, FicheiroExameUncheckedCreateWithoutExameInput> | FicheiroExameCreateWithoutExameInput[] | FicheiroExameUncheckedCreateWithoutExameInput[]
     connectOrCreate?: FicheiroExameCreateOrConnectWithoutExameInput | FicheiroExameCreateOrConnectWithoutExameInput[]
@@ -223458,6 +224930,30 @@ export namespace Prisma {
     update?: FicheiroExameUpdateWithWhereUniqueWithoutExameInput | FicheiroExameUpdateWithWhereUniqueWithoutExameInput[]
     updateMany?: FicheiroExameUpdateManyWithWhereWithoutExameInput | FicheiroExameUpdateManyWithWhereWithoutExameInput[]
     deleteMany?: FicheiroExameScalarWhereInput | FicheiroExameScalarWhereInput[]
+  }
+
+  export type LaudoRadiologicoUncheckedUpdateOneWithoutExameNestedInput = {
+    create?: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+    connectOrCreate?: LaudoRadiologicoCreateOrConnectWithoutExameInput
+    upsert?: LaudoRadiologicoUpsertWithoutExameInput
+    disconnect?: LaudoRadiologicoWhereInput | boolean
+    delete?: LaudoRadiologicoWhereInput | boolean
+    connect?: LaudoRadiologicoWhereUniqueInput
+    update?: XOR<XOR<LaudoRadiologicoUpdateToOneWithWhereWithoutExameInput, LaudoRadiologicoUpdateWithoutExameInput>, LaudoRadiologicoUncheckedUpdateWithoutExameInput>
+  }
+
+  export type ExameCreateNestedOneWithoutLaudoInput = {
+    create?: XOR<ExameCreateWithoutLaudoInput, ExameUncheckedCreateWithoutLaudoInput>
+    connectOrCreate?: ExameCreateOrConnectWithoutLaudoInput
+    connect?: ExameWhereUniqueInput
+  }
+
+  export type ExameUpdateOneRequiredWithoutLaudoNestedInput = {
+    create?: XOR<ExameCreateWithoutLaudoInput, ExameUncheckedCreateWithoutLaudoInput>
+    connectOrCreate?: ExameCreateOrConnectWithoutLaudoInput
+    upsert?: ExameUpsertWithoutLaudoInput
+    connect?: ExameWhereUniqueInput
+    update?: XOR<XOR<ExameUpdateToOneWithWhereWithoutLaudoInput, ExameUpdateWithoutLaudoInput>, ExameUncheckedUpdateWithoutLaudoInput>
   }
 
   export type ExameCreateNestedOneWithoutFicheirosInput = {
@@ -228539,6 +230035,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutExamesInput
     ficheiros?: FicheiroExameCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoCreateNestedOneWithoutExameInput
   }
 
   export type ExameUncheckedCreateWithoutSolicitadoPorInput = {
@@ -228553,6 +230050,7 @@ export namespace Prisma {
     observacoes?: string | null
     criadoEm?: Date | string
     ficheiros?: FicheiroExameUncheckedCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoUncheckedCreateNestedOneWithoutExameInput
   }
 
   export type ExameCreateOrConnectWithoutSolicitadoPorInput = {
@@ -237430,6 +238928,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     solicitadoPor: UtilizadorCreateNestedOneWithoutExamesSolicitadosInput
     ficheiros?: FicheiroExameCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoCreateNestedOneWithoutExameInput
   }
 
   export type ExameUncheckedCreateWithoutDoenteInput = {
@@ -237444,6 +238943,7 @@ export namespace Prisma {
     observacoes?: string | null
     criadoEm?: Date | string
     ficheiros?: FicheiroExameUncheckedCreateNestedManyWithoutExameInput
+    laudo?: LaudoRadiologicoUncheckedCreateNestedOneWithoutExameInput
   }
 
   export type ExameCreateOrConnectWithoutDoenteInput = {
@@ -269655,6 +271155,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LaudoRadiologicoCreateWithoutExameInput = {
+    id?: string
+    radiologistaId: string
+    tecnica?: string | null
+    achados: string
+    conclusao: string
+    estado?: string
+    assinadoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type LaudoRadiologicoUncheckedCreateWithoutExameInput = {
+    id?: string
+    radiologistaId: string
+    tecnica?: string | null
+    achados: string
+    conclusao: string
+    estado?: string
+    assinadoEm?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type LaudoRadiologicoCreateOrConnectWithoutExameInput = {
+    where: LaudoRadiologicoWhereUniqueInput
+    create: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+  }
+
   export type DoenteUpsertWithoutExamesInput = {
     update: XOR<DoenteUpdateWithoutExamesInput, DoenteUncheckedUpdateWithoutExamesInput>
     create: XOR<DoenteCreateWithoutExamesInput, DoenteUncheckedCreateWithoutExamesInput>
@@ -270144,6 +271671,115 @@ export namespace Prisma {
     mimeType?: StringFilter<"FicheiroExame"> | string
   }
 
+  export type LaudoRadiologicoUpsertWithoutExameInput = {
+    update: XOR<LaudoRadiologicoUpdateWithoutExameInput, LaudoRadiologicoUncheckedUpdateWithoutExameInput>
+    create: XOR<LaudoRadiologicoCreateWithoutExameInput, LaudoRadiologicoUncheckedCreateWithoutExameInput>
+    where?: LaudoRadiologicoWhereInput
+  }
+
+  export type LaudoRadiologicoUpdateToOneWithWhereWithoutExameInput = {
+    where?: LaudoRadiologicoWhereInput
+    data: XOR<LaudoRadiologicoUpdateWithoutExameInput, LaudoRadiologicoUncheckedUpdateWithoutExameInput>
+  }
+
+  export type LaudoRadiologicoUpdateWithoutExameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LaudoRadiologicoUncheckedUpdateWithoutExameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    radiologistaId?: StringFieldUpdateOperationsInput | string
+    tecnica?: NullableStringFieldUpdateOperationsInput | string | null
+    achados?: StringFieldUpdateOperationsInput | string
+    conclusao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExameCreateWithoutLaudoInput = {
+    id?: string
+    tipo: $Enums.TipoExame
+    descricao: string
+    urgente?: boolean
+    estado?: $Enums.EstadoExame
+    resultado?: string | null
+    dataResultado?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutExamesInput
+    solicitadoPor: UtilizadorCreateNestedOneWithoutExamesSolicitadosInput
+    ficheiros?: FicheiroExameCreateNestedManyWithoutExameInput
+  }
+
+  export type ExameUncheckedCreateWithoutLaudoInput = {
+    id?: string
+    doenteId: string
+    solicitadoPorId: string
+    tipo: $Enums.TipoExame
+    descricao: string
+    urgente?: boolean
+    estado?: $Enums.EstadoExame
+    resultado?: string | null
+    dataResultado?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    ficheiros?: FicheiroExameUncheckedCreateNestedManyWithoutExameInput
+  }
+
+  export type ExameCreateOrConnectWithoutLaudoInput = {
+    where: ExameWhereUniqueInput
+    create: XOR<ExameCreateWithoutLaudoInput, ExameUncheckedCreateWithoutLaudoInput>
+  }
+
+  export type ExameUpsertWithoutLaudoInput = {
+    update: XOR<ExameUpdateWithoutLaudoInput, ExameUncheckedUpdateWithoutLaudoInput>
+    create: XOR<ExameCreateWithoutLaudoInput, ExameUncheckedCreateWithoutLaudoInput>
+    where?: ExameWhereInput
+  }
+
+  export type ExameUpdateToOneWithWhereWithoutLaudoInput = {
+    where?: ExameWhereInput
+    data: XOR<ExameUpdateWithoutLaudoInput, ExameUncheckedUpdateWithoutLaudoInput>
+  }
+
+  export type ExameUpdateWithoutLaudoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoExameFieldUpdateOperationsInput | $Enums.TipoExame
+    descricao?: StringFieldUpdateOperationsInput | string
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    estado?: EnumEstadoExameFieldUpdateOperationsInput | $Enums.EstadoExame
+    resultado?: NullableStringFieldUpdateOperationsInput | string | null
+    dataResultado?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutExamesNestedInput
+    solicitadoPor?: UtilizadorUpdateOneRequiredWithoutExamesSolicitadosNestedInput
+    ficheiros?: FicheiroExameUpdateManyWithoutExameNestedInput
+  }
+
+  export type ExameUncheckedUpdateWithoutLaudoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoExameFieldUpdateOperationsInput | $Enums.TipoExame
+    descricao?: StringFieldUpdateOperationsInput | string
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    estado?: EnumEstadoExameFieldUpdateOperationsInput | $Enums.EstadoExame
+    resultado?: NullableStringFieldUpdateOperationsInput | string | null
+    dataResultado?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    ficheiros?: FicheiroExameUncheckedUpdateManyWithoutExameNestedInput
+  }
+
   export type ExameCreateWithoutFicheirosInput = {
     id?: string
     tipo: $Enums.TipoExame
@@ -270156,6 +271792,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutExamesInput
     solicitadoPor: UtilizadorCreateNestedOneWithoutExamesSolicitadosInput
+    laudo?: LaudoRadiologicoCreateNestedOneWithoutExameInput
   }
 
   export type ExameUncheckedCreateWithoutFicheirosInput = {
@@ -270170,6 +271807,7 @@ export namespace Prisma {
     dataResultado?: Date | string | null
     observacoes?: string | null
     criadoEm?: Date | string
+    laudo?: LaudoRadiologicoUncheckedCreateNestedOneWithoutExameInput
   }
 
   export type ExameCreateOrConnectWithoutFicheirosInput = {
@@ -270200,6 +271838,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutExamesNestedInput
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutExamesSolicitadosNestedInput
+    laudo?: LaudoRadiologicoUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateWithoutFicheirosInput = {
@@ -270214,6 +271853,7 @@ export namespace Prisma {
     dataResultado?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    laudo?: LaudoRadiologicoUncheckedUpdateOneWithoutExameNestedInput
   }
 
   export type DoenteCreateWithoutEpisodiosUrgenciaInput = {
@@ -336055,6 +337695,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutExamesNestedInput
     ficheiros?: FicheiroExameUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateWithoutSolicitadoPorInput = {
@@ -336069,6 +337710,7 @@ export namespace Prisma {
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     ficheiros?: FicheiroExameUncheckedUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUncheckedUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateManyWithoutSolicitadoPorInput = {
@@ -341270,6 +342912,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutExamesSolicitadosNestedInput
     ficheiros?: FicheiroExameUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateWithoutDoenteInput = {
@@ -341284,6 +342927,7 @@ export namespace Prisma {
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     ficheiros?: FicheiroExameUncheckedUpdateManyWithoutExameNestedInput
+    laudo?: LaudoRadiologicoUncheckedUpdateOneWithoutExameNestedInput
   }
 
   export type ExameUncheckedUpdateManyWithoutDoenteInput = {

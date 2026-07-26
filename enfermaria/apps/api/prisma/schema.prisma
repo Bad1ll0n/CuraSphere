@@ -1265,10 +1265,26 @@ model Exame {
   criadoEm        DateTime    @default(now())
 
   ficheiros FicheiroExame[]
+  laudo     LaudoRadiologico?
 
   @@index([estado, urgente])
   @@index([doenteId, estado])
   @@map("exames")
+}
+
+model LaudoRadiologico {
+  id             String    @id @default(uuid())
+  exameId        String    @unique
+  exame          Exame     @relation(fields: [exameId], references: [id], onDelete: Cascade)
+  radiologistaId String
+  tecnica        String?
+  achados        String
+  conclusao      String
+  estado         String    @default("rascunho") // rascunho | assinado
+  assinadoEm     DateTime?
+  criadoEm       DateTime  @default(now())
+
+  @@map("laudos_radiologicos")
 }
 
 model FicheiroExame {

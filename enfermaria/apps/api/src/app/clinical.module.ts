@@ -7,6 +7,7 @@ import { PediatriaModule } from './pediatria/pediatria.module';
 import { MaternidadeModule } from './maternidade/maternidade.module';
 import { OncologiaModule } from './oncologia/oncologia.module';
 import { DialiseModule } from './dialise/dialise.module';
+import { RadiologiaModule } from './radiologia/radiologia.module';
 import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
@@ -64,6 +65,7 @@ const clinicalModules = [
   // Serviços Especializados
   ConsultasModule, InterconsultasModule, UrgenciaModule, BlocoModule,
   FisioterapiaModule, MaternidadeModule, OncologiaModule, DialiseModule,
+  RadiologiaModule,
   // Vigilância
   IacsModule,
   // Session 48

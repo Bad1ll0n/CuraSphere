@@ -705,6 +705,18 @@ exports.Prisma.ExameScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.LaudoRadiologicoScalarFieldEnum = {
+  id: 'id',
+  exameId: 'exameId',
+  radiologistaId: 'radiologistaId',
+  tecnica: 'tecnica',
+  achados: 'achados',
+  conclusao: 'conclusao',
+  estado: 'estado',
+  assinadoEm: 'assinadoEm',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.FicheiroExameScalarFieldEnum = {
   id: 'id',
   exameId: 'exameId',
@@ -2170,6 +2182,7 @@ exports.Prisma.ModelName = {
   DispositivoToken: 'DispositivoToken',
   NotificacaoInApp: 'NotificacaoInApp',
   Exame: 'Exame',
+  LaudoRadiologico: 'LaudoRadiologico',
   FicheiroExame: 'FicheiroExame',
   EpisodioUrgencia: 'EpisodioUrgencia',
   AtualizacaoTransporte: 'AtualizacaoTransporte',
