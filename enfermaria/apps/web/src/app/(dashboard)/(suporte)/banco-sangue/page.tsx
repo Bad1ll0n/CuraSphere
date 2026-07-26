@@ -146,32 +146,32 @@ export default function BancoSanguePage() {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '18px' }}>{t('modalTitle')}</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldUnit')}</label>
-                <input id="fpage-0" value={form.numeroUnidade} onChange={e => setForm(f => ({ ...f, numeroUnidade: e.target.value }))} placeholder="Ex: U240115-A" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldUnit')}</span>
+                <input aria-label={t('fieldUnit')} value={form.numeroUnidade} onChange={e => setForm(f => ({ ...f, numeroUnidade: e.target.value }))} placeholder="Ex: U240115-A" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldComponent')}</label>
-                <select id="fpage-1" value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldComponent')}</span>
+                <select aria-label={t('fieldComponent')} value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                   {Object.entries(COMPONENTES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldAbo')}</label>
-                  <select id="fpage-2" value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>{GRUPOS.map(g => <option key={g} value={g}>{g}</option>)}</select>
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldAbo')}</span>
+                  <select aria-label={t('fieldAbo')} value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>{GRUPOS.map(g => <option key={g} value={g}>{g}</option>)}</select>
                 </div>
                 <div>
-                  <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldRh')}</label>
-                  <select id="fpage-3" value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}><option value="positivo">+</option><option value="negativo">−</option></select>
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldRh')}</span>
+                  <select aria-label={t('fieldRh')} value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}><option value="positivo">+</option><option value="negativo">−</option></select>
                 </div>
                 <div>
-                  <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldVolume')}</label>
-                  <input id="fpage-4" type="number" value={form.volumeMl} onChange={e => setForm(f => ({ ...f, volumeMl: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldVolume')}</span>
+                  <input aria-label={t('fieldVolume')} type="number" value={form.volumeMl} onChange={e => setForm(f => ({ ...f, volumeMl: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
                 </div>
               </div>
               <div>
-                <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldExpiry')}</label>
-                <input id="fpage-5" type="date" value={form.dataValidade} onChange={e => setForm(f => ({ ...f, dataValidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldExpiry')}</span>
+                <input aria-label={t('fieldExpiry')} type="date" value={form.dataValidade} onChange={e => setForm(f => ({ ...f, dataValidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '22px' }}>

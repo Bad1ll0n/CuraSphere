@@ -473,8 +473,8 @@ export default function IacsPage() {
               { label: 'Data da Colheita *', key: 'dataColheita', type: 'date', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input id="fpage-1" type={type} value={(formCultura as any)[key]} onChange={e => setFormCultura(f => ({ ...f, [key]: e.target.value }))}
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                <input aria-label={label} type={type} value={(formCultura as any)[key]} onChange={e => setFormCultura(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
@@ -558,8 +558,8 @@ export default function IacsPage() {
               { label: 'Serviço *', key: 'servico', placeholder: 'Ex: Internamento, UCI, Cirurgia...' },
             ].map(({ label, key, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input id="fpage-8" type="text" value={(formSurto as any)[key]} onChange={e => setFormSurto(f => ({ ...f, [key]: e.target.value }))}
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                <input aria-label={label} type="text" value={(formSurto as any)[key]} onChange={e => setFormSurto(f => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" style={{ padding: '10px 14px' }} />
               </div>
             ))}

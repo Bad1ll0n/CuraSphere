@@ -269,8 +269,8 @@ export default function SalaEsperaPage() {
               { label: 'Motivo da Entrada *', key: 'motivo', type: 'text', placeholder: 'Ex: Dor abdominal, Febre alta...' },
             ] as { label: string; key: string; type: string; placeholder: string }[]).map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '12px' }}>
-                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-                <input id="fpage-0" type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+                <input aria-label={label} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
                 {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}
@@ -308,8 +308,8 @@ export default function SalaEsperaPage() {
                 { label: 'Telefone', key: 'telefone', placeholder: '912345678' },
               ] as { label: string; key: string; placeholder: string }[]).map(({ label, key, placeholder }) => (
                 <div key={key} style={{ marginBottom: '12px' }}>
-                  <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-                  <input id="fpage-3" type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+                  <input aria-label={label} type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                     className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
                     style={{ padding: '10px 14px' }} placeholder={placeholder} />
                   {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}

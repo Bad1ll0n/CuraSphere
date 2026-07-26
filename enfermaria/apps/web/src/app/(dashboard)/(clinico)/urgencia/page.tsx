@@ -958,8 +958,8 @@ export default function UrgenciaPage() {
                         { key: 'vitalsFR', label: 'FR', placeholder: '16' },
                       ].map(({ key, label, placeholder }) => (
                         <div key={key}>
-                          <label htmlFor="fpage-19" className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</label>
-                          <input id="fpage-19" type="number" value={(formAmb as any)[key]}
+                          <span className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</span>
+                          <input aria-label={label} type="number" value={(formAmb as any)[key]}
                             onChange={e => setFormAmb(f => ({ ...f, [key]: e.target.value }))}
                             className="w-full border border-slate-200 rounded-xl text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                             style={{ padding: '8px 4px' }} placeholder={placeholder} />

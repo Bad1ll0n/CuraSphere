@@ -596,8 +596,8 @@ export default function ConsultasPage() {
               { label: 'Diagnóstico', key: 'diagnostico', rows: 2, placeholder: 'Diagnóstico registado...' },
             ].map(({ label, key, rows, placeholder }) => (
               <div key={key} style={{ marginBottom: 14 }}>
-                <label htmlFor="fpage-7" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</label>
-                <textarea id="fpage-7"
+                <span style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</span>
+                <textarea aria-label={label}
                   value={(realizarForm as any)[key]}
                   onChange={e => setRealizarForm(f => ({ ...f, [key]: e.target.value }))}
                   rows={rows}

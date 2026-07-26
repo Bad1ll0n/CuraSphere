@@ -776,8 +776,8 @@ export default function DoenteDetalhe() {
                 { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                  <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input id="fpage-0"
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                  <input aria-label={label}
                     value={(fichaForm as any)[key] ?? ''}
                     onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
                     placeholder={placeholder}

@@ -195,8 +195,8 @@ export default function SistemasExternosPage() {
               { key: 'authConfig', label: 'Credenciais (JSON)', placeholder: '{"token": "Bearer xyz"}' },
             ].map(({ key, label, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input id="fpage-0"
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                <input aria-label={label}
                   value={(form as any)[key]}
                   onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder}

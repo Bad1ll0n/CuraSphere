@@ -159,8 +159,8 @@ export default function CatalogoPage() {
                 { label: 'Código ATC', key: 'codigoATC', placeholder: 'Ex: N02BE01' },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
-                  <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input id="fpage-0" type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                  <input aria-label={label} type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     style={{ padding: '10px 14px' }} placeholder={placeholder} />
                 </div>
