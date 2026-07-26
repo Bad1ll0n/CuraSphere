@@ -52,7 +52,7 @@ A migração dos restantes ~50 modais para este primitivo é o item #2 do backlo
 
 | # | Critério WCAG | Achado | Severidade | Ação recomendada |
 |---|---|---|---|---|
-| 1 | **1.3.1 / 4.1.2** Info & Relationships | ~192 `<input>` sem `aria-label`/`id`+`<label htmlFor>` associados programaticamente (heurística; muitos têm label visível mas não ligado). | Alta | Associar `<label htmlFor>` ou `aria-label` a cada campo. Priorizar formulários clínicos (medicação, sinais vitais, prescrição). |
+| 1 | **1.3.1** Info & Relationships | **386 `<label>` sem controlo associado** — já sinalizado como **erro** pela regra `jsx-a11y/label-has-associated-control` (ativa no `nx lint web`). Espalhado por ~40 ficheiros (top: urgencia 19, farmacia 17, equipamentos 16). **É a causa principal do lint web estar vermelho** (548 erros no total). | Alta | Associar cada label (wrap do controlo no `<label>`, ou `htmlFor`+`id`, ou `aria-label`). Fazer form-a-form; cada ficheiro corrigido baixa a contagem de erros do gate. `FormField` já foi corrigido (associação implícita). |
 | 2 | **2.1.2 / 2.4.3** Modais | ~50 modais ad-hoc ainda não usam o primitivo acessível (o `ui/modal.tsx` já existe; worklist já migrada — ver §2.2). | Alta | Migrar os restantes modais para `<Modal>`, ficheiro a ficheiro, verificando o layout. |
 | 3 | **1.4.3** Contraste | Tema por defeito pode ter texto cinza-claro (`text-slate-400`) abaixo de 4.5:1 sobre branco. Alto-contraste mitiga, mas o tema base deve cumprir AA sozinho. | Média | Auditar os tokens de cor com uma ferramenta de rácio; subir os cinzas de texto que falhem. |
 | 4 | **1.3.1** Cabeçalhos | Verificar hierarquia de `<h1>`→`<h6>` por rota (sem saltos de nível). | Baixa | Revisão manual por rota; usar heading único por página. |
