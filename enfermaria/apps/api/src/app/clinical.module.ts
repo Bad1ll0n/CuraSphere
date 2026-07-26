@@ -4,6 +4,7 @@ import { CamasModule } from './camas/camas.module';
 import { TarefasModule } from './tarefas/tarefas.module';
 import { SinaisVitaisModule } from './sinais-vitais/sinais-vitais.module';
 import { PediatriaModule } from './pediatria/pediatria.module';
+import { MaternidadeModule } from './maternidade/maternidade.module';
 import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
@@ -60,7 +61,7 @@ const clinicalModules = [
   ProtocolosModule, DietasModule,
   // Serviços Especializados
   ConsultasModule, InterconsultasModule, UrgenciaModule, BlocoModule,
-  FisioterapiaModule,
+  FisioterapiaModule, MaternidadeModule,
   // Vigilância
   IacsModule,
   // Session 48

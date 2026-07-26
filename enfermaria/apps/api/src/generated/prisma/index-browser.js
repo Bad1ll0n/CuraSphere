@@ -1760,6 +1760,45 @@ exports.Prisma.SsoProviderScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.GravidezScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  dataUltimaMenstruacao: 'dataUltimaMenstruacao',
+  dataPrevistaParto: 'dataPrevistaParto',
+  gravida: 'gravida',
+  para: 'para',
+  grupoSanguineo: 'grupoSanguineo',
+  fatoresRisco: 'fatoresRisco',
+  estado: 'estado',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.RegistoPartogramaScalarFieldEnum = {
+  id: 'id',
+  gravidezId: 'gravidezId',
+  momento: 'momento',
+  dilatacaoCm: 'dilatacaoCm',
+  fcFetal: 'fcFetal',
+  contracoes10min: 'contracoes10min',
+  descidaApresentacao: 'descidaApresentacao',
+  notas: 'notas',
+  registadoPorId: 'registadoPorId'
+};
+
+exports.Prisma.PartoScalarFieldEnum = {
+  id: 'id',
+  gravidezId: 'gravidezId',
+  dataHora: 'dataHora',
+  tipo: 'tipo',
+  complicacoes: 'complicacoes',
+  apgar1: 'apgar1',
+  apgar5: 'apgar5',
+  pesoRN: 'pesoRN',
+  sexoRN: 'sexoRN',
+  registadoPorId: 'registadoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2168,7 +2207,10 @@ exports.Prisma.ModelName = {
   WellbeingSurvey: 'WellbeingSurvey',
   TransferenciaExterna: 'TransferenciaExterna',
   RegraClinica: 'RegraClinica',
-  SsoProvider: 'SsoProvider'
+  SsoProvider: 'SsoProvider',
+  Gravidez: 'Gravidez',
+  RegistoPartograma: 'RegistoPartograma',
+  Parto: 'Parto'
 };
 
 /**

@@ -330,6 +330,7 @@ model Doente {
   pedidosTransfusao       PedidoTransfusao[]
   registosTransfusao      RegistoTransfusao[]
   reacoesTransfusionais   ReacaoTransfusional[]
+  gravidezes              Gravidez[]
 
   @@index([tenantId, estado])
   @@index([ativo])
@@ -3066,3 +3067,57 @@ model SsoProvider {
   @@map("sso_providers")
 }
 
+
+// ─── Maternidade / Obstetrícia ──────────────────────────────────────────────
+
+model Gravidez {
+  id                    String   @id @default(uuid())
+  doenteId              String
+  doente                Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  dataUltimaMenstruacao DateTime? // DUM
+  dataPrevistaParto     DateTime? // DPP (calculada da DUM se não indicada)
+  gravida               Int? // G — nº de gestações
+  para                  Int? // P — nº de partos
+  grupoSanguineo        String?
+  fatoresRisco          String?
+  estado                String   @default("ativa") // ativa | concluida | interrompida
+  criadoPorId           String
+  criadoEm              DateTime @default(now())
+  registosPartograma    RegistoPartograma[]
+  parto                 Parto?
+
+  @@index([doenteId, estado])
+  @@map("gravidezes")
+}
+
+model RegistoPartograma {
+  id                  String   @id @default(uuid())
+  gravidezId          String
+  gravidez            Gravidez @relation(fields: [gravidezId], references: [id], onDelete: Cascade)
+  momento             DateTime @default(now())
+  dilatacaoCm         Int? // 0-10
+  fcFetal             Int? // bpm
+  contracoes10min     Int? // contrações por 10 min
+  descidaApresentacao Int? // estação -3..+3
+  notas               String?
+  registadoPorId      String
+
+  @@index([gravidezId, momento])
+  @@map("registos_partograma")
+}
+
+model Parto {
+  id             String   @id @default(uuid())
+  gravidezId     String   @unique
+  gravidez       Gravidez @relation(fields: [gravidezId], references: [id], onDelete: Cascade)
+  dataHora       DateTime @default(now())
+  tipo           String // eutocico | cesariana | ventosa | forceps
+  complicacoes   String?
+  apgar1         Int? // 0-10
+  apgar5         Int? // 0-10
+  pesoRN         Float? // peso do recém-nascido (kg)
+  sexoRN         String?
+  registadoPorId String
+
+  @@map("partos")
+}

@@ -668,6 +668,21 @@ export type RegraClinica = $Result.DefaultSelection<Prisma.$RegraClinicaPayload>
  * 
  */
 export type SsoProvider = $Result.DefaultSelection<Prisma.$SsoProviderPayload>
+/**
+ * Model Gravidez
+ * 
+ */
+export type Gravidez = $Result.DefaultSelection<Prisma.$GravidezPayload>
+/**
+ * Model RegistoPartograma
+ * 
+ */
+export type RegistoPartograma = $Result.DefaultSelection<Prisma.$RegistoPartogramaPayload>
+/**
+ * Model Parto
+ * 
+ */
+export type Parto = $Result.DefaultSelection<Prisma.$PartoPayload>
 
 /**
  * Enums
@@ -2569,6 +2584,36 @@ export class PrismaClient<
     * ```
     */
   get ssoProvider(): Prisma.SsoProviderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.gravidez`: Exposes CRUD operations for the **Gravidez** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Gravidezs
+    * const gravidezs = await prisma.gravidez.findMany()
+    * ```
+    */
+  get gravidez(): Prisma.GravidezDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.registoPartograma`: Exposes CRUD operations for the **RegistoPartograma** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RegistoPartogramas
+    * const registoPartogramas = await prisma.registoPartograma.findMany()
+    * ```
+    */
+  get registoPartograma(): Prisma.RegistoPartogramaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.parto`: Exposes CRUD operations for the **Parto** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Partos
+    * const partos = await prisma.parto.findMany()
+    * ```
+    */
+  get parto(): Prisma.PartoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -3133,7 +3178,10 @@ export namespace Prisma {
     WellbeingSurvey: 'WellbeingSurvey',
     TransferenciaExterna: 'TransferenciaExterna',
     RegraClinica: 'RegraClinica',
-    SsoProvider: 'SsoProvider'
+    SsoProvider: 'SsoProvider',
+    Gravidez: 'Gravidez',
+    RegistoPartograma: 'RegistoPartograma',
+    Parto: 'Parto'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -3149,7 +3197,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -12847,6 +12895,228 @@ export namespace Prisma {
           }
         }
       }
+      Gravidez: {
+        payload: Prisma.$GravidezPayload<ExtArgs>
+        fields: Prisma.GravidezFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GravidezFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GravidezFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          findFirst: {
+            args: Prisma.GravidezFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GravidezFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          findMany: {
+            args: Prisma.GravidezFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>[]
+          }
+          create: {
+            args: Prisma.GravidezCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          createMany: {
+            args: Prisma.GravidezCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GravidezCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>[]
+          }
+          delete: {
+            args: Prisma.GravidezDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          update: {
+            args: Prisma.GravidezUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          deleteMany: {
+            args: Prisma.GravidezDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GravidezUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GravidezUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>[]
+          }
+          upsert: {
+            args: Prisma.GravidezUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GravidezPayload>
+          }
+          aggregate: {
+            args: Prisma.GravidezAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGravidez>
+          }
+          groupBy: {
+            args: Prisma.GravidezGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GravidezGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GravidezCountArgs<ExtArgs>
+            result: $Utils.Optional<GravidezCountAggregateOutputType> | number
+          }
+        }
+      }
+      RegistoPartograma: {
+        payload: Prisma.$RegistoPartogramaPayload<ExtArgs>
+        fields: Prisma.RegistoPartogramaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RegistoPartogramaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RegistoPartogramaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          findFirst: {
+            args: Prisma.RegistoPartogramaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RegistoPartogramaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          findMany: {
+            args: Prisma.RegistoPartogramaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>[]
+          }
+          create: {
+            args: Prisma.RegistoPartogramaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          createMany: {
+            args: Prisma.RegistoPartogramaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RegistoPartogramaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>[]
+          }
+          delete: {
+            args: Prisma.RegistoPartogramaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          update: {
+            args: Prisma.RegistoPartogramaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          deleteMany: {
+            args: Prisma.RegistoPartogramaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RegistoPartogramaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RegistoPartogramaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>[]
+          }
+          upsert: {
+            args: Prisma.RegistoPartogramaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegistoPartogramaPayload>
+          }
+          aggregate: {
+            args: Prisma.RegistoPartogramaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRegistoPartograma>
+          }
+          groupBy: {
+            args: Prisma.RegistoPartogramaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RegistoPartogramaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RegistoPartogramaCountArgs<ExtArgs>
+            result: $Utils.Optional<RegistoPartogramaCountAggregateOutputType> | number
+          }
+        }
+      }
+      Parto: {
+        payload: Prisma.$PartoPayload<ExtArgs>
+        fields: Prisma.PartoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PartoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PartoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          findFirst: {
+            args: Prisma.PartoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PartoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          findMany: {
+            args: Prisma.PartoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>[]
+          }
+          create: {
+            args: Prisma.PartoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          createMany: {
+            args: Prisma.PartoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PartoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>[]
+          }
+          delete: {
+            args: Prisma.PartoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          update: {
+            args: Prisma.PartoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          deleteMany: {
+            args: Prisma.PartoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PartoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PartoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>[]
+          }
+          upsert: {
+            args: Prisma.PartoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartoPayload>
+          }
+          aggregate: {
+            args: Prisma.PartoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateParto>
+          }
+          groupBy: {
+            args: Prisma.PartoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PartoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PartoCountArgs<ExtArgs>
+            result: $Utils.Optional<PartoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -13086,6 +13356,9 @@ export namespace Prisma {
     transferenciaExterna?: TransferenciaExternaOmit
     regraClinica?: RegraClinicaOmit
     ssoProvider?: SsoProviderOmit
+    gravidez?: GravidezOmit
+    registoPartograma?: RegistoPartogramaOmit
+    parto?: PartoOmit
   }
 
   /* Types for Logging */
@@ -14330,6 +14603,7 @@ export namespace Prisma {
     pedidosTransfusao: number
     registosTransfusao: number
     reacoesTransfusionais: number
+    gravidezes: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14382,6 +14656,7 @@ export namespace Prisma {
     pedidosTransfusao?: boolean | DoenteCountOutputTypeCountPedidosTransfusaoArgs
     registosTransfusao?: boolean | DoenteCountOutputTypeCountRegistosTransfusaoArgs
     reacoesTransfusionais?: boolean | DoenteCountOutputTypeCountReacoesTransfusionaisArgs
+    gravidezes?: boolean | DoenteCountOutputTypeCountGravidezesArgs
   }
 
   // Custom InputTypes
@@ -14736,6 +15011,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountReacoesTransfusionaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReacaoTransfusionalWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountGravidezesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GravidezWhereInput
   }
 
 
@@ -15495,6 +15777,37 @@ export namespace Prisma {
    */
   export type TemplatePROCountOutputTypeCountRegistosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RegistoPROWhereInput
+  }
+
+
+  /**
+   * Count Type GravidezCountOutputType
+   */
+
+  export type GravidezCountOutputType = {
+    registosPartograma: number
+  }
+
+  export type GravidezCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registosPartograma?: boolean | GravidezCountOutputTypeCountRegistosPartogramaArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GravidezCountOutputType without action
+   */
+  export type GravidezCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GravidezCountOutputType
+     */
+    select?: GravidezCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GravidezCountOutputType without action
+   */
+  export type GravidezCountOutputTypeCountRegistosPartogramaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegistoPartogramaWhereInput
   }
 
 
@@ -23857,6 +24170,7 @@ export namespace Prisma {
     pedidosTransfusao?: boolean | Doente$pedidosTransfusaoArgs<ExtArgs>
     registosTransfusao?: boolean | Doente$registosTransfusaoArgs<ExtArgs>
     reacoesTransfusionais?: boolean | Doente$reacoesTransfusionaisArgs<ExtArgs>
+    gravidezes?: boolean | Doente$gravidezesArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -23994,6 +24308,7 @@ export namespace Prisma {
     pedidosTransfusao?: boolean | Doente$pedidosTransfusaoArgs<ExtArgs>
     registosTransfusao?: boolean | Doente$registosTransfusaoArgs<ExtArgs>
     reacoesTransfusionais?: boolean | Doente$reacoesTransfusionaisArgs<ExtArgs>
+    gravidezes?: boolean | Doente$gravidezesArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24064,6 +24379,7 @@ export namespace Prisma {
       pedidosTransfusao: Prisma.$PedidoTransfusaoPayload<ExtArgs>[]
       registosTransfusao: Prisma.$RegistoTransfusaoPayload<ExtArgs>[]
       reacoesTransfusionais: Prisma.$ReacaoTransfusionalPayload<ExtArgs>[]
+      gravidezes: Prisma.$GravidezPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -24537,6 +24853,7 @@ export namespace Prisma {
     pedidosTransfusao<T extends Doente$pedidosTransfusaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$pedidosTransfusaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTransfusaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     registosTransfusao<T extends Doente$registosTransfusaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$registosTransfusaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoTransfusaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reacoesTransfusionais<T extends Doente$reacoesTransfusionaisArgs<ExtArgs> = {}>(args?: Subset<T, Doente$reacoesTransfusionaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReacaoTransfusionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    gravidezes<T extends Doente$gravidezesArgs<ExtArgs> = {}>(args?: Subset<T, Doente$gravidezesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26294,6 +26611,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReacaoTransfusionalScalarFieldEnum | ReacaoTransfusionalScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.gravidezes
+   */
+  export type Doente$gravidezesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    where?: GravidezWhereInput
+    orderBy?: GravidezOrderByWithRelationInput | GravidezOrderByWithRelationInput[]
+    cursor?: GravidezWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GravidezScalarFieldEnum | GravidezScalarFieldEnum[]
   }
 
   /**
@@ -170936,6 +171277,3569 @@ export namespace Prisma {
 
 
   /**
+   * Model Gravidez
+   */
+
+  export type AggregateGravidez = {
+    _count: GravidezCountAggregateOutputType | null
+    _avg: GravidezAvgAggregateOutputType | null
+    _sum: GravidezSumAggregateOutputType | null
+    _min: GravidezMinAggregateOutputType | null
+    _max: GravidezMaxAggregateOutputType | null
+  }
+
+  export type GravidezAvgAggregateOutputType = {
+    gravida: number | null
+    para: number | null
+  }
+
+  export type GravidezSumAggregateOutputType = {
+    gravida: number | null
+    para: number | null
+  }
+
+  export type GravidezMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    dataUltimaMenstruacao: Date | null
+    dataPrevistaParto: Date | null
+    gravida: number | null
+    para: number | null
+    grupoSanguineo: string | null
+    fatoresRisco: string | null
+    estado: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type GravidezMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    dataUltimaMenstruacao: Date | null
+    dataPrevistaParto: Date | null
+    gravida: number | null
+    para: number | null
+    grupoSanguineo: string | null
+    fatoresRisco: string | null
+    estado: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type GravidezCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    dataUltimaMenstruacao: number
+    dataPrevistaParto: number
+    gravida: number
+    para: number
+    grupoSanguineo: number
+    fatoresRisco: number
+    estado: number
+    criadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type GravidezAvgAggregateInputType = {
+    gravida?: true
+    para?: true
+  }
+
+  export type GravidezSumAggregateInputType = {
+    gravida?: true
+    para?: true
+  }
+
+  export type GravidezMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataUltimaMenstruacao?: true
+    dataPrevistaParto?: true
+    gravida?: true
+    para?: true
+    grupoSanguineo?: true
+    fatoresRisco?: true
+    estado?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type GravidezMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataUltimaMenstruacao?: true
+    dataPrevistaParto?: true
+    gravida?: true
+    para?: true
+    grupoSanguineo?: true
+    fatoresRisco?: true
+    estado?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type GravidezCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataUltimaMenstruacao?: true
+    dataPrevistaParto?: true
+    gravida?: true
+    para?: true
+    grupoSanguineo?: true
+    fatoresRisco?: true
+    estado?: true
+    criadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type GravidezAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Gravidez to aggregate.
+     */
+    where?: GravidezWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Gravidezs to fetch.
+     */
+    orderBy?: GravidezOrderByWithRelationInput | GravidezOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GravidezWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Gravidezs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Gravidezs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Gravidezs
+    **/
+    _count?: true | GravidezCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GravidezAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GravidezSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GravidezMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GravidezMaxAggregateInputType
+  }
+
+  export type GetGravidezAggregateType<T extends GravidezAggregateArgs> = {
+        [P in keyof T & keyof AggregateGravidez]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGravidez[P]>
+      : GetScalarType<T[P], AggregateGravidez[P]>
+  }
+
+
+
+
+  export type GravidezGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GravidezWhereInput
+    orderBy?: GravidezOrderByWithAggregationInput | GravidezOrderByWithAggregationInput[]
+    by: GravidezScalarFieldEnum[] | GravidezScalarFieldEnum
+    having?: GravidezScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GravidezCountAggregateInputType | true
+    _avg?: GravidezAvgAggregateInputType
+    _sum?: GravidezSumAggregateInputType
+    _min?: GravidezMinAggregateInputType
+    _max?: GravidezMaxAggregateInputType
+  }
+
+  export type GravidezGroupByOutputType = {
+    id: string
+    doenteId: string
+    dataUltimaMenstruacao: Date | null
+    dataPrevistaParto: Date | null
+    gravida: number | null
+    para: number | null
+    grupoSanguineo: string | null
+    fatoresRisco: string | null
+    estado: string
+    criadoPorId: string
+    criadoEm: Date
+    _count: GravidezCountAggregateOutputType | null
+    _avg: GravidezAvgAggregateOutputType | null
+    _sum: GravidezSumAggregateOutputType | null
+    _min: GravidezMinAggregateOutputType | null
+    _max: GravidezMaxAggregateOutputType | null
+  }
+
+  type GetGravidezGroupByPayload<T extends GravidezGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GravidezGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GravidezGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GravidezGroupByOutputType[P]>
+            : GetScalarType<T[P], GravidezGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GravidezSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataUltimaMenstruacao?: boolean
+    dataPrevistaParto?: boolean
+    gravida?: boolean
+    para?: boolean
+    grupoSanguineo?: boolean
+    fatoresRisco?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registosPartograma?: boolean | Gravidez$registosPartogramaArgs<ExtArgs>
+    parto?: boolean | Gravidez$partoArgs<ExtArgs>
+    _count?: boolean | GravidezCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gravidez"]>
+
+  export type GravidezSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataUltimaMenstruacao?: boolean
+    dataPrevistaParto?: boolean
+    gravida?: boolean
+    para?: boolean
+    grupoSanguineo?: boolean
+    fatoresRisco?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gravidez"]>
+
+  export type GravidezSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataUltimaMenstruacao?: boolean
+    dataPrevistaParto?: boolean
+    gravida?: boolean
+    para?: boolean
+    grupoSanguineo?: boolean
+    fatoresRisco?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gravidez"]>
+
+  export type GravidezSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    dataUltimaMenstruacao?: boolean
+    dataPrevistaParto?: boolean
+    gravida?: boolean
+    para?: boolean
+    grupoSanguineo?: boolean
+    fatoresRisco?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type GravidezOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "dataUltimaMenstruacao" | "dataPrevistaParto" | "gravida" | "para" | "grupoSanguineo" | "fatoresRisco" | "estado" | "criadoPorId" | "criadoEm", ExtArgs["result"]["gravidez"]>
+  export type GravidezInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registosPartograma?: boolean | Gravidez$registosPartogramaArgs<ExtArgs>
+    parto?: boolean | Gravidez$partoArgs<ExtArgs>
+    _count?: boolean | GravidezCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GravidezIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type GravidezIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+
+  export type $GravidezPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Gravidez"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      registosPartograma: Prisma.$RegistoPartogramaPayload<ExtArgs>[]
+      parto: Prisma.$PartoPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      dataUltimaMenstruacao: Date | null
+      dataPrevistaParto: Date | null
+      gravida: number | null
+      para: number | null
+      grupoSanguineo: string | null
+      fatoresRisco: string | null
+      estado: string
+      criadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["gravidez"]>
+    composites: {}
+  }
+
+  type GravidezGetPayload<S extends boolean | null | undefined | GravidezDefaultArgs> = $Result.GetResult<Prisma.$GravidezPayload, S>
+
+  type GravidezCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GravidezFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GravidezCountAggregateInputType | true
+    }
+
+  export interface GravidezDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Gravidez'], meta: { name: 'Gravidez' } }
+    /**
+     * Find zero or one Gravidez that matches the filter.
+     * @param {GravidezFindUniqueArgs} args - Arguments to find a Gravidez
+     * @example
+     * // Get one Gravidez
+     * const gravidez = await prisma.gravidez.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GravidezFindUniqueArgs>(args: SelectSubset<T, GravidezFindUniqueArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Gravidez that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GravidezFindUniqueOrThrowArgs} args - Arguments to find a Gravidez
+     * @example
+     * // Get one Gravidez
+     * const gravidez = await prisma.gravidez.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GravidezFindUniqueOrThrowArgs>(args: SelectSubset<T, GravidezFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Gravidez that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezFindFirstArgs} args - Arguments to find a Gravidez
+     * @example
+     * // Get one Gravidez
+     * const gravidez = await prisma.gravidez.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GravidezFindFirstArgs>(args?: SelectSubset<T, GravidezFindFirstArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Gravidez that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezFindFirstOrThrowArgs} args - Arguments to find a Gravidez
+     * @example
+     * // Get one Gravidez
+     * const gravidez = await prisma.gravidez.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GravidezFindFirstOrThrowArgs>(args?: SelectSubset<T, GravidezFindFirstOrThrowArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Gravidezs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Gravidezs
+     * const gravidezs = await prisma.gravidez.findMany()
+     * 
+     * // Get first 10 Gravidezs
+     * const gravidezs = await prisma.gravidez.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const gravidezWithIdOnly = await prisma.gravidez.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GravidezFindManyArgs>(args?: SelectSubset<T, GravidezFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Gravidez.
+     * @param {GravidezCreateArgs} args - Arguments to create a Gravidez.
+     * @example
+     * // Create one Gravidez
+     * const Gravidez = await prisma.gravidez.create({
+     *   data: {
+     *     // ... data to create a Gravidez
+     *   }
+     * })
+     * 
+     */
+    create<T extends GravidezCreateArgs>(args: SelectSubset<T, GravidezCreateArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Gravidezs.
+     * @param {GravidezCreateManyArgs} args - Arguments to create many Gravidezs.
+     * @example
+     * // Create many Gravidezs
+     * const gravidez = await prisma.gravidez.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GravidezCreateManyArgs>(args?: SelectSubset<T, GravidezCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Gravidezs and returns the data saved in the database.
+     * @param {GravidezCreateManyAndReturnArgs} args - Arguments to create many Gravidezs.
+     * @example
+     * // Create many Gravidezs
+     * const gravidez = await prisma.gravidez.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Gravidezs and only return the `id`
+     * const gravidezWithIdOnly = await prisma.gravidez.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GravidezCreateManyAndReturnArgs>(args?: SelectSubset<T, GravidezCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Gravidez.
+     * @param {GravidezDeleteArgs} args - Arguments to delete one Gravidez.
+     * @example
+     * // Delete one Gravidez
+     * const Gravidez = await prisma.gravidez.delete({
+     *   where: {
+     *     // ... filter to delete one Gravidez
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GravidezDeleteArgs>(args: SelectSubset<T, GravidezDeleteArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Gravidez.
+     * @param {GravidezUpdateArgs} args - Arguments to update one Gravidez.
+     * @example
+     * // Update one Gravidez
+     * const gravidez = await prisma.gravidez.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GravidezUpdateArgs>(args: SelectSubset<T, GravidezUpdateArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Gravidezs.
+     * @param {GravidezDeleteManyArgs} args - Arguments to filter Gravidezs to delete.
+     * @example
+     * // Delete a few Gravidezs
+     * const { count } = await prisma.gravidez.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GravidezDeleteManyArgs>(args?: SelectSubset<T, GravidezDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Gravidezs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Gravidezs
+     * const gravidez = await prisma.gravidez.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GravidezUpdateManyArgs>(args: SelectSubset<T, GravidezUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Gravidezs and returns the data updated in the database.
+     * @param {GravidezUpdateManyAndReturnArgs} args - Arguments to update many Gravidezs.
+     * @example
+     * // Update many Gravidezs
+     * const gravidez = await prisma.gravidez.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Gravidezs and only return the `id`
+     * const gravidezWithIdOnly = await prisma.gravidez.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GravidezUpdateManyAndReturnArgs>(args: SelectSubset<T, GravidezUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Gravidez.
+     * @param {GravidezUpsertArgs} args - Arguments to update or create a Gravidez.
+     * @example
+     * // Update or create a Gravidez
+     * const gravidez = await prisma.gravidez.upsert({
+     *   create: {
+     *     // ... data to create a Gravidez
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Gravidez we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GravidezUpsertArgs>(args: SelectSubset<T, GravidezUpsertArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Gravidezs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezCountArgs} args - Arguments to filter Gravidezs to count.
+     * @example
+     * // Count the number of Gravidezs
+     * const count = await prisma.gravidez.count({
+     *   where: {
+     *     // ... the filter for the Gravidezs we want to count
+     *   }
+     * })
+    **/
+    count<T extends GravidezCountArgs>(
+      args?: Subset<T, GravidezCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GravidezCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Gravidez.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GravidezAggregateArgs>(args: Subset<T, GravidezAggregateArgs>): Prisma.PrismaPromise<GetGravidezAggregateType<T>>
+
+    /**
+     * Group by Gravidez.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GravidezGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GravidezGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GravidezGroupByArgs['orderBy'] }
+        : { orderBy?: GravidezGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GravidezGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGravidezGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Gravidez model
+   */
+  readonly fields: GravidezFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Gravidez.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GravidezClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registosPartograma<T extends Gravidez$registosPartogramaArgs<ExtArgs> = {}>(args?: Subset<T, Gravidez$registosPartogramaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    parto<T extends Gravidez$partoArgs<ExtArgs> = {}>(args?: Subset<T, Gravidez$partoArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Gravidez model
+   */
+  interface GravidezFieldRefs {
+    readonly id: FieldRef<"Gravidez", 'String'>
+    readonly doenteId: FieldRef<"Gravidez", 'String'>
+    readonly dataUltimaMenstruacao: FieldRef<"Gravidez", 'DateTime'>
+    readonly dataPrevistaParto: FieldRef<"Gravidez", 'DateTime'>
+    readonly gravida: FieldRef<"Gravidez", 'Int'>
+    readonly para: FieldRef<"Gravidez", 'Int'>
+    readonly grupoSanguineo: FieldRef<"Gravidez", 'String'>
+    readonly fatoresRisco: FieldRef<"Gravidez", 'String'>
+    readonly estado: FieldRef<"Gravidez", 'String'>
+    readonly criadoPorId: FieldRef<"Gravidez", 'String'>
+    readonly criadoEm: FieldRef<"Gravidez", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Gravidez findUnique
+   */
+  export type GravidezFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter, which Gravidez to fetch.
+     */
+    where: GravidezWhereUniqueInput
+  }
+
+  /**
+   * Gravidez findUniqueOrThrow
+   */
+  export type GravidezFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter, which Gravidez to fetch.
+     */
+    where: GravidezWhereUniqueInput
+  }
+
+  /**
+   * Gravidez findFirst
+   */
+  export type GravidezFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter, which Gravidez to fetch.
+     */
+    where?: GravidezWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Gravidezs to fetch.
+     */
+    orderBy?: GravidezOrderByWithRelationInput | GravidezOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Gravidezs.
+     */
+    cursor?: GravidezWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Gravidezs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Gravidezs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Gravidezs.
+     */
+    distinct?: GravidezScalarFieldEnum | GravidezScalarFieldEnum[]
+  }
+
+  /**
+   * Gravidez findFirstOrThrow
+   */
+  export type GravidezFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter, which Gravidez to fetch.
+     */
+    where?: GravidezWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Gravidezs to fetch.
+     */
+    orderBy?: GravidezOrderByWithRelationInput | GravidezOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Gravidezs.
+     */
+    cursor?: GravidezWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Gravidezs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Gravidezs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Gravidezs.
+     */
+    distinct?: GravidezScalarFieldEnum | GravidezScalarFieldEnum[]
+  }
+
+  /**
+   * Gravidez findMany
+   */
+  export type GravidezFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter, which Gravidezs to fetch.
+     */
+    where?: GravidezWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Gravidezs to fetch.
+     */
+    orderBy?: GravidezOrderByWithRelationInput | GravidezOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Gravidezs.
+     */
+    cursor?: GravidezWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Gravidezs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Gravidezs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Gravidezs.
+     */
+    distinct?: GravidezScalarFieldEnum | GravidezScalarFieldEnum[]
+  }
+
+  /**
+   * Gravidez create
+   */
+  export type GravidezCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Gravidez.
+     */
+    data: XOR<GravidezCreateInput, GravidezUncheckedCreateInput>
+  }
+
+  /**
+   * Gravidez createMany
+   */
+  export type GravidezCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Gravidezs.
+     */
+    data: GravidezCreateManyInput | GravidezCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Gravidez createManyAndReturn
+   */
+  export type GravidezCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * The data used to create many Gravidezs.
+     */
+    data: GravidezCreateManyInput | GravidezCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Gravidez update
+   */
+  export type GravidezUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Gravidez.
+     */
+    data: XOR<GravidezUpdateInput, GravidezUncheckedUpdateInput>
+    /**
+     * Choose, which Gravidez to update.
+     */
+    where: GravidezWhereUniqueInput
+  }
+
+  /**
+   * Gravidez updateMany
+   */
+  export type GravidezUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Gravidezs.
+     */
+    data: XOR<GravidezUpdateManyMutationInput, GravidezUncheckedUpdateManyInput>
+    /**
+     * Filter which Gravidezs to update
+     */
+    where?: GravidezWhereInput
+    /**
+     * Limit how many Gravidezs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Gravidez updateManyAndReturn
+   */
+  export type GravidezUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * The data used to update Gravidezs.
+     */
+    data: XOR<GravidezUpdateManyMutationInput, GravidezUncheckedUpdateManyInput>
+    /**
+     * Filter which Gravidezs to update
+     */
+    where?: GravidezWhereInput
+    /**
+     * Limit how many Gravidezs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Gravidez upsert
+   */
+  export type GravidezUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Gravidez to update in case it exists.
+     */
+    where: GravidezWhereUniqueInput
+    /**
+     * In case the Gravidez found by the `where` argument doesn't exist, create a new Gravidez with this data.
+     */
+    create: XOR<GravidezCreateInput, GravidezUncheckedCreateInput>
+    /**
+     * In case the Gravidez was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GravidezUpdateInput, GravidezUncheckedUpdateInput>
+  }
+
+  /**
+   * Gravidez delete
+   */
+  export type GravidezDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+    /**
+     * Filter which Gravidez to delete.
+     */
+    where: GravidezWhereUniqueInput
+  }
+
+  /**
+   * Gravidez deleteMany
+   */
+  export type GravidezDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Gravidezs to delete
+     */
+    where?: GravidezWhereInput
+    /**
+     * Limit how many Gravidezs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Gravidez.registosPartograma
+   */
+  export type Gravidez$registosPartogramaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    where?: RegistoPartogramaWhereInput
+    orderBy?: RegistoPartogramaOrderByWithRelationInput | RegistoPartogramaOrderByWithRelationInput[]
+    cursor?: RegistoPartogramaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegistoPartogramaScalarFieldEnum | RegistoPartogramaScalarFieldEnum[]
+  }
+
+  /**
+   * Gravidez.parto
+   */
+  export type Gravidez$partoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    where?: PartoWhereInput
+  }
+
+  /**
+   * Gravidez without action
+   */
+  export type GravidezDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Gravidez
+     */
+    select?: GravidezSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Gravidez
+     */
+    omit?: GravidezOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GravidezInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RegistoPartograma
+   */
+
+  export type AggregateRegistoPartograma = {
+    _count: RegistoPartogramaCountAggregateOutputType | null
+    _avg: RegistoPartogramaAvgAggregateOutputType | null
+    _sum: RegistoPartogramaSumAggregateOutputType | null
+    _min: RegistoPartogramaMinAggregateOutputType | null
+    _max: RegistoPartogramaMaxAggregateOutputType | null
+  }
+
+  export type RegistoPartogramaAvgAggregateOutputType = {
+    dilatacaoCm: number | null
+    fcFetal: number | null
+    contracoes10min: number | null
+    descidaApresentacao: number | null
+  }
+
+  export type RegistoPartogramaSumAggregateOutputType = {
+    dilatacaoCm: number | null
+    fcFetal: number | null
+    contracoes10min: number | null
+    descidaApresentacao: number | null
+  }
+
+  export type RegistoPartogramaMinAggregateOutputType = {
+    id: string | null
+    gravidezId: string | null
+    momento: Date | null
+    dilatacaoCm: number | null
+    fcFetal: number | null
+    contracoes10min: number | null
+    descidaApresentacao: number | null
+    notas: string | null
+    registadoPorId: string | null
+  }
+
+  export type RegistoPartogramaMaxAggregateOutputType = {
+    id: string | null
+    gravidezId: string | null
+    momento: Date | null
+    dilatacaoCm: number | null
+    fcFetal: number | null
+    contracoes10min: number | null
+    descidaApresentacao: number | null
+    notas: string | null
+    registadoPorId: string | null
+  }
+
+  export type RegistoPartogramaCountAggregateOutputType = {
+    id: number
+    gravidezId: number
+    momento: number
+    dilatacaoCm: number
+    fcFetal: number
+    contracoes10min: number
+    descidaApresentacao: number
+    notas: number
+    registadoPorId: number
+    _all: number
+  }
+
+
+  export type RegistoPartogramaAvgAggregateInputType = {
+    dilatacaoCm?: true
+    fcFetal?: true
+    contracoes10min?: true
+    descidaApresentacao?: true
+  }
+
+  export type RegistoPartogramaSumAggregateInputType = {
+    dilatacaoCm?: true
+    fcFetal?: true
+    contracoes10min?: true
+    descidaApresentacao?: true
+  }
+
+  export type RegistoPartogramaMinAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    momento?: true
+    dilatacaoCm?: true
+    fcFetal?: true
+    contracoes10min?: true
+    descidaApresentacao?: true
+    notas?: true
+    registadoPorId?: true
+  }
+
+  export type RegistoPartogramaMaxAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    momento?: true
+    dilatacaoCm?: true
+    fcFetal?: true
+    contracoes10min?: true
+    descidaApresentacao?: true
+    notas?: true
+    registadoPorId?: true
+  }
+
+  export type RegistoPartogramaCountAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    momento?: true
+    dilatacaoCm?: true
+    fcFetal?: true
+    contracoes10min?: true
+    descidaApresentacao?: true
+    notas?: true
+    registadoPorId?: true
+    _all?: true
+  }
+
+  export type RegistoPartogramaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegistoPartograma to aggregate.
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegistoPartogramas to fetch.
+     */
+    orderBy?: RegistoPartogramaOrderByWithRelationInput | RegistoPartogramaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RegistoPartogramaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegistoPartogramas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegistoPartogramas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RegistoPartogramas
+    **/
+    _count?: true | RegistoPartogramaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RegistoPartogramaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RegistoPartogramaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RegistoPartogramaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RegistoPartogramaMaxAggregateInputType
+  }
+
+  export type GetRegistoPartogramaAggregateType<T extends RegistoPartogramaAggregateArgs> = {
+        [P in keyof T & keyof AggregateRegistoPartograma]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRegistoPartograma[P]>
+      : GetScalarType<T[P], AggregateRegistoPartograma[P]>
+  }
+
+
+
+
+  export type RegistoPartogramaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegistoPartogramaWhereInput
+    orderBy?: RegistoPartogramaOrderByWithAggregationInput | RegistoPartogramaOrderByWithAggregationInput[]
+    by: RegistoPartogramaScalarFieldEnum[] | RegistoPartogramaScalarFieldEnum
+    having?: RegistoPartogramaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RegistoPartogramaCountAggregateInputType | true
+    _avg?: RegistoPartogramaAvgAggregateInputType
+    _sum?: RegistoPartogramaSumAggregateInputType
+    _min?: RegistoPartogramaMinAggregateInputType
+    _max?: RegistoPartogramaMaxAggregateInputType
+  }
+
+  export type RegistoPartogramaGroupByOutputType = {
+    id: string
+    gravidezId: string
+    momento: Date
+    dilatacaoCm: number | null
+    fcFetal: number | null
+    contracoes10min: number | null
+    descidaApresentacao: number | null
+    notas: string | null
+    registadoPorId: string
+    _count: RegistoPartogramaCountAggregateOutputType | null
+    _avg: RegistoPartogramaAvgAggregateOutputType | null
+    _sum: RegistoPartogramaSumAggregateOutputType | null
+    _min: RegistoPartogramaMinAggregateOutputType | null
+    _max: RegistoPartogramaMaxAggregateOutputType | null
+  }
+
+  type GetRegistoPartogramaGroupByPayload<T extends RegistoPartogramaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RegistoPartogramaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RegistoPartogramaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RegistoPartogramaGroupByOutputType[P]>
+            : GetScalarType<T[P], RegistoPartogramaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RegistoPartogramaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    momento?: boolean
+    dilatacaoCm?: boolean
+    fcFetal?: boolean
+    contracoes10min?: boolean
+    descidaApresentacao?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["registoPartograma"]>
+
+  export type RegistoPartogramaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    momento?: boolean
+    dilatacaoCm?: boolean
+    fcFetal?: boolean
+    contracoes10min?: boolean
+    descidaApresentacao?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["registoPartograma"]>
+
+  export type RegistoPartogramaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    momento?: boolean
+    dilatacaoCm?: boolean
+    fcFetal?: boolean
+    contracoes10min?: boolean
+    descidaApresentacao?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["registoPartograma"]>
+
+  export type RegistoPartogramaSelectScalar = {
+    id?: boolean
+    gravidezId?: boolean
+    momento?: boolean
+    dilatacaoCm?: boolean
+    fcFetal?: boolean
+    contracoes10min?: boolean
+    descidaApresentacao?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+  }
+
+  export type RegistoPartogramaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gravidezId" | "momento" | "dilatacaoCm" | "fcFetal" | "contracoes10min" | "descidaApresentacao" | "notas" | "registadoPorId", ExtArgs["result"]["registoPartograma"]>
+  export type RegistoPartogramaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+  export type RegistoPartogramaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+  export type RegistoPartogramaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+
+  export type $RegistoPartogramaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RegistoPartograma"
+    objects: {
+      gravidez: Prisma.$GravidezPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      gravidezId: string
+      momento: Date
+      dilatacaoCm: number | null
+      fcFetal: number | null
+      contracoes10min: number | null
+      descidaApresentacao: number | null
+      notas: string | null
+      registadoPorId: string
+    }, ExtArgs["result"]["registoPartograma"]>
+    composites: {}
+  }
+
+  type RegistoPartogramaGetPayload<S extends boolean | null | undefined | RegistoPartogramaDefaultArgs> = $Result.GetResult<Prisma.$RegistoPartogramaPayload, S>
+
+  type RegistoPartogramaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RegistoPartogramaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RegistoPartogramaCountAggregateInputType | true
+    }
+
+  export interface RegistoPartogramaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RegistoPartograma'], meta: { name: 'RegistoPartograma' } }
+    /**
+     * Find zero or one RegistoPartograma that matches the filter.
+     * @param {RegistoPartogramaFindUniqueArgs} args - Arguments to find a RegistoPartograma
+     * @example
+     * // Get one RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RegistoPartogramaFindUniqueArgs>(args: SelectSubset<T, RegistoPartogramaFindUniqueArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RegistoPartograma that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RegistoPartogramaFindUniqueOrThrowArgs} args - Arguments to find a RegistoPartograma
+     * @example
+     * // Get one RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RegistoPartogramaFindUniqueOrThrowArgs>(args: SelectSubset<T, RegistoPartogramaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegistoPartograma that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaFindFirstArgs} args - Arguments to find a RegistoPartograma
+     * @example
+     * // Get one RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RegistoPartogramaFindFirstArgs>(args?: SelectSubset<T, RegistoPartogramaFindFirstArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegistoPartograma that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaFindFirstOrThrowArgs} args - Arguments to find a RegistoPartograma
+     * @example
+     * // Get one RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RegistoPartogramaFindFirstOrThrowArgs>(args?: SelectSubset<T, RegistoPartogramaFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RegistoPartogramas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RegistoPartogramas
+     * const registoPartogramas = await prisma.registoPartograma.findMany()
+     * 
+     * // Get first 10 RegistoPartogramas
+     * const registoPartogramas = await prisma.registoPartograma.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const registoPartogramaWithIdOnly = await prisma.registoPartograma.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RegistoPartogramaFindManyArgs>(args?: SelectSubset<T, RegistoPartogramaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RegistoPartograma.
+     * @param {RegistoPartogramaCreateArgs} args - Arguments to create a RegistoPartograma.
+     * @example
+     * // Create one RegistoPartograma
+     * const RegistoPartograma = await prisma.registoPartograma.create({
+     *   data: {
+     *     // ... data to create a RegistoPartograma
+     *   }
+     * })
+     * 
+     */
+    create<T extends RegistoPartogramaCreateArgs>(args: SelectSubset<T, RegistoPartogramaCreateArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RegistoPartogramas.
+     * @param {RegistoPartogramaCreateManyArgs} args - Arguments to create many RegistoPartogramas.
+     * @example
+     * // Create many RegistoPartogramas
+     * const registoPartograma = await prisma.registoPartograma.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RegistoPartogramaCreateManyArgs>(args?: SelectSubset<T, RegistoPartogramaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RegistoPartogramas and returns the data saved in the database.
+     * @param {RegistoPartogramaCreateManyAndReturnArgs} args - Arguments to create many RegistoPartogramas.
+     * @example
+     * // Create many RegistoPartogramas
+     * const registoPartograma = await prisma.registoPartograma.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RegistoPartogramas and only return the `id`
+     * const registoPartogramaWithIdOnly = await prisma.registoPartograma.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RegistoPartogramaCreateManyAndReturnArgs>(args?: SelectSubset<T, RegistoPartogramaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RegistoPartograma.
+     * @param {RegistoPartogramaDeleteArgs} args - Arguments to delete one RegistoPartograma.
+     * @example
+     * // Delete one RegistoPartograma
+     * const RegistoPartograma = await prisma.registoPartograma.delete({
+     *   where: {
+     *     // ... filter to delete one RegistoPartograma
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RegistoPartogramaDeleteArgs>(args: SelectSubset<T, RegistoPartogramaDeleteArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RegistoPartograma.
+     * @param {RegistoPartogramaUpdateArgs} args - Arguments to update one RegistoPartograma.
+     * @example
+     * // Update one RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RegistoPartogramaUpdateArgs>(args: SelectSubset<T, RegistoPartogramaUpdateArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RegistoPartogramas.
+     * @param {RegistoPartogramaDeleteManyArgs} args - Arguments to filter RegistoPartogramas to delete.
+     * @example
+     * // Delete a few RegistoPartogramas
+     * const { count } = await prisma.registoPartograma.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RegistoPartogramaDeleteManyArgs>(args?: SelectSubset<T, RegistoPartogramaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegistoPartogramas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RegistoPartogramas
+     * const registoPartograma = await prisma.registoPartograma.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RegistoPartogramaUpdateManyArgs>(args: SelectSubset<T, RegistoPartogramaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegistoPartogramas and returns the data updated in the database.
+     * @param {RegistoPartogramaUpdateManyAndReturnArgs} args - Arguments to update many RegistoPartogramas.
+     * @example
+     * // Update many RegistoPartogramas
+     * const registoPartograma = await prisma.registoPartograma.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RegistoPartogramas and only return the `id`
+     * const registoPartogramaWithIdOnly = await prisma.registoPartograma.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RegistoPartogramaUpdateManyAndReturnArgs>(args: SelectSubset<T, RegistoPartogramaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RegistoPartograma.
+     * @param {RegistoPartogramaUpsertArgs} args - Arguments to update or create a RegistoPartograma.
+     * @example
+     * // Update or create a RegistoPartograma
+     * const registoPartograma = await prisma.registoPartograma.upsert({
+     *   create: {
+     *     // ... data to create a RegistoPartograma
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RegistoPartograma we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RegistoPartogramaUpsertArgs>(args: SelectSubset<T, RegistoPartogramaUpsertArgs<ExtArgs>>): Prisma__RegistoPartogramaClient<$Result.GetResult<Prisma.$RegistoPartogramaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RegistoPartogramas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaCountArgs} args - Arguments to filter RegistoPartogramas to count.
+     * @example
+     * // Count the number of RegistoPartogramas
+     * const count = await prisma.registoPartograma.count({
+     *   where: {
+     *     // ... the filter for the RegistoPartogramas we want to count
+     *   }
+     * })
+    **/
+    count<T extends RegistoPartogramaCountArgs>(
+      args?: Subset<T, RegistoPartogramaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RegistoPartogramaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RegistoPartograma.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RegistoPartogramaAggregateArgs>(args: Subset<T, RegistoPartogramaAggregateArgs>): Prisma.PrismaPromise<GetRegistoPartogramaAggregateType<T>>
+
+    /**
+     * Group by RegistoPartograma.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegistoPartogramaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RegistoPartogramaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RegistoPartogramaGroupByArgs['orderBy'] }
+        : { orderBy?: RegistoPartogramaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RegistoPartogramaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegistoPartogramaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RegistoPartograma model
+   */
+  readonly fields: RegistoPartogramaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RegistoPartograma.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RegistoPartogramaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gravidez<T extends GravidezDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GravidezDefaultArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RegistoPartograma model
+   */
+  interface RegistoPartogramaFieldRefs {
+    readonly id: FieldRef<"RegistoPartograma", 'String'>
+    readonly gravidezId: FieldRef<"RegistoPartograma", 'String'>
+    readonly momento: FieldRef<"RegistoPartograma", 'DateTime'>
+    readonly dilatacaoCm: FieldRef<"RegistoPartograma", 'Int'>
+    readonly fcFetal: FieldRef<"RegistoPartograma", 'Int'>
+    readonly contracoes10min: FieldRef<"RegistoPartograma", 'Int'>
+    readonly descidaApresentacao: FieldRef<"RegistoPartograma", 'Int'>
+    readonly notas: FieldRef<"RegistoPartograma", 'String'>
+    readonly registadoPorId: FieldRef<"RegistoPartograma", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RegistoPartograma findUnique
+   */
+  export type RegistoPartogramaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter, which RegistoPartograma to fetch.
+     */
+    where: RegistoPartogramaWhereUniqueInput
+  }
+
+  /**
+   * RegistoPartograma findUniqueOrThrow
+   */
+  export type RegistoPartogramaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter, which RegistoPartograma to fetch.
+     */
+    where: RegistoPartogramaWhereUniqueInput
+  }
+
+  /**
+   * RegistoPartograma findFirst
+   */
+  export type RegistoPartogramaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter, which RegistoPartograma to fetch.
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegistoPartogramas to fetch.
+     */
+    orderBy?: RegistoPartogramaOrderByWithRelationInput | RegistoPartogramaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegistoPartogramas.
+     */
+    cursor?: RegistoPartogramaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegistoPartogramas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegistoPartogramas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegistoPartogramas.
+     */
+    distinct?: RegistoPartogramaScalarFieldEnum | RegistoPartogramaScalarFieldEnum[]
+  }
+
+  /**
+   * RegistoPartograma findFirstOrThrow
+   */
+  export type RegistoPartogramaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter, which RegistoPartograma to fetch.
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegistoPartogramas to fetch.
+     */
+    orderBy?: RegistoPartogramaOrderByWithRelationInput | RegistoPartogramaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegistoPartogramas.
+     */
+    cursor?: RegistoPartogramaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegistoPartogramas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegistoPartogramas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegistoPartogramas.
+     */
+    distinct?: RegistoPartogramaScalarFieldEnum | RegistoPartogramaScalarFieldEnum[]
+  }
+
+  /**
+   * RegistoPartograma findMany
+   */
+  export type RegistoPartogramaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter, which RegistoPartogramas to fetch.
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegistoPartogramas to fetch.
+     */
+    orderBy?: RegistoPartogramaOrderByWithRelationInput | RegistoPartogramaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RegistoPartogramas.
+     */
+    cursor?: RegistoPartogramaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegistoPartogramas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegistoPartogramas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegistoPartogramas.
+     */
+    distinct?: RegistoPartogramaScalarFieldEnum | RegistoPartogramaScalarFieldEnum[]
+  }
+
+  /**
+   * RegistoPartograma create
+   */
+  export type RegistoPartogramaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RegistoPartograma.
+     */
+    data: XOR<RegistoPartogramaCreateInput, RegistoPartogramaUncheckedCreateInput>
+  }
+
+  /**
+   * RegistoPartograma createMany
+   */
+  export type RegistoPartogramaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RegistoPartogramas.
+     */
+    data: RegistoPartogramaCreateManyInput | RegistoPartogramaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RegistoPartograma createManyAndReturn
+   */
+  export type RegistoPartogramaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * The data used to create many RegistoPartogramas.
+     */
+    data: RegistoPartogramaCreateManyInput | RegistoPartogramaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegistoPartograma update
+   */
+  export type RegistoPartogramaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RegistoPartograma.
+     */
+    data: XOR<RegistoPartogramaUpdateInput, RegistoPartogramaUncheckedUpdateInput>
+    /**
+     * Choose, which RegistoPartograma to update.
+     */
+    where: RegistoPartogramaWhereUniqueInput
+  }
+
+  /**
+   * RegistoPartograma updateMany
+   */
+  export type RegistoPartogramaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RegistoPartogramas.
+     */
+    data: XOR<RegistoPartogramaUpdateManyMutationInput, RegistoPartogramaUncheckedUpdateManyInput>
+    /**
+     * Filter which RegistoPartogramas to update
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * Limit how many RegistoPartogramas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegistoPartograma updateManyAndReturn
+   */
+  export type RegistoPartogramaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * The data used to update RegistoPartogramas.
+     */
+    data: XOR<RegistoPartogramaUpdateManyMutationInput, RegistoPartogramaUncheckedUpdateManyInput>
+    /**
+     * Filter which RegistoPartogramas to update
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * Limit how many RegistoPartogramas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegistoPartograma upsert
+   */
+  export type RegistoPartogramaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RegistoPartograma to update in case it exists.
+     */
+    where: RegistoPartogramaWhereUniqueInput
+    /**
+     * In case the RegistoPartograma found by the `where` argument doesn't exist, create a new RegistoPartograma with this data.
+     */
+    create: XOR<RegistoPartogramaCreateInput, RegistoPartogramaUncheckedCreateInput>
+    /**
+     * In case the RegistoPartograma was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RegistoPartogramaUpdateInput, RegistoPartogramaUncheckedUpdateInput>
+  }
+
+  /**
+   * RegistoPartograma delete
+   */
+  export type RegistoPartogramaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+    /**
+     * Filter which RegistoPartograma to delete.
+     */
+    where: RegistoPartogramaWhereUniqueInput
+  }
+
+  /**
+   * RegistoPartograma deleteMany
+   */
+  export type RegistoPartogramaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegistoPartogramas to delete
+     */
+    where?: RegistoPartogramaWhereInput
+    /**
+     * Limit how many RegistoPartogramas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegistoPartograma without action
+   */
+  export type RegistoPartogramaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoPartograma
+     */
+    select?: RegistoPartogramaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoPartograma
+     */
+    omit?: RegistoPartogramaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoPartogramaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Parto
+   */
+
+  export type AggregateParto = {
+    _count: PartoCountAggregateOutputType | null
+    _avg: PartoAvgAggregateOutputType | null
+    _sum: PartoSumAggregateOutputType | null
+    _min: PartoMinAggregateOutputType | null
+    _max: PartoMaxAggregateOutputType | null
+  }
+
+  export type PartoAvgAggregateOutputType = {
+    apgar1: number | null
+    apgar5: number | null
+    pesoRN: number | null
+  }
+
+  export type PartoSumAggregateOutputType = {
+    apgar1: number | null
+    apgar5: number | null
+    pesoRN: number | null
+  }
+
+  export type PartoMinAggregateOutputType = {
+    id: string | null
+    gravidezId: string | null
+    dataHora: Date | null
+    tipo: string | null
+    complicacoes: string | null
+    apgar1: number | null
+    apgar5: number | null
+    pesoRN: number | null
+    sexoRN: string | null
+    registadoPorId: string | null
+  }
+
+  export type PartoMaxAggregateOutputType = {
+    id: string | null
+    gravidezId: string | null
+    dataHora: Date | null
+    tipo: string | null
+    complicacoes: string | null
+    apgar1: number | null
+    apgar5: number | null
+    pesoRN: number | null
+    sexoRN: string | null
+    registadoPorId: string | null
+  }
+
+  export type PartoCountAggregateOutputType = {
+    id: number
+    gravidezId: number
+    dataHora: number
+    tipo: number
+    complicacoes: number
+    apgar1: number
+    apgar5: number
+    pesoRN: number
+    sexoRN: number
+    registadoPorId: number
+    _all: number
+  }
+
+
+  export type PartoAvgAggregateInputType = {
+    apgar1?: true
+    apgar5?: true
+    pesoRN?: true
+  }
+
+  export type PartoSumAggregateInputType = {
+    apgar1?: true
+    apgar5?: true
+    pesoRN?: true
+  }
+
+  export type PartoMinAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    dataHora?: true
+    tipo?: true
+    complicacoes?: true
+    apgar1?: true
+    apgar5?: true
+    pesoRN?: true
+    sexoRN?: true
+    registadoPorId?: true
+  }
+
+  export type PartoMaxAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    dataHora?: true
+    tipo?: true
+    complicacoes?: true
+    apgar1?: true
+    apgar5?: true
+    pesoRN?: true
+    sexoRN?: true
+    registadoPorId?: true
+  }
+
+  export type PartoCountAggregateInputType = {
+    id?: true
+    gravidezId?: true
+    dataHora?: true
+    tipo?: true
+    complicacoes?: true
+    apgar1?: true
+    apgar5?: true
+    pesoRN?: true
+    sexoRN?: true
+    registadoPorId?: true
+    _all?: true
+  }
+
+  export type PartoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Parto to aggregate.
+     */
+    where?: PartoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Partos to fetch.
+     */
+    orderBy?: PartoOrderByWithRelationInput | PartoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PartoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Partos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Partos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Partos
+    **/
+    _count?: true | PartoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PartoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PartoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PartoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PartoMaxAggregateInputType
+  }
+
+  export type GetPartoAggregateType<T extends PartoAggregateArgs> = {
+        [P in keyof T & keyof AggregateParto]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateParto[P]>
+      : GetScalarType<T[P], AggregateParto[P]>
+  }
+
+
+
+
+  export type PartoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PartoWhereInput
+    orderBy?: PartoOrderByWithAggregationInput | PartoOrderByWithAggregationInput[]
+    by: PartoScalarFieldEnum[] | PartoScalarFieldEnum
+    having?: PartoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PartoCountAggregateInputType | true
+    _avg?: PartoAvgAggregateInputType
+    _sum?: PartoSumAggregateInputType
+    _min?: PartoMinAggregateInputType
+    _max?: PartoMaxAggregateInputType
+  }
+
+  export type PartoGroupByOutputType = {
+    id: string
+    gravidezId: string
+    dataHora: Date
+    tipo: string
+    complicacoes: string | null
+    apgar1: number | null
+    apgar5: number | null
+    pesoRN: number | null
+    sexoRN: string | null
+    registadoPorId: string
+    _count: PartoCountAggregateOutputType | null
+    _avg: PartoAvgAggregateOutputType | null
+    _sum: PartoSumAggregateOutputType | null
+    _min: PartoMinAggregateOutputType | null
+    _max: PartoMaxAggregateOutputType | null
+  }
+
+  type GetPartoGroupByPayload<T extends PartoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PartoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PartoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PartoGroupByOutputType[P]>
+            : GetScalarType<T[P], PartoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PartoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    dataHora?: boolean
+    tipo?: boolean
+    complicacoes?: boolean
+    apgar1?: boolean
+    apgar5?: boolean
+    pesoRN?: boolean
+    sexoRN?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["parto"]>
+
+  export type PartoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    dataHora?: boolean
+    tipo?: boolean
+    complicacoes?: boolean
+    apgar1?: boolean
+    apgar5?: boolean
+    pesoRN?: boolean
+    sexoRN?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["parto"]>
+
+  export type PartoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gravidezId?: boolean
+    dataHora?: boolean
+    tipo?: boolean
+    complicacoes?: boolean
+    apgar1?: boolean
+    apgar5?: boolean
+    pesoRN?: boolean
+    sexoRN?: boolean
+    registadoPorId?: boolean
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["parto"]>
+
+  export type PartoSelectScalar = {
+    id?: boolean
+    gravidezId?: boolean
+    dataHora?: boolean
+    tipo?: boolean
+    complicacoes?: boolean
+    apgar1?: boolean
+    apgar5?: boolean
+    pesoRN?: boolean
+    sexoRN?: boolean
+    registadoPorId?: boolean
+  }
+
+  export type PartoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gravidezId" | "dataHora" | "tipo" | "complicacoes" | "apgar1" | "apgar5" | "pesoRN" | "sexoRN" | "registadoPorId", ExtArgs["result"]["parto"]>
+  export type PartoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+  export type PartoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+  export type PartoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gravidez?: boolean | GravidezDefaultArgs<ExtArgs>
+  }
+
+  export type $PartoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Parto"
+    objects: {
+      gravidez: Prisma.$GravidezPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      gravidezId: string
+      dataHora: Date
+      tipo: string
+      complicacoes: string | null
+      apgar1: number | null
+      apgar5: number | null
+      pesoRN: number | null
+      sexoRN: string | null
+      registadoPorId: string
+    }, ExtArgs["result"]["parto"]>
+    composites: {}
+  }
+
+  type PartoGetPayload<S extends boolean | null | undefined | PartoDefaultArgs> = $Result.GetResult<Prisma.$PartoPayload, S>
+
+  type PartoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PartoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PartoCountAggregateInputType | true
+    }
+
+  export interface PartoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Parto'], meta: { name: 'Parto' } }
+    /**
+     * Find zero or one Parto that matches the filter.
+     * @param {PartoFindUniqueArgs} args - Arguments to find a Parto
+     * @example
+     * // Get one Parto
+     * const parto = await prisma.parto.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PartoFindUniqueArgs>(args: SelectSubset<T, PartoFindUniqueArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Parto that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PartoFindUniqueOrThrowArgs} args - Arguments to find a Parto
+     * @example
+     * // Get one Parto
+     * const parto = await prisma.parto.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PartoFindUniqueOrThrowArgs>(args: SelectSubset<T, PartoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Parto that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoFindFirstArgs} args - Arguments to find a Parto
+     * @example
+     * // Get one Parto
+     * const parto = await prisma.parto.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PartoFindFirstArgs>(args?: SelectSubset<T, PartoFindFirstArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Parto that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoFindFirstOrThrowArgs} args - Arguments to find a Parto
+     * @example
+     * // Get one Parto
+     * const parto = await prisma.parto.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PartoFindFirstOrThrowArgs>(args?: SelectSubset<T, PartoFindFirstOrThrowArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Partos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Partos
+     * const partos = await prisma.parto.findMany()
+     * 
+     * // Get first 10 Partos
+     * const partos = await prisma.parto.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const partoWithIdOnly = await prisma.parto.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PartoFindManyArgs>(args?: SelectSubset<T, PartoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Parto.
+     * @param {PartoCreateArgs} args - Arguments to create a Parto.
+     * @example
+     * // Create one Parto
+     * const Parto = await prisma.parto.create({
+     *   data: {
+     *     // ... data to create a Parto
+     *   }
+     * })
+     * 
+     */
+    create<T extends PartoCreateArgs>(args: SelectSubset<T, PartoCreateArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Partos.
+     * @param {PartoCreateManyArgs} args - Arguments to create many Partos.
+     * @example
+     * // Create many Partos
+     * const parto = await prisma.parto.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PartoCreateManyArgs>(args?: SelectSubset<T, PartoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Partos and returns the data saved in the database.
+     * @param {PartoCreateManyAndReturnArgs} args - Arguments to create many Partos.
+     * @example
+     * // Create many Partos
+     * const parto = await prisma.parto.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Partos and only return the `id`
+     * const partoWithIdOnly = await prisma.parto.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PartoCreateManyAndReturnArgs>(args?: SelectSubset<T, PartoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Parto.
+     * @param {PartoDeleteArgs} args - Arguments to delete one Parto.
+     * @example
+     * // Delete one Parto
+     * const Parto = await prisma.parto.delete({
+     *   where: {
+     *     // ... filter to delete one Parto
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PartoDeleteArgs>(args: SelectSubset<T, PartoDeleteArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Parto.
+     * @param {PartoUpdateArgs} args - Arguments to update one Parto.
+     * @example
+     * // Update one Parto
+     * const parto = await prisma.parto.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PartoUpdateArgs>(args: SelectSubset<T, PartoUpdateArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Partos.
+     * @param {PartoDeleteManyArgs} args - Arguments to filter Partos to delete.
+     * @example
+     * // Delete a few Partos
+     * const { count } = await prisma.parto.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PartoDeleteManyArgs>(args?: SelectSubset<T, PartoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Partos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Partos
+     * const parto = await prisma.parto.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PartoUpdateManyArgs>(args: SelectSubset<T, PartoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Partos and returns the data updated in the database.
+     * @param {PartoUpdateManyAndReturnArgs} args - Arguments to update many Partos.
+     * @example
+     * // Update many Partos
+     * const parto = await prisma.parto.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Partos and only return the `id`
+     * const partoWithIdOnly = await prisma.parto.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PartoUpdateManyAndReturnArgs>(args: SelectSubset<T, PartoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Parto.
+     * @param {PartoUpsertArgs} args - Arguments to update or create a Parto.
+     * @example
+     * // Update or create a Parto
+     * const parto = await prisma.parto.upsert({
+     *   create: {
+     *     // ... data to create a Parto
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Parto we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PartoUpsertArgs>(args: SelectSubset<T, PartoUpsertArgs<ExtArgs>>): Prisma__PartoClient<$Result.GetResult<Prisma.$PartoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Partos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoCountArgs} args - Arguments to filter Partos to count.
+     * @example
+     * // Count the number of Partos
+     * const count = await prisma.parto.count({
+     *   where: {
+     *     // ... the filter for the Partos we want to count
+     *   }
+     * })
+    **/
+    count<T extends PartoCountArgs>(
+      args?: Subset<T, PartoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PartoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Parto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PartoAggregateArgs>(args: Subset<T, PartoAggregateArgs>): Prisma.PrismaPromise<GetPartoAggregateType<T>>
+
+    /**
+     * Group by Parto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PartoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PartoGroupByArgs['orderBy'] }
+        : { orderBy?: PartoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PartoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPartoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Parto model
+   */
+  readonly fields: PartoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Parto.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PartoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gravidez<T extends GravidezDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GravidezDefaultArgs<ExtArgs>>): Prisma__GravidezClient<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Parto model
+   */
+  interface PartoFieldRefs {
+    readonly id: FieldRef<"Parto", 'String'>
+    readonly gravidezId: FieldRef<"Parto", 'String'>
+    readonly dataHora: FieldRef<"Parto", 'DateTime'>
+    readonly tipo: FieldRef<"Parto", 'String'>
+    readonly complicacoes: FieldRef<"Parto", 'String'>
+    readonly apgar1: FieldRef<"Parto", 'Int'>
+    readonly apgar5: FieldRef<"Parto", 'Int'>
+    readonly pesoRN: FieldRef<"Parto", 'Float'>
+    readonly sexoRN: FieldRef<"Parto", 'String'>
+    readonly registadoPorId: FieldRef<"Parto", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Parto findUnique
+   */
+  export type PartoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter, which Parto to fetch.
+     */
+    where: PartoWhereUniqueInput
+  }
+
+  /**
+   * Parto findUniqueOrThrow
+   */
+  export type PartoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter, which Parto to fetch.
+     */
+    where: PartoWhereUniqueInput
+  }
+
+  /**
+   * Parto findFirst
+   */
+  export type PartoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter, which Parto to fetch.
+     */
+    where?: PartoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Partos to fetch.
+     */
+    orderBy?: PartoOrderByWithRelationInput | PartoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Partos.
+     */
+    cursor?: PartoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Partos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Partos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Partos.
+     */
+    distinct?: PartoScalarFieldEnum | PartoScalarFieldEnum[]
+  }
+
+  /**
+   * Parto findFirstOrThrow
+   */
+  export type PartoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter, which Parto to fetch.
+     */
+    where?: PartoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Partos to fetch.
+     */
+    orderBy?: PartoOrderByWithRelationInput | PartoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Partos.
+     */
+    cursor?: PartoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Partos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Partos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Partos.
+     */
+    distinct?: PartoScalarFieldEnum | PartoScalarFieldEnum[]
+  }
+
+  /**
+   * Parto findMany
+   */
+  export type PartoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter, which Partos to fetch.
+     */
+    where?: PartoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Partos to fetch.
+     */
+    orderBy?: PartoOrderByWithRelationInput | PartoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Partos.
+     */
+    cursor?: PartoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Partos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Partos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Partos.
+     */
+    distinct?: PartoScalarFieldEnum | PartoScalarFieldEnum[]
+  }
+
+  /**
+   * Parto create
+   */
+  export type PartoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Parto.
+     */
+    data: XOR<PartoCreateInput, PartoUncheckedCreateInput>
+  }
+
+  /**
+   * Parto createMany
+   */
+  export type PartoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Partos.
+     */
+    data: PartoCreateManyInput | PartoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Parto createManyAndReturn
+   */
+  export type PartoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Partos.
+     */
+    data: PartoCreateManyInput | PartoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Parto update
+   */
+  export type PartoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Parto.
+     */
+    data: XOR<PartoUpdateInput, PartoUncheckedUpdateInput>
+    /**
+     * Choose, which Parto to update.
+     */
+    where: PartoWhereUniqueInput
+  }
+
+  /**
+   * Parto updateMany
+   */
+  export type PartoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Partos.
+     */
+    data: XOR<PartoUpdateManyMutationInput, PartoUncheckedUpdateManyInput>
+    /**
+     * Filter which Partos to update
+     */
+    where?: PartoWhereInput
+    /**
+     * Limit how many Partos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Parto updateManyAndReturn
+   */
+  export type PartoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * The data used to update Partos.
+     */
+    data: XOR<PartoUpdateManyMutationInput, PartoUncheckedUpdateManyInput>
+    /**
+     * Filter which Partos to update
+     */
+    where?: PartoWhereInput
+    /**
+     * Limit how many Partos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Parto upsert
+   */
+  export type PartoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Parto to update in case it exists.
+     */
+    where: PartoWhereUniqueInput
+    /**
+     * In case the Parto found by the `where` argument doesn't exist, create a new Parto with this data.
+     */
+    create: XOR<PartoCreateInput, PartoUncheckedCreateInput>
+    /**
+     * In case the Parto was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PartoUpdateInput, PartoUncheckedUpdateInput>
+  }
+
+  /**
+   * Parto delete
+   */
+  export type PartoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+    /**
+     * Filter which Parto to delete.
+     */
+    where: PartoWhereUniqueInput
+  }
+
+  /**
+   * Parto deleteMany
+   */
+  export type PartoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Partos to delete
+     */
+    where?: PartoWhereInput
+    /**
+     * Limit how many Partos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Parto without action
+   */
+  export type PartoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Parto
+     */
+    select?: PartoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Parto
+     */
+    omit?: PartoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -172982,6 +176886,54 @@ export namespace Prisma {
   export type SsoProviderScalarFieldEnum = (typeof SsoProviderScalarFieldEnum)[keyof typeof SsoProviderScalarFieldEnum]
 
 
+  export const GravidezScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    dataUltimaMenstruacao: 'dataUltimaMenstruacao',
+    dataPrevistaParto: 'dataPrevistaParto',
+    gravida: 'gravida',
+    para: 'para',
+    grupoSanguineo: 'grupoSanguineo',
+    fatoresRisco: 'fatoresRisco',
+    estado: 'estado',
+    criadoPorId: 'criadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type GravidezScalarFieldEnum = (typeof GravidezScalarFieldEnum)[keyof typeof GravidezScalarFieldEnum]
+
+
+  export const RegistoPartogramaScalarFieldEnum: {
+    id: 'id',
+    gravidezId: 'gravidezId',
+    momento: 'momento',
+    dilatacaoCm: 'dilatacaoCm',
+    fcFetal: 'fcFetal',
+    contracoes10min: 'contracoes10min',
+    descidaApresentacao: 'descidaApresentacao',
+    notas: 'notas',
+    registadoPorId: 'registadoPorId'
+  };
+
+  export type RegistoPartogramaScalarFieldEnum = (typeof RegistoPartogramaScalarFieldEnum)[keyof typeof RegistoPartogramaScalarFieldEnum]
+
+
+  export const PartoScalarFieldEnum: {
+    id: 'id',
+    gravidezId: 'gravidezId',
+    dataHora: 'dataHora',
+    tipo: 'tipo',
+    complicacoes: 'complicacoes',
+    apgar1: 'apgar1',
+    apgar5: 'apgar5',
+    pesoRN: 'pesoRN',
+    sexoRN: 'sexoRN',
+    registadoPorId: 'registadoPorId'
+  };
+
+  export type PartoScalarFieldEnum = (typeof PartoScalarFieldEnum)[keyof typeof PartoScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -174329,6 +178281,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoListRelationFilter
     registosTransfusao?: RegistoTransfusaoListRelationFilter
     reacoesTransfusionais?: ReacaoTransfusionalListRelationFilter
+    gravidezes?: GravidezListRelationFilter
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -174409,6 +178362,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoOrderByRelationAggregateInput
     registosTransfusao?: RegistoTransfusaoOrderByRelationAggregateInput
     reacoesTransfusionais?: ReacaoTransfusionalOrderByRelationAggregateInput
+    gravidezes?: GravidezOrderByRelationAggregateInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -174492,6 +178446,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoListRelationFilter
     registosTransfusao?: RegistoTransfusaoListRelationFilter
     reacoesTransfusionais?: ReacaoTransfusionalListRelationFilter
+    gravidezes?: GravidezListRelationFilter
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -184748,6 +188703,258 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"SsoProvider"> | Date | string
   }
 
+  export type GravidezWhereInput = {
+    AND?: GravidezWhereInput | GravidezWhereInput[]
+    OR?: GravidezWhereInput[]
+    NOT?: GravidezWhereInput | GravidezWhereInput[]
+    id?: StringFilter<"Gravidez"> | string
+    doenteId?: StringFilter<"Gravidez"> | string
+    dataUltimaMenstruacao?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    dataPrevistaParto?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    gravida?: IntNullableFilter<"Gravidez"> | number | null
+    para?: IntNullableFilter<"Gravidez"> | number | null
+    grupoSanguineo?: StringNullableFilter<"Gravidez"> | string | null
+    fatoresRisco?: StringNullableFilter<"Gravidez"> | string | null
+    estado?: StringFilter<"Gravidez"> | string
+    criadoPorId?: StringFilter<"Gravidez"> | string
+    criadoEm?: DateTimeFilter<"Gravidez"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registosPartograma?: RegistoPartogramaListRelationFilter
+    parto?: XOR<PartoNullableScalarRelationFilter, PartoWhereInput> | null
+  }
+
+  export type GravidezOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataUltimaMenstruacao?: SortOrderInput | SortOrder
+    dataPrevistaParto?: SortOrderInput | SortOrder
+    gravida?: SortOrderInput | SortOrder
+    para?: SortOrderInput | SortOrder
+    grupoSanguineo?: SortOrderInput | SortOrder
+    fatoresRisco?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    registosPartograma?: RegistoPartogramaOrderByRelationAggregateInput
+    parto?: PartoOrderByWithRelationInput
+  }
+
+  export type GravidezWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GravidezWhereInput | GravidezWhereInput[]
+    OR?: GravidezWhereInput[]
+    NOT?: GravidezWhereInput | GravidezWhereInput[]
+    doenteId?: StringFilter<"Gravidez"> | string
+    dataUltimaMenstruacao?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    dataPrevistaParto?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    gravida?: IntNullableFilter<"Gravidez"> | number | null
+    para?: IntNullableFilter<"Gravidez"> | number | null
+    grupoSanguineo?: StringNullableFilter<"Gravidez"> | string | null
+    fatoresRisco?: StringNullableFilter<"Gravidez"> | string | null
+    estado?: StringFilter<"Gravidez"> | string
+    criadoPorId?: StringFilter<"Gravidez"> | string
+    criadoEm?: DateTimeFilter<"Gravidez"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registosPartograma?: RegistoPartogramaListRelationFilter
+    parto?: XOR<PartoNullableScalarRelationFilter, PartoWhereInput> | null
+  }, "id">
+
+  export type GravidezOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataUltimaMenstruacao?: SortOrderInput | SortOrder
+    dataPrevistaParto?: SortOrderInput | SortOrder
+    gravida?: SortOrderInput | SortOrder
+    para?: SortOrderInput | SortOrder
+    grupoSanguineo?: SortOrderInput | SortOrder
+    fatoresRisco?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: GravidezCountOrderByAggregateInput
+    _avg?: GravidezAvgOrderByAggregateInput
+    _max?: GravidezMaxOrderByAggregateInput
+    _min?: GravidezMinOrderByAggregateInput
+    _sum?: GravidezSumOrderByAggregateInput
+  }
+
+  export type GravidezScalarWhereWithAggregatesInput = {
+    AND?: GravidezScalarWhereWithAggregatesInput | GravidezScalarWhereWithAggregatesInput[]
+    OR?: GravidezScalarWhereWithAggregatesInput[]
+    NOT?: GravidezScalarWhereWithAggregatesInput | GravidezScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Gravidez"> | string
+    doenteId?: StringWithAggregatesFilter<"Gravidez"> | string
+    dataUltimaMenstruacao?: DateTimeNullableWithAggregatesFilter<"Gravidez"> | Date | string | null
+    dataPrevistaParto?: DateTimeNullableWithAggregatesFilter<"Gravidez"> | Date | string | null
+    gravida?: IntNullableWithAggregatesFilter<"Gravidez"> | number | null
+    para?: IntNullableWithAggregatesFilter<"Gravidez"> | number | null
+    grupoSanguineo?: StringNullableWithAggregatesFilter<"Gravidez"> | string | null
+    fatoresRisco?: StringNullableWithAggregatesFilter<"Gravidez"> | string | null
+    estado?: StringWithAggregatesFilter<"Gravidez"> | string
+    criadoPorId?: StringWithAggregatesFilter<"Gravidez"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"Gravidez"> | Date | string
+  }
+
+  export type RegistoPartogramaWhereInput = {
+    AND?: RegistoPartogramaWhereInput | RegistoPartogramaWhereInput[]
+    OR?: RegistoPartogramaWhereInput[]
+    NOT?: RegistoPartogramaWhereInput | RegistoPartogramaWhereInput[]
+    id?: StringFilter<"RegistoPartograma"> | string
+    gravidezId?: StringFilter<"RegistoPartograma"> | string
+    momento?: DateTimeFilter<"RegistoPartograma"> | Date | string
+    dilatacaoCm?: IntNullableFilter<"RegistoPartograma"> | number | null
+    fcFetal?: IntNullableFilter<"RegistoPartograma"> | number | null
+    contracoes10min?: IntNullableFilter<"RegistoPartograma"> | number | null
+    descidaApresentacao?: IntNullableFilter<"RegistoPartograma"> | number | null
+    notas?: StringNullableFilter<"RegistoPartograma"> | string | null
+    registadoPorId?: StringFilter<"RegistoPartograma"> | string
+    gravidez?: XOR<GravidezScalarRelationFilter, GravidezWhereInput>
+  }
+
+  export type RegistoPartogramaOrderByWithRelationInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    momento?: SortOrder
+    dilatacaoCm?: SortOrderInput | SortOrder
+    fcFetal?: SortOrderInput | SortOrder
+    contracoes10min?: SortOrderInput | SortOrder
+    descidaApresentacao?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    gravidez?: GravidezOrderByWithRelationInput
+  }
+
+  export type RegistoPartogramaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RegistoPartogramaWhereInput | RegistoPartogramaWhereInput[]
+    OR?: RegistoPartogramaWhereInput[]
+    NOT?: RegistoPartogramaWhereInput | RegistoPartogramaWhereInput[]
+    gravidezId?: StringFilter<"RegistoPartograma"> | string
+    momento?: DateTimeFilter<"RegistoPartograma"> | Date | string
+    dilatacaoCm?: IntNullableFilter<"RegistoPartograma"> | number | null
+    fcFetal?: IntNullableFilter<"RegistoPartograma"> | number | null
+    contracoes10min?: IntNullableFilter<"RegistoPartograma"> | number | null
+    descidaApresentacao?: IntNullableFilter<"RegistoPartograma"> | number | null
+    notas?: StringNullableFilter<"RegistoPartograma"> | string | null
+    registadoPorId?: StringFilter<"RegistoPartograma"> | string
+    gravidez?: XOR<GravidezScalarRelationFilter, GravidezWhereInput>
+  }, "id">
+
+  export type RegistoPartogramaOrderByWithAggregationInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    momento?: SortOrder
+    dilatacaoCm?: SortOrderInput | SortOrder
+    fcFetal?: SortOrderInput | SortOrder
+    contracoes10min?: SortOrderInput | SortOrder
+    descidaApresentacao?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    _count?: RegistoPartogramaCountOrderByAggregateInput
+    _avg?: RegistoPartogramaAvgOrderByAggregateInput
+    _max?: RegistoPartogramaMaxOrderByAggregateInput
+    _min?: RegistoPartogramaMinOrderByAggregateInput
+    _sum?: RegistoPartogramaSumOrderByAggregateInput
+  }
+
+  export type RegistoPartogramaScalarWhereWithAggregatesInput = {
+    AND?: RegistoPartogramaScalarWhereWithAggregatesInput | RegistoPartogramaScalarWhereWithAggregatesInput[]
+    OR?: RegistoPartogramaScalarWhereWithAggregatesInput[]
+    NOT?: RegistoPartogramaScalarWhereWithAggregatesInput | RegistoPartogramaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RegistoPartograma"> | string
+    gravidezId?: StringWithAggregatesFilter<"RegistoPartograma"> | string
+    momento?: DateTimeWithAggregatesFilter<"RegistoPartograma"> | Date | string
+    dilatacaoCm?: IntNullableWithAggregatesFilter<"RegistoPartograma"> | number | null
+    fcFetal?: IntNullableWithAggregatesFilter<"RegistoPartograma"> | number | null
+    contracoes10min?: IntNullableWithAggregatesFilter<"RegistoPartograma"> | number | null
+    descidaApresentacao?: IntNullableWithAggregatesFilter<"RegistoPartograma"> | number | null
+    notas?: StringNullableWithAggregatesFilter<"RegistoPartograma"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"RegistoPartograma"> | string
+  }
+
+  export type PartoWhereInput = {
+    AND?: PartoWhereInput | PartoWhereInput[]
+    OR?: PartoWhereInput[]
+    NOT?: PartoWhereInput | PartoWhereInput[]
+    id?: StringFilter<"Parto"> | string
+    gravidezId?: StringFilter<"Parto"> | string
+    dataHora?: DateTimeFilter<"Parto"> | Date | string
+    tipo?: StringFilter<"Parto"> | string
+    complicacoes?: StringNullableFilter<"Parto"> | string | null
+    apgar1?: IntNullableFilter<"Parto"> | number | null
+    apgar5?: IntNullableFilter<"Parto"> | number | null
+    pesoRN?: FloatNullableFilter<"Parto"> | number | null
+    sexoRN?: StringNullableFilter<"Parto"> | string | null
+    registadoPorId?: StringFilter<"Parto"> | string
+    gravidez?: XOR<GravidezScalarRelationFilter, GravidezWhereInput>
+  }
+
+  export type PartoOrderByWithRelationInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    dataHora?: SortOrder
+    tipo?: SortOrder
+    complicacoes?: SortOrderInput | SortOrder
+    apgar1?: SortOrderInput | SortOrder
+    apgar5?: SortOrderInput | SortOrder
+    pesoRN?: SortOrderInput | SortOrder
+    sexoRN?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    gravidez?: GravidezOrderByWithRelationInput
+  }
+
+  export type PartoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    gravidezId?: string
+    AND?: PartoWhereInput | PartoWhereInput[]
+    OR?: PartoWhereInput[]
+    NOT?: PartoWhereInput | PartoWhereInput[]
+    dataHora?: DateTimeFilter<"Parto"> | Date | string
+    tipo?: StringFilter<"Parto"> | string
+    complicacoes?: StringNullableFilter<"Parto"> | string | null
+    apgar1?: IntNullableFilter<"Parto"> | number | null
+    apgar5?: IntNullableFilter<"Parto"> | number | null
+    pesoRN?: FloatNullableFilter<"Parto"> | number | null
+    sexoRN?: StringNullableFilter<"Parto"> | string | null
+    registadoPorId?: StringFilter<"Parto"> | string
+    gravidez?: XOR<GravidezScalarRelationFilter, GravidezWhereInput>
+  }, "id" | "gravidezId">
+
+  export type PartoOrderByWithAggregationInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    dataHora?: SortOrder
+    tipo?: SortOrder
+    complicacoes?: SortOrderInput | SortOrder
+    apgar1?: SortOrderInput | SortOrder
+    apgar5?: SortOrderInput | SortOrder
+    pesoRN?: SortOrderInput | SortOrder
+    sexoRN?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    _count?: PartoCountOrderByAggregateInput
+    _avg?: PartoAvgOrderByAggregateInput
+    _max?: PartoMaxOrderByAggregateInput
+    _min?: PartoMinOrderByAggregateInput
+    _sum?: PartoSumOrderByAggregateInput
+  }
+
+  export type PartoScalarWhereWithAggregatesInput = {
+    AND?: PartoScalarWhereWithAggregatesInput | PartoScalarWhereWithAggregatesInput[]
+    OR?: PartoScalarWhereWithAggregatesInput[]
+    NOT?: PartoScalarWhereWithAggregatesInput | PartoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Parto"> | string
+    gravidezId?: StringWithAggregatesFilter<"Parto"> | string
+    dataHora?: DateTimeWithAggregatesFilter<"Parto"> | Date | string
+    tipo?: StringWithAggregatesFilter<"Parto"> | string
+    complicacoes?: StringNullableWithAggregatesFilter<"Parto"> | string | null
+    apgar1?: IntNullableWithAggregatesFilter<"Parto"> | number | null
+    apgar5?: IntNullableWithAggregatesFilter<"Parto"> | number | null
+    pesoRN?: FloatNullableWithAggregatesFilter<"Parto"> | number | null
+    sexoRN?: StringNullableWithAggregatesFilter<"Parto"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"Parto"> | string
+  }
+
   export type RoleConfigCreateInput = {
     id?: string
     chave: string
@@ -185650,6 +189857,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -185728,6 +189936,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -185806,6 +190015,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -185884,6 +190094,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -196872,6 +201083,284 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GravidezCreateInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutGravidezesInput
+    registosPartograma?: RegistoPartogramaCreateNestedManyWithoutGravidezInput
+    parto?: PartoCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    registosPartograma?: RegistoPartogramaUncheckedCreateNestedManyWithoutGravidezInput
+    parto?: PartoUncheckedCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutGravidezesNestedInput
+    registosPartograma?: RegistoPartogramaUpdateManyWithoutGravidezNestedInput
+    parto?: PartoUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registosPartograma?: RegistoPartogramaUncheckedUpdateManyWithoutGravidezNestedInput
+    parto?: PartoUncheckedUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezCreateManyInput = {
+    id?: string
+    doenteId: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type GravidezUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GravidezUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegistoPartogramaCreateInput = {
+    id?: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+    gravidez: GravidezCreateNestedOneWithoutRegistosPartogramaInput
+  }
+
+  export type RegistoPartogramaUncheckedCreateInput = {
+    id?: string
+    gravidezId: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type RegistoPartogramaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    gravidez?: GravidezUpdateOneRequiredWithoutRegistosPartogramaNestedInput
+  }
+
+  export type RegistoPartogramaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gravidezId?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegistoPartogramaCreateManyInput = {
+    id?: string
+    gravidezId: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type RegistoPartogramaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegistoPartogramaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gravidezId?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PartoCreateInput = {
+    id?: string
+    dataHora?: Date | string
+    tipo: string
+    complicacoes?: string | null
+    apgar1?: number | null
+    apgar5?: number | null
+    pesoRN?: number | null
+    sexoRN?: string | null
+    registadoPorId: string
+    gravidez: GravidezCreateNestedOneWithoutPartoInput
+  }
+
+  export type PartoUncheckedCreateInput = {
+    id?: string
+    gravidezId: string
+    dataHora?: Date | string
+    tipo: string
+    complicacoes?: string | null
+    apgar1?: number | null
+    apgar5?: number | null
+    pesoRN?: number | null
+    sexoRN?: string | null
+    registadoPorId: string
+  }
+
+  export type PartoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    gravidez?: GravidezUpdateOneRequiredWithoutPartoNestedInput
+  }
+
+  export type PartoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gravidezId?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PartoCreateManyInput = {
+    id?: string
+    gravidezId: string
+    dataHora?: Date | string
+    tipo: string
+    complicacoes?: string | null
+    apgar1?: number | null
+    apgar5?: number | null
+    pesoRN?: number | null
+    sexoRN?: string | null
+    registadoPorId: string
+  }
+
+  export type PartoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PartoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gravidezId?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -198249,6 +202738,12 @@ export namespace Prisma {
     none?: StewardshipAntibioticoWhereInput
   }
 
+  export type GravidezListRelationFilter = {
+    every?: GravidezWhereInput
+    some?: GravidezWhereInput
+    none?: GravidezWhereInput
+  }
+
   export type PassagemTurnoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -198274,6 +202769,10 @@ export namespace Prisma {
   }
 
   export type StewardshipAntibioticoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GravidezOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -204454,6 +208953,179 @@ export namespace Prisma {
     criadoEm?: SortOrder
   }
 
+  export type RegistoPartogramaListRelationFilter = {
+    every?: RegistoPartogramaWhereInput
+    some?: RegistoPartogramaWhereInput
+    none?: RegistoPartogramaWhereInput
+  }
+
+  export type PartoNullableScalarRelationFilter = {
+    is?: PartoWhereInput | null
+    isNot?: PartoWhereInput | null
+  }
+
+  export type RegistoPartogramaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GravidezCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataUltimaMenstruacao?: SortOrder
+    dataPrevistaParto?: SortOrder
+    gravida?: SortOrder
+    para?: SortOrder
+    grupoSanguineo?: SortOrder
+    fatoresRisco?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type GravidezAvgOrderByAggregateInput = {
+    gravida?: SortOrder
+    para?: SortOrder
+  }
+
+  export type GravidezMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataUltimaMenstruacao?: SortOrder
+    dataPrevistaParto?: SortOrder
+    gravida?: SortOrder
+    para?: SortOrder
+    grupoSanguineo?: SortOrder
+    fatoresRisco?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type GravidezMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataUltimaMenstruacao?: SortOrder
+    dataPrevistaParto?: SortOrder
+    gravida?: SortOrder
+    para?: SortOrder
+    grupoSanguineo?: SortOrder
+    fatoresRisco?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type GravidezSumOrderByAggregateInput = {
+    gravida?: SortOrder
+    para?: SortOrder
+  }
+
+  export type GravidezScalarRelationFilter = {
+    is?: GravidezWhereInput
+    isNot?: GravidezWhereInput
+  }
+
+  export type RegistoPartogramaCountOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    momento?: SortOrder
+    dilatacaoCm?: SortOrder
+    fcFetal?: SortOrder
+    contracoes10min?: SortOrder
+    descidaApresentacao?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type RegistoPartogramaAvgOrderByAggregateInput = {
+    dilatacaoCm?: SortOrder
+    fcFetal?: SortOrder
+    contracoes10min?: SortOrder
+    descidaApresentacao?: SortOrder
+  }
+
+  export type RegistoPartogramaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    momento?: SortOrder
+    dilatacaoCm?: SortOrder
+    fcFetal?: SortOrder
+    contracoes10min?: SortOrder
+    descidaApresentacao?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type RegistoPartogramaMinOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    momento?: SortOrder
+    dilatacaoCm?: SortOrder
+    fcFetal?: SortOrder
+    contracoes10min?: SortOrder
+    descidaApresentacao?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type RegistoPartogramaSumOrderByAggregateInput = {
+    dilatacaoCm?: SortOrder
+    fcFetal?: SortOrder
+    contracoes10min?: SortOrder
+    descidaApresentacao?: SortOrder
+  }
+
+  export type PartoCountOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    dataHora?: SortOrder
+    tipo?: SortOrder
+    complicacoes?: SortOrder
+    apgar1?: SortOrder
+    apgar5?: SortOrder
+    pesoRN?: SortOrder
+    sexoRN?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type PartoAvgOrderByAggregateInput = {
+    apgar1?: SortOrder
+    apgar5?: SortOrder
+    pesoRN?: SortOrder
+  }
+
+  export type PartoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    dataHora?: SortOrder
+    tipo?: SortOrder
+    complicacoes?: SortOrder
+    apgar1?: SortOrder
+    apgar5?: SortOrder
+    pesoRN?: SortOrder
+    sexoRN?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type PartoMinOrderByAggregateInput = {
+    id?: SortOrder
+    gravidezId?: SortOrder
+    dataHora?: SortOrder
+    tipo?: SortOrder
+    complicacoes?: SortOrder
+    apgar1?: SortOrder
+    apgar5?: SortOrder
+    pesoRN?: SortOrder
+    sexoRN?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type PartoSumOrderByAggregateInput = {
+    apgar1?: SortOrder
+    apgar5?: SortOrder
+    pesoRN?: SortOrder
+  }
+
   export type SubRoleConfigCreateNestedManyWithoutRoleInput = {
     create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
@@ -210039,6 +214711,13 @@ export namespace Prisma {
     connect?: ReacaoTransfusionalWhereUniqueInput | ReacaoTransfusionalWhereUniqueInput[]
   }
 
+  export type GravidezCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput> | GravidezCreateWithoutDoenteInput[] | GravidezUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: GravidezCreateOrConnectWithoutDoenteInput | GravidezCreateOrConnectWithoutDoenteInput[]
+    createMany?: GravidezCreateManyDoenteInputEnvelope
+    connect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -210410,6 +215089,13 @@ export namespace Prisma {
     connectOrCreate?: ReacaoTransfusionalCreateOrConnectWithoutDoenteInput | ReacaoTransfusionalCreateOrConnectWithoutDoenteInput[]
     createMany?: ReacaoTransfusionalCreateManyDoenteInputEnvelope
     connect?: ReacaoTransfusionalWhereUniqueInput | ReacaoTransfusionalWhereUniqueInput[]
+  }
+
+  export type GravidezUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput> | GravidezCreateWithoutDoenteInput[] | GravidezUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: GravidezCreateOrConnectWithoutDoenteInput | GravidezCreateOrConnectWithoutDoenteInput[]
+    createMany?: GravidezCreateManyDoenteInputEnvelope
+    connect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -211172,6 +215858,20 @@ export namespace Prisma {
     deleteMany?: ReacaoTransfusionalScalarWhereInput | ReacaoTransfusionalScalarWhereInput[]
   }
 
+  export type GravidezUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput> | GravidezCreateWithoutDoenteInput[] | GravidezUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: GravidezCreateOrConnectWithoutDoenteInput | GravidezCreateOrConnectWithoutDoenteInput[]
+    upsert?: GravidezUpsertWithWhereUniqueWithoutDoenteInput | GravidezUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: GravidezCreateManyDoenteInputEnvelope
+    set?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    disconnect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    delete?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    connect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    update?: GravidezUpdateWithWhereUniqueWithoutDoenteInput | GravidezUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: GravidezUpdateManyWithWhereWithoutDoenteInput | GravidezUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: GravidezScalarWhereInput | GravidezScalarWhereInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -211906,6 +216606,20 @@ export namespace Prisma {
     update?: ReacaoTransfusionalUpdateWithWhereUniqueWithoutDoenteInput | ReacaoTransfusionalUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: ReacaoTransfusionalUpdateManyWithWhereWithoutDoenteInput | ReacaoTransfusionalUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: ReacaoTransfusionalScalarWhereInput | ReacaoTransfusionalScalarWhereInput[]
+  }
+
+  export type GravidezUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput> | GravidezCreateWithoutDoenteInput[] | GravidezUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: GravidezCreateOrConnectWithoutDoenteInput | GravidezCreateOrConnectWithoutDoenteInput[]
+    upsert?: GravidezUpsertWithWhereUniqueWithoutDoenteInput | GravidezUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: GravidezCreateManyDoenteInputEnvelope
+    set?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    disconnect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    delete?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    connect?: GravidezWhereUniqueInput | GravidezWhereUniqueInput[]
+    update?: GravidezUpdateWithWhereUniqueWithoutDoenteInput | GravidezUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: GravidezUpdateManyWithWhereWithoutDoenteInput | GravidezUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: GravidezScalarWhereInput | GravidezScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -216706,6 +221420,122 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutRegrasCliniasCriadasInput, UtilizadorUpdateWithoutRegrasCliniasCriadasInput>, UtilizadorUncheckedUpdateWithoutRegrasCliniasCriadasInput>
   }
 
+  export type DoenteCreateNestedOneWithoutGravidezesInput = {
+    create?: XOR<DoenteCreateWithoutGravidezesInput, DoenteUncheckedCreateWithoutGravidezesInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutGravidezesInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type RegistoPartogramaCreateNestedManyWithoutGravidezInput = {
+    create?: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput> | RegistoPartogramaCreateWithoutGravidezInput[] | RegistoPartogramaUncheckedCreateWithoutGravidezInput[]
+    connectOrCreate?: RegistoPartogramaCreateOrConnectWithoutGravidezInput | RegistoPartogramaCreateOrConnectWithoutGravidezInput[]
+    createMany?: RegistoPartogramaCreateManyGravidezInputEnvelope
+    connect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+  }
+
+  export type PartoCreateNestedOneWithoutGravidezInput = {
+    create?: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+    connectOrCreate?: PartoCreateOrConnectWithoutGravidezInput
+    connect?: PartoWhereUniqueInput
+  }
+
+  export type RegistoPartogramaUncheckedCreateNestedManyWithoutGravidezInput = {
+    create?: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput> | RegistoPartogramaCreateWithoutGravidezInput[] | RegistoPartogramaUncheckedCreateWithoutGravidezInput[]
+    connectOrCreate?: RegistoPartogramaCreateOrConnectWithoutGravidezInput | RegistoPartogramaCreateOrConnectWithoutGravidezInput[]
+    createMany?: RegistoPartogramaCreateManyGravidezInputEnvelope
+    connect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+  }
+
+  export type PartoUncheckedCreateNestedOneWithoutGravidezInput = {
+    create?: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+    connectOrCreate?: PartoCreateOrConnectWithoutGravidezInput
+    connect?: PartoWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutGravidezesNestedInput = {
+    create?: XOR<DoenteCreateWithoutGravidezesInput, DoenteUncheckedCreateWithoutGravidezesInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutGravidezesInput
+    upsert?: DoenteUpsertWithoutGravidezesInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutGravidezesInput, DoenteUpdateWithoutGravidezesInput>, DoenteUncheckedUpdateWithoutGravidezesInput>
+  }
+
+  export type RegistoPartogramaUpdateManyWithoutGravidezNestedInput = {
+    create?: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput> | RegistoPartogramaCreateWithoutGravidezInput[] | RegistoPartogramaUncheckedCreateWithoutGravidezInput[]
+    connectOrCreate?: RegistoPartogramaCreateOrConnectWithoutGravidezInput | RegistoPartogramaCreateOrConnectWithoutGravidezInput[]
+    upsert?: RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput | RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput[]
+    createMany?: RegistoPartogramaCreateManyGravidezInputEnvelope
+    set?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    disconnect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    delete?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    connect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    update?: RegistoPartogramaUpdateWithWhereUniqueWithoutGravidezInput | RegistoPartogramaUpdateWithWhereUniqueWithoutGravidezInput[]
+    updateMany?: RegistoPartogramaUpdateManyWithWhereWithoutGravidezInput | RegistoPartogramaUpdateManyWithWhereWithoutGravidezInput[]
+    deleteMany?: RegistoPartogramaScalarWhereInput | RegistoPartogramaScalarWhereInput[]
+  }
+
+  export type PartoUpdateOneWithoutGravidezNestedInput = {
+    create?: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+    connectOrCreate?: PartoCreateOrConnectWithoutGravidezInput
+    upsert?: PartoUpsertWithoutGravidezInput
+    disconnect?: PartoWhereInput | boolean
+    delete?: PartoWhereInput | boolean
+    connect?: PartoWhereUniqueInput
+    update?: XOR<XOR<PartoUpdateToOneWithWhereWithoutGravidezInput, PartoUpdateWithoutGravidezInput>, PartoUncheckedUpdateWithoutGravidezInput>
+  }
+
+  export type RegistoPartogramaUncheckedUpdateManyWithoutGravidezNestedInput = {
+    create?: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput> | RegistoPartogramaCreateWithoutGravidezInput[] | RegistoPartogramaUncheckedCreateWithoutGravidezInput[]
+    connectOrCreate?: RegistoPartogramaCreateOrConnectWithoutGravidezInput | RegistoPartogramaCreateOrConnectWithoutGravidezInput[]
+    upsert?: RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput | RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput[]
+    createMany?: RegistoPartogramaCreateManyGravidezInputEnvelope
+    set?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    disconnect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    delete?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    connect?: RegistoPartogramaWhereUniqueInput | RegistoPartogramaWhereUniqueInput[]
+    update?: RegistoPartogramaUpdateWithWhereUniqueWithoutGravidezInput | RegistoPartogramaUpdateWithWhereUniqueWithoutGravidezInput[]
+    updateMany?: RegistoPartogramaUpdateManyWithWhereWithoutGravidezInput | RegistoPartogramaUpdateManyWithWhereWithoutGravidezInput[]
+    deleteMany?: RegistoPartogramaScalarWhereInput | RegistoPartogramaScalarWhereInput[]
+  }
+
+  export type PartoUncheckedUpdateOneWithoutGravidezNestedInput = {
+    create?: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+    connectOrCreate?: PartoCreateOrConnectWithoutGravidezInput
+    upsert?: PartoUpsertWithoutGravidezInput
+    disconnect?: PartoWhereInput | boolean
+    delete?: PartoWhereInput | boolean
+    connect?: PartoWhereUniqueInput
+    update?: XOR<XOR<PartoUpdateToOneWithWhereWithoutGravidezInput, PartoUpdateWithoutGravidezInput>, PartoUncheckedUpdateWithoutGravidezInput>
+  }
+
+  export type GravidezCreateNestedOneWithoutRegistosPartogramaInput = {
+    create?: XOR<GravidezCreateWithoutRegistosPartogramaInput, GravidezUncheckedCreateWithoutRegistosPartogramaInput>
+    connectOrCreate?: GravidezCreateOrConnectWithoutRegistosPartogramaInput
+    connect?: GravidezWhereUniqueInput
+  }
+
+  export type GravidezUpdateOneRequiredWithoutRegistosPartogramaNestedInput = {
+    create?: XOR<GravidezCreateWithoutRegistosPartogramaInput, GravidezUncheckedCreateWithoutRegistosPartogramaInput>
+    connectOrCreate?: GravidezCreateOrConnectWithoutRegistosPartogramaInput
+    upsert?: GravidezUpsertWithoutRegistosPartogramaInput
+    connect?: GravidezWhereUniqueInput
+    update?: XOR<XOR<GravidezUpdateToOneWithWhereWithoutRegistosPartogramaInput, GravidezUpdateWithoutRegistosPartogramaInput>, GravidezUncheckedUpdateWithoutRegistosPartogramaInput>
+  }
+
+  export type GravidezCreateNestedOneWithoutPartoInput = {
+    create?: XOR<GravidezCreateWithoutPartoInput, GravidezUncheckedCreateWithoutPartoInput>
+    connectOrCreate?: GravidezCreateOrConnectWithoutPartoInput
+    connect?: GravidezWhereUniqueInput
+  }
+
+  export type GravidezUpdateOneRequiredWithoutPartoNestedInput = {
+    create?: XOR<GravidezCreateWithoutPartoInput, GravidezUncheckedCreateWithoutPartoInput>
+    connectOrCreate?: GravidezCreateOrConnectWithoutPartoInput
+    upsert?: GravidezUpsertWithoutPartoInput
+    connect?: GravidezWhereUniqueInput
+    update?: XOR<XOR<GravidezUpdateToOneWithWhereWithoutPartoInput, GravidezUpdateWithoutPartoInput>, GravidezUncheckedUpdateWithoutPartoInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -218008,6 +222838,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -218085,6 +222916,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -226408,6 +231240,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -226485,6 +231318,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -226578,6 +231412,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -226655,6 +231490,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -228934,6 +233770,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GravidezCreateWithoutDoenteInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    registosPartograma?: RegistoPartogramaCreateNestedManyWithoutGravidezInput
+    parto?: PartoCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    registosPartograma?: RegistoPartogramaUncheckedCreateNestedManyWithoutGravidezInput
+    parto?: PartoUncheckedCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezCreateOrConnectWithoutDoenteInput = {
+    where: GravidezWhereUniqueInput
+    create: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type GravidezCreateManyDoenteInputEnvelope = {
+    data: GravidezCreateManyDoenteInput | GravidezCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -230341,6 +235217,39 @@ export namespace Prisma {
     data: XOR<ReacaoTransfusionalUpdateManyMutationInput, ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteInput>
   }
 
+  export type GravidezUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: GravidezWhereUniqueInput
+    update: XOR<GravidezUpdateWithoutDoenteInput, GravidezUncheckedUpdateWithoutDoenteInput>
+    create: XOR<GravidezCreateWithoutDoenteInput, GravidezUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type GravidezUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: GravidezWhereUniqueInput
+    data: XOR<GravidezUpdateWithoutDoenteInput, GravidezUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type GravidezUpdateManyWithWhereWithoutDoenteInput = {
+    where: GravidezScalarWhereInput
+    data: XOR<GravidezUpdateManyMutationInput, GravidezUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type GravidezScalarWhereInput = {
+    AND?: GravidezScalarWhereInput | GravidezScalarWhereInput[]
+    OR?: GravidezScalarWhereInput[]
+    NOT?: GravidezScalarWhereInput | GravidezScalarWhereInput[]
+    id?: StringFilter<"Gravidez"> | string
+    doenteId?: StringFilter<"Gravidez"> | string
+    dataUltimaMenstruacao?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    dataPrevistaParto?: DateTimeNullableFilter<"Gravidez"> | Date | string | null
+    gravida?: IntNullableFilter<"Gravidez"> | number | null
+    para?: IntNullableFilter<"Gravidez"> | number | null
+    grupoSanguineo?: StringNullableFilter<"Gravidez"> | string | null
+    fatoresRisco?: StringNullableFilter<"Gravidez"> | string | null
+    estado?: StringFilter<"Gravidez"> | string
+    criadoPorId?: StringFilter<"Gravidez"> | string
+    criadoEm?: DateTimeFilter<"Gravidez"> | Date | string
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     tenantId?: string
@@ -231262,6 +236171,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -231339,6 +236249,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -231748,6 +236659,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -231825,6 +236737,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -232936,6 +237849,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -233013,6 +237927,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -233180,6 +238095,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -233257,6 +238173,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorCreateWithoutPresencaOnlineInput = {
@@ -234486,6 +239403,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
@@ -234563,6 +239481,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasClinciasInput = {
@@ -235226,6 +240145,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
@@ -235303,6 +240223,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasClinciasAutorInput = {
@@ -235962,6 +240883,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
@@ -236039,6 +240961,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEscalasClinicasInput = {
@@ -236417,6 +241340,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
@@ -236494,6 +241418,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEscalasClinicasRegistadasInput = {
@@ -236893,6 +241818,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -236970,6 +241896,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -237385,6 +242312,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -237462,6 +242390,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -237830,6 +242759,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -237907,6 +242837,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -238601,6 +243532,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -238678,6 +243610,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -239374,6 +244307,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -239451,6 +244385,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -240462,6 +245397,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -240539,6 +245475,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -241540,6 +246477,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutStewardshipAntibioticosInput = {
@@ -241617,6 +246555,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutStewardshipAntibioticosInput = {
@@ -241759,6 +246698,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutStewardshipAntibioticosInput = {
@@ -241836,6 +246776,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type MedicacaoUpsertWithoutStewardshipInput = {
@@ -242017,6 +246958,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -242094,6 +247036,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -242527,6 +247470,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -242604,6 +247548,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -246201,6 +251146,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -246278,6 +251224,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -246970,6 +251917,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -247047,6 +251995,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -247706,6 +252655,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
@@ -247783,6 +252733,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
@@ -248161,6 +253112,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
@@ -248238,6 +253190,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
@@ -248606,6 +253559,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBalancosHidricosInput = {
@@ -248683,6 +253637,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBalancosHidricosInput = {
@@ -249061,6 +254016,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBalancosHidricosInput = {
@@ -249138,6 +254094,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutBalancosHidricosRegistadosInput = {
@@ -249506,6 +254463,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFeridasInput = {
@@ -249583,6 +254541,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFeridasInput = {
@@ -249991,6 +254950,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFeridasInput = {
@@ -250068,6 +255028,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFeridasRegistadasInput = {
@@ -250616,6 +255577,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosTransfusaoInput = {
@@ -250693,6 +255655,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosTransfusaoInput = {
@@ -251153,6 +256116,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosTransfusaoInput = {
@@ -251230,6 +256194,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransfusoesPrescritasInput = {
@@ -251727,6 +256692,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoCreateNestedManyWithoutDoenteInput
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosTransfusaoInput = {
@@ -251804,6 +256770,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedCreateNestedManyWithoutDoenteInput
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosTransfusaoInput = {
@@ -252301,6 +257268,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUpdateManyWithoutDoenteNestedInput
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosTransfusaoInput = {
@@ -252378,6 +257346,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransfusoesAdministradasInput = {
@@ -252816,6 +257785,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoCreateNestedManyWithoutDoenteInput
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutReacoesTransfusionaisInput = {
@@ -252893,6 +257863,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedCreateNestedManyWithoutDoenteInput
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutReacoesTransfusionaisInput = {
@@ -253312,6 +258283,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUpdateManyWithoutDoenteNestedInput
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutReacoesTransfusionaisInput = {
@@ -253389,6 +258361,7 @@ export namespace Prisma {
     outcomesClinicos?: OutcomeClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutReacoesTransfusionaisRegistoInput = {
@@ -254333,6 +259306,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
@@ -254410,6 +259384,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlergiasInput = {
@@ -254503,6 +259478,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
@@ -254580,6 +259556,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -254657,6 +259634,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
@@ -254734,6 +259712,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
@@ -254827,6 +259806,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
@@ -254904,6 +259884,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAlertasClinicosInput = {
@@ -254981,6 +259962,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
@@ -255058,6 +260040,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
@@ -255436,6 +260419,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
@@ -255513,6 +260497,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAlertasAcusadosInput = {
@@ -255881,6 +260866,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -255958,6 +260944,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -256336,6 +261323,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -256413,6 +261401,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
@@ -256781,6 +261770,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
@@ -256858,6 +261848,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
@@ -257236,6 +262227,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
@@ -257313,6 +262305,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSumariosAltaInput = {
@@ -258833,6 +263826,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutExamesInput = {
@@ -258910,6 +263904,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutExamesInput = {
@@ -259312,6 +264307,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutExamesInput = {
@@ -259389,6 +264385,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutExamesSolicitadosInput = {
@@ -259856,6 +264853,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
@@ -259933,6 +264931,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosUrgenciaInput = {
@@ -260907,6 +265906,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
@@ -260984,6 +265984,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosTriadosInput = {
@@ -262686,6 +267687,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
@@ -262763,6 +267765,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCirurgiasInput = {
@@ -263457,6 +268460,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
@@ -263534,6 +268538,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoCircurgiaoInput = {
@@ -266042,6 +271047,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsultasInput = {
@@ -266119,6 +271125,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsultasInput = {
@@ -266558,6 +271565,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
@@ -266635,6 +271643,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsultasInput = {
@@ -273631,6 +278640,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -273708,6 +278718,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -274118,6 +279129,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -274195,6 +279207,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPlanosReabilitacaoInput = {
@@ -274606,6 +279619,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -274683,6 +279697,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -275094,6 +280109,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -275171,6 +280187,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesFisioterapiaInput = {
@@ -275539,6 +280556,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
@@ -275616,6 +280634,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosInternosInput = {
@@ -276279,6 +281298,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
@@ -276356,6 +281376,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosSolicitadosInput = {
@@ -278856,6 +283877,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
@@ -278933,6 +283955,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutInterconsultasInput = {
@@ -279596,6 +284619,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
@@ -279673,6 +284697,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRequisitadasInput = {
@@ -280332,6 +285357,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
@@ -280409,6 +285435,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDispositivosInvasivosInput = {
@@ -280787,6 +285814,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
@@ -280864,6 +285892,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutDispositivosInseridosInput = {
@@ -284224,6 +289253,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
@@ -284301,6 +289331,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFicheiroPessoalInput = {
@@ -284679,6 +289710,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
@@ -284756,6 +289788,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput = {
@@ -285124,6 +290157,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
@@ -285201,6 +290235,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput = {
@@ -285688,6 +290723,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
@@ -285765,6 +290801,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type ConsultaUpsertWithoutEpisodioFaturacaoInput = {
@@ -287750,6 +292787,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProblemasInput = {
@@ -287827,6 +292865,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProblemasInput = {
@@ -288205,6 +293244,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProblemasInput = {
@@ -288282,6 +293322,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProblemasRegistadosInput = {
@@ -293374,6 +298415,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEventosAdversosInput = {
@@ -293451,6 +298493,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEventosAdversosInput = {
@@ -293829,6 +298872,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEventosAdversosInput = {
@@ -293906,6 +298950,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEventosAdversosRegistadosInput = {
@@ -294274,6 +299319,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -294351,6 +299397,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -294729,6 +299776,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -294806,6 +299854,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesEspecialidadeInput = {
@@ -296902,6 +301951,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsentimentosInput = {
@@ -296979,6 +302029,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsentimentosInput = {
@@ -297642,6 +302693,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsentimentosInput = {
@@ -297719,6 +302771,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsentimentosTestemunhaInput = {
@@ -298663,6 +303716,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBreakGlassAcessosInput = {
@@ -298740,6 +303794,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBreakGlassAcessosInput = {
@@ -299124,6 +304179,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBreakGlassAcessosInput = {
@@ -299201,6 +304257,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutProtocolosClinicosInput = {
@@ -299278,6 +304335,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProtocolosClinicosInput = {
@@ -299355,6 +304413,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProtocolosClinicosInput = {
@@ -299761,6 +304820,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProtocolosClinicosInput = {
@@ -299838,6 +304898,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProtocolosAtivadosInput = {
@@ -300850,6 +305911,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPrescricoesDietaInput = {
@@ -300927,6 +305989,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPrescricoesDietaInput = {
@@ -301305,6 +306368,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPrescricoesDietaInput = {
@@ -301382,6 +306446,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPrescricoesDietaCriadasInput = {
@@ -301750,6 +306815,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput = {
@@ -301827,6 +306893,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCulturasMicrobiologicasInput = {
@@ -302205,6 +307272,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput = {
@@ -302282,6 +307350,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCulturasRegistadasInput = {
@@ -303802,6 +308871,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinalizacoesInput = {
@@ -303879,6 +308949,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinalizacoesInput = {
@@ -304542,6 +309613,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinalizacoesInput = {
@@ -304619,6 +309691,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinalizacoesCriadasInput = {
@@ -305278,6 +310351,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasSepsisInput = {
@@ -305355,6 +310429,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasSepsisInput = {
@@ -305448,6 +310523,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasSepsisInput = {
@@ -305525,6 +310601,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutBaselineInput = {
@@ -305602,6 +310679,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBaselineInput = {
@@ -305679,6 +310757,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBaselineInput = {
@@ -305772,6 +310851,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBaselineInput = {
@@ -305849,6 +310929,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutPlanoAltaInput = {
@@ -305926,6 +311007,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanoAltaInput = {
@@ -306003,6 +311085,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanoAltaInput = {
@@ -306096,6 +311179,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanoAltaInput = {
@@ -306173,6 +311257,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutReconciliacoesMedicacaoInput = {
@@ -306250,6 +311335,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutReconciliacoesMedicacaoInput = {
@@ -306327,6 +311413,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutReconciliacoesMedicacaoInput = {
@@ -306990,6 +312077,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutReconciliacoesMedicacaoInput = {
@@ -307067,6 +312155,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutReconciliacoesCriadasInput = {
@@ -308878,6 +313967,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAcessosFamiliaresInput = {
@@ -308955,6 +314045,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAcessosFamiliaresInput = {
@@ -309333,6 +314424,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAcessosFamiliaresInput = {
@@ -309410,6 +314502,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAcessosFamiliaresCriadosInput = {
@@ -309850,6 +314943,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutIdentificadoresExternosInput = {
@@ -309927,6 +315021,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutIdentificadoresExternosInput = {
@@ -310020,6 +315115,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutIdentificadoresExternosInput = {
@@ -310097,6 +315193,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutDocumentosSaudeInput = {
@@ -310174,6 +315271,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDocumentosSaudeInput = {
@@ -310251,6 +315349,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDocumentosSaudeInput = {
@@ -310943,6 +316042,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDocumentosSaudeInput = {
@@ -311020,6 +316120,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type SistemaExternoSaudeUpsertWithoutDocumentosInput = {
@@ -312290,6 +317391,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutOutcomesClinicosInput = {
@@ -312367,6 +317469,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutOutcomesClinicosInput = {
@@ -312745,6 +317848,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutOutcomesClinicosInput = {
@@ -312822,6 +317926,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutOutcomesRegistadosInput = {
@@ -313190,6 +318295,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutResultadosAnaliseInput = {
@@ -313267,6 +318373,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutResultadosAnaliseInput = {
@@ -313645,6 +318752,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutResultadosAnaliseInput = {
@@ -313722,6 +318830,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutResultadosAnaliseRegistadosInput = {
@@ -315394,6 +320503,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosProInput = {
@@ -315471,6 +320581,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosProInput = {
@@ -315585,6 +320696,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosProInput = {
@@ -315662,6 +320774,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type TemplatePROUpsertWithoutRegistosInput = {
@@ -315766,6 +320879,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPortalDoenteInput = {
@@ -315843,6 +320957,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPortalDoenteInput = {
@@ -316221,6 +321336,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPortalDoenteInput = {
@@ -316298,6 +321414,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPortaisCriadosInput = {
@@ -317242,6 +322359,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFollowUpsInput = {
@@ -317319,6 +322437,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFollowUpsInput = {
@@ -317697,6 +322816,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFollowUpsInput = {
@@ -317774,6 +322894,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFollowUpsResponsavelInput = {
@@ -319294,6 +324415,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTransferenciasExternasInput = {
@@ -319371,6 +324493,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTransferenciasExternasInput = {
@@ -320034,6 +325157,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTransferenciasExternasInput = {
@@ -320111,6 +325235,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransExternasSolicitadasInput = {
@@ -321269,6 +326394,613 @@ export namespace Prisma {
     transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
     transfusoesAdministradas?: RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
     reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type DoenteCreateWithoutGravidezesInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    icd10Code?: string | null
+    grupoSanguineo?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    fotoUrl?: string | null
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
+    balancosHidricos?: BalancoHidricoCreateNestedManyWithoutDoenteInput
+    feridas?: AvaliacaoFeridaCreateNestedManyWithoutDoenteInput
+    sinalizacoes?: SinalizacaoPreocupanteCreateNestedManyWithoutDoenteInput
+    alertasSepsis?: AlertaSepsisCreateNestedManyWithoutDoenteInput
+    baseline?: BaselineDoenteCreateNestedOneWithoutDoenteInput
+    planoAlta?: PlanoAltaCreateNestedOneWithoutDoenteInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoCreateNestedManyWithoutDoenteInput
+    acessosFamiliares?: AcessoFamiliarCreateNestedManyWithoutDoenteInput
+    resultadosAnalise?: ResultadoAnaliseCreateNestedManyWithoutDoenteInput
+    documentosSaude?: DocumentoSaudeCreateNestedManyWithoutDoenteInput
+    identificadoresExternos?: IdentificadorExternoCreateNestedManyWithoutDoenteInput
+    portalDoente?: PortalDoenteCreateNestedOneWithoutDoenteInput
+    registosPro?: RegistoPROCreateNestedManyWithoutDoenteInput
+    transferenciasExternas?: TransferenciaExternaCreateNestedManyWithoutDoenteInput
+    stewardshipAntibioticos?: StewardshipAntibioticoCreateNestedManyWithoutDoenteInput
+    followUps?: FollowUpAgendadoCreateNestedManyWithoutDoenteInput
+    outcomesClinicos?: OutcomeClinicoCreateNestedManyWithoutDoenteInput
+    pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
+    reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutGravidezesInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    icd10Code?: string | null
+    grupoSanguineo?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    fotoUrl?: string | null
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoUncheckedCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
+    balancosHidricos?: BalancoHidricoUncheckedCreateNestedManyWithoutDoenteInput
+    feridas?: AvaliacaoFeridaUncheckedCreateNestedManyWithoutDoenteInput
+    sinalizacoes?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutDoenteInput
+    alertasSepsis?: AlertaSepsisUncheckedCreateNestedManyWithoutDoenteInput
+    baseline?: BaselineDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    planoAlta?: PlanoAltaUncheckedCreateNestedOneWithoutDoenteInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    acessosFamiliares?: AcessoFamiliarUncheckedCreateNestedManyWithoutDoenteInput
+    resultadosAnalise?: ResultadoAnaliseUncheckedCreateNestedManyWithoutDoenteInput
+    documentosSaude?: DocumentoSaudeUncheckedCreateNestedManyWithoutDoenteInput
+    identificadoresExternos?: IdentificadorExternoUncheckedCreateNestedManyWithoutDoenteInput
+    portalDoente?: PortalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    registosPro?: RegistoPROUncheckedCreateNestedManyWithoutDoenteInput
+    transferenciasExternas?: TransferenciaExternaUncheckedCreateNestedManyWithoutDoenteInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUncheckedCreateNestedManyWithoutDoenteInput
+    followUps?: FollowUpAgendadoUncheckedCreateNestedManyWithoutDoenteInput
+    outcomesClinicos?: OutcomeClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
+    reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutGravidezesInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutGravidezesInput, DoenteUncheckedCreateWithoutGravidezesInput>
+  }
+
+  export type RegistoPartogramaCreateWithoutGravidezInput = {
+    id?: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type RegistoPartogramaUncheckedCreateWithoutGravidezInput = {
+    id?: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type RegistoPartogramaCreateOrConnectWithoutGravidezInput = {
+    where: RegistoPartogramaWhereUniqueInput
+    create: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput>
+  }
+
+  export type RegistoPartogramaCreateManyGravidezInputEnvelope = {
+    data: RegistoPartogramaCreateManyGravidezInput | RegistoPartogramaCreateManyGravidezInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PartoCreateWithoutGravidezInput = {
+    id?: string
+    dataHora?: Date | string
+    tipo: string
+    complicacoes?: string | null
+    apgar1?: number | null
+    apgar5?: number | null
+    pesoRN?: number | null
+    sexoRN?: string | null
+    registadoPorId: string
+  }
+
+  export type PartoUncheckedCreateWithoutGravidezInput = {
+    id?: string
+    dataHora?: Date | string
+    tipo: string
+    complicacoes?: string | null
+    apgar1?: number | null
+    apgar5?: number | null
+    pesoRN?: number | null
+    sexoRN?: string | null
+    registadoPorId: string
+  }
+
+  export type PartoCreateOrConnectWithoutGravidezInput = {
+    where: PartoWhereUniqueInput
+    create: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+  }
+
+  export type DoenteUpsertWithoutGravidezesInput = {
+    update: XOR<DoenteUpdateWithoutGravidezesInput, DoenteUncheckedUpdateWithoutGravidezesInput>
+    create: XOR<DoenteCreateWithoutGravidezesInput, DoenteUncheckedCreateWithoutGravidezesInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutGravidezesInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutGravidezesInput, DoenteUncheckedUpdateWithoutGravidezesInput>
+  }
+
+  export type DoenteUpdateWithoutGravidezesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
+    balancosHidricos?: BalancoHidricoUpdateManyWithoutDoenteNestedInput
+    feridas?: AvaliacaoFeridaUpdateManyWithoutDoenteNestedInput
+    sinalizacoes?: SinalizacaoPreocupanteUpdateManyWithoutDoenteNestedInput
+    alertasSepsis?: AlertaSepsisUpdateManyWithoutDoenteNestedInput
+    baseline?: BaselineDoenteUpdateOneWithoutDoenteNestedInput
+    planoAlta?: PlanoAltaUpdateOneWithoutDoenteNestedInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUpdateManyWithoutDoenteNestedInput
+    acessosFamiliares?: AcessoFamiliarUpdateManyWithoutDoenteNestedInput
+    resultadosAnalise?: ResultadoAnaliseUpdateManyWithoutDoenteNestedInput
+    documentosSaude?: DocumentoSaudeUpdateManyWithoutDoenteNestedInput
+    identificadoresExternos?: IdentificadorExternoUpdateManyWithoutDoenteNestedInput
+    portalDoente?: PortalDoenteUpdateOneWithoutDoenteNestedInput
+    registosPro?: RegistoPROUpdateManyWithoutDoenteNestedInput
+    transferenciasExternas?: TransferenciaExternaUpdateManyWithoutDoenteNestedInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUpdateManyWithoutDoenteNestedInput
+    followUps?: FollowUpAgendadoUpdateManyWithoutDoenteNestedInput
+    outcomesClinicos?: OutcomeClinicoUpdateManyWithoutDoenteNestedInput
+    pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
+    reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutGravidezesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUncheckedUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
+    balancosHidricos?: BalancoHidricoUncheckedUpdateManyWithoutDoenteNestedInput
+    feridas?: AvaliacaoFeridaUncheckedUpdateManyWithoutDoenteNestedInput
+    sinalizacoes?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasSepsis?: AlertaSepsisUncheckedUpdateManyWithoutDoenteNestedInput
+    baseline?: BaselineDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    planoAlta?: PlanoAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    acessosFamiliares?: AcessoFamiliarUncheckedUpdateManyWithoutDoenteNestedInput
+    resultadosAnalise?: ResultadoAnaliseUncheckedUpdateManyWithoutDoenteNestedInput
+    documentosSaude?: DocumentoSaudeUncheckedUpdateManyWithoutDoenteNestedInput
+    identificadoresExternos?: IdentificadorExternoUncheckedUpdateManyWithoutDoenteNestedInput
+    portalDoente?: PortalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    registosPro?: RegistoPROUncheckedUpdateManyWithoutDoenteNestedInput
+    transferenciasExternas?: TransferenciaExternaUncheckedUpdateManyWithoutDoenteNestedInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUncheckedUpdateManyWithoutDoenteNestedInput
+    followUps?: FollowUpAgendadoUncheckedUpdateManyWithoutDoenteNestedInput
+    outcomesClinicos?: OutcomeClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
+    reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput = {
+    where: RegistoPartogramaWhereUniqueInput
+    update: XOR<RegistoPartogramaUpdateWithoutGravidezInput, RegistoPartogramaUncheckedUpdateWithoutGravidezInput>
+    create: XOR<RegistoPartogramaCreateWithoutGravidezInput, RegistoPartogramaUncheckedCreateWithoutGravidezInput>
+  }
+
+  export type RegistoPartogramaUpdateWithWhereUniqueWithoutGravidezInput = {
+    where: RegistoPartogramaWhereUniqueInput
+    data: XOR<RegistoPartogramaUpdateWithoutGravidezInput, RegistoPartogramaUncheckedUpdateWithoutGravidezInput>
+  }
+
+  export type RegistoPartogramaUpdateManyWithWhereWithoutGravidezInput = {
+    where: RegistoPartogramaScalarWhereInput
+    data: XOR<RegistoPartogramaUpdateManyMutationInput, RegistoPartogramaUncheckedUpdateManyWithoutGravidezInput>
+  }
+
+  export type RegistoPartogramaScalarWhereInput = {
+    AND?: RegistoPartogramaScalarWhereInput | RegistoPartogramaScalarWhereInput[]
+    OR?: RegistoPartogramaScalarWhereInput[]
+    NOT?: RegistoPartogramaScalarWhereInput | RegistoPartogramaScalarWhereInput[]
+    id?: StringFilter<"RegistoPartograma"> | string
+    gravidezId?: StringFilter<"RegistoPartograma"> | string
+    momento?: DateTimeFilter<"RegistoPartograma"> | Date | string
+    dilatacaoCm?: IntNullableFilter<"RegistoPartograma"> | number | null
+    fcFetal?: IntNullableFilter<"RegistoPartograma"> | number | null
+    contracoes10min?: IntNullableFilter<"RegistoPartograma"> | number | null
+    descidaApresentacao?: IntNullableFilter<"RegistoPartograma"> | number | null
+    notas?: StringNullableFilter<"RegistoPartograma"> | string | null
+    registadoPorId?: StringFilter<"RegistoPartograma"> | string
+  }
+
+  export type PartoUpsertWithoutGravidezInput = {
+    update: XOR<PartoUpdateWithoutGravidezInput, PartoUncheckedUpdateWithoutGravidezInput>
+    create: XOR<PartoCreateWithoutGravidezInput, PartoUncheckedCreateWithoutGravidezInput>
+    where?: PartoWhereInput
+  }
+
+  export type PartoUpdateToOneWithWhereWithoutGravidezInput = {
+    where?: PartoWhereInput
+    data: XOR<PartoUpdateWithoutGravidezInput, PartoUncheckedUpdateWithoutGravidezInput>
+  }
+
+  export type PartoUpdateWithoutGravidezInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PartoUncheckedUpdateWithoutGravidezInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    apgar1?: NullableIntFieldUpdateOperationsInput | number | null
+    apgar5?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoRN?: NullableFloatFieldUpdateOperationsInput | number | null
+    sexoRN?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type GravidezCreateWithoutRegistosPartogramaInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutGravidezesInput
+    parto?: PartoCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezUncheckedCreateWithoutRegistosPartogramaInput = {
+    id?: string
+    doenteId: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    parto?: PartoUncheckedCreateNestedOneWithoutGravidezInput
+  }
+
+  export type GravidezCreateOrConnectWithoutRegistosPartogramaInput = {
+    where: GravidezWhereUniqueInput
+    create: XOR<GravidezCreateWithoutRegistosPartogramaInput, GravidezUncheckedCreateWithoutRegistosPartogramaInput>
+  }
+
+  export type GravidezUpsertWithoutRegistosPartogramaInput = {
+    update: XOR<GravidezUpdateWithoutRegistosPartogramaInput, GravidezUncheckedUpdateWithoutRegistosPartogramaInput>
+    create: XOR<GravidezCreateWithoutRegistosPartogramaInput, GravidezUncheckedCreateWithoutRegistosPartogramaInput>
+    where?: GravidezWhereInput
+  }
+
+  export type GravidezUpdateToOneWithWhereWithoutRegistosPartogramaInput = {
+    where?: GravidezWhereInput
+    data: XOR<GravidezUpdateWithoutRegistosPartogramaInput, GravidezUncheckedUpdateWithoutRegistosPartogramaInput>
+  }
+
+  export type GravidezUpdateWithoutRegistosPartogramaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutGravidezesNestedInput
+    parto?: PartoUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezUncheckedUpdateWithoutRegistosPartogramaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    parto?: PartoUncheckedUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezCreateWithoutPartoInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutGravidezesInput
+    registosPartograma?: RegistoPartogramaCreateNestedManyWithoutGravidezInput
+  }
+
+  export type GravidezUncheckedCreateWithoutPartoInput = {
+    id?: string
+    doenteId: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+    registosPartograma?: RegistoPartogramaUncheckedCreateNestedManyWithoutGravidezInput
+  }
+
+  export type GravidezCreateOrConnectWithoutPartoInput = {
+    where: GravidezWhereUniqueInput
+    create: XOR<GravidezCreateWithoutPartoInput, GravidezUncheckedCreateWithoutPartoInput>
+  }
+
+  export type GravidezUpsertWithoutPartoInput = {
+    update: XOR<GravidezUpdateWithoutPartoInput, GravidezUncheckedUpdateWithoutPartoInput>
+    create: XOR<GravidezCreateWithoutPartoInput, GravidezUncheckedCreateWithoutPartoInput>
+    where?: GravidezWhereInput
+  }
+
+  export type GravidezUpdateToOneWithWhereWithoutPartoInput = {
+    where?: GravidezWhereInput
+    data: XOR<GravidezUpdateWithoutPartoInput, GravidezUncheckedUpdateWithoutPartoInput>
+  }
+
+  export type GravidezUpdateWithoutPartoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutGravidezesNestedInput
+    registosPartograma?: RegistoPartogramaUpdateManyWithoutGravidezNestedInput
+  }
+
+  export type GravidezUncheckedUpdateWithoutPartoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registosPartograma?: RegistoPartogramaUncheckedUpdateManyWithoutGravidezNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -323179,6 +328911,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -323256,6 +328989,7 @@ export namespace Prisma {
     pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -328463,6 +334197,19 @@ export namespace Prisma {
     notificadoHemovigilancia?: boolean
   }
 
+  export type GravidezCreateManyDoenteInput = {
+    id?: string
+    dataUltimaMenstruacao?: Date | string | null
+    dataPrevistaParto?: Date | string | null
+    gravida?: number | null
+    para?: number | null
+    grupoSanguineo?: string | null
+    fatoresRisco?: string | null
+    estado?: string
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
   export type AtribuicaoDoenteUpdateWithoutDoenteInput = {
     id?: StringFieldUpdateOperationsInput | string
     enfermeiro?: UtilizadorUpdateOneRequiredWithoutAtribuicoesEnfermeiroNestedInput
@@ -330404,6 +336151,49 @@ export namespace Prisma {
     notificadoHemovigilancia?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type GravidezUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registosPartograma?: RegistoPartogramaUpdateManyWithoutGravidezNestedInput
+    parto?: PartoUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registosPartograma?: RegistoPartogramaUncheckedUpdateManyWithoutGravidezNestedInput
+    parto?: PartoUncheckedUpdateOneWithoutGravidezNestedInput
+  }
+
+  export type GravidezUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataUltimaMenstruacao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataPrevistaParto?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gravida?: NullableIntFieldUpdateOperationsInput | number | null
+    para?: NullableIntFieldUpdateOperationsInput | number | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    fatoresRisco?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyTurnoInput = {
     id?: string
     doenteId: string
@@ -331784,6 +337574,50 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     respostas?: JsonNullValueInput | InputJsonValue
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegistoPartogramaCreateManyGravidezInput = {
+    id?: string
+    momento?: Date | string
+    dilatacaoCm?: number | null
+    fcFetal?: number | null
+    contracoes10min?: number | null
+    descidaApresentacao?: number | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type RegistoPartogramaUpdateWithoutGravidezInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegistoPartogramaUncheckedUpdateWithoutGravidezInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegistoPartogramaUncheckedUpdateManyWithoutGravidezInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    momento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dilatacaoCm?: NullableIntFieldUpdateOperationsInput | number | null
+    fcFetal?: NullableIntFieldUpdateOperationsInput | number | null
+    contracoes10min?: NullableIntFieldUpdateOperationsInput | number | null
+    descidaApresentacao?: NullableIntFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
 
