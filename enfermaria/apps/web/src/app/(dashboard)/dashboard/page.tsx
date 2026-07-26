@@ -622,7 +622,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-600 bg-slate-50 rounded-xl" style={{ padding: '10px 14px', marginBottom: '20px' }}>
               <strong>{TIPO_EXAME_LABELS[resultadoModal.tipo]}</strong> — {resultadoModal.descricao}<br />

@@ -129,7 +129,7 @@ export default function PassagemTurnoPage() {
                   </svg>
                   <span className="text-sm font-bold text-indigo-800">Narrativa IA — Passagem de Turno</span>
                 </div>
-                <button onClick={() => setAiSumario(null)} className="text-indigo-400 hover:text-indigo-600 text-lg font-bold">✕</button>
+                <button aria-label="Fechar" onClick={() => setAiSumario(null)} className="text-indigo-400 hover:text-indigo-600 text-lg font-bold">✕</button>
               </div>
               <p className="text-sm text-indigo-900 leading-relaxed" style={{ marginBottom: '16px' }}>{aiSumario.narrativa}</p>
               {aiSumario.destaques.length > 0 && (

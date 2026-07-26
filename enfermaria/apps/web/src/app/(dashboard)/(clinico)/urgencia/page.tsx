@@ -604,7 +604,7 @@ export default function UrgenciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Entrada — Urgência</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
@@ -659,7 +659,7 @@ export default function UrgenciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Re-triagem</h2>
-              <button onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</label>
@@ -705,7 +705,7 @@ export default function UrgenciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Atribuir Médico Responsável</h2>
-              <button onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
@@ -747,7 +747,7 @@ export default function UrgenciaPage() {
             {/* Header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">🚑 Pré-notificação de Ambulância</h2>
-              <button onClick={() => setModalAmb(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAmb(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {/* Step indicators */}
             <div className="flex border-b border-slate-100 shrink-0" style={{ padding: '0 28px', marginTop: '16px' }}>
@@ -881,7 +881,7 @@ export default function UrgenciaPage() {
                       <div className="rounded-xl border border-indigo-200 bg-indigo-50" style={{ padding: '14px 16px' }}>
                         <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                           <span className="text-xs font-bold text-indigo-700 uppercase tracking-wide">Apoio IA — Manchester</span>
-                          <button onClick={() => setAiTriagem(null)} className="text-indigo-400 hover:text-indigo-600 text-sm font-bold">✕</button>
+                          <button aria-label="Fechar" onClick={() => setAiTriagem(null)} className="text-indigo-400 hover:text-indigo-600 text-sm font-bold">✕</button>
                         </div>
                         {aiTriagem.alertasVermelhos.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-2">

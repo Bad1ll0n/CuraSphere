@@ -573,7 +573,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
                 <p className="text-xs text-violet-600 font-medium" style={{ marginTop: '2px' }}>Aguardará aprovação do médico responsável</p>
               </div>
-              <button onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
@@ -628,7 +628,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
-              <button onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>

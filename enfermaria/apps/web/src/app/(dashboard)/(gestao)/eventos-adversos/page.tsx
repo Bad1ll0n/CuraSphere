@@ -256,7 +256,7 @@ export default function EventosAdversosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Evento Adverso</h2>
-              <button onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
@@ -343,7 +343,7 @@ export default function EventosAdversosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Gerir Evento Adverso</h2>
-              <button onClick={() => setModalAcao(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAcao(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>

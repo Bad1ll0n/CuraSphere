@@ -296,7 +296,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Reconciliação de Medicação</h2>
-              <button onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ID do Doente *</label>

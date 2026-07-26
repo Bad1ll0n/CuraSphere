@@ -313,7 +313,7 @@ export default function ConfiguracoesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modalTitulo}</h2>
-              <button onClick={fecharModal} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={fecharModal} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div className="flex flex-col gap-4">

@@ -277,7 +277,7 @@ export default function CamasPagina() {
           <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', textAlign: 'center', maxWidth: '320px', width: '100%', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">QR — Doente</h2>
-              <button onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{qrCama.doente.nome}</p>
             <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>

@@ -311,7 +311,7 @@ export default function PedidosTIPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Novo Pedido TI</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div style={{ marginBottom: '16px' }}>

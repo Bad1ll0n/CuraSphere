@@ -256,7 +256,7 @@ export default function TabelaAtosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '28px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{editando ? 'Editar Ato' : 'Novo Ato Clínico'}</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

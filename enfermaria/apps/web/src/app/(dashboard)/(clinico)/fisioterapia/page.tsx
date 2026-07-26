@@ -141,7 +141,7 @@ export default function FisioterapiaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Sessão</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'ID do Doente *', key: 'doenteId', type: 'text', placeholder: 'UUID do doente' },
@@ -186,7 +186,7 @@ export default function FisioterapiaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Sessão Realizada</h2>
-              <button onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{realizarModal.doente?.nome} — {realizarModal.descricao}</p>
             <div style={{ marginBottom: '24px' }}>

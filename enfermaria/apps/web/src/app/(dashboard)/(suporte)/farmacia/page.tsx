@@ -601,7 +601,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Prescrição</h2>
-              <button onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -624,7 +624,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Pedido</h2>
-              <button onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo clínico *</label>
@@ -648,7 +648,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Pedido de Reposição</h2>
-              <button onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{pedidoModal.nome}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -681,7 +681,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Ajustar Stock</h2>
-              <button onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{ajustarModal.nome} — actual: {ajustarModal.quantidade} {ajustarModal.unidade}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -731,7 +731,7 @@ export default function FarmaciaPage() {
                 <h2 className="text-lg font-bold text-slate-900">Histórico de Ajustes</h2>
                 <p className="text-slate-500 text-sm">{historicoModal.nome}</p>
               </div>
-              <button onClick={() => setHistoricoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setHistoricoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {loadingHistorico ? (
               <div className="flex justify-center" style={{ padding: '32px 0' }}>
@@ -766,7 +766,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Transferir Stock</h2>
-              <button onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{transferirModal.nome} — disponível: {transferirModal.quantidade} {transferirModal.unidade} ({transferirModal.servico})</p>
             <div style={{ marginBottom: '14px' }}>
@@ -808,7 +808,7 @@ export default function FarmaciaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Novo Item de Stock</h2>
-              <button onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ligar ao Catálogo</label>

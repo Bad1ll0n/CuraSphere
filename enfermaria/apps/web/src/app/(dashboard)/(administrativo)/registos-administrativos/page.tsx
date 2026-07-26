@@ -319,7 +319,7 @@ export default function RegistosAdministrativosPage() {
                     <p style={{ margin: '4px 0 0 0', color: 'var(--text-soft)', fontSize: 13 }}>Dados legais e de identificação do utente</p>
                   </div>
                   <button type="button" onClick={fecharModal}
-                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }}>✕</button>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }} aria-label="Fechar">✕</button>
                 </div>
 
                 {erro && (

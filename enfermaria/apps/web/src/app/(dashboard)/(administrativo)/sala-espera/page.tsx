@@ -256,7 +256,7 @@ export default function SalaEsperaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '92vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Entrada</h2>
-              <button onClick={() => { setModal(false); setErros({}); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModal(false); setErros({}); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             {/* ── Secção 1: Triagem ── */}

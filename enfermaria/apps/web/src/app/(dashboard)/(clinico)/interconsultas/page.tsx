@@ -187,7 +187,7 @@ export default function InterconsultasPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Responder à Interconsulta</h2>
-              <button onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
               Resposta / Parecer Clínico
@@ -221,7 +221,7 @@ export default function InterconsultasPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Interconsulta</h2>
-              <button onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>

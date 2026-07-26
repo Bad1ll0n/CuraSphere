@@ -275,7 +275,7 @@ export default function MarPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-base font-bold text-slate-900">Não administrada — Registar motivo</h2>
-              <button onClick={() => setModalNaoAdmin(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNaoAdmin(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>
               {medicacoes.find(m => m.id === modalNaoAdmin)?.nome} · {medicacoes.find(m => m.id === modalNaoAdmin)?.doente.nome}

@@ -178,7 +178,7 @@ export default function ComunicacaoPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <p className="text-green-700 text-sm flex-1">Broadcast enviado para <strong>{broadcastResultado}</strong> utilizadores.</p>
-          <button onClick={() => setBroadcastResultado(null)} className="text-green-400 hover:text-green-600 text-lg font-bold">✕</button>
+          <button aria-label="Fechar" onClick={() => setBroadcastResultado(null)} className="text-green-400 hover:text-green-600 text-lg font-bold">✕</button>
         </div>
       )}
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
@@ -355,7 +355,7 @@ export default function ComunicacaoPage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
               <h2 className="text-lg font-bold text-slate-900">Enviar Broadcast</h2>
               <button onClick={() => { setBroadcastModal(false); setBroadcastForm({ servicoAlvo: '', roleAlvo: '', assunto: '', texto: '' }); }}
-                className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+                className="text-slate-400 hover:text-slate-600 text-xl font-bold" aria-label="Fechar">✕</button>
             </div>
             <p className="text-slate-400 text-sm" style={{ marginBottom: '24px' }}>Envia uma mensagem para todos os utilizadores que correspondam ao filtro.</p>
 
@@ -423,7 +423,7 @@ export default function ComunicacaoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Publicar Anúncio</h2>
-              <button onClick={() => setAnuncioModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setAnuncioModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
@@ -476,7 +476,7 @@ export default function ComunicacaoPage() {
             onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Mensagem</h2>
-              <button onClick={() => setMensagemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setMensagemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             {/* Destinatário com pesquisa */}
@@ -494,7 +494,7 @@ export default function ComunicacaoPage() {
                     <span className="text-sm font-semibold text-slate-800">{destNome}</span>
                   </div>
                   <button onClick={() => { setMensagemForm(f => ({ ...f, destinatarioId: '' })); setDestNome(''); setPesquisa(''); setTimeout(() => pesquisaRef.current?.focus(), 50); }}
-                    className="text-slate-400 hover:text-slate-600 font-bold text-base leading-none">✕</button>
+                    className="text-slate-400 hover:text-slate-600 font-bold text-base leading-none" aria-label="Fechar">✕</button>
                 </div>
               ) : (
                 <>
@@ -571,7 +571,7 @@ export default function ComunicacaoPage() {
                     <span className="text-xs text-slate-400 shrink-0">({(anexoFile.size / 1024).toFixed(0)} KB)</span>
                   </div>
                   <button onClick={() => { setAnexoFile(null); if (anexoInputRef.current) anexoInputRef.current.value = ''; }}
-                    className="text-slate-400 hover:text-red-500 font-bold ml-2 shrink-0">✕</button>
+                    className="text-slate-400 hover:text-red-500 font-bold ml-2 shrink-0" aria-label="Fechar">✕</button>
                 </div>
               ) : (
                 <button onClick={() => anexoInputRef.current?.click()}

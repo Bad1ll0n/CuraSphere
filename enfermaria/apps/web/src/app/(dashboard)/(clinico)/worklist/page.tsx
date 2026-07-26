@@ -290,7 +290,7 @@ export default function WorklistPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="bg-slate-50 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
               <p className="text-sm font-semibold text-slate-700">{TIPO_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo}</p>
@@ -323,7 +323,7 @@ export default function WorklistPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h2 className="text-lg font-bold text-slate-900">Laudo Radiológico</h2>
-              <button onClick={() => setLaudoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setLaudoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="bg-slate-50 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
               <p className="text-sm font-semibold text-slate-700">{TIPO_LABELS[laudoModal.tipo] ?? laudoModal.tipo}{laudoModal.urgente && <span className="text-red-600"> · URGENTE</span>}</p>

@@ -600,7 +600,7 @@ export default function DoenteAdminDetalhePage() {
                 <p className="text-base font-bold text-slate-900">Agendar Consulta</p>
                 <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Passo {agStep} de 4</p>
               </div>
-              <button onClick={() => setModalAgendar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAgendar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             {/* Passo 1 — Especialidade */}

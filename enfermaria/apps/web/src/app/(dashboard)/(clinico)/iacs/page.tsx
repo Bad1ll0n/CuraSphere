@@ -466,7 +466,7 @@ export default function IacsPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Colheita Microbiológica</h2>
-              <button onClick={() => setModalCultura(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalCultura(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'ID do Doente *', key: 'doenteId', type: 'text', placeholder: 'UUID do doente' },
@@ -512,7 +512,7 @@ export default function IacsPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button onClick={() => setEditCultura(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setEditCultura(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editCultura.doente.nome} · {TIPO_AMOSTRA_LABELS[editCultura.tipoAmostra] ?? editCultura.tipoAmostra}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -551,7 +551,7 @@ export default function IacsPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Surto IACS</h2>
-              <button onClick={() => setModalSurto(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalSurto(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'Agente *', key: 'agente', placeholder: 'Ex: MRSA, Clostridioides difficile...' },
@@ -597,7 +597,7 @@ export default function IacsPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Actualizar Surto</h2>
-              <button onClick={() => setEditSurto(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setEditSurto(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editSurto.agente} · {editSurto.servico}</p>
             <div style={{ marginBottom: '14px' }}>

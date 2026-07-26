@@ -350,7 +350,7 @@ export default function TarefasPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
-              <button onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
@@ -442,7 +442,7 @@ export default function TarefasPage() {
                 <h2 className="text-lg font-bold text-slate-900">Editar Tarefa</h2>
                 <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{modalEditarTarefa.doente.nome}</p>
               </div>
-              <button onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>

@@ -190,7 +190,7 @@ export default function FormacoesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Formação</h2>
-              <button onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>

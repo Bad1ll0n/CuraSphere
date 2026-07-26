@@ -386,7 +386,7 @@ export default function EquipamentosPage() {
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Novo Equipamento</h2>
-              <button onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -435,7 +435,7 @@ export default function EquipamentosPage() {
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Editar Equipamento</h2>
                 <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalEditarEq.nome}</p>
               </div>
-              <button onClick={() => setModalEditarEq(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarEq(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -494,7 +494,7 @@ export default function EquipamentosPage() {
                 </h2>
                 <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalAtualizarMan.equipamentoNome}</p>
               </div>
-              <button onClick={() => setModalAtualizarMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAtualizarMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -530,7 +530,7 @@ export default function EquipamentosPage() {
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Reportar Ocorrência</h2>
                 <p style={{ color: 'var(--text-soft)', fontSize: 13, marginTop: 4 }}>{modalMan.nome}</p>
               </div>
-              <button onClick={() => setModalMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalMan(null)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>

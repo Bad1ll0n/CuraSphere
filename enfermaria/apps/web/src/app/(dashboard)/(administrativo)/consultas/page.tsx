@@ -448,7 +448,7 @@ export default function ConsultasPage() {
           <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 560, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
               <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Nova Marcação</h2>
-              <button onClick={() => setModalNova(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
 
             {/* Médico */}
@@ -586,7 +586,7 @@ export default function ConsultasPage() {
           <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 520, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
               <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Registar Consulta Realizada</h2>
-              <button onClick={() => setRealizarModal(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setRealizarModal(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
             <p style={{ color: 'var(--text-soft)', fontSize: 14, marginBottom: 20 }}>
               {realizarModal.doente?.nome ?? realizarModal.nomeDoente} — {realizarModal.especialidade}
@@ -662,7 +662,7 @@ export default function ConsultasPage() {
                             } catch {}
                           }}
                           style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: 0, fontSize: 16, lineHeight: 1 }}
-                        >✕</button>
+                         aria-label="Fechar">✕</button>
                       </div>
                     </div>
                   ))}
@@ -692,7 +692,7 @@ export default function ConsultasPage() {
           <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 440, padding: '32px', margin: '0 16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
               <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-hi)', margin: 0 }}>Definir Disponibilidade</h2>
-              <button onClick={() => setModalAgenda(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAgenda(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-dim)' }}>✕</button>
             </div>
             <div style={{ marginBottom: 16 }}>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>

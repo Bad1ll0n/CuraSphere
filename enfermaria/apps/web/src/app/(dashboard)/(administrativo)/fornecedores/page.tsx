@@ -253,7 +253,7 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modalForn === 'criar' ? 'Novo Fornecedor' : 'Editar Fornecedor'}</h2>
-              <button onClick={() => { setModalForn(null); setEditForn(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModalForn(null); setEditForn(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               {[
@@ -290,7 +290,7 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Encomenda</h2>
-              <button onClick={() => setModalEncomenda(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEncomenda(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               <div>
@@ -356,7 +356,7 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Receber Encomenda</h2>
-              <button onClick={() => setModalReceber(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalReceber(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '4px' }}>{modalReceber.stockItem?.nome}</p>
             <p className="text-slate-400 text-xs" style={{ marginBottom: '20px' }}>Encomendado: {modalReceber.quantidadeEncomendada} {modalReceber.stockItem?.unidade}</p>

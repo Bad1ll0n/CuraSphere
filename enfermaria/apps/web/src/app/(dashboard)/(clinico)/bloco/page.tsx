@@ -574,7 +574,7 @@ export default function BlocoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Agendar Cirurgia</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'Designação *', key: 'designacao', type: 'text', placeholder: 'Ex: Colecistectomia laparoscópica' },
@@ -628,7 +628,7 @@ export default function BlocoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Concluir Cirurgia</h2>
-              <button onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{detalhe.designacao} — {detalhe.doente?.nome}</p>
             <div style={{ marginBottom: '24px' }}>
@@ -660,7 +660,7 @@ export default function BlocoPage() {
                 <h2 className="text-lg font-bold text-slate-900">WHO Surgical Safety Checklist</h2>
                 <p className="text-sm text-slate-500">{checklistCirurgia.designacao} — {checklistCirurgia.doente?.nome}</p>
               </div>
-              <button onClick={() => setChecklistCirurgia(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistCirurgia(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ marginTop: '24px' }}>
@@ -711,7 +711,7 @@ export default function BlocoPage() {
                 <h2 className="text-lg font-bold text-slate-900">WHO — {WHO_FASES[checklistFase].label}</h2>
                 <p className="text-sm text-slate-500">{WHO_FASES[checklistFase].sublabel}</p>
               </div>
-              <button onClick={() => setChecklistFase(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistFase(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ margin: '20px 0 24px' }}>

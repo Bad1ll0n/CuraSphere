@@ -148,7 +148,7 @@ export default function CatalogoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modal === 'criar' ? 'Adicionar Medicamento' : 'Editar Medicamento'}</h2>
-              <button onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               {[
