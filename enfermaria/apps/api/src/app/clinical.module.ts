@@ -6,6 +6,7 @@ import { SinaisVitaisModule } from './sinais-vitais/sinais-vitais.module';
 import { PediatriaModule } from './pediatria/pediatria.module';
 import { MaternidadeModule } from './maternidade/maternidade.module';
 import { OncologiaModule } from './oncologia/oncologia.module';
+import { DialiseModule } from './dialise/dialise.module';
 import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
@@ -62,7 +63,7 @@ const clinicalModules = [
   ProtocolosModule, DietasModule,
   // Serviços Especializados
   ConsultasModule, InterconsultasModule, UrgenciaModule, BlocoModule,
-  FisioterapiaModule, MaternidadeModule, OncologiaModule,
+  FisioterapiaModule, MaternidadeModule, OncologiaModule, DialiseModule,
   // Vigilância
   IacsModule,
   // Session 48

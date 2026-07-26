@@ -1826,6 +1826,25 @@ exports.Prisma.CicloQuimioterapiaScalarFieldEnum = {
   registadoPorId: 'registadoPorId'
 };
 
+exports.Prisma.SessaoDialiseScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  data: 'data',
+  modalidade: 'modalidade',
+  duracaoMin: 'duracaoMin',
+  pesoSecoKg: 'pesoSecoKg',
+  pesoPreKg: 'pesoPreKg',
+  pesoPosKg: 'pesoPosKg',
+  ultrafiltracaoMl: 'ultrafiltracaoMl',
+  fluxoSangueMlMin: 'fluxoSangueMlMin',
+  acessoVascular: 'acessoVascular',
+  paSistolicaPre: 'paSistolicaPre',
+  paSistolicaPos: 'paSistolicaPos',
+  complicacoes: 'complicacoes',
+  notas: 'notas',
+  registadoPorId: 'registadoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2239,7 +2258,8 @@ exports.Prisma.ModelName = {
   RegistoPartograma: 'RegistoPartograma',
   Parto: 'Parto',
   PlanoQuimioterapia: 'PlanoQuimioterapia',
-  CicloQuimioterapia: 'CicloQuimioterapia'
+  CicloQuimioterapia: 'CicloQuimioterapia',
+  SessaoDialise: 'SessaoDialise'
 };
 
 /**

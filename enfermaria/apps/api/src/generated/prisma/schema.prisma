@@ -332,6 +332,7 @@ model Doente {
   reacoesTransfusionais   ReacaoTransfusional[]
   gravidezes              Gravidez[]
   planosQuimioterapia     PlanoQuimioterapia[]
+  sessoesDialise          SessaoDialise[]
 
   @@index([tenantId, estado])
   @@index([ativo])
@@ -3158,4 +3159,29 @@ model CicloQuimioterapia {
 
   @@index([planoId, numero])
   @@map("ciclos_quimioterapia")
+}
+
+// ─── Diálise / Nefrologia ───────────────────────────────────────────────────
+
+model SessaoDialise {
+  id               String   @id @default(uuid())
+  doenteId         String
+  doente           Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  data             DateTime @default(now())
+  modalidade       String // hemodialise | dialise_peritoneal
+  duracaoMin       Int?
+  pesoSecoKg       Float? // peso seco alvo
+  pesoPreKg        Float?
+  pesoPosKg        Float?
+  ultrafiltracaoMl Int? // volume removido
+  fluxoSangueMlMin Int?
+  acessoVascular   String? // fistula | cateter | protese
+  paSistolicaPre   Int?
+  paSistolicaPos   Int?
+  complicacoes     String?
+  notas            String?
+  registadoPorId   String
+
+  @@index([doenteId, data])
+  @@map("sessoes_dialise")
 }

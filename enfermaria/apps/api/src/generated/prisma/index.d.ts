@@ -693,6 +693,11 @@ export type PlanoQuimioterapia = $Result.DefaultSelection<Prisma.$PlanoQuimioter
  * 
  */
 export type CicloQuimioterapia = $Result.DefaultSelection<Prisma.$CicloQuimioterapiaPayload>
+/**
+ * Model SessaoDialise
+ * 
+ */
+export type SessaoDialise = $Result.DefaultSelection<Prisma.$SessaoDialisePayload>
 
 /**
  * Enums
@@ -2644,6 +2649,16 @@ export class PrismaClient<
     * ```
     */
   get cicloQuimioterapia(): Prisma.CicloQuimioterapiaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sessaoDialise`: Exposes CRUD operations for the **SessaoDialise** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SessaoDialises
+    * const sessaoDialises = await prisma.sessaoDialise.findMany()
+    * ```
+    */
+  get sessaoDialise(): Prisma.SessaoDialiseDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -3213,7 +3228,8 @@ export namespace Prisma {
     RegistoPartograma: 'RegistoPartograma',
     Parto: 'Parto',
     PlanoQuimioterapia: 'PlanoQuimioterapia',
-    CicloQuimioterapia: 'CicloQuimioterapia'
+    CicloQuimioterapia: 'CicloQuimioterapia',
+    SessaoDialise: 'SessaoDialise'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -3229,7 +3245,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -13297,6 +13313,80 @@ export namespace Prisma {
           }
         }
       }
+      SessaoDialise: {
+        payload: Prisma.$SessaoDialisePayload<ExtArgs>
+        fields: Prisma.SessaoDialiseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessaoDialiseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessaoDialiseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          findFirst: {
+            args: Prisma.SessaoDialiseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessaoDialiseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          findMany: {
+            args: Prisma.SessaoDialiseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>[]
+          }
+          create: {
+            args: Prisma.SessaoDialiseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          createMany: {
+            args: Prisma.SessaoDialiseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessaoDialiseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>[]
+          }
+          delete: {
+            args: Prisma.SessaoDialiseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          update: {
+            args: Prisma.SessaoDialiseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          deleteMany: {
+            args: Prisma.SessaoDialiseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessaoDialiseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessaoDialiseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>[]
+          }
+          upsert: {
+            args: Prisma.SessaoDialiseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessaoDialisePayload>
+          }
+          aggregate: {
+            args: Prisma.SessaoDialiseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSessaoDialise>
+          }
+          groupBy: {
+            args: Prisma.SessaoDialiseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessaoDialiseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessaoDialiseCountArgs<ExtArgs>
+            result: $Utils.Optional<SessaoDialiseCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -13541,6 +13631,7 @@ export namespace Prisma {
     parto?: PartoOmit
     planoQuimioterapia?: PlanoQuimioterapiaOmit
     cicloQuimioterapia?: CicloQuimioterapiaOmit
+    sessaoDialise?: SessaoDialiseOmit
   }
 
   /* Types for Logging */
@@ -14787,6 +14878,7 @@ export namespace Prisma {
     reacoesTransfusionais: number
     gravidezes: number
     planosQuimioterapia: number
+    sessoesDialise: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14841,6 +14933,7 @@ export namespace Prisma {
     reacoesTransfusionais?: boolean | DoenteCountOutputTypeCountReacoesTransfusionaisArgs
     gravidezes?: boolean | DoenteCountOutputTypeCountGravidezesArgs
     planosQuimioterapia?: boolean | DoenteCountOutputTypeCountPlanosQuimioterapiaArgs
+    sessoesDialise?: boolean | DoenteCountOutputTypeCountSessoesDialiseArgs
   }
 
   // Custom InputTypes
@@ -15209,6 +15302,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountPlanosQuimioterapiaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PlanoQuimioterapiaWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountSessoesDialiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessaoDialiseWhereInput
   }
 
 
@@ -24394,6 +24494,7 @@ export namespace Prisma {
     reacoesTransfusionais?: boolean | Doente$reacoesTransfusionaisArgs<ExtArgs>
     gravidezes?: boolean | Doente$gravidezesArgs<ExtArgs>
     planosQuimioterapia?: boolean | Doente$planosQuimioterapiaArgs<ExtArgs>
+    sessoesDialise?: boolean | Doente$sessoesDialiseArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -24533,6 +24634,7 @@ export namespace Prisma {
     reacoesTransfusionais?: boolean | Doente$reacoesTransfusionaisArgs<ExtArgs>
     gravidezes?: boolean | Doente$gravidezesArgs<ExtArgs>
     planosQuimioterapia?: boolean | Doente$planosQuimioterapiaArgs<ExtArgs>
+    sessoesDialise?: boolean | Doente$sessoesDialiseArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24605,6 +24707,7 @@ export namespace Prisma {
       reacoesTransfusionais: Prisma.$ReacaoTransfusionalPayload<ExtArgs>[]
       gravidezes: Prisma.$GravidezPayload<ExtArgs>[]
       planosQuimioterapia: Prisma.$PlanoQuimioterapiaPayload<ExtArgs>[]
+      sessoesDialise: Prisma.$SessaoDialisePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -25080,6 +25183,7 @@ export namespace Prisma {
     reacoesTransfusionais<T extends Doente$reacoesTransfusionaisArgs<ExtArgs> = {}>(args?: Subset<T, Doente$reacoesTransfusionaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReacaoTransfusionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gravidezes<T extends Doente$gravidezesArgs<ExtArgs> = {}>(args?: Subset<T, Doente$gravidezesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GravidezPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     planosQuimioterapia<T extends Doente$planosQuimioterapiaArgs<ExtArgs> = {}>(args?: Subset<T, Doente$planosQuimioterapiaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlanoQuimioterapiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessoesDialise<T extends Doente$sessoesDialiseArgs<ExtArgs> = {}>(args?: Subset<T, Doente$sessoesDialiseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26885,6 +26989,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PlanoQuimioterapiaScalarFieldEnum | PlanoQuimioterapiaScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.sessoesDialise
+   */
+  export type Doente$sessoesDialiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    where?: SessaoDialiseWhereInput
+    orderBy?: SessaoDialiseOrderByWithRelationInput | SessaoDialiseOrderByWithRelationInput[]
+    cursor?: SessaoDialiseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessaoDialiseScalarFieldEnum | SessaoDialiseScalarFieldEnum[]
   }
 
   /**
@@ -177473,6 +177601,1274 @@ export namespace Prisma {
 
 
   /**
+   * Model SessaoDialise
+   */
+
+  export type AggregateSessaoDialise = {
+    _count: SessaoDialiseCountAggregateOutputType | null
+    _avg: SessaoDialiseAvgAggregateOutputType | null
+    _sum: SessaoDialiseSumAggregateOutputType | null
+    _min: SessaoDialiseMinAggregateOutputType | null
+    _max: SessaoDialiseMaxAggregateOutputType | null
+  }
+
+  export type SessaoDialiseAvgAggregateOutputType = {
+    duracaoMin: number | null
+    pesoSecoKg: number | null
+    pesoPreKg: number | null
+    pesoPosKg: number | null
+    ultrafiltracaoMl: number | null
+    fluxoSangueMlMin: number | null
+    paSistolicaPre: number | null
+    paSistolicaPos: number | null
+  }
+
+  export type SessaoDialiseSumAggregateOutputType = {
+    duracaoMin: number | null
+    pesoSecoKg: number | null
+    pesoPreKg: number | null
+    pesoPosKg: number | null
+    ultrafiltracaoMl: number | null
+    fluxoSangueMlMin: number | null
+    paSistolicaPre: number | null
+    paSistolicaPos: number | null
+  }
+
+  export type SessaoDialiseMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    data: Date | null
+    modalidade: string | null
+    duracaoMin: number | null
+    pesoSecoKg: number | null
+    pesoPreKg: number | null
+    pesoPosKg: number | null
+    ultrafiltracaoMl: number | null
+    fluxoSangueMlMin: number | null
+    acessoVascular: string | null
+    paSistolicaPre: number | null
+    paSistolicaPos: number | null
+    complicacoes: string | null
+    notas: string | null
+    registadoPorId: string | null
+  }
+
+  export type SessaoDialiseMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    data: Date | null
+    modalidade: string | null
+    duracaoMin: number | null
+    pesoSecoKg: number | null
+    pesoPreKg: number | null
+    pesoPosKg: number | null
+    ultrafiltracaoMl: number | null
+    fluxoSangueMlMin: number | null
+    acessoVascular: string | null
+    paSistolicaPre: number | null
+    paSistolicaPos: number | null
+    complicacoes: string | null
+    notas: string | null
+    registadoPorId: string | null
+  }
+
+  export type SessaoDialiseCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    data: number
+    modalidade: number
+    duracaoMin: number
+    pesoSecoKg: number
+    pesoPreKg: number
+    pesoPosKg: number
+    ultrafiltracaoMl: number
+    fluxoSangueMlMin: number
+    acessoVascular: number
+    paSistolicaPre: number
+    paSistolicaPos: number
+    complicacoes: number
+    notas: number
+    registadoPorId: number
+    _all: number
+  }
+
+
+  export type SessaoDialiseAvgAggregateInputType = {
+    duracaoMin?: true
+    pesoSecoKg?: true
+    pesoPreKg?: true
+    pesoPosKg?: true
+    ultrafiltracaoMl?: true
+    fluxoSangueMlMin?: true
+    paSistolicaPre?: true
+    paSistolicaPos?: true
+  }
+
+  export type SessaoDialiseSumAggregateInputType = {
+    duracaoMin?: true
+    pesoSecoKg?: true
+    pesoPreKg?: true
+    pesoPosKg?: true
+    ultrafiltracaoMl?: true
+    fluxoSangueMlMin?: true
+    paSistolicaPre?: true
+    paSistolicaPos?: true
+  }
+
+  export type SessaoDialiseMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    data?: true
+    modalidade?: true
+    duracaoMin?: true
+    pesoSecoKg?: true
+    pesoPreKg?: true
+    pesoPosKg?: true
+    ultrafiltracaoMl?: true
+    fluxoSangueMlMin?: true
+    acessoVascular?: true
+    paSistolicaPre?: true
+    paSistolicaPos?: true
+    complicacoes?: true
+    notas?: true
+    registadoPorId?: true
+  }
+
+  export type SessaoDialiseMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    data?: true
+    modalidade?: true
+    duracaoMin?: true
+    pesoSecoKg?: true
+    pesoPreKg?: true
+    pesoPosKg?: true
+    ultrafiltracaoMl?: true
+    fluxoSangueMlMin?: true
+    acessoVascular?: true
+    paSistolicaPre?: true
+    paSistolicaPos?: true
+    complicacoes?: true
+    notas?: true
+    registadoPorId?: true
+  }
+
+  export type SessaoDialiseCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    data?: true
+    modalidade?: true
+    duracaoMin?: true
+    pesoSecoKg?: true
+    pesoPreKg?: true
+    pesoPosKg?: true
+    ultrafiltracaoMl?: true
+    fluxoSangueMlMin?: true
+    acessoVascular?: true
+    paSistolicaPre?: true
+    paSistolicaPos?: true
+    complicacoes?: true
+    notas?: true
+    registadoPorId?: true
+    _all?: true
+  }
+
+  export type SessaoDialiseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessaoDialise to aggregate.
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessaoDialises to fetch.
+     */
+    orderBy?: SessaoDialiseOrderByWithRelationInput | SessaoDialiseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessaoDialiseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessaoDialises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessaoDialises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SessaoDialises
+    **/
+    _count?: true | SessaoDialiseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SessaoDialiseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SessaoDialiseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessaoDialiseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessaoDialiseMaxAggregateInputType
+  }
+
+  export type GetSessaoDialiseAggregateType<T extends SessaoDialiseAggregateArgs> = {
+        [P in keyof T & keyof AggregateSessaoDialise]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSessaoDialise[P]>
+      : GetScalarType<T[P], AggregateSessaoDialise[P]>
+  }
+
+
+
+
+  export type SessaoDialiseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessaoDialiseWhereInput
+    orderBy?: SessaoDialiseOrderByWithAggregationInput | SessaoDialiseOrderByWithAggregationInput[]
+    by: SessaoDialiseScalarFieldEnum[] | SessaoDialiseScalarFieldEnum
+    having?: SessaoDialiseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessaoDialiseCountAggregateInputType | true
+    _avg?: SessaoDialiseAvgAggregateInputType
+    _sum?: SessaoDialiseSumAggregateInputType
+    _min?: SessaoDialiseMinAggregateInputType
+    _max?: SessaoDialiseMaxAggregateInputType
+  }
+
+  export type SessaoDialiseGroupByOutputType = {
+    id: string
+    doenteId: string
+    data: Date
+    modalidade: string
+    duracaoMin: number | null
+    pesoSecoKg: number | null
+    pesoPreKg: number | null
+    pesoPosKg: number | null
+    ultrafiltracaoMl: number | null
+    fluxoSangueMlMin: number | null
+    acessoVascular: string | null
+    paSistolicaPre: number | null
+    paSistolicaPos: number | null
+    complicacoes: string | null
+    notas: string | null
+    registadoPorId: string
+    _count: SessaoDialiseCountAggregateOutputType | null
+    _avg: SessaoDialiseAvgAggregateOutputType | null
+    _sum: SessaoDialiseSumAggregateOutputType | null
+    _min: SessaoDialiseMinAggregateOutputType | null
+    _max: SessaoDialiseMaxAggregateOutputType | null
+  }
+
+  type GetSessaoDialiseGroupByPayload<T extends SessaoDialiseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessaoDialiseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessaoDialiseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessaoDialiseGroupByOutputType[P]>
+            : GetScalarType<T[P], SessaoDialiseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessaoDialiseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    data?: boolean
+    modalidade?: boolean
+    duracaoMin?: boolean
+    pesoSecoKg?: boolean
+    pesoPreKg?: boolean
+    pesoPosKg?: boolean
+    ultrafiltracaoMl?: boolean
+    fluxoSangueMlMin?: boolean
+    acessoVascular?: boolean
+    paSistolicaPre?: boolean
+    paSistolicaPos?: boolean
+    complicacoes?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessaoDialise"]>
+
+  export type SessaoDialiseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    data?: boolean
+    modalidade?: boolean
+    duracaoMin?: boolean
+    pesoSecoKg?: boolean
+    pesoPreKg?: boolean
+    pesoPosKg?: boolean
+    ultrafiltracaoMl?: boolean
+    fluxoSangueMlMin?: boolean
+    acessoVascular?: boolean
+    paSistolicaPre?: boolean
+    paSistolicaPos?: boolean
+    complicacoes?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessaoDialise"]>
+
+  export type SessaoDialiseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    data?: boolean
+    modalidade?: boolean
+    duracaoMin?: boolean
+    pesoSecoKg?: boolean
+    pesoPreKg?: boolean
+    pesoPosKg?: boolean
+    ultrafiltracaoMl?: boolean
+    fluxoSangueMlMin?: boolean
+    acessoVascular?: boolean
+    paSistolicaPre?: boolean
+    paSistolicaPos?: boolean
+    complicacoes?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessaoDialise"]>
+
+  export type SessaoDialiseSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    data?: boolean
+    modalidade?: boolean
+    duracaoMin?: boolean
+    pesoSecoKg?: boolean
+    pesoPreKg?: boolean
+    pesoPosKg?: boolean
+    ultrafiltracaoMl?: boolean
+    fluxoSangueMlMin?: boolean
+    acessoVascular?: boolean
+    paSistolicaPre?: boolean
+    paSistolicaPos?: boolean
+    complicacoes?: boolean
+    notas?: boolean
+    registadoPorId?: boolean
+  }
+
+  export type SessaoDialiseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "data" | "modalidade" | "duracaoMin" | "pesoSecoKg" | "pesoPreKg" | "pesoPosKg" | "ultrafiltracaoMl" | "fluxoSangueMlMin" | "acessoVascular" | "paSistolicaPre" | "paSistolicaPos" | "complicacoes" | "notas" | "registadoPorId", ExtArgs["result"]["sessaoDialise"]>
+  export type SessaoDialiseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type SessaoDialiseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type SessaoDialiseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+
+  export type $SessaoDialisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SessaoDialise"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      data: Date
+      modalidade: string
+      duracaoMin: number | null
+      pesoSecoKg: number | null
+      pesoPreKg: number | null
+      pesoPosKg: number | null
+      ultrafiltracaoMl: number | null
+      fluxoSangueMlMin: number | null
+      acessoVascular: string | null
+      paSistolicaPre: number | null
+      paSistolicaPos: number | null
+      complicacoes: string | null
+      notas: string | null
+      registadoPorId: string
+    }, ExtArgs["result"]["sessaoDialise"]>
+    composites: {}
+  }
+
+  type SessaoDialiseGetPayload<S extends boolean | null | undefined | SessaoDialiseDefaultArgs> = $Result.GetResult<Prisma.$SessaoDialisePayload, S>
+
+  type SessaoDialiseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessaoDialiseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessaoDialiseCountAggregateInputType | true
+    }
+
+  export interface SessaoDialiseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SessaoDialise'], meta: { name: 'SessaoDialise' } }
+    /**
+     * Find zero or one SessaoDialise that matches the filter.
+     * @param {SessaoDialiseFindUniqueArgs} args - Arguments to find a SessaoDialise
+     * @example
+     * // Get one SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessaoDialiseFindUniqueArgs>(args: SelectSubset<T, SessaoDialiseFindUniqueArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SessaoDialise that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessaoDialiseFindUniqueOrThrowArgs} args - Arguments to find a SessaoDialise
+     * @example
+     * // Get one SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessaoDialiseFindUniqueOrThrowArgs>(args: SelectSubset<T, SessaoDialiseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessaoDialise that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseFindFirstArgs} args - Arguments to find a SessaoDialise
+     * @example
+     * // Get one SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessaoDialiseFindFirstArgs>(args?: SelectSubset<T, SessaoDialiseFindFirstArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessaoDialise that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseFindFirstOrThrowArgs} args - Arguments to find a SessaoDialise
+     * @example
+     * // Get one SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessaoDialiseFindFirstOrThrowArgs>(args?: SelectSubset<T, SessaoDialiseFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SessaoDialises that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SessaoDialises
+     * const sessaoDialises = await prisma.sessaoDialise.findMany()
+     * 
+     * // Get first 10 SessaoDialises
+     * const sessaoDialises = await prisma.sessaoDialise.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessaoDialiseWithIdOnly = await prisma.sessaoDialise.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessaoDialiseFindManyArgs>(args?: SelectSubset<T, SessaoDialiseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SessaoDialise.
+     * @param {SessaoDialiseCreateArgs} args - Arguments to create a SessaoDialise.
+     * @example
+     * // Create one SessaoDialise
+     * const SessaoDialise = await prisma.sessaoDialise.create({
+     *   data: {
+     *     // ... data to create a SessaoDialise
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessaoDialiseCreateArgs>(args: SelectSubset<T, SessaoDialiseCreateArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SessaoDialises.
+     * @param {SessaoDialiseCreateManyArgs} args - Arguments to create many SessaoDialises.
+     * @example
+     * // Create many SessaoDialises
+     * const sessaoDialise = await prisma.sessaoDialise.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessaoDialiseCreateManyArgs>(args?: SelectSubset<T, SessaoDialiseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SessaoDialises and returns the data saved in the database.
+     * @param {SessaoDialiseCreateManyAndReturnArgs} args - Arguments to create many SessaoDialises.
+     * @example
+     * // Create many SessaoDialises
+     * const sessaoDialise = await prisma.sessaoDialise.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SessaoDialises and only return the `id`
+     * const sessaoDialiseWithIdOnly = await prisma.sessaoDialise.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessaoDialiseCreateManyAndReturnArgs>(args?: SelectSubset<T, SessaoDialiseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SessaoDialise.
+     * @param {SessaoDialiseDeleteArgs} args - Arguments to delete one SessaoDialise.
+     * @example
+     * // Delete one SessaoDialise
+     * const SessaoDialise = await prisma.sessaoDialise.delete({
+     *   where: {
+     *     // ... filter to delete one SessaoDialise
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessaoDialiseDeleteArgs>(args: SelectSubset<T, SessaoDialiseDeleteArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SessaoDialise.
+     * @param {SessaoDialiseUpdateArgs} args - Arguments to update one SessaoDialise.
+     * @example
+     * // Update one SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessaoDialiseUpdateArgs>(args: SelectSubset<T, SessaoDialiseUpdateArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SessaoDialises.
+     * @param {SessaoDialiseDeleteManyArgs} args - Arguments to filter SessaoDialises to delete.
+     * @example
+     * // Delete a few SessaoDialises
+     * const { count } = await prisma.sessaoDialise.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessaoDialiseDeleteManyArgs>(args?: SelectSubset<T, SessaoDialiseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessaoDialises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SessaoDialises
+     * const sessaoDialise = await prisma.sessaoDialise.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessaoDialiseUpdateManyArgs>(args: SelectSubset<T, SessaoDialiseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessaoDialises and returns the data updated in the database.
+     * @param {SessaoDialiseUpdateManyAndReturnArgs} args - Arguments to update many SessaoDialises.
+     * @example
+     * // Update many SessaoDialises
+     * const sessaoDialise = await prisma.sessaoDialise.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SessaoDialises and only return the `id`
+     * const sessaoDialiseWithIdOnly = await prisma.sessaoDialise.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessaoDialiseUpdateManyAndReturnArgs>(args: SelectSubset<T, SessaoDialiseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SessaoDialise.
+     * @param {SessaoDialiseUpsertArgs} args - Arguments to update or create a SessaoDialise.
+     * @example
+     * // Update or create a SessaoDialise
+     * const sessaoDialise = await prisma.sessaoDialise.upsert({
+     *   create: {
+     *     // ... data to create a SessaoDialise
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SessaoDialise we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessaoDialiseUpsertArgs>(args: SelectSubset<T, SessaoDialiseUpsertArgs<ExtArgs>>): Prisma__SessaoDialiseClient<$Result.GetResult<Prisma.$SessaoDialisePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SessaoDialises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseCountArgs} args - Arguments to filter SessaoDialises to count.
+     * @example
+     * // Count the number of SessaoDialises
+     * const count = await prisma.sessaoDialise.count({
+     *   where: {
+     *     // ... the filter for the SessaoDialises we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessaoDialiseCountArgs>(
+      args?: Subset<T, SessaoDialiseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessaoDialiseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SessaoDialise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessaoDialiseAggregateArgs>(args: Subset<T, SessaoDialiseAggregateArgs>): Prisma.PrismaPromise<GetSessaoDialiseAggregateType<T>>
+
+    /**
+     * Group by SessaoDialise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessaoDialiseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessaoDialiseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessaoDialiseGroupByArgs['orderBy'] }
+        : { orderBy?: SessaoDialiseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessaoDialiseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessaoDialiseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SessaoDialise model
+   */
+  readonly fields: SessaoDialiseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SessaoDialise.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessaoDialiseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SessaoDialise model
+   */
+  interface SessaoDialiseFieldRefs {
+    readonly id: FieldRef<"SessaoDialise", 'String'>
+    readonly doenteId: FieldRef<"SessaoDialise", 'String'>
+    readonly data: FieldRef<"SessaoDialise", 'DateTime'>
+    readonly modalidade: FieldRef<"SessaoDialise", 'String'>
+    readonly duracaoMin: FieldRef<"SessaoDialise", 'Int'>
+    readonly pesoSecoKg: FieldRef<"SessaoDialise", 'Float'>
+    readonly pesoPreKg: FieldRef<"SessaoDialise", 'Float'>
+    readonly pesoPosKg: FieldRef<"SessaoDialise", 'Float'>
+    readonly ultrafiltracaoMl: FieldRef<"SessaoDialise", 'Int'>
+    readonly fluxoSangueMlMin: FieldRef<"SessaoDialise", 'Int'>
+    readonly acessoVascular: FieldRef<"SessaoDialise", 'String'>
+    readonly paSistolicaPre: FieldRef<"SessaoDialise", 'Int'>
+    readonly paSistolicaPos: FieldRef<"SessaoDialise", 'Int'>
+    readonly complicacoes: FieldRef<"SessaoDialise", 'String'>
+    readonly notas: FieldRef<"SessaoDialise", 'String'>
+    readonly registadoPorId: FieldRef<"SessaoDialise", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SessaoDialise findUnique
+   */
+  export type SessaoDialiseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter, which SessaoDialise to fetch.
+     */
+    where: SessaoDialiseWhereUniqueInput
+  }
+
+  /**
+   * SessaoDialise findUniqueOrThrow
+   */
+  export type SessaoDialiseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter, which SessaoDialise to fetch.
+     */
+    where: SessaoDialiseWhereUniqueInput
+  }
+
+  /**
+   * SessaoDialise findFirst
+   */
+  export type SessaoDialiseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter, which SessaoDialise to fetch.
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessaoDialises to fetch.
+     */
+    orderBy?: SessaoDialiseOrderByWithRelationInput | SessaoDialiseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessaoDialises.
+     */
+    cursor?: SessaoDialiseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessaoDialises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessaoDialises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessaoDialises.
+     */
+    distinct?: SessaoDialiseScalarFieldEnum | SessaoDialiseScalarFieldEnum[]
+  }
+
+  /**
+   * SessaoDialise findFirstOrThrow
+   */
+  export type SessaoDialiseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter, which SessaoDialise to fetch.
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessaoDialises to fetch.
+     */
+    orderBy?: SessaoDialiseOrderByWithRelationInput | SessaoDialiseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessaoDialises.
+     */
+    cursor?: SessaoDialiseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessaoDialises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessaoDialises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessaoDialises.
+     */
+    distinct?: SessaoDialiseScalarFieldEnum | SessaoDialiseScalarFieldEnum[]
+  }
+
+  /**
+   * SessaoDialise findMany
+   */
+  export type SessaoDialiseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter, which SessaoDialises to fetch.
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessaoDialises to fetch.
+     */
+    orderBy?: SessaoDialiseOrderByWithRelationInput | SessaoDialiseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SessaoDialises.
+     */
+    cursor?: SessaoDialiseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessaoDialises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessaoDialises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessaoDialises.
+     */
+    distinct?: SessaoDialiseScalarFieldEnum | SessaoDialiseScalarFieldEnum[]
+  }
+
+  /**
+   * SessaoDialise create
+   */
+  export type SessaoDialiseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SessaoDialise.
+     */
+    data: XOR<SessaoDialiseCreateInput, SessaoDialiseUncheckedCreateInput>
+  }
+
+  /**
+   * SessaoDialise createMany
+   */
+  export type SessaoDialiseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SessaoDialises.
+     */
+    data: SessaoDialiseCreateManyInput | SessaoDialiseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SessaoDialise createManyAndReturn
+   */
+  export type SessaoDialiseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * The data used to create many SessaoDialises.
+     */
+    data: SessaoDialiseCreateManyInput | SessaoDialiseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessaoDialise update
+   */
+  export type SessaoDialiseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SessaoDialise.
+     */
+    data: XOR<SessaoDialiseUpdateInput, SessaoDialiseUncheckedUpdateInput>
+    /**
+     * Choose, which SessaoDialise to update.
+     */
+    where: SessaoDialiseWhereUniqueInput
+  }
+
+  /**
+   * SessaoDialise updateMany
+   */
+  export type SessaoDialiseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SessaoDialises.
+     */
+    data: XOR<SessaoDialiseUpdateManyMutationInput, SessaoDialiseUncheckedUpdateManyInput>
+    /**
+     * Filter which SessaoDialises to update
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * Limit how many SessaoDialises to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessaoDialise updateManyAndReturn
+   */
+  export type SessaoDialiseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * The data used to update SessaoDialises.
+     */
+    data: XOR<SessaoDialiseUpdateManyMutationInput, SessaoDialiseUncheckedUpdateManyInput>
+    /**
+     * Filter which SessaoDialises to update
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * Limit how many SessaoDialises to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessaoDialise upsert
+   */
+  export type SessaoDialiseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SessaoDialise to update in case it exists.
+     */
+    where: SessaoDialiseWhereUniqueInput
+    /**
+     * In case the SessaoDialise found by the `where` argument doesn't exist, create a new SessaoDialise with this data.
+     */
+    create: XOR<SessaoDialiseCreateInput, SessaoDialiseUncheckedCreateInput>
+    /**
+     * In case the SessaoDialise was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessaoDialiseUpdateInput, SessaoDialiseUncheckedUpdateInput>
+  }
+
+  /**
+   * SessaoDialise delete
+   */
+  export type SessaoDialiseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+    /**
+     * Filter which SessaoDialise to delete.
+     */
+    where: SessaoDialiseWhereUniqueInput
+  }
+
+  /**
+   * SessaoDialise deleteMany
+   */
+  export type SessaoDialiseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessaoDialises to delete
+     */
+    where?: SessaoDialiseWhereInput
+    /**
+     * Limit how many SessaoDialises to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessaoDialise without action
+   */
+  export type SessaoDialiseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessaoDialise
+     */
+    select?: SessaoDialiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessaoDialise
+     */
+    omit?: SessaoDialiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessaoDialiseInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -179600,6 +180996,28 @@ export namespace Prisma {
   export type CicloQuimioterapiaScalarFieldEnum = (typeof CicloQuimioterapiaScalarFieldEnum)[keyof typeof CicloQuimioterapiaScalarFieldEnum]
 
 
+  export const SessaoDialiseScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    data: 'data',
+    modalidade: 'modalidade',
+    duracaoMin: 'duracaoMin',
+    pesoSecoKg: 'pesoSecoKg',
+    pesoPreKg: 'pesoPreKg',
+    pesoPosKg: 'pesoPosKg',
+    ultrafiltracaoMl: 'ultrafiltracaoMl',
+    fluxoSangueMlMin: 'fluxoSangueMlMin',
+    acessoVascular: 'acessoVascular',
+    paSistolicaPre: 'paSistolicaPre',
+    paSistolicaPos: 'paSistolicaPos',
+    complicacoes: 'complicacoes',
+    notas: 'notas',
+    registadoPorId: 'registadoPorId'
+  };
+
+  export type SessaoDialiseScalarFieldEnum = (typeof SessaoDialiseScalarFieldEnum)[keyof typeof SessaoDialiseScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -180949,6 +182367,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalListRelationFilter
     gravidezes?: GravidezListRelationFilter
     planosQuimioterapia?: PlanoQuimioterapiaListRelationFilter
+    sessoesDialise?: SessaoDialiseListRelationFilter
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -181031,6 +182450,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalOrderByRelationAggregateInput
     gravidezes?: GravidezOrderByRelationAggregateInput
     planosQuimioterapia?: PlanoQuimioterapiaOrderByRelationAggregateInput
+    sessoesDialise?: SessaoDialiseOrderByRelationAggregateInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -181116,6 +182536,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalListRelationFilter
     gravidezes?: GravidezListRelationFilter
     planosQuimioterapia?: PlanoQuimioterapiaListRelationFilter
+    sessoesDialise?: SessaoDialiseListRelationFilter
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -191796,6 +193217,118 @@ export namespace Prisma {
     registadoPorId?: StringNullableWithAggregatesFilter<"CicloQuimioterapia"> | string | null
   }
 
+  export type SessaoDialiseWhereInput = {
+    AND?: SessaoDialiseWhereInput | SessaoDialiseWhereInput[]
+    OR?: SessaoDialiseWhereInput[]
+    NOT?: SessaoDialiseWhereInput | SessaoDialiseWhereInput[]
+    id?: StringFilter<"SessaoDialise"> | string
+    doenteId?: StringFilter<"SessaoDialise"> | string
+    data?: DateTimeFilter<"SessaoDialise"> | Date | string
+    modalidade?: StringFilter<"SessaoDialise"> | string
+    duracaoMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    pesoSecoKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPreKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPosKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    ultrafiltracaoMl?: IntNullableFilter<"SessaoDialise"> | number | null
+    fluxoSangueMlMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    acessoVascular?: StringNullableFilter<"SessaoDialise"> | string | null
+    paSistolicaPre?: IntNullableFilter<"SessaoDialise"> | number | null
+    paSistolicaPos?: IntNullableFilter<"SessaoDialise"> | number | null
+    complicacoes?: StringNullableFilter<"SessaoDialise"> | string | null
+    notas?: StringNullableFilter<"SessaoDialise"> | string | null
+    registadoPorId?: StringFilter<"SessaoDialise"> | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }
+
+  export type SessaoDialiseOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    data?: SortOrder
+    modalidade?: SortOrder
+    duracaoMin?: SortOrderInput | SortOrder
+    pesoSecoKg?: SortOrderInput | SortOrder
+    pesoPreKg?: SortOrderInput | SortOrder
+    pesoPosKg?: SortOrderInput | SortOrder
+    ultrafiltracaoMl?: SortOrderInput | SortOrder
+    fluxoSangueMlMin?: SortOrderInput | SortOrder
+    acessoVascular?: SortOrderInput | SortOrder
+    paSistolicaPre?: SortOrderInput | SortOrder
+    paSistolicaPos?: SortOrderInput | SortOrder
+    complicacoes?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+  }
+
+  export type SessaoDialiseWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SessaoDialiseWhereInput | SessaoDialiseWhereInput[]
+    OR?: SessaoDialiseWhereInput[]
+    NOT?: SessaoDialiseWhereInput | SessaoDialiseWhereInput[]
+    doenteId?: StringFilter<"SessaoDialise"> | string
+    data?: DateTimeFilter<"SessaoDialise"> | Date | string
+    modalidade?: StringFilter<"SessaoDialise"> | string
+    duracaoMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    pesoSecoKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPreKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPosKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    ultrafiltracaoMl?: IntNullableFilter<"SessaoDialise"> | number | null
+    fluxoSangueMlMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    acessoVascular?: StringNullableFilter<"SessaoDialise"> | string | null
+    paSistolicaPre?: IntNullableFilter<"SessaoDialise"> | number | null
+    paSistolicaPos?: IntNullableFilter<"SessaoDialise"> | number | null
+    complicacoes?: StringNullableFilter<"SessaoDialise"> | string | null
+    notas?: StringNullableFilter<"SessaoDialise"> | string | null
+    registadoPorId?: StringFilter<"SessaoDialise"> | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }, "id">
+
+  export type SessaoDialiseOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    data?: SortOrder
+    modalidade?: SortOrder
+    duracaoMin?: SortOrderInput | SortOrder
+    pesoSecoKg?: SortOrderInput | SortOrder
+    pesoPreKg?: SortOrderInput | SortOrder
+    pesoPosKg?: SortOrderInput | SortOrder
+    ultrafiltracaoMl?: SortOrderInput | SortOrder
+    fluxoSangueMlMin?: SortOrderInput | SortOrder
+    acessoVascular?: SortOrderInput | SortOrder
+    paSistolicaPre?: SortOrderInput | SortOrder
+    paSistolicaPos?: SortOrderInput | SortOrder
+    complicacoes?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    _count?: SessaoDialiseCountOrderByAggregateInput
+    _avg?: SessaoDialiseAvgOrderByAggregateInput
+    _max?: SessaoDialiseMaxOrderByAggregateInput
+    _min?: SessaoDialiseMinOrderByAggregateInput
+    _sum?: SessaoDialiseSumOrderByAggregateInput
+  }
+
+  export type SessaoDialiseScalarWhereWithAggregatesInput = {
+    AND?: SessaoDialiseScalarWhereWithAggregatesInput | SessaoDialiseScalarWhereWithAggregatesInput[]
+    OR?: SessaoDialiseScalarWhereWithAggregatesInput[]
+    NOT?: SessaoDialiseScalarWhereWithAggregatesInput | SessaoDialiseScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SessaoDialise"> | string
+    doenteId?: StringWithAggregatesFilter<"SessaoDialise"> | string
+    data?: DateTimeWithAggregatesFilter<"SessaoDialise"> | Date | string
+    modalidade?: StringWithAggregatesFilter<"SessaoDialise"> | string
+    duracaoMin?: IntNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    pesoSecoKg?: FloatNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    pesoPreKg?: FloatNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    pesoPosKg?: FloatNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    ultrafiltracaoMl?: IntNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    fluxoSangueMlMin?: IntNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    acessoVascular?: StringNullableWithAggregatesFilter<"SessaoDialise"> | string | null
+    paSistolicaPre?: IntNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    paSistolicaPos?: IntNullableWithAggregatesFilter<"SessaoDialise"> | number | null
+    complicacoes?: StringNullableWithAggregatesFilter<"SessaoDialise"> | string | null
+    notas?: StringNullableWithAggregatesFilter<"SessaoDialise"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"SessaoDialise"> | string
+  }
+
   export type RoleConfigCreateInput = {
     id?: string
     chave: string
@@ -192700,6 +194233,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -192780,6 +194314,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -192860,6 +194395,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -192940,6 +194476,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -204397,6 +205934,138 @@ export namespace Prisma {
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type SessaoDialiseCreateInput = {
+    id?: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+    doente: DoenteCreateNestedOneWithoutSessoesDialiseInput
+  }
+
+  export type SessaoDialiseUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type SessaoDialiseUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    doente?: DoenteUpdateOneRequiredWithoutSessoesDialiseNestedInput
+  }
+
+  export type SessaoDialiseUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SessaoDialiseCreateManyInput = {
+    id?: string
+    doenteId: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type SessaoDialiseUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SessaoDialiseUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -205786,6 +207455,12 @@ export namespace Prisma {
     none?: PlanoQuimioterapiaWhereInput
   }
 
+  export type SessaoDialiseListRelationFilter = {
+    every?: SessaoDialiseWhereInput
+    some?: SessaoDialiseWhereInput
+    none?: SessaoDialiseWhereInput
+  }
+
   export type PassagemTurnoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -205819,6 +207494,10 @@ export namespace Prisma {
   }
 
   export type PlanoQuimioterapiaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessaoDialiseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -212292,6 +213971,85 @@ export namespace Prisma {
     toxicidadeGrau?: SortOrder
   }
 
+  export type SessaoDialiseCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    data?: SortOrder
+    modalidade?: SortOrder
+    duracaoMin?: SortOrder
+    pesoSecoKg?: SortOrder
+    pesoPreKg?: SortOrder
+    pesoPosKg?: SortOrder
+    ultrafiltracaoMl?: SortOrder
+    fluxoSangueMlMin?: SortOrder
+    acessoVascular?: SortOrder
+    paSistolicaPre?: SortOrder
+    paSistolicaPos?: SortOrder
+    complicacoes?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type SessaoDialiseAvgOrderByAggregateInput = {
+    duracaoMin?: SortOrder
+    pesoSecoKg?: SortOrder
+    pesoPreKg?: SortOrder
+    pesoPosKg?: SortOrder
+    ultrafiltracaoMl?: SortOrder
+    fluxoSangueMlMin?: SortOrder
+    paSistolicaPre?: SortOrder
+    paSistolicaPos?: SortOrder
+  }
+
+  export type SessaoDialiseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    data?: SortOrder
+    modalidade?: SortOrder
+    duracaoMin?: SortOrder
+    pesoSecoKg?: SortOrder
+    pesoPreKg?: SortOrder
+    pesoPosKg?: SortOrder
+    ultrafiltracaoMl?: SortOrder
+    fluxoSangueMlMin?: SortOrder
+    acessoVascular?: SortOrder
+    paSistolicaPre?: SortOrder
+    paSistolicaPos?: SortOrder
+    complicacoes?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type SessaoDialiseMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    data?: SortOrder
+    modalidade?: SortOrder
+    duracaoMin?: SortOrder
+    pesoSecoKg?: SortOrder
+    pesoPreKg?: SortOrder
+    pesoPosKg?: SortOrder
+    ultrafiltracaoMl?: SortOrder
+    fluxoSangueMlMin?: SortOrder
+    acessoVascular?: SortOrder
+    paSistolicaPre?: SortOrder
+    paSistolicaPos?: SortOrder
+    complicacoes?: SortOrder
+    notas?: SortOrder
+    registadoPorId?: SortOrder
+  }
+
+  export type SessaoDialiseSumOrderByAggregateInput = {
+    duracaoMin?: SortOrder
+    pesoSecoKg?: SortOrder
+    pesoPreKg?: SortOrder
+    pesoPosKg?: SortOrder
+    ultrafiltracaoMl?: SortOrder
+    fluxoSangueMlMin?: SortOrder
+    paSistolicaPre?: SortOrder
+    paSistolicaPos?: SortOrder
+  }
+
   export type SubRoleConfigCreateNestedManyWithoutRoleInput = {
     create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
@@ -217891,6 +219649,13 @@ export namespace Prisma {
     connect?: PlanoQuimioterapiaWhereUniqueInput | PlanoQuimioterapiaWhereUniqueInput[]
   }
 
+  export type SessaoDialiseCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput> | SessaoDialiseCreateWithoutDoenteInput[] | SessaoDialiseUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SessaoDialiseCreateOrConnectWithoutDoenteInput | SessaoDialiseCreateOrConnectWithoutDoenteInput[]
+    createMany?: SessaoDialiseCreateManyDoenteInputEnvelope
+    connect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -218276,6 +220041,13 @@ export namespace Prisma {
     connectOrCreate?: PlanoQuimioterapiaCreateOrConnectWithoutDoenteInput | PlanoQuimioterapiaCreateOrConnectWithoutDoenteInput[]
     createMany?: PlanoQuimioterapiaCreateManyDoenteInputEnvelope
     connect?: PlanoQuimioterapiaWhereUniqueInput | PlanoQuimioterapiaWhereUniqueInput[]
+  }
+
+  export type SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput> | SessaoDialiseCreateWithoutDoenteInput[] | SessaoDialiseUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SessaoDialiseCreateOrConnectWithoutDoenteInput | SessaoDialiseCreateOrConnectWithoutDoenteInput[]
+    createMany?: SessaoDialiseCreateManyDoenteInputEnvelope
+    connect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -219066,6 +220838,20 @@ export namespace Prisma {
     deleteMany?: PlanoQuimioterapiaScalarWhereInput | PlanoQuimioterapiaScalarWhereInput[]
   }
 
+  export type SessaoDialiseUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput> | SessaoDialiseCreateWithoutDoenteInput[] | SessaoDialiseUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SessaoDialiseCreateOrConnectWithoutDoenteInput | SessaoDialiseCreateOrConnectWithoutDoenteInput[]
+    upsert?: SessaoDialiseUpsertWithWhereUniqueWithoutDoenteInput | SessaoDialiseUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: SessaoDialiseCreateManyDoenteInputEnvelope
+    set?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    disconnect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    delete?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    connect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    update?: SessaoDialiseUpdateWithWhereUniqueWithoutDoenteInput | SessaoDialiseUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: SessaoDialiseUpdateManyWithWhereWithoutDoenteInput | SessaoDialiseUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: SessaoDialiseScalarWhereInput | SessaoDialiseScalarWhereInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -219828,6 +221614,20 @@ export namespace Prisma {
     update?: PlanoQuimioterapiaUpdateWithWhereUniqueWithoutDoenteInput | PlanoQuimioterapiaUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: PlanoQuimioterapiaUpdateManyWithWhereWithoutDoenteInput | PlanoQuimioterapiaUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: PlanoQuimioterapiaScalarWhereInput | PlanoQuimioterapiaScalarWhereInput[]
+  }
+
+  export type SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput> | SessaoDialiseCreateWithoutDoenteInput[] | SessaoDialiseUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SessaoDialiseCreateOrConnectWithoutDoenteInput | SessaoDialiseCreateOrConnectWithoutDoenteInput[]
+    upsert?: SessaoDialiseUpsertWithWhereUniqueWithoutDoenteInput | SessaoDialiseUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: SessaoDialiseCreateManyDoenteInputEnvelope
+    set?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    disconnect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    delete?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    connect?: SessaoDialiseWhereUniqueInput | SessaoDialiseWhereUniqueInput[]
+    update?: SessaoDialiseUpdateWithWhereUniqueWithoutDoenteInput | SessaoDialiseUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: SessaoDialiseUpdateManyWithWhereWithoutDoenteInput | SessaoDialiseUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: SessaoDialiseScalarWhereInput | SessaoDialiseScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -224814,6 +226614,20 @@ export namespace Prisma {
     update?: XOR<XOR<PlanoQuimioterapiaUpdateToOneWithWhereWithoutCiclosInput, PlanoQuimioterapiaUpdateWithoutCiclosInput>, PlanoQuimioterapiaUncheckedUpdateWithoutCiclosInput>
   }
 
+  export type DoenteCreateNestedOneWithoutSessoesDialiseInput = {
+    create?: XOR<DoenteCreateWithoutSessoesDialiseInput, DoenteUncheckedCreateWithoutSessoesDialiseInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSessoesDialiseInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutSessoesDialiseNestedInput = {
+    create?: XOR<DoenteCreateWithoutSessoesDialiseInput, DoenteUncheckedCreateWithoutSessoesDialiseInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSessoesDialiseInput
+    upsert?: DoenteUpsertWithoutSessoesDialiseInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutSessoesDialiseInput, DoenteUpdateWithoutSessoesDialiseInput>, DoenteUncheckedUpdateWithoutSessoesDialiseInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -226118,6 +227932,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -226197,6 +228012,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -234522,6 +236338,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -234601,6 +236418,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -234696,6 +236514,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -234775,6 +236594,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -237134,6 +238954,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessaoDialiseCreateWithoutDoenteInput = {
+    id?: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type SessaoDialiseUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
+  export type SessaoDialiseCreateOrConnectWithoutDoenteInput = {
+    where: SessaoDialiseWhereUniqueInput
+    create: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type SessaoDialiseCreateManyDoenteInputEnvelope = {
+    data: SessaoDialiseCreateManyDoenteInput | SessaoDialiseCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -238608,6 +240474,44 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"PlanoQuimioterapia"> | Date | string
   }
 
+  export type SessaoDialiseUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: SessaoDialiseWhereUniqueInput
+    update: XOR<SessaoDialiseUpdateWithoutDoenteInput, SessaoDialiseUncheckedUpdateWithoutDoenteInput>
+    create: XOR<SessaoDialiseCreateWithoutDoenteInput, SessaoDialiseUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type SessaoDialiseUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: SessaoDialiseWhereUniqueInput
+    data: XOR<SessaoDialiseUpdateWithoutDoenteInput, SessaoDialiseUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type SessaoDialiseUpdateManyWithWhereWithoutDoenteInput = {
+    where: SessaoDialiseScalarWhereInput
+    data: XOR<SessaoDialiseUpdateManyMutationInput, SessaoDialiseUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type SessaoDialiseScalarWhereInput = {
+    AND?: SessaoDialiseScalarWhereInput | SessaoDialiseScalarWhereInput[]
+    OR?: SessaoDialiseScalarWhereInput[]
+    NOT?: SessaoDialiseScalarWhereInput | SessaoDialiseScalarWhereInput[]
+    id?: StringFilter<"SessaoDialise"> | string
+    doenteId?: StringFilter<"SessaoDialise"> | string
+    data?: DateTimeFilter<"SessaoDialise"> | Date | string
+    modalidade?: StringFilter<"SessaoDialise"> | string
+    duracaoMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    pesoSecoKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPreKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    pesoPosKg?: FloatNullableFilter<"SessaoDialise"> | number | null
+    ultrafiltracaoMl?: IntNullableFilter<"SessaoDialise"> | number | null
+    fluxoSangueMlMin?: IntNullableFilter<"SessaoDialise"> | number | null
+    acessoVascular?: StringNullableFilter<"SessaoDialise"> | string | null
+    paSistolicaPre?: IntNullableFilter<"SessaoDialise"> | number | null
+    paSistolicaPos?: IntNullableFilter<"SessaoDialise"> | number | null
+    complicacoes?: StringNullableFilter<"SessaoDialise"> | string | null
+    notas?: StringNullableFilter<"SessaoDialise"> | string | null
+    registadoPorId?: StringFilter<"SessaoDialise"> | string
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     tenantId?: string
@@ -239531,6 +241435,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -239610,6 +241515,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -240021,6 +241927,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -240100,6 +242007,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -241213,6 +243121,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -241292,6 +243201,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -241461,6 +243371,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -241540,6 +243451,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorCreateWithoutPresencaOnlineInput = {
@@ -242771,6 +244683,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
@@ -242850,6 +244763,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasClinciasInput = {
@@ -243515,6 +245429,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
@@ -243594,6 +245509,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasClinciasAutorInput = {
@@ -244255,6 +246171,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
@@ -244334,6 +246251,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEscalasClinicasInput = {
@@ -244714,6 +246632,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
@@ -244793,6 +246712,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEscalasClinicasRegistadasInput = {
@@ -245194,6 +247114,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -245273,6 +247194,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -245690,6 +247612,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -245769,6 +247692,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -246139,6 +248063,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -246218,6 +248143,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -246914,6 +248840,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -246993,6 +248920,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -247691,6 +249619,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -247770,6 +249699,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -248783,6 +250713,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -248862,6 +250793,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -249865,6 +251797,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutStewardshipAntibioticosInput = {
@@ -249944,6 +251877,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutStewardshipAntibioticosInput = {
@@ -250088,6 +252022,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutStewardshipAntibioticosInput = {
@@ -250167,6 +252102,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type MedicacaoUpsertWithoutStewardshipInput = {
@@ -250350,6 +252286,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -250429,6 +252366,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -250864,6 +252802,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -250943,6 +252882,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -254542,6 +256482,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -254621,6 +256562,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -255315,6 +257257,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -255394,6 +257337,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -256055,6 +257999,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
@@ -256134,6 +258079,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
@@ -256514,6 +258460,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
@@ -256593,6 +258540,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
@@ -256963,6 +258911,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBalancosHidricosInput = {
@@ -257042,6 +258991,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBalancosHidricosInput = {
@@ -257422,6 +259372,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBalancosHidricosInput = {
@@ -257501,6 +259452,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutBalancosHidricosRegistadosInput = {
@@ -257871,6 +259823,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFeridasInput = {
@@ -257950,6 +259903,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFeridasInput = {
@@ -258360,6 +260314,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFeridasInput = {
@@ -258439,6 +260394,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFeridasRegistadasInput = {
@@ -258989,6 +260945,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosTransfusaoInput = {
@@ -259068,6 +261025,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosTransfusaoInput = {
@@ -259530,6 +261488,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosTransfusaoInput = {
@@ -259609,6 +261568,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransfusoesPrescritasInput = {
@@ -260108,6 +262068,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosTransfusaoInput = {
@@ -260187,6 +262148,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosTransfusaoInput = {
@@ -260686,6 +262648,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosTransfusaoInput = {
@@ -260765,6 +262728,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransfusoesAdministradasInput = {
@@ -261205,6 +263169,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutReacoesTransfusionaisInput = {
@@ -261284,6 +263249,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutReacoesTransfusionaisInput = {
@@ -261705,6 +263671,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutReacoesTransfusionaisInput = {
@@ -261784,6 +263751,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutReacoesTransfusionaisRegistoInput = {
@@ -262730,6 +264698,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
@@ -262809,6 +264778,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlergiasInput = {
@@ -262904,6 +264874,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
@@ -262983,6 +264954,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -263062,6 +265034,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
@@ -263141,6 +265114,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
@@ -263236,6 +265210,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
@@ -263315,6 +265290,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAlertasClinicosInput = {
@@ -263394,6 +265370,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
@@ -263473,6 +265450,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
@@ -263853,6 +265831,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
@@ -263932,6 +265911,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAlertasAcusadosInput = {
@@ -264302,6 +266282,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -264381,6 +266362,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -264761,6 +266743,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -264840,6 +266823,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
@@ -265210,6 +267194,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
@@ -265289,6 +267274,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
@@ -265669,6 +267655,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
@@ -265748,6 +267735,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSumariosAltaInput = {
@@ -267270,6 +269258,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutExamesInput = {
@@ -267349,6 +269338,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutExamesInput = {
@@ -267753,6 +269743,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutExamesInput = {
@@ -267832,6 +269823,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutExamesSolicitadosInput = {
@@ -268301,6 +270293,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
@@ -268380,6 +270373,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosUrgenciaInput = {
@@ -269356,6 +271350,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
@@ -269435,6 +271430,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosTriadosInput = {
@@ -271139,6 +273135,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
@@ -271218,6 +273215,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCirurgiasInput = {
@@ -271914,6 +273912,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
@@ -271993,6 +273992,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoCircurgiaoInput = {
@@ -274503,6 +276503,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsultasInput = {
@@ -274582,6 +276583,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsultasInput = {
@@ -275023,6 +277025,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
@@ -275102,6 +277105,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsultasInput = {
@@ -282100,6 +284104,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -282179,6 +284184,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -282591,6 +284597,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -282670,6 +284677,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPlanosReabilitacaoInput = {
@@ -283083,6 +285091,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -283162,6 +285171,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -283575,6 +285585,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -283654,6 +285665,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesFisioterapiaInput = {
@@ -284024,6 +286036,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
@@ -284103,6 +286116,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosInternosInput = {
@@ -284768,6 +286782,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
@@ -284847,6 +286862,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosSolicitadosInput = {
@@ -287349,6 +289365,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
@@ -287428,6 +289445,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutInterconsultasInput = {
@@ -288093,6 +290111,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
@@ -288172,6 +290191,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRequisitadasInput = {
@@ -288833,6 +290853,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
@@ -288912,6 +290933,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDispositivosInvasivosInput = {
@@ -289292,6 +291314,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
@@ -289371,6 +291394,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutDispositivosInseridosInput = {
@@ -292733,6 +294757,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
@@ -292812,6 +294837,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFicheiroPessoalInput = {
@@ -293192,6 +295218,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
@@ -293271,6 +295298,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput = {
@@ -293641,6 +295669,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
@@ -293720,6 +295749,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput = {
@@ -294209,6 +296239,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
@@ -294288,6 +296319,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type ConsultaUpsertWithoutEpisodioFaturacaoInput = {
@@ -296275,6 +298307,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProblemasInput = {
@@ -296354,6 +298387,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProblemasInput = {
@@ -296734,6 +298768,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProblemasInput = {
@@ -296813,6 +298848,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProblemasRegistadosInput = {
@@ -301907,6 +303943,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEventosAdversosInput = {
@@ -301986,6 +304023,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEventosAdversosInput = {
@@ -302366,6 +304404,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEventosAdversosInput = {
@@ -302445,6 +304484,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEventosAdversosRegistadosInput = {
@@ -302815,6 +304855,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -302894,6 +304935,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -303274,6 +305316,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -303353,6 +305396,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesEspecialidadeInput = {
@@ -305451,6 +307495,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsentimentosInput = {
@@ -305530,6 +307575,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsentimentosInput = {
@@ -306195,6 +308241,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsentimentosInput = {
@@ -306274,6 +308321,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsentimentosTestemunhaInput = {
@@ -307220,6 +309268,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBreakGlassAcessosInput = {
@@ -307299,6 +309348,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBreakGlassAcessosInput = {
@@ -307685,6 +309735,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBreakGlassAcessosInput = {
@@ -307764,6 +309815,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutProtocolosClinicosInput = {
@@ -307843,6 +309895,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProtocolosClinicosInput = {
@@ -307922,6 +309975,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProtocolosClinicosInput = {
@@ -308330,6 +310384,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProtocolosClinicosInput = {
@@ -308409,6 +310464,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProtocolosAtivadosInput = {
@@ -309423,6 +311479,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPrescricoesDietaInput = {
@@ -309502,6 +311559,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPrescricoesDietaInput = {
@@ -309882,6 +311940,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPrescricoesDietaInput = {
@@ -309961,6 +312020,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPrescricoesDietaCriadasInput = {
@@ -310331,6 +312391,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput = {
@@ -310410,6 +312471,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCulturasMicrobiologicasInput = {
@@ -310790,6 +312852,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput = {
@@ -310869,6 +312932,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCulturasRegistadasInput = {
@@ -312391,6 +314455,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinalizacoesInput = {
@@ -312470,6 +314535,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinalizacoesInput = {
@@ -313135,6 +315201,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinalizacoesInput = {
@@ -313214,6 +315281,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinalizacoesCriadasInput = {
@@ -313875,6 +315943,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasSepsisInput = {
@@ -313954,6 +316023,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasSepsisInput = {
@@ -314049,6 +316119,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasSepsisInput = {
@@ -314128,6 +316199,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutBaselineInput = {
@@ -314207,6 +316279,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBaselineInput = {
@@ -314286,6 +316359,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBaselineInput = {
@@ -314381,6 +316455,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBaselineInput = {
@@ -314460,6 +316535,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutPlanoAltaInput = {
@@ -314539,6 +316615,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanoAltaInput = {
@@ -314618,6 +316695,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanoAltaInput = {
@@ -314713,6 +316791,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanoAltaInput = {
@@ -314792,6 +316871,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutReconciliacoesMedicacaoInput = {
@@ -314871,6 +316951,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutReconciliacoesMedicacaoInput = {
@@ -314950,6 +317031,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutReconciliacoesMedicacaoInput = {
@@ -315615,6 +317697,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutReconciliacoesMedicacaoInput = {
@@ -315694,6 +317777,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutReconciliacoesCriadasInput = {
@@ -317507,6 +319591,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAcessosFamiliaresInput = {
@@ -317586,6 +319671,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAcessosFamiliaresInput = {
@@ -317966,6 +320052,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAcessosFamiliaresInput = {
@@ -318045,6 +320132,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAcessosFamiliaresCriadosInput = {
@@ -318487,6 +320575,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutIdentificadoresExternosInput = {
@@ -318566,6 +320655,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutIdentificadoresExternosInput = {
@@ -318661,6 +320751,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutIdentificadoresExternosInput = {
@@ -318740,6 +320831,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutDocumentosSaudeInput = {
@@ -318819,6 +320911,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDocumentosSaudeInput = {
@@ -318898,6 +320991,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDocumentosSaudeInput = {
@@ -319592,6 +321686,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDocumentosSaudeInput = {
@@ -319671,6 +321766,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type SistemaExternoSaudeUpsertWithoutDocumentosInput = {
@@ -320943,6 +323039,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutOutcomesClinicosInput = {
@@ -321022,6 +323119,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutOutcomesClinicosInput = {
@@ -321402,6 +323500,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutOutcomesClinicosInput = {
@@ -321481,6 +323580,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutOutcomesRegistadosInput = {
@@ -321851,6 +323951,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutResultadosAnaliseInput = {
@@ -321930,6 +324031,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutResultadosAnaliseInput = {
@@ -322310,6 +324412,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutResultadosAnaliseInput = {
@@ -322389,6 +324492,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutResultadosAnaliseRegistadosInput = {
@@ -324063,6 +326167,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosProInput = {
@@ -324142,6 +326247,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosProInput = {
@@ -324258,6 +326364,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosProInput = {
@@ -324337,6 +326444,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type TemplatePROUpsertWithoutRegistosInput = {
@@ -324443,6 +326551,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPortalDoenteInput = {
@@ -324522,6 +326631,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPortalDoenteInput = {
@@ -324902,6 +327012,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPortalDoenteInput = {
@@ -324981,6 +327092,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPortaisCriadosInput = {
@@ -325927,6 +328039,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFollowUpsInput = {
@@ -326006,6 +328119,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFollowUpsInput = {
@@ -326386,6 +328500,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFollowUpsInput = {
@@ -326465,6 +328580,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFollowUpsResponsavelInput = {
@@ -327987,6 +330103,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTransferenciasExternasInput = {
@@ -328066,6 +330183,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTransferenciasExternasInput = {
@@ -328731,6 +330849,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTransferenciasExternasInput = {
@@ -328810,6 +330929,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransExternasSolicitadasInput = {
@@ -330047,6 +332167,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutGravidezesInput = {
@@ -330126,6 +332247,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutGravidezesInput = {
@@ -330282,6 +332404,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutGravidezesInput = {
@@ -330361,6 +332484,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type RegistoPartogramaUpsertWithWhereUniqueWithoutGravidezInput = {
@@ -330658,6 +332782,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosQuimioterapiaInput = {
@@ -330737,6 +332862,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
     gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesDialise?: SessaoDialiseUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosQuimioterapiaInput = {
@@ -330864,6 +332990,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosQuimioterapiaInput = {
@@ -330943,6 +333070,7 @@ export namespace Prisma {
     registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CicloQuimioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -331050,6 +333178,342 @@ export namespace Prisma {
     estado?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DoenteCreateWithoutSessoesDialiseInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    icd10Code?: string | null
+    grupoSanguineo?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    fotoUrl?: string | null
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
+    balancosHidricos?: BalancoHidricoCreateNestedManyWithoutDoenteInput
+    feridas?: AvaliacaoFeridaCreateNestedManyWithoutDoenteInput
+    sinalizacoes?: SinalizacaoPreocupanteCreateNestedManyWithoutDoenteInput
+    alertasSepsis?: AlertaSepsisCreateNestedManyWithoutDoenteInput
+    baseline?: BaselineDoenteCreateNestedOneWithoutDoenteInput
+    planoAlta?: PlanoAltaCreateNestedOneWithoutDoenteInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoCreateNestedManyWithoutDoenteInput
+    acessosFamiliares?: AcessoFamiliarCreateNestedManyWithoutDoenteInput
+    resultadosAnalise?: ResultadoAnaliseCreateNestedManyWithoutDoenteInput
+    documentosSaude?: DocumentoSaudeCreateNestedManyWithoutDoenteInput
+    identificadoresExternos?: IdentificadorExternoCreateNestedManyWithoutDoenteInput
+    portalDoente?: PortalDoenteCreateNestedOneWithoutDoenteInput
+    registosPro?: RegistoPROCreateNestedManyWithoutDoenteInput
+    transferenciasExternas?: TransferenciaExternaCreateNestedManyWithoutDoenteInput
+    stewardshipAntibioticos?: StewardshipAntibioticoCreateNestedManyWithoutDoenteInput
+    followUps?: FollowUpAgendadoCreateNestedManyWithoutDoenteInput
+    outcomesClinicos?: OutcomeClinicoCreateNestedManyWithoutDoenteInput
+    pedidosTransfusao?: PedidoTransfusaoCreateNestedManyWithoutDoenteInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutDoenteInput
+    reacoesTransfusionais?: ReacaoTransfusionalCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezCreateNestedManyWithoutDoenteInput
+    planosQuimioterapia?: PlanoQuimioterapiaCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutSessoesDialiseInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    icd10Code?: string | null
+    grupoSanguineo?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    fotoUrl?: string | null
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoUncheckedCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
+    balancosHidricos?: BalancoHidricoUncheckedCreateNestedManyWithoutDoenteInput
+    feridas?: AvaliacaoFeridaUncheckedCreateNestedManyWithoutDoenteInput
+    sinalizacoes?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutDoenteInput
+    alertasSepsis?: AlertaSepsisUncheckedCreateNestedManyWithoutDoenteInput
+    baseline?: BaselineDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    planoAlta?: PlanoAltaUncheckedCreateNestedOneWithoutDoenteInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    acessosFamiliares?: AcessoFamiliarUncheckedCreateNestedManyWithoutDoenteInput
+    resultadosAnalise?: ResultadoAnaliseUncheckedCreateNestedManyWithoutDoenteInput
+    documentosSaude?: DocumentoSaudeUncheckedCreateNestedManyWithoutDoenteInput
+    identificadoresExternos?: IdentificadorExternoUncheckedCreateNestedManyWithoutDoenteInput
+    portalDoente?: PortalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    registosPro?: RegistoPROUncheckedCreateNestedManyWithoutDoenteInput
+    transferenciasExternas?: TransferenciaExternaUncheckedCreateNestedManyWithoutDoenteInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUncheckedCreateNestedManyWithoutDoenteInput
+    followUps?: FollowUpAgendadoUncheckedCreateNestedManyWithoutDoenteInput
+    outcomesClinicos?: OutcomeClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosTransfusao?: PedidoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutDoenteInput
+    reacoesTransfusionais?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutDoenteInput
+    gravidezes?: GravidezUncheckedCreateNestedManyWithoutDoenteInput
+    planosQuimioterapia?: PlanoQuimioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutSessoesDialiseInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutSessoesDialiseInput, DoenteUncheckedCreateWithoutSessoesDialiseInput>
+  }
+
+  export type DoenteUpsertWithoutSessoesDialiseInput = {
+    update: XOR<DoenteUpdateWithoutSessoesDialiseInput, DoenteUncheckedUpdateWithoutSessoesDialiseInput>
+    create: XOR<DoenteCreateWithoutSessoesDialiseInput, DoenteUncheckedCreateWithoutSessoesDialiseInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutSessoesDialiseInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutSessoesDialiseInput, DoenteUncheckedUpdateWithoutSessoesDialiseInput>
+  }
+
+  export type DoenteUpdateWithoutSessoesDialiseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
+    balancosHidricos?: BalancoHidricoUpdateManyWithoutDoenteNestedInput
+    feridas?: AvaliacaoFeridaUpdateManyWithoutDoenteNestedInput
+    sinalizacoes?: SinalizacaoPreocupanteUpdateManyWithoutDoenteNestedInput
+    alertasSepsis?: AlertaSepsisUpdateManyWithoutDoenteNestedInput
+    baseline?: BaselineDoenteUpdateOneWithoutDoenteNestedInput
+    planoAlta?: PlanoAltaUpdateOneWithoutDoenteNestedInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUpdateManyWithoutDoenteNestedInput
+    acessosFamiliares?: AcessoFamiliarUpdateManyWithoutDoenteNestedInput
+    resultadosAnalise?: ResultadoAnaliseUpdateManyWithoutDoenteNestedInput
+    documentosSaude?: DocumentoSaudeUpdateManyWithoutDoenteNestedInput
+    identificadoresExternos?: IdentificadorExternoUpdateManyWithoutDoenteNestedInput
+    portalDoente?: PortalDoenteUpdateOneWithoutDoenteNestedInput
+    registosPro?: RegistoPROUpdateManyWithoutDoenteNestedInput
+    transferenciasExternas?: TransferenciaExternaUpdateManyWithoutDoenteNestedInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUpdateManyWithoutDoenteNestedInput
+    followUps?: FollowUpAgendadoUpdateManyWithoutDoenteNestedInput
+    outcomesClinicos?: OutcomeClinicoUpdateManyWithoutDoenteNestedInput
+    pedidosTransfusao?: PedidoTransfusaoUpdateManyWithoutDoenteNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutDoenteNestedInput
+    reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
+    planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutSessoesDialiseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoSanguineo?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUncheckedUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
+    balancosHidricos?: BalancoHidricoUncheckedUpdateManyWithoutDoenteNestedInput
+    feridas?: AvaliacaoFeridaUncheckedUpdateManyWithoutDoenteNestedInput
+    sinalizacoes?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasSepsis?: AlertaSepsisUncheckedUpdateManyWithoutDoenteNestedInput
+    baseline?: BaselineDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    planoAlta?: PlanoAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    reconciliacoesMedicacao?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    acessosFamiliares?: AcessoFamiliarUncheckedUpdateManyWithoutDoenteNestedInput
+    resultadosAnalise?: ResultadoAnaliseUncheckedUpdateManyWithoutDoenteNestedInput
+    documentosSaude?: DocumentoSaudeUncheckedUpdateManyWithoutDoenteNestedInput
+    identificadoresExternos?: IdentificadorExternoUncheckedUpdateManyWithoutDoenteNestedInput
+    portalDoente?: PortalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    registosPro?: RegistoPROUncheckedUpdateManyWithoutDoenteNestedInput
+    transferenciasExternas?: TransferenciaExternaUncheckedUpdateManyWithoutDoenteNestedInput
+    stewardshipAntibioticos?: StewardshipAntibioticoUncheckedUpdateManyWithoutDoenteNestedInput
+    followUps?: FollowUpAgendadoUncheckedUpdateManyWithoutDoenteNestedInput
+    outcomesClinicos?: OutcomeClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosTransfusao?: PedidoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutDoenteNestedInput
+    reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
+    gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
+    planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -332962,6 +335426,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -333041,6 +335506,7 @@ export namespace Prisma {
     reacoesTransfusionais?: ReacaoTransfusionalUncheckedUpdateManyWithoutDoenteNestedInput
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -338275,6 +340741,24 @@ export namespace Prisma {
     criadoEm?: Date | string
   }
 
+  export type SessaoDialiseCreateManyDoenteInput = {
+    id?: string
+    data?: Date | string
+    modalidade: string
+    duracaoMin?: number | null
+    pesoSecoKg?: number | null
+    pesoPreKg?: number | null
+    pesoPosKg?: number | null
+    ultrafiltracaoMl?: number | null
+    fluxoSangueMlMin?: number | null
+    acessoVascular?: string | null
+    paSistolicaPre?: number | null
+    paSistolicaPos?: number | null
+    complicacoes?: string | null
+    notas?: string | null
+    registadoPorId: string
+  }
+
   export type AtribuicaoDoenteUpdateWithoutDoenteInput = {
     id?: StringFieldUpdateOperationsInput | string
     enfermeiro?: UtilizadorUpdateOneRequiredWithoutAtribuicoesEnfermeiroNestedInput
@@ -340301,6 +342785,60 @@ export namespace Prisma {
     estado?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessaoDialiseUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SessaoDialiseUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SessaoDialiseUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    modalidade?: StringFieldUpdateOperationsInput | string
+    duracaoMin?: NullableIntFieldUpdateOperationsInput | number | null
+    pesoSecoKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPreKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    pesoPosKg?: NullableFloatFieldUpdateOperationsInput | number | null
+    ultrafiltracaoMl?: NullableIntFieldUpdateOperationsInput | number | null
+    fluxoSangueMlMin?: NullableIntFieldUpdateOperationsInput | number | null
+    acessoVascular?: NullableStringFieldUpdateOperationsInput | string | null
+    paSistolicaPre?: NullableIntFieldUpdateOperationsInput | number | null
+    paSistolicaPos?: NullableIntFieldUpdateOperationsInput | number | null
+    complicacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AtribuicaoDoenteCreateManyTurnoInput = {
