@@ -1,5 +1,7 @@
-import { Page } from '@playwright/test';
+import { Page, request as pwRequest } from '@playwright/test';
 import { createHmac } from 'crypto';
+
+const API = process.env['API_URL'] ?? 'http://localhost:3333';
 
 type Role = 'admin' | 'medico' | 'enfermeiro';
 
@@ -73,6 +75,10 @@ export async function loginAs(page: Page, roleOrNumero: Role | string = 'admin',
   const outcome = await Promise.race([redirected, mfaVisible]);
 
   if (outcome === 'mfa') {
+    // NOTA: o anti-replay do TOTP é por-(utilizador, código) — personas DIFERENTES com o mesmo
+    // código não colidem (ver persona-smoke, 17 users). Só o MESMO utilizador re-autenticado
+    // dentro do mesmo intervalo de 30s colide; por isso cada spec usa um user clínico distinto
+    // e um único login por ficheiro (esperar 30s por um código fresco estouraria o timeout).
     await mfaInput.fill(totp(TOTP_SECRET));
     await page.getByRole('button', { name: 'Verificar' }).click();
     await page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 10000 });
@@ -112,4 +118,50 @@ async function dismissFirstLoginTour(page: Page): Promise<void> {
   } catch {
     // Tour não apareceu (ou já foi fechado) — nada a fazer.
   }
+}
+
+/**
+ * Devolve o valor do cookie csrf-token do contexto da página (necessário para mutações POST).
+ */
+async function csrfDaPagina(page: Page): Promise<string> {
+  const cookies = await page.context().cookies();
+  return cookies.find((c) => c.name === 'csrf-token')?.value ?? '';
+}
+
+/**
+ * Prepara um doente com dados clínicos para testes de painéis e garante acesso do clínico via
+ * break-glass — usando a sessão UI ATUAL da página (chamar depois de `loginAs(page, '00002')`).
+ * Não faz logins adicionais, evitando a colisão de anti-replay do TOTP (todas as personas de
+ * teste partilham o mesmo segredo). Devolve o id do doente já acessível e com sinais vitais.
+ *
+ * O id do doente é obtido por um contexto de API separado como direção (00001, sem MFA → sem
+ * colisão de TOTP), que vê todos os doentes.
+ */
+export async function prepararDoenteClinico(page: Page): Promise<string> {
+  const dir = await pwRequest.newContext({ baseURL: API });
+  await dir.post('/v1/auth/login', {
+    data: { numeroFuncionario: process.env['TEST_USER'] ?? '00001', password: process.env['TEST_PASSWORD'] ?? 'Teste1234!' },
+  });
+  const lista = await (await dir.get('/v1/doentes?limit=50')).json();
+  const doentes: Array<{ id: string; camaId?: string | null }> = lista.data ?? [];
+  await dir.dispose();
+  // Um doente INTERNADO (com cama) tem a vista clínica completa (painéis); os não-admitidos não.
+  const doenteId = (doentes.find((d) => d.camaId) ?? doentes[0])?.id;
+  if (!doenteId) throw new Error('prepararDoenteClinico: seed sem doentes');
+
+  // NOTA: page.request usa o baseURL da PÁGINA (web :3000); a API está noutra porta (:3333), pelo
+  // que estas chamadas têm de usar a URL absoluta da API. O cookie de sessão (host localhost) é
+  // enviado à mesma. Sem a URL absoluta, os POSTs iam para o web e davam 404 (break-glass falhava).
+  const headers = { 'x-csrf-token': await csrfDaPagina(page) };
+  // A sessão da página é o médico (00002): ativar break-glass dá-lhe acesso ao doente.
+  await page.request.post(`${API}/v1/break-glass`, {
+    data: { doenteId, motivo: 'Validação E2E de painéis clínicos — acesso de teste automatizado' },
+    headers,
+  });
+  // Garantir dados de sinais vitais (para os badges NEWS2 / scores de risco renderizarem).
+  await page.request.post(`${API}/v1/sinais-vitais/${doenteId}`, {
+    data: { pressaoSistolica: 120, pressaoDiastolica: 80, pulso: 84, temperatura: 37.1, saturacaoO2: 97, frequenciaRespiratoria: 18 },
+    headers,
+  }).catch(() => undefined);
+  return doenteId;
 }
