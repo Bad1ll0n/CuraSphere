@@ -331,6 +331,7 @@ export default function ConsultasPage() {
                             Check-in
                           </button>
                         )}
+                        {utilizador?.role === 'medico' && (
                         <button
                           onClick={async () => {
   setRealizarModal(c);
@@ -350,6 +351,7 @@ export default function ConsultasPage() {
                         >
                           Realizar
                         </button>
+                        )}
                         <button
                           onClick={() => api.patch(`/consultas/${c.id}/estado`, { estado: 'faltou' }).then(carregar)}
                           style={{ background: 'transparent', color: '#ef4444', border: '1px solid #fecaca', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}

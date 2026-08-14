@@ -460,7 +460,7 @@ export default function DoenteAdminDetalhePage() {
               <div className="text-xs text-slate-500">
                 {c.especialidade}{c.medico?.nome ? ` · ${c.medico.nome}` : ''}
               </div>
-              {c.diagnostico && <p className="text-xs text-slate-500 italic" style={{ marginTop: '2px' }}>{c.diagnostico}</p>}
+              {/* Diagnóstico é dado clínico — não é exibido na ficha administrativa (RGPD). */}
             </div>
             {c.estado !== 'agendada' && (
               <button

@@ -7,6 +7,9 @@ import api from '@/lib/api';
 import { useSocket } from '@/lib/use-socket';
 import { useToast } from '@/components/toast';
 import { AiFeedback } from '@/components/ai-feedback';
+import { RoleGuard } from '@/components/role-guard';
+
+const ROLES_CLINICOS_URGENCIA = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
 interface EpisodioUrgencia {
   id: string;
@@ -101,6 +104,16 @@ function sugerirEspecialidade(ep: { triagem: string; queixaPrincipal: string; me
 }
 
 export default function UrgenciaPage() {
+  // Camada 2: a Urgência é um quadro clínico (triagem, NEWS2, Glasgow). Só papéis clínicos
+  // entram — mesmo por navegação direta ao URL, não só via menu escondido.
+  return (
+    <RoleGuard allow={ROLES_CLINICOS_URGENCIA}>
+      <UrgenciaPageInner />
+    </RoleGuard>
+  );
+}
+
+function UrgenciaPageInner() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
   const toast = useToast();
