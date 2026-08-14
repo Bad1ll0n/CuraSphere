@@ -10,7 +10,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useNaoLidasCount } from '@/lib/hooks';
 import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
-import { navItems } from './nav-data';
+import { filtrarMenus } from './nav-data';
 import { SosBanner } from './sos-banner';
 import { SidebarNav } from './sidebar-nav';
 import { ModalConfiguracoes } from './modal-configuracoes';
@@ -116,14 +116,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 
-  const itemsVisiveis = navItems.filter((item) => {
-    const servicoOk          = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
-    const roleOk             = !item.roles    || item.roles.includes(utilizador.role);
-    const subRoleOk          = !(item as any).subRoles        || (item as any).subRoles.includes(utilizador.subRole);
-    const notExcluded        = !(item as any).excludeSubRoles  || !(item as any).excludeSubRoles.includes(utilizador.subRole);
-    const notExcludedServico = !(item as any).excludeServicos  || !(item as any).excludeServicos.includes(utilizador.servico ?? 'internamento');
-    return servicoOk && roleOk && subRoleOk && notExcluded && notExcludedServico;
-  });
+  const itemsVisiveis = filtrarMenus(utilizador);
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">

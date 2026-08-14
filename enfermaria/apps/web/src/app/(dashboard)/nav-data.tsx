@@ -29,7 +29,7 @@ export const navItems = [
     href: '/dashboard-executivo',
     label: 'Dashboard Executivo',
     servicos: null,
-    roles: [...ROLES_DIRECAO, ...ROLES_ADMIN],
+    roles: [...ROLES_DIRECAO],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ export const navItems = [
     href: '/dashboard-qualidade/ia-insights',
     label: 'IA Insights',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, 'chefe_enfermeiros'],
+    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, 'supervisor_enfermagem'],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ export const navItems = [
     href: '/risco-clinico',
     label: 'Risco Clínico',
     servicos: null,
-    roles: [...ROLES_MEDICO, 'chefe_turno', 'chefe_enfermeiros', ...ROLES_DIRECAO],
+    roles: [...ROLES_MEDICO, 'supervisor_enfermagem', ...ROLES_DIRECAO],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,6 +103,7 @@ export const navItems = [
     label: 'Doentes',
     servicos: null,
     roles: [...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling', 'backoffice', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +115,7 @@ export const navItems = [
     href: '/urgencia',
     label: 'Urgência',
     servicos: ['urgencia'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,6 +128,7 @@ export const navItems = [
     label: 'Sala de Espera',
     servicos: ['urgencia'],
     roles: [...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['front_desk', 'scheduling'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,6 +165,7 @@ export const navItems = [
     label: 'Consultas',
     servicos: ['consultas_externas'],
     roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,6 +299,7 @@ export const navItems = [
     label: 'Catálogo',
     servicos: null,
     roles: [...ROLES_FARMACIA, ...ROLES_ADMIN, ...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    subRolesByRole: { administrativo: ['procurement', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,6 +312,7 @@ export const navItems = [
     label: 'Fornecedores',
     servicos: null,
     roles: [...ROLES_FARMACIA, ...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['procurement'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -345,6 +350,7 @@ export const navItems = [
     servicos: null,
     excludeServicos: ['urgencia'],
     roles: [...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -358,6 +364,7 @@ export const navItems = [
     servicos: null,
     excludeServicos: ['urgencia'],
     roles: [...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'backoffice'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,6 +377,7 @@ export const navItems = [
     label: 'Faturação',
     servicos: null,
     roles: [...ROLES_ADMIN],
+    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -382,6 +390,7 @@ export const navItems = [
     label: 'Recursos Humanos',
     servicos: null,
     roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
+    subRolesByRole: { administrativo: ['hr_specialist'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -394,6 +403,7 @@ export const navItems = [
     label: 'Relatórios',
     servicos: null,
     roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
+    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -406,6 +416,7 @@ export const navItems = [
     label: 'Tabela de Atos',
     servicos: null,
     roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
+    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -478,7 +489,7 @@ export const navItems = [
     label: 'Utilizadores',
     servicos: null,
     roles: [...ROLES_TI],
-    subRoles: ['it_admin'],
+    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -491,7 +502,7 @@ export const navItems = [
     label: 'Configurações',
     servicos: null,
     roles: [...ROLES_TI],
-    subRoles: ['it_admin'],
+    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -504,7 +515,7 @@ export const navItems = [
     label: 'Conectores Externos',
     servicos: null,
     roles: [...ROLES_TI, ...ROLES_DIRECAO],
-    subRoles: ['it_admin'],
+    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -516,8 +527,8 @@ export const navItems = [
     href: '/guidelines',
     label: 'Guidelines Clínicas',
     servicos: null,
-    roles: [...ROLES_TI, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'chefe_enfermeiros'],
-    subRoles: ['it_admin'],
+    roles: [...ROLES_TI, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'supervisor_enfermagem'],
+    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -645,6 +656,7 @@ export const navItems = [
     label: 'Relatórios DGS',
     servicos: null,
     roles: [...ROLES_DIRECAO, ...ROLES_ADMIN, ...ROLES_TI],
+    subRolesByRole: { administrativo: ['backoffice'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -665,6 +677,42 @@ export const navItems = [
     ),
   },
 ];
+
+export interface UtilizadorNav {
+  role: string;
+  subRole?: string | null;
+  servico?: string | null;
+}
+
+/**
+ * Decide se um item de menu é visível para um utilizador — a fonte única de verdade da barra
+ * lateral (usada pelo layout e testável isoladamente). Combina papel, sub-papel e regime:
+ *
+ *  - `roles`            → papel OU sub-papel (espelha o RolesGuard do backend).
+ *  - `subRolesByRole`   → restrição de sub-papel COM ÂMBITO por papel: só o papel indicado no
+ *                         mapa é restringido; os outros papéis de `roles` passam livremente.
+ *                         (Evita o AND global que bloqueava a Direção/Médico.)
+ *  - `subRoles`         → restrição global de sub-papel (legado; usar só em menus de papel único).
+ *  - `servicos` / `excludeServicos` / `excludeSubRoles` → regime de trabalho e exclusões.
+ */
+export function menuVisivel(item: (typeof navItems)[number], u: UtilizadorNav): boolean {
+  const it = item as any;
+  const servico = u.servico ?? 'internamento';
+  const servicoOk = !item.servicos || item.servicos.includes(servico);
+  const roleOk = !item.roles || item.roles.includes(u.role) || (!!u.subRole && item.roles.includes(u.subRole));
+  const scoped = it.subRolesByRole?.[u.role] as string[] | undefined;
+  const subRoleOk = scoped
+    ? (!!u.subRole && scoped.includes(u.subRole))
+    : (!it.subRoles || it.subRoles.includes(u.subRole));
+  const notExcluded = !it.excludeSubRoles || !it.excludeSubRoles.includes(u.subRole);
+  const notExcludedServico = !it.excludeServicos || !it.excludeServicos.includes(servico);
+  return servicoOk && roleOk && subRoleOk && notExcluded && notExcludedServico;
+}
+
+/** Devolve os menus visíveis para o utilizador, na ordem de definição. */
+export function filtrarMenus(u: UtilizadorNav) {
+  return navItems.filter((item) => menuVisivel(item, u));
+}
 
 export const roleLabel: Record<string, string> = {
   medico:         'Médico',
