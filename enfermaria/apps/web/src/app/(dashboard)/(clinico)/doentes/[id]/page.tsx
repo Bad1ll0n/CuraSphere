@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { useAuth } from '@/lib/auth-context';
@@ -207,6 +208,13 @@ export default function DoenteDetalhe() {
   const [portalSenha, setPortalSenha] = useState('');
   const [criandoPortal, setCriandoPortal] = useState(false);
   const [portalCriado, setPortalCriado] = useState(false);
+  const dlgEditar = useDialogoAcessivel({ aberto: modalEditarDoente, onFechar: () => setModalEditarDoente(false), titulo: 'Editar doente' });
+  const dlgIsolamento = useDialogoAcessivel({ aberto: modalIsolamento, onFechar: () => setModalIsolamento(false), titulo: 'Activar isolamento' });
+  const dlgQR = useDialogoAcessivel({ aberto: modalQR, onFechar: () => setModalQR(false), titulo: 'Código QR do doente' });
+  const dlgAlta = useDialogoAcessivel({ aberto: modalAltaEstruturada, onFechar: () => setModalAltaEstruturada(false), titulo: 'Alta estruturada' });
+  const dlgSinalizar = useDialogoAcessivel({ aberto: modalSinalizar, onFechar: () => setModalSinalizar(false), titulo: 'Sinalizar doente como preocupante' });
+  const dlgPortal = useDialogoAcessivel({ aberto: modalPortal, onFechar: () => setModalPortal(false), titulo: 'Portal do doente' });
+
   const podeCriarPortal = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
 
   // Score de risco
@@ -928,7 +936,7 @@ export default function DoenteDetalhe() {
       {/* Modal Editar Doente */}
       {modalEditarDoente && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Editar Dados Clínicos</h2>
               <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -962,7 +970,7 @@ export default function DoenteDetalhe() {
       {/* Modal Activar Isolamento */}
       {modalIsolamento && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
               <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -988,7 +996,7 @@ export default function DoenteDetalhe() {
       {/* Modal QR Code */}
       {modalQR && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
+          <div {...dlgQR.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h3 className="text-lg font-bold text-slate-900">QR Code do Doente</h3>
               <button onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
@@ -1049,7 +1057,7 @@ export default function DoenteDetalhe() {
       {/* Modal Alta Estruturada */}
       {modalAltaEstruturada && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
+          <div {...dlgAlta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Dar Alta — {doente.nome}</h2>
               <button onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
@@ -1162,7 +1170,7 @@ export default function DoenteDetalhe() {
       {/* Modal Sinalizar como Preocupante */}
       {modalSinalizar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgSinalizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">⚠ Sinalizar como Preocupante</h2>
               <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -1209,7 +1217,7 @@ export default function DoenteDetalhe() {
       {/* Modal Portal do Doente */}
       {modalPortal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgPortal.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Portal do Doente</h2>

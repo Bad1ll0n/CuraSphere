@@ -1,3 +1,10 @@
+/**
+ * Arranque do Sentry no **cliente**.
+ *
+ * Substitui `sentry.client.config.ts`, que o Next.js 16 deixou de suportar com Turbopack
+ * (o build emitia um aviso de descontinuação a cada compilação). A configuração é a mesma —
+ * incluindo a limpeza RGPD do corpo e cookies do pedido, que não pode desaparecer daqui.
+ */
 import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
@@ -13,3 +20,5 @@ Sentry.init({
     return event;
   },
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

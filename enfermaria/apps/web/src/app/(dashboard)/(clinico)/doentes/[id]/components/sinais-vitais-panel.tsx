@@ -61,7 +61,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref}

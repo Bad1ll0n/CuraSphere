@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useAuth } from '@/lib/auth-context';
 
 interface DoenteIsolado {
@@ -98,6 +99,12 @@ export default function IacsPage() {
   const [formSurto, setFormSurto] = useState({ agente: '', servico: '', dataInicio: new Date().toISOString().split('T')[0], numCasos: 1, observacoes: '' });
   const [salvandoSurto, setSalvandoSurto] = useState(false);
   const [editSurto, setEditSurto] = useState<SurtoIACS | null>(null);
+  const dlgIsolamento = useDialogoAcessivel({ aberto: !!modalIsolamento, onFechar: () => setModalIsolamento(null), titulo: 'Activar isolamento' });
+  const dlgCultura = useDialogoAcessivel({ aberto: modalCultura, onFechar: () => setModalCultura(false), titulo: 'Registar cultura microbiológica' });
+  const dlgEditCultura = useDialogoAcessivel({ aberto: !!editCultura, onFechar: () => setEditCultura(null), titulo: 'Registar resultado de cultura' });
+  const dlgSurto = useDialogoAcessivel({ aberto: modalSurto, onFechar: () => setModalSurto(false), titulo: 'Registar surto' });
+  const dlgEditSurto = useDialogoAcessivel({ aberto: !!editSurto, onFechar: () => setEditSurto(null), titulo: 'Actualizar surto' });
+
   const [formEditSurto, setFormEditSurto] = useState({ estado: 'activo', numCasos: 1, observacoes: '' });
 
   const podeEditar = ['medico', 'enfermeiro', 'tecnico_saude', 'qualidade'].includes(utilizador?.role ?? '');
@@ -436,7 +443,7 @@ export default function IacsPage() {
       {/* ─── Modal: Ativar Isolamento ─────────────────────────────────────────── */}
       {modalIsolamento && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '4px' }}>Ativar Isolamento IACS</h2>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{modalIsolamento.nome}</p>
             <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo de Isolamento</label>
@@ -463,7 +470,7 @@ export default function IacsPage() {
       {/* ─── Modal: Nova Cultura ─────────────────────────────────────────────── */}
       {modalCultura && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgCultura.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Colheita Microbiológica</h2>
               <button aria-label="Fechar" onClick={() => setModalCultura(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -509,7 +516,7 @@ export default function IacsPage() {
       {/* ─── Modal: Registar Resultado Cultura ──────────────────────────────── */}
       {editCultura && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditCultura.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
               <button aria-label="Fechar" onClick={() => setEditCultura(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -548,7 +555,7 @@ export default function IacsPage() {
       {/* ─── Modal: Registar Surto ───────────────────────────────────────────── */}
       {modalSurto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgSurto.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Surto IACS</h2>
               <button aria-label="Fechar" onClick={() => setModalSurto(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -594,7 +601,7 @@ export default function IacsPage() {
       {/* ─── Modal: Actualizar Surto ─────────────────────────────────────────── */}
       {editSurto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditSurto.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Actualizar Surto</h2>
               <button aria-label="Fechar" onClick={() => setEditSurto(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

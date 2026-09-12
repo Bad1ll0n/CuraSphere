@@ -1,10 +1,49 @@
 name: CI — CuraSphere
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ATENÇÃO: este ficheiro TEM de viver em `.github/workflows/` na raiz do
+# repositório git (aqui), não em `enfermaria/.github/`. O GitHub Actions só lê
+# workflows a partir da raiz do repositório — os workflows deste projecto
+# estiveram em `enfermaria/.github/` e NUNCA correram.
+# O workspace Nx vive em `enfermaria/`, daí o `working-directory` em todos os jobs.
+#
+# Havia DOIS ci.yml: este e um gerado pelo Nx em `enfermaria/.github/workflows/`
+# que fazia `npm ci` num repositório pnpm sem `package-lock.json` — falhava
+# sempre no primeiro passo. Ficou só este, em pnpm.
+#
+# ── Estrutura do gate (OPS-16), dois níveis ─────────────────────────────────
+#   `verify`  — rápido e BLOQUEANTE por PR. Só contém verificações que estão
+#               comprovadamente VERDES no baseline actual. É o único job que a
+#               protecção de ramo deve exigir como required check.
+#   `quality` — corre as mesmas ferramentas sobre o que ainda está VERMELHO no
+#               baseline (lint, formatação, typecheck de ui/mobile). Job inteiro
+#               em continue-on-error: aparece na lista de checks e torna a
+#               dívida visível, mas não reprova PRs enquanto o baseline não
+#               estiver limpo. Ver NOTA DE DÍVIDA abaixo.
+#   `e2e`     — lento e informativo: schedule nocturno, a pedido, ou PR com a
+#               etiqueta `run-e2e`. Carga (k6) vive em `load.yml`.
+#
+# ── NOTA DE DÍVIDA (medida em 2026-09-03, não estimada) ─────────────────────
+#   lint      : @org/api 10 628 erros + 2 902 avisos; @org/web-e2e e @org/mobile
+#               também falham. ~5 176 são auto-corrigíveis com `--fix`.
+#   typecheck : @org/api VERDE, @org/shared VERDE.
+#               @org/ui 8 erros (moduleResolution node16 exige extensões
+#               explícitas em src/index.ts + React importado sem uso).
+#               @org/mobile falha por dependências Expo em falta
+#               (@expo/vector-icons, expo-secure-store, expo-device).
+#   test      : @org/api VERDE (é o gate). @org/web com 3 suites e 1 teste a
+#               falhar — fica em `quality` até fechar.
+#   build     : @org/api e @org/web VERDES (o web só falha se houver outro
+#               `next build` a correr em paralelo — contenção do lock do .next,
+#               não um erro de código).
+#   Passar cada um destes de `quality` para `verify` à medida que ficam a zero.
+#   Enquanto estiverem aqui, NÃO são gate — é dívida assumida, não segurança.
+# ─────────────────────────────────────────────────────────────────────────────
+
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
   workflow_dispatch:
     inputs:
       run_e2e:
@@ -15,16 +54,29 @@ on:
     # Suite E2E nocturna — todos os dias às 02:00 UTC
     - cron: '0 2 * * *'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  # Só cancela runs em progresso em PRs; em main deixa terminar.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
+  # O projecto exige pnpm >=10 e Node >=22.12 (engines em package.json).
   PNPM_VERSION: '10'
   NODE_VERSION: '22'
 
-# ─────────────────────────────────────────────────────────────────────────────
 jobs:
-  # ── Job 1: TypeScript + Unit Tests (corre em cada push/PR, ~2min) ──────────
-  unit:
-    name: TypeScript + Unit Tests
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NÍVEL 1 — gate rápido e BLOQUEANTE (cada push e cada PR)
+  # Só entra aqui o que está verde no baseline. Um gate vermelho à nascença é
+  # ruído que toda a gente aprende a ignorar — pior do que não ter gate.
+  # ═══════════════════════════════════════════════════════════════════════════
+  verify:
+    name: Verificação (types · unit · build)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: enfermaria
@@ -42,24 +94,75 @@ jobs:
           cache: pnpm
           cache-dependency-path: enfermaria/pnpm-lock.yaml
 
+      # `pnpm install` corre build scripts só dos pacotes listados em
+      # `pnpm.onlyBuiltDependencies` (package.json) e `allowBuilds`
+      # (pnpm-workspace.yaml) — prisma, @swc/core, sharp, @node-rs/bcrypt…
+      # NÃO acrescentar `--ignore-scripts`: parte o cliente Prisma e o SWC, e
+      # já causou problemas neste repositório.
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
 
-      - name: TypeScript — verificar tipos (API)
-        # Gate bloqueante: o baseline de tipos está a ZERO (produção + testes). Se reaparecerem
-        # erros de tipo, o CI falha aqui. O target `typecheck` cobre app + specs.
-        run: pnpm nx run api:typecheck
+      # ── Tipos (BLOQUEANTE) ─────────────────────────────────────────────────
+      # Baseline a ZERO em @org/api (produção + specs) e @org/shared, verificado.
+      # ui/mobile ficam no job `quality` até o baseline deles fechar.
+      - name: TypeScript — verificar tipos (api + shared)
+        run: pnpm exec nx run-many -t typecheck -p @org/api @org/shared
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
 
-      - name: Unit Tests (API) com cobertura
-        run: pnpm nx run api:test --coverage --passWithNoTests
+      # ── Testes unitários + cobertura (BLOQUEANTE) ──────────────────────────
+      # Thresholds de cobertura impostos em apps/api/jest.config.js.
+      # Só @org/api: a suite de @org/web tem 3 suites e 1 teste a falhar no
+      # baseline (ver NOTA DE DÍVIDA) e corre no job `quality`.
+      - name: Unit tests (api) com cobertura
+        run: pnpm exec nx run @org/api:test --coverage --passWithNoTests
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
           REDIS_URL: redis://localhost:6379/1
           NODE_ENV: test
+
+      # ── Build (BLOQUEANTE) ─────────────────────────────────────────────────
+      # Inclui `@org/web`. Como o web NÃO tem target `typecheck` (ver NOTA DE
+      # DEPENDÊNCIA abaixo), este build é hoje a única verificação de compilação
+      # do frontend em CI — antes desta alteração o CI não tocava no frontend.
+      #
+      # NOTA DE DEPENDÊNCIA (fora do domínio deste workflow):
+      #   `apps/web/project.json` não define target `typecheck`, por isso o
+      #   `run-many` salta o web em silêncio. Fechar isto exige acrescentar lá
+      #   um target `typecheck` (`tsc --noEmit -p tsconfig.json`). Esse ficheiro
+      #   pertence a outro agente; fica registado, não alterado aqui.
+      - name: Build (api + web + libs)
+        run: pnpm exec nx run-many -t build
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+          NODE_ENV: production
+
+      # ── Sanidade da infraestrutura (BLOQUEANTE, segundos) ──────────────────
+      # Apanha erros de sintaxe/interpolação no compose antes de chegarem ao
+      # servidor. Valores fictícios: valida-se a estrutura, não os segredos.
+      - name: Validar docker-compose (dev + prod)
+        run: |
+          docker compose -f docker-compose.yml config -q
+          docker compose -f docker-compose.prod.yml config -q
+        env:
+          DB_USER: ci
+          DB_PASSWORD: ci
+          DB_NAME: enfermaria
+          JWT_SECRET: ci-placeholder-secret-32-chars-minimo!!
+          ENCRYPTION_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
+          AUDIT_SIGNING_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
+          ALLOWED_ORIGINS: https://exemplo.pt
+          NEXT_PUBLIC_API_URL: https://exemplo.pt/api
+          NEXT_PUBLIC_WEB_URL: https://exemplo.pt
+          NEXT_PUBLIC_JITSI_SERVER: https://jitsi.exemplo.pt
+          JITSI_SERVER: https://jitsi.exemplo.pt
+          SPMS_API_URL: https://api.exemplo.pt
+          SNS_PEM_MODE: sandbox
+          ANTHROPIC_API_KEY: placeholder
 
       - name: Publicar relatório de cobertura
         uses: actions/upload-artifact@v4
@@ -69,13 +172,74 @@ jobs:
           path: enfermaria/apps/api/test-output/jest/coverage/
           retention-days: 14
 
-  # ── Job 2: Playwright E2E (schedule nocturno ou trigger manual) ────────────
-  e2e:
-    name: E2E Playwright
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NÍVEL 1b — qualidade: corre sempre, NÃO reprova (baseline ainda vermelho).
+  # Existe para tornar a dívida visível e mensurável a cada PR. Cada linha
+  # daqui muda-se para `verify` no dia em que o respectivo baseline chegar a
+  # zero — ver NOTA DE DÍVIDA no topo do ficheiro.
+  # ═══════════════════════════════════════════════════════════════════════════
+  quality:
+    name: Qualidade (lint · formato · types ui/mobile) — informativo
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Job inteiro não-bloqueante: aparece como check, nunca reprova o PR.
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: enfermaria
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # `nx format:check` compara contra uma base; precisa do histórico.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Formatação (nx format:check)
+        continue-on-error: true
+        run: pnpm exec nx format:check --base=origin/${{ github.event.pull_request.base.ref || 'main' }} --head=HEAD
+
+      # `--nx-bail=false`: queremos o retrato completo da dívida, não o primeiro
+      # projecto a falhar.
+      - name: Lint (todos os projectos)
+        continue-on-error: true
+        run: pnpm exec nx run-many -t lint --nx-bail=false
+
+      - name: TypeScript — ui + mobile
+        continue-on-error: true
+        run: pnpm exec nx run-many -t typecheck -p @org/ui @org/mobile --nx-bail=false
+
+      - name: Unit tests — web
+        continue-on-error: true
+        run: pnpm exec nx run @org/web:test --passWithNoTests
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NÍVEL 2 — E2E: lento e informativo. NÃO deve ser required check de PR.
+  # Corre no schedule nocturno, a pedido, ou num PR com a etiqueta `run-e2e`.
+  # ═══════════════════════════════════════════════════════════════════════════
+  e2e:
+    name: E2E Playwright (informativo)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: verify
     if: |
       github.event_name == 'schedule' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_e2e == 'true')
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_e2e == 'true') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'run-e2e'))
     defaults:
       run:
         working-directory: enfermaria
@@ -122,49 +286,58 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Instalar browsers Playwright
-        run: pnpm playwright install chromium --with-deps
+        run: pnpm exec playwright install chromium --with-deps
 
       - name: Migrar base de dados de teste
         working-directory: enfermaria/apps/api
-        run: pnpm prisma db push --force-reset
+        run: pnpm exec prisma db push --force-reset
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+
+      # Os triggers de auditoria são criados por script, não pelo schema Prisma —
+      # sem isto o E2E corre contra uma BD sem o trilho append-only e não
+      # detecta regressões na auditoria (o mesmo passo existe no deploy).
+      - name: Reinstalar triggers de auditoria
+        run: node apps/api/scripts/apply-audit-triggers.mjs
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
 
       - name: Build API
-        run: pnpm nx build api
+        run: pnpm exec nx build @org/api
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
 
       - name: Arrancar API em background
-        run: pnpm nx serve api &
+        run: pnpm exec nx serve @org/api &
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          ENCRYPTION_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
           REDIS_URL: redis://localhost:6379/1
           PORT: 3333
           NODE_ENV: test
           ALLOWED_ORIGINS: http://localhost:3000
 
       - name: Arrancar Web em background
-        run: pnpm nx serve web &
+        run: pnpm exec nx serve @org/web &
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3333
 
       - name: Aguardar servidores (API + Web)
-        run: |
-          npx wait-on http://localhost:3333/v1/health http://localhost:3000 --timeout 120000
+        run: pnpm dlx wait-on http://localhost:3333/v1/health http://localhost:3000 --timeout 120000
 
       - name: Seed de dados de teste
-        run: npx ts-node apps/web-e2e/fixtures/seed.ts
+        run: pnpm exec ts-node apps/web-e2e/fixtures/seed.ts
         env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           NEXT_PUBLIC_API_URL: http://localhost:3333
           TEST_USER: '00001'
           TEST_PASSWORD: Admin1234!
         continue-on-error: true
 
       - name: Correr testes Playwright
-        run: pnpm playwright test --config=apps/web-e2e/playwright.config.ts
+        run: pnpm exec playwright test --config=apps/web-e2e/playwright.config.ts
         env:
           BASE_URL: http://localhost:3000
           TEST_USER: '00001'

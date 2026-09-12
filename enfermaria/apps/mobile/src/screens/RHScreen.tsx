@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Ausencia {
   id: string;
   tipo: string;
@@ -129,8 +130,7 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
         const r = await api.get('/rh/avaliacoes');
         setAvaliacoes(r.data ?? []);
       }
-    } catch {
-    } finally {
+    } catch (e) { registarFalhaSilenciosa('RHScreen', e); } finally {
       setLoading(false);
     }
   }, [tab]);

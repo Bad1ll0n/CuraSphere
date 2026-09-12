@@ -10,6 +10,7 @@ import { PrismaClient } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
+import { gerarTokenFamilia, hashTokenFamilia } from '../app/familia/token-familia';
 
 try { process.loadEnvFile(); } catch {}
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
@@ -217,23 +218,27 @@ async function main() {
   });
   console.log(`  ✓  Portal do doente: ${PORTAL_EMAIL} / ${PASSWORD}`);
 
-  let acessoFamiliar = await prisma.acessoFamiliar.findFirst({
-    where: { doenteId: doenteTeste.id, ativo: true, accessTokenExpiry: { gt: new Date() } },
+  // S-15: só se guarda o hash do token, por isso um acesso que já exista não tem link que se
+  // possa mostrar. O seed revoga o acesso de teste anterior e emite outro — e imprime o token
+  // desta emissão, a única altura em que ele existe fora da memória.
+  await prisma.acessoFamiliar.updateMany({
+    where: { doenteId: doenteTeste.id, email: 'familia.teste@curasphere.local', ativo: true },
+    data: { ativo: false },
   });
-  if (!acessoFamiliar) {
-    const expiry = new Date();
-    expiry.setDate(expiry.getDate() + 7);
-    acessoFamiliar = await prisma.acessoFamiliar.create({
-      data: {
-        doenteId: doenteTeste.id,
-        criadoPorId: direcaoId,
-        nomeContacto: 'Familiar de Teste (Persona)',
-        email: 'familia.teste@curasphere.local',
-        accessTokenExpiry: expiry,
-      },
-    });
-  }
-  console.log(`  ✓  Acesso família: token=${acessoFamiliar.accessToken} (expira ${acessoFamiliar.accessTokenExpiry.toISOString().slice(0, 10)})`);
+  const tokenFamilia = gerarTokenFamilia();
+  const expiryFamilia = new Date();
+  expiryFamilia.setDate(expiryFamilia.getDate() + 7);
+  const acessoFamiliar = await prisma.acessoFamiliar.create({
+    data: {
+      doenteId: doenteTeste.id,
+      criadoPorId: direcaoId,
+      nomeContacto: 'Familiar de Teste (Persona)',
+      email: 'familia.teste@curasphere.local',
+      accessTokenHash: hashTokenFamilia(tokenFamilia),
+      accessTokenExpiry: expiryFamilia,
+    },
+  });
+  console.log(`  ✓  Acesso família emitido (expira ${acessoFamiliar.accessTokenExpiry.toISOString().slice(0, 10)})`);
 
   // ── 3. Resumo final ────────────────────────────────────────────────────────
   console.log('\n══════════════════════════════════════════════════');
@@ -265,8 +270,8 @@ async function main() {
   console.log('\n  PORTAL DO DOENTE:');
   console.log(`  Email: doente.teste@curasphere.local  /  Password: ${PASSWORD}`);
   console.log('\n  ACESSO FAMÍLIA (link directo, sem login):');
-  console.log(`  /familia/${acessoFamiliar.accessToken}`);
-  console.log(`  (expira ${acessoFamiliar.accessTokenExpiry.toISOString().slice(0, 10)} — reexecutar este script gera um novo se expirado)\n`);
+  console.log(`  /familia/${tokenFamilia}`);
+  console.log(`  (expira ${acessoFamiliar.accessTokenExpiry.toISOString().slice(0, 10)} — cada execução revoga o link anterior e emite um novo)\n`);
 }
 
 main()

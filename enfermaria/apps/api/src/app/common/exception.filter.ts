@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma';
+import { sanitizarUrlParaLog } from './sanitizar-url-log';
 
 const HTTP_CODE_MAP: Record<number, string> = {
   400: 'BAD_REQUEST',
@@ -72,7 +73,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (status >= 500) {
       this.logger.error(
-        `${request.method} ${request.url} → ${status}`,
+        // O URL pode trazer o token da família ou um NIF: ver sanitizarUrlParaLog.
+        `${request.method} ${sanitizarUrlParaLog(request.url)} → ${status}`,
         exception instanceof Error ? exception.stack : String(exception),
       );
       // Reportar erros 5xx ao Sentry (não reportar 4xx que são input do utilizador)

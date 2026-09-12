@@ -1,34 +1,45 @@
-# ─── Stage 1: Instalar dependências ──────────────────────────────────────────
+# ─── Stage 1: Store do pnpm a partir do lockfile ─────────────────────────────
 FROM node:22-alpine AS deps
 WORKDIR /workspace
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# OPS-14: `pnpm@latest` torna a imagem irreprodutível — a mesma etiqueta de imagem
+# construída amanhã pode resolver dependências de forma diferente da de hoje, e uma
+# regressão deixa de ser rastreável ao commit. Versão fixa, alinhada com o lockfile.
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
+# OPS-02: ver a nota equivalente em apps/api/Dockerfile. Aqui era pior: o web depende de
+# @org/shared (libs/shared), e nenhum package.json de libs/ chegava a ser copiado.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/api/package.json ./apps/api/
-COPY apps/web/package.json ./apps/web/
-
-RUN pnpm install --frozen-lockfile
+RUN pnpm fetch --frozen-lockfile
 
 # ─── Stage 2: Build ───────────────────────────────────────────────────────────
-FROM node:22-alpine AS builder
-WORKDIR /workspace
+FROM deps AS builder
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# O `prepare` da raiz corre o husky, que precisa de .git — excluído pelo .dockerignore.
+ENV HUSKY=0
 
 # Variáveis públicas substituídas no build pelo docker-compose
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+# Servidor Jitsi da instituição. Sem isto, src/app/teleconsulta/[consultaId]/page.tsx
+# cai em 'meet.jit.si' e as videochamadas clínicas saem por um servidor público.
+ARG NEXT_PUBLIC_JITSI_SERVER
+ENV NEXT_PUBLIC_JITSI_SERVER=$NEXT_PUBLIC_JITSI_SERVER
+
+COPY . .
+RUN pnpm install --frozen-lockfile --prefer-offline
+
+# NODE_ENV=production só DEPOIS da instalação: com ele definido, o pnpm salta as
+# devDependencies — e o build do Next precisa delas.
 ENV NODE_ENV=production
 
-COPY --from=deps /workspace/node_modules ./node_modules
-COPY . .
-
-# Build do Next.js (cwd: apps/web) — pnpm exec, não npx, para usar o next já
-# instalado no workspace em vez de o npx tentar buscar uma versão do registry
-RUN cd apps/web && pnpm exec next build
+# OPS-02: `--webpack` e obrigatorio. O Next 16 constroi com Turbopack por omissao, e o
+# Turbopack ignora `output: 'standalone'` - a imagem compilava e depois falhava a copiar
+# .next/standalone, que nunca chegava a existir. E a mesma flag que o alvo de build do
+# projecto ja usa.
+RUN cd apps/web && pnpm exec next build --webpack
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
 FROM node:22-alpine AS runner

@@ -588,7 +588,7 @@ export default function DoenteAdminDetalhePage() {
 
       {/* ── Modal Agendar Consulta ── */}
       {modalAgendar && (
-        <div
+        <div role="presentation"
           className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: '16px' }}
           onClick={(e) => { if (e.target === e.currentTarget) setModalAgendar(false); }}

@@ -261,6 +261,15 @@ exports.Prisma.NotaClinicaScalarFieldEnum = {
   assinadaPorId: 'assinadaPorId'
 };
 
+exports.Prisma.NotaClinicaAdendaScalarFieldEnum = {
+  id: 'id',
+  notaClinicaId: 'notaClinicaId',
+  autorId: 'autorId',
+  texto: 'texto',
+  motivo: 'motivo',
+  criadaEm: 'criadaEm'
+};
+
 exports.Prisma.EscalaClinicaScalarFieldEnum = {
   id: 'id',
   doenteId: 'doenteId',
@@ -317,7 +326,10 @@ exports.Prisma.MedicacaoScalarFieldEnum = {
   validadaEm: 'validadaEm',
   motivoRejeicao: 'motivoRejeicao',
   assinadoEm: 'assinadoEm',
-  assinadoPorId: 'assinadoPorId'
+  assinadoPorId: 'assinadoPorId',
+  overrideAlergia: 'overrideAlergia',
+  overrideMotivo: 'overrideMotivo',
+  overrideAlergenioId: 'overrideAlergenioId'
 };
 
 exports.Prisma.StewardshipAntibioticoScalarFieldEnum = {
@@ -338,6 +350,7 @@ exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
   administradoEm: 'administradoEm',
   observacoes: 'observacoes',
   verificacao5Certas: 'verificacao5Certas',
+  certosVerificados: 'certosVerificados',
   naoAdministrada: 'naoAdministrada',
   motivoNaoAdmin: 'motivoNaoAdmin',
   deletedAt: 'deletedAt',
@@ -401,6 +414,9 @@ exports.Prisma.SinalVitalScalarFieldEnum = {
   avpu: 'avpu',
   o2Suplementar: 'o2Suplementar',
   news2: 'news2',
+  news2Completo: 'news2Completo',
+  news2ParametrosFalta: 'news2ParametrosFalta',
+  news2ParametroIsolado3: 'news2ParametroIsolado3',
   pews: 'pews',
   glasgow: 'glasgow',
   pamMedia: 'pamMedia',
@@ -500,6 +516,8 @@ exports.Prisma.RegistoTransfusaoScalarFieldEnum = {
   verificacaoUnidade: 'verificacaoUnidade',
   verificacaoValidade: 'verificacaoValidade',
   compativel: 'compativel',
+  segundoVerificadorId: 'segundoVerificadorId',
+  consentimentoId: 'consentimentoId',
   observacoes: 'observacoes'
 };
 
@@ -636,6 +654,7 @@ exports.Prisma.AlertaClinicoScalarFieldEnum = {
   doenteId: 'doenteId',
   tipo: 'tipo',
   mensagem: 'mensagem',
+  severidade: 'severidade',
   lido: 'lido',
   urgencia: 'urgencia',
   acusadoPorId: 'acusadoPorId',
@@ -1484,7 +1503,7 @@ exports.Prisma.AcessoFamiliarScalarFieldEnum = {
   criadoEm: 'criadoEm',
   nomeContacto: 'nomeContacto',
   email: 'email',
-  accessToken: 'accessToken',
+  accessTokenHash: 'accessTokenHash',
   accessTokenExpiry: 'accessTokenExpiry',
   ativo: 'ativo'
 };
@@ -1493,7 +1512,7 @@ exports.Prisma.DispositivoFhirScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
   tipo: 'tipo',
-  apiKey: 'apiKey',
+  apiKeyHash: 'apiKeyHash',
   doenteId: 'doenteId',
   ativo: 'ativo',
   ultimoPing: 'ultimoPing',
@@ -2147,6 +2166,7 @@ exports.Prisma.ModelName = {
   PresencaOnline: 'PresencaOnline',
   RegistoCheckin: 'RegistoCheckin',
   NotaClinica: 'NotaClinica',
+  NotaClinicaAdenda: 'NotaClinicaAdenda',
   EscalaClinica: 'EscalaClinica',
   NotaTurno: 'NotaTurno',
   Tarefa: 'Tarefa',

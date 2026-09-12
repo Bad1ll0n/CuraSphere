@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { FormField } from '@/components/form-field';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -154,6 +155,9 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
   const [lightbox, setLightbox] = useState<string | null>(null); // URL da foto em lightbox
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const toast = useToast();
+
+  const dlgLightbox = useDialogoAcessivel({ aberto: !!lightbox, onFechar: () => setLightbox(null), titulo: 'Fotografia da ferida' });
+  const dlgAvaliacao = useDialogoAcessivel({ aberto: modalAberto, onFechar: () => setModalAberto(false), titulo: 'Nova avaliação de ferida' });
 
   const [feridasErrors, setFeridasErrors] = useState<Record<string, string>>({});
   const formDirty = modalAberto && (form.localizacao.trim().length > 0 || form.notas.trim().length > 0);
@@ -452,12 +456,18 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                               <div key={foto.id} className="flex flex-col gap-2">
                                 <div className="flex items-start gap-3">
                                   <div className="relative group shrink-0">
-                                    <img
-                                      src={foto.url}
-                                      alt="Fotografia da ferida"
+                                    <button
+                                      type="button"
                                       onClick={() => setLightbox(foto.url)}
-                                      className="w-20 h-20 object-cover rounded-xl border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
-                                    />
+                                      aria-label="Ampliar fotografia da ferida"
+                                      className="block rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                      <img
+                                        src={foto.url}
+                                        alt="Fotografia da ferida"
+                                        className="w-20 h-20 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity"
+                                      />
+                                    </button>
                                     {podeRegistar && (
                                       <button
                                         onClick={() => apagarFoto(foto.id)}
@@ -548,23 +558,27 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
       {/* Lightbox */}
       {lightbox && (
         <div
+          role="presentation"
           className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}
-          onClick={() => setLightbox(null)}>
-          <img src={lightbox} alt="Fotografia da ferida" className="max-w-full max-h-full rounded-xl" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-4 right-4 w-9 h-9 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
-            style={{ fontSize: '20px', lineHeight: 1 }}>
-            ×
-          </button>
+          onClick={(e) => { if (e.target === e.currentTarget) setLightbox(null); }}>
+          <div {...dlgLightbox.propsPainel} className="relative flex items-center justify-center">
+            <img src={lightbox} alt="Fotografia da ferida" className="max-w-full max-h-full rounded-xl" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            <button
+              onClick={() => setLightbox(null)}
+              aria-label="Fechar fotografia"
+              className="absolute top-4 right-4 w-11 h-11 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
+              style={{ fontSize: '20px', lineHeight: 1 }}>
+              ×
+            </button>
+          </div>
         </div>
       )}
 
       {/* Modal Nova Avaliação */}
       {modalAberto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-hidden flex flex-col" style={{ maxWidth: '580px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgAvaliacao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-hidden flex flex-col" style={{ maxWidth: '580px', maxHeight: '90vh', margin: '0 16px' }}>
 
             {/* Modal header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>

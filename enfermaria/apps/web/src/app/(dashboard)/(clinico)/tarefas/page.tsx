@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import type { Tarefa as SharedTarefa } from '@org/shared';
 
 interface TarefaDoente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
@@ -74,6 +75,9 @@ export default function TarefasPage() {
   const [ePrioridade, setEPrioridade] = useState<'baixa' | 'media' | 'alta' | 'urgente'>('media');
   const [eGrupo, setEGrupo] = useState('enfermeiro');
   const [ePrazo, setEPrazo] = useState('');
+  const dlgNovaTarefa = useDialogoAcessivel({ aberto: modalNovaTarefa, onFechar: () => setModalNovaTarefa(false), titulo: 'Nova tarefa' });
+  const dlgEditarTarefa = useDialogoAcessivel({ aberto: !!modalEditarTarefa, onFechar: () => setModalEditarTarefa(null), titulo: 'Editar tarefa' });
+
   const [editando, setEditando] = useState(false);
 
   const [sseConectado, setSseConectado] = useState(false);
@@ -347,7 +351,7 @@ export default function TarefasPage() {
       {/* Modal Nova Tarefa */}
       {modalNovaTarefa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovaTarefa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
               <button aria-label="Fechar" onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -436,7 +440,7 @@ export default function TarefasPage() {
       {/* Modal Editar Tarefa */}
       {modalEditarTarefa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditarTarefa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Editar Tarefa</h2>

@@ -53,7 +53,11 @@ export class UrgenciaController {
     return this.service.activarEspecialidade(id, dto, req.user.sub);
   }
 
+  // S-09: sem @Roles o RolesGuard deixa passar, e qualquer sessão de pessoal — auxiliar,
+  // farmácia, TI — lia a lista da urgência com os nomes. Ficam os papéis que operam o episódio.
+  // O `dashboard` fica aberto: são só contagens, e alimenta o painel inicial de todos.
   @Get('lista')
+  @Roles('enfermeiro', 'medico', 'administrativo')
   listaEspera() {
     return this.service.listaEspera();
   }
@@ -63,7 +67,10 @@ export class UrgenciaController {
     return this.service.dashboard();
   }
 
+  // O fluxo leva a queixa de cada entrada e o nome do doente com SLA excedido: a mesma
+  // audiência da lista.
   @Sse('eventos')
+  @Roles('enfermeiro', 'medico', 'administrativo')
   eventos(): Observable<MessageEvent> {
     return this.service.eventStream().pipe(
       map(e => ({ type: e.type, data: e.data }) as MessageEvent),

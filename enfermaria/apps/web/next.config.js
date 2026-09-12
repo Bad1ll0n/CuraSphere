@@ -13,8 +13,15 @@ const createNextIntlPlugin = require('next-intl/plugin');
 // workspace, o que faz a resolução falhar aí. Ver uso de `withCwd` abaixo.
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { isMainThread } = require('worker_threads');
+
 /** Corre `fn` com process.cwd() temporariamente definido para __dirname. */
 function withCwd(fn) {
+  // OPS-02: o Next 16 carrega esta configuração num worker durante o `next build`, e num
+  // worker `process.chdir` é proibido — a imagem de produção não construía. Nesse caso o
+  // `next` já corre com cwd = apps/web, que é exactamente o que o next-intl precisa.
+  if (!isMainThread || process.cwd() === __dirname) return fn();
   const originalCwd = process.cwd();
   process.chdir(__dirname);
   try {

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useSocket } from '@/lib/use-socket';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Checklist {
   signInEm: string | null;
@@ -128,6 +129,11 @@ export default function BlocoPage() {
   const [dadosFase, setDadosFase] = useState<Record<string, boolean>>({});
   const [enviando, setEnviando] = useState(false);
 
+  const dlgAgendar = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Agendar cirurgia' });
+  const dlgDetalhe = useDialogoAcessivel({ aberto: !!detalhe, onFechar: () => setDetalhe(null), titulo: 'Notas de pós-operatório' });
+  const dlgChecklist = useDialogoAcessivel({ aberto: !!checklistCirurgia && checklist !== null && !checklistFase, onFechar: () => setChecklistCirurgia(null), titulo: 'Checklist de segurança cirúrgica (OMS)' });
+  const dlgFase = useDialogoAcessivel({ aberto: !!checklistCirurgia && !!checklistFase, onFechar: () => setChecklistFase(null), titulo: 'Preencher fase do checklist' });
+
   // Vista de Sala
   const [statusSalas, setStatusSalas] = useState<SalaStatus[]>([]);
   const [loadingSalas, setLoadingSalas] = useState(false);
@@ -165,7 +171,7 @@ export default function BlocoPage() {
       .finally(() => setLoadingCal(false));
   }, [vistaAtiva, calMes, calAno]);
 
-  useSocket(undefined, {
+  useSocket({
     'bloco:update': () => { carregar(); if (vistaAtiva === 'salas') carregarSalas(); },
   });
 
@@ -345,9 +351,13 @@ export default function BlocoPage() {
                   for (const c of cirurgiasDia) porSala[c.sala] = (porSala[c.sala] ?? 0) + 1;
                   return (
                     <div key={diaStr}
-                      className={`border-r border-b border-slate-100 cursor-pointer hover:bg-blue-50/30 transition-colors`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Ver agenda de ${diaStr}${total > 0 ? ` — ${total} cirurgia${total !== 1 ? 's' : ''}` : ''}`}
+                      className={`border-r border-b border-slate-100 cursor-pointer hover:bg-blue-50/30 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors`}
                       style={{ minHeight: '110px', padding: '8px 6px' }}
-                      onClick={() => { setDataFiltro(diaStr); setVistaAtiva('agenda'); }}>
+                      onClick={() => { setDataFiltro(diaStr); setVistaAtiva('agenda'); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setDataFiltro(diaStr); setVistaAtiva('agenda'); } }}>
                       <div style={{ marginBottom: '6px' }}>
                         <span className={`text-xs font-bold flex items-center justify-center rounded-full ${ehHoje ? 'bg-blue-600 text-white' : 'text-slate-500'}`}
                           style={{ width: '22px', height: '22px' }}>
@@ -571,7 +581,7 @@ export default function BlocoPage() {
       {/* Modal: Agendar Cirurgia */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgAgendar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Agendar Cirurgia</h2>
               <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -625,7 +635,7 @@ export default function BlocoPage() {
       {/* Modal: Notas Pós-Operatório */}
       {detalhe && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgDetalhe.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Concluir Cirurgia</h2>
               <button aria-label="Fechar" onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -654,7 +664,7 @@ export default function BlocoPage() {
       {/* Modal: WHO Surgical Safety Checklist */}
       {checklistCirurgia && checklist !== null && !checklistFase && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgChecklist.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-start justify-between" style={{ marginBottom: '8px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">WHO Surgical Safety Checklist</h2>
@@ -705,7 +715,7 @@ export default function BlocoPage() {
       {/* Modal: Preencher fase WHO */}
       {checklistCirurgia && checklistFase && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgFase.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-start justify-between" style={{ marginBottom: '8px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">WHO — {WHO_FASES[checklistFase].label}</h2>

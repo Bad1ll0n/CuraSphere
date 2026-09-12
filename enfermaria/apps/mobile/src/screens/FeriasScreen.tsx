@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Ausencia {
@@ -54,7 +55,7 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
       setSaldo(sR.data);
       setMinhas(mR.data ?? []);
       setParaAprovar(aR.data ?? []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) { registarFalhaSilenciosa('FeriasScreen', e); } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
@@ -90,8 +91,7 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
     Alert.alert('Eliminar', 'Eliminar este pedido?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Eliminar', style: 'destructive', onPress: async () => {
-        try { await api.delete(`/rh/ausencias/${id}`); await carregar(); }
-        catch {}
+        try { await api.delete(`/rh/ausencias/${id}`); await carregar(); } catch (e) { registarFalhaSilenciosa('FeriasScreen', e); }
       }},
     ]);
   };

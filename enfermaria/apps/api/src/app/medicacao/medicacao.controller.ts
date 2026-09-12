@@ -12,6 +12,7 @@ import { RejeitarMedicacaoDto } from './dto/rejeitar-medicacao.dto';
 import { AdministrarMedicacaoDto } from './dto/administrar-medicacao.dto';
 import { NaoAdministrarDto } from './dto/nao-administrar.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
+import { Verificar5CertosDto } from './dto/verificar-5-certos.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('medicacao')
@@ -79,6 +80,11 @@ export class MedicacaoController {
       medicacaoId: id,
       doenteId: dto.doenteId,
       administradoPorId: req.user.sub,
+      // Sem estes dois, os certos 3 e 4 nunca chegam ao serviço que os avalia.
+      qrPayload: dto.qrPayload,
+      dose: dto.dose,
+      atestadoPeloEnfermeiro: dto.atestadoPeloEnfermeiro,
+      via: dto.via,
       observacoes: dto.observacoes,
     });
   }
@@ -103,20 +109,22 @@ export class MedicacaoController {
     return this.medicacaoService.descontinuar(id);
   }
 
-  @Get('doente/:id/mar/pdf')
+  // `:doenteId` e não `:id`: é o nome que a verificação global de acesso procura. Esta rota
+  // já verificava à mão, mas era a única das sete com `doente/:id` que o fazia.
+  @Get('doente/:doenteId/mar/pdf')
   @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros')
   async marPdf(
-    @Param('id') id: string,
+    @Param('doenteId') doenteId: string,
     @Query('data') data: string | undefined,
     @Res() res: Response,
     @Request() req: any,
   ) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
-    const buffer = await this.pdfService.gerarMar(id, data);
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    const buffer = await this.pdfService.gerarMar(doenteId, data);
     const dataLabel = data ? data.slice(0, 10) : new Date().toISOString().slice(0, 10);
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="MAR_${id}_${dataLabel}.pdf"`,
+      'Content-Disposition': `inline; filename="MAR_${doenteId}_${dataLabel}.pdf"`,
       'Content-Length': buffer.length,
     });
     res.end(buffer);
@@ -161,8 +169,8 @@ export class MedicacaoController {
 
   @Post('verificar-5-certos')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'auxiliar', 'tecnico_saude')
-  verificar5Certos(@Body() body: { qrPayload: string; doenteIdEsperado: string }) {
-    return this.medicacaoService.verificar5Certos(body.qrPayload, body.doenteIdEsperado);
+  verificar5Certos(@Body() dto: Verificar5CertosDto) {
+    return this.medicacaoService.verificar5Certos(dto.qrPayload, dto.doenteIdEsperado);
   }
 
   @Get('timeline')

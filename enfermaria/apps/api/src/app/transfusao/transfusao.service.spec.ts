@@ -51,6 +51,31 @@ describe('TransfusaoService.verificarCompatibilidade', () => {
     });
   });
 
+  // BA-05: as plaquetas são suspensas em plasma — seguem a regra INVERSA, não a eritrocitária.
+  describe('plaquetas (concentrado_plaquetas) — segue a regra do plasma', () => {
+    const PLQ = 'concentrado_plaquetas';
+
+    it('doente O recebe plaquetas de qualquer grupo ABO (recetor universal de plasma)', () => {
+      for (const abo of ['A', 'B', 'AB', 'O']) {
+        expect(compat(PLQ, 'O', 'positivo', abo, 'positivo')).toBe(true);
+      }
+    });
+
+    it('doente AB só recebe plaquetas AB', () => {
+      expect(compat(PLQ, 'AB', 'positivo', 'AB', 'positivo')).toBe(true);
+      expect(compat(PLQ, 'AB', 'positivo', 'O', 'positivo')).toBe(false);
+    });
+
+    it('não aplica a restrição Rh dos eritrócitos às plaquetas', () => {
+      expect(compat(PLQ, 'O', 'negativo', 'A', 'positivo')).toBe(true);
+    });
+
+    it('grupo por determinar → plaquetas só AB (dador universal de plasma)', () => {
+      expect(compat(PLQ, null, null, 'AB', 'positivo')).toBe(true);
+      expect(compat(PLQ, null, null, 'O', 'negativo')).toBe(false);
+    });
+  });
+
   describe('plasma (plasma_fresco_congelado) — compatibilidade ABO invertida', () => {
     const P = 'plasma_fresco_congelado';
 
@@ -82,14 +107,21 @@ describe('TransfusaoService.verificarCompatibilidade', () => {
 describe('TransfusaoService — métodos com BD (mock)', () => {
   const prisma: any = {
     doente: { findUnique: jest.fn() },
+    utilizador: { findUnique: jest.fn() },
+    consentimentoInformado: { findMany: jest.fn() },
     pedidoTransfusao: { findUnique: jest.fn(), create: jest.fn(), findMany: jest.fn(), update: jest.fn() },
     bolsaSangue: { findUnique: jest.fn(), create: jest.fn(), findMany: jest.fn(), updateMany: jest.fn(), update: jest.fn() },
+    registoTransfusao: { create: jest.fn(), count: jest.fn() },
+    $transaction: jest.fn(),
   };
   const alertas: any = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
   let svc: TransfusaoService;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    prisma.$transaction.mockImplementation((arg: any) =>
+      typeof arg === 'function' ? arg(prisma) : Promise.all(arg),
+    );
     svc = new TransfusaoService(prisma, alertas);
   });
 
@@ -140,10 +172,149 @@ describe('TransfusaoService — métodos com BD (mock)', () => {
   });
 
   describe('administrar()', () => {
+    const dtoBase = {
+      bolsaId: 'b1',
+      verificacaoABO: true,
+      verificacaoUnidade: true,
+      verificacaoValidade: true,
+      segundoVerificadorId: 'enf-2',
+    };
+    const validade = new Date(Date.now() + 30 * 86_400_000);
+
+    /** Cenário base: pedido válido, bolsa O- disponível, consentimento assinado. */
+    const prepararCenario = (over: Record<string, unknown> = {}) => {
+      prisma.pedidoTransfusao.findUnique.mockResolvedValue({
+        id: 'p1', doenteId: 'd1', componente: 'concentrado_eritrocitos',
+        grupoABO: null, rhD: null, urgencia: 'rotina', estado: 'reservado',
+        numeroUnidades: 1, deletedAt: null, ...over,
+      });
+      prisma.bolsaSangue.findUnique.mockResolvedValue({
+        id: 'b1', numeroUnidade: 'U1', grupoABO: 'O', rhD: 'negativo',
+        estado: 'reservada', dataValidade: validade,
+      });
+      prisma.utilizador.findUnique.mockResolvedValue({ id: 'enf-2', ativo: true });
+      prisma.consentimentoInformado.findMany.mockResolvedValue([
+        { id: 'c1', recusado: false, motivoRecusa: null, assinadoDoenteEm: new Date() },
+      ]);
+      prisma.doente.findUnique.mockResolvedValue({ grupoSanguineo: 'O-' });
+      prisma.registoTransfusao.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'r1', ...data }));
+      prisma.registoTransfusao.count.mockResolvedValue(1);
+      prisma.bolsaSangue.update.mockResolvedValue({});
+      prisma.pedidoTransfusao.update.mockResolvedValue({});
+    };
+
     it('rejeita quando a tripla-verificação está incompleta', async () => {
       await expect(
-        svc.administrar('p1', { bolsaId: 'b1', verificacaoABO: true, verificacaoUnidade: false, verificacaoValidade: true } as any, 'enf-1'),
+        svc.administrar('p1', { ...dtoBase, verificacaoUnidade: false } as any, 'enf-1'),
       ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    // ── BA-05: dupla verificação por dois profissionais ────────────────────
+
+    it('rejeita sem segundo verificador identificado', async () => {
+      await expect(
+        svc.administrar('p1', { ...dtoBase, segundoVerificadorId: undefined } as any, 'enf-1'),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('rejeita quando o segundo verificador é quem administra', async () => {
+      await expect(
+        svc.administrar('p1', { ...dtoBase, segundoVerificadorId: 'enf-1' } as any, 'enf-1'),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('rejeita segundo verificador inactivo', async () => {
+      prepararCenario();
+      prisma.utilizador.findUnique.mockResolvedValue({ id: 'enf-2', ativo: false });
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('grava o segundo verificador no registo', async () => {
+      prepararCenario();
+
+      const r: any = await svc.administrar('p1', dtoBase as any, 'enf-1');
+
+      expect(r.segundoVerificadorId).toBe('enf-2');
+      expect(r.administradoPorId).toBe('enf-1');
+    });
+
+    // ── BA-05: grupo derivado do doente, não do pedido ─────────────────────
+
+    it('usa o grupo do DOENTE, não o auto-declarado no pedido', async () => {
+      // Pedido diz AB+ (o que permitiria qualquer bolsa); o doente é mesmo O-.
+      prepararCenario({ grupoABO: 'AB', rhD: 'positivo' });
+      prisma.doente.findUnique.mockResolvedValue({ grupoSanguineo: 'O-' });
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('bloqueia bolsa incompatível com o grupo tipado do doente', async () => {
+      prepararCenario();
+      prisma.doente.findUnique.mockResolvedValue({ grupoSanguineo: 'O+' });
+      prisma.bolsaSangue.findUnique.mockResolvedValue({
+        id: 'b1', numeroUnidade: 'U1', grupoABO: 'A', rhD: 'positivo',
+        estado: 'reservada', dataValidade: validade,
+      });
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('doente sem grupo tipado só aceita dador universal O Rh-', async () => {
+      prepararCenario();
+      prisma.doente.findUnique.mockResolvedValue({ grupoSanguineo: null });
+
+      const r: any = await svc.administrar('p1', dtoBase as any, 'enf-1');
+      expect(r.compativel).toBe(true); // a bolsa do cenário é O-
+
+      prisma.bolsaSangue.findUnique.mockResolvedValue({
+        id: 'b1', numeroUnidade: 'U1', grupoABO: 'O', rhD: 'positivo',
+        estado: 'reservada', dataValidade: validade,
+      });
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    // ── BA-08: consentimento informado ─────────────────────────────────────
+
+    it('bloqueia sem consentimento assinado (pedido de rotina)', async () => {
+      prepararCenario();
+      prisma.consentimentoInformado.findMany.mockResolvedValue([]);
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('bloqueia sempre quando há recusa registada — mesmo em emergência', async () => {
+      prepararCenario({ urgencia: 'emergencia' });
+      prisma.consentimentoInformado.findMany.mockResolvedValue([
+        { id: 'c1', recusado: true, motivoRecusa: 'convicção religiosa', assinadoDoenteEm: null },
+      ]);
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('permite emergência sem consentimento prévio, sem o associar', async () => {
+      prepararCenario({ urgencia: 'emergencia' });
+      prisma.consentimentoInformado.findMany.mockResolvedValue([]);
+
+      const r: any = await svc.administrar('p1', dtoBase as any, 'enf-1');
+      expect(r.consentimentoId).toBeNull();
+    });
+
+    it('associa o consentimento assinado ao registo', async () => {
+      prepararCenario();
+
+      const r: any = await svc.administrar('p1', dtoBase as any, 'enf-1');
+      expect(r.consentimentoId).toBe('c1');
+    });
+
+    it('a decisão mais recente do doente prevalece sobre a anterior', async () => {
+      prepararCenario();
+      prisma.consentimentoInformado.findMany.mockResolvedValue([
+        { id: 'c2', recusado: true, motivoRecusa: 'mudou de ideias', assinadoDoenteEm: null },
+        { id: 'c1', recusado: false, motivoRecusa: null, assinadoDoenteEm: new Date() },
+      ]);
+
+      await expect(svc.administrar('p1', dtoBase as any, 'enf-1')).rejects.toBeInstanceOf(BadRequestException);
     });
   });
 });

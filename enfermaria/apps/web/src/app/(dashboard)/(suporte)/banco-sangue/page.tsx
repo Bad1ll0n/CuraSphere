@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
@@ -41,6 +42,8 @@ export default function BancoSanguePage() {
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ numeroUnidade: '', componente: 'concentrado_eritrocitos', grupoABO: 'O', rhD: 'positivo', volumeMl: '', dataValidade: '' });
   const [salvando, setSalvando] = useState(false);
+
+  const dlgBolsa = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: t('modalTitle') });
 
   const carregar = useCallback(() => {
     setLoading(true);
@@ -142,7 +145,7 @@ export default function BancoSanguePage() {
 
       {modal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '28px' }}>
+          <div {...dlgBolsa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '28px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '18px' }}>{t('modalTitle')}</h2>
             <div className="flex flex-col gap-4">
               <div>

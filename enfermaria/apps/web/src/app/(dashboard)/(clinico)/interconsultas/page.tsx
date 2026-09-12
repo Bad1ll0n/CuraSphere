@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Interconsulta {
   id: string;
@@ -43,6 +44,9 @@ export default function InterconsultasPage() {
   const [novaMotivo, setNovaMotivo] = useState('');
   const [novaUrgente, setNovaUrgente] = useState(false);
   const [modalResposta, setModalResposta] = useState<string | null>(null);
+  const dlgResposta = useDialogoAcessivel({ aberto: !!modalResposta, onFechar: () => setModalResposta(null), titulo: 'Responder à interconsulta' });
+  const dlgNova = useDialogoAcessivel({ aberto: modalNova, onFechar: () => setModalNova(false), titulo: 'Nova interconsulta' });
+
   const [textoResposta, setTextoResposta] = useState('');
 
   const role = utilizador?.role ?? '';
@@ -182,9 +186,9 @@ export default function InterconsultasPage() {
 
       {/* Modal: Responder */}
       {modalResposta && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalResposta(null); }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgResposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Responder à Interconsulta</h2>
               <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
@@ -216,9 +220,9 @@ export default function InterconsultasPage() {
 
       {/* Modal: Nova Interconsulta */}
       {modalNova && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalNova(false); }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Interconsulta</h2>
               <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>

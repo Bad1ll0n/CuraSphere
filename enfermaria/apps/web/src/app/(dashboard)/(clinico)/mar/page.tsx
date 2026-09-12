@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const MOTIVOS_NAO_ADMIN = [
   { value: 'recusou', label: 'Recusou tomar' },
@@ -83,6 +85,7 @@ export default function MarPage() {
   const toast = useToast();
   const [medicacoes, setMedicacoes] = useState<Medicacao[]>([]);
   const [loading, setLoading] = useState(true);
+  const [erroCarga, setErroCarga] = useState(false);
   const [administrando, setAdministrando] = useState<string | null>(null);
   const [obs, setObs] = useState('');
   const [modalId, setModalId] = useState<string | null>(null);
@@ -92,10 +95,26 @@ export default function MarPage() {
   const [motivoOutro, setMotivoOutro] = useState('');
   const [registandoNaoAdmin, setRegistandoNaoAdmin] = useState(false);
 
+  // Escape, armadilha de foco e devolução do foco nos dois diálogos desta página.
+  const dlgNaoAdmin = useDialogoAcessivel({
+    aberto: !!modalNaoAdmin,
+    onFechar: () => setModalNaoAdmin(null),
+    titulo: 'Não administrada — registar motivo',
+  });
+  const dlg5Certas = useDialogoAcessivel({
+    aberto: !!modalId,
+    onFechar: () => setModalId(null),
+    titulo: 'Verificação das 5 Corretas',
+  });
+
+  // F-08: sem `catch`, uma falha de rede terminava no estado vazio — "Sem medicações para
+  // este turno" — e o enfermeiro concluía que não havia nada a administrar.
   const carregar = () => {
     setLoading(true);
+    setErroCarga(false);
     api.get('/medicacao/mar')
       .then((r) => setMedicacoes(r.data))
+      .catch(() => setErroCarga(true))
       .finally(() => setLoading(false));
   };
 
@@ -136,6 +155,11 @@ export default function MarPage() {
     try {
       await api.post(`/medicacao/${modalId}/administrar`, {
         doenteId: modalMed?.doente.id,
+        // Atestação, não verificação: o enfermeiro percorreu a lista à cabeceira, mas o
+        // sistema não comparou nada. Reenviar aqui a dose e a via que o servidor nos
+        // mandou faria com que ele as comparasse consigo próprio e gravasse uma
+        // verificação inexistente. A verificação a sério é a da etiqueta lida por QR.
+        atestadoPeloEnfermeiro: todasMarcadas,
         observacoes: obs || undefined,
       });
       toast.success('Medicação administrada');
@@ -185,6 +209,14 @@ export default function MarPage() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
           <span className="text-sm">A carregar MAR...</span>
+        </div>
+      ) : erroCarga ? (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <ErroCarregamento
+            titulo="Não foi possível carregar o MAR"
+            descricao="Isto não quer dizer que não haja medicações por administrar neste turno. Verifique a ligação e tente de novo antes de dar a ronda por concluída."
+            onTentarNovamente={carregar}
+          />
         </div>
       ) : Object.keys(porDoente).length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
@@ -270,9 +302,9 @@ export default function MarPage() {
 
       {/* Modal: Não administrada */}
       {modalNaoAdmin && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
+        <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
              onClick={(e) => e.target === e.currentTarget && setModalNaoAdmin(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNaoAdmin.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-base font-bold text-slate-900">Não administrada — Registar motivo</h2>
               <button aria-label="Fechar" onClick={() => setModalNaoAdmin(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -314,9 +346,9 @@ export default function MarPage() {
 
       {/* Modal 5 Corretas */}
       {modalId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
+        <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
              onClick={(e) => e.target === e.currentTarget && setModalId(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
+          <div {...dlg5Certas.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
 
             {/* Header */}
             <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>

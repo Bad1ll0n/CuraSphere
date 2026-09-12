@@ -5,6 +5,26 @@ services:
 
   # ── Base de dados ──────────────────────────────────────────────────────────
   postgres:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.5"
+        reservations:
+          memory: 512M
     image: postgres:16-alpine
     container_name: curasphere-db
     restart: unless-stopped
@@ -26,6 +46,26 @@ services:
 
   # ── Backup automático diário ───────────────────────────────────────────────
   backup:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.25"
+        reservations:
+          memory: 64M
     image: postgres:16-alpine
     container_name: curasphere-backup
     restart: unless-stopped
@@ -34,9 +74,19 @@ services:
       POSTGRES_USER:     ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_HOST:     postgres
+      # OPS-08: os scripts usavam `./backups`, relativo ao directório de trabalho do cron —
+      # que não é este volume. Sem isto, a cópia diária podia ficar dentro do contentor e
+      # desaparecer com ele, com o log (esse sim em /backups) a dizer que tinha corrido bem.
+      BACKUP_DIR:        /backups
     volumes:
       - ./backups:/backups
-      - ./scripts/backup-db.sh:/backup-db.sh:ro
+      # A rotina de cópia passa a ser um script versionado, não uma linha de
+      # crontab embutida no compose (era impossível de testar e divergia do
+      # `scripts/backup-db.sh` que existia em paralelo).
+      - ./scripts:/scripts:ro
+      # ─── OPS-01 — os uploads TÊM de entrar no backup ───────────────────────
+      # Só-leitura: o contentor de backup nunca escreve no registo clínico.
+      - api_uploads:/uploads-src:ro
     networks:
       - curasphere-internal
     depends_on:
@@ -44,12 +94,33 @@ services:
         condition: service_healthy
     entrypoint: >
       sh -c "
-        echo '0 2 * * * PGPASSWORD=$$POSTGRES_PASSWORD pg_dump -h $$POSTGRES_HOST -U $$POSTGRES_USER $$POSTGRES_DB | gzip > /backups/backup-$$(date +%Y%m%d_%H%M%S).sql.gz && find /backups -name \"*.sql.gz\" -mtime +30 -delete' | crontab -
+        apk add --no-cache openssl tar >/dev/null 2>&1 || true;
+        echo '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1' | crontab -;
         crond -f
       "
 
   # ── Cache (Redis) ─────────────────────────────────────────────────────────
   redis:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+        reservations:
+          memory: 128M
     image: redis:7-alpine
     container_name: curasphere-redis
     restart: unless-stopped
@@ -64,28 +135,178 @@ services:
 
   # ── API (NestJS) ───────────────────────────────────────────────────────────
   api:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: "2.0"
+        reservations:
+          memory: 512M
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+    # OPS-07: nome de imagem fixo, para o deploy guardar a versão em serviço
+    # (`curasphere-api:anterior`) e voltar a ela se a nova não ficar saudável.
+    image: curasphere-api:latest
     container_name: curasphere-api
     restart: unless-stopped
+    # ─────────────────────────────────────────────────────────────────────────
+    # OPS-03 + OPS-13 — convenção deste bloco:
+    #   ${VAR:?...}  = falha, não opção. `docker compose up` RECUSA arrancar e
+    #                  diz porquê. É o mesmo padrão que o projecto já escolheu
+    #                  no Joi (app.module.ts): recusar arrancar mal configurado
+    #                  em vez de degradar em silêncio. Aplicado aqui porque o
+    #                  compose é a camada que este agente controla.
+    #   ${VAR:-...}  = opção com omissão segura (funcionalidade desligada).
+    # Antes desta alteração, ~30 variáveis lidas pelo código NUNCA chegavam ao
+    # contentor: o código lia `undefined` e caía em omissões pensadas para
+    # desenvolvimento, em produção, sem ninguém dar por isso.
+    # ─────────────────────────────────────────────────────────────────────────
     environment:
-      DATABASE_URL:            "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
-      JWT_SECRET:              ${JWT_SECRET}
+      DATABASE_URL:            "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
+      JWT_SECRET:              ${JWT_SECRET:?JWT_SECRET em falta (min. 32 chars) — validado por Joi no arranque}
       JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-1h}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}
-      ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS}
+      ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS:?ALLOWED_ORIGINS em falta — obrigatório em produção (Joi)}
       REDIS_URL:               redis://redis:6379
       NODE_ENV:                production
       PORT:                    3333
-      ANTHROPIC_API_KEY:       ${ANTHROPIC_API_KEY}
       SENTRY_DSN:              ${SENTRY_DSN:-}
-      # OBRIGATÓRIO — sem isto o middleware de encriptação faz no-op silencioso e
-      # guarda PII (nome/contacto/morada de doentes) em texto simples na BD
-      ENCRYPTION_KEY:          ${ENCRYPTION_KEY}
+
+      # ── Segredos criptográficos ────────────────────────────────────────────
+      # Sem isto o middleware de encriptação faz no-op silencioso e guarda PII
+      # (nome/contacto/morada de doentes) em texto simples na BD.
+      ENCRYPTION_KEY:          ${ENCRYPTION_KEY:?ENCRYPTION_KEY em falta (64 hex) — sem ela a PII dos doentes fica em texto simples}
+      # OPS-03 — CRÍTICO. A chave que assina os checkpoints de auditoria estava
+      # ausente deste ficheiro E tem um valor por omissão publicado no
+      # repositório ('dev-insecure-audit-signing-key-change-me', em
+      # common/audit-checkpoint.service.ts). Com a omissão, os checkpoints são
+      # assinados com uma chave que qualquer pessoa conhece: um DBA pode forjar
+      # um checkpoint que valide dados adulterados. O serviço regista um
+      # logger.error em produção mas ARRANCA na mesma — ou seja, a garantia de
+      # inviolabilidade do registo de auditoria estava desligada sem falhar nada.
+      # Guardar FORA da BD (secret manager). Gerar: openssl rand -hex 32
+      AUDIT_SIGNING_KEY:       ${AUDIT_SIGNING_KEY:?AUDIT_SIGNING_KEY em falta — sem ela a auditoria é assinada com uma chave PÚBLICA e o tamper-proof não existe}
+      AUDIT_CHECKPOINT_MS:     ${AUDIT_CHECKPOINT_MS:-60000}
+      # Sink append-only FORA da BD. Fica dentro do volume de uploads para
+      # sobreviver ao deploy e entrar na rotina de cópia (ver OPS-01).
+      AUDIT_ANCHOR_FILE:       ${AUDIT_ANCHOR_FILE:-/app/uploads/audit-anchor.jsonl}
       # OBRIGATÓRIO se o quiosque de doente estiver activo — a API lança erro
-      # ao gerar/validar tokens de quiosque sem isto
+      # ao gerar/validar tokens de quiosque sem isto.
       QUIOSQUE_SECRET:         ${QUIOSQUE_SECRET:-}
+
+      # ── URL pública do frontend ────────────────────────────────────────────
+      # Lida em auth/sso/sso.controller.ts para construir o redirect pós-SSO.
+      # A omissão no código é 'http://localhost:4200': sem esta variável, o SSO
+      # em produção devolve os utilizadores autenticados para localhost.
+      NEXT_PUBLIC_WEB_URL:     ${NEXT_PUBLIC_WEB_URL:?NEXT_PUBLIC_WEB_URL em falta — o redirect de SSO cairia em http://localhost:4200}
+      # A API também lê esta: auth/webauthn/webauthn.service.ts deriva dela o
+      # `rpId` do WebAuthn (o hostname). A omissão no código é
+      # 'http://localhost:3333' → as passkeys ficariam registadas contra o
+      # domínio "localhost" e deixariam de autenticar em produção. Não é só
+      # uma variável do frontend.
+      NEXT_PUBLIC_API_URL:     ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL em falta — o rpId do WebAuthn cairia em 'localhost' e as passkeys deixariam de funcionar}
+
+      # ── Endpoint de métricas (Prometheus) ──────────────────────────────────
+      # common/metrics-scrape.guard.ts falha FECHADO em produção: sem este token
+      # o /metrics devolve 401 e o sistema fica sem métricas nenhumas. Definir
+      # se houver recolha (ver OPS-11). Gerar: openssl rand -hex 32
+      METRICS_TOKEN:           ${METRICS_TOKEN:-}
+      # Assinatura das etiquetas QR de medicação. Cai no JWT_SECRET quando
+      # ausente (omissão segura), mas convém ser uma chave própria.
+      MEDICACAO_QR_SECRET:     ${MEDICACAO_QR_SECRET:-}
+      # Idade máxima de um token de quiosque (SEC-17). Omissão no código.
+      QUIOSQUE_TOKEN_MAX_DIAS: ${QUIOSQUE_TOKEN_MAX_DIAS:-}
+
+      # ── Armazenamento de objectos (documentos, DICOM, PDFs) ────────────────
+      # 'local' guarda em /app/uploads (volume api_uploads, ver OPS-01).
+      # 's3'/'minio' exigem as credenciais abaixo — sem elas os uploads falham
+      # em runtime, não no arranque.
+      STORAGE_PROVIDER:        ${STORAGE_PROVIDER:-local}
+      S3_BUCKET:               ${S3_BUCKET:-curasphere}
+      MINIO_BUCKET:            ${MINIO_BUCKET:-}
+      MINIO_ENDPOINT:          ${MINIO_ENDPOINT:-}
+      MINIO_PORT:              ${MINIO_PORT:-}
+      MINIO_ACCESS_KEY:        ${MINIO_ACCESS_KEY:-}
+      MINIO_SECRET_KEY:        ${MINIO_SECRET_KEY:-}
+      AWS_REGION:              ${AWS_REGION:-eu-west-1}
+      AWS_ACCESS_KEY_ID:       ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY:   ${AWS_SECRET_ACCESS_KEY:-}
+
+      # ── Integrações clínicas externas ──────────────────────────────────────
+      # Teleconsulta. A omissão no código é o servidor PÚBLICO meet.jit.si —
+      # consultas clínicas a passar por infraestrutura de terceiros sem contrato
+      # nem RGPD. Definir para o Jitsi da instituição.
+      JITSI_SERVER:            ${JITSI_SERVER:?JITSI_SERVER em falta — a omissão do código é o servidor público meet.jit.si}
+      # SPMS/SNS. A omissão do código é api-staging.spms.min-saude.pt: produção
+      # a falar com staging é uma falha, não uma opção.
+      SPMS_API_URL:            ${SPMS_API_URL:?SPMS_API_URL em falta — a omissão do código aponta para STAGING}
+      SPMS_API_KEY:            ${SPMS_API_KEY:-}
+      # 'sandbox' por omissão: em produção o PEM tem de ser explícito.
+      SNS_PEM_MODE:            ${SNS_PEM_MODE:?SNS_PEM_MODE em falta — a omissão do código é 'sandbox'}
+      SNS_PEM_ENDPOINT:        ${SNS_PEM_ENDPOINT:-}
+      # Token do endpoint HL7. Omissão '' e o controlador falha FECHADO
+      # (401 em /hl7/receive) — opção segura: vazio = integração HL7 desligada.
+      HL7_API_TOKEN:           ${HL7_API_TOKEN:-}
+
+      # ── IA clínica ─────────────────────────────────────────────────────────
+      # Sem ANTHROPIC_API_KEY: AI Clínico e stewardship antibiótico desligados.
+      # Sem OPENAI_API_KEY: a busca de guidelines cai em keyword cosine
+      # similarity (degradação assumida, não falha).
+      ANTHROPIC_API_KEY:       ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY:          ${OPENAI_API_KEY:-}
+
+      # ── Email transaccional ────────────────────────────────────────────────
+      # Sem RESEND_API_KEY o mailer regista um aviso e ignora o envio — os
+      # relatórios de turno deixam de sair sem nada falhar visivelmente.
+      RESEND_API_KEY:          ${RESEND_API_KEY:-}
+      MAIL_DOMAIN:             ${MAIL_DOMAIN:-curasphere.pt}
+      RELATORIO_TURNO_EMAILS:  ${RELATORIO_TURNO_EMAILS:-}
+
+      # ── Geofencing de turnos ───────────────────────────────────────────────
+      # turnos.service.ts faz parseFloat(HOSPITAL_LAT ?? '0'): sem estes valores
+      # o hospital fica em (0,0), ao largo da Guiné, e a validação de picagem
+      # por localização rejeita toda a gente.
+      HOSPITAL_LAT:            ${HOSPITAL_LAT:-}
+      HOSPITAL_LON:            ${HOSPITAL_LON:-}
+      HOSPITAL_GEOFENCE_METROS: ${HOSPITAL_GEOFENCE_METROS:-500}
+
+      # ── Limites de pedidos e observabilidade ───────────────────────────────
+      THROTTLE_LIMIT:          ${THROTTLE_LIMIT:-60}
+      LOGIN_THROTTLE_LIMIT:    ${LOGIN_THROTTLE_LIMIT:-5}
+      LOG_PRETTY:              ${LOG_PRETTY:-false}
+      # Vazio = tracing OpenTelemetry desligado (gated em src/tracing.ts).
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+    volumes:
+      # ─── OPS-01 — REGISTO CLÍNICO. NÃO REMOVER. ────────────────────────────
+      # Sem este volume, os anexos de mensagens, imagens DICOM, fotografias de
+      # doentes e PDFs de carta de alta viviam DENTRO do contentor: `deploy.sh`
+      # faz `docker compose down` + `up`, o contentor é recriado do zero e todos
+      # esses ficheiros desaparecem. Nunca entraram em backup nenhum.
+      #
+      # O caminho tem de ser exactamente /app/uploads: o código escreve em
+      # `path.join(process.cwd(), 'uploads')` e o WORKDIR da imagem é /app
+      # (apps/api/src/main.ts, common/storage.service.ts,
+      # comunicacao/comunicacao.controller.ts).
+      #
+      # O `mkdir -p uploads/mensagens && chown nestjs` no Dockerfile continua a
+      # ser necessário: no primeiro arranque o Docker copia o conteúdo (e o dono)
+      # do directório da imagem para o volume vazio. Sem ele, o volume nasceria
+      # pertencente a root e o processo (uid 1001) não conseguiria escrever.
+      - api_uploads:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -100,14 +321,72 @@ services:
       retries: 3
       start_period: 30s
 
+  # ── Schema e triggers de auditoria (OPS-03) ────────────────────────────────
+  # Execução única, corrida pelo `deploy.sh` antes de substituir a API:
+  #   docker compose --profile deploy run --rm migrate
+  # O perfil impede que um `up -d` o arranque. Usa o estágio `builder` da imagem
+  # da API, que tem o workspace, o CLI do Prisma e os scripts — a imagem final só
+  # leva o bundle.
+  #
+  # `prisma db push` SEM `--accept-data-loss`: uma alteração destrutiva faz o
+  # deploy parar aqui, com a versão antiga ainda a servir. Uma alteração dessas
+  # precisa de migração prévia (ver apps/api/scripts/migrar-tokens-familia.mjs).
+  migrate:
+    profiles: ["deploy"]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: builder
+    image: curasphere-migrate:latest
+    restart: "no"
+    working_dir: /workspace/apps/api
+    environment:
+      DATABASE_URL: "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
+    command: ["sh", "-c", "pnpm exec prisma db push && node scripts/apply-audit-triggers.mjs"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - curasphere-internal
+
   # ── Web (Next.js) ──────────────────────────────────────────────────────────
   web:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: "1.0"
+        reservations:
+          memory: 256M
     build:
       context: .
       dockerfile: apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL:        ${NEXT_PUBLIC_API_URL}
+        # Build-arg, não variável de runtime: fica cozido no bundle do Next.js.
+        # Alimenta o URL do WebSocket (src/lib/use-socket.ts) E o `connect-src`
+        # do CSP (next.config.js). Se ficar vazio, o build produz um bundle que
+        # tenta falar com localhost — indisponibilidade total, não um detalhe.
+        NEXT_PUBLIC_API_URL:        ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL em falta — o bundle do web ficaria a apontar para localhost (WebSocket + CSP)}
         NEXT_PUBLIC_SENTRY_DSN:     ${NEXT_PUBLIC_SENTRY_DSN:-}
+        # A página de teleconsulta faz `?? 'meet.jit.si'`: sem este build-arg, as
+        # videochamadas clínicas passam pelo servidor Jitsi PÚBLICO. Como é
+        # NEXT_PUBLIC_*, fica cozido no bundle — tem de ser build-arg, não env.
+        NEXT_PUBLIC_JITSI_SERVER:   ${NEXT_PUBLIC_JITSI_SERVER:?NEXT_PUBLIC_JITSI_SERVER em falta — a teleconsulta cairia no servidor público meet.jit.si}
+    # OPS-07: ver a nota da imagem da API.
+    image: curasphere-web:latest
     container_name: curasphere-web
     restart: unless-stopped
     environment:
@@ -115,7 +394,9 @@ services:
       # TEM de ser o mesmo valor que a API — src/middleware.ts verifica a assinatura
       # JWT (HS256) server-side; sem isto o secret resolve para a string "undefined"
       # e todos os utilizadores autenticados são redirecionados para /login
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET em falta — o middleware do web rejeitaria todas as sessões}
+      # Sentry server-side do Next.js (o DSN público é build-arg, este não).
+      SENTRY_DSN: ${SENTRY_DSN:-}
     depends_on:
       api:
         condition: service_healthy
@@ -129,6 +410,26 @@ services:
 
   # ── Nginx (reverse proxy + SSL) ────────────────────────────────────────────
   nginx:
+    # OPS-11: sem limite, os logs enchem o disco do host — a causa mais banal de
+    # indisponibilidade num deployment de máquina única. 3 ficheiros de 20 MB por
+    # serviço chegam para investigar um incidente sem arriscar o disco.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    # OPS-15: sem limites, um serviço em fuga leva o host inteiro — incluindo a base
+    # de dados. Num serviço de enfermaria isso é perder o registo clínico todo de uma
+    # vez. ATENÇÃO: estes valores são um ponto de partida seguro e TÊM de ser
+    # confirmados contra a máquina real; um limite curto demais mata o processo sob
+    # carga, que é pior do que não ter limite nenhum.
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+        reservations:
+          memory: 64M
     image: nginx:1.27-alpine
     container_name: curasphere-nginx
     restart: unless-stopped
@@ -157,3 +458,9 @@ networks:
 volumes:
   postgres_data:
   nginx_logs:
+  # ─── OPS-01 — REGISTO CLÍNICO ───────────────────────────────────────────────
+  # Anexos de mensagens, DICOM, fotografias de doentes e PDFs de carta de alta.
+  # Sobrevive a `docker compose down` (que só remove contentores e redes).
+  # NUNCA correr `docker compose down -v` neste stack: o `-v` apaga volumes
+  # nomeados e destrói este e o `postgres_data` de forma irrecuperável.
+  api_uploads:

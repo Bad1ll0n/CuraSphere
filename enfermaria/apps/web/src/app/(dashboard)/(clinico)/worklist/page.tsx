@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { Modal } from '@/components/ui';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const TIPO_LABELS: Record<string, string> = {
   analise_clinica: 'Análise Clínica', rx: 'Raio-X', eco: 'Ecografia',
@@ -27,6 +28,7 @@ const isImagem = (tipo: string) => MODALIDADES_IMAGEM.includes(tipo);
 export default function WorklistPage() {
   const [exames, setExames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [erroCarga, setErroCarga] = useState(false);
   const [filtroTipo, setFiltroTipo] = useState<string>('');
   const [filtroEstado, setFiltroEstado] = useState<string>('');
   const [atualizando, setAtualizando] = useState<string | null>(null);
@@ -47,7 +49,12 @@ export default function WorklistPage() {
       if (filtroTipo) params.append('tipo', filtroTipo);
       const r = await api.get(`/exames/worklist?${params}`);
       setExames(r.data);
-    } catch { setExames([]); }
+      setErroCarga(false);
+    } catch {
+      // F-08: esvaziar a lista sem mais nada mostrava "A worklist está limpa" e "Urgentes: 0".
+      setExames([]);
+      setErroCarga(true);
+    }
     finally { setLoading(false); }
   };
 
@@ -141,7 +148,7 @@ export default function WorklistPage() {
         ].map(({ label, value, cor }) => (
           <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</p>
-            <p className={`text-3xl font-bold text-${cor}-600`} style={{ marginTop: '4px' }}>{value}</p>
+            <p className={`text-3xl font-bold text-${cor}-600`} style={{ marginTop: '4px' }}>{erroCarga ? '—' : value}</p>
           </div>
         ))}
       </div>
@@ -183,6 +190,14 @@ export default function WorklistPage() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
           <span className="text-sm">A carregar worklist...</span>
+        </div>
+      ) : erroCarga ? (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <ErroCarregamento
+            titulo="Não foi possível carregar a worklist"
+            descricao="Isto não quer dizer que não haja exames pendentes. Verifique a ligação e tente de novo."
+            onTentarNovamente={carregar}
+          />
         </div>
       ) : examesFiltrados.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px 0' }}>

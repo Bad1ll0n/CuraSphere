@@ -395,6 +395,7 @@ const s = StyleSheet.create({
   badge: { backgroundColor: '#ef4444', borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2 },
   badgeTexto: { fontSize: 11, fontWeight: '700', color: '#fff' },
 
+  semDados: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic', paddingVertical: 8 },
   alertaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
   alertaPonto: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#f59e0b', marginTop: 5 },
   alertaTipo: { fontSize: 11, fontWeight: '700', color: '#64748b', textTransform: 'capitalize' },

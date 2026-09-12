@@ -8,6 +8,8 @@ import { useSocket } from '@/lib/use-socket';
 import { useToast } from '@/components/toast';
 import { AiFeedback } from '@/components/ai-feedback';
 import { RoleGuard } from '@/components/role-guard';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const ROLES_CLINICOS_URGENCIA = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
@@ -137,6 +139,11 @@ function UrgenciaPageInner() {
   const [aiTriagem, setAiTriagem] = useState<{ alertasVermelhos: string[]; nivelSugerido: string; observacoes: string; discriminadoresAvaliar: string[]; disclaimer: string } | null>(null);
   const [pedindoAiTriagem, setPedindoAiTriagem] = useState(false);
 
+  const dlgNova = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Nova entrada na urgência' });
+  const dlgReTriagem = useDialogoAcessivel({ aberto: !!modalReTriagem, onFechar: () => setModalReTriagem(null), titulo: 'Re-triagem' });
+  const dlgAtribuir = useDialogoAcessivel({ aberto: !!modalAtribuir, onFechar: () => setModalAtribuir(null), titulo: 'Atribuir médico e sala' });
+  const dlgAmb = useDialogoAcessivel({ aberto: modalAmb, onFechar: () => setModalAmb(false), titulo: 'Pré-notificação de ambulância' });
+
   const [sseConectado, setSseConectado] = useState(false);
   const etaRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -150,7 +157,7 @@ function UrgenciaPageInner() {
     enabled: !!modalAtribuir,
   });
 
-  const { data: episodios = [], isLoading } = useQuery<EpisodioUrgencia[]>({
+  const { data: episodios = [], isLoading, isError, refetch } = useQuery<EpisodioUrgencia[]>({
     queryKey: ['urgencia-lista'],
     queryFn: () => api.get('/urgencia/lista').then(r => r.data),
     refetchInterval: 60_000,
@@ -188,8 +195,7 @@ function UrgenciaPageInner() {
     return () => clearInterval(etaRef.current!);
   }, []);
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
-  useSocket(token, {
+  useSocket({
     'urgencia:update':        () => invalidar(),
     'urgencia:ambulancia':    () => invalidar(),
     'urgencia:sla-excedido':  (data: any) => {
@@ -498,6 +504,16 @@ function UrgenciaPageInner() {
             <span className="text-sm">A carregar...</span>
           </div>
         </div>
+      ) : isError ? (
+        // F-08: sem isto, uma falha a carregar mostrava o coração verde de "Urgência sem
+        // doentes em espera" — com a sala cheia.
+        <div className="bg-white rounded-2xl border border-slate-200">
+          <ErroCarregamento
+            titulo="Não foi possível carregar a lista da urgência"
+            descricao="Isto não quer dizer que não haja doentes em espera. Verifique a ligação e tente de novo."
+            onTentarNovamente={() => refetch()}
+          />
+        </div>
       ) : ativos.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '64px 40px' }}>
           <div className="w-16 h-16 rounded-2xl bg-green-50 flex items-center justify-center mx-auto" style={{ marginBottom: '16px' }}>
@@ -613,7 +629,7 @@ function UrgenciaPageInner() {
       {/* Modal: Nova Entrada */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Entrada — Urgência</h2>
               <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -668,7 +684,7 @@ function UrgenciaPageInner() {
       {/* Modal: Re-triagem */}
       {modalReTriagem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgReTriagem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Re-triagem</h2>
               <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -714,7 +730,7 @@ function UrgenciaPageInner() {
       {/* Modal: Atribuir Médico + Sala */}
       {modalAtribuir && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgAtribuir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Atribuir Médico Responsável</h2>
               <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -755,7 +771,7 @@ function UrgenciaPageInner() {
       {/* Modal: Pré-notificação Ambulância — 3 blocos */}
       {modalAmb && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden" style={{ maxWidth: '560px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgAmb.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden" style={{ maxWidth: '560px', maxHeight: '90vh', margin: '0 16px' }}>
             {/* Header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">🚑 Pré-notificação de Ambulância</h2>

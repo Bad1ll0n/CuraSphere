@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import ModalRegistarVitais from './doente-detalhe/modals/ModalRegistarVitais';
+import { ordenarParaRegistoRapido } from '../lib/prioridade-vitais';
 
 interface Doente {
   id: string;
@@ -14,6 +15,8 @@ interface Doente {
   cama: { numero: string; quarto: string } | null;
   ultimoNews2?: number | null;
   ultimosVitaisEm?: string | null;
+  /** Os vitais deste doente não carregaram: o risco é desconhecido, não baixo. */
+  erroVitais?: boolean;
 }
 
 const news2Cor = (score: number | null | undefined) => {
@@ -40,41 +43,44 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
   const [refreshing, setRefreshing] = useState(false);
   const [doenteAlvo, setDoenteAlvo] = useState<Doente | null>(null);
   const [modalVitais, setModalVitais] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
   const carregar = useCallback(async (isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     try {
+      setErro(null);
       const { data } = await api.get('/doentes?limit=50');
       const lista = Array.isArray(data) ? data : (data?.data ?? []);
 
-      // Para cada doente, busca o último sinal vital
+      // Para cada doente, o último sinal vital. A rota pedida era `/sinais-vitais/doente/:id`,
+      // que não existe: todos os pedidos davam 404 e caíam no `catch`. Os campos lidos
+      // (`news2Score`, `registadoEm`) também não existem. O ecrã nunca mostrou um NEWS2.
       const comVitais = await Promise.all(
         lista.map(async (d: any) => {
           try {
-            const vr = await api.get(`/sinais-vitais/doente/${d.id}?limit=1`);
-            const vitais = Array.isArray(vr.data) ? vr.data : (vr.data?.data ?? []);
-            const ultimo = vitais[0];
+            const vr = await api.get(`/sinais-vitais/${d.id}/ultimo`);
+            // Sem nenhum registo, a API responde com o corpo vazio.
+            const ultimo = vr.data && typeof vr.data === 'object' ? vr.data : null;
             return {
               id: d.id,
               nome: d.nome,
               cama: d.cama ?? null,
-              ultimoNews2: ultimo?.news2Score ?? null,
-              ultimosVitaisEm: ultimo?.registadoEm ?? null,
+              ultimoNews2: ultimo?.news2 ?? null,
+              ultimosVitaisEm: ultimo?.data ?? null,
             } as Doente;
           } catch {
-            return { id: d.id, nome: d.nome, cama: d.cama ?? null, ultimoNews2: null, ultimosVitaisEm: null } as Doente;
+            return {
+              id: d.id, nome: d.nome, cama: d.cama ?? null,
+              ultimoNews2: null, ultimosVitaisEm: null, erroVitais: true,
+            } as Doente;
           }
         })
       );
 
-      // Ordenar: crítico primeiro, depois por última hora sem registo
-      comVitais.sort((a, b) => {
-        const sa = a.ultimoNews2 ?? -1;
-        const sb = b.ultimoNews2 ?? -1;
-        return sb - sa;
-      });
-
-      setDoentes(comVitais);
+      setDoentes(ordenarParaRegistoRapido(comVitais));
+    } catch {
+      // Uma falha a carregar a lista mostrava "Sem doentes atribuídos neste turno".
+      setErro('Não foi possível carregar os doentes. Puxe para baixo para tentar de novo.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -120,7 +126,7 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
           return (
             <TouchableOpacity key={d.id} style={estilos.card} activeOpacity={0.75} onPress={() => abrirModal(d)}>
               <View style={[estilos.news2Badge, { backgroundColor: cor + '22', borderColor: cor + '55' }]}>
-                <Text style={[estilos.news2Score, { color: cor }]}>{score ?? '—'}</Text>
+                <Text style={[estilos.news2Score, { color: cor }]}>{score ?? (d.erroVitais ? '?' : '—')}</Text>
                 <Text style={[estilos.news2Label, { color: cor }]}>{news2Label(score)}</Text>
               </View>
               <View style={estilos.cardInfo}>
@@ -128,7 +134,9 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
                 <Text style={estilos.camaText}>
                   {d.cama ? `Cama ${d.cama.numero} · ${d.cama.quarto}` : 'Sem cama'}
                 </Text>
-                <Text style={estilos.ultimoText}>{tempoDesdeUltimo(d.ultimosVitaisEm)}</Text>
+                <Text style={[estilos.ultimoText, d.erroVitais ? { color: '#c2410c', fontWeight: '600' } : null]}>
+                  {d.erroVitais ? 'Vitais não carregados' : tempoDesdeUltimo(d.ultimosVitaisEm)}
+                </Text>
               </View>
               <View style={estilos.btnRegistar}>
                 <Text style={estilos.btnRegistarText}>Registar</Text>
@@ -137,7 +145,7 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
           );
         })}
         {doentes.length === 0 && (
-          <Text style={estilos.vazio}>Sem doentes atribuídos neste turno</Text>
+          <Text style={estilos.vazio}>{erro ?? 'Sem doentes atribuídos neste turno'}</Text>
         )}
       </ScrollView>
 

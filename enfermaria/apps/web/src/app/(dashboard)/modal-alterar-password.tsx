@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   onClose: () => void;
@@ -28,14 +29,17 @@ export function ModalAlterarPassword({ onClose }: Props) {
   };
 
   const fechar = () => { setSucesso(false); onClose(); };
+  // Escape, armadilha de foco e devolução do foco — antes o Escape estava num `onKeyDown` da
+  // sobreposição, que só disparava com o foco já lá dentro.
+  const { propsPainel } = useDialogoAcessivel({ aberto: true, onFechar: fechar, titulo: 'Alterar palavra-passe' });
 
   return (
     <div
+      role="presentation"
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
-      onKeyDown={e => { if (e.key === 'Escape') fechar(); }}
     >
-      <div role="dialog" aria-modal="true" aria-labelledby="modal-pwd-titulo"
+      <div {...propsPainel} aria-labelledby="modal-pwd-titulo"
         className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
           <h2 id="modal-pwd-titulo" className="text-lg font-bold text-slate-900">Alterar Password</h2>

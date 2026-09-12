@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { DicomViewer } from '@/components/dicom-viewer';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   doenteId: string;
@@ -66,6 +67,9 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   const [dicomViewer, setDicomViewer] = useState<{ url: string; titulo: string } | null>(null);
   const [modalUpload, setModalUpload] = useState(false);
   const [enviando, setEnviando] = useState(false);
+  const dlgDoc = useDialogoAcessivel({ aberto: !!docAberto, onFechar: () => setDocAberto(null), titulo: 'Visualizador de documento' });
+  const dlgUpload = useDialogoAcessivel({ aberto: modalUpload, onFechar: () => setModalUpload(false), titulo: 'Carregar documento de saúde' });
+
   const [uploadForm, setUploadForm] = useState({
     tipo: 'outro', titulo: '', dataDocumento: new Date().toISOString().slice(0, 10), origem: 'Upload manual',
   });
@@ -329,7 +333,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
       {/* Modal Visualizador de Documento */}
       {docAberto && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl flex flex-col" style={{ width: '90vw', height: '90vh', maxWidth: '1200px' }}>
+          <div {...dlgDoc.propsPainel} className="bg-white rounded-2xl shadow-2xl flex flex-col" style={{ width: '90vw', height: '90vh', maxWidth: '1200px' }}>
             <div className="flex items-center justify-between" style={{ padding: '16px 20px', borderBottom: '1px solid #f1f5f9' }}>
               <span className="text-sm font-semibold text-slate-700 truncate">{docAberto.titulo}</span>
               <button
@@ -381,7 +385,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
       {/* Modal Upload */}
       {modalUpload && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgUpload.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Carregar Documento</h2>
               <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
@@ -392,10 +396,14 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
             {/* Drag and drop */}
             <div
               ref={dragRef}
+              role="button"
+              tabIndex={0}
+              aria-label="Escolher ficheiro para carregar (ou largar aqui)"
               onDrop={handleDrop}
               onDragOver={e => e.preventDefault()}
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-colors"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
+              className="border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               style={{ padding: '32px', marginBottom: '20px' }}
             >
               {fileSeleccionado ? (

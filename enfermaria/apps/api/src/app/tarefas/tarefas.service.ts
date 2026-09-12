@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 @Injectable()
 export class TarefasService implements OnApplicationBootstrap, OnApplicationShutdown {
   private readonly logger = new Logger(TarefasService.name);
@@ -86,7 +87,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
       if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
     }
 
-    const diaStr = dataRef.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(dataRef);
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
 

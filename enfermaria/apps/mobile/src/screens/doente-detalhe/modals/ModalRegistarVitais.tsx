@@ -33,6 +33,10 @@ export default function ModalRegistarVitais({ visible, doenteId, onClose, onSave
       frequenciaRespiratoria: fr ? parseInt(fr) : undefined,
       peso: peso ? parseFloat(peso) : undefined,
       notas: notas || undefined,
+      // MB-05: a hora em que o enfermeiro MEDIU, capturada aqui e não inferida pelo
+      // servidor. Um registo feito sem rede podia sincronizar horas depois e ficava
+      // datado da sincronização — a tendência do NEWS2 lia os valores no momento errado.
+      medidoEm: new Date().toISOString(),
     };
     setSalvando(true);
     try {

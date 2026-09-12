@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 
 interface Sessao {
@@ -49,6 +50,9 @@ export default function EspecialidadesPage() {
   const [modal, setModal] = useState<'nova' | 'evolucao' | null>(null);
   const [sessaoSel, setSessaoSel] = useState<Sessao | null>(null);
   const [form, setForm] = useState({ doenteId: '', data: '', duracao: 60, descricao: '' });
+  const dlgNovaSessao = useDialogoAcessivel({ aberto: modal === 'nova', onFechar: () => setModal(null), titulo: 'Nova sessão' });
+  const dlgEvolucao = useDialogoAcessivel({ aberto: modal === 'evolucao' && !!sessaoSel, onFechar: () => setModal(null), titulo: 'Registar evolução' });
+
   const [evolucaoText, setEvolucaoText] = useState('');
 
   const { data: sessoes = [], isLoading } = useQuery<Sessao[]>({
@@ -207,7 +211,7 @@ export default function EspecialidadesPage() {
       {/* Modal: Nova Sessão */}
       {modal === 'nova' && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" style={{ padding: '24px' }}>
-          <div className="bg-white rounded-2xl shadow-xl w-full" style={{ maxWidth: '480px', padding: '28px' }}>
+          <div {...dlgNovaSessao.propsPainel} className="bg-white rounded-2xl shadow-xl w-full" style={{ maxWidth: '480px', padding: '28px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Nova Sessão — {titulo}</h2>
             <div className="flex flex-col gap-4">
               <div>
@@ -264,7 +268,7 @@ export default function EspecialidadesPage() {
       {/* Modal: Registar Evolução */}
       {modal === 'evolucao' && sessaoSel && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" style={{ padding: '24px' }}>
-          <div className="bg-white rounded-2xl shadow-xl w-full" style={{ maxWidth: '480px', padding: '28px' }}>
+          <div {...dlgEvolucao.propsPainel} className="bg-white rounded-2xl shadow-xl w-full" style={{ maxWidth: '480px', padding: '28px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '8px' }}>Registar Evolução</h2>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>
               {sessaoSel.doente?.nome} · {new Date(sessaoSel.data).toLocaleDateString('pt-PT')}

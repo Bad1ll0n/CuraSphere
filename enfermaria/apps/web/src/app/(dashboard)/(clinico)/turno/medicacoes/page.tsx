@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
+import { Modal } from '@/components/ui/modal';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 type Turno = 'manha' | 'tarde' | 'noite';
 
@@ -40,11 +43,19 @@ const SERVICOS = ['Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'N
 
 export default function TimelineMedicacoesPage() {
   const toast = useToast();
+  const t = useTranslations('medication');
+  const tc = useTranslations('common');
   const [turno, setTurno] = useState<Turno>('manha');
   const [servico, setServico] = useState(SERVICOS[0]);
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
   const [timeline, setTimeline] = useState<TimelineData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [erroCarga, setErroCarga] = useState(false);
+  // Guarda de duplo-submit: id da medicação em curso. Fica activo desde o clique
+  // (síncrono) até ao fim do round-trip — o `disabled` derivado de `m.administrada`
+  // só reflectiria o servidor depois de recarregar, tarde demais num tablet.
+  const [administrando, setAdministrando] = useState<string | null>(null);
+  const [confirmar, setConfirmar] = useState<SlotMed | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const carregar = async () => {
@@ -52,7 +63,11 @@ export default function TimelineMedicacoesPage() {
     try {
       const r = await api.get('/medicacao/timeline', { params: { servico, turno, data } });
       setTimeline(r.data);
+      setErroCarga(false);
     } catch (e: any) {
+      // F-08: o toast desaparece em segundos e a timeline anterior fica no ecra como se fosse
+      // a actual. Na primeira carga ficava "Sem doentes activos neste servico".
+      setErroCarga(true);
       toast.error(e?.response?.data?.message ?? 'Erro ao carregar');
     } finally { setLoading(false); }
   };
@@ -63,13 +78,34 @@ export default function TimelineMedicacoesPage() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [servico, turno, data]);
 
-  const administrar = async (medicacaoId: string) => {
+  const administrar = async (med: SlotMed) => {
+    // Segunda barreira: mesmo que dois eventos passem o `disabled`, só o primeiro entra.
+    if (administrando) return;
+    setAdministrando(med.medicacaoId);
+    setConfirmar(null);
     try {
-      await api.post(`/medicacao/${medicacaoId}/administrar`, { doenteId: '' });
+      await api.post(`/medicacao/${med.medicacaoId}/administrar`, { doenteId: med.doenteId });
+      // Marca localmente antes do recarregamento para o botão não voltar a ficar activo
+      // na janela entre a resposta e a chegada da timeline nova.
+      setTimeline((prev) =>
+        prev
+          ? {
+              ...prev,
+              slots: prev.slots.map((s) => ({
+                ...s,
+                medicacoes: s.medicacoes.map((m) =>
+                  m.medicacaoId === med.medicacaoId ? { ...m, administrada: true } : m,
+                ),
+              })),
+            }
+          : prev,
+      );
       toast.success('Medicação registada como administrada');
-      carregar();
+      await carregar();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro');
+    } finally {
+      setAdministrando(null);
     }
   };
 
@@ -129,7 +165,17 @@ export default function TimelineMedicacoesPage() {
         </div>
       )}
 
-      {timeline && (
+      {erroCarga && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginBottom: '24px' }}>
+          <ErroCarregamento
+            titulo="Nao foi possivel carregar a timeline"
+            descricao="Isto nao quer dizer que nao haja medicacoes por administrar neste turno. Verifique a ligacao e tente de novo."
+            onTentarNovamente={carregar}
+          />
+        </div>
+      )}
+
+      {!erroCarga && timeline && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-x-auto">
           {/* Indicador de densidade */}
           <div className="grid border-b border-slate-100" style={{ gridTemplateColumns: `160px repeat(${horas.length}, 1fr)` }}>
@@ -173,11 +219,12 @@ export default function TimelineMedicacoesPage() {
                       return (
                         <button
                           key={m.medicacaoId}
-                          onClick={() => !m.administrada && administrar(m.medicacaoId)}
-                          disabled={m.administrada}
+                          onClick={() => setConfirmar(m)}
+                          disabled={m.administrada || !!administrando}
                           title={`${m.nome} ${m.dose}`}
-                          className={`text-xs font-medium rounded border px-1.5 py-0.5 truncate transition-all max-w-full ${cor} ${!m.administrada ? 'cursor-pointer hover:opacity-80' : 'cursor-default'}`}>
-                          {m.nome.slice(0, 8)}
+                          aria-label={`${m.administrada ? t('administered') : t('administer')}: ${m.nome} ${m.dose} — ${m.doenteName}, cama ${m.cama}, ${h}`}
+                          className={`text-xs font-medium rounded border px-1.5 py-0.5 truncate transition-all max-w-full ${cor} ${!m.administrada && !administrando ? 'cursor-pointer hover:opacity-80' : 'cursor-default'} disabled:opacity-60`}>
+                          <span aria-hidden="true">{m.nome.slice(0, 8)}</span>
                         </button>
                       );
                     })}
@@ -207,8 +254,39 @@ export default function TimelineMedicacoesPage() {
             <span className="text-xs text-slate-500">{label}</span>
           </div>
         ))}
-        <span className="text-xs text-slate-400 ml-auto">Click no bloco → marcar como administrada</span>
+        <span className="text-xs text-slate-400 ml-auto">Click no bloco → confirmar administração</span>
       </div>
+
+      {/* Confirmação explícita antes de gravar um registo de administração. */}
+      <Modal
+        isOpen={!!confirmar}
+        onClose={() => setConfirmar(null)}
+        titulo={t('confirmTitle')}
+        maxWidth="420px"
+      >
+        <p className="text-sm text-slate-600" style={{ marginBottom: '20px' }}>
+          {t('confirmBody', {
+            farmaco: `${confirmar?.nome ?? ''} ${confirmar?.dose ?? ''}`.trim(),
+            doente: confirmar?.doenteName ?? '',
+            cama: confirmar?.cama ?? '',
+          })}
+        </p>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setConfirmar(null)}
+            className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+            style={{ padding: '11px', minHeight: '44px' }}>
+            {tc('cancel')}
+          </button>
+          <button
+            onClick={() => confirmar && administrar(confirmar)}
+            disabled={!!administrando}
+            className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            style={{ padding: '11px', minHeight: '44px' }}>
+            {administrando ? t('administering') : t('administer')}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

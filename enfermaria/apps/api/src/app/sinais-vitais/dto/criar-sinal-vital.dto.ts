@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsEnum, IsBoolean, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsEnum, IsBoolean, IsInt, Min, Max, IsISO8601 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -100,4 +100,14 @@ export class CriarSinalVitalDto {
   @IsBoolean()
   @IsOptional()
   vasopressores?: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Instante da MEDIÇÃO, em ISO 8601. Enviado pela app móvel quando o registo é feito ' +
+      'offline e só sincroniza mais tarde. Sem ele, o registo fica com a hora da ' +
+      'sincronização e a tendência do NEWS2 passa a ler valores no momento errado.',
+  })
+  @IsISO8601()
+  @IsOptional()
+  medidoEm?: string;
 }

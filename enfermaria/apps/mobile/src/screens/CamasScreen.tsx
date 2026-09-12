@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const estadoCor: Record<string, string> = {
@@ -43,7 +44,7 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
     try {
       const { data } = await api.get('/camas');
       setCamas(data);
-    } catch {} finally {
+    } catch (e) { registarFalhaSilenciosa('CamasScreen', e); } finally {
       setLoading(false);
       setRefreshing(false);
     }

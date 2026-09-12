@@ -4583,6 +4583,394 @@ ciclos_quimioterapia + sessoes_dialise) + re-seed dos 3 cargos + variáveis
 `UV_THREADPOOL_SIZE`/`LOGIN_THROTTLE_LIMIT`; triggers de auditoria re-aplicam-se às tabelas
 novas (append-only, clínicas → auditadas).
 
+## Sessão 75 — Auditoria independente por 7 revisores e vaga de correcções (2026-09-02/03)
+
+Sete revisores séniores independentes — analista de negócio, backend, frontend, mobile,
+qualidade, segurança e operação — percorreram o sistema em modo só-leitura, com uma regra:
+nada contava como achado sem ficheiro, linha e excerto. Documentação e memórias de sessões
+anteriores **não** foram aceites como prova, e em três casos contradisseram o código.
+
+**Notas atribuídas:** backend 7 · frontend 6 · negócio clínico 5,5 · segurança 5,5 ·
+qualidade 4 · mobile 3 · operação 3.
+
+### O padrão que atravessa quase todos os achados
+
+> *Uma invariante aplicada à mão em muitos sítios, sem nada que verifique que continua a
+> valer em todos.*
+
+Medido: `assertAcessoDoente` em 26/44 controladores · `ssrf-guard` em 1/3 pontos de saída ·
+`RoleGuard` em 1/81 rotas · `Modal` acessível em 1/119 diálogos · 15 endpoints cujo `@Body()`
+usava tipo TS inline (metatype `Object`, a `ValidationPipe` não validava nada).
+
+A conclusão do revisor de qualidade — e a alteração mais importante desta sessão — é que
+**mais testes por exemplo não resolvem isto**: um teste por exemplo prova que UM caminho está
+certo. O que faltava era enumerar e falhar no que escapa.
+
+### Testes estruturais (`apps/api/src/app/common/estrutura.spec.ts`)
+
+Dez verificações que varrem o código-fonte e falham no que escapa à regra:
+
+1. Nenhum controlador **novo** com `:doenteId` sem `assertAcessoDoente`.
+2. A dívida declarada **só encolhe** — corrigir um controlador obriga a removê-lo da lista,
+   senão o teste falha. É o que impede uma lista de excepções de apodrecer.
+3. Todo o controlador exige guard, ou está declarado público **com a razão escrita ao lado**.
+4. Nenhum `@Body()` com tipo inline ou `Partial<>`.
+5. Todo o `fetch` com destino variável valida contra endereços internos.
+6. Ninguém deriva chave de dia de `toISOString()`.
+7. Nenhum modelo novo nasce com duas convenções de remoção lógica.
+
+Encontraram imediatamente o que os sete revisores não tinham apanhado: mais **10 ficheiros**
+com o bug de fuso horário, e dois controladores sem guard que se confirmaram legítimos — o
+valor aqui não foi achar um bug, foi obrigar a verificar e a **escrever a justificação**.
+
+### Segurança
+
+| Achado | Estado |
+|---|---|
+| Token do portal do doente aceite como token de pessoal (13 controladores) | Corrigido — audiências distintas por tipo + claim `tipo` (`auth/token-audiences.ts`) |
+| MFA contornável com tokens intermédios | Corrigido na mesma alteração |
+| `QuiosqueController` sem `@UseGuards` (NIF → identidade + consulta) | Corrigido — `QuiosqueGuard` |
+| Login do portal sem throttle, bloqueio nem hash-dummy | Corrigido, replicando `auth.service.ts` |
+| 16 endpoints sem validação em runtime | Corrigidos com DTO reais |
+| SSRF em `sistemas-externos` e `fhir` | `assertUrlDestinoPublico` na criação **e** em cada disparo |
+| Nome do doente em claro nos logs | `*.nome` no `redact` do Pino |
+| **Gateway WebSocket sem `issuer`/`audience`/`algorithms`** | Corrigido — não estava na auditoria: o socket verifica o token por sua conta e a separação de domínios **não o cobria** |
+| Token do portal em `localStorage` | Migrado para cookie `httpOnly` + CSRF nas 8 páginas do portal |
+
+**Bilhete de socket** (`GET /auth/socket-ticket`): o token de sessão vive num cookie
+`httpOnly` e não é legível por JavaScript — de propósito. O socket recebe agora um JWT de
+60 s com audiência própria, deliberadamente **fora** das audiências que a API aceita em HTTP.
+Um bilhete roubado abre um websocket durante um minuto e não abre uma única rota.
+
+### Regras clínicas
+
+- **Cama presa após alta** — `Doente.camaId` é `@unique` e nenhum dos dois caminhos de alta o
+  limpava. Um serviço de 30 camas bloqueava em dias. Corrigido dentro da transacção.
+- **Nota clínica assinada era mutável** — `atualizar()` não verificava `assinadaEm`. Novo
+  modelo `NotaClinicaAdenda`; `direcao` deixou de poder editar a nota clínica de um médico.
+- **Override de alergia descartado** — a justificação era removida antes do `create`, com um
+  teste a consagrar o defeito. Novos campos `overrideAlergia`/`overrideMotivo`/`overrideAlergenioId`.
+- **Cadeia de alertas** — destinatário podia ser vazio, a de-duplicação de 5 min suprimia a
+  escalada de NEWS2 5→9, e um único parâmetro em vermelho não disparava nada (faltava o
+  gatilho RCP de "3 num parâmetro isolado"). NEWS2 deixou de contar 0 nos parâmetros ausentes.
+- **ABO/Rh** — validava o grupo escrito no pedido, nunca o do doente. Plaquetas estavam
+  classificadas como eritrocitárias (regra invertida). Segundo verificador obrigatório.
+- **"5 certos"** — ver secção própria abaixo.
+
+### Os "5 certos" — o defeito mais fundo
+
+O servidor devolvia **só a lista de falhas** e o ecrã pintava a verde tudo o que não estivesse
+nela. Como dose e via nunca eram avaliadas — o comentário no código admitia que ficavam "para
+o acto da administração" — apareciam sempre confirmadas. O campo `verificacao5Certas` era
+gravado a `true` incondicionalmente: o registo legal do procedimento de segurança era prova
+falsa. Três alterações:
+
+1. A etiqueta QR passa a transportar **dose e via**, o que torna os certos 3 e 4 verificáveis:
+   compara-se o impresso com o prescrito. Apanha uma etiqueta emitida **antes** de uma
+   alteração de dose.
+2. O servidor devolve os cinco certos **sempre**, cada um com estado explícito — `ok`,
+   `falha` ou `nao_verificado`. `valido` só é verdade com os cinco confirmados.
+3. O ecrã mobile mostra os três estados, e o que o servidor não verificou exige um **gesto
+   explícito do enfermeiro** contra a prescrição antes de o botão de administrar activar.
+
+Uma etiqueta ilegível deixa os **cinco** por verificar — não é uma falha do certo
+"Medicamento", porque não torna o medicamento errado: torna tudo por verificar.
+
+### Mobile — não compilava
+
+`expo-secure-store`, de que dependem os três ficheiros de autenticação, não estava declarado.
+Não era erro de tipos: era falha de resolução do Metro no arranque.
+
+| | Antes | Depois |
+|---|---|---|
+| typecheck | 50 erros | 0 |
+| lint | 52 erros · 236 avisos | **0 erros** · 241 avisos |
+| testes | nenhum, sem alvo Nx | 10, alvo reconhecido pelo Nx |
+
+- **Fila offline reescrita.** Vários `flushMutationQueue()` concorrentes na reconexão, sem
+  chave de idempotência e sem escrita atómica — duplicação **e** perda de administrações de
+  medicação. Um quinto defeito que a auditoria não viu: o flush era chamado dentro do updater
+  do `setState`, que o React pode invocar duas vezes. Agora: uma escuta de rede por processo,
+  flush de disparo único, mútex no acesso à fila, remoção por id sobre a fila actual.
+- **Idempotência no servidor** (`IdempotencyInterceptor`) — o cabeçalho `Idempotency-Key` não
+  valia nada sozinho. Chave qualificada por utilizador e rota, resposta guardada em Redis,
+  409 enquanto o original decorre, e corre **antes** da auditoria para um reenvio reconhecido
+  não entrar no registo como acto novo.
+- **Vitais offline** ficavam com a hora da sincronização. Novo campo `medidoEm`; medições no
+  futuro são recusadas (relógio mal configurado corromperia a tendência).
+- **Credenciais biométricas não eram limpas no logout** — a função existia e nunca era chamada.
+  Em dispositivo partilhado entre turnos, os actos ficavam atribuídos à pessoa errada.
+- **`app.json`** — bundle identifiers e 6 descrições de permissão iOS. Sem elas o iOS
+  **termina** a app quando a API é chamada: biometria, câmara, ditado e localização.
+- **Botão de fechar do scanner** estava em `top: 52` fixo — num iPhone com notch ficava por
+  baixo da câmara, inalcançável. Passou a respeitar a safe area, alvo de 44px.
+
+### Frontend
+
+- **Camada WebSocket clínica estava morta**: `use-socket.ts` lia uma chave de `localStorage`
+  que nenhum ponto do código escreve, e saía em silêncio. Alertas SOS, SLA de urgência,
+  pré-notificação de ambulância e bloqueio de notas nunca chegavam.
+- **Guarda de papel**: de 1/81 rotas para **81/81**, num ponto de montagem único derivado do
+  próprio `navItems`.
+- **Duplo-submit na medicação**: o `disabled` só actualizava depois do round-trip — duplo
+  toque num tablet gravava dois registos.
+- 65 diálogos migrados para o primitivo acessível (39 por migrar, todos não-clínicos) ·
+  `loading.tsx` de 5 para 26 · toasts de erro deixaram de expirar sozinhos · Sentry passou a
+  inicializar no servidor · 3 suites de teste que nem arrancavam (alias `@/` sem
+  `moduleNameMapper`): 37 → **54 testes**.
+
+### Fusos horários (BE-03)
+
+Novo `dia-clinico.helper.ts`: a fronteira do dia clínico é a do **hospital**, não a do
+servidor — um contentor mudado de região não pode deslocar a fronteira entre turnos. O código
+misturava `setHours(0,0,0,0)` (local) com `toISOString()` (UTC): em `Europe/Lisbon` no verão
+as chaves deslocavam um dia, o primeiro dia aparecia sempre a zero e o último criava um
+*bucket* fantasma. **Passava em CI, que corre em UTC, e falhava em produção.** Migrados 14
+ficheiros; os 9 testes fixam a zona explicitamente em vez de a herdarem do runner.
+
+### Infraestrutura
+
+- **Os documentos clínicos eram destruídos a cada deploy** e nunca entraram num backup — sem
+  volume, sem S3. Volume `api_uploads` + `backup-all.sh` (base de dados **e** ficheiros).
+- **O CI nunca correu.** Duas causas independentes: `ci.yml` fazia `npm ci` num repositório
+  pnpm sem `package-lock.json`, e os restantes workflows estavam em `enfermaria/.github/`,
+  pasta que o GitHub Actions não lê. Trivy, gitleaks, Semgrep, `pnpm audit`, Snyk, ZAP e
+  Dependabot estavam escritos e revistos — e nenhum tinha alguma vez executado.
+- `AUDIT_SIGNING_KEY` tinha valor por omissão publicado no repositório, anulando a garantia
+  de inviolabilidade da auditoria. Agora obrigatória.
+- `deploy.sh` anunciava sucesso mesmo quando a API nunca ficava saudável (`break` → `exit 1`).
+- Limites de log e de recursos nos 6 serviços; `pnpm@latest` fixado em 10.33.0.
+- **Ensaio de recuperação executado** — ver `DR-RUNBOOK.md §6.1`. 140 tabelas repostas, 135
+  triggers de auditoria a voltar com o restauro, e o restauro sobre base **já povoada** a
+  funcionar — o caso que falhava, porque o `pg_dump` não usava `--clean --if-exists`.
+
+### Base de dados
+
+`prisma db push` aplicado depois de gerar e ler o SQL: **inteiramente aditivo**, sem `DROP`.
+Modelo `NotaClinicaAdenda`, campos de override de alergia, `certosVerificados`, detalhe do
+NEWS2, segundo verificador da transfusão. Triggers de auditoria reaplicados: **135 tabelas,
+405 triggers**.
+
+**22 índices** acrescentados em chaves estrangeiras. A justificação da auditoria — "apagar um
+`Utilizador` força varrimentos sequenciais" — **não se confirmou**: nem `Utilizador` nem
+`Doente` são alguma vez apagados. A justificação correcta veio de medir o que o código
+realmente filtra: `doenteId` (212 usos), `utilizadorId` (64), `turnoId` (30). As outras 45
+colunas ficaram sem índice de propósito — indexar o que nunca se filtra é pagar custo de
+escrita por nada.
+
+### Estado verificado no fim
+
+| Projecto | typecheck | testes | lint | build |
+|---|---|---|---|---|
+| api | 0 erros | **108 suites · 917 testes** | — | — |
+| web | 0 erros | 7 suites · 54 testes | 0 erros · 600 avisos | compila |
+| mobile | 0 erros | 1 suite · 10 testes | 0 erros · 241 avisos | — |
+
+Antes da auditoria: api 103 suites / 733 testes; web 37 testes com 3 suites mortas; mobile
+sem compilar e sem um único teste.
+
+### Deliberadamente por fazer
+
+- **Classificação do `ai-clinico` sob o MDR** — o módulo não foi auditado e a questão de
+  saber se o CuraSphere é dispositivo médico de Classe IIa é jurídica, não técnica. É
+  provavelmente a maior exposição de negócio do produto.
+- **Backups encriptados fora da máquina** — exige infraestrutura que não existe.
+- **Migração de dinheiro `Float` → `Decimal`** (47 campos) — exige migração de dados.
+- **Escala horizontal** — o compose fixa `container_name` no serviço `api`. Corrigir exige
+  mudar também o upstream do nginx e o `deploy.sh`, e é uma decisão de capacidade.
+- **18 controladores sem `assertAcessoDoente`** — dívida declarada e travada pelo teste
+  estrutural; a resolução completa é um guard global.
+- **`RoleGuard` no `middleware.ts`** (servidor) — exige extrair a tabela de política de
+  `nav-data.tsx` para um módulo sem JSX, por causa do edge runtime.
+- **Limiares clínicos** validados contra conhecimento de domínio, **não** contra os protocolos
+  da instituição. Devem ser confirmados com a direcção clínica.
+
+---
+
+## Sessão 76 — Segunda auditoria cega, plano de remediação e P0 concluído (2026-09-10/11)
+
+Os mesmos papéis de revisão voltaram a correr **às cegas**: sem acesso aos relatórios da
+Sessão 75 e com os comentários do código tratados como afirmações, não como prova. O
+resultado virou um plano com prioridades P0–P4 (Artifact "Plano de Remediação CuraSphere"),
+executado por ordem. Esta secção cobre o **P0 completo**.
+
+### O padrão, outra vez — com uma variante silenciosa
+
+A primeira auditoria encontrou invariantes aplicadas à mão. Esta encontrou a sua variante mais
+perigosa: **código que falha sem que ninguém veja**.
+
+- Consultas a campos que não existem, escondidas por `as any` e `.catch(() => 0)` — o ecrã de
+  corredor mostrava **sempre zero alertas** e "sem dados NEWS2".
+- Um ecrã mobile que pedia os vitais a uma rota inexistente — todos os pedidos davam 404, o
+  `catch` engolia-os, e o registo rápido de vitais **nunca mostrou um NEWS2**.
+- Dois caracteres invisíveis (backspace) dentro do próprio `estrutura.spec.ts`, que desligavam
+  em silêncio a regra de SSRF.
+- O alerta de sépsis era criado com severidade 1 — abaixo de "NEWS2 incompleto".
+
+### Acesso a dados de doente
+
+| Achado | Correcção |
+|---|---|
+| S-01 — `assertAcessoDoente` aplicado à mão (26/44 controladores) | `AcessoDoenteInterceptor` **global**: `doenteId` no caminho e na query; portal só vê o próprio doente; tokens intermédios recusados. O teste estrutural garante que continua registado e que nenhuma rota foge mudando o nome do parâmetro |
+| S-07 — o websocket autenticava a ligação, mas nenhum handler autorizava o pedido | entrar na sala de um doente e bloquear notas passam pela mesma regra do HTTP (token `VERIFICADOR_ACESSO_DOENTE`, sem ciclo de imports); a nota tem de pertencer ao doente declarado; só quem detém o bloqueio o liberta |
+| S-08 — qualquer sessão aceitava qualquer passagem de turno | só quem está escalado no turno que recebe; aceitação condicionada ao estado (sem dupla aceitação); a confirmação passou a chegar a **quem entrega** |
+| S-09 — nome, queixa e texto clínico difundidos a papéis inteiros; sépsis para todos os sockets | SOS/sépsis: nome e detalhe só para a equipa do doente, localização para os restantes clínicos. Urgência: o texto clínico fica no serviço. `GET /urgencia/lista` e o SSE ganharam `@Roles`. Dois testes estruturais novos |
+| `DELETE /familia/:id` escapava ao interceptor | rota passa a `acessos/:doenteId/:id`, e o acesso tem de ser desse doente |
+
+### Segredos e credenciais
+
+| Achado | Correcção |
+|---|---|
+| S-02 — anexos de mensagens servidos como ficheiros estáticos, nome de `Math.random()` | `GET /v1/ficheiros/mensagens/:ficheiro` autenticado, só remetente ou destinatário; nome com `randomBytes` |
+| S-03/S-04/BA-08 — FHIR: chave em claro, doente vindo do payload, ingestão fora do circuito clínico | chave de 256 bits guardada como SHA-256; o doente vem só do dispositivo; ingestão por `ingerirDeMonitor` (alertas, NEWS2, sépsis) |
+| S-15 — token do portal da família: `cuid()` em claro | 256 bits, só o SHA-256 (`familia/token-familia.ts`); migração em SQL que mantém válidos os links já enviados até expirarem |
+| S-13 — código de marcação `CON-XXXX` de `Math.random()` | `CON-XXXX-XXXX` com `randomInt` (≈ 1,1 × 10¹²); normalização do que se escreve no quiosque; o formato antigo continua válido; throttle na pesquisa |
+| S-14 — a encriptação apontava para um modelo e campos inexistentes | configuração validada no arranque; backfill idempotente `scripts/cifrar-dados-existentes.mjs` — em dev havia 11 registos em claro |
+| S-05 — `quiosque-dados` validava o token à parte, sem tecto de idade nem revogação | passa pelo `QuiosqueGuard`; o token é emitido com a validade que o guard aceita |
+| F-03 — quiosque de senhas e painel de chamada sem token (401 em tudo desde o SEC-02) | `lib/quiosque-token.ts` (cabeçalho `Authorization`; `?token=` só no `EventSource`); as Configurações geram os três links |
+| Token da família, NIF e código OIDC em claro nos logs | `sanitizarUrlParaLog` no serializer do Pino e no filtro de excepções — o `redact` não chega ao texto do URL |
+| SSO — `fetch` ao fornecedor de identidade sem guarda | HTTPS em produção, `assertUrlDestinoPublico`, sem seguir redirects, timeout de 10 s |
+| `Math.random()` a gerar segredos pela segunda vez | teste estrutural: proibido em `src/app` (excepção declarada: cliente PEM de sandbox) |
+
+### Regras clínicas
+
+- **"5 certos" em três estados** — `verificado`, `atestado` (gesto explícito do enfermeiro) ou
+  `nao_confirmado`; dose e via lidas da etiqueta QR assinada, não do pedido.
+- **Sépsis com severidade 4** — a da resposta imediata, igual à do NEWS2 ≥ 7, que já activa o
+  protocolo. Estava na omissão (1) e não marcava `urgencia`.
+- **Ecrã de corredor** — alertas urgentes por acusar e o **último** NEWS2 de cada doente (um
+  doente com vitais de hora a hora contava doze vezes); quem não tem avaliação recente fica
+  fora da distribuição em vez de contar como "normal".
+- **Registo rápido de vitais (mobile)** — rota e campos corrigidos. Ordem: risco alto conhecido
+  → risco desconhecido → risco baixo; dentro de cada grupo, quem está há mais tempo sem registo.
+  Uma falha a carregar deixou de aparecer como "Sem doentes atribuídos".
+
+### Mobile — fila offline num dispositivo partilhado (A9)
+
+A fila enviava os actos com o token de quem tivesse a sessão aberta **no momento do envio**. Um
+enfermeiro que saía sem rede deixava as administrações a seguir mais tarde **em nome do colega
+seguinte**.
+
+- Cada operação guarda o dono, e só a sessão dele a envia. O que é de outra pessoa não se apaga:
+  espera que ela volte a entrar. Se a sessão mudar a meio do envio, o envio pára.
+- O logout tenta enviar antes de terminar a sessão (limite de 8 s) e a confirmação avisa quando
+  ficam registos por sincronizar.
+- Sem rede, ou com a sessão expirada (401), as tentativas deixam de se gastar — antes, sair
+  três vezes sem rede fazia perder o que se tinha registado.
+- Sem sessão activa, a fila recusa guardar, para o ecrã mostrar que o registo não ficou.
+
+### Regressões da primeira vaga, corrigidas
+
+- `use-socket.ts` — `socket.off(evento)` sem handler removia os ouvintes de outros componentes;
+  o SOS ficava mudo ao sair da página inicial. Agora remove só o que registou.
+- `IdempotencyInterceptor` — com o Redis em baixo respondia 409, e a fila móvel descartava a
+  administração. Agora segue sem idempotência e regista aviso; o 409 passou a ser retentável.
+- `doenteId` tornado obrigatório no servidor sem actualizar os ecrãs móveis — corrigido nos dois.
+
+### Base de dados
+
+`prisma db push` aplicado sempre depois de gerar e ler o SQL:
+
+- `DispositivoFhir.apiKey` → `apiKeyHash` (tabela vazia em dev; em produção obriga a reemitir as
+  chaves dos dispositivos).
+- `AcessoFamiliar.accessToken` → `accessTokenHash`, **com migração prévia**
+  (`scripts/migrar-tokens-familia.mjs`, idempotente): o hash é calculado em SQL a partir do token
+  em claro — `sha256()` do Postgres confirmado igual ao do Node — e só depois o push remove a
+  coluna. Verificado em dev: depois do push, o link antigo foi encontrado pelo hash.
+- Triggers de auditoria confirmados depois dos pushes: **um** trigger `curasphere_audit` por
+  tabela, em 135 tabelas. O "405" que `apply-audit-triggers.mjs` imprime conta cada trigger uma
+  vez por evento (INSERT, UPDATE, DELETE).
+
+### Estado verificado no fim
+
+| Projecto | typecheck | testes | lint dos ficheiros alterados |
+|---|---|---|---|
+| api | 0 erros | **115 suites · 994 testes** | — |
+| web | 0 erros | **8 suites · 57 testes** | 0 erros |
+| mobile | 0 erros | **3 suites · 24 testes** | 0 erros |
+
+Nota de método: `tsc -p apps/api/tsconfig.spec.json` lê as declarações de `dist/` através das
+project references e acusa assinaturas que já mudaram. O comando fiável é
+`pnpm nx run api:typecheck`, que as reconstrói.
+
+### P1 — o que impedia isto de funcionar em produção
+
+**A imagem de produção não construía — e agora constrói.** Três causas independentes, todas
+confirmadas por `docker build` e não por leitura:
+
+- Os Dockerfiles copiavam três `package.json` de um workspace com nove projectos. Com
+  `--frozen-lockfile`, o pnpm recusa instalar um workspace incompleto. Passam a usar
+  `pnpm fetch` (que só precisa do lockfile) e a instalar sobre o código completo.
+- `apps/api/webpack.config.js` faz `require('webpack')` e **nenhum `package.json` do
+  workspace declarava o webpack**. Localmente passava por causa do grafo de projecto em cache
+  do Nx; num build limpo, o Nx falhava a processar o grafo. O webpack passou a ser dependência
+  declarada da API, na versão que o `@nx/webpack` já traz.
+- A imagem final copiava o `node_modules` da **raiz**. Com o linker isolado do pnpm, as
+  dependências da API vivem no `node_modules` da própria app: a API teria arrancado sem
+  `@nestjs/config`, `@nestjs/jwt`, `pg` ou `socket.io`. Agora instala-se o `package.json`
+  podado que o alvo `prune` do Nx gera — exactamente as 65 dependências de runtime.
+
+No lado da web havia mais duas: o `next.config.js` chamava `process.chdir()`, proibido no
+worker onde o Next 16 carrega a configuração, e o build corria com Turbopack, que **ignora**
+`output: 'standalone'` — compilava, e depois não havia nada para copiar. Passa a construir com
+`--webpack`, a mesma flag que o alvo de build do projecto já usava.
+
+**O deploy (OPS-03 / OPS-07).** A versão anterior fazia `down` antes de saber se a nova
+arrancava, não tinha rollback e nunca aplicava schema nem triggers de auditoria. A ordem passou
+a ser: guardar as imagens em serviço, construir, **cópia de segurança**, schema e triggers
+(serviço `migrate` de execução única, com `prisma db push` sem `--accept-data-loss`: uma
+alteração destrutiva pára o deploy com a versão antiga a servir), substituir só a API e a web
+e, se a API nova não ficar saudável, repor as imagens anteriores. Pelo caminho: o script pedia
+os logs de um serviço `db` que não existe (chama-se `postgres`).
+
+**O nginx.** Três defeitos, todos verificados num contentor real com certificados de teste:
+
+| Achado | O que acontecia | Correcção |
+|---|---|---|
+| OPS-04 | o handshake do socket sai para `/socket.io/`, e a única `location` estava em `/api/socket.io/` — caía no `location /` e ia para a app Next | `location /socket.io/` |
+| OPS-05 | o limite de tentativas apontava a `/api/auth/login`, mas a API responde em `/v1` — a regra nunca correspondia a nada | caminhos reais do login, do MFA e do portal do doente |
+| OPS-06 | o `add_header` do HSTS no bloco `server` descartava os quatro cabeçalhos herdados, e o `Cache-Control` de `/_next/static/` fazia o mesmo | os cinco cabeçalhos no mesmo nível, e nenhuma `location` com `add_header` |
+
+**Os backups (OPS-08).** Era `pg_dump | gzip > ficheiro`: num pipe, o shell só olha para o
+último comando, por isso um dump falhado escrevia um `.gz` válido e incompleto, e a retenção ia
+apagando os bons por cima dele. O `pg_dump` passa a comprimir ele próprio (`-Z`), o ficheiro só
+ganha o nome definitivo depois de descomprimir e de conter a marca final do `pg_dump`, e a
+retenção só corre depois de um backup bom. Testado num contentor Postgres 17 contra a base de
+dev: com credenciais certas, backup verificado; com password errada, código de saída 1, sem
+ficheiro novo e sem restos. O contentor de backup ganhou `BACKUP_DIR=/backups` — os scripts
+usavam um caminho relativo ao directório de trabalho do cron, que não é o volume.
+
+**Sete rotas identificavam o doente como `:id`** — especialidades, exportação FHIR completa,
+documentos de saúde, outcomes e MAR em PDF — e escapavam à verificação global de acesso, que
+procura `doenteId`. Seis não verificavam nada. O URL não mudou: mudou o nome do parâmetro. Há
+agora uma regra estrutural que proíbe `doente/:id`.
+
+**F2 — o ecrã de especialidades do telemóvel** chamava `/especialidades/sessoes` nas três
+operações. Essa rota não existe: os 404 caíam no reporte silencioso e o ecrã dizia "Sem sessões
+registadas". Passou a usar as rotas reais e deixou de enviar um campo que o DTO recusa.
+
+**F-08 / A6 — "falhou a carregar" e "não há dados" eram o mesmo ecrã.** A medição deu 56 ecrãs
+na web e 41 no telemóvel, e não 22. Os onze com consequência clínica directa foram corrigidos —
+MAR (web e telemóvel), medicações do turno, lista de doentes, urgência, camas, worklist, turno,
+tarefas, passagem de turno e worklist móvel — com dois componentes novos (`ErroCarregamento`)
+que dizem explicitamente que a lista **não chegou a ser lida**. Os restantes ficaram como dívida
+declarada em duas regras estruturais novas (51 ecrãs na web, 36 no telemóvel) que só podem
+encolher. O pior caso era o MAR do telemóvel: um `catch` vazio transformava uma falha de rede em
+"Todas as medicações administradas", com um visto verde.
+
+### Por fazer
+
+- **P1** — fica o commit (OPS-01: enquanto os workflows não forem commitados, o GitHub
+  Actions não os vê), a decisão sobre os papéis-fantasma (BA-05) e os restantes ecrãs do
+  F-08/A6, travados por teste estrutural.
+- **P2/P3** — concorrência em `reservarBolsa` e `atualizarQuantidade`; consentimento e alta;
+  NEWS2 Scale 2; denominador da cobertura; E2E com `test.skip` condicional.
+- **Decisões da direcção (P4)** — classificação MDR do `ai-clinico`; backups encriptados fora da
+  máquina; multi-tenancy; `Float` → `Decimal`; limiares clínicos (incluindo a severidade 4 da
+  sépsis e as faixas do ecrã de corredor); índice cego para NIF e número SNS — a encriptação com
+  IV aleatório impede a pesquisa por igualdade, por isso continuam em claro.
+- **Nada foi commitado.** Tudo continua no ramo `ci/pnpm-fix`, incluindo os workflows (OPS-01).
+
 ---
 
 *Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*

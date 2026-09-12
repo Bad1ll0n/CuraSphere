@@ -44,8 +44,12 @@ updates:
       - dependencies
       - docker
 
+  # Os workflows vivem em `.github/workflows/` na RAIZ do git (foram movidos de
+  # `enfermaria/.github/`, onde o Actions nunca os lia). O Dependabot procura
+  # workflows em `<directory>/.github/workflows` e não recorre a árvore, por isso
+  # `directory` tem de ser `/` — com `/enfermaria` não encontrava nada.
   - package-ecosystem: github-actions
-    directory: /enfermaria
+    directory: /
     schedule:
       interval: weekly
       day: monday

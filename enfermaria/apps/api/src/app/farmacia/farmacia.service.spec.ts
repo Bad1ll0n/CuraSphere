@@ -6,8 +6,9 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 const mockTx = {
   pedidoFarmacia: { findUnique: jest.fn(), update: jest.fn() },
-  stockItem: { findUnique: jest.fn(), update: jest.fn() },
-  transferenciaStock: { create: jest.fn() },
+  stockItem: { findUnique: jest.fn(), update: jest.fn(), updateMany: jest.fn(), findFirst: jest.fn(), create: jest.fn() },
+  transferenciaStock: { create: jest.fn(), findUnique: jest.fn(), findUniqueOrThrow: jest.fn(), updateMany: jest.fn() },
+  ajusteStock: { create: jest.fn() },
 };
 
 const mockPrisma = {
@@ -186,6 +187,169 @@ describe('FarmaciaService', () => {
         expect.objectContaining({ data: { quantidade: { decrement: 5 } } }),
       );
       expect(resultado.estado).toBe('dispensado');
+    });
+  });
+
+  // ── confirmarTransferencia() ────────────────────────────────
+
+  const transfBase = {
+    id: 'tr-1',
+    stockItemId: 'item-1',
+    quantidade: 10,
+    servicoOrigem: 'medicina',
+    servicoDestino: 'cirurgia',
+    estado: 'pendente',
+    confirmadoPorId: null,
+  };
+
+  describe('confirmarTransferencia()', () => {
+    it('lança NotFoundException quando transferência não existe', async () => {
+      mockTx.transferenciaStock.findUnique.mockResolvedValue(null);
+      await expect(service.confirmarTransferencia('x', 'u1')).rejects.toThrow(NotFoundException);
+    });
+
+    it('lança BadRequestException quando já foi processada', async () => {
+      mockTx.transferenciaStock.findUnique.mockResolvedValue({ ...transfBase, estado: 'confirmada', stockItem: itemBase });
+      await expect(service.confirmarTransferencia('tr-1', 'u1')).rejects.toThrow(BadRequestException);
+      expect(mockTx.stockItem.updateMany).not.toHaveBeenCalled();
+    });
+
+    it('lança BadRequestException quando o stock de origem não chega', async () => {
+      mockTx.transferenciaStock.findUnique.mockResolvedValue({ ...transfBase, quantidade: 999, stockItem: { ...itemBase, quantidade: 5 } });
+      await expect(service.confirmarTransferencia('tr-1', 'u1')).rejects.toThrow(BadRequestException);
+      expect(mockTx.stockItem.updateMany).not.toHaveBeenCalled();
+    });
+
+    it('fecha a transferência com o estado esperado no `where` antes de mexer em stock', async () => {
+      mockTx.transferenciaStock.findUnique.mockResolvedValue({ ...transfBase, stockItem: itemBase });
+      mockTx.transferenciaStock.updateMany.mockResolvedValue({ count: 1 });
+      mockTx.stockItem.updateMany.mockResolvedValue({ count: 1 });
+      mockTx.stockItem.findFirst.mockResolvedValue({ id: 'item-2', servico: 'cirurgia' });
+      mockTx.stockItem.update.mockResolvedValue({});
+      mockTx.ajusteStock.create.mockResolvedValue({});
+
+      await service.confirmarTransferencia('tr-1', 'u1');
+
+      expect(mockTx.transferenciaStock.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { id: 'tr-1', estado: 'pendente' } }),
+      );
+      expect(mockTx.stockItem.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { id: 'item-1', quantidade: { gte: 10 } } }),
+      );
+    });
+
+    it('aborta sem debitar stock quando o fecho de estado perde a corrida (count 0)', async () => {
+      mockTx.transferenciaStock.findUnique.mockResolvedValue({ ...transfBase, stockItem: itemBase });
+      mockTx.transferenciaStock.updateMany.mockResolvedValue({ count: 0 });
+
+      await expect(service.confirmarTransferencia('tr-1', 'u1')).rejects.toThrow(BadRequestException);
+      expect(mockTx.stockItem.updateMany).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── confirmarTransferencia() — concorrência ──────────────────────
+
+  describe('confirmarTransferencia() — concorrência', () => {
+    // Duplo do Prisma com estado real em memória. `updateMany` avalia o `where` e
+    // aplica a mutação sem `await` pelo meio — modela o lock de linha de um
+    // `UPDATE ... WHERE estado = 'pendente'`. As leituras cedem o event loop, para
+    // que os N pedidos se cruzem de facto entre a leitura-guarda e a escrita.
+    function criarPrismaEmMemoria(quantidadeInicial: number) {
+      const ceder = () => new Promise((r) => setImmediate(r));
+      const db = {
+        transferencia: { ...transfBase } as any,
+        itens: [{ ...itemBase, id: 'item-1', quantidade: quantidadeInicial, tipo: 'medicamento', catalogoId: null, precoUnitario: 1 }] as any[],
+        ajustes: [] as any[],
+      };
+
+      const tx = {
+        transferenciaStock: {
+          findUnique: async ({ where, include }: any) => {
+            await ceder();
+            if (where.id !== db.transferencia.id) return null;
+            const base: any = { ...db.transferencia };
+            if (include?.stockItem) base.stockItem = { ...db.itens.find((i) => i.id === db.transferencia.stockItemId) };
+            return base;
+          },
+          findUniqueOrThrow: async () => ({ ...db.transferencia }),
+          updateMany: async ({ where, data }: any) => {
+            if (where.id !== db.transferencia.id || db.transferencia.estado !== where.estado) return { count: 0 };
+            Object.assign(db.transferencia, data);
+            return { count: 1 };
+          },
+        },
+        stockItem: {
+          updateMany: async ({ where, data }: any) => {
+            const item = db.itens.find((i) => i.id === where.id);
+            if (!item) return { count: 0 };
+            if (where.quantidade?.gte !== undefined && item.quantidade < where.quantidade.gte) return { count: 0 };
+            if (data.quantidade?.decrement) item.quantidade -= data.quantidade.decrement;
+            if (data.quantidade?.increment) item.quantidade += data.quantidade.increment;
+            return { count: 1 };
+          },
+          findFirst: async ({ where }: any) => {
+            await ceder();
+            return db.itens.find((i) => i.nome === where.nome && i.servico === where.servico) ?? null;
+          },
+          update: async ({ where, data }: any) => {
+            const item = db.itens.find((i) => i.id === where.id);
+            if (data.quantidade?.increment) item.quantidade += data.quantidade.increment;
+            if (data.quantidade?.decrement) item.quantidade -= data.quantidade.decrement;
+            return item;
+          },
+          create: async ({ data }: any) => {
+            const novo = { id: `item-${db.itens.length + 1}`, ...data };
+            db.itens.push(novo);
+            return novo;
+          },
+        },
+        ajusteStock: { create: async ({ data }: any) => { db.ajustes.push(data); return data; } },
+      };
+
+      return { db, prisma: { $transaction: (fn: any) => fn(tx) } };
+    }
+
+    it('com 8 pedidos em paralelo só um vence e o stock é debitado uma única vez', async () => {
+      const { db, prisma } = criarPrismaEmMemoria(100);
+      const svc = new FarmaciaService(prisma as any, mockNotificacoes as any);
+
+      const N = 8;
+      const resultados = await Promise.allSettled(
+        Array.from({ length: N }, (_, i) => svc.confirmarTransferencia('tr-1', `u${i}`)),
+      );
+
+      expect(resultados.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+      expect(
+        resultados.filter((r) => r.status === 'rejected' && (r as PromiseRejectedResult).reason instanceof BadRequestException),
+      ).toHaveLength(N - 1);
+
+      // 100 − 10, uma única vez — não 100 − (8 × 10)
+      expect(db.itens.find((i) => i.id === 'item-1').quantidade).toBe(90);
+      expect(db.transferencia.estado).toBe('confirmada');
+      expect(db.ajustes.filter((a) => a.delta === -10)).toHaveLength(1);
+      expect(db.ajustes.filter((a) => a.delta === 10)).toHaveLength(1);
+      // o destino recebeu exactamente uma vez
+      expect(db.itens.filter((i) => i.servico === 'cirurgia')).toHaveLength(1);
+      expect(db.itens.find((i) => i.servico === 'cirurgia').quantidade).toBe(10);
+    });
+
+    it('confirmar e cancelar em paralelo — exactamente um dos dois vence', async () => {
+      const { db, prisma } = criarPrismaEmMemoria(100);
+      const svc = new FarmaciaService(prisma as any, mockNotificacoes as any);
+
+      const resultados = await Promise.allSettled([
+        svc.confirmarTransferencia('tr-1', 'u1'),
+        svc.cancelarTransferencia('tr-1'),
+      ]);
+
+      expect(resultados.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+      expect(['confirmada', 'cancelada']).toContain(db.transferencia.estado);
+      // se cancelou, o stock não pode ter sido tocado
+      if (db.transferencia.estado === 'cancelada') {
+        expect(db.itens.find((i) => i.id === 'item-1').quantidade).toBe(100);
+      } else {
+        expect(db.itens.find((i) => i.id === 'item-1').quantidade).toBe(90);
+      }
     });
   });
 

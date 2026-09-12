@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Cirurgia {
@@ -32,7 +33,7 @@ export default function BlocoScreen({ utilizador, onVoltar }: Props) {
     try {
       const { data } = await api.get('/bloco');
       setCirurgias(data ?? []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) { registarFalhaSilenciosa('BlocoScreen', e); } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));

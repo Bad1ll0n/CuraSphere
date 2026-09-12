@@ -4,6 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { criarClienteComEncriptacao } from './encryption.middleware';
 import { RequestContextService } from './request-context.service';
+import { comRetentativas } from '../common/transacao';
 
 const SLOW_QUERY_MS = 500;
 
@@ -43,7 +44,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     // (admitir, alta, prescrever, transfusão…) passam a ser atribuídas sem qualquer refactoring.
     (this as any).$transaction = function (arg: any, opts: any) {
       if (typeof arg === 'function') {
-        return encTx(async (tx: any) => {
+        const executar = () => encTx(async (tx: any) => {
           const ctx = reqCtxRef.get();
           if (ctx?.userId) {
             await tx.$executeRawUnsafe(
@@ -53,6 +54,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           }
           return arg(tx);
         }, opts);
+        // F4: o Postgres aborta uma das transacções concorrentes com 40001 (P2034 no Prisma).
+        // Não é um erro do pedido — é o preço do isolamento — e sem retentativa chegava ao
+        // enfermeiro como um 500 opaco. Só a forma de callback se repete: um array de
+        // PrismaPromise não se reexecuta.
+        return opts?.isolationLevel === 'Serializable'
+          ? comRetentativas(executar, { rotulo: 'transacção Serializable' })
+          : executar();
       }
       return encTx(arg, opts); // forma de array — passa-se tal e qual
     };

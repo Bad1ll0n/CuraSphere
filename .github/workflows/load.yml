@@ -1,0 +1,117 @@
+name: Load Test (k6)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Movido de `enfermaria/.github/workflows/` (pasta que o GitHub Actions nunca lê)
+# para a raiz do git. Como o cwd passou a ser a raiz do repositório e o workspace
+# pnpm vive em `enfermaria/`, os passos `run` levam `defaults.run.working-directory`
+# e os inputs de actions (que `defaults.run` NÃO afecta) levam o caminho completo
+# a partir da raiz — ver `filename:` no passo do k6.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Carga é ruidosa e lenta — não corre por PR. Gate periódico + sob demanda.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1' # Segunda 05:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  k6-smoke:
+    name: k6 smoke (leituras + escritas + WebSocket)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: enfermaria
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: enfermaria
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: ci-load-throwaway-secret-0000000000000000000000000000000000000
+      JWT_EXPIRES_IN: 1h
+      JWT_REFRESH_EXPIRES_IN: 7d
+      ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      NODE_ENV: production
+      LOG_PRETTY: 'false'
+      LOGIN_THROTTLE_LIMIT: '100'
+      THROTTLE_LIMIT: '10000'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Prisma db push + generate
+        run: |
+          pnpm exec prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          pnpm exec prisma generate --schema apps/api/prisma/schema.prisma
+
+      # Sem os triggers, as escritas do teste de carga não pagam o custo real da
+      # auditoria append-only — o número sairia optimista face a produção.
+      - name: Reinstalar triggers de auditoria
+        run: node apps/api/scripts/apply-audit-triggers.mjs
+
+      - name: Seed utilizadores de teste
+        run: cd apps/api && pnpm exec ts-node src/prisma/seed-test-users.ts
+
+      # Carga contra uma BD vazia mede o planeador do Postgres a fazer seq-scan em
+      # tabelas de 0 linhas, o que não se parece com produção. Este passo enche a
+      # BD com um volume representativo antes de medir.
+      - name: Seed de volume representativo
+        run: node load/seed-volume.mjs
+        env:
+          SEED_DOENTES: '500'
+
+      - name: Build API
+        run: pnpm exec nx build @org/api
+
+      - name: Arrancar API em background
+        run: |
+          node apps/api/dist/main.js &
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:3333/v1/health >/dev/null 2>&1; then echo "API pronta"; exit 0; fi
+            sleep 5
+          done
+          echo "API não respondeu a tempo"; exit 1
+
+      - name: k6 smoke
+        uses: grafana/k6-action@v0.3.1
+        with:
+          # Input de action: relativo a GITHUB_WORKSPACE (raiz do git), NÃO
+          # afectado por defaults.run.working-directory.
+          filename: enfermaria/load/smoke.js
+        env:
+          BASE_URL: http://localhost:3333
+
+      - name: Publicar sumário k6
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-summary
+          path: enfermaria/load/k6-summary.json
+          retention-days: 30

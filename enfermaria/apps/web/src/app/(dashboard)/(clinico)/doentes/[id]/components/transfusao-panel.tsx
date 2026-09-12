@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 
@@ -53,6 +54,10 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
 
   const [modalReacao, setModalReacao] = useState<string | null>(null); // registoId
   const [reacao, setReacao] = useState({ tipo: 'febril_nao_hemolitica', gravidade: 'ligeira', sintomas: '', medidas: '' });
+
+  const dlgPedido = useDialogoAcessivel({ aberto: modalPedido, onFechar: () => setModalPedido(false), titulo: 'Pedir transfusão' });
+  const dlgAdmin = useDialogoAcessivel({ aberto: !!modalAdmin, onFechar: () => setModalAdmin(null), titulo: 'Administrar transfusão' });
+  const dlgReacao = useDialogoAcessivel({ aberto: !!modalReacao, onFechar: () => setModalReacao(null), titulo: 'Registar reação transfusional' });
 
   const carregar = useCallback(() => {
     setLoading(true);
@@ -191,7 +196,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Pedir transfusão */}
       {modalPedido && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '28px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div {...dlgPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '28px', maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Pedir Transfusão</h2>
             <div className="flex flex-col gap-4">
               <div>
@@ -240,7 +245,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Administrar (dupla verificação) */}
       {modalAdmin && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '28px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div {...dlgAdmin.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '28px', maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '4px' }}>Administrar Transfusão</h2>
             <p className="text-xs text-slate-500" style={{ marginBottom: '18px' }}>{COMPONENTES[modalAdmin.componente]} · {modalAdmin.numeroUnidades} un.</p>
 
@@ -287,7 +292,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Reação */}
       {modalReacao && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '28px' }}>
+          <div {...dlgReacao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '28px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '18px' }}>Registar Reação Transfusional</h2>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-3">

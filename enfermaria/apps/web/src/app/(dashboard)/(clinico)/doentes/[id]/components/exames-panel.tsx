@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   doenteId: string;
@@ -41,6 +42,9 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
   const [resultadoModal, setResultadoModal] = useState<any>(null);
   const [resultadoTexto, setResultadoTexto] = useState('');
   const [salvandoExame, setSalvandoExame] = useState(false);
+  const dlgExame = useDialogoAcessivel({ aberto: modalExame, onFechar: () => setModalExame(false), titulo: 'Solicitar exame' });
+  const dlgResultado = useDialogoAcessivel({ aberto: !!resultadoModal, onFechar: () => setResultadoModal(null), titulo: 'Registar resultado de exame' });
+
   const [confirmarAcao, setConfirmarAcao] = useState<{
     titulo: string; mensagem: string; variant: 'danger' | 'warning';
     onConfirmar: () => void;
@@ -164,7 +168,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Solicitar Exame */}
       {modalExame && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgExame.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Solicitar Exame</h2>
               <button aria-label="Fechar" onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -208,7 +212,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Registar Resultado */}
       {resultadoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
               <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

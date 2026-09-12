@@ -168,9 +168,7 @@ interface SOSAlerta {
 
 function useSOS() {
   const [alertas, setAlertas] = useState<SOSAlerta[]>([]);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
-
-  useSocket(token, {
+  useSocket({
     'sos:alerta': (data: any) => {
       setAlertas(prev => [
         { doenteId: data.doenteId, doenteNome: data.doenteNome ?? 'Doente', quarto: data.quarto, acionadoPor: data.acionadoPor, alertaId: data.alertaId, ts: Date.now() },

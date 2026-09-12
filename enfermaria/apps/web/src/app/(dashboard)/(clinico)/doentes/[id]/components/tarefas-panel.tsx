@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Tarefa {
   id: string;
@@ -66,7 +67,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -154,6 +155,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
   const [modalHistorico, setModalHistorico] = useState(false);
   const [tarefasHistorico, setTarefasHistorico] = useState<Tarefa[]>([]);
   const [loadingHistorico, setLoadingHistorico] = useState(false);
+
+  const dlgHistorico = useDialogoAcessivel({ aberto: modalHistorico, onFechar: () => setModalHistorico(false), titulo: 'Histórico de tarefas' });
 
   const abrirModalTarefa = () => {
     setTarefaDesc(''); setTarefaTipo('clinica'); setTarefaPrioridade('media');
@@ -342,7 +345,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
       {/* Modal Histórico de Tarefas */}
       {modalHistorico && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+          <div {...dlgHistorico.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

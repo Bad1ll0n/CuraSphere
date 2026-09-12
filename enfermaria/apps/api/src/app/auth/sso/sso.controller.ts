@@ -15,7 +15,8 @@ import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
 import { RedisService } from '../../redis/redis.service';
 import * as crypto from 'crypto';
-
+
+import { assertUrlDestinoPublico } from '../../common/ssrf-guard';
 class CriarProviderDto {
   @IsString() @IsIn(['saml', 'oidc']) tipo: string;
   @IsString() @MaxLength(100) nome: string;
@@ -214,9 +215,28 @@ export class SsoController {
       const redirectUri = `${apiUrl}/v1/auth/sso/oidc/callback`;
       const tokenEndpoint = config['tokenEndpoint'] ?? `${config['issuer']}/oauth2/v2.0/token`;
 
+      // F11: este era o único `fetch` do projecto sem timeout e sem guarda de destino.
+      //
+      // O endpoint vem da configuração do fornecedor de identidade, gravada por um
+      // administrador. A guarda de SSRF fica activa por omissão — mas é comum um hospital
+      // correr o fornecedor de identidade numa rede interna (Keycloak on-prem, ADFS), e aí
+      // bloquear endereços privados partiria o SSO na instalação mais típica. Por isso existe
+      // uma excepção explícita, desligada por omissão e documentada no .env.example.
+      if (process.env['NODE_ENV'] === 'production' && !tokenEndpoint.startsWith('https://')) {
+        throw new Error('O endpoint de tokens do fornecedor de identidade tem de usar HTTPS');
+      }
+      if (process.env['SSO_PERMITIR_IDP_INTERNO'] !== 'true') {
+        await assertUrlDestinoPublico(tokenEndpoint);
+      }
+
       // Trocar code por tokens
       const tokenResponse = await fetch(tokenEndpoint, {
         method: 'POST',
+        // Sem seguir redireccionamentos: um 302 para um endereço interno contornaria a
+        // verificação de destino feita acima.
+        redirect: 'manual',
+        // Sem limite, um fornecedor lento prendia o pedido de login indefinidamente.
+        signal: AbortSignal.timeout(10_000),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           grant_type: 'authorization_code',

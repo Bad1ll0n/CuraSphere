@@ -1,6 +1,7 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
 
+import { registarFalhaSilenciosa } from './erros';
 const KEY_USERNAME = 'bio_username';
 const KEY_PASSWORD = 'bio_password';
 
@@ -34,6 +35,6 @@ export async function obterCredenciaisBiometricas(): Promise<{ username: string;
 }
 
 export async function limparCredenciaisBiometricas(): Promise<void> {
-  await SecureStore.deleteItemAsync(KEY_USERNAME).catch(() => {});
-  await SecureStore.deleteItemAsync(KEY_PASSWORD).catch(() => {});
+  await SecureStore.deleteItemAsync(KEY_USERNAME).catch((e) => registarFalhaSilenciosa('biometric', e));
+  await SecureStore.deleteItemAsync(KEY_PASSWORD).catch((e) => registarFalhaSilenciosa('biometric', e));
 }

@@ -139,6 +139,40 @@ Um restauro nunca ensaiado não conta. A cada trimestre:
 4. Cronometrar (valida o RTO) e registar a data/resultado do drill.
 5. Testar também o restauro dos **segredos** e do **object storage**, não só da BD.
 
+### 6.1 Registo de drills
+
+| Data | Âmbito | Resultado | Tempos | Executado por |
+|---|---|---|---|---|
+| 2026-09-03 | Base de dados (dev → scratch descartável) | **Passou** | backup 1 s (2,0 MB) · restauro 2 s · restauro sobre base já povoada 3 s · total 8 s | Correcção pós-auditoria |
+
+**O que este drill provou.** As 140 tabelas foram repostas na íntegra e os **135 triggers de
+auditoria vieram com o restauro** — a cadeia à prova de adulteração sobrevive a uma
+recuperação, que é o que interessa num sistema onde o registo de quem acedeu a que processo
+é requisito legal. E o restauro correu uma segunda vez **sobre a base já povoada**: é
+exactamente o caso que falhava antes, porque o `pg_dump` não usava `--clean --if-exists` e o
+`psql` abortava no primeiro `relation already exists`. Numa recuperação real a base nunca
+está vazia — o Postgres cria-a já com o schema `public`, ou tem restos da tentativa anterior.
+
+**O que este drill NÃO provou, e é preciso dizer:**
+
+- **Foi feito contra a base de desenvolvimento**, com 2,0 MB. Os tempos acima não se
+  extrapolam para produção: com dados reais o restauro é dominado pela reconstrução dos
+  índices, e cresce muito mais depressa do que o tamanho do dump. **O RTO só fica conhecido
+  quando este mesmo ensaio correr contra um dump de produção.**
+- **Não testou o restauro dos segredos nem do object storage** (passos 5 do §6). Sem
+  `ENCRYPTION_KEY` a base restaurada é ilegível na parte cifrada, e sem os ficheiros clínicos
+  o registo volta com referências a anexos que não existem.
+- **Não testou provisionamento de máquina**. O ensaio correu contra um Postgres já a
+  funcionar; num desastre real o tempo de pôr a máquina de pé vem antes disto e não está
+  medido.
+
+**Como repetir** (não interactivo, para poder correr em CI):
+
+```sh
+RESTAURO_NAO_INTERATIVO=sim DB_NAME=<scratch> ./scripts/restore-db.sh <ficheiro.sql.gz>
+```
+
+
 ---
 
 ## 7. Cenários de falha

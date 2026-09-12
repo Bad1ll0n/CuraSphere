@@ -4,6 +4,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useSocket, emitSocket } from '@/lib/use-socket';
 
 interface Props {
@@ -31,6 +32,8 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
   const [soapForm, setSoapForm] = useState({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
   const [salvandoSoap, setSalvandoSoap] = useState(false);
   const [notaSoapEditandoId, setNotaSoapEditandoId] = useState<string | null>(null);
+  const dlgSoap = useDialogoAcessivel({ aberto: modalNotaClinica, onFechar: () => setModalNotaClinica(false), titulo: 'Nota clínica SOAP' });
+
   const [confirmarAcao, setConfirmarAcao] = useState<{
     titulo: string; mensagem: string; variant: 'danger' | 'warning';
     onConfirmar: () => void;
@@ -44,16 +47,15 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
   useUnsavedChanges(soapDirty);
 
   // Socket — join doente room and listen for nota locks
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
-  useSocket(token, {
+  const { estado: estadoTempoReal } = useSocket({
     'nota:lock': (data: { notaId: string; nome: string }) =>
       setLocks(prev => ({ ...prev, [data.notaId]: data.nome })),
     'nota:unlock': (data: { notaId: string }) =>
       setLocks(prev => { const n = { ...prev }; delete n[data.notaId]; return n; }),
   });
   useEffect(() => {
-    if (token) emitSocket('nota:join-doente', { doenteId });
-  }, [doenteId, token]);
+    if (estadoTempoReal === 'ligado') emitSocket('nota:join-doente', { doenteId });
+  }, [doenteId, estadoTempoReal]);
 
   // Voice dictation
   const [activeVoiceField, setActiveVoiceField] = useState<string | null>(null);
@@ -226,7 +228,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
       {/* Modal Nota Clínica SOAP */}
       {modalNotaClinica && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgSoap.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
               <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">

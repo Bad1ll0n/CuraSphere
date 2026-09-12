@@ -27,7 +27,7 @@ interface Registo {
 }
 
 function PROContent() {
-  const { user, token, loading: authLoading } = usePortalAuth();
+  const { user, autenticado, loading: authLoading } = usePortalAuth();
   const router = useRouter();
 
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -40,13 +40,13 @@ function PROContent() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!token) { router.push('/portal/login'); return; }
-    const h = { Authorization: `Bearer ${token}` };
-    fetch(`${API}/portal/pro/templates`, { headers: h })
+    if (!autenticado) { router.push('/portal/login'); return; }
+    const opcoes: RequestInit = { credentials: 'include' };
+    fetch(`${API}/portal/pro/templates`, opcoes)
       .then(r => r.json()).then(setTemplates).catch(() => { /* vazio */ });
-    fetch(`${API}/portal/pro/historico`, { headers: h })
+    fetch(`${API}/portal/pro/historico`, opcoes)
       .then(r => r.json()).then(setHistorico).catch(() => { /* vazio */ });
-  }, [token, authLoading, router]);
+  }, [autenticado, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,15 +56,16 @@ function PROContent() {
     try {
       const r = await fetch(`${API}/portal/pro/submeter`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ templateId: templateSel.id, respostas }),
       });
       if (!r.ok) throw new Error();
       setMensagem('Obrigado! O seu registo foi guardado.');
       setRespostas({});
       setTemplateSel(null);
-      const h = { Authorization: `Bearer ${token}` };
-      fetch(`${API}/portal/pro/historico`, { headers: h }).then(r2 => r2.json()).then(setHistorico).catch(() => { /* vazio */ });
+      const opcoes: RequestInit = { credentials: 'include' };
+      fetch(`${API}/portal/pro/historico`, opcoes).then(r2 => r2.json()).then(setHistorico).catch(() => { /* vazio */ });
     } catch {
       setMensagem('Erro ao guardar. Tente novamente.');
     } finally {

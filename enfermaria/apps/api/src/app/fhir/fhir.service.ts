@@ -2,7 +2,11 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException,
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
-
+import { assertUrlDestinoPublico } from '../common/ssrf-guard';
+
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
+import { createHash, randomBytes } from 'crypto';
 // LOINC code → SinalVital field mapping
 const LOINC_MAP: Record<string, string> = {
   '8867-4':  'pulso',
@@ -20,6 +24,11 @@ export class CriarDispositivoDto {
   @IsOptional() @IsString() doenteId?: string;
 }
 
+/** SHA-256 da chave. Determinista, para servir de chave de procura, e irreversível. */
+function hashDeChave(chave: string): string {
+  return createHash('sha256').update(chave).digest('hex');
+}
+
 @Injectable()
 export class FhirService {
   private readonly logger = new Logger(FhirService.name);
@@ -29,20 +38,46 @@ export class FhirService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly sinaisVitais: SinaisVitaisService,
   ) {}
 
   async receberObservation(body: any, apiKey: string) {
-    const dispositivo = await this.prisma.dispositivoFhir.findUnique({ where: { apiKey } });
+    // A chave nunca é comparada em claro contra a base: compara-se o hash.
+    const dispositivo = await this.prisma.dispositivoFhir.findUnique({
+      where: { apiKeyHash: hashDeChave(apiKey) },
+    });
     if (!dispositivo || !dispositivo.ativo) throw new ForbiddenException('Dispositivo não autorizado');
 
-    await this.prisma.dispositivoFhir.update({ where: { apiKey }, data: { ultimoPing: new Date() } });
+    await this.prisma.dispositivoFhir.update({
+      where: { id: dispositivo.id },
+      data: { ultimoPing: new Date() },
+    });
 
     if (!body || body.resourceType !== 'Observation') {
       throw new BadRequestException('Recurso FHIR inválido — esperado resourceType: Observation');
     }
 
-    const doenteId = dispositivo.doenteId ?? body.subject?.reference?.split('/').pop();
-    if (!doenteId) throw new BadRequestException('Doente não associado ao dispositivo nem referenciado na Observation');
+    // S-04: o doente vem SEMPRE do dispositivo, nunca do corpo do pedido.
+    //
+    // Antes era `dispositivo.doenteId ?? body.subject`, o que deixava um dispositivo sem
+    // doente associado escrever sinais vitais em QUALQUER doente — bastava nomeá-lo no
+    // payload. E esses vitais alimentam o NEWS2 e os alertas de deterioração.
+    const doenteId = dispositivo.doenteId;
+    if (!doenteId) {
+      throw new BadRequestException(
+        'Dispositivo sem doente associado — associe-o antes de enviar observações',
+      );
+    }
+
+    // Se o payload nomear um doente diferente, é erro de configuração à cabeceira: o
+    // monitor está ligado a uma pessoa e a dizer o nome de outra. Recusar é o único
+    // comportamento seguro.
+    const doenteNoPayload = body.subject?.reference?.split('/').pop();
+    if (doenteNoPayload && doenteNoPayload !== doenteId) {
+      throw new BadRequestException(
+        'A observação refere um doente diferente daquele a que o dispositivo está associado',
+      );
+    }
 
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
@@ -76,30 +111,48 @@ export class FhirService {
       return { status: 'ignorado', motivo: 'Código LOINC não mapeado: ' + (code ?? 'N/A') };
     }
 
-    const sinal = await this.prisma.sinalVital.create({
-      data: {
-        doenteId,
-        registadoPorId: sistemUserId,
-        data: body.effectiveDateTime ? new Date(body.effectiveDateTime) : new Date(),
-        ...sinalData,
-      },
+    // BA-08: os vitais de dispositivos passam pelo MESMO caminho dos manuais.
+    //
+    // Antes iam directos ao `prisma.sinalVital.create`, saltando o NEWS2, o PEWS, os
+    // alertas de valor crítico isolado e a avaliação de sépsis. A monitorização contínua
+    // — a única fonte que observa o doente 24 horas por dia — era exactamente a que
+    // escapava por completo à detecção de deterioração.
+    const sinal = await this.sinaisVitais.ingerirDeMonitor(doenteId, sistemUserId, {
+      ...sinalData,
+      medidoEm: body.effectiveDateTime ?? undefined,
     });
 
     return { status: 'criado', sinalVitalId: sinal.id, campos: Object.keys(sinalData) };
   }
 
   private async obterUtilizadorSistema(): Promise<string> {
-    const sys = await this.prisma.utilizador.findFirst({ where: { role: 'it_admin' }, select: { id: true } });
-    if (sys) return sys.id;
-    // Fallback: primeiro admin
-    const admin = await this.prisma.utilizador.findFirst({ where: { role: 'admin' }, select: { id: true } });
-    if (admin) return admin.id;
-    throw new Error('Nenhum utilizador admin/sistema encontrado para associar registos de dispositivos');
+    // `it_admin` é um SUB-papel; o papel chama-se `ti`. E `admin` não existe de todo no
+    // catálogo. Com os nomes errados esta procura devolvia sempre nada e a ingestão de
+    // dispositivos rebentava aqui — antes sequer de chegar ao registo do vital.
+    const ti = await this.prisma.utilizador.findFirst({
+      where: { role: 'ti', ativo: true },
+      orderBy: { criadoEm: 'asc' },
+      select: { id: true },
+    });
+    if (ti) return ti.id;
+
+    const direcao = await this.prisma.utilizador.findFirst({
+      where: { role: 'direcao', ativo: true },
+      orderBy: { criadoEm: 'asc' },
+      select: { id: true },
+    });
+    if (direcao) return direcao.id;
+
+    throw new Error(
+      'Nenhum utilizador com papel `ti` ou `direcao` activo para associar registos de dispositivos',
+    );
   }
 
   listarDispositivos() {
+    // Nunca devolver o hash: não serve para nada a quem lista e é material sensível.
     return this.prisma.dispositivoFhir.findMany({
       orderBy: { criadoEm: 'desc' },
+      select: { id: true, nome: true, tipo: true, doenteId: true, ativo: true, ultimoPing: true, criadoEm: true },
     });
   }
 
@@ -108,9 +161,21 @@ export class FhirService {
       const doente = await this.prisma.doente.findUnique({ where: { id: dto.doenteId }, select: { id: true } });
       if (!doente) throw new NotFoundException(`Doente (ID ${dto.doenteId}) não encontrado`);
     }
-    return this.prisma.dispositivoFhir.create({
-      data: { nome: dto.nome, tipo: dto.tipo, doenteId: dto.doenteId ?? null },
+    // A chave é mostrada UMA vez, aqui. Não há forma de a recuperar depois — é esse o
+    // ponto: deixa de existir em lado nenhum que uma leitura da base possa alcançar.
+    const chave = randomBytes(32).toString('base64url');
+
+    const dispositivo = await this.prisma.dispositivoFhir.create({
+      data: {
+        nome: dto.nome,
+        tipo: dto.tipo,
+        doenteId: dto.doenteId ?? null,
+        apiKeyHash: hashDeChave(chave),
+      },
+      select: { id: true, nome: true, tipo: true, doenteId: true, ativo: true, criadoEm: true },
     });
+
+    return { ...dispositivo, apiKey: chave, aviso: 'Guarde esta chave: não voltará a ser mostrada.' };
   }
 
   async removerDispositivo(id: string) {
@@ -142,7 +207,7 @@ export class FhirService {
       id: doente.id,
       identifier: [{ system: 'urn:curasp:process', value: doente.numeroProcesso }],
       name: [{ text: doente.nome }],
-      birthDate: doente.dataNascimento ? new Date(doente.dataNascimento).toISOString().split('T')[0] : undefined,
+      birthDate: doente.dataNascimento ? chaveDiaClinico(new Date(doente.dataNascimento)) : undefined,
     };
 
     const conditions = ((doenteAny.problemas ?? []) as any[]).map((p: any) => ({
@@ -222,6 +287,14 @@ export class FhirService {
     const { default: fetch } = await import('node-fetch');
     const url = `${sistema.endpoint}/DocumentReference?patient=${patientId}&_sort=-date&_count=50`;
 
+    // SEC-05: `sistema.endpoint` tem origem no utilizador (registado via
+    // `POST /v1/sistemas-externos` por um `ti`/`direcao`). Validar o IP resolvido em cada
+    // disparo, não só na criação — o DNS pode mudar entre o registo e o pedido. Repare-se
+    // que este `fetch` leva um `Authorization` construído a partir do `authConfig` do
+    // sistema: sem esta validação, um endpoint apontado para um serviço interno recebia
+    // esse cabeçalho.
+    await assertUrlDestinoPublico(url);
+
     const headers: Record<string, string> = { Accept: 'application/fhir+json' };
     if (sistema.authConfig) {
       try {
@@ -231,7 +304,12 @@ export class FhirService {
       } catch { /* ignore malformed authConfig */ }
     }
 
-    const res = await (fetch as any)(url, { headers, signal: AbortSignal.timeout(15000) });
+    const res = await (fetch as any)(url, {
+      headers,
+      signal: AbortSignal.timeout(15000),
+      // Um redirect levaria o cabeçalho Authorization para um destino não validado.
+      redirect: 'manual',
+    });
     if (!res.ok) throw new Error(`FHIR ${res.status}: ${res.statusText}`);
 
     const bundle: any = await res.json();

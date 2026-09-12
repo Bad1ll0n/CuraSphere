@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   doenteId: string;
@@ -237,6 +238,8 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
   const [modalEscalaClinica, setModalEscalaClinica] = useState(false);
   const [tipoEscalaClinica, setTipoEscalaClinica] = useState('RASS');
   const [valoresEscalaClinica, setValoresEscalaClinica] = useState<Record<string, any>>({});
+  const dlgEscalaClinica = useDialogoAcessivel({ aberto: modalEscalaClinica, onFechar: () => setModalEscalaClinica(false), titulo: `Escala clínica ${tipoEscalaClinica}` });
+
   const [salvandoEscalaClinica, setSalvandoEscalaClinica] = useState(false);
 
   const role = utilizador?.role ?? '';
@@ -354,7 +357,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
 
         return (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-            <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+            <div {...dlgEscalaClinica.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                 <h2 className="text-xl font-bold text-slate-900">Registar Escala Clínica</h2>
                 <button onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">

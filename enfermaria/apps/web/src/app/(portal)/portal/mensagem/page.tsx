@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function MensagemContent() {
-  const { token, loading: authLoading } = usePortalAuth();
+  const { autenticado, loading: authLoading } = usePortalAuth();
   const [conteudo, setConteudo] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
@@ -12,7 +12,7 @@ function MensagemContent() {
 
   if (authLoading) return null;
 
-  if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
+  if (!autenticado) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ function MensagemContent() {
     setErro('');
     setEnviando(true);
     try {
-      await portalFetch('/portal/mensagem', token, {
+      await portalFetch('/portal/mensagem', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ conteudo }),

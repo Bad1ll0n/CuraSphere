@@ -13,7 +13,7 @@ const mockPrisma = {
   sinalVital: { create: jest.fn(), findMany: jest.fn(), findFirst: jest.fn() },
 };
 
-const mockAlertas = { criarAlerta: jest.fn() };
+const mockAlertas = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
 const mockNotificacoes = { enviarParaDoente: jest.fn().mockResolvedValue(undefined) };
 const mockProtocolos = { ativarSeNaoAtivo: jest.fn().mockResolvedValue(undefined) };
 const mockSepsis = { avaliar: jest.fn().mockResolvedValue(undefined) };
@@ -42,6 +42,7 @@ describe('SinaisVitaisService', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockAlertas.criarAlerta.mockResolvedValue(undefined);
     mockNotificacoes.enviarParaDoente.mockResolvedValue(undefined);
     mockProtocolos.ativarSeNaoAtivo.mockResolvedValue(undefined);
     mockSepsis.avaliar.mockResolvedValue(undefined);
@@ -73,6 +74,50 @@ describe('SinaisVitaisService', () => {
   });
 
   // ── criar() — NEWS2 = 0 (parâmetros normais) ─────────────────────────────
+
+  describe('criar() — hora da medição (registo offline)', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
+      mockPrisma.sinalVital.create.mockImplementation(async ({ data }: any) => ({ id: 'sv1', ...data }));
+    });
+
+    it('usa a hora da MEDIÇÃO quando o cliente a declara, não a da chegada', async () => {
+      // O caso real: registo feito à cabeceira sem rede, sincronizado 3 h depois.
+      const medidoEm = new Date(Date.now() - 3 * 3_600_000).toISOString();
+
+      await service.criar('d1', 'u1', 'enfermeiro', { pulso: 80, medidoEm } as any);
+
+      const { data } = mockPrisma.sinalVital.create.mock.calls[0][0];
+      expect(data.data).toEqual(new Date(medidoEm));
+      // O campo de transporte não pode chegar ao Prisma como coluna.
+      expect(data.medidoEm).toBeUndefined();
+    });
+
+    it('deixa o servidor datar quando o cliente não declara nada', async () => {
+      await service.criar('d1', 'u1', 'enfermeiro', { pulso: 80 } as any);
+
+      const { data } = mockPrisma.sinalVital.create.mock.calls[0][0];
+      expect(data.data).toBeUndefined(); // fica ao cargo do @default(now()) do schema
+    });
+
+    it('recusa uma medição no futuro — é sempre relógio mal configurado', async () => {
+      const futuro = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+      await expect(
+        service.criar('d1', 'u1', 'enfermeiro', { pulso: 80, medidoEm: futuro } as any),
+      ).rejects.toThrow(/futuro/i);
+      expect(mockPrisma.sinalVital.create).not.toHaveBeenCalled();
+    });
+
+    it('tolera pequeno desvio de relógio do dispositivo', async () => {
+      const ligeiramenteAdiante = new Date(Date.now() + 60 * 1000).toISOString();
+
+      await expect(
+        service.criar('d1', 'u1', 'enfermeiro', { pulso: 80, medidoEm: ligeiramenteAdiante } as any),
+      ).resolves.toBeDefined();
+    });
+  });
 
   describe('criar() — NEWS2 scoring', () => {
     const mockRegisto = { id: 'sv1', doenteId: 'd1', news2: 0 };
@@ -107,7 +152,7 @@ describe('SinaisVitaisService', () => {
         pressaoSistolica: 85,
       });
 
-      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'news2_critico', expect.stringContaining('CRÍTICO'));
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'news2_critico', expect.stringContaining('CRÍTICO'), 4);
       expect(mockProtocolos.ativarSeNaoAtivo).toHaveBeenCalledWith('d1', 'sepsis');
     });
 
@@ -123,7 +168,7 @@ describe('SinaisVitaisService', () => {
         temperatura: 36.0,
       });
 
-      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'news2_alto', expect.stringContaining('ALTO'));
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'news2_alto', expect.stringContaining('ALTO'), 3);
       expect(mockProtocolos.ativarSeNaoAtivo).not.toHaveBeenCalled();
     });
 
@@ -155,6 +200,130 @@ describe('SinaisVitaisService', () => {
 
   // ── criar() — alertas de sinais críticos individuais ─────────────────────
 
+  // ── BA-04(d) — gatilho RCP "3 num parâmetro isolado" ─────────────────────
+
+  describe('criar() — parâmetro isolado em vermelho (RCP)', () => {
+    beforeEach(() => {
+      mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
+      mockPrisma.sinalVital.create.mockResolvedValue({ id: 'sv1' });
+    });
+
+    it('FR=30 com NEWS2 total 3 gera alerta (antes: silêncio total)', async () => {
+      // FR=30 → +3; SpO2=98 → 0; PA=120 → 0. Total 3, abaixo do limiar de escalada de 5.
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 30,
+        saturacaoO2: 98,
+        pressaoSistolica: 120,
+      });
+
+      const tipos = mockAlertas.criarAlerta.mock.calls.map((c: unknown[]) => c[1]);
+      expect(tipos).toContain('sinal_vital_critico');
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith(
+        'd1',
+        'sinal_vital_critico',
+        expect.stringContaining('Frequência respiratória crítica'),
+        3,
+      );
+    });
+
+    it('AVPU alterado com NEWS2 total 3 gera alerta de consciência', async () => {
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 15,
+        saturacaoO2: 98,
+        pressaoSistolica: 120,
+        avpu: 'P',
+      });
+
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith(
+        'd1',
+        'sinal_vital_critico',
+        expect.stringContaining('Estado de consciência alterado'),
+        3,
+      );
+    });
+
+    it('parâmetro vermelho não coberto pela rede de valores críticos gera news2_parametro_isolado', async () => {
+      // PAS=85 vale 3 pontos no NEWS2 mas está acima do limiar (<80) da rede paralela.
+      // FR=15 → 0, temp=37 → 0 ⇒ total 3, abaixo do limiar de escalada.
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        pressaoSistolica: 85,
+        frequenciaRespiratoria: 15,
+        temperatura: 37,
+      });
+
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith(
+        'd1',
+        'news2_parametro_isolado',
+        expect.stringContaining('TA sistólica'),
+        3,
+      );
+    });
+
+    it('não duplica quando o NEWS2 total já escalou (≥5)', async () => {
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 28,
+        saturacaoO2: 89,
+        pressaoSistolica: 85,
+      });
+
+      const tipos = mockAlertas.criarAlerta.mock.calls.map((c: unknown[]) => c[1]);
+      expect(tipos).toContain('news2_critico');
+      expect(tipos).not.toContain('news2_parametro_isolado');
+    });
+  });
+
+  // ── BA-04(e) — score sobre dados parciais ────────────────────────────────
+
+  describe('criar() — NEWS2 com dados incompletos', () => {
+    beforeEach(() => {
+      mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
+      mockPrisma.sinalVital.create.mockResolvedValue({ id: 'sv1' });
+    });
+
+    it('grava news2Completo e a lista de parâmetros em falta', async () => {
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 15,
+        saturacaoO2: 98,
+        temperatura: 37,
+      });
+
+      const createCall = mockPrisma.sinalVital.create.mock.calls[0][0];
+      expect(createCall.data.news2Completo).toBe(false);
+      expect(createCall.data.news2ParametrosFalta).toEqual(
+        expect.arrayContaining(['pressaoSistolica', 'pulso', 'avpu']),
+      );
+    });
+
+    it('score baixo mas inconclusivo (3 de 7 parâmetros) gera alerta news2_incompleto', async () => {
+      // Score 0 com FR/SpO2/temp normais; faltam PAS(3) + pulso(3) + AVPU(3) ⇒ pior caso 9.
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 15,
+        saturacaoO2: 98,
+        temperatura: 37,
+      });
+
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith(
+        'd1',
+        'news2_incompleto',
+        expect.stringContaining('INCOMPLETOS'),
+        2,
+      );
+    });
+
+    it('observação completa nos 5 vitais numéricos não gera ruído de incompletude', async () => {
+      // Só falta AVPU (máx 3) e O₂ suplementar (lido como ar ambiente) ⇒ pior caso 3 < 5.
+      await service.criar('d1', 'u1', 'enfermeiro', {
+        frequenciaRespiratoria: 15,
+        saturacaoO2: 98,
+        temperatura: 37,
+        pressaoSistolica: 120,
+        pulso: 70,
+      });
+
+      expect(mockAlertas.criarAlerta).not.toHaveBeenCalled();
+    });
+  });
+
   describe('criar() — alertas de valores críticos individuais', () => {
     beforeEach(() => {
       mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
@@ -168,6 +337,7 @@ describe('SinaisVitaisService', () => {
         'd1',
         'sinal_vital_critico',
         expect.stringContaining('SpO₂ crítica'),
+        3,
       );
     });
 
@@ -178,6 +348,7 @@ describe('SinaisVitaisService', () => {
         'd1',
         'sinal_vital_critico',
         expect.stringContaining('Pulso crítico'),
+        3,
       );
     });
 
@@ -188,6 +359,7 @@ describe('SinaisVitaisService', () => {
         'd1',
         'sinal_vital_critico',
         expect.stringContaining('TA sistólica crítica'),
+        3,
       );
     });
   });

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface ResultadoAnalise {
   id: string;
@@ -42,6 +43,8 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
   const [aberto, setAberto] = useState(false);
   const [modalNovo, setModalNovo] = useState(false);
   const [salvando, setSalvando] = useState(false);
+
+  const dlgNovoResultado = useDialogoAcessivel({ aberto: modalNovo, onFechar: () => setModalNovo(false), titulo: 'Novo resultado laboratorial' });
 
   const [form, setForm] = useState({
     parametro: '',
@@ -233,7 +236,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       {/* Modal Novo Resultado */}
       {modalNovo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgNovoResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado Analítico</h2>
               <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

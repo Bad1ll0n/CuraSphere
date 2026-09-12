@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { quiosqueFetch, urlComTokenQuiosque } from '@/lib/quiosque-token';
 
 const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
@@ -61,8 +62,8 @@ export default function PainelPage() {
   useEffect(() => {
     // Carregar estado inicial
     Promise.all([
-      fetch(`${API}/quiosque/ultimos?n=8`).then((r) => r.json()),
-      fetch(`${API}/quiosque/fila`).then((r) => r.json()),
+      quiosqueFetch(`${API}/quiosque/ultimos?n=8`).then((r) => r.json()),
+      quiosqueFetch(`${API}/quiosque/fila`).then((r) => r.json()),
     ]).then(([u, f]) => {
       if (Array.isArray(u) && u.length > 0) {
         setUltimoChamado(u[0]);
@@ -73,7 +74,7 @@ export default function PainelPage() {
 
     // SSE
     function conectar() {
-      const es = new EventSource(`${API}/quiosque/eventos`);
+      const es = new EventSource(urlComTokenQuiosque(`${API}/quiosque/eventos`));
       esRef.current = es;
 
       es.addEventListener('open', () => setConectado(true));

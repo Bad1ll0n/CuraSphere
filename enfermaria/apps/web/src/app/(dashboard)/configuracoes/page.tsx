@@ -22,15 +22,22 @@ const categoriaColor: Record<string, string> = {
 
 function QuiosqueSection() {
   const [servicoId, setServicoPId] = useState('internamento');
-  const [link, setLink] = useState('');
+  const [links, setLinks] = useState<{ rotulo: string; url: string }[]>([]);
   const [gerando, setGerando] = useState(false);
 
   const gerar = async () => {
     setGerando(true);
     try {
       const { data } = await api.post(`/doentes/quiosque-token?servicoId=${encodeURIComponent(servicoId)}`);
-      const url = `${window.location.origin}/quiosque/${encodeURIComponent(data.servicoId)}?token=${encodeURIComponent(data.token)}`;
-      setLink(url);
+      const origem = window.location.origin;
+      const token = encodeURIComponent(data.token);
+      // S-05 / F-03: o quiosque de senhas e o painel de chamada também exigem token de
+      // terminal, e não havia onde o obter — só se gerava o link do ecrã de corredor.
+      setLinks([
+        { rotulo: 'Corredor', url: `${origem}/quiosque/${encodeURIComponent(data.servicoId)}?token=${token}` },
+        { rotulo: 'Senhas e check-in', url: `${origem}/quiosque?token=${token}` },
+        { rotulo: 'Painel de chamada', url: `${origem}/painel?token=${token}` },
+      ]);
     } catch (e: any) {
       alert(e.response?.data?.message ?? 'Erro ao gerar link');
     } finally {
@@ -47,16 +54,16 @@ function QuiosqueSection() {
           </svg>
         </div>
         <div>
-          <span className="text-sm font-semibold text-slate-700">Quiosque de Corredor</span>
-          <p className="text-xs text-slate-400">Ecrã público com ocupação anonimizada para corredor de enfermaria</p>
+          <span className="text-sm font-semibold text-slate-700">Terminais de quiosque</span>
+          <p className="text-xs text-slate-400">Links de provisionamento do ecrã de corredor, do quiosque de senhas e do painel de chamada. Expiram ao fim de 30 dias, por omissão.</p>
         </div>
       </div>
-      <div className="flex items-end gap-3" style={{ marginBottom: link ? '16px' : '0' }}>
+      <div className="flex items-end gap-3" style={{ marginBottom: links.length ? '16px' : '0' }}>
         <div className="flex-1">
           <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
           <input id="fpage-0"
             value={servicoId}
-            onChange={e => { setServicoPId(e.target.value); setLink(''); }}
+            onChange={e => { setServicoPId(e.target.value); setLinks([]); }}
             placeholder="ex: internamento"
             className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
             style={{ padding: '10px 14px' }}
@@ -71,18 +78,23 @@ function QuiosqueSection() {
           {gerando ? 'A gerar...' : 'Gerar link'}
         </button>
       </div>
-      {link && (
-        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl" style={{ padding: '10px 14px' }}>
-          <span className="text-xs text-slate-500 truncate flex-1 font-mono">{link}</span>
-          <button
-            onClick={() => { navigator.clipboard.writeText(link); }}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
-          >
-            Copiar
-          </button>
-          <a href={link} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 shrink-0">
-            Abrir
-          </a>
+      {links.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {links.map(({ rotulo, url }) => (
+            <div key={rotulo} className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl" style={{ padding: '10px 14px' }}>
+              <span className="text-xs font-semibold text-slate-600 shrink-0" style={{ minWidth: '130px' }}>{rotulo}</span>
+              <span className="text-xs text-slate-500 truncate flex-1 font-mono">{url}</span>
+              <button
+                onClick={() => { navigator.clipboard.writeText(url); }}
+                className="text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
+              >
+                Copiar
+              </button>
+              <a href={url} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 shrink-0">
+                Abrir
+              </a>
+            </div>
+          ))}
         </div>
       )}
     </div>

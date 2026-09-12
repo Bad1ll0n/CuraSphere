@@ -21,6 +21,25 @@ export default [
     },
   },
   {
+    // Zonas já limpas: a regra volta a ser bloqueante para não regredirem. Ficaram em `warn`
+    // apenas os caminhos com dívida por saldar — (administrativo), (gestao), (suporte) e as
+    // páginas soltas de (dashboard). Quando esses 13 locais forem corrigidos, este bloco
+    // passa a poder cobrir `src/**` e o override de `warn` acima desaparece.
+    files: [
+      '**/src/components/**/*.tsx',
+      '**/src/lib/**/*.tsx',
+      '**/src/app/(dashboard)/(clinico)/**/*.tsx',
+      '**/src/app/(portal)/**/*.tsx',
+      '**/src/app/(auth)/**/*.tsx',
+      '**/src/app/(print)/**/*.tsx',
+    ],
+    rules: {
+      'jsx-a11y/click-events-have-key-events': 'error',
+      'jsx-a11y/no-static-element-interactions': 'error',
+      'jsx-a11y/no-noninteractive-element-interactions': 'error',
+    },
+  },
+  {
     ignores: ['.next/**/*', '**/out-tsc'],
   },
 ];

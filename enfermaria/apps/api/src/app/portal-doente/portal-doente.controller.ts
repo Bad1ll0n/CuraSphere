@@ -1,28 +1,71 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request, Res, Header, Query } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
+import {
+  PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
+  SubmeterProDto, CriarTemplateProDto,
+} from './dto/portal.dto';
+
+/**
+ * Tem de acompanhar o `expiresIn: '8h'` com que o token do portal é assinado
+ * (`portal-doente.service.ts`). Um cookie que sobreviva ao token deixa o portal a
+ * enviar credenciais mortas e a receber 401 sem explicação.
+ */
+const PORTAL_COOKIE_MAX_AGE = 8 * 60 * 60 * 1000;
 
 @Controller('portal')
 export class PortalDoenteController {
   constructor(private readonly service: PortalDoenteService) {}
 
+  // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
+  // 15 min) feito no serviço — o throttle trava um IP a martelar muitas contas, o
+  // bloqueio de conta trava muitos IP a martelar uma conta.
+  @Throttle({ default: { ttl: 600000, limit: 5 } })
   @Post('login')
-  login(@Body() body: { email: string; senha: string }) {
-    return this.service.login(body.email, body.senha);
+  async login(
+    @Body() dto: PortalLoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const resultado = await this.service.login(dto.email, dto.senha);
+
+    // SEC-07: o token do portal passa a viajar em cookie `httpOnly`, como o do pessoal.
+    // Enquanto vivia em `localStorage` bastava um XSS no portal para o ler; aqui o
+    // JavaScript da página não lhe toca. O `accessToken` continua no corpo apenas
+    // durante a transição do cliente — assim que o portal deixar de o ler, retirar daqui.
+    res.cookie('portal_token', resultado.accessToken, {
+      httpOnly: true,
+      secure: process.env['NODE_ENV'] === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: PORTAL_COOKIE_MAX_AGE,
+    });
+
+    return resultado;
+  }
+
+  /**
+   * SEC-07: sem isto, terminar sessão no portal deixava o cookie válido no browser
+   * durante 8 h. O cookie é `httpOnly`, por isso só o servidor o pode apagar.
+   */
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('portal_token', { path: '/', httpOnly: true, sameSite: 'strict' });
+    return { ok: true };
   }
 
   @Post('criar-acesso')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   criarAcesso(
-    @Body() body: { doenteId: string; email: string; senha: string },
+    @Body() dto: CriarAcessoPortalDto,
     @Request() req: any,
   ) {
-    return this.service.criarAcesso(body.doenteId, body.email, body.senha, req.user.sub);
+    return this.service.criarAcesso(dto.doenteId, dto.email, dto.senha, req.user.sub);
   }
 
   @Get('me')
@@ -51,8 +94,8 @@ export class PortalDoenteController {
 
   @Post('mensagem')
   @UseGuards(PortalJwtGuard)
-  mensagem(@Body() body: { conteudo: string }, @Request() req: any) {
-    return this.service.enviarMensagem(req.user.doenteId, body.conteudo);
+  mensagem(@Body() dto: MensagemPortalDto, @Request() req: any) {
+    return this.service.enviarMensagem(req.user.doenteId, dto.conteudo);
   }
 
   @Get('exportar/pdf')
@@ -93,10 +136,10 @@ export class PortalDoenteController {
   @Post('pro/submeter')
   @UseGuards(PortalJwtGuard)
   submeterPRO(
-    @Body() body: { templateId: string; respostas: Record<string, unknown> },
+    @Body() dto: SubmeterProDto,
     @Request() req: any,
   ) {
-    return this.service.submeterPRO(req.user.doenteId, body.templateId, body.respostas);
+    return this.service.submeterPRO(req.user.doenteId, dto.templateId, dto.respostas);
   }
 
   @Get('pro/historico')
@@ -110,8 +153,8 @@ export class PortalDoenteController {
   @Post('pro/templates')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
-  criarTemplate(@Body() body: { nome: string; campos: object[] }) {
-    return this.service.criarTemplatePRO(body.nome, body.campos);
+  criarTemplate(@Body() dto: CriarTemplateProDto) {
+    return this.service.criarTemplatePRO(dto.nome, dto.campos);
   }
 
   @Get('pro/doente/:doenteId')

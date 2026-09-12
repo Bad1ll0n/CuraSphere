@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const estadoCor: Record<string, string> = {
@@ -27,12 +29,18 @@ export default function PassagemTurnoScreen({ utilizador, onVoltar }: Props) {
   const [confirmando, setConfirmando] = useState(false);
   const [confirmado, setConfirmado] = useState(false);
   const [expandido, setExpandido] = useState<string | null>(null);
+  const [erroCarga, setErroCarga] = useState(false);
 
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data } = await api.get('/turnos/passagem-turno');
       setDados(data);
-    } catch {} finally {
+    } catch (e) {
+      // A6: uma falha mostrava "Sem passagem pendente" — e o turno era assumido sem ela.
+      registarFalhaSilenciosa('PassagemTurnoScreen', e);
+      setErroCarga(true);
+    } finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -66,6 +74,11 @@ export default function PassagemTurnoScreen({ utilizador, onVoltar }: Props) {
 
       {loading ? (
         <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
+      ) : erroCarga ? (
+        <ErroCarregamento
+          texto="Isto não quer dizer que não haja passagem de turno. Verifique a ligação antes de assumir o turno."
+          onTentarNovamente={() => { setLoading(true); carregar(); }}
+        />
       ) : dados.length === 0 ? (
         <View style={s.centro}>
           <Ionicons name="checkmark-circle-outline" size={56} color="#d1fae5" />

@@ -470,7 +470,7 @@ export default function ComunicacaoPage() {
 
       {/* Modal: Enviar Mensagem */}
       {mensagemModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={() => setDropdownAberto(false)}>
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px' }}
             onClick={e => e.stopPropagation()}>

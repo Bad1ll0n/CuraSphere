@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface SessaoFisioterapia {
   id: string;
@@ -32,6 +33,9 @@ export default function FisioterapiaPage() {
   const [form, setForm] = useState({ doenteId: '', data: '', duracao: 45, descricao: '', planoId: '' });
   const [salvando, setSalvando] = useState(false);
   const [realizarModal, setRealizarModal] = useState<SessaoFisioterapia | null>(null);
+  const dlgNovaSessao = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Nova sessão de fisioterapia' });
+  const dlgRealizar = useDialogoAcessivel({ aberto: !!realizarModal, onFechar: () => setRealizarModal(null), titulo: 'Registar sessão realizada' });
+
   const [evolucao, setEvolucao] = useState('');
 
   const carregar = async () => {
@@ -138,7 +142,7 @@ export default function FisioterapiaPage() {
       {/* Modal: Agendar */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovaSessao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Sessão</h2>
               <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -183,7 +187,7 @@ export default function FisioterapiaPage() {
       {/* Modal: Realizar */}
       {realizarModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRealizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Sessão Realizada</h2>
               <button aria-label="Fechar" onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

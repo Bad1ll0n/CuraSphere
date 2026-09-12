@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { GuidelinesService } from './guidelines.service';
+import { CriarGuidelineDto, UploadGuidelinePdfDto } from './dto/guidelines.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('guidelines')
@@ -22,7 +23,7 @@ export class GuidelinesController {
 
   @Post()
   @Roles('ti', 'direcao')
-  criar(@Body() dto: { titulo: string; categoria: string; conteudo: string; fonte: string; versao?: string }) {
+  criar(@Body() dto: CriarGuidelineDto) {
     return this.service.criar(dto);
   }
 
@@ -40,7 +41,7 @@ export class GuidelinesController {
   )
   async uploadPdf(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { titulo: string; categoria: string; fonte: string },
+    @Body() body: UploadGuidelinePdfDto,
   ) {
     if (!file) throw new BadRequestException('Ficheiro PDF obrigatório');
     // Validar magic bytes PDF: %PDF

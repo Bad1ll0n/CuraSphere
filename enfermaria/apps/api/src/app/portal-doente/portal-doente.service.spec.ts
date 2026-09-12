@@ -10,6 +10,7 @@ import { NotFoundException, UnauthorizedException, ConflictException } from '@ne
 import { JwtService } from '@nestjs/jwt';
 import { PortalDoenteService } from './portal-doente.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 import { StorageService } from '../common/storage.service';
 import { PdfService } from '../common/pdf.service';
 
@@ -34,6 +35,8 @@ const mockPrisma = {
 };
 
 const mockJwt = { sign: jest.fn().mockReturnValue('jwt-token-simulado') };
+// SEC-06: o login do portal passou a usar Redis para o bloqueio de conta por falhas.
+const mockRedis = { get: jest.fn(), set: jest.fn(), del: jest.fn() };
 const mockStorage = { getSignedUrl: jest.fn().mockResolvedValue('https://signed.url/doc') };
 const mockPdf = { gerarSumarioAlta: jest.fn().mockResolvedValue(Buffer.from('pdf')) };
 
@@ -45,6 +48,9 @@ describe('PortalDoenteService', () => {
     (hashPassword as jest.Mock).mockResolvedValue('hash-simulado');
     (verifyPassword as jest.Mock).mockResolvedValue(true);
     mockJwt.sign.mockReturnValue('jwt-token-simulado');
+    mockRedis.get.mockResolvedValue(null);
+    mockRedis.set.mockResolvedValue(undefined);
+    mockRedis.del.mockResolvedValue(undefined);
     mockStorage.getSignedUrl.mockResolvedValue('https://signed.url/doc');
     mockPdf.gerarSumarioAlta.mockResolvedValue(Buffer.from('pdf'));
 
@@ -53,6 +59,7 @@ describe('PortalDoenteService', () => {
         PortalDoenteService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: JwtService, useValue: mockJwt },
+        { provide: RedisService, useValue: mockRedis },
         { provide: StorageService, useValue: mockStorage },
         { provide: PdfService, useValue: mockPdf },
       ],

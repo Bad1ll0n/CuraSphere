@@ -1296,7 +1296,7 @@ export default function HorariosPagina() {
         };
         return (
           <>
-            <div className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
+            <div role="presentation" className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
             <div className="fixed top-0 right-0 h-full bg-white shadow-2xl z-50 flex flex-col" style={{ width: '420px' }}>
 
               {/* Header */}

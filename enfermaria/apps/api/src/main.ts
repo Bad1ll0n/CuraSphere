@@ -55,15 +55,13 @@ async function bootstrap() {
   // antes do processo terminar, em vez de derrubar ligações a meio.
   app.enableShutdownHooks();
 
-  // Servir uploads como anexos (nunca inline) para evitar XSS via SVG/HTML/PDF embutido
-  app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/uploads',
-    setHeaders: (res) => {
-      res.setHeader('Content-Disposition', 'attachment');
-      res.setHeader('X-Content-Type-Options', 'nosniff');
-      res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
-    },
-  });
+  // S-02: os anexos clínicos DEIXARAM de ser servidos como ficheiros estáticos.
+  //
+  // `useStaticAssets` entrega fora do pipeline do Nest — logo fora dos guards, fora do
+  // interceptor de auditoria e fora do limitador de tentativas. Qualquer pessoa com o URL
+  // descarregava o anexo de um doente, e nada ficava registado sobre quem o leu. Passaram
+  // a ser servidos pelo `FicheirosController`, que verifica o acesso contra a mensagem a
+  // que o anexo pertence.
 
   app.use((compression as any).default());
   app.use((helmet as any).default({

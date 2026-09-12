@@ -1,5 +1,18 @@
 name: Security Scan
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Este ficheiro estava em `enfermaria/.github/workflows/`, pasta que o GitHub
+# Actions NUNCA lê — Trivy, gitleaks, Semgrep, `pnpm audit`, Snyk e ZAP nunca
+# correram uma única vez. Vive agora em `.github/workflows/` na raiz do git.
+#
+# Consequência da mudança: o checkout passa a colocar a RAIZ DO REPOSITÓRIO como
+# cwd, não `enfermaria/`. Todos os passos que dependem do workspace pnpm levam
+# `working-directory: enfermaria` (via `defaults.run`), e os inputs de actions —
+# que NÃO são afectados por `defaults.run` — levam o caminho completo.
+# Scanners de árvore (Trivy, gitleaks, Semgrep) ficam à raiz de propósito:
+# passam agora a cobrir o repositório inteiro, não só o subdirectório.
+# ─────────────────────────────────────────────────────────────────────────────
+
 on:
   push:
     branches:
@@ -17,6 +30,10 @@ jobs:
   audit:
     name: Dependency Audit
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: enfermaria
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +45,9 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
+          # Sem isto o setup-node procura o lockfile na raiz do git (onde não
+          # existe) e falha a preparar a cache.
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
 
       - run: pnpm install --frozen-lockfile
 
@@ -38,20 +58,28 @@ jobs:
   snyk:
     name: Snyk Vulnerability Scan
     runs-on: ubuntu-latest
-    # Só corre se SNYK_TOKEN estiver configurado
-    if: ${{ secrets.SNYK_TOKEN != '' }}
+    timeout-minutes: 20
+    # O contexto `secrets` NÃO está disponível em `jobs.<id>.if` (nem em
+    # `steps.if`) — a condição anterior `if: ${{ secrets.SNYK_TOKEN != '' }}`
+    # era inválida e teria falhado no servidor. O padrão correcto é expor o
+    # segredo como env do job e testar o env no passo.
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: snyk/actions/node@v1.0.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Snyk (só se SNYK_TOKEN estiver configurado)
+        if: env.SNYK_TOKEN != ''
+        uses: snyk/actions/node@v1.0.0
         with:
+          # --all-projects recorre a árvore a partir da raiz do git e descobre
+          # sozinho os manifests em enfermaria/.
           args: --severity-threshold=high --all-projects
 
   trivy:
     name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -68,6 +96,7 @@ jobs:
   gitleaks:
     name: Secrets Scanning (gitleaks)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -79,6 +108,7 @@ jobs:
   semgrep:
     name: Semgrep SAST
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
@@ -113,11 +143,15 @@ jobs:
   zap-dast:
     name: OWASP ZAP DAST (baseline)
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     # DAST precisa da app a correr, por isso NUNCA bloqueia PRs: corre só no scan semanal
     # (schedule) ou manualmente (workflow_dispatch). Arranca uma instância descartável da API
     # (Postgres + Redis como services, env de teste inline — não são segredos reais) e faz-lhe
     # um baseline scan. Se os comandos de build/migração mudarem, ajustar os passos abaixo.
     if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    defaults:
+      run:
+        working-directory: enfermaria
     services:
       postgres:
         image: postgres:16
@@ -140,6 +174,7 @@ jobs:
       JWT_EXPIRES_IN: 1h
       JWT_REFRESH_EXPIRES_IN: 7d
       ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
       NODE_ENV: production
       LOG_PRETTY: 'false'
     steps:
@@ -153,17 +188,28 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Prisma migrate + generate
-        continue-on-error: true
+      # O projecto NÃO tem directório de migrations (workflow db-push-only), por
+      # isso `prisma migrate deploy` não fazia nada; com `continue-on-error: true`
+      # falhava em silêncio e o ZAP acabava a fazer scan a uma API sem schema —
+      # quase todos os endpoints a responder 500 e o scan sem valor.
+      # `db push` é o comando correcto neste projecto, e sem continue-on-error
+      # para que um schema partido seja visível em vez de mascarado.
+      - name: Prisma db push + generate
         run: |
-          npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
-          npx prisma generate --schema apps/api/prisma/schema.prisma
+          pnpm exec prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          pnpm exec prisma generate --schema apps/api/prisma/schema.prisma
+
+      # Os triggers de auditoria não vêm do schema Prisma — sem eles a superfície
+      # testada não é a de produção.
+      - name: Reinstalar triggers de auditoria
+        run: node apps/api/scripts/apply-audit-triggers.mjs
 
       - name: Build API
-        run: npx nx build @org/api
+        run: pnpm exec nx build @org/api
 
       - name: Arrancar API em background
         run: |

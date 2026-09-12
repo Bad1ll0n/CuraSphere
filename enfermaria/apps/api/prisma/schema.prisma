@@ -166,6 +166,8 @@ model Utilizador {
   prescricoesDietaCriadas        PrescricaoDieta[]
   medicacoesAssinadas            Medicacao[]                 @relation("MedicacaoAssinatura")
   notasAssinadas                 NotaClinica[]               @relation("NotaAssinatura")
+  adendasNotasClinicas           NotaClinicaAdenda[]         @relation("NotaClinicaAdendaAutor")
+  transfusoesSegundaVerificacao  RegistoTransfusao[]         @relation("TransfusoesSegundaVerificacao")
   culturasRegistadas             CulturaMicrobiologica[]
   surtosRegistados               SurtoIACS[]
   notasIncidentesTI              NotaIncidenteTI[]           @relation("NotasIncidentesTI")
@@ -193,16 +195,16 @@ model Utilizador {
   portaisCriados                 PortalDoente[]              @relation("PortalDoentesCriados")
   dashboardConfig                DashboardConfig?
   followUpsResponsavel           FollowUpAgendado[]
-  outcomesRegistados             OutcomeClinico[]    @relation("OutcomesRegistados")
-  webhooksCriados                Webhook[]           @relation("WebhooksCriados")
-  cohortsCriadas                 CohortDefinition[]  @relation("CohortsCriadas")
-  transExternasSolicitadas       TransferenciaExterna[] @relation("TransferenciasSolicitadas")
-  transExternasAceites           TransferenciaExterna[] @relation("TransferenciasAceites")
-  regrasCliniasCriadas           RegraClinica[]      @relation("RegrasCliniasCriadas")
+  outcomesRegistados             OutcomeClinico[]            @relation("OutcomesRegistados")
+  webhooksCriados                Webhook[]                   @relation("WebhooksCriados")
+  cohortsCriadas                 CohortDefinition[]          @relation("CohortsCriadas")
+  transExternasSolicitadas       TransferenciaExterna[]      @relation("TransferenciasSolicitadas")
+  transExternasAceites           TransferenciaExterna[]      @relation("TransferenciasAceites")
+  regrasCliniasCriadas           RegraClinica[]              @relation("RegrasCliniasCriadas")
   webAuthnCredentials            WebAuthnCredential[]
-  transfusoesPrescritas          PedidoTransfusao[]     @relation("TransfusoesPrescritas")
-  transfusoesAdministradas       RegistoTransfusao[]    @relation("TransfusoesAdministradas")
-  reacoesTransfusionaisRegisto   ReacaoTransfusional[]  @relation("ReacoesTransfusRegisto")
+  transfusoesPrescritas          PedidoTransfusao[]          @relation("TransfusoesPrescritas")
+  transfusoesAdministradas       RegistoTransfusao[]         @relation("TransfusoesAdministradas")
+  reacoesTransfusionaisRegisto   ReacaoTransfusional[]       @relation("ReacoesTransfusRegisto")
 
   @@index([tenantId, role, ativo])
   @@index([role, ativo])
@@ -223,10 +225,10 @@ model Cama {
   id       String     @id @default(uuid())
   tenantId String     @default("default")
   numero   String     @unique
-  quarto  String
-  estado  EstadoCama @default(livre)
-  servico String?
-  piso    Int?
+  quarto   String
+  estado   EstadoCama @default(livre)
+  servico  String?
+  piso     Int?
 
   doente Doente?
 
@@ -384,6 +386,11 @@ model AtribuicaoDoente {
 
   @@unique([doenteId, enfermeiroId, turnoId])
   @@map("atribuicoes_doente")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
 }
 
 model HorarioEntrada {
@@ -398,6 +405,11 @@ model HorarioEntrada {
 
   @@unique([turnoId, utilizadorId])
   @@map("horarios_entrada")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
 }
 
 model PassagemTurno {
@@ -418,6 +430,11 @@ model PassagemTurno {
 
   @@index([estadoDesafio])
   @@map("passagens_turno")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 model PresencaOnline {
@@ -466,10 +483,29 @@ model NotaClinica {
   assinadaPorId String?
   assinadaPor   Utilizador? @relation("NotaAssinatura", fields: [assinadaPorId], references: [id], onDelete: SetNull)
 
+  adendas NotaClinicaAdenda[]
+
   @@index([doenteId, criadaEm])
   @@index([deletedAt])
   @@index([doenteId, deletedAt])
   @@map("notas_clinicas")
+}
+
+// Adenda a uma nota clínica JÁ ASSINADA. Uma nota assinada é imutável (registo legal):
+// correcções/acrescentos entram como adenda append-only, com autor, momento e motivo.
+model NotaClinicaAdenda {
+  id            String   @id @default(uuid())
+  notaClinicaId String
+  autorId       String
+  texto         String   @db.Text
+  motivo        String   @db.VarChar(500)
+  criadaEm      DateTime @default(now())
+
+  nota  NotaClinica @relation(fields: [notaClinicaId], references: [id], onDelete: Cascade)
+  autor Utilizador  @relation("NotaClinicaAdendaAutor", fields: [autorId], references: [id], onDelete: Cascade)
+
+  @@index([notaClinicaId, criadaEm])
+  @@map("notas_clinicas_adendas")
 }
 
 // ─── Escalas Clínicas Especializadas ─────────────────────────────────────────
@@ -525,6 +561,12 @@ model NotaTurno {
   autor  Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
 
   @@map("notas_turno")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
+  @@index([doenteId])
 }
 
 // ─── Tarefas ─────────────────────────────────────────────────────────────────
@@ -573,6 +615,11 @@ model Tarefa {
   @@index([doenteId, estado])
   @@index([responsavelId, estado])
   @@map("tarefas")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
 }
 
 // ─── Medicação ───────────────────────────────────────────────────────────────
@@ -599,13 +646,21 @@ model Medicacao {
   assinadoEm      DateTime?
   assinadoPorId   String?
 
-  doente       Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  prescritoPor Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
-  validadoPor  Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
-  assinadoPor  Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
-  registos     RegistoMedicacao[]
-  stewardship  StewardshipAntibiotico?
+  // Override de alergia — prescrição feita apesar de alergia documentada.
+  // Persistido para rasto clínico/medico-legal (antes era descartado antes do create).
+  overrideAlergia     Boolean @default(false)
+  overrideMotivo      String? @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
+  overrideAlergenioId String?
 
+  doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  validadoPor       Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
+  assinadoPor       Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
+  overrideAlergenio Alergia?                @relation("MedicacaoOverrideAlergia", fields: [overrideAlergenioId], references: [id], onDelete: SetNull)
+  registos          RegistoMedicacao[]
+  stewardship       StewardshipAntibiotico?
+
+  @@index([doenteId, overrideAlergia])
   @@index([doenteId, ativo])
   @@index([doenteId, ativo, iniciadoEm])
   @@index([estadoValidacao])
@@ -637,7 +692,8 @@ model RegistoMedicacao {
   id                 String    @id @default(uuid())
   administradoEm     DateTime  @default(now())
   observacoes        String?
-  verificacao5Certas Boolean   @default(false)
+  verificacao5Certas Boolean   @default(false) // resultado REAL da verificação, não um literal
+  certosVerificados  Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
   naoAdministrada    Boolean   @default(false)
   motivoNaoAdmin     String?
   deletedAt          DateTime?
@@ -696,6 +752,11 @@ model HorarioTurnoProfissional {
 
   @@id([horarioTurnoId, utilizadorId])
   @@map("horarios_turno_profissionais")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
 }
 
 enum EstadoPedidoTroca {
@@ -722,6 +783,11 @@ model PedidoTrocaTurno {
   aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
 
   @@map("pedidos_troca_turno")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
 }
 
 model AtribuicaoHorarioTurno {
@@ -739,6 +805,11 @@ model AtribuicaoHorarioTurno {
   @@unique([horarioTurnoId, doenteId, utilizadorId])
   @@index([utilizadorId, horarioTurnoId])
   @@map("atribuicoes_horario_turno")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Sinais Vitais ────────────────────────────────────────────────────────────
@@ -762,11 +833,16 @@ model SinalVital {
   avpu                   String? // A=Alert V=Voice P=Pain U=Unresponsive (NEWS2)
   o2Suplementar          Boolean? // parâmetro NEWS2 Scale 2
   news2                  Int? // score NEWS2 calculado automaticamente (adulto)
+  // Um NEWS2 calculado sobre dados parciais NÃO é um NEWS2 "baixo" — é um score incompleto.
+  // Estes dois campos distinguem "não medido" de "normal" para quem lê o registo.
+  news2Completo          Boolean? // true = os 7 parâmetros NEWS2 estavam presentes
+  news2ParametrosFalta   String[] @default([]) // parâmetros em falta no cálculo
+  news2ParametroIsolado3 Boolean? // gatilho RCP: 3 pontos num único parâmetro
   pews                   Int? // score PEWS calculado automaticamente (pediátrico, por faixa etária)
   glasgow                Int? // Glasgow Coma Scale 3-15 (para SOFA SNC)
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)
-  origem                 String? @default("manual") // 'manual' | 'monitor' (proveniência do registo)
+  origem                 String?  @default("manual") // 'manual' | 'monitor' (proveniência do registo)
 
   @@index([doenteId, data])
   @@map("sinais_vitais")
@@ -852,19 +928,19 @@ model AvaliacaoFerida {
 // Compatibilidade ABO/Rh é validada em serviço (dupla-verificação, análoga aos "5 certos").
 
 model BolsaSangue {
-  id            String    @id @default(uuid())
-  tenantId      String    @default("default")
-  numeroUnidade String    @unique // código da bolsa (etiqueta do banco de sangue / ISBT 128)
-  componente    String // 'concentrado_eritrocitos'|'plasma_fresco_congelado'|'concentrado_plaquetas'|'crioprecipitado'|'sangue_total'
-  grupoABO      String // 'A'|'B'|'AB'|'O'
-  rhD           String // 'positivo'|'negativo'
-  volumeMl      Int?
-  dataColheita  DateTime?
-  dataValidade  DateTime
-  estado        String    @default("disponivel") // 'disponivel'|'reservada'|'transfundida'|'expirada'|'descartada'
+  id              String    @id @default(uuid())
+  tenantId        String    @default("default")
+  numeroUnidade   String    @unique // código da bolsa (etiqueta do banco de sangue / ISBT 128)
+  componente      String // 'concentrado_eritrocitos'|'plasma_fresco_congelado'|'concentrado_plaquetas'|'crioprecipitado'|'sangue_total'
+  grupoABO        String // 'A'|'B'|'AB'|'O'
+  rhD             String // 'positivo'|'negativo'
+  volumeMl        Int?
+  dataColheita    DateTime?
+  dataValidade    DateTime
+  estado          String    @default("disponivel") // 'disponivel'|'reservada'|'transfundida'|'expirada'|'descartada'
   reservadaParaId String?
-  criadaEm      DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  criadaEm        DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   reservadaPara     PedidoTransfusao?  @relation(fields: [reservadaParaId], references: [id], onDelete: SetNull)
   registoTransfusao RegistoTransfusao?
@@ -911,18 +987,25 @@ model RegistoTransfusao {
   iniciadoEm         DateTime  @default(now())
   terminadoEm        DateTime?
 
-  // Dupla verificação de segurança à cabeceira (análogo aos "5 certos" do MAR)
-  verificacaoABO      Boolean @default(false) // doente certo + grupo ABO/Rh compatível conferido
-  verificacaoUnidade  Boolean @default(false) // nº da unidade confere com a etiqueta
-  verificacaoValidade Boolean @default(false) // dentro da validade
-  compativel          Boolean // resultado do check de compatibilidade ABO/Rh (calculado em serviço)
-  observacoes         String? @db.VarChar(1000)
+  // Dupla verificação de segurança à cabeceira (análogo aos "5 certos" do MAR).
+  // "Dupla" implica DOIS profissionais: segundoVerificadorId tem de existir e ser
+  // distinto de administradoPorId (validado no serviço; nullable na BD só para não
+  // partir os registos históricos anteriores a esta regra — ver relatório).
+  verificacaoABO       Boolean @default(false) // doente certo + grupo ABO/Rh compatível conferido
+  verificacaoUnidade   Boolean @default(false) // nº da unidade confere com a etiqueta
+  verificacaoValidade  Boolean @default(false) // dentro da validade
+  compativel           Boolean // resultado do check de compatibilidade ABO/Rh (calculado em serviço)
+  segundoVerificadorId String?
+  consentimentoId      String? // consentimento informado de transfusão validado no acto
+  observacoes          String? @db.VarChar(1000)
 
-  pedido          PedidoTransfusao     @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
-  bolsa           BolsaSangue          @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
-  doente          Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  administradoPor Utilizador           @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
-  reacao          ReacaoTransfusional?
+  pedido             PedidoTransfusao        @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
+  bolsa              BolsaSangue             @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
+  doente             Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  administradoPor    Utilizador              @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
+  segundoVerificador Utilizador?             @relation("TransfusoesSegundaVerificacao", fields: [segundoVerificadorId], references: [id], onDelete: SetNull)
+  consentimento      ConsentimentoInformado? @relation("TransfusaoConsentimento", fields: [consentimentoId], references: [id], onDelete: SetNull)
+  reacao             ReacaoTransfusional?
 
   @@index([doenteId, iniciadoEm])
   @@map("registos_transfusao")
@@ -951,17 +1034,17 @@ model ReacaoTransfusional {
 
 // ─── Lista de espera de consultas ────────────────────────────────────────────
 model ListaEspera {
-  id              String    @id @default(uuid())
-  doenteId        String?
-  nomeDoente      String?
-  medicoId        String?
-  especialidade   String
-  prioridade      String    @default("normal") // 'urgente' | 'alta' | 'normal'
-  estado          String    @default("em_espera") // 'em_espera' | 'contactado' | 'agendado' | 'cancelado'
+  id               String   @id @default(uuid())
+  doenteId         String?
+  nomeDoente       String?
+  medicoId         String?
+  especialidade    String
+  prioridade       String   @default("normal") // 'urgente' | 'alta' | 'normal'
+  estado           String   @default("em_espera") // 'em_espera' | 'contactado' | 'agendado' | 'cancelado'
   contactoTelefone String?
-  notas           String?   @db.VarChar(500)
-  criadaEm        DateTime  @default(now())
-  atualizadaEm    DateTime  @updatedAt
+  notas            String?  @db.VarChar(500)
+  criadaEm         DateTime @default(now())
+  atualizadaEm     DateTime @updatedAt
 
   @@index([especialidade, estado, prioridade])
   @@map("lista_espera")
@@ -971,17 +1054,17 @@ model ListaEspera {
 // Registo da submissão de uma prescrição ao sistema nacional (PEM). O cliente é
 // plugável: por defeito usa um mock/simulador; a ligação real à SPMS entra por config.
 model ReceitaEletronica {
-  id             String    @id @default(uuid())
+  id             String   @id @default(uuid())
   doenteId       String
   prescritoPorId String
-  numeroReceita  String?   @unique // nº atribuído pelo PEM
+  numeroReceita  String?  @unique // nº atribuído pelo PEM
   codigoDispensa String? // código de acesso/dispensa (PEM)
-  estado         String    @default("emitida") // 'emitida' | 'dispensada' | 'anulada' | 'erro'
-  ambiente       String    @default("sandbox") // 'sandbox' | 'producao'
+  estado         String   @default("emitida") // 'emitida' | 'dispensada' | 'anulada' | 'erro'
+  ambiente       String   @default("sandbox") // 'sandbox' | 'producao'
   medicamentos   Json // snapshot dos itens prescritos
   erro           String?
-  dataEmissao    DateTime  @default(now())
-  criadaEm       DateTime  @default(now())
+  dataEmissao    DateTime @default(now())
+  criadaEm       DateTime @default(now())
 
   @@index([doenteId, criadaEm])
   @@map("receitas_eletronicas")
@@ -990,32 +1073,32 @@ model ReceitaEletronica {
 // ─── Audit Log ───────────────────────────────────────────────────────────────
 
 model AuditLog {
-  id           String      @id @default(uuid())
-  seq          Int         @unique @default(autoincrement())
+  id             String      @id @default(uuid())
+  seq            Int         @unique @default(autoincrement())
   // Nullable + SetNull: uma escrita registada por trigger pode não ter utilizador da app
   // (ex.: SQL direto → 'system'), e o log de 6 anos tem de sobreviver à remoção do utilizador.
   // NUNCA pode uma FK do audit fazer falhar a escrita de negócio.
-  utilizadorId String?
-  utilizador   Utilizador? @relation(fields: [utilizadorId], references: [id], onDelete: SetNull)
+  utilizadorId   String?
+  utilizador     Utilizador? @relation(fields: [utilizadorId], references: [id], onDelete: SetNull)
   // Snapshot da identidade no momento (papéis mudam; utilizador pode ser apagado).
   utilizadorNome String?
   utilizadorRole String?
-  acao         String
-  entidadeId   String?
-  entidadeTipo String?
-  detalhes     String?
-  ip           String?
-  userAgent    String?
-  correlationId String?
-  origem       String     @default("app") // 'app' | 'trigger' | 'system'
-  createdAt    DateTime   @default(now())
+  acao           String
+  entidadeId     String?
+  entidadeTipo   String?
+  detalhes       String?
+  ip             String?
+  userAgent      String?
+  correlationId  String?
+  origem         String      @default("app") // 'app' | 'trigger' | 'system'
+  createdAt      DateTime    @default(now())
 
   // Hash-de-conteúdo por-linha (independente, sem ordem/lock) — calculado na captura.
   // A prova de integridade global vive em AuditCheckpoint (append-only + assinado).
-  contentHash  String?
+  contentHash String?
   // Legado da 1.ª iteração (cadeia encadeada) — mantido para as linhas antigas.
-  prevHash     String?
-  hash         String?
+  prevHash    String?
+  hash        String?
 
   @@index([utilizadorId, createdAt])
   @@index([createdAt])
@@ -1051,15 +1134,15 @@ model CronLock {
 // de audit_logs, seladas em diferido pelo checkpointer (com watermark de commit) e ancoradas
 // fora da BD. As linhas de audit_logs nunca são alteradas (WORM) — a prova está aqui.
 model AuditCheckpoint {
-  id                 String   @id @default(uuid())
+  id                 String    @id @default(uuid())
   seqInicio          Int
   seqFim             Int
-  raiz               String   // raiz Merkle ou hash encadeado dos contentHash do intervalo
-  prevCheckpointHash String?  // encadeia os checkpoints entre si
-  assinatura         String?  // assinatura da raiz com chave que o DBA não tem
+  raiz               String // raiz Merkle ou hash encadeado dos contentHash do intervalo
+  prevCheckpointHash String? // encadeia os checkpoints entre si
+  assinatura         String? // assinatura da raiz com chave que o DBA não tem
   totalEntradas      Int
   ancoradoEm         DateTime? // quando foi replicado para armazenamento externo/WORM
-  criadoEm           DateTime @default(now())
+  criadoEm           DateTime  @default(now())
 
   @@index([seqFim])
   @@map("audit_checkpoints")
@@ -1068,16 +1151,16 @@ model AuditCheckpoint {
 // Trilho de acessos (LEITURAS) de dados sensíveis. Escrito de forma assíncrona e em lote,
 // SEPARADO do audit de escritas, para não afetar a performance das leituras. Sem cadeia.
 model AcessoLeitura {
-  id            String   @id @default(uuid())
-  utilizadorId  String?
+  id             String   @id @default(uuid())
+  utilizadorId   String?
   utilizadorNome String?
   utilizadorRole String?
-  entidadeTipo  String
-  entidadeId    String?
-  rota          String?
-  ip            String?
-  correlationId String?
-  createdAt     DateTime @default(now())
+  entidadeTipo   String
+  entidadeId     String?
+  rota           String?
+  ip             String?
+  correlationId  String?
+  createdAt      DateTime @default(now())
 
   @@index([utilizadorId, createdAt])
   @@index([entidadeTipo, entidadeId])
@@ -1088,16 +1171,16 @@ model AcessoLeitura {
 // ─── Feature Flags ────────────────────────────────────────────────────────────
 
 model FeatureFlag {
-  id             String   @id @default(uuid())
-  key            String   @unique
-  descricao      String?
-  enabled        Boolean  @default(false) // desliga tudo se false
-  rolloutPercent Int      @default(100)   // % de utilizadores (hash determinístico) quando enabled
-  roles          String[] @default([])    // allowlist de roles (vazio = todas)
-  servicos       String[] @default([])    // allowlist de serviços (vazio = todos)
+  id              String   @id @default(uuid())
+  key             String   @unique
+  descricao       String?
+  enabled         Boolean  @default(false) // desliga tudo se false
+  rolloutPercent  Int      @default(100) // % de utilizadores (hash determinístico) quando enabled
+  roles           String[] @default([]) // allowlist de roles (vazio = todas)
+  servicos        String[] @default([]) // allowlist de serviços (vazio = todos)
   atualizadoPorId String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@map("feature_flags")
 }
@@ -1113,6 +1196,8 @@ model Alergia {
   severidade String
   notas      String?
   criadaEm   DateTime @default(now())
+
+  medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 
   @@index([doenteId])
   @@map("alergias")
@@ -1130,6 +1215,11 @@ model ContactoEmergencia {
   principal Boolean @default(false)
 
   @@map("contactos_emergencia")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Alertas Clínicos ─────────────────────────────────────────────────────────
@@ -1140,6 +1230,9 @@ model AlertaClinico {
   doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo         String
   mensagem     String
+  // Severidade numérica (1 = informativo … 4 = crítico). Usada na de-duplicação:
+  // só se de-duplica quando a severidade NÃO sobe — uma escalada gera sempre linha nova.
+  severidade   Int         @default(1)
   lido         Boolean     @default(false)
   urgencia     Boolean     @default(false)
   acusadoPorId String?
@@ -1169,6 +1262,11 @@ model AvaliacaoRisco {
   criadaEm       DateTime   @default(now())
 
   @@map("avaliacoes_risco")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Sumário de Alta ──────────────────────────────────────────────────────────
@@ -1205,6 +1303,11 @@ model DispositivoToken {
   criadoEm     DateTime   @default(now())
 
   @@map("dispositivos_tokens")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
 }
 
 // ─── Notificações In-App ──────────────────────────────────────────────────────
@@ -1370,6 +1473,11 @@ model EpisodioUrgencia {
 
   @@index([estadoEpisodio, dataEntrada])
   @@map("episodios_urgencia")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 model AtualizacaoTransporte {
@@ -1420,6 +1528,11 @@ model CirurgiaProgramada {
   @@index([dataHora])
   @@index([estado])
   @@map("cirurgias_programadas")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 model ChecklistCirurgia {
@@ -1482,6 +1595,11 @@ model Consulta {
   @@index([medicoId, dataHora])
   @@index([codigo])
   @@map("consultas")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 model AgendaMedico {
@@ -1623,6 +1741,11 @@ model AjusteStock {
   @@index([stockItemId])
   @@index([criadoEm])
   @@map("ajustes_stock")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
 }
 
 model TransferenciaStock {
@@ -1699,6 +1822,11 @@ model PlanoReabilitacao {
   sessoes SessaoFisioterapia[]
 
   @@map("planos_reabilitacao")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 enum EstadoSessao {
@@ -1723,6 +1851,11 @@ model SessaoFisioterapia {
   estado           EstadoSessao      @default(agendada)
 
   @@map("sessoes_fisioterapia")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Pedidos Internos ────────────────────────────────────────────────────────
@@ -1761,6 +1894,11 @@ model PedidoInterno {
 
   @@index([estado, criadoEm])
   @@map("pedidos_internos")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Comunicação Interna ──────────────────────────────────────────────────────
@@ -2262,6 +2400,11 @@ model EventoAdverso {
   @@index([estado])
   @@index([ocorridoEm])
   @@map("eventos_adversos")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Especialidades Clínicas (Nutrição, Psicologia, Terapia da Fala, TAE) ────
@@ -2342,8 +2485,11 @@ model ConsentimentoInformado {
   criadoPorId          String
   criadoPor            Utilizador  @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
+  registosTransfusao RegistoTransfusao[] @relation("TransfusaoConsentimento")
+
   @@index([doenteId])
   @@index([tipo])
+  @@index([doenteId, tipo])
   @@map("consentimentos_informados")
 }
 
@@ -2364,6 +2510,11 @@ model BreakGlassAccess {
   @@index([utilizadorId, doenteId, ativo])
   @@index([expiradoEm])
   @@map("break_glass_access")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
 }
 
 // ─── Protocolos Clínicos ──────────────────────────────────────────────────────
@@ -2630,7 +2781,10 @@ model AcessoFamiliar {
   criadoEm          DateTime @default(now())
   nomeContacto      String
   email             String
-  accessToken       String   @unique @default(cuid())
+  // S-15: guarda-se o SHA-256 do token, nunca o token. Era um `cuid()` — que não é aleatório
+  // criptográfico — guardado em claro: quem lesse esta tabela entrava no portal de todas as
+  // famílias. O token tem 256 bits e só é mostrado uma vez, na criação.
+  accessTokenHash   String   @unique
   accessTokenExpiry DateTime
   ativo             Boolean  @default(true)
 
@@ -2638,7 +2792,6 @@ model AcessoFamiliar {
   criadoPor Utilizador @relation("AcessoFamiliarCriado", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
   @@index([doenteId, ativo])
-  @@index([accessToken])
   @@map("acessos_familiares")
 }
 
@@ -2648,7 +2801,11 @@ model DispositivoFhir {
   id         String    @id @default(uuid())
   nome       String
   tipo       String // 'monitor_vitais' | 'ventilador' | 'bomba_infusao'
-  apiKey     String    @unique @default(cuid())
+  // S-03: guarda-se o SHA-256 da chave, nunca a chave. Um `cuid()` em claro numa coluna
+  // legível por qualquer leitura da tabela — e devolvido inteiro pelo endpoint de
+  // listagem — era uma credencial partilhada à vista de todos. A chave é aleatória de
+  // 256 bits, portanto o hash simples chega: não há dicionário que a ataque.
+  apiKeyHash String    @unique
   doenteId   String?
   ativo      Boolean   @default(true)
   ultimoPing DateTime?
@@ -2692,7 +2849,7 @@ model IdentificadorExterno {
 }
 
 model DocumentoSaude {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   doenteId        String
   tipo            String // 'rx'|'tc'|'rmn'|'eco'|'ecg'|'lab'|'alta'|'prescricao'|'vacinacao'|'patologia'|'outro'
   titulo          String
@@ -2707,12 +2864,12 @@ model DocumentoSaude {
   tamanhoBytes    Int?
   fhirResourceId  String? // ID do recurso FHIR (para upsert)
   modalidadeDicom String? // 'CR'|'CT'|'MR'|'US'|'DX'|'NM'
-  verificado      Boolean  @default(false)
+  verificado      Boolean   @default(false)
   registadoPorId  String?
   assinadoEm      DateTime?
   assinadoPorId   String?
   hashSHA256      String?
-  criadoEm        DateTime @default(now())
+  criadoEm        DateTime  @default(now())
 
   doente        Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   sistemaOrigem SistemaExternoSaude? @relation(fields: [sistemaOrigemId], references: [id], onDelete: SetNull)
@@ -2741,6 +2898,11 @@ model AiDecisao {
   @@index([doenteId, criadoEm])
   @@index([tipo, criadoEm])
   @@map("ai_decisoes")
+
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
 }
 
 model AiMetrica {
@@ -2761,7 +2923,7 @@ model AiMetrica {
 model OutcomeClinico {
   id                     String   @id @default(uuid())
   doenteId               String
-  tipo                   String   // 'readmissao_30d' | 'obito_intra' | 'complicacao' | 'melhoria'
+  tipo                   String // 'readmissao_30d' | 'obito_intra' | 'complicacao' | 'melhoria'
   descricao              String?
   dataOcorrido           DateTime
   relacionadoAiDecisaoId String?
@@ -2823,15 +2985,15 @@ model FotoFerida {
 // ─── Guidelines Clínicas (RAG) ────────────────────────────────────────────────
 
 model GuidelineClinica {
-  id        String   @id @default(uuid())
-  titulo    String
-  categoria String // 'sepsis'|'antibioterapia'|'feridas'|'isolamento'|'dor'|'medicacao'|'geral'
-  conteudo  String   @db.Text
-  fonte     String // "DGS 2024", "Protocolo Hospital", "NICE 2023"
-  versao    String?
-  ativo     Boolean  @default(true)
-  criadoEm  DateTime @default(now())
-  embeddingJson String? @db.Text
+  id            String   @id @default(uuid())
+  titulo        String
+  categoria     String // 'sepsis'|'antibioterapia'|'feridas'|'isolamento'|'dor'|'medicacao'|'geral'
+  conteudo      String   @db.Text
+  fonte         String // "DGS 2024", "Protocolo Hospital", "NICE 2023"
+  versao        String?
+  ativo         Boolean  @default(true)
+  criadoEm      DateTime @default(now())
+  embeddingJson String?  @db.Text
 
   @@index([categoria])
   @@map("guidelines_clinicas")
@@ -2842,7 +3004,7 @@ model GuidelineClinica {
 model CohortDefinition {
   id          String   @id @default(uuid())
   nome        String
-  filtros     Json     // { diagnostico?, idadeMin?, idadeMax?, servico?, icd10Code? }
+  filtros     Json // { diagnostico?, idadeMin?, idadeMax?, servico?, icd10Code? }
   criadoPorId String
   criadoEm    DateTime @default(now())
 
@@ -2855,10 +3017,10 @@ model CohortDefinition {
 // ─── Patient-Reported Outcomes (PROs) ────────────────────────────────────────
 
 model TemplatePRO {
-  id     String @id @default(uuid())
-  nome   String
-  campos Json   // [{ id, label, tipo:'scale'|'bool'|'text', min?, max? }]
-  ativo  Boolean @default(true)
+  id       String   @id @default(uuid())
+  nome     String
+  campos   Json // [{ id, label, tipo:'scale'|'bool'|'text', min?, max? }]
+  ativo    Boolean  @default(true)
   criadoEm DateTime @default(now())
 
   registos RegistoPRO[]
@@ -2870,10 +3032,10 @@ model RegistoPRO {
   id         String   @id @default(uuid())
   doenteId   String
   templateId String
-  respostas  Json     // { campoId: valor }
+  respostas  Json // { campoId: valor }
   criadoEm   DateTime @default(now())
 
-  doente   Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente   Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   template TemplatePRO @relation(fields: [templateId], references: [id])
 
   @@index([doenteId, criadoEm])
@@ -2917,7 +3079,7 @@ model Hl7Mensagem {
 model DashboardConfig {
   id           String   @id @default(uuid())
   userId       String   @unique
-  widgets      Json     // [{ id: string, x: number, y: number, w: number, h: number, visible: boolean }]
+  widgets      Json // [{ id: string, x: number, y: number, w: number, h: number, visible: boolean }]
   atualizadoEm DateTime @updatedAt
   criadoEm     DateTime @default(now())
 
@@ -2929,16 +3091,16 @@ model DashboardConfig {
 // ─── Follow-Up Pós-Alta ───────────────────────────────────────────────────────
 
 model FollowUpAgendado {
-  id             String     @id @default(uuid())
-  doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  tipo           String     // '7_dias' | '30_dias' | 'consulta_especialidade'
-  dataAgendada   DateTime
-  especialidade  String?
-  responsavelId  String
-  responsavel    Utilizador @relation(fields: [responsavelId], references: [id], onDelete: Cascade)
-  concluido      Boolean    @default(false)
-  observacoes    String?    @db.Text
+  id            String     @id @default(uuid())
+  doenteId      String
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  tipo          String // '7_dias' | '30_dias' | 'consulta_especialidade'
+  dataAgendada  DateTime
+  especialidade String?
+  responsavelId String
+  responsavel   Utilizador @relation(fields: [responsavelId], references: [id], onDelete: Cascade)
+  concluido     Boolean    @default(false)
+  observacoes   String?    @db.Text
   criadoEm      DateTime   @default(now())
 
   @@index([responsavelId, concluido])
@@ -2966,18 +3128,18 @@ model Webhook {
 // ─── WebAuthn / FIDO2 passkeys ───────────────────────────────────────────────
 
 model WebAuthnCredential {
-  id               String   @id @default(uuid())
-  credentialId     String   @unique
-  publicKey        Bytes
-  counter          BigInt   @default(0)
-  deviceType       String   @default("singleDevice") // 'singleDevice' | 'multiDevice'
-  backedUp         Boolean  @default(false)
-  transports       String[] // ['internal', 'usb', 'ble', 'nfc', 'hybrid', 'cable']
-  nome             String   @default("Passkey") // nome dado pelo utilizador
-  utilizadorId     String
-  utilizador       Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
-  criadoEm         DateTime @default(now())
-  ultimoUsoEm      DateTime?
+  id           String     @id @default(uuid())
+  credentialId String     @unique
+  publicKey    Bytes
+  counter      BigInt     @default(0)
+  deviceType   String     @default("singleDevice") // 'singleDevice' | 'multiDevice'
+  backedUp     Boolean    @default(false)
+  transports   String[] // ['internal', 'usb', 'ble', 'nfc', 'hybrid', 'cable']
+  nome         String     @default("Passkey") // nome dado pelo utilizador
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  criadoEm     DateTime   @default(now())
+  ultimoUsoEm  DateTime?
 
   @@index([utilizadorId])
   @@map("webauthn_credentials")
@@ -3001,15 +3163,15 @@ model AiPromptInsight {
 // ─── AI Staffing Previsão ────────────────────────────────────────────────────
 
 model AiStaffingPrevisao {
-  id                  String   @id @default(uuid())
-  data                DateTime @db.Date
-  turno               String   // 'manha' | 'tarde' | 'noite'
-  servicoId           String?
-  pessoalAtual        Int?
-  pessoalRecomendado  Int
-  motivo              String   @db.Text
-  confianca           String   // 'alta' | 'media' | 'baixa'
-  criadoEm            DateTime @default(now())
+  id                 String   @id @default(uuid())
+  data               DateTime @db.Date
+  turno              String // 'manha' | 'tarde' | 'noite'
+  servicoId          String?
+  pessoalAtual       Int?
+  pessoalRecomendado Int
+  motivo             String   @db.Text
+  confianca          String // 'alta' | 'media' | 'baixa'
+  criadoEm           DateTime @default(now())
 
   @@index([data])
   @@map("ai_staffing_previsoes")
@@ -3019,9 +3181,9 @@ model AiStaffingPrevisao {
 
 model WellbeingSurvey {
   id           String   @id @default(uuid())
-  utilizadorId String?  // null = anónimo
-  respostas    Json     // { q1: 1-5, q2: 1-5, ... }
-  scoreGlobal  Int      // 1-100
+  utilizadorId String? // null = anónimo
+  respostas    Json // { q1: 1-5, q2: 1-5, ... }
+  scoreGlobal  Int // 1-100
   semana       DateTime @db.Date
   criadoEm     DateTime @default(now())
 
@@ -3045,8 +3207,8 @@ model TransferenciaExterna {
   criadoEm        DateTime  @default(now())
   concluidaEm     DateTime?
 
-  doente        Doente     @relation(fields: [doenteId], references: [id])
-  solicitadoPor Utilizador @relation("TransferenciasSolicitadas", fields: [solicitadoPorId], references: [id])
+  doente        Doente      @relation(fields: [doenteId], references: [id])
+  solicitadoPor Utilizador  @relation("TransferenciasSolicitadas", fields: [solicitadoPorId], references: [id])
   aceitoPor     Utilizador? @relation("TransferenciasAceites", fields: [aceitoPorId], references: [id])
 
   @@index([doenteId])
@@ -3059,8 +3221,8 @@ model TransferenciaExterna {
 model RegraClinica {
   id          String   @id @default(uuid())
   nome        String
-  condicao    Json     // { parametro:'spo2', operador:'<', valor:90 }
-  acoes       Json     // [{ tipo:'notificar', role:'medico' }]
+  condicao    Json // { parametro:'spo2', operador:'<', valor:90 }
+  acoes       Json // [{ tipo:'notificar', role:'medico' }]
   ativa       Boolean  @default(true)
   servicoId   String?
   criadoPorId String
@@ -3075,32 +3237,31 @@ model RegraClinica {
 // ─── SSO Providers ────────────────────────────────────────────────────────────
 
 model SsoProvider {
-  id       String  @id @default(uuid())
-  tipo     String  // 'saml' | 'oidc'
+  id       String   @id @default(uuid())
+  tipo     String // 'saml' | 'oidc'
   nome     String
-  config   Json    // { entryPoint, cert, issuer, clientId, clientSecret, redirectUri, ... }
-  ativo    Boolean @default(true)
+  config   Json // { entryPoint, cert, issuer, clientId, clientSecret, redirectUri, ... }
+  ativo    Boolean  @default(true)
   criadoEm DateTime @default(now())
 
   @@map("sso_providers")
 }
 
-
 // ─── Maternidade / Obstetrícia ──────────────────────────────────────────────
 
 model Gravidez {
-  id                    String   @id @default(uuid())
+  id                    String              @id @default(uuid())
   doenteId              String
-  doente                Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente                Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   dataUltimaMenstruacao DateTime? // DUM
   dataPrevistaParto     DateTime? // DPP (calculada da DUM se não indicada)
   gravida               Int? // G — nº de gestações
   para                  Int? // P — nº de partos
   grupoSanguineo        String?
   fatoresRisco          String?
-  estado                String   @default("ativa") // ativa | concluida | interrompida
+  estado                String              @default("ativa") // ativa | concluida | interrompida
   criadoPorId           String
-  criadoEm              DateTime @default(now())
+  criadoEm              DateTime            @default(now())
   registosPartograma    RegistoPartograma[]
   parto                 Parto?
 
@@ -3143,19 +3304,19 @@ model Parto {
 // ─── Oncologia / Quimioterapia ──────────────────────────────────────────────
 
 model PlanoQuimioterapia {
-  id                   String   @id @default(uuid())
+  id                   String               @id @default(uuid())
   doenteId             String
-  doente               Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente               Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   protocoloNome        String
   ciclosPrevistos      Int
-  intervaloDias        Int      @default(21)
+  intervaloDias        Int                  @default(21)
   alturaCm             Float?
   pesoKg               Float?
   superficieCorporalM2 Float? // BSA (Mosteller)
   farmacos             Json // [{ nome, mgPorM2, doseMaximaMg? }]
-  estado               String   @default("ativo") // ativo | concluido | suspenso
+  estado               String               @default("ativo") // ativo | concluido | suspenso
   criadoPorId          String
-  criadoEm             DateTime @default(now())
+  criadoEm             DateTime             @default(now())
   ciclos               CicloQuimioterapia[]
 
   @@index([doenteId, estado])

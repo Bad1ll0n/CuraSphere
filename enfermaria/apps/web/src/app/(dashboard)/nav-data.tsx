@@ -699,19 +699,86 @@ export function menuVisivel(item: (typeof navItems)[number], u: UtilizadorNav): 
   const it = item as any;
   const servico = u.servico ?? 'internamento';
   const servicoOk = !item.servicos || item.servicos.includes(servico);
+  const notExcludedServico = !it.excludeServicos || !it.excludeServicos.includes(servico);
+  return papelPermitido(item, u) && servicoOk && notExcludedServico;
+}
+
+/**
+ * A parte de `menuVisivel` que é **autorização** e não arrumação de menu: papel, sub-papel e
+ * exclusões de sub-papel. Separada de propósito — o `RolesGuard` da API decide por
+ * papel/sub-papel e **nunca** por serviço, por isso uma guarda de rota que também exigisse o
+ * regime de trabalho seria mais restritiva do que o servidor e bloquearia acessos legítimos
+ * (um médico afecto ao bloco a consultar `/camas`, por exemplo). O regime continua a filtrar
+ * o menu; não fecha a rota.
+ */
+export function papelPermitido(item: (typeof navItems)[number], u: UtilizadorNav): boolean {
+  const it = item as any;
   const roleOk = !item.roles || item.roles.includes(u.role) || (!!u.subRole && item.roles.includes(u.subRole));
   const scoped = it.subRolesByRole?.[u.role] as string[] | undefined;
   const subRoleOk = scoped
     ? (!!u.subRole && scoped.includes(u.subRole))
     : (!it.subRoles || it.subRoles.includes(u.subRole));
   const notExcluded = !it.excludeSubRoles || !it.excludeSubRoles.includes(u.subRole);
-  const notExcludedServico = !it.excludeServicos || !it.excludeServicos.includes(servico);
-  return servicoOk && roleOk && subRoleOk && notExcluded && notExcludedServico;
+  return roleOk && subRoleOk && notExcluded;
 }
 
 /** Devolve os menus visíveis para o utilizador, na ordem de definição. */
 export function filtrarMenus(u: UtilizadorNav) {
   return navItems.filter((item) => menuVisivel(item, u));
+}
+
+/**
+ * Rotas do shell que qualquer sessão de pessoal alcança independentemente do papel:
+ * a landing pós-login, o perfil próprio e as notificações próprias. Não são vistas de
+ * domínio — não têm (nem devem ter) entrada de menu com `roles`, e guardá-las criaria
+ * um ciclo de redirecção para quem não as tem no menu (ex.: a Direção não vê /dashboard).
+ */
+export const ROTAS_UNIVERSAIS = ['/dashboard', '/perfil', '/notificacoes'];
+
+/**
+ * Encontra o item de menu que governa um caminho, por prefixo de segmento mais longo:
+ * `/rh/pessoal` → `/rh`, `/doentes/[id]/consentimentos` → `/doentes`. O "mais longo"
+ * importa porque há entradas aninhadas com papéis mais estreitos que o pai
+ * (`/dashboard-qualidade/ia-insights` vs. `/dashboard-qualidade`). A comparação é por
+ * segmento, para que `/doentes-admin` nunca herde as permissões de `/doentes`.
+ */
+export function itemQueGoverna(pathname: string) {
+  let melhor: (typeof navItems)[number] | undefined;
+  for (const item of navItems) {
+    if (pathname === item.href || pathname.startsWith(item.href + '/')) {
+      if (!melhor || item.href.length > melhor.href.length) melhor = item;
+    }
+  }
+  return melhor;
+}
+
+/**
+ * Camada 2 do controlo de acessos, aplicada a **todas** as rotas do dashboard.
+ *
+ * Reutiliza `menuVisivel` de propósito: esconder um item do menu e permitir o mesmo item
+ * por URL directo eram duas decisões separadas que divergiam. Passam a ser a mesma.
+ * Isto **não substitui** os guards da API (que continuam a ser a autoridade); evita que a
+ * interface renderize e peça dados que o servidor vai recusar.
+ *
+ * Uma rota sem item de menu que a governe é permitida — cobre o shell (ver
+ * `ROTAS_UNIVERSAIS`) e evita que uma rota nova fique inacessível por esquecimento. O
+ * preço é conhecido e está registado: uma vista de domínio nova só fica coberta quando
+ * entrar no `navItems`.
+ */
+export function rotaPermitida(pathname: string, u: UtilizadorNav): boolean {
+  if (ROTAS_UNIVERSAIS.some((r) => pathname === r || pathname.startsWith(r + '/'))) return true;
+  const item = itemQueGoverna(pathname);
+  if (!item) return true;
+  return papelPermitido(item, u);
+}
+
+/**
+ * Destino seguro quando uma rota é recusada: o primeiro menu que o utilizador vê.
+ * Um `/dashboard` fixo daria ciclo de redirecção para papéis que não têm `/dashboard`
+ * no menu (Direção, TI, Operacional, Qualidade).
+ */
+export function destinoPorOmissao(u: UtilizadorNav): string {
+  return filtrarMenus(u)[0]?.href ?? '/perfil';
 }
 
 export const roleLabel: Record<string, string> = {

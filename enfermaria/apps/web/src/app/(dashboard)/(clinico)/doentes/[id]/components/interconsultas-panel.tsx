@@ -49,7 +49,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"

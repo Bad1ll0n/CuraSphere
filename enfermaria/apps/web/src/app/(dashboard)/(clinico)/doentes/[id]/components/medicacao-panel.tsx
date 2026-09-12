@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import QRCode from 'react-qr-code';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -65,7 +66,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -154,6 +155,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const [modalHistoricoMed, setModalHistoricoMed] = useState(false);
   const [medHistorico, setMedHistorico] = useState<Medicacao[]>([]);
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
+
+  const dlgPropor = useDialogoAcessivel({ aberto: modalPropor, onFechar: () => setModalPropor(false), titulo: 'Propor medicação' });
+  const dlgRejeitarProposta = useDialogoAcessivel({ aberto: !!modalRejeitarProposta, onFechar: () => setModalRejeitarProposta(null), titulo: 'Rejeitar proposta' });
+  const dlgHistoricoMed = useDialogoAcessivel({ aberto: modalHistoricoMed, onFechar: () => setModalHistoricoMed(false), titulo: 'Histórico de medicação' });
+  const dlgQrMed = useDialogoAcessivel({ aberto: !!qrMed, onFechar: () => setQrMed(null), titulo: 'Código QR das 5 certas' });
 
   // Confirm modal
   const [confirmarAcao, setConfirmarAcao] = useState<{
@@ -567,7 +573,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Propor Prescrição (enfermeiro) */}
       {modalPropor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgPropor.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
@@ -625,7 +631,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Rejeitar Proposta */}
       {modalRejeitarProposta && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitarProposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
               <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -648,7 +654,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Histórico de Medicação */}
       {modalHistoricoMed && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+          <div {...dlgHistoricoMed.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -719,11 +725,10 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
 
       {/* Modal QR 5 Certos */}
       {qrMed && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
           style={{ backdropFilter: 'blur(4px)' }}
-          onClick={() => setQrMed(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}
-            onClick={e => e.stopPropagation()}>
+          onClick={(e) => { if (e.target === e.currentTarget) setQrMed(null); }}>
+          <div {...dlgQrMed.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h3 className="text-base font-bold text-slate-900">QR — 5 Certos</h3>
               <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">

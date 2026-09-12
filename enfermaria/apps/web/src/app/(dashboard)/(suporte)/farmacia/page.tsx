@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 
 interface StockItem {
@@ -119,6 +120,14 @@ export default function FarmaciaPage() {
   const [motivoRejeicao, setMotivoRejeicao] = useState('');
   const [modalRejeitarPedido, setModalRejeitarPedido] = useState<string | null>(null);
   const [motivoRejPedido, setMotivoRejPedido] = useState('');
+
+  const dlgRejeitar = useDialogoAcessivel({ aberto: !!modalRejeitar, onFechar: () => setModalRejeitar(null), titulo: 'Rejeitar validação' });
+  const dlgRejeitarPedido = useDialogoAcessivel({ aberto: !!modalRejeitarPedido, onFechar: () => setModalRejeitarPedido(null), titulo: 'Rejeitar pedido' });
+  const dlgPedido = useDialogoAcessivel({ aberto: !!pedidoModal, onFechar: () => setPedidoModal(null), titulo: 'Pedido de reposição' });
+  const dlgAjustar = useDialogoAcessivel({ aberto: !!ajustarModal, onFechar: () => setAjustarModal(null), titulo: 'Ajustar stock' });
+  const dlgHistorico = useDialogoAcessivel({ aberto: !!historicoModal, onFechar: () => setHistoricoModal(null), titulo: 'Histórico de movimentos' });
+  const dlgTransferir = useDialogoAcessivel({ aberto: !!transferirModal, onFechar: () => setTransferirModal(null), titulo: 'Transferir stock' });
+  const dlgNovoItem = useDialogoAcessivel({ aberto: novoItemModal, onFechar: () => setNovoItemModal(false), titulo: 'Novo item de stock' });
 
   // Filtros relatório
   const [relServico, setRelServico] = useState('');
@@ -598,7 +607,7 @@ export default function FarmaciaPage() {
       {/* Rejeitar Prescrição */}
       {modalRejeitar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Prescrição</h2>
               <button aria-label="Fechar" onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -621,7 +630,7 @@ export default function FarmaciaPage() {
       {/* Rejeitar Pedido Médico */}
       {modalRejeitarPedido && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitarPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Pedido</h2>
               <button aria-label="Fechar" onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -645,7 +654,7 @@ export default function FarmaciaPage() {
       {/* Pedido de Reposição */}
       {pedidoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Pedido de Reposição</h2>
               <button aria-label="Fechar" onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -678,7 +687,7 @@ export default function FarmaciaPage() {
       {/* Ajustar Quantidade */}
       {ajustarModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgAjustar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Ajustar Stock</h2>
               <button aria-label="Fechar" onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -725,7 +734,7 @@ export default function FarmaciaPage() {
       {/* Histórico de Ajustes */}
       {historicoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '540px', padding: '32px', margin: '0 16px', maxHeight: '80vh', overflowY: 'auto' }}>
+          <div {...dlgHistorico.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '540px', padding: '32px', margin: '0 16px', maxHeight: '80vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Histórico de Ajustes</h2>
@@ -763,7 +772,7 @@ export default function FarmaciaPage() {
       {/* Transferir Stock */}
       {transferirModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgTransferir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Transferir Stock</h2>
               <button aria-label="Fechar" onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -805,7 +814,7 @@ export default function FarmaciaPage() {
       {/* Novo Item */}
       {novoItemModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovoItem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Novo Item de Stock</h2>
               <button aria-label="Fechar" onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

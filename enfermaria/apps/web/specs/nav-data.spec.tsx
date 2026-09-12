@@ -1,4 +1,4 @@
-import { filtrarMenus, type UtilizadorNav } from '../src/app/(dashboard)/nav-data';
+import { destinoPorOmissao, filtrarMenus, itemQueGoverna, rotaPermitida, type UtilizadorNav } from '../src/app/(dashboard)/nav-data';
 
 // Verifica o filtro de menus à granularidade papel × sub-papel × regime — a especificação
 // acordada. Cada persona reflete um utilizador real da seed.
@@ -107,5 +107,79 @@ describe('filtrarMenus — regime de trabalho (serviço)', () => {
   it('Médico em Urgência vê a Urgência; em Internamento não (é gated por serviço)', () => {
     expect(hrefs({ role: 'medico', subRole: 'clinico_geral', servico: 'urgencia' })).toContain('/urgencia');
     expect(hrefs({ role: 'medico', subRole: 'clinico_geral', servico: 'internamento' })).not.toContain('/urgencia');
+  });
+});
+
+
+// ── Camada 2 do controlo de acessos: a guarda de rota (FE-15) ──────────────────────────
+// Antes, esconder o menu era a única defesa no cliente: escrever o URL alcançava tudo.
+
+const ENFERMEIRO: UtilizadorNav = { role: 'enfermeiro', subRole: 'generalista', servico: 'internamento' };
+const DIRECAO: UtilizadorNav = { role: 'direcao', subRole: null, servico: 'internamento' };
+const TI_ADMIN: UtilizadorNav = { role: 'ti', subRole: 'it_admin', servico: 'internamento' };
+const RECECAO: UtilizadorNav = { role: 'administrativo', subRole: 'front_desk', servico: 'consultas_externas' };
+
+describe('rotaPermitida — as fugas reportadas ficam fechadas', () => {
+  it('enfermeiro não alcança /dashboard-executivo, /auditoria nem /rh por URL directo', () => {
+    expect(rotaPermitida('/dashboard-executivo', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/auditoria', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/rh', ENFERMEIRO)).toBe(false);
+  });
+
+  it('sub-rotas herdam a permissão do item que as governa (/rh/pessoal, /rh/avaliacoes)', () => {
+    expect(itemQueGoverna('/rh/pessoal')?.href).toBe('/rh');
+    expect(rotaPermitida('/rh/pessoal', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/rh/avaliacoes', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/rh/pessoal', { role: 'administrativo', subRole: 'hr_specialist', servico: 'internamento' })).toBe(true);
+  });
+
+  it('a correspondência é por segmento — /doentes-admin não herda de /doentes', () => {
+    expect(itemQueGoverna('/doentes-admin')?.href).toBe('/doentes-admin');
+    expect(itemQueGoverna('/doentes-admin/abc')?.href).toBe('/doentes-admin');
+    expect(rotaPermitida('/doentes-admin', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/doentes/abc/consentimentos', ENFERMEIRO)).toBe(true);
+  });
+
+  it('ganha o prefixo mais longo quando há entradas aninhadas mais estreitas', () => {
+    expect(itemQueGoverna('/dashboard-qualidade/ia-insights')?.href).toBe('/dashboard-qualidade/ia-insights');
+    expect(rotaPermitida('/dashboard-qualidade/ia-insights', ENFERMEIRO)).toBe(false);
+    expect(rotaPermitida('/dashboard-qualidade/ia-insights', { role: 'enfermeiro', subRole: 'supervisor_enfermagem', servico: 'internamento' })).toBe(true);
+  });
+
+  it('quem tem o papel continua a entrar', () => {
+    expect(rotaPermitida('/dashboard-executivo', DIRECAO)).toBe(true);
+    expect(rotaPermitida('/auditoria', TI_ADMIN)).toBe(true);
+    expect(rotaPermitida('/utilizadores', TI_ADMIN)).toBe(true);
+    expect(rotaPermitida('/recepcao', RECECAO)).toBe(true);
+  });
+
+  it('o sub-papel errado dentro do papel certo não passa', () => {
+    expect(rotaPermitida('/faturacao', RECECAO)).toBe(false);
+    expect(rotaPermitida('/utilizadores', { role: 'ti', subRole: 'suporte_n1', servico: 'internamento' })).toBe(false);
+  });
+});
+
+describe('rotaPermitida — alinhamento com o RolesGuard da API', () => {
+  it('o regime de trabalho filtra o menu mas NÃO fecha a rota (a API não conhece serviço)', () => {
+    const medicoInternamento: UtilizadorNav = { role: 'medico', subRole: 'clinico_geral', servico: 'internamento' };
+    expect(filtrarMenus(medicoInternamento).map((i) => i.href)).not.toContain('/urgencia');
+    expect(rotaPermitida('/urgencia', medicoInternamento)).toBe(true);
+  });
+
+  it('as rotas universais do shell nunca são recusadas', () => {
+    for (const u of [ENFERMEIRO, DIRECAO, TI_ADMIN, RECECAO]) {
+      expect(rotaPermitida('/dashboard', u)).toBe(true);
+      expect(rotaPermitida('/perfil', u)).toBe(true);
+      expect(rotaPermitida('/notificacoes', u)).toBe(true);
+    }
+  });
+});
+
+describe('destinoPorOmissao — não pode haver ciclo de redirecção', () => {
+  it('devolve um destino que o próprio utilizador tem permissão para abrir', () => {
+    for (const u of [ENFERMEIRO, DIRECAO, TI_ADMIN, RECECAO, { role: 'operacional', subRole: null, servico: 'internamento' }, { role: 'qualidade', subRole: null, servico: 'internamento' }]) {
+      const destino = destinoPorOmissao(u as UtilizadorNav);
+      expect(rotaPermitida(destino, u as UtilizadorNav)).toBe(true);
+    }
   });
 });

@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
+import { AUD_PORTAL, JWT_ISSUER } from '../auth/token-audiences';
 
 @Injectable()
 export class PortalJwtStrategy extends PassportStrategy(Strategy, 'portal-jwt') {
@@ -15,8 +16,11 @@ export class PortalJwtStrategy extends PassportStrategy(Strategy, 'portal-jwt') 
       ignoreExpiration: false,
       secretOrKey: config.get<string>('JWT_SECRET')!,
       algorithms: ['HS256'],
-      issuer: 'curasphere-api',
-      audience: 'curasphere',
+      issuer: JWT_ISSUER,
+      // SEC-01: audiência exclusiva do portal. Um access token de pessoal (aud
+      // 'curasphere') deixa de ser aceite aqui, e — mais importante — o token do
+      // portal deixa de ser aceite pela estratégia do pessoal.
+      audience: AUD_PORTAL,
     });
   }
 

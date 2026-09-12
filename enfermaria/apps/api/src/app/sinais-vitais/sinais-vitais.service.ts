@@ -1,11 +1,17 @@
-import { Injectable, Logger, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { ProtocolosService } from '../protocolos/protocolos.service';
 import { SepsisService } from '../sepsis/sepsis.service';
 import { BaselinesService } from '../baselines/baselines.service';
-import { calcularNEWS2 } from '../common/news2.helper';
+import {
+  calcularNEWS2Detalhado,
+  NEWS2_LABELS,
+  NEWS2_LIMIAR_CRITICO,
+  NEWS2_LIMIAR_ESCALADA,
+  type News2Parametro,
+} from '../common/news2.helper';
 import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
 
 const ROLES_PODEM_REGISTAR = [
@@ -27,18 +33,36 @@ export interface CriarSinalVitalDto {
   glasgow?: number;
   pamMedia?: number;
   vasopressores?: boolean;
+  /** Instante da medição (ISO 8601). Ver o tratamento em `_processarVital`. */
+  medidoEm?: string;
 }
 
-function detetar(dto: CriarSinalVitalDto): string[] {
-  const alertas: string[] = [];
+interface CriticoIndividual {
+  parametro: News2Parametro | 'pressaoDiastolica';
+  mensagem: string;
+}
+
+/**
+ * Rede paralela de valores individualmente críticos — independente do score composto.
+ * Cobre agora também frequência respiratória e AVPU (antes em falta: uma FR de 30 ou um
+ * doente que só responde à voz passavam em silêncio se o NEWS2 total ficasse abaixo de 5).
+ */
+function detetar(dto: CriarSinalVitalDto): CriticoIndividual[] {
+  const alertas: CriticoIndividual[] = [];
   if (dto.saturacaoO2 != null && dto.saturacaoO2 < 90)
-    alertas.push(`SpO₂ crítica: ${dto.saturacaoO2}%`);
+    alertas.push({ parametro: 'saturacaoO2', mensagem: `SpO₂ crítica: ${dto.saturacaoO2}%` });
   if (dto.pressaoSistolica != null && (dto.pressaoSistolica >= 160 || dto.pressaoSistolica < 80))
-    alertas.push(`TA sistólica crítica: ${dto.pressaoSistolica} mmHg`);
+    alertas.push({ parametro: 'pressaoSistolica', mensagem: `TA sistólica crítica: ${dto.pressaoSistolica} mmHg` });
   if (dto.pulso != null && (dto.pulso > 120 || dto.pulso < 50))
-    alertas.push(`Pulso crítico: ${dto.pulso} bpm`);
+    alertas.push({ parametro: 'pulso', mensagem: `Pulso crítico: ${dto.pulso} bpm` });
   if (dto.temperatura != null && (dto.temperatura > 38.5 || dto.temperatura < 35))
-    alertas.push(`Temperatura crítica: ${dto.temperatura}ºC`);
+    alertas.push({ parametro: 'temperatura', mensagem: `Temperatura crítica: ${dto.temperatura}ºC` });
+  // NEWS2: FR ≤8 ou ≥25 vale 3 pontos — banda vermelha do RCP.
+  if (dto.frequenciaRespiratoria != null && (dto.frequenciaRespiratoria <= 8 || dto.frequenciaRespiratoria >= 25))
+    alertas.push({ parametro: 'frequenciaRespiratoria', mensagem: `Frequência respiratória crítica: ${dto.frequenciaRespiratoria}/min` });
+  // Qualquer AVPU diferente de "Alert" é alteração do estado de consciência.
+  if (dto.avpu && dto.avpu !== 'A')
+    alertas.push({ parametro: 'avpu', mensagem: `Estado de consciência alterado (AVPU: ${dto.avpu})` });
   return alertas;
 }
 
@@ -71,13 +95,64 @@ export class SinaisVitaisService {
     return this._processarVital(doenteId, responsavelId, dto, 'monitor');
   }
 
+  /**
+   * Emite um alerta clínico + notificação da equipa, sempre com `await` e com as rejeições
+   * contidas. Antes estas chamadas eram feitas sem `await` e sem `.catch()`: como a API não
+   * regista um handler de `unhandledRejection`, uma falha aqui derrubava o processo.
+   * Uma falha a notificar nunca pode impedir o registo do vital — daí o log em vez do throw.
+   */
+  private async _emitirAlerta(
+    doenteId: string,
+    tipo: string,
+    titulo: string,
+    mensagem: string,
+    severidade: number,
+  ): Promise<void> {
+    try {
+      await this.alertasService.criarAlerta(doenteId, tipo, mensagem, severidade);
+    } catch (err) {
+      this.logger.error(`criarAlerta(${tipo}) falhou`, (err as Error)?.message ?? String(err));
+    }
+    try {
+      await this.notificacoesService.enviarParaDoente(doenteId, titulo, mensagem);
+    } catch (err) {
+      this.logger.error(`enviarParaDoente(${tipo}) falhou`, (err as Error)?.message ?? String(err));
+    }
+  }
+
   private async _processarVital(doenteId: string, registadoPorId: string, dto: CriarSinalVitalDto, origem: 'manual' | 'monitor') {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
     if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
-    const news2 = calcularNEWS2(dto);
-    const data: any = { doenteId, registadoPorId, origem, ...dto };
-    if (news2 != null) data.news2 = news2;
+    const detalheNews2 = calcularNEWS2Detalhado(dto);
+    const news2 = detalheNews2.score;
+    // MB-05: a hora da MEDIÇÃO, não a da chegada ao servidor. Um registo feito offline
+    // à cabeceira e sincronizado três horas depois ficava datado da sincronização, o que
+    // desloca a tendência do NEWS2 e a detecção de deterioração para o momento errado.
+    const { medidoEm, ...valores } = dto;
+    const data: any = { doenteId, registadoPorId, origem, ...valores };
+
+    if (medidoEm) {
+      const instante = new Date(medidoEm);
+      const TOLERANCIA_RELOGIO_MS = 5 * 60 * 1000;
+      if (instante.getTime() > Date.now() + TOLERANCIA_RELOGIO_MS) {
+        // Um vital medido no futuro é sempre relógio mal configurado. Aceitá-lo
+        // corromperia a ordem da tendência clínica.
+        throw new BadRequestException(
+          'A hora de medição está no futuro — verifique o relógio do dispositivo.',
+        );
+      }
+      // Qualquer instante no passado é aceite tal como declarado: é o que o enfermeiro
+      // observou, e recusá-lo perderia registo clínico que já existe.
+      data.data = instante;
+    }
+    if (news2 != null) {
+      data.news2 = news2;
+      // "Não medido" ≠ "normal": guarda-se sempre o que faltou e se o score é de confiança.
+      data.news2Completo = detalheNews2.completo;
+      data.news2ParametrosFalta = detalheNews2.parametrosEmFalta;
+      data.news2ParametroIsolado3 = detalheNews2.parametroIsoladoTres;
+    }
 
     // PEWS (pediátrico) — calculado por faixa etária quando o doente tem < 16 anos.
     let pews: number | null = null;
@@ -99,38 +174,68 @@ export class SinaisVitaisService {
 
     // Alertas por valores individuais críticos
     const criticos = detetar(dto);
-    for (const msg of criticos) {
-      this.alertasService.criarAlerta(doenteId, 'sinal_vital_critico', msg);
-      this.notificacoesService.enviarParaDoente(
-        doenteId,
-        `⚠ Sinal Vital Crítico — ${doente.nome}`,
-        msg,
+    for (const critico of criticos) {
+      await this._emitirAlerta(
+        doenteId, 'sinal_vital_critico',
+        `⚠ Sinal Vital Crítico — ${doente.nome}`, critico.mensagem, 3,
       );
     }
 
     // Alerta NEWS2 (score composto — mais abrangente que alertas individuais)
-    if (news2 != null && news2 >= 5) {
-      const nivel = news2 >= 7 ? 'CRÍTICO' : 'ALTO';
-      const resposta = news2 >= 7 ? 'Resposta imediata (≥7)' : 'Resposta urgente (5–6)';
+    if (news2 != null && news2 >= NEWS2_LIMIAR_ESCALADA) {
+      const critico = news2 >= NEWS2_LIMIAR_CRITICO;
+      const nivel = critico ? 'CRÍTICO' : 'ALTO';
+      const resposta = critico ? 'Resposta imediata (≥7)' : 'Resposta urgente (5–6)';
       const msg = `NEWS2 ${nivel} — Score ${news2}. ${resposta} necessária.`;
-      this.alertasService.criarAlerta(doenteId, news2 >= 7 ? 'news2_critico' : 'news2_alto', msg);
-      this.notificacoesService.enviarParaDoente(
-        doenteId,
-        `🔴 NEWS2 ${nivel} — ${doente.nome}`,
-        msg,
+      await this._emitirAlerta(
+        doenteId, critico ? 'news2_critico' : 'news2_alto',
+        `🔴 NEWS2 ${nivel} — ${doente.nome}`, msg, critico ? 4 : 3,
       );
 
-      if (news2 >= 7) {
+      if (critico) {
         this.protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis').catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
+    } else if (detalheNews2.parametroIsoladoTres) {
+      // Gatilho RCP: 3 pontos NUM PARÂMETRO ISOLADO exige revisão urgente por clínico
+      // mesmo com o total abaixo de 5 (ex.: FR de 30 → NEWS2 total 3).
+      // Só se reporta o que a rede de valores críticos ainda não cobriu.
+      const jaReportados = new Set<string>(criticos.map((c) => c.parametro));
+      const novos = detalheNews2.parametrosVermelhos.filter((p) => !jaReportados.has(p));
+      if (novos.length > 0) {
+        const lista = novos.map((p) => NEWS2_LABELS[p]).join(', ');
+        const msg =
+          `Parâmetro isolado em vermelho (3 pontos NEWS2): ${lista}. ` +
+          `NEWS2 total ${news2 ?? 'não calculável'} — o RCP exige revisão urgente por clínico ` +
+          `mesmo quando o score total é baixo.`;
+        await this._emitirAlerta(
+          doenteId, 'news2_parametro_isolado',
+          `🔴 Parâmetro vital isolado em vermelho — ${doente.nome}`, msg, 3,
+        );
+      }
+    }
+
+    // Score calculado sobre dados parciais que, no pior cenário, poderia atingir o limiar
+    // de escalada: não é um NEWS2 tranquilizador, é um NEWS2 inconclusivo.
+    if (news2 != null && !detalheNews2.conclusivo) {
+      const faltam = detalheNews2.parametrosEmFalta.map((p) => NEWS2_LABELS[p]).join(', ');
+      const msg =
+        `NEWS2 ${news2} calculado com dados INCOMPLETOS — em falta: ${faltam}. ` +
+        `Com os parâmetros em falta no pior valor o score seria ${detalheNews2.scoreMaximoPossivel}. ` +
+        `Score não conclusivo — completar a avaliação.`;
+      await this._emitirAlerta(
+        doenteId, 'news2_incompleto',
+        `⚠ NEWS2 incompleto — ${doente.nome}`, msg, 2,
+      );
     }
 
     // Alerta PEWS (pediátrico) — a criança deteriora rápido, por isso limiares sensíveis.
     if (pews != null && pews >= 4) {
       const nivel = pews >= 6 ? 'CRÍTICO' : 'ALTO';
       const msg = `PEWS ${nivel} — Score ${pews} (pediátrico). Reavaliação ${pews >= 6 ? 'imediata' : 'urgente'} necessária.`;
-      this.alertasService.criarAlerta(doenteId, pews >= 6 ? 'pews_critico' : 'pews_alto', msg);
-      this.notificacoesService.enviarParaDoente(doenteId, `🔴 PEWS ${nivel} — ${doente.nome}`, msg);
+      await this._emitirAlerta(
+        doenteId, pews >= 6 ? 'pews_critico' : 'pews_alto',
+        `🔴 PEWS ${nivel} — ${doente.nome}`, msg, pews >= 6 ? 4 : 3,
+      );
     }
 
     // Hooks assíncronos: Sépsis Sentinel + Baselines Individuais

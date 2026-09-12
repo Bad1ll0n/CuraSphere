@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 
 interface Tarefa {
   id: string;
@@ -37,15 +39,19 @@ export default function TarefasScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filtro, setFiltro] = useState<'todas' | 'clinica' | 'logistica'>('todas');
+  const [erroCarga, setErroCarga] = useState(false);
 
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data } = await api.get('/tarefas/minhas');
       setTarefas(data.sort((a: Tarefa, b: Tarefa) =>
         (ordem[a.prioridade] ?? 9) - (ordem[b.prioridade] ?? 9)
       ));
-    } catch (_e) {
-      // ignorar erros de rede
+    } catch (e) {
+      // A6: "ignorar erros de rede" mostrava "Sem tarefas pendentes neste turno".
+      registarFalhaSilenciosa('TarefasScreen.carregar', e);
+      setErroCarga(true);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -87,7 +93,12 @@ export default function TarefasScreen() {
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
       >
-        {filtradas.length === 0 ? (
+        {erroCarga ? (
+          <ErroCarregamento
+            texto="Isto não quer dizer que não haja tarefas pendentes. Verifique a ligação e tente de novo."
+            onTentarNovamente={() => { setLoading(true); carregar(); }}
+          />
+        ) : filtradas.length === 0 ? (
           <View style={s.vazio}>
             <Text style={s.vazioTexto}>Sem tarefas pendentes neste turno</Text>
           </View>

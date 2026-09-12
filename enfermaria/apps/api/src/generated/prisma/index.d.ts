@@ -74,6 +74,11 @@ export type RegistoCheckin = $Result.DefaultSelection<Prisma.$RegistoCheckinPayl
  */
 export type NotaClinica = $Result.DefaultSelection<Prisma.$NotaClinicaPayload>
 /**
+ * Model NotaClinicaAdenda
+ * 
+ */
+export type NotaClinicaAdenda = $Result.DefaultSelection<Prisma.$NotaClinicaAdendaPayload>
+/**
  * Model EscalaClinica
  * 
  */
@@ -1414,6 +1419,16 @@ export class PrismaClient<
     * ```
     */
   get notaClinica(): Prisma.NotaClinicaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notaClinicaAdenda`: Exposes CRUD operations for the **NotaClinicaAdenda** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotaClinicaAdendas
+    * const notaClinicaAdendas = await prisma.notaClinicaAdenda.findMany()
+    * ```
+    */
+  get notaClinicaAdenda(): Prisma.NotaClinicaAdendaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.escalaClinica`: Exposes CRUD operations for the **EscalaClinica** model.
@@ -3120,6 +3135,7 @@ export namespace Prisma {
     PresencaOnline: 'PresencaOnline',
     RegistoCheckin: 'RegistoCheckin',
     NotaClinica: 'NotaClinica',
+    NotaClinicaAdenda: 'NotaClinicaAdenda',
     EscalaClinica: 'EscalaClinica',
     NotaTurno: 'NotaTurno',
     Tarefa: 'Tarefa',
@@ -3261,7 +3277,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "laudoRadiologico" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "notaClinicaAdenda" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "laudoRadiologico" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4150,6 +4166,80 @@ export namespace Prisma {
           count: {
             args: Prisma.NotaClinicaCountArgs<ExtArgs>
             result: $Utils.Optional<NotaClinicaCountAggregateOutputType> | number
+          }
+        }
+      }
+      NotaClinicaAdenda: {
+        payload: Prisma.$NotaClinicaAdendaPayload<ExtArgs>
+        fields: Prisma.NotaClinicaAdendaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotaClinicaAdendaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotaClinicaAdendaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          findFirst: {
+            args: Prisma.NotaClinicaAdendaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotaClinicaAdendaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          findMany: {
+            args: Prisma.NotaClinicaAdendaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>[]
+          }
+          create: {
+            args: Prisma.NotaClinicaAdendaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          createMany: {
+            args: Prisma.NotaClinicaAdendaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotaClinicaAdendaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>[]
+          }
+          delete: {
+            args: Prisma.NotaClinicaAdendaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          update: {
+            args: Prisma.NotaClinicaAdendaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotaClinicaAdendaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotaClinicaAdendaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotaClinicaAdendaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotaClinicaAdendaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaClinicaAdendaPayload>
+          }
+          aggregate: {
+            args: Prisma.NotaClinicaAdendaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotaClinicaAdenda>
+          }
+          groupBy: {
+            args: Prisma.NotaClinicaAdendaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotaClinicaAdendaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotaClinicaAdendaCountArgs<ExtArgs>
+            result: $Utils.Optional<NotaClinicaAdendaCountAggregateOutputType> | number
           }
         }
       }
@@ -13597,6 +13687,7 @@ export namespace Prisma {
     presencaOnline?: PresencaOnlineOmit
     registoCheckin?: RegistoCheckinOmit
     notaClinica?: NotaClinicaOmit
+    notaClinicaAdenda?: NotaClinicaAdendaOmit
     escalaClinica?: EscalaClinicaOmit
     notaTurno?: NotaTurnoOmit
     tarefa?: TarefaOmit
@@ -13917,6 +14008,8 @@ export namespace Prisma {
     prescricoesDietaCriadas: number
     medicacoesAssinadas: number
     notasAssinadas: number
+    adendasNotasClinicas: number
+    transfusoesSegundaVerificacao: number
     culturasRegistadas: number
     surtosRegistados: number
     notasIncidentesTI: number
@@ -14038,6 +14131,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | UtilizadorCountOutputTypeCountPrescricoesDietaCriadasArgs
     medicacoesAssinadas?: boolean | UtilizadorCountOutputTypeCountMedicacoesAssinadasArgs
     notasAssinadas?: boolean | UtilizadorCountOutputTypeCountNotasAssinadasArgs
+    adendasNotasClinicas?: boolean | UtilizadorCountOutputTypeCountAdendasNotasClinicasArgs
+    transfusoesSegundaVerificacao?: boolean | UtilizadorCountOutputTypeCountTransfusoesSegundaVerificacaoArgs
     culturasRegistadas?: boolean | UtilizadorCountOutputTypeCountCulturasRegistadasArgs
     surtosRegistados?: boolean | UtilizadorCountOutputTypeCountSurtosRegistadosArgs
     notasIncidentesTI?: boolean | UtilizadorCountOutputTypeCountNotasIncidentesTIArgs
@@ -14665,6 +14760,20 @@ export namespace Prisma {
    */
   export type UtilizadorCountOutputTypeCountNotasAssinadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotaClinicaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAdendasNotasClinicasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaClinicaAdendaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTransfusoesSegundaVerificacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegistoTransfusaoWhereInput
   }
 
   /**
@@ -15480,6 +15589,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type NotaClinicaCountOutputType
+   */
+
+  export type NotaClinicaCountOutputType = {
+    adendas: number
+  }
+
+  export type NotaClinicaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    adendas?: boolean | NotaClinicaCountOutputTypeCountAdendasArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * NotaClinicaCountOutputType without action
+   */
+  export type NotaClinicaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaCountOutputType
+     */
+    select?: NotaClinicaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * NotaClinicaCountOutputType without action
+   */
+  export type NotaClinicaCountOutputTypeCountAdendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaClinicaAdendaWhereInput
+  }
+
+
+  /**
    * Count Type MedicacaoCountOutputType
    */
 
@@ -15658,6 +15798,37 @@ export namespace Prisma {
    */
   export type PedidoTransfusaoCountOutputTypeCountRegistosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RegistoTransfusaoWhereInput
+  }
+
+
+  /**
+   * Count Type AlergiaCountOutputType
+   */
+
+  export type AlergiaCountOutputType = {
+    medicacoesOverride: number
+  }
+
+  export type AlergiaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    medicacoesOverride?: boolean | AlergiaCountOutputTypeCountMedicacoesOverrideArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AlergiaCountOutputType without action
+   */
+  export type AlergiaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlergiaCountOutputType
+     */
+    select?: AlergiaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AlergiaCountOutputType without action
+   */
+  export type AlergiaCountOutputTypeCountMedicacoesOverrideArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MedicacaoWhereInput
   }
 
 
@@ -16066,6 +16237,37 @@ export namespace Prisma {
    */
   export type EquipamentoCountOutputTypeCountManutencoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ManutencaoWhereInput
+  }
+
+
+  /**
+   * Count Type ConsentimentoInformadoCountOutputType
+   */
+
+  export type ConsentimentoInformadoCountOutputType = {
+    registosTransfusao: number
+  }
+
+  export type ConsentimentoInformadoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registosTransfusao?: boolean | ConsentimentoInformadoCountOutputTypeCountRegistosTransfusaoArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ConsentimentoInformadoCountOutputType without action
+   */
+  export type ConsentimentoInformadoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsentimentoInformadoCountOutputType
+     */
+    select?: ConsentimentoInformadoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ConsentimentoInformadoCountOutputType without action
+   */
+  export type ConsentimentoInformadoCountOutputTypeCountRegistosTransfusaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegistoTransfusaoWhereInput
   }
 
 
@@ -18840,6 +19042,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | Utilizador$prescricoesDietaCriadasArgs<ExtArgs>
     medicacoesAssinadas?: boolean | Utilizador$medicacoesAssinadasArgs<ExtArgs>
     notasAssinadas?: boolean | Utilizador$notasAssinadasArgs<ExtArgs>
+    adendasNotasClinicas?: boolean | Utilizador$adendasNotasClinicasArgs<ExtArgs>
+    transfusoesSegundaVerificacao?: boolean | Utilizador$transfusoesSegundaVerificacaoArgs<ExtArgs>
     culturasRegistadas?: boolean | Utilizador$culturasRegistadasArgs<ExtArgs>
     surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
     notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
@@ -19029,6 +19233,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | Utilizador$prescricoesDietaCriadasArgs<ExtArgs>
     medicacoesAssinadas?: boolean | Utilizador$medicacoesAssinadasArgs<ExtArgs>
     notasAssinadas?: boolean | Utilizador$notasAssinadasArgs<ExtArgs>
+    adendasNotasClinicas?: boolean | Utilizador$adendasNotasClinicasArgs<ExtArgs>
+    transfusoesSegundaVerificacao?: boolean | Utilizador$transfusoesSegundaVerificacaoArgs<ExtArgs>
     culturasRegistadas?: boolean | Utilizador$culturasRegistadasArgs<ExtArgs>
     surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
     notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
@@ -19163,6 +19369,8 @@ export namespace Prisma {
       prescricoesDietaCriadas: Prisma.$PrescricaoDietaPayload<ExtArgs>[]
       medicacoesAssinadas: Prisma.$MedicacaoPayload<ExtArgs>[]
       notasAssinadas: Prisma.$NotaClinicaPayload<ExtArgs>[]
+      adendasNotasClinicas: Prisma.$NotaClinicaAdendaPayload<ExtArgs>[]
+      transfusoesSegundaVerificacao: Prisma.$RegistoTransfusaoPayload<ExtArgs>[]
       culturasRegistadas: Prisma.$CulturaMicrobiologicaPayload<ExtArgs>[]
       surtosRegistados: Prisma.$SurtoIACSPayload<ExtArgs>[]
       notasIncidentesTI: Prisma.$NotaIncidenteTIPayload<ExtArgs>[]
@@ -19698,6 +19906,8 @@ export namespace Prisma {
     prescricoesDietaCriadas<T extends Utilizador$prescricoesDietaCriadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$prescricoesDietaCriadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescricaoDietaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     medicacoesAssinadas<T extends Utilizador$medicacoesAssinadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$medicacoesAssinadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasAssinadas<T extends Utilizador$notasAssinadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasAssinadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adendasNotasClinicas<T extends Utilizador$adendasNotasClinicasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$adendasNotasClinicasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transfusoesSegundaVerificacao<T extends Utilizador$transfusoesSegundaVerificacaoArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$transfusoesSegundaVerificacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoTransfusaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     culturasRegistadas<T extends Utilizador$culturasRegistadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$culturasRegistadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     surtosRegistados<T extends Utilizador$surtosRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$surtosRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasIncidentesTI<T extends Utilizador$notasIncidentesTIArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasIncidentesTIArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -22227,6 +22437,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotaClinicaScalarFieldEnum | NotaClinicaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.adendasNotasClinicas
+   */
+  export type Utilizador$adendasNotasClinicasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    where?: NotaClinicaAdendaWhereInput
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotaClinicaAdendaScalarFieldEnum | NotaClinicaAdendaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.transfusoesSegundaVerificacao
+   */
+  export type Utilizador$transfusoesSegundaVerificacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoTransfusao
+     */
+    select?: RegistoTransfusaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoTransfusao
+     */
+    omit?: RegistoTransfusaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoTransfusaoInclude<ExtArgs> | null
+    where?: RegistoTransfusaoWhereInput
+    orderBy?: RegistoTransfusaoOrderByWithRelationInput | RegistoTransfusaoOrderByWithRelationInput[]
+    cursor?: RegistoTransfusaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegistoTransfusaoScalarFieldEnum | RegistoTransfusaoScalarFieldEnum[]
   }
 
   /**
@@ -34056,6 +34314,8 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     assinadaPor?: boolean | NotaClinica$assinadaPorArgs<ExtArgs>
+    adendas?: boolean | NotaClinica$adendasArgs<ExtArgs>
+    _count?: boolean | NotaClinicaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaClinica"]>
 
   export type NotaClinicaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -34114,6 +34374,8 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     assinadaPor?: boolean | NotaClinica$assinadaPorArgs<ExtArgs>
+    adendas?: boolean | NotaClinica$adendasArgs<ExtArgs>
+    _count?: boolean | NotaClinicaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type NotaClinicaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -34132,6 +34394,7 @@ export namespace Prisma {
       doente: Prisma.$DoentePayload<ExtArgs>
       autor: Prisma.$UtilizadorPayload<ExtArgs>
       assinadaPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+      adendas: Prisma.$NotaClinicaAdendaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -34543,6 +34806,7 @@ export namespace Prisma {
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     autor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     assinadaPor<T extends NotaClinica$assinadaPorArgs<ExtArgs> = {}>(args?: Subset<T, NotaClinica$assinadaPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    adendas<T extends NotaClinica$adendasArgs<ExtArgs> = {}>(args?: Subset<T, NotaClinica$adendasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -35004,6 +35268,30 @@ export namespace Prisma {
   }
 
   /**
+   * NotaClinica.adendas
+   */
+  export type NotaClinica$adendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    where?: NotaClinicaAdendaWhereInput
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotaClinicaAdendaScalarFieldEnum | NotaClinicaAdendaScalarFieldEnum[]
+  }
+
+  /**
    * NotaClinica without action
    */
   export type NotaClinicaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -35019,6 +35307,1090 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: NotaClinicaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NotaClinicaAdenda
+   */
+
+  export type AggregateNotaClinicaAdenda = {
+    _count: NotaClinicaAdendaCountAggregateOutputType | null
+    _min: NotaClinicaAdendaMinAggregateOutputType | null
+    _max: NotaClinicaAdendaMaxAggregateOutputType | null
+  }
+
+  export type NotaClinicaAdendaMinAggregateOutputType = {
+    id: string | null
+    notaClinicaId: string | null
+    autorId: string | null
+    texto: string | null
+    motivo: string | null
+    criadaEm: Date | null
+  }
+
+  export type NotaClinicaAdendaMaxAggregateOutputType = {
+    id: string | null
+    notaClinicaId: string | null
+    autorId: string | null
+    texto: string | null
+    motivo: string | null
+    criadaEm: Date | null
+  }
+
+  export type NotaClinicaAdendaCountAggregateOutputType = {
+    id: number
+    notaClinicaId: number
+    autorId: number
+    texto: number
+    motivo: number
+    criadaEm: number
+    _all: number
+  }
+
+
+  export type NotaClinicaAdendaMinAggregateInputType = {
+    id?: true
+    notaClinicaId?: true
+    autorId?: true
+    texto?: true
+    motivo?: true
+    criadaEm?: true
+  }
+
+  export type NotaClinicaAdendaMaxAggregateInputType = {
+    id?: true
+    notaClinicaId?: true
+    autorId?: true
+    texto?: true
+    motivo?: true
+    criadaEm?: true
+  }
+
+  export type NotaClinicaAdendaCountAggregateInputType = {
+    id?: true
+    notaClinicaId?: true
+    autorId?: true
+    texto?: true
+    motivo?: true
+    criadaEm?: true
+    _all?: true
+  }
+
+  export type NotaClinicaAdendaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotaClinicaAdenda to aggregate.
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaClinicaAdendas to fetch.
+     */
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaClinicaAdendas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaClinicaAdendas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotaClinicaAdendas
+    **/
+    _count?: true | NotaClinicaAdendaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotaClinicaAdendaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotaClinicaAdendaMaxAggregateInputType
+  }
+
+  export type GetNotaClinicaAdendaAggregateType<T extends NotaClinicaAdendaAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotaClinicaAdenda]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotaClinicaAdenda[P]>
+      : GetScalarType<T[P], AggregateNotaClinicaAdenda[P]>
+  }
+
+
+
+
+  export type NotaClinicaAdendaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaClinicaAdendaWhereInput
+    orderBy?: NotaClinicaAdendaOrderByWithAggregationInput | NotaClinicaAdendaOrderByWithAggregationInput[]
+    by: NotaClinicaAdendaScalarFieldEnum[] | NotaClinicaAdendaScalarFieldEnum
+    having?: NotaClinicaAdendaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotaClinicaAdendaCountAggregateInputType | true
+    _min?: NotaClinicaAdendaMinAggregateInputType
+    _max?: NotaClinicaAdendaMaxAggregateInputType
+  }
+
+  export type NotaClinicaAdendaGroupByOutputType = {
+    id: string
+    notaClinicaId: string
+    autorId: string
+    texto: string
+    motivo: string
+    criadaEm: Date
+    _count: NotaClinicaAdendaCountAggregateOutputType | null
+    _min: NotaClinicaAdendaMinAggregateOutputType | null
+    _max: NotaClinicaAdendaMaxAggregateOutputType | null
+  }
+
+  type GetNotaClinicaAdendaGroupByPayload<T extends NotaClinicaAdendaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotaClinicaAdendaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotaClinicaAdendaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotaClinicaAdendaGroupByOutputType[P]>
+            : GetScalarType<T[P], NotaClinicaAdendaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotaClinicaAdendaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    notaClinicaId?: boolean
+    autorId?: boolean
+    texto?: boolean
+    motivo?: boolean
+    criadaEm?: boolean
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaClinicaAdenda"]>
+
+  export type NotaClinicaAdendaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    notaClinicaId?: boolean
+    autorId?: boolean
+    texto?: boolean
+    motivo?: boolean
+    criadaEm?: boolean
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaClinicaAdenda"]>
+
+  export type NotaClinicaAdendaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    notaClinicaId?: boolean
+    autorId?: boolean
+    texto?: boolean
+    motivo?: boolean
+    criadaEm?: boolean
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaClinicaAdenda"]>
+
+  export type NotaClinicaAdendaSelectScalar = {
+    id?: boolean
+    notaClinicaId?: boolean
+    autorId?: boolean
+    texto?: boolean
+    motivo?: boolean
+    criadaEm?: boolean
+  }
+
+  export type NotaClinicaAdendaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "notaClinicaId" | "autorId" | "texto" | "motivo" | "criadaEm", ExtArgs["result"]["notaClinicaAdenda"]>
+  export type NotaClinicaAdendaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotaClinicaAdendaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotaClinicaAdendaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    nota?: boolean | NotaClinicaDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $NotaClinicaAdendaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotaClinicaAdenda"
+    objects: {
+      nota: Prisma.$NotaClinicaPayload<ExtArgs>
+      autor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      notaClinicaId: string
+      autorId: string
+      texto: string
+      motivo: string
+      criadaEm: Date
+    }, ExtArgs["result"]["notaClinicaAdenda"]>
+    composites: {}
+  }
+
+  type NotaClinicaAdendaGetPayload<S extends boolean | null | undefined | NotaClinicaAdendaDefaultArgs> = $Result.GetResult<Prisma.$NotaClinicaAdendaPayload, S>
+
+  type NotaClinicaAdendaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotaClinicaAdendaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotaClinicaAdendaCountAggregateInputType | true
+    }
+
+  export interface NotaClinicaAdendaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotaClinicaAdenda'], meta: { name: 'NotaClinicaAdenda' } }
+    /**
+     * Find zero or one NotaClinicaAdenda that matches the filter.
+     * @param {NotaClinicaAdendaFindUniqueArgs} args - Arguments to find a NotaClinicaAdenda
+     * @example
+     * // Get one NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotaClinicaAdendaFindUniqueArgs>(args: SelectSubset<T, NotaClinicaAdendaFindUniqueArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NotaClinicaAdenda that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotaClinicaAdendaFindUniqueOrThrowArgs} args - Arguments to find a NotaClinicaAdenda
+     * @example
+     * // Get one NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotaClinicaAdendaFindUniqueOrThrowArgs>(args: SelectSubset<T, NotaClinicaAdendaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotaClinicaAdenda that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaFindFirstArgs} args - Arguments to find a NotaClinicaAdenda
+     * @example
+     * // Get one NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotaClinicaAdendaFindFirstArgs>(args?: SelectSubset<T, NotaClinicaAdendaFindFirstArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotaClinicaAdenda that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaFindFirstOrThrowArgs} args - Arguments to find a NotaClinicaAdenda
+     * @example
+     * // Get one NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotaClinicaAdendaFindFirstOrThrowArgs>(args?: SelectSubset<T, NotaClinicaAdendaFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NotaClinicaAdendas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotaClinicaAdendas
+     * const notaClinicaAdendas = await prisma.notaClinicaAdenda.findMany()
+     * 
+     * // Get first 10 NotaClinicaAdendas
+     * const notaClinicaAdendas = await prisma.notaClinicaAdenda.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notaClinicaAdendaWithIdOnly = await prisma.notaClinicaAdenda.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotaClinicaAdendaFindManyArgs>(args?: SelectSubset<T, NotaClinicaAdendaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NotaClinicaAdenda.
+     * @param {NotaClinicaAdendaCreateArgs} args - Arguments to create a NotaClinicaAdenda.
+     * @example
+     * // Create one NotaClinicaAdenda
+     * const NotaClinicaAdenda = await prisma.notaClinicaAdenda.create({
+     *   data: {
+     *     // ... data to create a NotaClinicaAdenda
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotaClinicaAdendaCreateArgs>(args: SelectSubset<T, NotaClinicaAdendaCreateArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NotaClinicaAdendas.
+     * @param {NotaClinicaAdendaCreateManyArgs} args - Arguments to create many NotaClinicaAdendas.
+     * @example
+     * // Create many NotaClinicaAdendas
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotaClinicaAdendaCreateManyArgs>(args?: SelectSubset<T, NotaClinicaAdendaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotaClinicaAdendas and returns the data saved in the database.
+     * @param {NotaClinicaAdendaCreateManyAndReturnArgs} args - Arguments to create many NotaClinicaAdendas.
+     * @example
+     * // Create many NotaClinicaAdendas
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotaClinicaAdendas and only return the `id`
+     * const notaClinicaAdendaWithIdOnly = await prisma.notaClinicaAdenda.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotaClinicaAdendaCreateManyAndReturnArgs>(args?: SelectSubset<T, NotaClinicaAdendaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NotaClinicaAdenda.
+     * @param {NotaClinicaAdendaDeleteArgs} args - Arguments to delete one NotaClinicaAdenda.
+     * @example
+     * // Delete one NotaClinicaAdenda
+     * const NotaClinicaAdenda = await prisma.notaClinicaAdenda.delete({
+     *   where: {
+     *     // ... filter to delete one NotaClinicaAdenda
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotaClinicaAdendaDeleteArgs>(args: SelectSubset<T, NotaClinicaAdendaDeleteArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NotaClinicaAdenda.
+     * @param {NotaClinicaAdendaUpdateArgs} args - Arguments to update one NotaClinicaAdenda.
+     * @example
+     * // Update one NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotaClinicaAdendaUpdateArgs>(args: SelectSubset<T, NotaClinicaAdendaUpdateArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NotaClinicaAdendas.
+     * @param {NotaClinicaAdendaDeleteManyArgs} args - Arguments to filter NotaClinicaAdendas to delete.
+     * @example
+     * // Delete a few NotaClinicaAdendas
+     * const { count } = await prisma.notaClinicaAdenda.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotaClinicaAdendaDeleteManyArgs>(args?: SelectSubset<T, NotaClinicaAdendaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotaClinicaAdendas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotaClinicaAdendas
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotaClinicaAdendaUpdateManyArgs>(args: SelectSubset<T, NotaClinicaAdendaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotaClinicaAdendas and returns the data updated in the database.
+     * @param {NotaClinicaAdendaUpdateManyAndReturnArgs} args - Arguments to update many NotaClinicaAdendas.
+     * @example
+     * // Update many NotaClinicaAdendas
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NotaClinicaAdendas and only return the `id`
+     * const notaClinicaAdendaWithIdOnly = await prisma.notaClinicaAdenda.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotaClinicaAdendaUpdateManyAndReturnArgs>(args: SelectSubset<T, NotaClinicaAdendaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NotaClinicaAdenda.
+     * @param {NotaClinicaAdendaUpsertArgs} args - Arguments to update or create a NotaClinicaAdenda.
+     * @example
+     * // Update or create a NotaClinicaAdenda
+     * const notaClinicaAdenda = await prisma.notaClinicaAdenda.upsert({
+     *   create: {
+     *     // ... data to create a NotaClinicaAdenda
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotaClinicaAdenda we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotaClinicaAdendaUpsertArgs>(args: SelectSubset<T, NotaClinicaAdendaUpsertArgs<ExtArgs>>): Prisma__NotaClinicaAdendaClient<$Result.GetResult<Prisma.$NotaClinicaAdendaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NotaClinicaAdendas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaCountArgs} args - Arguments to filter NotaClinicaAdendas to count.
+     * @example
+     * // Count the number of NotaClinicaAdendas
+     * const count = await prisma.notaClinicaAdenda.count({
+     *   where: {
+     *     // ... the filter for the NotaClinicaAdendas we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotaClinicaAdendaCountArgs>(
+      args?: Subset<T, NotaClinicaAdendaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotaClinicaAdendaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotaClinicaAdenda.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotaClinicaAdendaAggregateArgs>(args: Subset<T, NotaClinicaAdendaAggregateArgs>): Prisma.PrismaPromise<GetNotaClinicaAdendaAggregateType<T>>
+
+    /**
+     * Group by NotaClinicaAdenda.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaClinicaAdendaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotaClinicaAdendaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotaClinicaAdendaGroupByArgs['orderBy'] }
+        : { orderBy?: NotaClinicaAdendaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotaClinicaAdendaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotaClinicaAdendaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotaClinicaAdenda model
+   */
+  readonly fields: NotaClinicaAdendaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotaClinicaAdenda.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotaClinicaAdendaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    nota<T extends NotaClinicaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NotaClinicaDefaultArgs<ExtArgs>>): Prisma__NotaClinicaClient<$Result.GetResult<Prisma.$NotaClinicaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    autor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotaClinicaAdenda model
+   */
+  interface NotaClinicaAdendaFieldRefs {
+    readonly id: FieldRef<"NotaClinicaAdenda", 'String'>
+    readonly notaClinicaId: FieldRef<"NotaClinicaAdenda", 'String'>
+    readonly autorId: FieldRef<"NotaClinicaAdenda", 'String'>
+    readonly texto: FieldRef<"NotaClinicaAdenda", 'String'>
+    readonly motivo: FieldRef<"NotaClinicaAdenda", 'String'>
+    readonly criadaEm: FieldRef<"NotaClinicaAdenda", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotaClinicaAdenda findUnique
+   */
+  export type NotaClinicaAdendaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaClinicaAdenda to fetch.
+     */
+    where: NotaClinicaAdendaWhereUniqueInput
+  }
+
+  /**
+   * NotaClinicaAdenda findUniqueOrThrow
+   */
+  export type NotaClinicaAdendaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaClinicaAdenda to fetch.
+     */
+    where: NotaClinicaAdendaWhereUniqueInput
+  }
+
+  /**
+   * NotaClinicaAdenda findFirst
+   */
+  export type NotaClinicaAdendaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaClinicaAdenda to fetch.
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaClinicaAdendas to fetch.
+     */
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotaClinicaAdendas.
+     */
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaClinicaAdendas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaClinicaAdendas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotaClinicaAdendas.
+     */
+    distinct?: NotaClinicaAdendaScalarFieldEnum | NotaClinicaAdendaScalarFieldEnum[]
+  }
+
+  /**
+   * NotaClinicaAdenda findFirstOrThrow
+   */
+  export type NotaClinicaAdendaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaClinicaAdenda to fetch.
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaClinicaAdendas to fetch.
+     */
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotaClinicaAdendas.
+     */
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaClinicaAdendas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaClinicaAdendas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotaClinicaAdendas.
+     */
+    distinct?: NotaClinicaAdendaScalarFieldEnum | NotaClinicaAdendaScalarFieldEnum[]
+  }
+
+  /**
+   * NotaClinicaAdenda findMany
+   */
+  export type NotaClinicaAdendaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaClinicaAdendas to fetch.
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaClinicaAdendas to fetch.
+     */
+    orderBy?: NotaClinicaAdendaOrderByWithRelationInput | NotaClinicaAdendaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotaClinicaAdendas.
+     */
+    cursor?: NotaClinicaAdendaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaClinicaAdendas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaClinicaAdendas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotaClinicaAdendas.
+     */
+    distinct?: NotaClinicaAdendaScalarFieldEnum | NotaClinicaAdendaScalarFieldEnum[]
+  }
+
+  /**
+   * NotaClinicaAdenda create
+   */
+  export type NotaClinicaAdendaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotaClinicaAdenda.
+     */
+    data: XOR<NotaClinicaAdendaCreateInput, NotaClinicaAdendaUncheckedCreateInput>
+  }
+
+  /**
+   * NotaClinicaAdenda createMany
+   */
+  export type NotaClinicaAdendaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotaClinicaAdendas.
+     */
+    data: NotaClinicaAdendaCreateManyInput | NotaClinicaAdendaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotaClinicaAdenda createManyAndReturn
+   */
+  export type NotaClinicaAdendaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * The data used to create many NotaClinicaAdendas.
+     */
+    data: NotaClinicaAdendaCreateManyInput | NotaClinicaAdendaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotaClinicaAdenda update
+   */
+  export type NotaClinicaAdendaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotaClinicaAdenda.
+     */
+    data: XOR<NotaClinicaAdendaUpdateInput, NotaClinicaAdendaUncheckedUpdateInput>
+    /**
+     * Choose, which NotaClinicaAdenda to update.
+     */
+    where: NotaClinicaAdendaWhereUniqueInput
+  }
+
+  /**
+   * NotaClinicaAdenda updateMany
+   */
+  export type NotaClinicaAdendaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotaClinicaAdendas.
+     */
+    data: XOR<NotaClinicaAdendaUpdateManyMutationInput, NotaClinicaAdendaUncheckedUpdateManyInput>
+    /**
+     * Filter which NotaClinicaAdendas to update
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * Limit how many NotaClinicaAdendas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotaClinicaAdenda updateManyAndReturn
+   */
+  export type NotaClinicaAdendaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * The data used to update NotaClinicaAdendas.
+     */
+    data: XOR<NotaClinicaAdendaUpdateManyMutationInput, NotaClinicaAdendaUncheckedUpdateManyInput>
+    /**
+     * Filter which NotaClinicaAdendas to update
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * Limit how many NotaClinicaAdendas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotaClinicaAdenda upsert
+   */
+  export type NotaClinicaAdendaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotaClinicaAdenda to update in case it exists.
+     */
+    where: NotaClinicaAdendaWhereUniqueInput
+    /**
+     * In case the NotaClinicaAdenda found by the `where` argument doesn't exist, create a new NotaClinicaAdenda with this data.
+     */
+    create: XOR<NotaClinicaAdendaCreateInput, NotaClinicaAdendaUncheckedCreateInput>
+    /**
+     * In case the NotaClinicaAdenda was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotaClinicaAdendaUpdateInput, NotaClinicaAdendaUncheckedUpdateInput>
+  }
+
+  /**
+   * NotaClinicaAdenda delete
+   */
+  export type NotaClinicaAdendaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
+    /**
+     * Filter which NotaClinicaAdenda to delete.
+     */
+    where: NotaClinicaAdendaWhereUniqueInput
+  }
+
+  /**
+   * NotaClinicaAdenda deleteMany
+   */
+  export type NotaClinicaAdendaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotaClinicaAdendas to delete
+     */
+    where?: NotaClinicaAdendaWhereInput
+    /**
+     * Limit how many NotaClinicaAdendas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotaClinicaAdenda without action
+   */
+  export type NotaClinicaAdendaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaClinicaAdenda
+     */
+    select?: NotaClinicaAdendaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaClinicaAdenda
+     */
+    omit?: NotaClinicaAdendaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaClinicaAdendaInclude<ExtArgs> | null
   }
 
 
@@ -38557,6 +39929,9 @@ export namespace Prisma {
     motivoRejeicao: string | null
     assinadoEm: Date | null
     assinadoPorId: string | null
+    overrideAlergia: boolean | null
+    overrideMotivo: string | null
+    overrideAlergenioId: string | null
   }
 
   export type MedicacaoMaxAggregateOutputType = {
@@ -38578,6 +39953,9 @@ export namespace Prisma {
     motivoRejeicao: string | null
     assinadoEm: Date | null
     assinadoPorId: string | null
+    overrideAlergia: boolean | null
+    overrideMotivo: string | null
+    overrideAlergenioId: string | null
   }
 
   export type MedicacaoCountAggregateOutputType = {
@@ -38599,6 +39977,9 @@ export namespace Prisma {
     motivoRejeicao: number
     assinadoEm: number
     assinadoPorId: number
+    overrideAlergia: number
+    overrideMotivo: number
+    overrideAlergenioId: number
     _all: number
   }
 
@@ -38622,6 +40003,9 @@ export namespace Prisma {
     motivoRejeicao?: true
     assinadoEm?: true
     assinadoPorId?: true
+    overrideAlergia?: true
+    overrideMotivo?: true
+    overrideAlergenioId?: true
   }
 
   export type MedicacaoMaxAggregateInputType = {
@@ -38643,6 +40027,9 @@ export namespace Prisma {
     motivoRejeicao?: true
     assinadoEm?: true
     assinadoPorId?: true
+    overrideAlergia?: true
+    overrideMotivo?: true
+    overrideAlergenioId?: true
   }
 
   export type MedicacaoCountAggregateInputType = {
@@ -38664,6 +40051,9 @@ export namespace Prisma {
     motivoRejeicao?: true
     assinadoEm?: true
     assinadoPorId?: true
+    overrideAlergia?: true
+    overrideMotivo?: true
+    overrideAlergenioId?: true
     _all?: true
   }
 
@@ -38758,6 +40148,9 @@ export namespace Prisma {
     motivoRejeicao: string | null
     assinadoEm: Date | null
     assinadoPorId: string | null
+    overrideAlergia: boolean
+    overrideMotivo: string | null
+    overrideAlergenioId: string | null
     _count: MedicacaoCountAggregateOutputType | null
     _min: MedicacaoMinAggregateOutputType | null
     _max: MedicacaoMaxAggregateOutputType | null
@@ -38796,10 +40189,14 @@ export namespace Prisma {
     motivoRejeicao?: boolean
     assinadoEm?: boolean
     assinadoPorId?: boolean
+    overrideAlergia?: boolean
+    overrideMotivo?: boolean
+    overrideAlergenioId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
     registos?: boolean | Medicacao$registosArgs<ExtArgs>
     stewardship?: boolean | Medicacao$stewardshipArgs<ExtArgs>
     _count?: boolean | MedicacaoCountOutputTypeDefaultArgs<ExtArgs>
@@ -38824,10 +40221,14 @@ export namespace Prisma {
     motivoRejeicao?: boolean
     assinadoEm?: boolean
     assinadoPorId?: boolean
+    overrideAlergia?: boolean
+    overrideMotivo?: boolean
+    overrideAlergenioId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
   }, ExtArgs["result"]["medicacao"]>
 
   export type MedicacaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -38849,10 +40250,14 @@ export namespace Prisma {
     motivoRejeicao?: boolean
     assinadoEm?: boolean
     assinadoPorId?: boolean
+    overrideAlergia?: boolean
+    overrideMotivo?: boolean
+    overrideAlergenioId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
   }, ExtArgs["result"]["medicacao"]>
 
   export type MedicacaoSelectScalar = {
@@ -38874,14 +40279,18 @@ export namespace Prisma {
     motivoRejeicao?: boolean
     assinadoEm?: boolean
     assinadoPorId?: boolean
+    overrideAlergia?: boolean
+    overrideMotivo?: boolean
+    overrideAlergenioId?: boolean
   }
 
-  export type MedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "nome" | "dose" | "via" | "frequencia" | "ativo" | "iniciadoEm" | "terminadoEm" | "deletedAt" | "doenteId" | "prescritoPorId" | "estadoValidacao" | "validadoPorId" | "validadaEm" | "motivoRejeicao" | "assinadoEm" | "assinadoPorId", ExtArgs["result"]["medicacao"]>
+  export type MedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "nome" | "dose" | "via" | "frequencia" | "ativo" | "iniciadoEm" | "terminadoEm" | "deletedAt" | "doenteId" | "prescritoPorId" | "estadoValidacao" | "validadoPorId" | "validadaEm" | "motivoRejeicao" | "assinadoEm" | "assinadoPorId" | "overrideAlergia" | "overrideMotivo" | "overrideAlergenioId", ExtArgs["result"]["medicacao"]>
   export type MedicacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
     registos?: boolean | Medicacao$registosArgs<ExtArgs>
     stewardship?: boolean | Medicacao$stewardshipArgs<ExtArgs>
     _count?: boolean | MedicacaoCountOutputTypeDefaultArgs<ExtArgs>
@@ -38891,12 +40300,14 @@ export namespace Prisma {
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
   }
   export type MedicacaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     validadoPor?: boolean | Medicacao$validadoPorArgs<ExtArgs>
     assinadoPor?: boolean | Medicacao$assinadoPorArgs<ExtArgs>
+    overrideAlergenio?: boolean | Medicacao$overrideAlergenioArgs<ExtArgs>
   }
 
   export type $MedicacaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -38906,6 +40317,7 @@ export namespace Prisma {
       prescritoPor: Prisma.$UtilizadorPayload<ExtArgs>
       validadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
       assinadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+      overrideAlergenio: Prisma.$AlergiaPayload<ExtArgs> | null
       registos: Prisma.$RegistoMedicacaoPayload<ExtArgs>[]
       stewardship: Prisma.$StewardshipAntibioticoPayload<ExtArgs> | null
     }
@@ -38928,6 +40340,9 @@ export namespace Prisma {
       motivoRejeicao: string | null
       assinadoEm: Date | null
       assinadoPorId: string | null
+      overrideAlergia: boolean
+      overrideMotivo: string | null
+      overrideAlergenioId: string | null
     }, ExtArgs["result"]["medicacao"]>
     composites: {}
   }
@@ -39326,6 +40741,7 @@ export namespace Prisma {
     prescritoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     validadoPor<T extends Medicacao$validadoPorArgs<ExtArgs> = {}>(args?: Subset<T, Medicacao$validadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     assinadoPor<T extends Medicacao$assinadoPorArgs<ExtArgs> = {}>(args?: Subset<T, Medicacao$assinadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    overrideAlergenio<T extends Medicacao$overrideAlergenioArgs<ExtArgs> = {}>(args?: Subset<T, Medicacao$overrideAlergenioArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     registos<T extends Medicacao$registosArgs<ExtArgs> = {}>(args?: Subset<T, Medicacao$registosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoMedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stewardship<T extends Medicacao$stewardshipArgs<ExtArgs> = {}>(args?: Subset<T, Medicacao$stewardshipArgs<ExtArgs>>): Prisma__StewardshipAntibioticoClient<$Result.GetResult<Prisma.$StewardshipAntibioticoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -39375,6 +40791,9 @@ export namespace Prisma {
     readonly motivoRejeicao: FieldRef<"Medicacao", 'String'>
     readonly assinadoEm: FieldRef<"Medicacao", 'DateTime'>
     readonly assinadoPorId: FieldRef<"Medicacao", 'String'>
+    readonly overrideAlergia: FieldRef<"Medicacao", 'Boolean'>
+    readonly overrideMotivo: FieldRef<"Medicacao", 'String'>
+    readonly overrideAlergenioId: FieldRef<"Medicacao", 'String'>
   }
     
 
@@ -39811,6 +41230,25 @@ export namespace Prisma {
      */
     include?: UtilizadorInclude<ExtArgs> | null
     where?: UtilizadorWhereInput
+  }
+
+  /**
+   * Medicacao.overrideAlergenio
+   */
+  export type Medicacao$overrideAlergenioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    where?: AlergiaWhereInput
   }
 
   /**
@@ -41086,6 +42524,7 @@ export namespace Prisma {
     administradoEm: number
     observacoes: number
     verificacao5Certas: number
+    certosVerificados: number
     naoAdministrada: number
     motivoNaoAdmin: number
     deletedAt: number
@@ -41127,6 +42566,7 @@ export namespace Prisma {
     administradoEm?: true
     observacoes?: true
     verificacao5Certas?: true
+    certosVerificados?: true
     naoAdministrada?: true
     motivoNaoAdmin?: true
     deletedAt?: true
@@ -41213,6 +42653,7 @@ export namespace Prisma {
     administradoEm: Date
     observacoes: string | null
     verificacao5Certas: boolean
+    certosVerificados: JsonValue | null
     naoAdministrada: boolean
     motivoNaoAdmin: string | null
     deletedAt: Date | null
@@ -41243,6 +42684,7 @@ export namespace Prisma {
     administradoEm?: boolean
     observacoes?: boolean
     verificacao5Certas?: boolean
+    certosVerificados?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
     deletedAt?: boolean
@@ -41259,6 +42701,7 @@ export namespace Prisma {
     administradoEm?: boolean
     observacoes?: boolean
     verificacao5Certas?: boolean
+    certosVerificados?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
     deletedAt?: boolean
@@ -41275,6 +42718,7 @@ export namespace Prisma {
     administradoEm?: boolean
     observacoes?: boolean
     verificacao5Certas?: boolean
+    certosVerificados?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
     deletedAt?: boolean
@@ -41291,6 +42735,7 @@ export namespace Prisma {
     administradoEm?: boolean
     observacoes?: boolean
     verificacao5Certas?: boolean
+    certosVerificados?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
     deletedAt?: boolean
@@ -41299,7 +42744,7 @@ export namespace Prisma {
     administradoPorId?: boolean
   }
 
-  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "verificacao5Certas" | "naoAdministrada" | "motivoNaoAdmin" | "deletedAt" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
+  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "verificacao5Certas" | "certosVerificados" | "naoAdministrada" | "motivoNaoAdmin" | "deletedAt" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
   export type RegistoMedicacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     medicacao?: boolean | MedicacaoDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -41328,6 +42773,7 @@ export namespace Prisma {
       administradoEm: Date
       observacoes: string | null
       verificacao5Certas: boolean
+      certosVerificados: Prisma.JsonValue | null
       naoAdministrada: boolean
       motivoNaoAdmin: string | null
       deletedAt: Date | null
@@ -41764,6 +43210,7 @@ export namespace Prisma {
     readonly administradoEm: FieldRef<"RegistoMedicacao", 'DateTime'>
     readonly observacoes: FieldRef<"RegistoMedicacao", 'String'>
     readonly verificacao5Certas: FieldRef<"RegistoMedicacao", 'Boolean'>
+    readonly certosVerificados: FieldRef<"RegistoMedicacao", 'Json'>
     readonly naoAdministrada: FieldRef<"RegistoMedicacao", 'Boolean'>
     readonly motivoNaoAdmin: FieldRef<"RegistoMedicacao", 'String'>
     readonly deletedAt: FieldRef<"RegistoMedicacao", 'DateTime'>
@@ -47776,6 +49223,8 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    news2Completo: boolean | null
+    news2ParametroIsolado3: boolean | null
     pews: number | null
     glasgow: number | null
     pamMedia: number | null
@@ -47799,6 +49248,8 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    news2Completo: boolean | null
+    news2ParametroIsolado3: boolean | null
     pews: number | null
     glasgow: number | null
     pamMedia: number | null
@@ -47822,6 +49273,9 @@ export namespace Prisma {
     avpu: number
     o2Suplementar: number
     news2: number
+    news2Completo: number
+    news2ParametrosFalta: number
+    news2ParametroIsolado3: number
     pews: number
     glasgow: number
     pamMedia: number
@@ -47875,6 +49329,8 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    news2Completo?: true
+    news2ParametroIsolado3?: true
     pews?: true
     glasgow?: true
     pamMedia?: true
@@ -47898,6 +49354,8 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    news2Completo?: true
+    news2ParametroIsolado3?: true
     pews?: true
     glasgow?: true
     pamMedia?: true
@@ -47921,6 +49379,9 @@ export namespace Prisma {
     avpu?: true
     o2Suplementar?: true
     news2?: true
+    news2Completo?: true
+    news2ParametrosFalta?: true
+    news2ParametroIsolado3?: true
     pews?: true
     glasgow?: true
     pamMedia?: true
@@ -48031,6 +49492,9 @@ export namespace Prisma {
     avpu: string | null
     o2Suplementar: boolean | null
     news2: number | null
+    news2Completo: boolean | null
+    news2ParametrosFalta: string[]
+    news2ParametroIsolado3: boolean | null
     pews: number | null
     glasgow: number | null
     pamMedia: number | null
@@ -48073,6 +49537,9 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    news2Completo?: boolean
+    news2ParametrosFalta?: boolean
+    news2ParametroIsolado3?: boolean
     pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
@@ -48098,6 +49565,9 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    news2Completo?: boolean
+    news2ParametrosFalta?: boolean
+    news2ParametroIsolado3?: boolean
     pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
@@ -48123,6 +49593,9 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    news2Completo?: boolean
+    news2ParametrosFalta?: boolean
+    news2ParametroIsolado3?: boolean
     pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
@@ -48148,6 +49621,9 @@ export namespace Prisma {
     avpu?: boolean
     o2Suplementar?: boolean
     news2?: boolean
+    news2Completo?: boolean
+    news2ParametrosFalta?: boolean
+    news2ParametroIsolado3?: boolean
     pews?: boolean
     glasgow?: boolean
     pamMedia?: boolean
@@ -48155,7 +49631,7 @@ export namespace Prisma {
     origem?: boolean
   }
 
-  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas" | "avpu" | "o2Suplementar" | "news2" | "pews" | "glasgow" | "pamMedia" | "vasopressores" | "origem", ExtArgs["result"]["sinalVital"]>
+  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas" | "avpu" | "o2Suplementar" | "news2" | "news2Completo" | "news2ParametrosFalta" | "news2ParametroIsolado3" | "pews" | "glasgow" | "pamMedia" | "vasopressores" | "origem", ExtArgs["result"]["sinalVital"]>
   export type SinalVitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -48191,6 +49667,9 @@ export namespace Prisma {
       avpu: string | null
       o2Suplementar: boolean | null
       news2: number | null
+      news2Completo: boolean | null
+      news2ParametrosFalta: string[]
+      news2ParametroIsolado3: boolean | null
       pews: number | null
       glasgow: number | null
       pamMedia: number | null
@@ -48636,6 +50115,9 @@ export namespace Prisma {
     readonly avpu: FieldRef<"SinalVital", 'String'>
     readonly o2Suplementar: FieldRef<"SinalVital", 'Boolean'>
     readonly news2: FieldRef<"SinalVital", 'Int'>
+    readonly news2Completo: FieldRef<"SinalVital", 'Boolean'>
+    readonly news2ParametrosFalta: FieldRef<"SinalVital", 'String[]'>
+    readonly news2ParametroIsolado3: FieldRef<"SinalVital", 'Boolean'>
     readonly pews: FieldRef<"SinalVital", 'Int'>
     readonly glasgow: FieldRef<"SinalVital", 'Int'>
     readonly pamMedia: FieldRef<"SinalVital", 'Float'>
@@ -55156,6 +56638,8 @@ export namespace Prisma {
     verificacaoUnidade: boolean | null
     verificacaoValidade: boolean | null
     compativel: boolean | null
+    segundoVerificadorId: string | null
+    consentimentoId: string | null
     observacoes: string | null
   }
 
@@ -55171,6 +56655,8 @@ export namespace Prisma {
     verificacaoUnidade: boolean | null
     verificacaoValidade: boolean | null
     compativel: boolean | null
+    segundoVerificadorId: string | null
+    consentimentoId: string | null
     observacoes: string | null
   }
 
@@ -55186,6 +56672,8 @@ export namespace Prisma {
     verificacaoUnidade: number
     verificacaoValidade: number
     compativel: number
+    segundoVerificadorId: number
+    consentimentoId: number
     observacoes: number
     _all: number
   }
@@ -55203,6 +56691,8 @@ export namespace Prisma {
     verificacaoUnidade?: true
     verificacaoValidade?: true
     compativel?: true
+    segundoVerificadorId?: true
+    consentimentoId?: true
     observacoes?: true
   }
 
@@ -55218,6 +56708,8 @@ export namespace Prisma {
     verificacaoUnidade?: true
     verificacaoValidade?: true
     compativel?: true
+    segundoVerificadorId?: true
+    consentimentoId?: true
     observacoes?: true
   }
 
@@ -55233,6 +56725,8 @@ export namespace Prisma {
     verificacaoUnidade?: true
     verificacaoValidade?: true
     compativel?: true
+    segundoVerificadorId?: true
+    consentimentoId?: true
     observacoes?: true
     _all?: true
   }
@@ -55321,6 +56815,8 @@ export namespace Prisma {
     verificacaoUnidade: boolean
     verificacaoValidade: boolean
     compativel: boolean
+    segundoVerificadorId: string | null
+    consentimentoId: string | null
     observacoes: string | null
     _count: RegistoTransfusaoCountAggregateOutputType | null
     _min: RegistoTransfusaoMinAggregateOutputType | null
@@ -55353,11 +56849,15 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel?: boolean
+    segundoVerificadorId?: boolean
+    consentimentoId?: boolean
     observacoes?: boolean
     pedido?: boolean | PedidoTransfusaoDefaultArgs<ExtArgs>
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
     reacao?: boolean | RegistoTransfusao$reacaoArgs<ExtArgs>
   }, ExtArgs["result"]["registoTransfusao"]>
 
@@ -55373,11 +56873,15 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel?: boolean
+    segundoVerificadorId?: boolean
+    consentimentoId?: boolean
     observacoes?: boolean
     pedido?: boolean | PedidoTransfusaoDefaultArgs<ExtArgs>
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
   }, ExtArgs["result"]["registoTransfusao"]>
 
   export type RegistoTransfusaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -55392,11 +56896,15 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel?: boolean
+    segundoVerificadorId?: boolean
+    consentimentoId?: boolean
     observacoes?: boolean
     pedido?: boolean | PedidoTransfusaoDefaultArgs<ExtArgs>
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
   }, ExtArgs["result"]["registoTransfusao"]>
 
   export type RegistoTransfusaoSelectScalar = {
@@ -55411,15 +56919,19 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel?: boolean
+    segundoVerificadorId?: boolean
+    consentimentoId?: boolean
     observacoes?: boolean
   }
 
-  export type RegistoTransfusaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pedidoTransfusaoId" | "bolsaId" | "doenteId" | "administradoPorId" | "iniciadoEm" | "terminadoEm" | "verificacaoABO" | "verificacaoUnidade" | "verificacaoValidade" | "compativel" | "observacoes", ExtArgs["result"]["registoTransfusao"]>
+  export type RegistoTransfusaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pedidoTransfusaoId" | "bolsaId" | "doenteId" | "administradoPorId" | "iniciadoEm" | "terminadoEm" | "verificacaoABO" | "verificacaoUnidade" | "verificacaoValidade" | "compativel" | "segundoVerificadorId" | "consentimentoId" | "observacoes", ExtArgs["result"]["registoTransfusao"]>
   export type RegistoTransfusaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pedido?: boolean | PedidoTransfusaoDefaultArgs<ExtArgs>
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
     reacao?: boolean | RegistoTransfusao$reacaoArgs<ExtArgs>
   }
   export type RegistoTransfusaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -55427,12 +56939,16 @@ export namespace Prisma {
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
   }
   export type RegistoTransfusaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pedido?: boolean | PedidoTransfusaoDefaultArgs<ExtArgs>
     bolsa?: boolean | BolsaSangueDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     administradoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    segundoVerificador?: boolean | RegistoTransfusao$segundoVerificadorArgs<ExtArgs>
+    consentimento?: boolean | RegistoTransfusao$consentimentoArgs<ExtArgs>
   }
 
   export type $RegistoTransfusaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -55442,6 +56958,8 @@ export namespace Prisma {
       bolsa: Prisma.$BolsaSanguePayload<ExtArgs>
       doente: Prisma.$DoentePayload<ExtArgs>
       administradoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      segundoVerificador: Prisma.$UtilizadorPayload<ExtArgs> | null
+      consentimento: Prisma.$ConsentimentoInformadoPayload<ExtArgs> | null
       reacao: Prisma.$ReacaoTransfusionalPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -55456,6 +56974,8 @@ export namespace Prisma {
       verificacaoUnidade: boolean
       verificacaoValidade: boolean
       compativel: boolean
+      segundoVerificadorId: string | null
+      consentimentoId: string | null
       observacoes: string | null
     }, ExtArgs["result"]["registoTransfusao"]>
     composites: {}
@@ -55855,6 +57375,8 @@ export namespace Prisma {
     bolsa<T extends BolsaSangueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BolsaSangueDefaultArgs<ExtArgs>>): Prisma__BolsaSangueClient<$Result.GetResult<Prisma.$BolsaSanguePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     administradoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    segundoVerificador<T extends RegistoTransfusao$segundoVerificadorArgs<ExtArgs> = {}>(args?: Subset<T, RegistoTransfusao$segundoVerificadorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    consentimento<T extends RegistoTransfusao$consentimentoArgs<ExtArgs> = {}>(args?: Subset<T, RegistoTransfusao$consentimentoArgs<ExtArgs>>): Prisma__ConsentimentoInformadoClient<$Result.GetResult<Prisma.$ConsentimentoInformadoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     reacao<T extends RegistoTransfusao$reacaoArgs<ExtArgs> = {}>(args?: Subset<T, RegistoTransfusao$reacaoArgs<ExtArgs>>): Prisma__ReacaoTransfusionalClient<$Result.GetResult<Prisma.$ReacaoTransfusionalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -55896,6 +57418,8 @@ export namespace Prisma {
     readonly verificacaoUnidade: FieldRef<"RegistoTransfusao", 'Boolean'>
     readonly verificacaoValidade: FieldRef<"RegistoTransfusao", 'Boolean'>
     readonly compativel: FieldRef<"RegistoTransfusao", 'Boolean'>
+    readonly segundoVerificadorId: FieldRef<"RegistoTransfusao", 'String'>
+    readonly consentimentoId: FieldRef<"RegistoTransfusao", 'String'>
     readonly observacoes: FieldRef<"RegistoTransfusao", 'String'>
   }
     
@@ -56295,6 +57819,44 @@ export namespace Prisma {
      * Limit how many RegistoTransfusaos to delete.
      */
     limit?: number
+  }
+
+  /**
+   * RegistoTransfusao.segundoVerificador
+   */
+  export type RegistoTransfusao$segundoVerificadorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * RegistoTransfusao.consentimento
+   */
+  export type RegistoTransfusao$consentimentoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsentimentoInformado
+     */
+    select?: ConsentimentoInformadoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsentimentoInformado
+     */
+    omit?: ConsentimentoInformadoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsentimentoInformadoInclude<ExtArgs> | null
+    where?: ConsentimentoInformadoWhereInput
   }
 
   /**
@@ -66256,6 +67818,8 @@ export namespace Prisma {
     notas?: boolean
     criadaEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
+    _count?: boolean | AlergiaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alergia"]>
 
   export type AlergiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -66293,6 +67857,8 @@ export namespace Prisma {
   export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm", ExtArgs["result"]["alergia"]>
   export type AlergiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
+    _count?: boolean | AlergiaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AlergiaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -66305,6 +67871,7 @@ export namespace Prisma {
     name: "Alergia"
     objects: {
       doente: Prisma.$DoentePayload<ExtArgs>
+      medicacoesOverride: Prisma.$MedicacaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -66709,6 +68276,7 @@ export namespace Prisma {
   export interface Prisma__AlergiaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    medicacoesOverride<T extends Alergia$medicacoesOverrideArgs<ExtArgs> = {}>(args?: Subset<T, Alergia$medicacoesOverrideArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -67143,6 +68711,30 @@ export namespace Prisma {
      * Limit how many Alergias to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Alergia.medicacoesOverride
+   */
+  export type Alergia$medicacoesOverrideArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medicacao
+     */
+    select?: MedicacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medicacao
+     */
+    omit?: MedicacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedicacaoInclude<ExtArgs> | null
+    where?: MedicacaoWhereInput
+    orderBy?: MedicacaoOrderByWithRelationInput | MedicacaoOrderByWithRelationInput[]
+    cursor?: MedicacaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MedicacaoScalarFieldEnum | MedicacaoScalarFieldEnum[]
   }
 
   /**
@@ -68246,8 +69838,18 @@ export namespace Prisma {
 
   export type AggregateAlertaClinico = {
     _count: AlertaClinicoCountAggregateOutputType | null
+    _avg: AlertaClinicoAvgAggregateOutputType | null
+    _sum: AlertaClinicoSumAggregateOutputType | null
     _min: AlertaClinicoMinAggregateOutputType | null
     _max: AlertaClinicoMaxAggregateOutputType | null
+  }
+
+  export type AlertaClinicoAvgAggregateOutputType = {
+    severidade: number | null
+  }
+
+  export type AlertaClinicoSumAggregateOutputType = {
+    severidade: number | null
   }
 
   export type AlertaClinicoMinAggregateOutputType = {
@@ -68255,6 +69857,7 @@ export namespace Prisma {
     doenteId: string | null
     tipo: string | null
     mensagem: string | null
+    severidade: number | null
     lido: boolean | null
     urgencia: boolean | null
     acusadoPorId: string | null
@@ -68268,6 +69871,7 @@ export namespace Prisma {
     doenteId: string | null
     tipo: string | null
     mensagem: string | null
+    severidade: number | null
     lido: boolean | null
     urgencia: boolean | null
     acusadoPorId: string | null
@@ -68281,6 +69885,7 @@ export namespace Prisma {
     doenteId: number
     tipo: number
     mensagem: number
+    severidade: number
     lido: number
     urgencia: number
     acusadoPorId: number
@@ -68291,11 +69896,20 @@ export namespace Prisma {
   }
 
 
+  export type AlertaClinicoAvgAggregateInputType = {
+    severidade?: true
+  }
+
+  export type AlertaClinicoSumAggregateInputType = {
+    severidade?: true
+  }
+
   export type AlertaClinicoMinAggregateInputType = {
     id?: true
     doenteId?: true
     tipo?: true
     mensagem?: true
+    severidade?: true
     lido?: true
     urgencia?: true
     acusadoPorId?: true
@@ -68309,6 +69923,7 @@ export namespace Prisma {
     doenteId?: true
     tipo?: true
     mensagem?: true
+    severidade?: true
     lido?: true
     urgencia?: true
     acusadoPorId?: true
@@ -68322,6 +69937,7 @@ export namespace Prisma {
     doenteId?: true
     tipo?: true
     mensagem?: true
+    severidade?: true
     lido?: true
     urgencia?: true
     acusadoPorId?: true
@@ -68369,6 +69985,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AlertaClinicoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AlertaClinicoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AlertaClinicoMinAggregateInputType
@@ -68399,6 +70027,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AlertaClinicoCountAggregateInputType | true
+    _avg?: AlertaClinicoAvgAggregateInputType
+    _sum?: AlertaClinicoSumAggregateInputType
     _min?: AlertaClinicoMinAggregateInputType
     _max?: AlertaClinicoMaxAggregateInputType
   }
@@ -68408,6 +70038,7 @@ export namespace Prisma {
     doenteId: string
     tipo: string
     mensagem: string
+    severidade: number
     lido: boolean
     urgencia: boolean
     acusadoPorId: string | null
@@ -68415,6 +70046,8 @@ export namespace Prisma {
     escaladoEm: Date | null
     criadoEm: Date
     _count: AlertaClinicoCountAggregateOutputType | null
+    _avg: AlertaClinicoAvgAggregateOutputType | null
+    _sum: AlertaClinicoSumAggregateOutputType | null
     _min: AlertaClinicoMinAggregateOutputType | null
     _max: AlertaClinicoMaxAggregateOutputType | null
   }
@@ -68438,6 +70071,7 @@ export namespace Prisma {
     doenteId?: boolean
     tipo?: boolean
     mensagem?: boolean
+    severidade?: boolean
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: boolean
@@ -68453,6 +70087,7 @@ export namespace Prisma {
     doenteId?: boolean
     tipo?: boolean
     mensagem?: boolean
+    severidade?: boolean
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: boolean
@@ -68468,6 +70103,7 @@ export namespace Prisma {
     doenteId?: boolean
     tipo?: boolean
     mensagem?: boolean
+    severidade?: boolean
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: boolean
@@ -68483,6 +70119,7 @@ export namespace Prisma {
     doenteId?: boolean
     tipo?: boolean
     mensagem?: boolean
+    severidade?: boolean
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: boolean
@@ -68491,7 +70128,7 @@ export namespace Prisma {
     criadoEm?: boolean
   }
 
-  export type AlertaClinicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "mensagem" | "lido" | "urgencia" | "acusadoPorId" | "acusadoEm" | "escaladoEm" | "criadoEm", ExtArgs["result"]["alertaClinico"]>
+  export type AlertaClinicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "mensagem" | "severidade" | "lido" | "urgencia" | "acusadoPorId" | "acusadoEm" | "escaladoEm" | "criadoEm", ExtArgs["result"]["alertaClinico"]>
   export type AlertaClinicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     acusadoPor?: boolean | AlertaClinico$acusadoPorArgs<ExtArgs>
@@ -68516,6 +70153,7 @@ export namespace Prisma {
       doenteId: string
       tipo: string
       mensagem: string
+      severidade: number
       lido: boolean
       urgencia: boolean
       acusadoPorId: string | null
@@ -68951,6 +70589,7 @@ export namespace Prisma {
     readonly doenteId: FieldRef<"AlertaClinico", 'String'>
     readonly tipo: FieldRef<"AlertaClinico", 'String'>
     readonly mensagem: FieldRef<"AlertaClinico", 'String'>
+    readonly severidade: FieldRef<"AlertaClinico", 'Int'>
     readonly lido: FieldRef<"AlertaClinico", 'Boolean'>
     readonly urgencia: FieldRef<"AlertaClinico", 'Boolean'>
     readonly acusadoPorId: FieldRef<"AlertaClinico", 'String'>
@@ -128198,6 +129837,8 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     testemunha?: boolean | ConsentimentoInformado$testemunhaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    registosTransfusao?: boolean | ConsentimentoInformado$registosTransfusaoArgs<ExtArgs>
+    _count?: boolean | ConsentimentoInformadoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["consentimentoInformado"]>
 
   export type ConsentimentoInformadoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -128253,6 +129894,8 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     testemunha?: boolean | ConsentimentoInformado$testemunhaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    registosTransfusao?: boolean | ConsentimentoInformado$registosTransfusaoArgs<ExtArgs>
+    _count?: boolean | ConsentimentoInformadoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConsentimentoInformadoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -128271,6 +129914,7 @@ export namespace Prisma {
       doente: Prisma.$DoentePayload<ExtArgs>
       testemunha: Prisma.$UtilizadorPayload<ExtArgs> | null
       criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      registosTransfusao: Prisma.$RegistoTransfusaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -128681,6 +130325,7 @@ export namespace Prisma {
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     testemunha<T extends ConsentimentoInformado$testemunhaArgs<ExtArgs> = {}>(args?: Subset<T, ConsentimentoInformado$testemunhaArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registosTransfusao<T extends ConsentimentoInformado$registosTransfusaoArgs<ExtArgs> = {}>(args?: Subset<T, ConsentimentoInformado$registosTransfusaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoTransfusaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -129138,6 +130783,30 @@ export namespace Prisma {
      */
     include?: UtilizadorInclude<ExtArgs> | null
     where?: UtilizadorWhereInput
+  }
+
+  /**
+   * ConsentimentoInformado.registosTransfusao
+   */
+  export type ConsentimentoInformado$registosTransfusaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegistoTransfusao
+     */
+    select?: RegistoTransfusaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegistoTransfusao
+     */
+    omit?: RegistoTransfusaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegistoTransfusaoInclude<ExtArgs> | null
+    where?: RegistoTransfusaoWhereInput
+    orderBy?: RegistoTransfusaoOrderByWithRelationInput | RegistoTransfusaoOrderByWithRelationInput[]
+    cursor?: RegistoTransfusaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegistoTransfusaoScalarFieldEnum | RegistoTransfusaoScalarFieldEnum[]
   }
 
   /**
@@ -144184,7 +145853,7 @@ export namespace Prisma {
     criadoEm: Date | null
     nomeContacto: string | null
     email: string | null
-    accessToken: string | null
+    accessTokenHash: string | null
     accessTokenExpiry: Date | null
     ativo: boolean | null
   }
@@ -144196,7 +145865,7 @@ export namespace Prisma {
     criadoEm: Date | null
     nomeContacto: string | null
     email: string | null
-    accessToken: string | null
+    accessTokenHash: string | null
     accessTokenExpiry: Date | null
     ativo: boolean | null
   }
@@ -144208,7 +145877,7 @@ export namespace Prisma {
     criadoEm: number
     nomeContacto: number
     email: number
-    accessToken: number
+    accessTokenHash: number
     accessTokenExpiry: number
     ativo: number
     _all: number
@@ -144222,7 +145891,7 @@ export namespace Prisma {
     criadoEm?: true
     nomeContacto?: true
     email?: true
-    accessToken?: true
+    accessTokenHash?: true
     accessTokenExpiry?: true
     ativo?: true
   }
@@ -144234,7 +145903,7 @@ export namespace Prisma {
     criadoEm?: true
     nomeContacto?: true
     email?: true
-    accessToken?: true
+    accessTokenHash?: true
     accessTokenExpiry?: true
     ativo?: true
   }
@@ -144246,7 +145915,7 @@ export namespace Prisma {
     criadoEm?: true
     nomeContacto?: true
     email?: true
-    accessToken?: true
+    accessTokenHash?: true
     accessTokenExpiry?: true
     ativo?: true
     _all?: true
@@ -144331,7 +146000,7 @@ export namespace Prisma {
     criadoEm: Date
     nomeContacto: string
     email: string
-    accessToken: string
+    accessTokenHash: string
     accessTokenExpiry: Date
     ativo: boolean
     _count: AcessoFamiliarCountAggregateOutputType | null
@@ -144360,7 +146029,7 @@ export namespace Prisma {
     criadoEm?: boolean
     nomeContacto?: boolean
     email?: boolean
-    accessToken?: boolean
+    accessTokenHash?: boolean
     accessTokenExpiry?: boolean
     ativo?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -144374,7 +146043,7 @@ export namespace Prisma {
     criadoEm?: boolean
     nomeContacto?: boolean
     email?: boolean
-    accessToken?: boolean
+    accessTokenHash?: boolean
     accessTokenExpiry?: boolean
     ativo?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -144388,7 +146057,7 @@ export namespace Prisma {
     criadoEm?: boolean
     nomeContacto?: boolean
     email?: boolean
-    accessToken?: boolean
+    accessTokenHash?: boolean
     accessTokenExpiry?: boolean
     ativo?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -144402,12 +146071,12 @@ export namespace Prisma {
     criadoEm?: boolean
     nomeContacto?: boolean
     email?: boolean
-    accessToken?: boolean
+    accessTokenHash?: boolean
     accessTokenExpiry?: boolean
     ativo?: boolean
   }
 
-  export type AcessoFamiliarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "criadoPorId" | "criadoEm" | "nomeContacto" | "email" | "accessToken" | "accessTokenExpiry" | "ativo", ExtArgs["result"]["acessoFamiliar"]>
+  export type AcessoFamiliarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "criadoPorId" | "criadoEm" | "nomeContacto" | "email" | "accessTokenHash" | "accessTokenExpiry" | "ativo", ExtArgs["result"]["acessoFamiliar"]>
   export type AcessoFamiliarInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -144434,7 +146103,7 @@ export namespace Prisma {
       criadoEm: Date
       nomeContacto: string
       email: string
-      accessToken: string
+      accessTokenHash: string
       accessTokenExpiry: Date
       ativo: boolean
     }, ExtArgs["result"]["acessoFamiliar"]>
@@ -144868,7 +146537,7 @@ export namespace Prisma {
     readonly criadoEm: FieldRef<"AcessoFamiliar", 'DateTime'>
     readonly nomeContacto: FieldRef<"AcessoFamiliar", 'String'>
     readonly email: FieldRef<"AcessoFamiliar", 'String'>
-    readonly accessToken: FieldRef<"AcessoFamiliar", 'String'>
+    readonly accessTokenHash: FieldRef<"AcessoFamiliar", 'String'>
     readonly accessTokenExpiry: FieldRef<"AcessoFamiliar", 'DateTime'>
     readonly ativo: FieldRef<"AcessoFamiliar", 'Boolean'>
   }
@@ -145304,7 +146973,7 @@ export namespace Prisma {
     id: string | null
     nome: string | null
     tipo: string | null
-    apiKey: string | null
+    apiKeyHash: string | null
     doenteId: string | null
     ativo: boolean | null
     ultimoPing: Date | null
@@ -145315,7 +146984,7 @@ export namespace Prisma {
     id: string | null
     nome: string | null
     tipo: string | null
-    apiKey: string | null
+    apiKeyHash: string | null
     doenteId: string | null
     ativo: boolean | null
     ultimoPing: Date | null
@@ -145326,7 +146995,7 @@ export namespace Prisma {
     id: number
     nome: number
     tipo: number
-    apiKey: number
+    apiKeyHash: number
     doenteId: number
     ativo: number
     ultimoPing: number
@@ -145339,7 +147008,7 @@ export namespace Prisma {
     id?: true
     nome?: true
     tipo?: true
-    apiKey?: true
+    apiKeyHash?: true
     doenteId?: true
     ativo?: true
     ultimoPing?: true
@@ -145350,7 +147019,7 @@ export namespace Prisma {
     id?: true
     nome?: true
     tipo?: true
-    apiKey?: true
+    apiKeyHash?: true
     doenteId?: true
     ativo?: true
     ultimoPing?: true
@@ -145361,7 +147030,7 @@ export namespace Prisma {
     id?: true
     nome?: true
     tipo?: true
-    apiKey?: true
+    apiKeyHash?: true
     doenteId?: true
     ativo?: true
     ultimoPing?: true
@@ -145445,7 +147114,7 @@ export namespace Prisma {
     id: string
     nome: string
     tipo: string
-    apiKey: string
+    apiKeyHash: string
     doenteId: string | null
     ativo: boolean
     ultimoPing: Date | null
@@ -145473,7 +147142,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     tipo?: boolean
-    apiKey?: boolean
+    apiKeyHash?: boolean
     doenteId?: boolean
     ativo?: boolean
     ultimoPing?: boolean
@@ -145484,7 +147153,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     tipo?: boolean
-    apiKey?: boolean
+    apiKeyHash?: boolean
     doenteId?: boolean
     ativo?: boolean
     ultimoPing?: boolean
@@ -145495,7 +147164,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     tipo?: boolean
-    apiKey?: boolean
+    apiKeyHash?: boolean
     doenteId?: boolean
     ativo?: boolean
     ultimoPing?: boolean
@@ -145506,14 +147175,14 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     tipo?: boolean
-    apiKey?: boolean
+    apiKeyHash?: boolean
     doenteId?: boolean
     ativo?: boolean
     ultimoPing?: boolean
     criadoEm?: boolean
   }
 
-  export type DispositivoFhirOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "tipo" | "apiKey" | "doenteId" | "ativo" | "ultimoPing" | "criadoEm", ExtArgs["result"]["dispositivoFhir"]>
+  export type DispositivoFhirOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "tipo" | "apiKeyHash" | "doenteId" | "ativo" | "ultimoPing" | "criadoEm", ExtArgs["result"]["dispositivoFhir"]>
 
   export type $DispositivoFhirPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DispositivoFhir"
@@ -145522,7 +147191,7 @@ export namespace Prisma {
       id: string
       nome: string
       tipo: string
-      apiKey: string
+      apiKeyHash: string
       doenteId: string | null
       ativo: boolean
       ultimoPing: Date | null
@@ -145953,7 +147622,7 @@ export namespace Prisma {
     readonly id: FieldRef<"DispositivoFhir", 'String'>
     readonly nome: FieldRef<"DispositivoFhir", 'String'>
     readonly tipo: FieldRef<"DispositivoFhir", 'String'>
-    readonly apiKey: FieldRef<"DispositivoFhir", 'String'>
+    readonly apiKeyHash: FieldRef<"DispositivoFhir", 'String'>
     readonly doenteId: FieldRef<"DispositivoFhir", 'String'>
     readonly ativo: FieldRef<"DispositivoFhir", 'Boolean'>
     readonly ultimoPing: FieldRef<"DispositivoFhir", 'DateTime'>
@@ -180288,6 +181957,18 @@ export namespace Prisma {
   export type NotaClinicaScalarFieldEnum = (typeof NotaClinicaScalarFieldEnum)[keyof typeof NotaClinicaScalarFieldEnum]
 
 
+  export const NotaClinicaAdendaScalarFieldEnum: {
+    id: 'id',
+    notaClinicaId: 'notaClinicaId',
+    autorId: 'autorId',
+    texto: 'texto',
+    motivo: 'motivo',
+    criadaEm: 'criadaEm'
+  };
+
+  export type NotaClinicaAdendaScalarFieldEnum = (typeof NotaClinicaAdendaScalarFieldEnum)[keyof typeof NotaClinicaAdendaScalarFieldEnum]
+
+
   export const EscalaClinicaScalarFieldEnum: {
     id: 'id',
     doenteId: 'doenteId',
@@ -180353,7 +182034,10 @@ export namespace Prisma {
     validadaEm: 'validadaEm',
     motivoRejeicao: 'motivoRejeicao',
     assinadoEm: 'assinadoEm',
-    assinadoPorId: 'assinadoPorId'
+    assinadoPorId: 'assinadoPorId',
+    overrideAlergia: 'overrideAlergia',
+    overrideMotivo: 'overrideMotivo',
+    overrideAlergenioId: 'overrideAlergenioId'
   };
 
   export type MedicacaoScalarFieldEnum = (typeof MedicacaoScalarFieldEnum)[keyof typeof MedicacaoScalarFieldEnum]
@@ -180380,6 +182064,7 @@ export namespace Prisma {
     administradoEm: 'administradoEm',
     observacoes: 'observacoes',
     verificacao5Certas: 'verificacao5Certas',
+    certosVerificados: 'certosVerificados',
     naoAdministrada: 'naoAdministrada',
     motivoNaoAdmin: 'motivoNaoAdmin',
     deletedAt: 'deletedAt',
@@ -180461,6 +182146,9 @@ export namespace Prisma {
     avpu: 'avpu',
     o2Suplementar: 'o2Suplementar',
     news2: 'news2',
+    news2Completo: 'news2Completo',
+    news2ParametrosFalta: 'news2ParametrosFalta',
+    news2ParametroIsolado3: 'news2ParametroIsolado3',
     pews: 'pews',
     glasgow: 'glasgow',
     pamMedia: 'pamMedia',
@@ -180578,6 +182266,8 @@ export namespace Prisma {
     verificacaoUnidade: 'verificacaoUnidade',
     verificacaoValidade: 'verificacaoValidade',
     compativel: 'compativel',
+    segundoVerificadorId: 'segundoVerificadorId',
+    consentimentoId: 'consentimentoId',
     observacoes: 'observacoes'
   };
 
@@ -180750,6 +182440,7 @@ export namespace Prisma {
     doenteId: 'doenteId',
     tipo: 'tipo',
     mensagem: 'mensagem',
+    severidade: 'severidade',
     lido: 'lido',
     urgencia: 'urgencia',
     acusadoPorId: 'acusadoPorId',
@@ -181793,7 +183484,7 @@ export namespace Prisma {
     criadoEm: 'criadoEm',
     nomeContacto: 'nomeContacto',
     email: 'email',
-    accessToken: 'accessToken',
+    accessTokenHash: 'accessTokenHash',
     accessTokenExpiry: 'accessTokenExpiry',
     ativo: 'ativo'
   };
@@ -181805,7 +183496,7 @@ export namespace Prisma {
     id: 'id',
     nome: 'nome',
     tipo: 'tipo',
-    apiKey: 'apiKey',
+    apiKeyHash: 'apiKeyHash',
     doenteId: 'doenteId',
     ativo: 'ativo',
     ultimoPing: 'ultimoPing',
@@ -183088,6 +184779,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaListRelationFilter
     medicacoesAssinadas?: MedicacaoListRelationFilter
     notasAssinadas?: NotaClinicaListRelationFilter
+    adendasNotasClinicas?: NotaClinicaAdendaListRelationFilter
+    transfusoesSegundaVerificacao?: RegistoTransfusaoListRelationFilter
     culturasRegistadas?: CulturaMicrobiologicaListRelationFilter
     surtosRegistados?: SurtoIACSListRelationFilter
     notasIncidentesTI?: NotaIncidenteTIListRelationFilter
@@ -183230,6 +184923,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaOrderByRelationAggregateInput
     medicacoesAssinadas?: MedicacaoOrderByRelationAggregateInput
     notasAssinadas?: NotaClinicaOrderByRelationAggregateInput
+    adendasNotasClinicas?: NotaClinicaAdendaOrderByRelationAggregateInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoOrderByRelationAggregateInput
     culturasRegistadas?: CulturaMicrobiologicaOrderByRelationAggregateInput
     surtosRegistados?: SurtoIACSOrderByRelationAggregateInput
     notasIncidentesTI?: NotaIncidenteTIOrderByRelationAggregateInput
@@ -183375,6 +185070,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaListRelationFilter
     medicacoesAssinadas?: MedicacaoListRelationFilter
     notasAssinadas?: NotaClinicaListRelationFilter
+    adendasNotasClinicas?: NotaClinicaAdendaListRelationFilter
+    transfusoesSegundaVerificacao?: RegistoTransfusaoListRelationFilter
     culturasRegistadas?: CulturaMicrobiologicaListRelationFilter
     surtosRegistados?: SurtoIACSListRelationFilter
     notasIncidentesTI?: NotaIncidenteTIListRelationFilter
@@ -184253,6 +185950,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     assinadaPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    adendas?: NotaClinicaAdendaListRelationFilter
   }
 
   export type NotaClinicaOrderByWithRelationInput = {
@@ -184271,6 +185969,7 @@ export namespace Prisma {
     doente?: DoenteOrderByWithRelationInput
     autor?: UtilizadorOrderByWithRelationInput
     assinadaPor?: UtilizadorOrderByWithRelationInput
+    adendas?: NotaClinicaAdendaOrderByRelationAggregateInput
   }
 
   export type NotaClinicaWhereUniqueInput = Prisma.AtLeast<{
@@ -184292,6 +185991,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     assinadaPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    adendas?: NotaClinicaAdendaListRelationFilter
   }, "id">
 
   export type NotaClinicaOrderByWithAggregationInput = {
@@ -184328,6 +186028,69 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"NotaClinica"> | Date | string | null
     assinadaEm?: DateTimeNullableWithAggregatesFilter<"NotaClinica"> | Date | string | null
     assinadaPorId?: StringNullableWithAggregatesFilter<"NotaClinica"> | string | null
+  }
+
+  export type NotaClinicaAdendaWhereInput = {
+    AND?: NotaClinicaAdendaWhereInput | NotaClinicaAdendaWhereInput[]
+    OR?: NotaClinicaAdendaWhereInput[]
+    NOT?: NotaClinicaAdendaWhereInput | NotaClinicaAdendaWhereInput[]
+    id?: StringFilter<"NotaClinicaAdenda"> | string
+    notaClinicaId?: StringFilter<"NotaClinicaAdenda"> | string
+    autorId?: StringFilter<"NotaClinicaAdenda"> | string
+    texto?: StringFilter<"NotaClinicaAdenda"> | string
+    motivo?: StringFilter<"NotaClinicaAdenda"> | string
+    criadaEm?: DateTimeFilter<"NotaClinicaAdenda"> | Date | string
+    nota?: XOR<NotaClinicaScalarRelationFilter, NotaClinicaWhereInput>
+    autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type NotaClinicaAdendaOrderByWithRelationInput = {
+    id?: SortOrder
+    notaClinicaId?: SortOrder
+    autorId?: SortOrder
+    texto?: SortOrder
+    motivo?: SortOrder
+    criadaEm?: SortOrder
+    nota?: NotaClinicaOrderByWithRelationInput
+    autor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type NotaClinicaAdendaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotaClinicaAdendaWhereInput | NotaClinicaAdendaWhereInput[]
+    OR?: NotaClinicaAdendaWhereInput[]
+    NOT?: NotaClinicaAdendaWhereInput | NotaClinicaAdendaWhereInput[]
+    notaClinicaId?: StringFilter<"NotaClinicaAdenda"> | string
+    autorId?: StringFilter<"NotaClinicaAdenda"> | string
+    texto?: StringFilter<"NotaClinicaAdenda"> | string
+    motivo?: StringFilter<"NotaClinicaAdenda"> | string
+    criadaEm?: DateTimeFilter<"NotaClinicaAdenda"> | Date | string
+    nota?: XOR<NotaClinicaScalarRelationFilter, NotaClinicaWhereInput>
+    autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type NotaClinicaAdendaOrderByWithAggregationInput = {
+    id?: SortOrder
+    notaClinicaId?: SortOrder
+    autorId?: SortOrder
+    texto?: SortOrder
+    motivo?: SortOrder
+    criadaEm?: SortOrder
+    _count?: NotaClinicaAdendaCountOrderByAggregateInput
+    _max?: NotaClinicaAdendaMaxOrderByAggregateInput
+    _min?: NotaClinicaAdendaMinOrderByAggregateInput
+  }
+
+  export type NotaClinicaAdendaScalarWhereWithAggregatesInput = {
+    AND?: NotaClinicaAdendaScalarWhereWithAggregatesInput | NotaClinicaAdendaScalarWhereWithAggregatesInput[]
+    OR?: NotaClinicaAdendaScalarWhereWithAggregatesInput[]
+    NOT?: NotaClinicaAdendaScalarWhereWithAggregatesInput | NotaClinicaAdendaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotaClinicaAdenda"> | string
+    notaClinicaId?: StringWithAggregatesFilter<"NotaClinicaAdenda"> | string
+    autorId?: StringWithAggregatesFilter<"NotaClinicaAdenda"> | string
+    texto?: StringWithAggregatesFilter<"NotaClinicaAdenda"> | string
+    motivo?: StringWithAggregatesFilter<"NotaClinicaAdenda"> | string
+    criadaEm?: DateTimeWithAggregatesFilter<"NotaClinicaAdenda"> | Date | string
   }
 
   export type EscalaClinicaWhereInput = {
@@ -184607,10 +186370,14 @@ export namespace Prisma {
     motivoRejeicao?: StringNullableFilter<"Medicacao"> | string | null
     assinadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     assinadoPorId?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergia?: BoolFilter<"Medicacao"> | boolean
+    overrideMotivo?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergenioId?: StringNullableFilter<"Medicacao"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     prescritoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     validadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     assinadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    overrideAlergenio?: XOR<AlergiaNullableScalarRelationFilter, AlergiaWhereInput> | null
     registos?: RegistoMedicacaoListRelationFilter
     stewardship?: XOR<StewardshipAntibioticoNullableScalarRelationFilter, StewardshipAntibioticoWhereInput> | null
   }
@@ -184634,10 +186401,14 @@ export namespace Prisma {
     motivoRejeicao?: SortOrderInput | SortOrder
     assinadoEm?: SortOrderInput | SortOrder
     assinadoPorId?: SortOrderInput | SortOrder
+    overrideAlergia?: SortOrder
+    overrideMotivo?: SortOrderInput | SortOrder
+    overrideAlergenioId?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     prescritoPor?: UtilizadorOrderByWithRelationInput
     validadoPor?: UtilizadorOrderByWithRelationInput
     assinadoPor?: UtilizadorOrderByWithRelationInput
+    overrideAlergenio?: AlergiaOrderByWithRelationInput
     registos?: RegistoMedicacaoOrderByRelationAggregateInput
     stewardship?: StewardshipAntibioticoOrderByWithRelationInput
   }
@@ -184664,10 +186435,14 @@ export namespace Prisma {
     motivoRejeicao?: StringNullableFilter<"Medicacao"> | string | null
     assinadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     assinadoPorId?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergia?: BoolFilter<"Medicacao"> | boolean
+    overrideMotivo?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergenioId?: StringNullableFilter<"Medicacao"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     prescritoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     validadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     assinadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    overrideAlergenio?: XOR<AlergiaNullableScalarRelationFilter, AlergiaWhereInput> | null
     registos?: RegistoMedicacaoListRelationFilter
     stewardship?: XOR<StewardshipAntibioticoNullableScalarRelationFilter, StewardshipAntibioticoWhereInput> | null
   }, "id">
@@ -184691,6 +186466,9 @@ export namespace Prisma {
     motivoRejeicao?: SortOrderInput | SortOrder
     assinadoEm?: SortOrderInput | SortOrder
     assinadoPorId?: SortOrderInput | SortOrder
+    overrideAlergia?: SortOrder
+    overrideMotivo?: SortOrderInput | SortOrder
+    overrideAlergenioId?: SortOrderInput | SortOrder
     _count?: MedicacaoCountOrderByAggregateInput
     _max?: MedicacaoMaxOrderByAggregateInput
     _min?: MedicacaoMinOrderByAggregateInput
@@ -184718,6 +186496,9 @@ export namespace Prisma {
     motivoRejeicao?: StringNullableWithAggregatesFilter<"Medicacao"> | string | null
     assinadoEm?: DateTimeNullableWithAggregatesFilter<"Medicacao"> | Date | string | null
     assinadoPorId?: StringNullableWithAggregatesFilter<"Medicacao"> | string | null
+    overrideAlergia?: BoolWithAggregatesFilter<"Medicacao"> | boolean
+    overrideMotivo?: StringNullableWithAggregatesFilter<"Medicacao"> | string | null
+    overrideAlergenioId?: StringNullableWithAggregatesFilter<"Medicacao"> | string | null
   }
 
   export type StewardshipAntibioticoWhereInput = {
@@ -184813,6 +186594,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    certosVerificados?: JsonNullableFilter<"RegistoMedicacao">
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
@@ -184829,6 +186611,7 @@ export namespace Prisma {
     administradoEm?: SortOrder
     observacoes?: SortOrderInput | SortOrder
     verificacao5Certas?: SortOrder
+    certosVerificados?: SortOrderInput | SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -184848,6 +186631,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    certosVerificados?: JsonNullableFilter<"RegistoMedicacao">
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
@@ -184864,6 +186648,7 @@ export namespace Prisma {
     administradoEm?: SortOrder
     observacoes?: SortOrderInput | SortOrder
     verificacao5Certas?: SortOrder
+    certosVerificados?: SortOrderInput | SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -184883,6 +186668,7 @@ export namespace Prisma {
     administradoEm?: DateTimeWithAggregatesFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableWithAggregatesFilter<"RegistoMedicacao"> | string | null
     verificacao5Certas?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
+    certosVerificados?: JsonNullableWithAggregatesFilter<"RegistoMedicacao">
     naoAdministrada?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableWithAggregatesFilter<"RegistoMedicacao"> | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"RegistoMedicacao"> | Date | string | null
@@ -185218,6 +187004,9 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    news2Completo?: BoolNullableFilter<"SinalVital"> | boolean | null
+    news2ParametrosFalta?: StringNullableListFilter<"SinalVital">
+    news2ParametroIsolado3?: BoolNullableFilter<"SinalVital"> | boolean | null
     pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
@@ -185243,6 +187032,9 @@ export namespace Prisma {
     avpu?: SortOrderInput | SortOrder
     o2Suplementar?: SortOrderInput | SortOrder
     news2?: SortOrderInput | SortOrder
+    news2Completo?: SortOrderInput | SortOrder
+    news2ParametrosFalta?: SortOrder
+    news2ParametroIsolado3?: SortOrderInput | SortOrder
     pews?: SortOrderInput | SortOrder
     glasgow?: SortOrderInput | SortOrder
     pamMedia?: SortOrderInput | SortOrder
@@ -185271,6 +187063,9 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    news2Completo?: BoolNullableFilter<"SinalVital"> | boolean | null
+    news2ParametrosFalta?: StringNullableListFilter<"SinalVital">
+    news2ParametroIsolado3?: BoolNullableFilter<"SinalVital"> | boolean | null
     pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
@@ -185296,6 +187091,9 @@ export namespace Prisma {
     avpu?: SortOrderInput | SortOrder
     o2Suplementar?: SortOrderInput | SortOrder
     news2?: SortOrderInput | SortOrder
+    news2Completo?: SortOrderInput | SortOrder
+    news2ParametrosFalta?: SortOrder
+    news2ParametroIsolado3?: SortOrderInput | SortOrder
     pews?: SortOrderInput | SortOrder
     glasgow?: SortOrderInput | SortOrder
     pamMedia?: SortOrderInput | SortOrder
@@ -185327,6 +187125,9 @@ export namespace Prisma {
     avpu?: StringNullableWithAggregatesFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableWithAggregatesFilter<"SinalVital"> | boolean | null
     news2?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    news2Completo?: BoolNullableWithAggregatesFilter<"SinalVital"> | boolean | null
+    news2ParametrosFalta?: StringNullableListFilter<"SinalVital">
+    news2ParametroIsolado3?: BoolNullableWithAggregatesFilter<"SinalVital"> | boolean | null
     pews?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
     glasgow?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableWithAggregatesFilter<"SinalVital"> | number | null
@@ -185850,11 +187651,15 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFilter<"RegistoTransfusao"> | boolean
     verificacaoValidade?: BoolFilter<"RegistoTransfusao"> | boolean
     compativel?: BoolFilter<"RegistoTransfusao"> | boolean
+    segundoVerificadorId?: StringNullableFilter<"RegistoTransfusao"> | string | null
+    consentimentoId?: StringNullableFilter<"RegistoTransfusao"> | string | null
     observacoes?: StringNullableFilter<"RegistoTransfusao"> | string | null
     pedido?: XOR<PedidoTransfusaoScalarRelationFilter, PedidoTransfusaoWhereInput>
     bolsa?: XOR<BolsaSangueScalarRelationFilter, BolsaSangueWhereInput>
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     administradoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    segundoVerificador?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    consentimento?: XOR<ConsentimentoInformadoNullableScalarRelationFilter, ConsentimentoInformadoWhereInput> | null
     reacao?: XOR<ReacaoTransfusionalNullableScalarRelationFilter, ReacaoTransfusionalWhereInput> | null
   }
 
@@ -185870,11 +187675,15 @@ export namespace Prisma {
     verificacaoUnidade?: SortOrder
     verificacaoValidade?: SortOrder
     compativel?: SortOrder
+    segundoVerificadorId?: SortOrderInput | SortOrder
+    consentimentoId?: SortOrderInput | SortOrder
     observacoes?: SortOrderInput | SortOrder
     pedido?: PedidoTransfusaoOrderByWithRelationInput
     bolsa?: BolsaSangueOrderByWithRelationInput
     doente?: DoenteOrderByWithRelationInput
     administradoPor?: UtilizadorOrderByWithRelationInput
+    segundoVerificador?: UtilizadorOrderByWithRelationInput
+    consentimento?: ConsentimentoInformadoOrderByWithRelationInput
     reacao?: ReacaoTransfusionalOrderByWithRelationInput
   }
 
@@ -185893,11 +187702,15 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFilter<"RegistoTransfusao"> | boolean
     verificacaoValidade?: BoolFilter<"RegistoTransfusao"> | boolean
     compativel?: BoolFilter<"RegistoTransfusao"> | boolean
+    segundoVerificadorId?: StringNullableFilter<"RegistoTransfusao"> | string | null
+    consentimentoId?: StringNullableFilter<"RegistoTransfusao"> | string | null
     observacoes?: StringNullableFilter<"RegistoTransfusao"> | string | null
     pedido?: XOR<PedidoTransfusaoScalarRelationFilter, PedidoTransfusaoWhereInput>
     bolsa?: XOR<BolsaSangueScalarRelationFilter, BolsaSangueWhereInput>
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     administradoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    segundoVerificador?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    consentimento?: XOR<ConsentimentoInformadoNullableScalarRelationFilter, ConsentimentoInformadoWhereInput> | null
     reacao?: XOR<ReacaoTransfusionalNullableScalarRelationFilter, ReacaoTransfusionalWhereInput> | null
   }, "id" | "bolsaId">
 
@@ -185913,6 +187726,8 @@ export namespace Prisma {
     verificacaoUnidade?: SortOrder
     verificacaoValidade?: SortOrder
     compativel?: SortOrder
+    segundoVerificadorId?: SortOrderInput | SortOrder
+    consentimentoId?: SortOrderInput | SortOrder
     observacoes?: SortOrderInput | SortOrder
     _count?: RegistoTransfusaoCountOrderByAggregateInput
     _max?: RegistoTransfusaoMaxOrderByAggregateInput
@@ -185934,6 +187749,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolWithAggregatesFilter<"RegistoTransfusao"> | boolean
     verificacaoValidade?: BoolWithAggregatesFilter<"RegistoTransfusao"> | boolean
     compativel?: BoolWithAggregatesFilter<"RegistoTransfusao"> | boolean
+    segundoVerificadorId?: StringNullableWithAggregatesFilter<"RegistoTransfusao"> | string | null
+    consentimentoId?: StringNullableWithAggregatesFilter<"RegistoTransfusao"> | string | null
     observacoes?: StringNullableWithAggregatesFilter<"RegistoTransfusao"> | string | null
   }
 
@@ -186620,6 +188437,7 @@ export namespace Prisma {
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    medicacoesOverride?: MedicacaoListRelationFilter
   }
 
   export type AlergiaOrderByWithRelationInput = {
@@ -186631,6 +188449,7 @@ export namespace Prisma {
     notas?: SortOrderInput | SortOrder
     criadaEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
+    medicacoesOverride?: MedicacaoOrderByRelationAggregateInput
   }
 
   export type AlergiaWhereUniqueInput = Prisma.AtLeast<{
@@ -186645,6 +188464,7 @@ export namespace Prisma {
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    medicacoesOverride?: MedicacaoListRelationFilter
   }, "id">
 
   export type AlergiaOrderByWithAggregationInput = {
@@ -186741,6 +188561,7 @@ export namespace Prisma {
     doenteId?: StringFilter<"AlertaClinico"> | string
     tipo?: StringFilter<"AlertaClinico"> | string
     mensagem?: StringFilter<"AlertaClinico"> | string
+    severidade?: IntFilter<"AlertaClinico"> | number
     lido?: BoolFilter<"AlertaClinico"> | boolean
     urgencia?: BoolFilter<"AlertaClinico"> | boolean
     acusadoPorId?: StringNullableFilter<"AlertaClinico"> | string | null
@@ -186756,6 +188577,7 @@ export namespace Prisma {
     doenteId?: SortOrder
     tipo?: SortOrder
     mensagem?: SortOrder
+    severidade?: SortOrder
     lido?: SortOrder
     urgencia?: SortOrder
     acusadoPorId?: SortOrderInput | SortOrder
@@ -186774,6 +188596,7 @@ export namespace Prisma {
     doenteId?: StringFilter<"AlertaClinico"> | string
     tipo?: StringFilter<"AlertaClinico"> | string
     mensagem?: StringFilter<"AlertaClinico"> | string
+    severidade?: IntFilter<"AlertaClinico"> | number
     lido?: BoolFilter<"AlertaClinico"> | boolean
     urgencia?: BoolFilter<"AlertaClinico"> | boolean
     acusadoPorId?: StringNullableFilter<"AlertaClinico"> | string | null
@@ -186789,6 +188612,7 @@ export namespace Prisma {
     doenteId?: SortOrder
     tipo?: SortOrder
     mensagem?: SortOrder
+    severidade?: SortOrder
     lido?: SortOrder
     urgencia?: SortOrder
     acusadoPorId?: SortOrderInput | SortOrder
@@ -186796,8 +188620,10 @@ export namespace Prisma {
     escaladoEm?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: AlertaClinicoCountOrderByAggregateInput
+    _avg?: AlertaClinicoAvgOrderByAggregateInput
     _max?: AlertaClinicoMaxOrderByAggregateInput
     _min?: AlertaClinicoMinOrderByAggregateInput
+    _sum?: AlertaClinicoSumOrderByAggregateInput
   }
 
   export type AlertaClinicoScalarWhereWithAggregatesInput = {
@@ -186808,6 +188634,7 @@ export namespace Prisma {
     doenteId?: StringWithAggregatesFilter<"AlertaClinico"> | string
     tipo?: StringWithAggregatesFilter<"AlertaClinico"> | string
     mensagem?: StringWithAggregatesFilter<"AlertaClinico"> | string
+    severidade?: IntWithAggregatesFilter<"AlertaClinico"> | number
     lido?: BoolWithAggregatesFilter<"AlertaClinico"> | boolean
     urgencia?: BoolWithAggregatesFilter<"AlertaClinico"> | boolean
     acusadoPorId?: StringNullableWithAggregatesFilter<"AlertaClinico"> | string | null
@@ -191087,6 +192914,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     testemunha?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    registosTransfusao?: RegistoTransfusaoListRelationFilter
   }
 
   export type ConsentimentoInformadoOrderByWithRelationInput = {
@@ -191104,6 +192932,7 @@ export namespace Prisma {
     doente?: DoenteOrderByWithRelationInput
     testemunha?: UtilizadorOrderByWithRelationInput
     criadoPor?: UtilizadorOrderByWithRelationInput
+    registosTransfusao?: RegistoTransfusaoOrderByRelationAggregateInput
   }
 
   export type ConsentimentoInformadoWhereUniqueInput = Prisma.AtLeast<{
@@ -191124,6 +192953,7 @@ export namespace Prisma {
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     testemunha?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    registosTransfusao?: RegistoTransfusaoListRelationFilter
   }, "id">
 
   export type ConsentimentoInformadoOrderByWithAggregationInput = {
@@ -192231,7 +194061,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"AcessoFamiliar"> | Date | string
     nomeContacto?: StringFilter<"AcessoFamiliar"> | string
     email?: StringFilter<"AcessoFamiliar"> | string
-    accessToken?: StringFilter<"AcessoFamiliar"> | string
+    accessTokenHash?: StringFilter<"AcessoFamiliar"> | string
     accessTokenExpiry?: DateTimeFilter<"AcessoFamiliar"> | Date | string
     ativo?: BoolFilter<"AcessoFamiliar"> | boolean
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
@@ -192245,7 +194075,7 @@ export namespace Prisma {
     criadoEm?: SortOrder
     nomeContacto?: SortOrder
     email?: SortOrder
-    accessToken?: SortOrder
+    accessTokenHash?: SortOrder
     accessTokenExpiry?: SortOrder
     ativo?: SortOrder
     doente?: DoenteOrderByWithRelationInput
@@ -192254,7 +194084,7 @@ export namespace Prisma {
 
   export type AcessoFamiliarWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    accessToken?: string
+    accessTokenHash?: string
     AND?: AcessoFamiliarWhereInput | AcessoFamiliarWhereInput[]
     OR?: AcessoFamiliarWhereInput[]
     NOT?: AcessoFamiliarWhereInput | AcessoFamiliarWhereInput[]
@@ -192267,7 +194097,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"AcessoFamiliar"> | boolean
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
-  }, "id" | "accessToken">
+  }, "id" | "accessTokenHash">
 
   export type AcessoFamiliarOrderByWithAggregationInput = {
     id?: SortOrder
@@ -192276,7 +194106,7 @@ export namespace Prisma {
     criadoEm?: SortOrder
     nomeContacto?: SortOrder
     email?: SortOrder
-    accessToken?: SortOrder
+    accessTokenHash?: SortOrder
     accessTokenExpiry?: SortOrder
     ativo?: SortOrder
     _count?: AcessoFamiliarCountOrderByAggregateInput
@@ -192294,7 +194124,7 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"AcessoFamiliar"> | Date | string
     nomeContacto?: StringWithAggregatesFilter<"AcessoFamiliar"> | string
     email?: StringWithAggregatesFilter<"AcessoFamiliar"> | string
-    accessToken?: StringWithAggregatesFilter<"AcessoFamiliar"> | string
+    accessTokenHash?: StringWithAggregatesFilter<"AcessoFamiliar"> | string
     accessTokenExpiry?: DateTimeWithAggregatesFilter<"AcessoFamiliar"> | Date | string
     ativo?: BoolWithAggregatesFilter<"AcessoFamiliar"> | boolean
   }
@@ -192306,7 +194136,7 @@ export namespace Prisma {
     id?: StringFilter<"DispositivoFhir"> | string
     nome?: StringFilter<"DispositivoFhir"> | string
     tipo?: StringFilter<"DispositivoFhir"> | string
-    apiKey?: StringFilter<"DispositivoFhir"> | string
+    apiKeyHash?: StringFilter<"DispositivoFhir"> | string
     doenteId?: StringNullableFilter<"DispositivoFhir"> | string | null
     ativo?: BoolFilter<"DispositivoFhir"> | boolean
     ultimoPing?: DateTimeNullableFilter<"DispositivoFhir"> | Date | string | null
@@ -192317,7 +194147,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     tipo?: SortOrder
-    apiKey?: SortOrder
+    apiKeyHash?: SortOrder
     doenteId?: SortOrderInput | SortOrder
     ativo?: SortOrder
     ultimoPing?: SortOrderInput | SortOrder
@@ -192326,7 +194156,7 @@ export namespace Prisma {
 
   export type DispositivoFhirWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    apiKey?: string
+    apiKeyHash?: string
     AND?: DispositivoFhirWhereInput | DispositivoFhirWhereInput[]
     OR?: DispositivoFhirWhereInput[]
     NOT?: DispositivoFhirWhereInput | DispositivoFhirWhereInput[]
@@ -192336,13 +194166,13 @@ export namespace Prisma {
     ativo?: BoolFilter<"DispositivoFhir"> | boolean
     ultimoPing?: DateTimeNullableFilter<"DispositivoFhir"> | Date | string | null
     criadoEm?: DateTimeFilter<"DispositivoFhir"> | Date | string
-  }, "id" | "apiKey">
+  }, "id" | "apiKeyHash">
 
   export type DispositivoFhirOrderByWithAggregationInput = {
     id?: SortOrder
     nome?: SortOrder
     tipo?: SortOrder
-    apiKey?: SortOrder
+    apiKeyHash?: SortOrder
     doenteId?: SortOrderInput | SortOrder
     ativo?: SortOrder
     ultimoPing?: SortOrderInput | SortOrder
@@ -192359,7 +194189,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"DispositivoFhir"> | string
     nome?: StringWithAggregatesFilter<"DispositivoFhir"> | string
     tipo?: StringWithAggregatesFilter<"DispositivoFhir"> | string
-    apiKey?: StringWithAggregatesFilter<"DispositivoFhir"> | string
+    apiKeyHash?: StringWithAggregatesFilter<"DispositivoFhir"> | string
     doenteId?: StringNullableWithAggregatesFilter<"DispositivoFhir"> | string | null
     ativo?: BoolWithAggregatesFilter<"DispositivoFhir"> | boolean
     ultimoPing?: DateTimeNullableWithAggregatesFilter<"DispositivoFhir"> | Date | string | null
@@ -194883,6 +196713,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -195024,6 +196856,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -195165,6 +196999,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -195306,6 +197142,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -196275,6 +198113,7 @@ export namespace Prisma {
     doente: DoenteCreateNestedOneWithoutNotasClinciasInput
     autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
     assinadaPor?: UtilizadorCreateNestedOneWithoutNotasAssinadasInput
+    adendas?: NotaClinicaAdendaCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaUncheckedCreateInput = {
@@ -196290,6 +198129,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     assinadaEm?: Date | string | null
     assinadaPorId?: string | null
+    adendas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaUpdateInput = {
@@ -196305,6 +198145,7 @@ export namespace Prisma {
     doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
     autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
     assinadaPor?: UtilizadorUpdateOneWithoutNotasAssinadasNestedInput
+    adendas?: NotaClinicaAdendaUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateInput = {
@@ -196320,6 +198161,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    adendas?: NotaClinicaAdendaUncheckedUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaCreateManyInput = {
@@ -196362,6 +198204,67 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type NotaClinicaAdendaCreateInput = {
+    id?: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+    nota: NotaClinicaCreateNestedOneWithoutAdendasInput
+    autor: UtilizadorCreateNestedOneWithoutAdendasNotasClinicasInput
+  }
+
+  export type NotaClinicaAdendaUncheckedCreateInput = {
+    id?: string
+    notaClinicaId: string
+    autorId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaClinicaAdendaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    nota?: NotaClinicaUpdateOneRequiredWithoutAdendasNestedInput
+    autor?: UtilizadorUpdateOneRequiredWithoutAdendasNotasClinicasNestedInput
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    notaClinicaId?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaClinicaAdendaCreateManyInput = {
+    id?: string
+    notaClinicaId: string
+    autorId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaClinicaAdendaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    notaClinicaId?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EscalaClinicaCreateInput = {
@@ -196636,10 +198539,13 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
@@ -196663,6 +198569,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
@@ -196682,10 +198591,13 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
@@ -196709,6 +198621,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
@@ -196732,6 +198647,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
   }
 
   export type MedicacaoUpdateManyMutationInput = {
@@ -196749,6 +198667,8 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MedicacaoUncheckedUpdateManyInput = {
@@ -196770,6 +198690,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StewardshipAntibioticoCreateInput = {
@@ -196866,6 +198789,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -196879,6 +198803,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -196892,6 +198817,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -196905,6 +198831,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -196918,6 +198845,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -196931,6 +198859,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -196941,6 +198870,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -197241,6 +199171,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -197266,6 +199199,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -197287,6 +199223,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -197312,6 +199251,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -197335,6 +199277,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -197356,6 +199301,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -197379,6 +199327,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -197968,6 +199919,8 @@ export namespace Prisma {
     bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
     doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
     reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
   }
 
@@ -197983,6 +199936,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
     reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
   }
@@ -198000,6 +199955,8 @@ export namespace Prisma {
     bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
     reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
   }
 
@@ -198015,6 +199972,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
   }
@@ -198031,6 +199990,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
   }
 
@@ -198057,6 +200018,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -198825,6 +200788,7 @@ export namespace Prisma {
     notas?: string | null
     criadaEm?: Date | string
     doente: DoenteCreateNestedOneWithoutAlergiasInput
+    medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
 
   export type AlergiaUncheckedCreateInput = {
@@ -198835,6 +200799,7 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
   export type AlergiaUpdateInput = {
@@ -198845,6 +200810,7 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
+    medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
   export type AlergiaUncheckedUpdateInput = {
@@ -198855,6 +200821,7 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
   export type AlergiaCreateManyInput = {
@@ -198952,6 +200919,7 @@ export namespace Prisma {
     id?: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoEm?: Date | string | null
@@ -198966,6 +200934,7 @@ export namespace Prisma {
     doenteId: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: string | null
@@ -198978,6 +200947,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -198992,6 +200962,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -199005,6 +200976,7 @@ export namespace Prisma {
     doenteId: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: string | null
@@ -199017,6 +200989,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -199029,6 +201002,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -203610,6 +205584,7 @@ export namespace Prisma {
     doente: DoenteCreateNestedOneWithoutConsentimentosInput
     testemunha?: UtilizadorCreateNestedOneWithoutConsentimentosTestemunhaInput
     criadoPor: UtilizadorCreateNestedOneWithoutConsentimentosCriadosInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoUncheckedCreateInput = {
@@ -203624,6 +205599,7 @@ export namespace Prisma {
     motivoRecusa?: string | null
     criadoEm?: Date | string
     criadoPorId: string
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoUpdateInput = {
@@ -203638,6 +205614,7 @@ export namespace Prisma {
     doente?: DoenteUpdateOneRequiredWithoutConsentimentosNestedInput
     testemunha?: UtilizadorUpdateOneWithoutConsentimentosTestemunhaNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutConsentimentosCriadosNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateInput = {
@@ -203652,6 +205629,7 @@ export namespace Prisma {
     motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoCreateManyInput = {
@@ -204834,7 +206812,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
     doente: DoenteCreateNestedOneWithoutAcessosFamiliaresInput
@@ -204848,7 +206826,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -204858,7 +206836,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
     doente?: DoenteUpdateOneRequiredWithoutAcessosFamiliaresNestedInput
@@ -204872,7 +206850,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -204884,7 +206862,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -204894,7 +206872,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -204906,7 +206884,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -204915,7 +206893,7 @@ export namespace Prisma {
     id?: string
     nome: string
     tipo: string
-    apiKey?: string
+    apiKeyHash: string
     doenteId?: string | null
     ativo?: boolean
     ultimoPing?: Date | string | null
@@ -204926,7 +206904,7 @@ export namespace Prisma {
     id?: string
     nome: string
     tipo: string
-    apiKey?: string
+    apiKeyHash: string
     doenteId?: string | null
     ativo?: boolean
     ultimoPing?: Date | string | null
@@ -204937,7 +206915,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
+    apiKeyHash?: StringFieldUpdateOperationsInput | string
     doenteId?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     ultimoPing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -204948,7 +206926,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
+    apiKeyHash?: StringFieldUpdateOperationsInput | string
     doenteId?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     ultimoPing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -204959,7 +206937,7 @@ export namespace Prisma {
     id?: string
     nome: string
     tipo: string
-    apiKey?: string
+    apiKeyHash: string
     doenteId?: string | null
     ativo?: boolean
     ultimoPing?: Date | string | null
@@ -204970,7 +206948,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
+    apiKeyHash?: StringFieldUpdateOperationsInput | string
     doenteId?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     ultimoPing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -204981,7 +206959,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
+    apiKeyHash?: StringFieldUpdateOperationsInput | string
     doenteId?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     ultimoPing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -208057,6 +210035,18 @@ export namespace Prisma {
     none?: PrescricaoDietaWhereInput
   }
 
+  export type NotaClinicaAdendaListRelationFilter = {
+    every?: NotaClinicaAdendaWhereInput
+    some?: NotaClinicaAdendaWhereInput
+    none?: NotaClinicaAdendaWhereInput
+  }
+
+  export type RegistoTransfusaoListRelationFilter = {
+    every?: RegistoTransfusaoWhereInput
+    some?: RegistoTransfusaoWhereInput
+    none?: RegistoTransfusaoWhereInput
+  }
+
   export type CulturaMicrobiologicaListRelationFilter = {
     every?: CulturaMicrobiologicaWhereInput
     some?: CulturaMicrobiologicaWhereInput
@@ -208210,12 +210200,6 @@ export namespace Prisma {
     every?: PedidoTransfusaoWhereInput
     some?: PedidoTransfusaoWhereInput
     none?: PedidoTransfusaoWhereInput
-  }
-
-  export type RegistoTransfusaoListRelationFilter = {
-    every?: RegistoTransfusaoWhereInput
-    some?: RegistoTransfusaoWhereInput
-    none?: RegistoTransfusaoWhereInput
   }
 
   export type ReacaoTransfusionalListRelationFilter = {
@@ -208465,6 +210449,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type NotaClinicaAdendaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RegistoTransfusaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type CulturaMicrobiologicaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -208562,10 +210554,6 @@ export namespace Prisma {
   }
 
   export type PedidoTransfusaoOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type RegistoTransfusaoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -209281,6 +211269,38 @@ export namespace Prisma {
     assinadaPorId?: SortOrder
   }
 
+  export type NotaClinicaScalarRelationFilter = {
+    is?: NotaClinicaWhereInput
+    isNot?: NotaClinicaWhereInput
+  }
+
+  export type NotaClinicaAdendaCountOrderByAggregateInput = {
+    id?: SortOrder
+    notaClinicaId?: SortOrder
+    autorId?: SortOrder
+    texto?: SortOrder
+    motivo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type NotaClinicaAdendaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    notaClinicaId?: SortOrder
+    autorId?: SortOrder
+    texto?: SortOrder
+    motivo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type NotaClinicaAdendaMinOrderByAggregateInput = {
+    id?: SortOrder
+    notaClinicaId?: SortOrder
+    autorId?: SortOrder
+    texto?: SortOrder
+    motivo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
   export type EnumTipoEscalaClinicaFilter<$PrismaModel = never> = {
     equals?: $Enums.TipoEscalaClinica | EnumTipoEscalaClinicaFieldRefInput<$PrismaModel>
     in?: $Enums.TipoEscalaClinica[] | ListEnumTipoEscalaClinicaFieldRefInput<$PrismaModel>
@@ -209523,6 +211543,11 @@ export namespace Prisma {
     _max?: NestedEnumEstadoTarefaFilter<$PrismaModel>
   }
 
+  export type AlergiaNullableScalarRelationFilter = {
+    is?: AlergiaWhereInput | null
+    isNot?: AlergiaWhereInput | null
+  }
+
   export type StewardshipAntibioticoNullableScalarRelationFilter = {
     is?: StewardshipAntibioticoWhereInput | null
     isNot?: StewardshipAntibioticoWhereInput | null
@@ -209547,6 +211572,9 @@ export namespace Prisma {
     motivoRejeicao?: SortOrder
     assinadoEm?: SortOrder
     assinadoPorId?: SortOrder
+    overrideAlergia?: SortOrder
+    overrideMotivo?: SortOrder
+    overrideAlergenioId?: SortOrder
   }
 
   export type MedicacaoMaxOrderByAggregateInput = {
@@ -209568,6 +211596,9 @@ export namespace Prisma {
     motivoRejeicao?: SortOrder
     assinadoEm?: SortOrder
     assinadoPorId?: SortOrder
+    overrideAlergia?: SortOrder
+    overrideMotivo?: SortOrder
+    overrideAlergenioId?: SortOrder
   }
 
   export type MedicacaoMinOrderByAggregateInput = {
@@ -209589,6 +211620,9 @@ export namespace Prisma {
     motivoRejeicao?: SortOrder
     assinadoEm?: SortOrder
     assinadoPorId?: SortOrder
+    overrideAlergia?: SortOrder
+    overrideMotivo?: SortOrder
+    overrideAlergenioId?: SortOrder
   }
 
   export type MedicacaoScalarRelationFilter = {
@@ -209642,12 +211676,36 @@ export namespace Prisma {
   export type StewardshipAntibioticoSumOrderByAggregateInput = {
     diasTerapia?: SortOrder
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type RegistoMedicacaoCountOrderByAggregateInput = {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrder
     verificacao5Certas?: SortOrder
+    certosVerificados?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrder
     deletedAt?: SortOrder
@@ -209680,6 +211738,32 @@ export namespace Prisma {
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type HorarioTurnoListRelationFilter = {
@@ -209867,6 +211951,14 @@ export namespace Prisma {
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type SinalVitalCountOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
@@ -209883,6 +211975,9 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    news2Completo?: SortOrder
+    news2ParametrosFalta?: SortOrder
+    news2ParametroIsolado3?: SortOrder
     pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
@@ -209920,6 +212015,8 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    news2Completo?: SortOrder
+    news2ParametroIsolado3?: SortOrder
     pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
@@ -209943,6 +212040,8 @@ export namespace Prisma {
     avpu?: SortOrder
     o2Suplementar?: SortOrder
     news2?: SortOrder
+    news2Completo?: SortOrder
+    news2ParametroIsolado3?: SortOrder
     pews?: SortOrder
     glasgow?: SortOrder
     pamMedia?: SortOrder
@@ -210280,6 +212379,11 @@ export namespace Prisma {
     isNot?: BolsaSangueWhereInput
   }
 
+  export type ConsentimentoInformadoNullableScalarRelationFilter = {
+    is?: ConsentimentoInformadoWhereInput | null
+    isNot?: ConsentimentoInformadoWhereInput | null
+  }
+
   export type ReacaoTransfusionalNullableScalarRelationFilter = {
     is?: ReacaoTransfusionalWhereInput | null
     isNot?: ReacaoTransfusionalWhereInput | null
@@ -210297,6 +212401,8 @@ export namespace Prisma {
     verificacaoUnidade?: SortOrder
     verificacaoValidade?: SortOrder
     compativel?: SortOrder
+    segundoVerificadorId?: SortOrder
+    consentimentoId?: SortOrder
     observacoes?: SortOrder
   }
 
@@ -210312,6 +212418,8 @@ export namespace Prisma {
     verificacaoUnidade?: SortOrder
     verificacaoValidade?: SortOrder
     compativel?: SortOrder
+    segundoVerificadorId?: SortOrder
+    consentimentoId?: SortOrder
     observacoes?: SortOrder
   }
 
@@ -210327,6 +212435,8 @@ export namespace Prisma {
     verificacaoUnidade?: SortOrder
     verificacaoValidade?: SortOrder
     compativel?: SortOrder
+    segundoVerificadorId?: SortOrder
+    consentimentoId?: SortOrder
     observacoes?: SortOrder
   }
 
@@ -210641,14 +212751,6 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type FeatureFlagCountOrderByAggregateInput = {
     id?: SortOrder
     key?: SortOrder
@@ -210754,6 +212856,7 @@ export namespace Prisma {
     doenteId?: SortOrder
     tipo?: SortOrder
     mensagem?: SortOrder
+    severidade?: SortOrder
     lido?: SortOrder
     urgencia?: SortOrder
     acusadoPorId?: SortOrder
@@ -210762,11 +212865,16 @@ export namespace Prisma {
     criadoEm?: SortOrder
   }
 
+  export type AlertaClinicoAvgOrderByAggregateInput = {
+    severidade?: SortOrder
+  }
+
   export type AlertaClinicoMaxOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
     tipo?: SortOrder
     mensagem?: SortOrder
+    severidade?: SortOrder
     lido?: SortOrder
     urgencia?: SortOrder
     acusadoPorId?: SortOrder
@@ -210780,12 +212888,17 @@ export namespace Prisma {
     doenteId?: SortOrder
     tipo?: SortOrder
     mensagem?: SortOrder
+    severidade?: SortOrder
     lido?: SortOrder
     urgencia?: SortOrder
     acusadoPorId?: SortOrder
     acusadoEm?: SortOrder
     escaladoEm?: SortOrder
     criadoEm?: SortOrder
+  }
+
+  export type AlertaClinicoSumOrderByAggregateInput = {
+    severidade?: SortOrder
   }
 
   export type AvaliacaoRiscoCountOrderByAggregateInput = {
@@ -210901,29 +213014,6 @@ export namespace Prisma {
     plataforma?: SortOrder
     criadoEm?: SortOrder
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NotificacaoInAppCountOrderByAggregateInput = {
     id?: SortOrder
@@ -210954,32 +213044,6 @@ export namespace Prisma {
     lida?: SortOrder
     criadaEm?: SortOrder
     lidaEm?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumTipoExameFilter<$PrismaModel = never> = {
@@ -214139,7 +216203,7 @@ export namespace Prisma {
     criadoEm?: SortOrder
     nomeContacto?: SortOrder
     email?: SortOrder
-    accessToken?: SortOrder
+    accessTokenHash?: SortOrder
     accessTokenExpiry?: SortOrder
     ativo?: SortOrder
   }
@@ -214151,7 +216215,7 @@ export namespace Prisma {
     criadoEm?: SortOrder
     nomeContacto?: SortOrder
     email?: SortOrder
-    accessToken?: SortOrder
+    accessTokenHash?: SortOrder
     accessTokenExpiry?: SortOrder
     ativo?: SortOrder
   }
@@ -214163,7 +216227,7 @@ export namespace Prisma {
     criadoEm?: SortOrder
     nomeContacto?: SortOrder
     email?: SortOrder
-    accessToken?: SortOrder
+    accessTokenHash?: SortOrder
     accessTokenExpiry?: SortOrder
     ativo?: SortOrder
   }
@@ -214172,7 +216236,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     tipo?: SortOrder
-    apiKey?: SortOrder
+    apiKeyHash?: SortOrder
     doenteId?: SortOrder
     ativo?: SortOrder
     ultimoPing?: SortOrder
@@ -214183,7 +216247,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     tipo?: SortOrder
-    apiKey?: SortOrder
+    apiKeyHash?: SortOrder
     doenteId?: SortOrder
     ativo?: SortOrder
     ultimoPing?: SortOrder
@@ -214194,7 +216258,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     tipo?: SortOrder
-    apiKey?: SortOrder
+    apiKeyHash?: SortOrder
     doenteId?: SortOrder
     ativo?: SortOrder
     ultimoPing?: SortOrder
@@ -216171,6 +218235,20 @@ export namespace Prisma {
     connect?: NotaClinicaWhereUniqueInput | NotaClinicaWhereUniqueInput[]
   }
 
+  export type NotaClinicaAdendaCreateNestedManyWithoutAutorInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput> | NotaClinicaAdendaCreateWithoutAutorInput[] | NotaClinicaAdendaUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutAutorInput | NotaClinicaAdendaCreateOrConnectWithoutAutorInput[]
+    createMany?: NotaClinicaAdendaCreateManyAutorInputEnvelope
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+  }
+
+  export type RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput> | RegistoTransfusaoCreateWithoutSegundoVerificadorInput[] | RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput | RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput[]
+    createMany?: RegistoTransfusaoCreateManySegundoVerificadorInputEnvelope
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+  }
+
   export type CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput = {
     create?: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput> | CulturaMicrobiologicaCreateWithoutRegistadoPorInput[] | CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput | CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput[]
@@ -217013,6 +219091,20 @@ export namespace Prisma {
     connectOrCreate?: NotaClinicaCreateOrConnectWithoutAssinadaPorInput | NotaClinicaCreateOrConnectWithoutAssinadaPorInput[]
     createMany?: NotaClinicaCreateManyAssinadaPorInputEnvelope
     connect?: NotaClinicaWhereUniqueInput | NotaClinicaWhereUniqueInput[]
+  }
+
+  export type NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput> | NotaClinicaAdendaCreateWithoutAutorInput[] | NotaClinicaAdendaUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutAutorInput | NotaClinicaAdendaCreateOrConnectWithoutAutorInput[]
+    createMany?: NotaClinicaAdendaCreateManyAutorInputEnvelope
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+  }
+
+  export type RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput> | RegistoTransfusaoCreateWithoutSegundoVerificadorInput[] | RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput | RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput[]
+    createMany?: RegistoTransfusaoCreateManySegundoVerificadorInputEnvelope
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
   }
 
   export type CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput = {
@@ -218480,6 +220572,34 @@ export namespace Prisma {
     update?: NotaClinicaUpdateWithWhereUniqueWithoutAssinadaPorInput | NotaClinicaUpdateWithWhereUniqueWithoutAssinadaPorInput[]
     updateMany?: NotaClinicaUpdateManyWithWhereWithoutAssinadaPorInput | NotaClinicaUpdateManyWithWhereWithoutAssinadaPorInput[]
     deleteMany?: NotaClinicaScalarWhereInput | NotaClinicaScalarWhereInput[]
+  }
+
+  export type NotaClinicaAdendaUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput> | NotaClinicaAdendaCreateWithoutAutorInput[] | NotaClinicaAdendaUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutAutorInput | NotaClinicaAdendaCreateOrConnectWithoutAutorInput[]
+    upsert?: NotaClinicaAdendaUpsertWithWhereUniqueWithoutAutorInput | NotaClinicaAdendaUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: NotaClinicaAdendaCreateManyAutorInputEnvelope
+    set?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    disconnect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    delete?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    update?: NotaClinicaAdendaUpdateWithWhereUniqueWithoutAutorInput | NotaClinicaAdendaUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: NotaClinicaAdendaUpdateManyWithWhereWithoutAutorInput | NotaClinicaAdendaUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+  }
+
+  export type RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput> | RegistoTransfusaoCreateWithoutSegundoVerificadorInput[] | RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput | RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput[]
+    upsert?: RegistoTransfusaoUpsertWithWhereUniqueWithoutSegundoVerificadorInput | RegistoTransfusaoUpsertWithWhereUniqueWithoutSegundoVerificadorInput[]
+    createMany?: RegistoTransfusaoCreateManySegundoVerificadorInputEnvelope
+    set?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    disconnect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    delete?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    update?: RegistoTransfusaoUpdateWithWhereUniqueWithoutSegundoVerificadorInput | RegistoTransfusaoUpdateWithWhereUniqueWithoutSegundoVerificadorInput[]
+    updateMany?: RegistoTransfusaoUpdateManyWithWhereWithoutSegundoVerificadorInput | RegistoTransfusaoUpdateManyWithWhereWithoutSegundoVerificadorInput[]
+    deleteMany?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
   }
 
   export type CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput = {
@@ -220162,6 +222282,34 @@ export namespace Prisma {
     update?: NotaClinicaUpdateWithWhereUniqueWithoutAssinadaPorInput | NotaClinicaUpdateWithWhereUniqueWithoutAssinadaPorInput[]
     updateMany?: NotaClinicaUpdateManyWithWhereWithoutAssinadaPorInput | NotaClinicaUpdateManyWithWhereWithoutAssinadaPorInput[]
     deleteMany?: NotaClinicaScalarWhereInput | NotaClinicaScalarWhereInput[]
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput> | NotaClinicaAdendaCreateWithoutAutorInput[] | NotaClinicaAdendaUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutAutorInput | NotaClinicaAdendaCreateOrConnectWithoutAutorInput[]
+    upsert?: NotaClinicaAdendaUpsertWithWhereUniqueWithoutAutorInput | NotaClinicaAdendaUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: NotaClinicaAdendaCreateManyAutorInputEnvelope
+    set?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    disconnect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    delete?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    update?: NotaClinicaAdendaUpdateWithWhereUniqueWithoutAutorInput | NotaClinicaAdendaUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: NotaClinicaAdendaUpdateManyWithWhereWithoutAutorInput | NotaClinicaAdendaUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput> | RegistoTransfusaoCreateWithoutSegundoVerificadorInput[] | RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput | RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput[]
+    upsert?: RegistoTransfusaoUpsertWithWhereUniqueWithoutSegundoVerificadorInput | RegistoTransfusaoUpsertWithWhereUniqueWithoutSegundoVerificadorInput[]
+    createMany?: RegistoTransfusaoCreateManySegundoVerificadorInputEnvelope
+    set?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    disconnect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    delete?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    update?: RegistoTransfusaoUpdateWithWhereUniqueWithoutSegundoVerificadorInput | RegistoTransfusaoUpdateWithWhereUniqueWithoutSegundoVerificadorInput[]
+    updateMany?: RegistoTransfusaoUpdateManyWithWhereWithoutSegundoVerificadorInput | RegistoTransfusaoUpdateManyWithWhereWithoutSegundoVerificadorInput[]
+    deleteMany?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
   }
 
   export type CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
@@ -223516,6 +225664,20 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type NotaClinicaAdendaCreateNestedManyWithoutNotaInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput> | NotaClinicaAdendaCreateWithoutNotaInput[] | NotaClinicaAdendaUncheckedCreateWithoutNotaInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutNotaInput | NotaClinicaAdendaCreateOrConnectWithoutNotaInput[]
+    createMany?: NotaClinicaAdendaCreateManyNotaInputEnvelope
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+  }
+
+  export type NotaClinicaAdendaUncheckedCreateNestedManyWithoutNotaInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput> | NotaClinicaAdendaCreateWithoutNotaInput[] | NotaClinicaAdendaUncheckedCreateWithoutNotaInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutNotaInput | NotaClinicaAdendaCreateOrConnectWithoutNotaInput[]
+    createMany?: NotaClinicaAdendaCreateManyNotaInputEnvelope
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+  }
+
   export type DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput = {
     create?: XOR<DoenteCreateWithoutNotasClinciasInput, DoenteUncheckedCreateWithoutNotasClinciasInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutNotasClinciasInput
@@ -223540,6 +225702,62 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutNotasAssinadasInput, UtilizadorUpdateWithoutNotasAssinadasInput>, UtilizadorUncheckedUpdateWithoutNotasAssinadasInput>
+  }
+
+  export type NotaClinicaAdendaUpdateManyWithoutNotaNestedInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput> | NotaClinicaAdendaCreateWithoutNotaInput[] | NotaClinicaAdendaUncheckedCreateWithoutNotaInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutNotaInput | NotaClinicaAdendaCreateOrConnectWithoutNotaInput[]
+    upsert?: NotaClinicaAdendaUpsertWithWhereUniqueWithoutNotaInput | NotaClinicaAdendaUpsertWithWhereUniqueWithoutNotaInput[]
+    createMany?: NotaClinicaAdendaCreateManyNotaInputEnvelope
+    set?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    disconnect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    delete?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    update?: NotaClinicaAdendaUpdateWithWhereUniqueWithoutNotaInput | NotaClinicaAdendaUpdateWithWhereUniqueWithoutNotaInput[]
+    updateMany?: NotaClinicaAdendaUpdateManyWithWhereWithoutNotaInput | NotaClinicaAdendaUpdateManyWithWhereWithoutNotaInput[]
+    deleteMany?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateManyWithoutNotaNestedInput = {
+    create?: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput> | NotaClinicaAdendaCreateWithoutNotaInput[] | NotaClinicaAdendaUncheckedCreateWithoutNotaInput[]
+    connectOrCreate?: NotaClinicaAdendaCreateOrConnectWithoutNotaInput | NotaClinicaAdendaCreateOrConnectWithoutNotaInput[]
+    upsert?: NotaClinicaAdendaUpsertWithWhereUniqueWithoutNotaInput | NotaClinicaAdendaUpsertWithWhereUniqueWithoutNotaInput[]
+    createMany?: NotaClinicaAdendaCreateManyNotaInputEnvelope
+    set?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    disconnect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    delete?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    connect?: NotaClinicaAdendaWhereUniqueInput | NotaClinicaAdendaWhereUniqueInput[]
+    update?: NotaClinicaAdendaUpdateWithWhereUniqueWithoutNotaInput | NotaClinicaAdendaUpdateWithWhereUniqueWithoutNotaInput[]
+    updateMany?: NotaClinicaAdendaUpdateManyWithWhereWithoutNotaInput | NotaClinicaAdendaUpdateManyWithWhereWithoutNotaInput[]
+    deleteMany?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+  }
+
+  export type NotaClinicaCreateNestedOneWithoutAdendasInput = {
+    create?: XOR<NotaClinicaCreateWithoutAdendasInput, NotaClinicaUncheckedCreateWithoutAdendasInput>
+    connectOrCreate?: NotaClinicaCreateOrConnectWithoutAdendasInput
+    connect?: NotaClinicaWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAdendasNotasClinicasInput = {
+    create?: XOR<UtilizadorCreateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedCreateWithoutAdendasNotasClinicasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAdendasNotasClinicasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type NotaClinicaUpdateOneRequiredWithoutAdendasNestedInput = {
+    create?: XOR<NotaClinicaCreateWithoutAdendasInput, NotaClinicaUncheckedCreateWithoutAdendasInput>
+    connectOrCreate?: NotaClinicaCreateOrConnectWithoutAdendasInput
+    upsert?: NotaClinicaUpsertWithoutAdendasInput
+    connect?: NotaClinicaWhereUniqueInput
+    update?: XOR<XOR<NotaClinicaUpdateToOneWithWhereWithoutAdendasInput, NotaClinicaUpdateWithoutAdendasInput>, NotaClinicaUncheckedUpdateWithoutAdendasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAdendasNotasClinicasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedCreateWithoutAdendasNotasClinicasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAdendasNotasClinicasInput
+    upsert?: UtilizadorUpsertWithoutAdendasNotasClinicasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAdendasNotasClinicasInput, UtilizadorUpdateWithoutAdendasNotasClinicasInput>, UtilizadorUncheckedUpdateWithoutAdendasNotasClinicasInput>
   }
 
   export type DoenteCreateNestedOneWithoutEscalasClinicasInput = {
@@ -223714,6 +225932,12 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type AlergiaCreateNestedOneWithoutMedicacoesOverrideInput = {
+    create?: XOR<AlergiaCreateWithoutMedicacoesOverrideInput, AlergiaUncheckedCreateWithoutMedicacoesOverrideInput>
+    connectOrCreate?: AlergiaCreateOrConnectWithoutMedicacoesOverrideInput
+    connect?: AlergiaWhereUniqueInput
+  }
+
   export type RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput = {
     create?: XOR<RegistoMedicacaoCreateWithoutMedicacaoInput, RegistoMedicacaoUncheckedCreateWithoutMedicacaoInput> | RegistoMedicacaoCreateWithoutMedicacaoInput[] | RegistoMedicacaoUncheckedCreateWithoutMedicacaoInput[]
     connectOrCreate?: RegistoMedicacaoCreateOrConnectWithoutMedicacaoInput | RegistoMedicacaoCreateOrConnectWithoutMedicacaoInput[]
@@ -223774,6 +225998,16 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutMedicacoesAssinadasInput, UtilizadorUpdateWithoutMedicacoesAssinadasInput>, UtilizadorUncheckedUpdateWithoutMedicacoesAssinadasInput>
+  }
+
+  export type AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput = {
+    create?: XOR<AlergiaCreateWithoutMedicacoesOverrideInput, AlergiaUncheckedCreateWithoutMedicacoesOverrideInput>
+    connectOrCreate?: AlergiaCreateOrConnectWithoutMedicacoesOverrideInput
+    upsert?: AlergiaUpsertWithoutMedicacoesOverrideInput
+    disconnect?: AlergiaWhereInput | boolean
+    delete?: AlergiaWhereInput | boolean
+    connect?: AlergiaWhereUniqueInput
+    update?: XOR<XOR<AlergiaUpdateToOneWithWhereWithoutMedicacoesOverrideInput, AlergiaUpdateWithoutMedicacoesOverrideInput>, AlergiaUncheckedUpdateWithoutMedicacoesOverrideInput>
   }
 
   export type RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput = {
@@ -224236,6 +226470,10 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAtribuicoesFeitasInput, UtilizadorUpdateWithoutAtribuicoesFeitasInput>, UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput>
   }
 
+  export type SinalVitalCreatenews2ParametrosFaltaInput = {
+    set: string[]
+  }
+
   export type DoenteCreateNestedOneWithoutSinaisVitaisInput = {
     create?: XOR<DoenteCreateWithoutSinaisVitaisInput, DoenteUncheckedCreateWithoutSinaisVitaisInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutSinaisVitaisInput
@@ -224250,6 +226488,11 @@ export namespace Prisma {
 
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
+  }
+
+  export type SinalVitalUpdatenews2ParametrosFaltaInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput = {
@@ -224550,6 +226793,18 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput = {
+    create?: XOR<UtilizadorCreateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedCreateWithoutTransfusoesSegundaVerificacaoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransfusoesSegundaVerificacaoInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput = {
+    create?: XOR<ConsentimentoInformadoCreateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedCreateWithoutRegistosTransfusaoInput>
+    connectOrCreate?: ConsentimentoInformadoCreateOrConnectWithoutRegistosTransfusaoInput
+    connect?: ConsentimentoInformadoWhereUniqueInput
+  }
+
   export type ReacaoTransfusionalCreateNestedOneWithoutRegistoInput = {
     create?: XOR<ReacaoTransfusionalCreateWithoutRegistoInput, ReacaoTransfusionalUncheckedCreateWithoutRegistoInput>
     connectOrCreate?: ReacaoTransfusionalCreateOrConnectWithoutRegistoInput
@@ -224592,6 +226847,26 @@ export namespace Prisma {
     upsert?: UtilizadorUpsertWithoutTransfusoesAdministradasInput
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTransfusoesAdministradasInput, UtilizadorUpdateWithoutTransfusoesAdministradasInput>, UtilizadorUncheckedUpdateWithoutTransfusoesAdministradasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedCreateWithoutTransfusoesSegundaVerificacaoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransfusoesSegundaVerificacaoInput
+    upsert?: UtilizadorUpsertWithoutTransfusoesSegundaVerificacaoInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUpdateWithoutTransfusoesSegundaVerificacaoInput>, UtilizadorUncheckedUpdateWithoutTransfusoesSegundaVerificacaoInput>
+  }
+
+  export type ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput = {
+    create?: XOR<ConsentimentoInformadoCreateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedCreateWithoutRegistosTransfusaoInput>
+    connectOrCreate?: ConsentimentoInformadoCreateOrConnectWithoutRegistosTransfusaoInput
+    upsert?: ConsentimentoInformadoUpsertWithoutRegistosTransfusaoInput
+    disconnect?: ConsentimentoInformadoWhereInput | boolean
+    delete?: ConsentimentoInformadoWhereInput | boolean
+    connect?: ConsentimentoInformadoWhereUniqueInput
+    update?: XOR<XOR<ConsentimentoInformadoUpdateToOneWithWhereWithoutRegistosTransfusaoInput, ConsentimentoInformadoUpdateWithoutRegistosTransfusaoInput>, ConsentimentoInformadoUncheckedUpdateWithoutRegistosTransfusaoInput>
   }
 
   export type ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput = {
@@ -224696,12 +226971,54 @@ export namespace Prisma {
     connect?: DoenteWhereUniqueInput
   }
 
+  export type MedicacaoCreateNestedManyWithoutOverrideAlergenioInput = {
+    create?: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput> | MedicacaoCreateWithoutOverrideAlergenioInput[] | MedicacaoUncheckedCreateWithoutOverrideAlergenioInput[]
+    connectOrCreate?: MedicacaoCreateOrConnectWithoutOverrideAlergenioInput | MedicacaoCreateOrConnectWithoutOverrideAlergenioInput[]
+    createMany?: MedicacaoCreateManyOverrideAlergenioInputEnvelope
+    connect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+  }
+
+  export type MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput = {
+    create?: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput> | MedicacaoCreateWithoutOverrideAlergenioInput[] | MedicacaoUncheckedCreateWithoutOverrideAlergenioInput[]
+    connectOrCreate?: MedicacaoCreateOrConnectWithoutOverrideAlergenioInput | MedicacaoCreateOrConnectWithoutOverrideAlergenioInput[]
+    createMany?: MedicacaoCreateManyOverrideAlergenioInputEnvelope
+    connect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+  }
+
   export type DoenteUpdateOneRequiredWithoutAlergiasNestedInput = {
     create?: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutAlergiasInput
     upsert?: DoenteUpsertWithoutAlergiasInput
     connect?: DoenteWhereUniqueInput
     update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutAlergiasInput, DoenteUpdateWithoutAlergiasInput>, DoenteUncheckedUpdateWithoutAlergiasInput>
+  }
+
+  export type MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput = {
+    create?: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput> | MedicacaoCreateWithoutOverrideAlergenioInput[] | MedicacaoUncheckedCreateWithoutOverrideAlergenioInput[]
+    connectOrCreate?: MedicacaoCreateOrConnectWithoutOverrideAlergenioInput | MedicacaoCreateOrConnectWithoutOverrideAlergenioInput[]
+    upsert?: MedicacaoUpsertWithWhereUniqueWithoutOverrideAlergenioInput | MedicacaoUpsertWithWhereUniqueWithoutOverrideAlergenioInput[]
+    createMany?: MedicacaoCreateManyOverrideAlergenioInputEnvelope
+    set?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    disconnect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    delete?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    connect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    update?: MedicacaoUpdateWithWhereUniqueWithoutOverrideAlergenioInput | MedicacaoUpdateWithWhereUniqueWithoutOverrideAlergenioInput[]
+    updateMany?: MedicacaoUpdateManyWithWhereWithoutOverrideAlergenioInput | MedicacaoUpdateManyWithWhereWithoutOverrideAlergenioInput[]
+    deleteMany?: MedicacaoScalarWhereInput | MedicacaoScalarWhereInput[]
+  }
+
+  export type MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput = {
+    create?: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput> | MedicacaoCreateWithoutOverrideAlergenioInput[] | MedicacaoUncheckedCreateWithoutOverrideAlergenioInput[]
+    connectOrCreate?: MedicacaoCreateOrConnectWithoutOverrideAlergenioInput | MedicacaoCreateOrConnectWithoutOverrideAlergenioInput[]
+    upsert?: MedicacaoUpsertWithWhereUniqueWithoutOverrideAlergenioInput | MedicacaoUpsertWithWhereUniqueWithoutOverrideAlergenioInput[]
+    createMany?: MedicacaoCreateManyOverrideAlergenioInputEnvelope
+    set?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    disconnect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    delete?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    connect?: MedicacaoWhereUniqueInput | MedicacaoWhereUniqueInput[]
+    update?: MedicacaoUpdateWithWhereUniqueWithoutOverrideAlergenioInput | MedicacaoUpdateWithWhereUniqueWithoutOverrideAlergenioInput[]
+    updateMany?: MedicacaoUpdateManyWithWhereWithoutOverrideAlergenioInput | MedicacaoUpdateManyWithWhereWithoutOverrideAlergenioInput[]
+    deleteMany?: MedicacaoScalarWhereInput | MedicacaoScalarWhereInput[]
   }
 
   export type DoenteCreateNestedOneWithoutContactosEmergenciaInput = {
@@ -226989,6 +229306,20 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type RegistoTransfusaoCreateNestedManyWithoutConsentimentoInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput> | RegistoTransfusaoCreateWithoutConsentimentoInput[] | RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput | RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput[]
+    createMany?: RegistoTransfusaoCreateManyConsentimentoInputEnvelope
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+  }
+
+  export type RegistoTransfusaoUncheckedCreateNestedManyWithoutConsentimentoInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput> | RegistoTransfusaoCreateWithoutConsentimentoInput[] | RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput | RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput[]
+    createMany?: RegistoTransfusaoCreateManyConsentimentoInputEnvelope
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+  }
+
   export type DoenteUpdateOneRequiredWithoutConsentimentosNestedInput = {
     create?: XOR<DoenteCreateWithoutConsentimentosInput, DoenteUncheckedCreateWithoutConsentimentosInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutConsentimentosInput
@@ -227013,6 +229344,34 @@ export namespace Prisma {
     upsert?: UtilizadorUpsertWithoutConsentimentosCriadosInput
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutConsentimentosCriadosInput, UtilizadorUpdateWithoutConsentimentosCriadosInput>, UtilizadorUncheckedUpdateWithoutConsentimentosCriadosInput>
+  }
+
+  export type RegistoTransfusaoUpdateManyWithoutConsentimentoNestedInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput> | RegistoTransfusaoCreateWithoutConsentimentoInput[] | RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput | RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput[]
+    upsert?: RegistoTransfusaoUpsertWithWhereUniqueWithoutConsentimentoInput | RegistoTransfusaoUpsertWithWhereUniqueWithoutConsentimentoInput[]
+    createMany?: RegistoTransfusaoCreateManyConsentimentoInputEnvelope
+    set?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    disconnect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    delete?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    update?: RegistoTransfusaoUpdateWithWhereUniqueWithoutConsentimentoInput | RegistoTransfusaoUpdateWithWhereUniqueWithoutConsentimentoInput[]
+    updateMany?: RegistoTransfusaoUpdateManyWithWhereWithoutConsentimentoInput | RegistoTransfusaoUpdateManyWithWhereWithoutConsentimentoInput[]
+    deleteMany?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoNestedInput = {
+    create?: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput> | RegistoTransfusaoCreateWithoutConsentimentoInput[] | RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput[]
+    connectOrCreate?: RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput | RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput[]
+    upsert?: RegistoTransfusaoUpsertWithWhereUniqueWithoutConsentimentoInput | RegistoTransfusaoUpsertWithWhereUniqueWithoutConsentimentoInput[]
+    createMany?: RegistoTransfusaoCreateManyConsentimentoInputEnvelope
+    set?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    disconnect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    delete?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    connect?: RegistoTransfusaoWhereUniqueInput | RegistoTransfusaoWhereUniqueInput[]
+    update?: RegistoTransfusaoUpdateWithWhereUniqueWithoutConsentimentoInput | RegistoTransfusaoUpdateWithWhereUniqueWithoutConsentimentoInput[]
+    updateMany?: RegistoTransfusaoUpdateManyWithWhereWithoutConsentimentoInput | RegistoTransfusaoUpdateManyWithWhereWithoutConsentimentoInput[]
+    deleteMany?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutBreakGlassUsadosInput = {
@@ -228499,6 +230858,29 @@ export namespace Prisma {
     _min?: NestedEnumEstadoTarefaFilter<$PrismaModel>
     _max?: NestedEnumEstadoTarefaFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumEstadoPedidoTrocaFilter<$PrismaModel = never> = {
     equals?: $Enums.EstadoPedidoTroca | EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
@@ -228528,29 +230910,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumTipoExameFilter<$PrismaModel = never> = {
@@ -229278,9 +231637,12 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
@@ -229303,6 +231665,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
@@ -229322,6 +231687,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -229334,6 +231700,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -229787,6 +232154,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -229810,6 +232180,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -229965,6 +232338,7 @@ export namespace Prisma {
     assinadaEm?: Date | string | null
     doente: DoenteCreateNestedOneWithoutNotasClinciasInput
     assinadaPor?: UtilizadorCreateNestedOneWithoutNotasAssinadasInput
+    adendas?: NotaClinicaAdendaCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaUncheckedCreateWithoutAutorInput = {
@@ -229979,6 +232353,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     assinadaEm?: Date | string | null
     assinadaPorId?: string | null
+    adendas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaCreateOrConnectWithoutAutorInput = {
@@ -230838,9 +233213,12 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
@@ -230863,6 +233241,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
@@ -231483,6 +233864,7 @@ export namespace Prisma {
     id?: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoEm?: Date | string | null
@@ -231496,6 +233878,7 @@ export namespace Prisma {
     doenteId: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoEm?: Date | string | null
@@ -231882,6 +234265,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -232022,6 +234407,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -232167,6 +234554,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -232307,6 +234696,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -232555,6 +234946,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutConsentimentosInput
     testemunha?: UtilizadorCreateNestedOneWithoutConsentimentosTestemunhaInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoUncheckedCreateWithoutCriadoPorInput = {
@@ -232568,6 +234960,7 @@ export namespace Prisma {
     recusado?: boolean
     motivoRecusa?: string | null
     criadoEm?: Date | string
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoCreateOrConnectWithoutCriadoPorInput = {
@@ -232591,6 +234984,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutConsentimentosInput
     criadoPor: UtilizadorCreateNestedOneWithoutConsentimentosCriadosInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoUncheckedCreateWithoutTestemunhaInput = {
@@ -232604,6 +234998,7 @@ export namespace Prisma {
     motivoRecusa?: string | null
     criadoEm?: Date | string
     criadoPorId: string
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoCreateOrConnectWithoutTestemunhaInput = {
@@ -232747,9 +235142,12 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
@@ -232772,6 +235170,9 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
@@ -232798,6 +235199,7 @@ export namespace Prisma {
     assinadaEm?: Date | string | null
     doente: DoenteCreateNestedOneWithoutNotasClinciasInput
     autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
+    adendas?: NotaClinicaAdendaCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaUncheckedCreateWithoutAssinadaPorInput = {
@@ -232812,6 +235214,7 @@ export namespace Prisma {
     editadaEm?: Date | string | null
     deletedAt?: Date | string | null
     assinadaEm?: Date | string | null
+    adendas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaCreateOrConnectWithoutAssinadaPorInput = {
@@ -232821,6 +235224,76 @@ export namespace Prisma {
 
   export type NotaClinicaCreateManyAssinadaPorInputEnvelope = {
     data: NotaClinicaCreateManyAssinadaPorInput | NotaClinicaCreateManyAssinadaPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotaClinicaAdendaCreateWithoutAutorInput = {
+    id?: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+    nota: NotaClinicaCreateNestedOneWithoutAdendasInput
+  }
+
+  export type NotaClinicaAdendaUncheckedCreateWithoutAutorInput = {
+    id?: string
+    notaClinicaId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaClinicaAdendaCreateOrConnectWithoutAutorInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    create: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput>
+  }
+
+  export type NotaClinicaAdendaCreateManyAutorInputEnvelope = {
+    data: NotaClinicaAdendaCreateManyAutorInput | NotaClinicaAdendaCreateManyAutorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RegistoTransfusaoCreateWithoutSegundoVerificadorInput = {
+    id?: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    observacoes?: string | null
+    pedido: PedidoTransfusaoCreateNestedOneWithoutRegistosInput
+    bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
+    doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
+    administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
+    reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
+  }
+
+  export type RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput = {
+    id?: string
+    pedidoTransfusaoId: string
+    bolsaId: string
+    doenteId: string
+    administradoPorId: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    consentimentoId?: string | null
+    observacoes?: string | null
+    reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
+  }
+
+  export type RegistoTransfusaoCreateOrConnectWithoutSegundoVerificadorInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    create: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput>
+  }
+
+  export type RegistoTransfusaoCreateManySegundoVerificadorInputEnvelope = {
+    data: RegistoTransfusaoCreateManySegundoVerificadorInput | RegistoTransfusaoCreateManySegundoVerificadorInput[]
     skipDuplicates?: boolean
   }
 
@@ -233435,7 +235908,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
     doente: DoenteCreateNestedOneWithoutAcessosFamiliaresInput
@@ -233447,7 +235920,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -234037,6 +236510,8 @@ export namespace Prisma {
     pedido: PedidoTransfusaoCreateNestedOneWithoutRegistosInput
     bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
     doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
     reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
   }
 
@@ -234051,6 +236526,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
     reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
   }
@@ -234271,6 +236748,9 @@ export namespace Prisma {
     motivoRejeicao?: StringNullableFilter<"Medicacao"> | string | null
     assinadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     assinadoPorId?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergia?: BoolFilter<"Medicacao"> | boolean
+    overrideMotivo?: StringNullableFilter<"Medicacao"> | string | null
+    overrideAlergenioId?: StringNullableFilter<"Medicacao"> | string | null
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutAdministradoPorInput = {
@@ -234297,6 +236777,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    certosVerificados?: JsonNullableFilter<"RegistoMedicacao">
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
@@ -234604,6 +237085,9 @@ export namespace Prisma {
     avpu?: StringNullableFilter<"SinalVital"> | string | null
     o2Suplementar?: BoolNullableFilter<"SinalVital"> | boolean | null
     news2?: IntNullableFilter<"SinalVital"> | number | null
+    news2Completo?: BoolNullableFilter<"SinalVital"> | boolean | null
+    news2ParametrosFalta?: StringNullableListFilter<"SinalVital">
+    news2ParametroIsolado3?: BoolNullableFilter<"SinalVital"> | boolean | null
     pews?: IntNullableFilter<"SinalVital"> | number | null
     glasgow?: IntNullableFilter<"SinalVital"> | number | null
     pamMedia?: FloatNullableFilter<"SinalVital"> | number | null
@@ -235818,6 +238302,7 @@ export namespace Prisma {
     doenteId?: StringFilter<"AlertaClinico"> | string
     tipo?: StringFilter<"AlertaClinico"> | string
     mensagem?: StringFilter<"AlertaClinico"> | string
+    severidade?: IntFilter<"AlertaClinico"> | number
     lido?: BoolFilter<"AlertaClinico"> | boolean
     urgencia?: BoolFilter<"AlertaClinico"> | boolean
     acusadoPorId?: StringNullableFilter<"AlertaClinico"> | string | null
@@ -236163,6 +238648,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -236303,6 +238790,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -236744,6 +239233,70 @@ export namespace Prisma {
   export type NotaClinicaUpdateManyWithWhereWithoutAssinadaPorInput = {
     where: NotaClinicaScalarWhereInput
     data: XOR<NotaClinicaUpdateManyMutationInput, NotaClinicaUncheckedUpdateManyWithoutAssinadaPorInput>
+  }
+
+  export type NotaClinicaAdendaUpsertWithWhereUniqueWithoutAutorInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    update: XOR<NotaClinicaAdendaUpdateWithoutAutorInput, NotaClinicaAdendaUncheckedUpdateWithoutAutorInput>
+    create: XOR<NotaClinicaAdendaCreateWithoutAutorInput, NotaClinicaAdendaUncheckedCreateWithoutAutorInput>
+  }
+
+  export type NotaClinicaAdendaUpdateWithWhereUniqueWithoutAutorInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    data: XOR<NotaClinicaAdendaUpdateWithoutAutorInput, NotaClinicaAdendaUncheckedUpdateWithoutAutorInput>
+  }
+
+  export type NotaClinicaAdendaUpdateManyWithWhereWithoutAutorInput = {
+    where: NotaClinicaAdendaScalarWhereInput
+    data: XOR<NotaClinicaAdendaUpdateManyMutationInput, NotaClinicaAdendaUncheckedUpdateManyWithoutAutorInput>
+  }
+
+  export type NotaClinicaAdendaScalarWhereInput = {
+    AND?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+    OR?: NotaClinicaAdendaScalarWhereInput[]
+    NOT?: NotaClinicaAdendaScalarWhereInput | NotaClinicaAdendaScalarWhereInput[]
+    id?: StringFilter<"NotaClinicaAdenda"> | string
+    notaClinicaId?: StringFilter<"NotaClinicaAdenda"> | string
+    autorId?: StringFilter<"NotaClinicaAdenda"> | string
+    texto?: StringFilter<"NotaClinicaAdenda"> | string
+    motivo?: StringFilter<"NotaClinicaAdenda"> | string
+    criadaEm?: DateTimeFilter<"NotaClinicaAdenda"> | Date | string
+  }
+
+  export type RegistoTransfusaoUpsertWithWhereUniqueWithoutSegundoVerificadorInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    update: XOR<RegistoTransfusaoUpdateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedUpdateWithoutSegundoVerificadorInput>
+    create: XOR<RegistoTransfusaoCreateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedCreateWithoutSegundoVerificadorInput>
+  }
+
+  export type RegistoTransfusaoUpdateWithWhereUniqueWithoutSegundoVerificadorInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    data: XOR<RegistoTransfusaoUpdateWithoutSegundoVerificadorInput, RegistoTransfusaoUncheckedUpdateWithoutSegundoVerificadorInput>
+  }
+
+  export type RegistoTransfusaoUpdateManyWithWhereWithoutSegundoVerificadorInput = {
+    where: RegistoTransfusaoScalarWhereInput
+    data: XOR<RegistoTransfusaoUpdateManyMutationInput, RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorInput>
+  }
+
+  export type RegistoTransfusaoScalarWhereInput = {
+    AND?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
+    OR?: RegistoTransfusaoScalarWhereInput[]
+    NOT?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
+    id?: StringFilter<"RegistoTransfusao"> | string
+    pedidoTransfusaoId?: StringFilter<"RegistoTransfusao"> | string
+    bolsaId?: StringFilter<"RegistoTransfusao"> | string
+    doenteId?: StringFilter<"RegistoTransfusao"> | string
+    administradoPorId?: StringFilter<"RegistoTransfusao"> | string
+    iniciadoEm?: DateTimeFilter<"RegistoTransfusao"> | Date | string
+    terminadoEm?: DateTimeNullableFilter<"RegistoTransfusao"> | Date | string | null
+    verificacaoABO?: BoolFilter<"RegistoTransfusao"> | boolean
+    verificacaoUnidade?: BoolFilter<"RegistoTransfusao"> | boolean
+    verificacaoValidade?: BoolFilter<"RegistoTransfusao"> | boolean
+    compativel?: BoolFilter<"RegistoTransfusao"> | boolean
+    segundoVerificadorId?: StringNullableFilter<"RegistoTransfusao"> | string | null
+    consentimentoId?: StringNullableFilter<"RegistoTransfusao"> | string | null
+    observacoes?: StringNullableFilter<"RegistoTransfusao"> | string | null
   }
 
   export type CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput = {
@@ -237213,7 +239766,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"AcessoFamiliar"> | Date | string
     nomeContacto?: StringFilter<"AcessoFamiliar"> | string
     email?: StringFilter<"AcessoFamiliar"> | string
-    accessToken?: StringFilter<"AcessoFamiliar"> | string
+    accessTokenHash?: StringFilter<"AcessoFamiliar"> | string
     accessTokenExpiry?: DateTimeFilter<"AcessoFamiliar"> | Date | string
     ativo?: BoolFilter<"AcessoFamiliar"> | boolean
   }
@@ -237707,24 +240260,6 @@ export namespace Prisma {
   export type RegistoTransfusaoUpdateManyWithWhereWithoutAdministradoPorInput = {
     where: RegistoTransfusaoScalarWhereInput
     data: XOR<RegistoTransfusaoUpdateManyMutationInput, RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorInput>
-  }
-
-  export type RegistoTransfusaoScalarWhereInput = {
-    AND?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
-    OR?: RegistoTransfusaoScalarWhereInput[]
-    NOT?: RegistoTransfusaoScalarWhereInput | RegistoTransfusaoScalarWhereInput[]
-    id?: StringFilter<"RegistoTransfusao"> | string
-    pedidoTransfusaoId?: StringFilter<"RegistoTransfusao"> | string
-    bolsaId?: StringFilter<"RegistoTransfusao"> | string
-    doenteId?: StringFilter<"RegistoTransfusao"> | string
-    administradoPorId?: StringFilter<"RegistoTransfusao"> | string
-    iniciadoEm?: DateTimeFilter<"RegistoTransfusao"> | Date | string
-    terminadoEm?: DateTimeNullableFilter<"RegistoTransfusao"> | Date | string | null
-    verificacaoABO?: BoolFilter<"RegistoTransfusao"> | boolean
-    verificacaoUnidade?: BoolFilter<"RegistoTransfusao"> | boolean
-    verificacaoValidade?: BoolFilter<"RegistoTransfusao"> | boolean
-    compativel?: BoolFilter<"RegistoTransfusao"> | boolean
-    observacoes?: StringNullableFilter<"RegistoTransfusao"> | string | null
   }
 
   export type ReacaoTransfusionalUpsertWithWhereUniqueWithoutRegistadoPorInput = {
@@ -238222,6 +240757,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -238362,6 +240899,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -238508,9 +241047,12 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
@@ -238533,6 +241075,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
@@ -238552,6 +241097,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -238564,6 +241110,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -238651,6 +241198,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -238674,6 +241224,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -238698,6 +241251,7 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
 
   export type AlergiaUncheckedCreateWithoutDoenteInput = {
@@ -238707,6 +241261,7 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
   export type AlergiaCreateOrConnectWithoutDoenteInput = {
@@ -238749,6 +241304,7 @@ export namespace Prisma {
     id?: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoEm?: Date | string | null
@@ -238761,6 +241317,7 @@ export namespace Prisma {
     id?: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: string | null
@@ -238858,6 +241415,7 @@ export namespace Prisma {
     assinadaEm?: Date | string | null
     autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
     assinadaPor?: UtilizadorCreateNestedOneWithoutNotasAssinadasInput
+    adendas?: NotaClinicaAdendaCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaUncheckedCreateWithoutDoenteInput = {
@@ -238872,6 +241430,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     assinadaEm?: Date | string | null
     assinadaPorId?: string | null
+    adendas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutNotaInput
   }
 
   export type NotaClinicaCreateOrConnectWithoutDoenteInput = {
@@ -239502,6 +242061,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     testemunha?: UtilizadorCreateNestedOneWithoutConsentimentosTestemunhaInput
     criadoPor: UtilizadorCreateNestedOneWithoutConsentimentosCriadosInput
+    registosTransfusao?: RegistoTransfusaoCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoUncheckedCreateWithoutDoenteInput = {
@@ -239515,6 +242075,7 @@ export namespace Prisma {
     motivoRecusa?: string | null
     criadoEm?: Date | string
     criadoPorId: string
+    registosTransfusao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutConsentimentoInput
   }
 
   export type ConsentimentoInformadoCreateOrConnectWithoutDoenteInput = {
@@ -239926,7 +242487,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
     criadoPor: UtilizadorCreateNestedOneWithoutAcessosFamiliaresCriadosInput
@@ -239938,7 +242499,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -240312,6 +242873,8 @@ export namespace Prisma {
     pedido: PedidoTransfusaoCreateNestedOneWithoutRegistosInput
     bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
     reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
   }
 
@@ -240326,6 +242889,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
     reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
   }
@@ -240644,6 +243209,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -240784,6 +243351,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -242114,6 +244683,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -242254,6 +244825,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -242584,6 +245157,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -242724,6 +245299,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -243125,6 +245702,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -243265,6 +245844,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -243623,6 +246204,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -243763,6 +246346,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -243971,6 +246556,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -244111,6 +246698,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -244304,6 +246893,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -244444,6 +247035,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -245056,6 +247649,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -245196,6 +247791,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -245352,6 +247949,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -245492,6 +248091,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -245632,6 +248233,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -245772,6 +248375,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -245928,6 +248533,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -246068,6 +248675,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -246373,6 +248982,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -246513,6 +249124,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -246658,6 +249271,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -246798,6 +249413,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -246839,6 +249456,32 @@ export namespace Prisma {
   export type UtilizadorCreateOrConnectWithoutNotasAssinadasInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutNotasAssinadasInput, UtilizadorUncheckedCreateWithoutNotasAssinadasInput>
+  }
+
+  export type NotaClinicaAdendaCreateWithoutNotaInput = {
+    id?: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+    autor: UtilizadorCreateNestedOneWithoutAdendasNotasClinicasInput
+  }
+
+  export type NotaClinicaAdendaUncheckedCreateWithoutNotaInput = {
+    id?: string
+    autorId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaClinicaAdendaCreateOrConnectWithoutNotaInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    create: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput>
+  }
+
+  export type NotaClinicaAdendaCreateManyNotaInputEnvelope = {
+    data: NotaClinicaAdendaCreateManyNotaInput | NotaClinicaAdendaCreateManyNotaInput[]
+    skipDuplicates?: boolean
   }
 
   export type DoenteUpsertWithoutNotasClinciasInput = {
@@ -247125,6 +249768,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -247265,6 +249910,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -247416,6 +250063,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -247556,6 +250205,684 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedUpdateManyWithoutResponsavelNestedInput
+    outcomesRegistados?: OutcomeClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    webhooksCriados?: WebhookUncheckedUpdateManyWithoutCriadoPorNestedInput
+    cohortsCriadas?: CohortDefinitionUncheckedUpdateManyWithoutCriadoPorNestedInput
+    transExternasSolicitadas?: TransferenciaExternaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transExternasAceites?: TransferenciaExternaUncheckedUpdateManyWithoutAceitoPorNestedInput
+    regrasCliniasCriadas?: RegraClinicaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    webAuthnCredentials?: WebAuthnCredentialUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    transfusoesAdministradas?: RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type NotaClinicaAdendaUpsertWithWhereUniqueWithoutNotaInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    update: XOR<NotaClinicaAdendaUpdateWithoutNotaInput, NotaClinicaAdendaUncheckedUpdateWithoutNotaInput>
+    create: XOR<NotaClinicaAdendaCreateWithoutNotaInput, NotaClinicaAdendaUncheckedCreateWithoutNotaInput>
+  }
+
+  export type NotaClinicaAdendaUpdateWithWhereUniqueWithoutNotaInput = {
+    where: NotaClinicaAdendaWhereUniqueInput
+    data: XOR<NotaClinicaAdendaUpdateWithoutNotaInput, NotaClinicaAdendaUncheckedUpdateWithoutNotaInput>
+  }
+
+  export type NotaClinicaAdendaUpdateManyWithWhereWithoutNotaInput = {
+    where: NotaClinicaAdendaScalarWhereInput
+    data: XOR<NotaClinicaAdendaUpdateManyMutationInput, NotaClinicaAdendaUncheckedUpdateManyWithoutNotaInput>
+  }
+
+  export type NotaClinicaCreateWithoutAdendasInput = {
+    id?: string
+    subjetivo: string
+    objetivo: string
+    avaliacao: string
+    plano: string
+    criadaEm?: Date | string
+    editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
+    assinadaEm?: Date | string | null
+    doente: DoenteCreateNestedOneWithoutNotasClinciasInput
+    autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
+    assinadaPor?: UtilizadorCreateNestedOneWithoutNotasAssinadasInput
+  }
+
+  export type NotaClinicaUncheckedCreateWithoutAdendasInput = {
+    id?: string
+    doenteId: string
+    autorId: string
+    subjetivo: string
+    objetivo: string
+    avaliacao: string
+    plano: string
+    criadaEm?: Date | string
+    editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
+    assinadaEm?: Date | string | null
+    assinadaPorId?: string | null
+  }
+
+  export type NotaClinicaCreateOrConnectWithoutAdendasInput = {
+    where: NotaClinicaWhereUniqueInput
+    create: XOR<NotaClinicaCreateWithoutAdendasInput, NotaClinicaUncheckedCreateWithoutAdendasInput>
+  }
+
+  export type UtilizadorCreateWithoutAdendasNotasClinicasInput = {
+    id?: string
+    tenantId?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
+    aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoCreateNestedManyWithoutResponsavelInput
+    outcomesRegistados?: OutcomeClinicoCreateNestedManyWithoutRegistadoPorInput
+    webhooksCriados?: WebhookCreateNestedManyWithoutCriadoPorInput
+    cohortsCriadas?: CohortDefinitionCreateNestedManyWithoutCriadoPorInput
+    transExternasSolicitadas?: TransferenciaExternaCreateNestedManyWithoutSolicitadoPorInput
+    transExternasAceites?: TransferenciaExternaCreateNestedManyWithoutAceitoPorInput
+    regrasCliniasCriadas?: RegraClinicaCreateNestedManyWithoutCriadoPorInput
+    webAuthnCredentials?: WebAuthnCredentialCreateNestedManyWithoutUtilizadorInput
+    transfusoesPrescritas?: PedidoTransfusaoCreateNestedManyWithoutPrescritoPorInput
+    transfusoesAdministradas?: RegistoTransfusaoCreateNestedManyWithoutAdministradoPorInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAdendasNotasClinicasInput = {
+    id?: string
+    tenantId?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
+    aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedCreateNestedManyWithoutResponsavelInput
+    outcomesRegistados?: OutcomeClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    webhooksCriados?: WebhookUncheckedCreateNestedManyWithoutCriadoPorInput
+    cohortsCriadas?: CohortDefinitionUncheckedCreateNestedManyWithoutCriadoPorInput
+    transExternasSolicitadas?: TransferenciaExternaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transExternasAceites?: TransferenciaExternaUncheckedCreateNestedManyWithoutAceitoPorInput
+    regrasCliniasCriadas?: RegraClinicaUncheckedCreateNestedManyWithoutCriadoPorInput
+    webAuthnCredentials?: WebAuthnCredentialUncheckedCreateNestedManyWithoutUtilizadorInput
+    transfusoesPrescritas?: PedidoTransfusaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    transfusoesAdministradas?: RegistoTransfusaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAdendasNotasClinicasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedCreateWithoutAdendasNotasClinicasInput>
+  }
+
+  export type NotaClinicaUpsertWithoutAdendasInput = {
+    update: XOR<NotaClinicaUpdateWithoutAdendasInput, NotaClinicaUncheckedUpdateWithoutAdendasInput>
+    create: XOR<NotaClinicaCreateWithoutAdendasInput, NotaClinicaUncheckedCreateWithoutAdendasInput>
+    where?: NotaClinicaWhereInput
+  }
+
+  export type NotaClinicaUpdateToOneWithWhereWithoutAdendasInput = {
+    where?: NotaClinicaWhereInput
+    data: XOR<NotaClinicaUpdateWithoutAdendasInput, NotaClinicaUncheckedUpdateWithoutAdendasInput>
+  }
+
+  export type NotaClinicaUpdateWithoutAdendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subjetivo?: StringFieldUpdateOperationsInput | string
+    objetivo?: StringFieldUpdateOperationsInput | string
+    avaliacao?: StringFieldUpdateOperationsInput | string
+    plano?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
+    autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
+    assinadaPor?: UtilizadorUpdateOneWithoutNotasAssinadasNestedInput
+  }
+
+  export type NotaClinicaUncheckedUpdateWithoutAdendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    subjetivo?: StringFieldUpdateOperationsInput | string
+    objetivo?: StringFieldUpdateOperationsInput | string
+    avaliacao?: StringFieldUpdateOperationsInput | string
+    plano?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UtilizadorUpsertWithoutAdendasNotasClinicasInput = {
+    update: XOR<UtilizadorUpdateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedUpdateWithoutAdendasNotasClinicasInput>
+    create: XOR<UtilizadorCreateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedCreateWithoutAdendasNotasClinicasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAdendasNotasClinicasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAdendasNotasClinicasInput, UtilizadorUncheckedUpdateWithoutAdendasNotasClinicasInput>
+  }
+
+  export type UtilizadorUpdateWithoutAdendasNotasClinicasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
+    aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUpdateManyWithoutResponsavelNestedInput
+    outcomesRegistados?: OutcomeClinicoUpdateManyWithoutRegistadoPorNestedInput
+    webhooksCriados?: WebhookUpdateManyWithoutCriadoPorNestedInput
+    cohortsCriadas?: CohortDefinitionUpdateManyWithoutCriadoPorNestedInput
+    transExternasSolicitadas?: TransferenciaExternaUpdateManyWithoutSolicitadoPorNestedInput
+    transExternasAceites?: TransferenciaExternaUpdateManyWithoutAceitoPorNestedInput
+    regrasCliniasCriadas?: RegraClinicaUpdateManyWithoutCriadoPorNestedInput
+    webAuthnCredentials?: WebAuthnCredentialUpdateManyWithoutUtilizadorNestedInput
+    transfusoesPrescritas?: PedidoTransfusaoUpdateManyWithoutPrescritoPorNestedInput
+    transfusoesAdministradas?: RegistoTransfusaoUpdateManyWithoutAdministradoPorNestedInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAdendasNotasClinicasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -247861,6 +251188,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -248001,6 +251330,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -248328,6 +251659,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -248468,6 +251801,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -248804,6 +252139,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -248944,6 +252281,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -249308,6 +252647,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -249448,6 +252789,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -249753,6 +253096,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -249893,6 +253238,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -250038,6 +253385,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -250178,6 +253527,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -250536,6 +253887,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -250676,6 +254029,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -250827,6 +254182,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -250967,6 +254324,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -251309,6 +254668,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -251449,6 +254810,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -251594,6 +254957,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -251734,6 +255099,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -251879,6 +255246,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -252019,6 +255388,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -252062,11 +255433,37 @@ export namespace Prisma {
     create: XOR<UtilizadorCreateWithoutMedicacoesAssinadasInput, UtilizadorUncheckedCreateWithoutMedicacoesAssinadasInput>
   }
 
+  export type AlergiaCreateWithoutMedicacoesOverrideInput = {
+    id?: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutAlergiasInput
+  }
+
+  export type AlergiaUncheckedCreateWithoutMedicacoesOverrideInput = {
+    id?: string
+    doenteId: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type AlergiaCreateOrConnectWithoutMedicacoesOverrideInput = {
+    where: AlergiaWhereUniqueInput
+    create: XOR<AlergiaCreateWithoutMedicacoesOverrideInput, AlergiaUncheckedCreateWithoutMedicacoesOverrideInput>
+  }
+
   export type RegistoMedicacaoCreateWithoutMedicacaoInput = {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -252079,6 +255476,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -252409,6 +255807,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -252549,6 +255949,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -252700,6 +256102,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -252840,6 +256244,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -252991,6 +256397,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -253131,6 +256539,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -253167,6 +256577,37 @@ export namespace Prisma {
     transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
     transfusoesAdministradas?: RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
     reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type AlergiaUpsertWithoutMedicacoesOverrideInput = {
+    update: XOR<AlergiaUpdateWithoutMedicacoesOverrideInput, AlergiaUncheckedUpdateWithoutMedicacoesOverrideInput>
+    create: XOR<AlergiaCreateWithoutMedicacoesOverrideInput, AlergiaUncheckedCreateWithoutMedicacoesOverrideInput>
+    where?: AlergiaWhereInput
+  }
+
+  export type AlergiaUpdateToOneWithWhereWithoutMedicacoesOverrideInput = {
+    where?: AlergiaWhereInput
+    data: XOR<AlergiaUpdateWithoutMedicacoesOverrideInput, AlergiaUncheckedUpdateWithoutMedicacoesOverrideInput>
+  }
+
+  export type AlergiaUpdateWithoutMedicacoesOverrideInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
+  }
+
+  export type AlergiaUncheckedUpdateWithoutMedicacoesOverrideInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -253400,10 +256841,13 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
   }
 
@@ -253426,6 +256870,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
   }
 
@@ -253631,10 +257078,13 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
   }
 
@@ -253657,6 +257107,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
   }
 
@@ -253675,10 +257128,13 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
     doente: DoenteCreateNestedOneWithoutMedicacoesInput
     prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
     validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
     assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    overrideAlergenio?: AlergiaCreateNestedOneWithoutMedicacoesOverrideInput
     stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
   }
 
@@ -253701,6 +257157,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
     stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
   }
 
@@ -253976,6 +257435,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -254116,6 +257577,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -254185,10 +257648,13 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
 
@@ -254211,6 +257677,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
 
@@ -254498,6 +257967,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -254638,6 +258109,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -254778,6 +258251,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -254918,6 +258393,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -255102,6 +258579,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -255242,6 +258721,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -255599,6 +259080,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -255739,6 +259222,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -255924,6 +259409,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -256064,6 +259551,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -256204,6 +259693,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -256344,6 +259835,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -256489,6 +259982,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -256629,6 +260124,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -256797,6 +260294,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -256937,6 +260436,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -257093,6 +260594,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -257233,6 +260736,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -257384,6 +260889,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -257524,6 +261031,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -257704,6 +261213,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -257844,6 +261355,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -258172,6 +261685,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -258312,6 +261827,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -258457,6 +261974,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -258597,6 +262116,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -258953,6 +262474,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -259093,6 +262616,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -259244,6 +262769,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -259384,6 +262911,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -259689,6 +263218,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -259829,6 +263360,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -260156,6 +263689,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -260296,6 +263831,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -260602,6 +264139,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -260742,6 +264281,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -261069,6 +264610,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -261209,6 +264752,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -261514,6 +265059,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -261654,6 +265201,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -262011,6 +265560,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -262151,6 +265702,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -262257,6 +265810,8 @@ export namespace Prisma {
     pedido: PedidoTransfusaoCreateNestedOneWithoutRegistosInput
     doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
     reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
   }
 
@@ -262271,6 +265826,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
     reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
   }
@@ -262350,6 +265907,8 @@ export namespace Prisma {
     pedido?: PedidoTransfusaoUpdateOneRequiredWithoutRegistosNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
     reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
   }
 
@@ -262364,6 +265923,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
   }
@@ -262636,6 +266197,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -262776,6 +266339,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -262872,6 +266437,8 @@ export namespace Prisma {
     bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
     doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
     reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
   }
 
@@ -262886,6 +266453,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
     reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
   }
@@ -263185,6 +266754,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -263325,6 +266896,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -263759,6 +267332,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -263899,6 +267474,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -263939,6 +267516,328 @@ export namespace Prisma {
   export type UtilizadorCreateOrConnectWithoutTransfusoesAdministradasInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutTransfusoesAdministradasInput, UtilizadorUncheckedCreateWithoutTransfusoesAdministradasInput>
+  }
+
+  export type UtilizadorCreateWithoutTransfusoesSegundaVerificacaoInput = {
+    id?: string
+    tenantId?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
+    aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoCreateNestedManyWithoutResponsavelInput
+    outcomesRegistados?: OutcomeClinicoCreateNestedManyWithoutRegistadoPorInput
+    webhooksCriados?: WebhookCreateNestedManyWithoutCriadoPorInput
+    cohortsCriadas?: CohortDefinitionCreateNestedManyWithoutCriadoPorInput
+    transExternasSolicitadas?: TransferenciaExternaCreateNestedManyWithoutSolicitadoPorInput
+    transExternasAceites?: TransferenciaExternaCreateNestedManyWithoutAceitoPorInput
+    regrasCliniasCriadas?: RegraClinicaCreateNestedManyWithoutCriadoPorInput
+    webAuthnCredentials?: WebAuthnCredentialCreateNestedManyWithoutUtilizadorInput
+    transfusoesPrescritas?: PedidoTransfusaoCreateNestedManyWithoutPrescritoPorInput
+    transfusoesAdministradas?: RegistoTransfusaoCreateNestedManyWithoutAdministradoPorInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTransfusoesSegundaVerificacaoInput = {
+    id?: string
+    tenantId?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
+    aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedCreateNestedManyWithoutResponsavelInput
+    outcomesRegistados?: OutcomeClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    webhooksCriados?: WebhookUncheckedCreateNestedManyWithoutCriadoPorInput
+    cohortsCriadas?: CohortDefinitionUncheckedCreateNestedManyWithoutCriadoPorInput
+    transExternasSolicitadas?: TransferenciaExternaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transExternasAceites?: TransferenciaExternaUncheckedCreateNestedManyWithoutAceitoPorInput
+    regrasCliniasCriadas?: RegraClinicaUncheckedCreateNestedManyWithoutCriadoPorInput
+    webAuthnCredentials?: WebAuthnCredentialUncheckedCreateNestedManyWithoutUtilizadorInput
+    transfusoesPrescritas?: PedidoTransfusaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    transfusoesAdministradas?: RegistoTransfusaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTransfusoesSegundaVerificacaoInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedCreateWithoutTransfusoesSegundaVerificacaoInput>
+  }
+
+  export type ConsentimentoInformadoCreateWithoutRegistosTransfusaoInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    assinadoDoenteEm?: Date | string | null
+    assinadoTestemunhaEm?: Date | string | null
+    recusado?: boolean
+    motivoRecusa?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutConsentimentosInput
+    testemunha?: UtilizadorCreateNestedOneWithoutConsentimentosTestemunhaInput
+    criadoPor: UtilizadorCreateNestedOneWithoutConsentimentosCriadosInput
+  }
+
+  export type ConsentimentoInformadoUncheckedCreateWithoutRegistosTransfusaoInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    descricao: string
+    assinadoDoenteEm?: Date | string | null
+    assinadoTestemunhaEm?: Date | string | null
+    testemunhaId?: string | null
+    recusado?: boolean
+    motivoRecusa?: string | null
+    criadoEm?: Date | string
+    criadoPorId: string
+  }
+
+  export type ConsentimentoInformadoCreateOrConnectWithoutRegistosTransfusaoInput = {
+    where: ConsentimentoInformadoWhereUniqueInput
+    create: XOR<ConsentimentoInformadoCreateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedCreateWithoutRegistosTransfusaoInput>
   }
 
   export type ReacaoTransfusionalCreateWithoutRegistoInput = {
@@ -264345,6 +268244,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -264485,6 +268386,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -264520,6 +268423,340 @@ export namespace Prisma {
     webAuthnCredentials?: WebAuthnCredentialUncheckedUpdateManyWithoutUtilizadorNestedInput
     transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
     reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTransfusoesSegundaVerificacaoInput = {
+    update: XOR<UtilizadorUpdateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedUpdateWithoutTransfusoesSegundaVerificacaoInput>
+    create: XOR<UtilizadorCreateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedCreateWithoutTransfusoesSegundaVerificacaoInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTransfusoesSegundaVerificacaoInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTransfusoesSegundaVerificacaoInput, UtilizadorUncheckedUpdateWithoutTransfusoesSegundaVerificacaoInput>
+  }
+
+  export type UtilizadorUpdateWithoutTransfusoesSegundaVerificacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
+    aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUpdateManyWithoutResponsavelNestedInput
+    outcomesRegistados?: OutcomeClinicoUpdateManyWithoutRegistadoPorNestedInput
+    webhooksCriados?: WebhookUpdateManyWithoutCriadoPorNestedInput
+    cohortsCriadas?: CohortDefinitionUpdateManyWithoutCriadoPorNestedInput
+    transExternasSolicitadas?: TransferenciaExternaUpdateManyWithoutSolicitadoPorNestedInput
+    transExternasAceites?: TransferenciaExternaUpdateManyWithoutAceitoPorNestedInput
+    regrasCliniasCriadas?: RegraClinicaUpdateManyWithoutCriadoPorNestedInput
+    webAuthnCredentials?: WebAuthnCredentialUpdateManyWithoutUtilizadorNestedInput
+    transfusoesPrescritas?: PedidoTransfusaoUpdateManyWithoutPrescritoPorNestedInput
+    transfusoesAdministradas?: RegistoTransfusaoUpdateManyWithoutAdministradoPorNestedInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTransfusoesSegundaVerificacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedUpdateManyWithoutResponsavelNestedInput
+    outcomesRegistados?: OutcomeClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    webhooksCriados?: WebhookUncheckedUpdateManyWithoutCriadoPorNestedInput
+    cohortsCriadas?: CohortDefinitionUncheckedUpdateManyWithoutCriadoPorNestedInput
+    transExternasSolicitadas?: TransferenciaExternaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transExternasAceites?: TransferenciaExternaUncheckedUpdateManyWithoutAceitoPorNestedInput
+    regrasCliniasCriadas?: RegraClinicaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    webAuthnCredentials?: WebAuthnCredentialUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    transfusoesAdministradas?: RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type ConsentimentoInformadoUpsertWithoutRegistosTransfusaoInput = {
+    update: XOR<ConsentimentoInformadoUpdateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedUpdateWithoutRegistosTransfusaoInput>
+    create: XOR<ConsentimentoInformadoCreateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedCreateWithoutRegistosTransfusaoInput>
+    where?: ConsentimentoInformadoWhereInput
+  }
+
+  export type ConsentimentoInformadoUpdateToOneWithWhereWithoutRegistosTransfusaoInput = {
+    where?: ConsentimentoInformadoWhereInput
+    data: XOR<ConsentimentoInformadoUpdateWithoutRegistosTransfusaoInput, ConsentimentoInformadoUncheckedUpdateWithoutRegistosTransfusaoInput>
+  }
+
+  export type ConsentimentoInformadoUpdateWithoutRegistosTransfusaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    assinadoDoenteEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoTestemunhaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recusado?: BoolFieldUpdateOperationsInput | boolean
+    motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutConsentimentosNestedInput
+    testemunha?: UtilizadorUpdateOneWithoutConsentimentosTestemunhaNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutConsentimentosCriadosNestedInput
+  }
+
+  export type ConsentimentoInformadoUncheckedUpdateWithoutRegistosTransfusaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    assinadoDoenteEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoTestemunhaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    testemunhaId?: NullableStringFieldUpdateOperationsInput | string | null
+    recusado?: BoolFieldUpdateOperationsInput | boolean
+    motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ReacaoTransfusionalUpsertWithoutRegistoInput = {
@@ -264570,6 +268807,8 @@ export namespace Prisma {
     bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
     doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    consentimento?: ConsentimentoInformadoCreateNestedOneWithoutRegistosTransfusaoInput
   }
 
   export type RegistoTransfusaoUncheckedCreateWithoutReacaoInput = {
@@ -264584,6 +268823,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
   }
 
@@ -264860,6 +269101,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -265000,6 +269243,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -265066,6 +269311,8 @@ export namespace Prisma {
     bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
   }
 
   export type RegistoTransfusaoUncheckedUpdateWithoutReacaoInput = {
@@ -265080,6 +269327,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -265368,6 +269617,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -265508,6 +269759,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -265647,6 +269900,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -265787,6 +270042,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -265943,6 +270200,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -266083,6 +270342,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -266286,6 +270547,66 @@ export namespace Prisma {
     create: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
   }
 
+  export type MedicacaoCreateWithoutOverrideAlergenioInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dose: string
+    via: string
+    frequencia: string
+    ativo?: boolean
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
+    estadoValidacao?: string | null
+    validadaEm?: Date | string | null
+    motivoRejeicao?: string | null
+    assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    doente: DoenteCreateNestedOneWithoutMedicacoesInput
+    prescritoPor: UtilizadorCreateNestedOneWithoutMedicacoesPrescritasInput
+    validadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesValidadasInput
+    assinadoPor?: UtilizadorCreateNestedOneWithoutMedicacoesAssinadasInput
+    registos?: RegistoMedicacaoCreateNestedManyWithoutMedicacaoInput
+    stewardship?: StewardshipAntibioticoCreateNestedOneWithoutMedicacaoInput
+  }
+
+  export type MedicacaoUncheckedCreateWithoutOverrideAlergenioInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dose: string
+    via: string
+    frequencia: string
+    ativo?: boolean
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
+    doenteId: string
+    prescritoPorId: string
+    estadoValidacao?: string | null
+    validadoPorId?: string | null
+    validadaEm?: Date | string | null
+    motivoRejeicao?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    registos?: RegistoMedicacaoUncheckedCreateNestedManyWithoutMedicacaoInput
+    stewardship?: StewardshipAntibioticoUncheckedCreateNestedOneWithoutMedicacaoInput
+  }
+
+  export type MedicacaoCreateOrConnectWithoutOverrideAlergenioInput = {
+    where: MedicacaoWhereUniqueInput
+    create: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput>
+  }
+
+  export type MedicacaoCreateManyOverrideAlergenioInputEnvelope = {
+    data: MedicacaoCreateManyOverrideAlergenioInput | MedicacaoCreateManyOverrideAlergenioInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DoenteUpsertWithoutAlergiasInput = {
     update: XOR<DoenteUpdateWithoutAlergiasInput, DoenteUncheckedUpdateWithoutAlergiasInput>
     create: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
@@ -266455,6 +270776,22 @@ export namespace Prisma {
     gravidezes?: GravidezUncheckedUpdateManyWithoutDoenteNestedInput
     planosQuimioterapia?: PlanoQuimioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
     sessoesDialise?: SessaoDialiseUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type MedicacaoUpsertWithWhereUniqueWithoutOverrideAlergenioInput = {
+    where: MedicacaoWhereUniqueInput
+    update: XOR<MedicacaoUpdateWithoutOverrideAlergenioInput, MedicacaoUncheckedUpdateWithoutOverrideAlergenioInput>
+    create: XOR<MedicacaoCreateWithoutOverrideAlergenioInput, MedicacaoUncheckedCreateWithoutOverrideAlergenioInput>
+  }
+
+  export type MedicacaoUpdateWithWhereUniqueWithoutOverrideAlergenioInput = {
+    where: MedicacaoWhereUniqueInput
+    data: XOR<MedicacaoUpdateWithoutOverrideAlergenioInput, MedicacaoUncheckedUpdateWithoutOverrideAlergenioInput>
+  }
+
+  export type MedicacaoUpdateManyWithWhereWithoutOverrideAlergenioInput = {
+    where: MedicacaoScalarWhereInput
+    data: XOR<MedicacaoUpdateManyMutationInput, MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioInput>
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -267060,6 +271397,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -267200,6 +271539,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -267527,6 +271868,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -267667,6 +272010,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -267972,6 +272317,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -268112,6 +272459,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -268439,6 +272788,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -268579,6 +272930,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -268884,6 +273237,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -269024,6 +273379,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -269351,6 +273708,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -269491,6 +273850,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -269631,6 +273992,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -269771,6 +274134,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -269927,6 +274292,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -270067,6 +274434,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -270207,6 +274576,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -270347,6 +274718,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -270503,6 +274876,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -270643,6 +275018,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -270948,6 +275325,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -271088,6 +275467,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -271466,6 +275847,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -271606,6 +275989,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -272123,6 +276508,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -272263,6 +276650,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -272408,6 +276797,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -272548,6 +276939,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -272694,6 +277087,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -272834,6 +277229,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -273186,6 +277583,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -273326,6 +277725,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -273477,6 +277878,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -273617,6 +278020,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -273769,6 +278174,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -273909,6 +278316,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -274142,6 +278551,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -274282,6 +278693,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -274521,6 +278934,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -274661,6 +279076,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -274965,6 +279382,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -275105,6 +279524,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -275250,6 +279671,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -275390,6 +279813,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -275748,6 +280173,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -275888,6 +280315,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -276039,6 +280468,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -276179,6 +280610,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -276395,6 +280828,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -276535,6 +280970,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -276680,6 +281117,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -276820,6 +281259,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -276965,6 +281406,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -277105,6 +281548,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -277306,6 +281751,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -277446,6 +281893,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -277597,6 +282046,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -277737,6 +282188,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -277888,6 +282341,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -278028,6 +282483,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -278333,6 +282790,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -278473,6 +282932,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -278861,6 +283322,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -279001,6 +283464,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -279210,6 +283675,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -279350,6 +283817,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -279506,6 +283975,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -279646,6 +284117,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -279786,6 +284259,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -279926,6 +284401,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -280071,6 +284548,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -280211,6 +284690,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -280367,6 +284848,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -280507,6 +284990,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -280658,6 +285143,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -280798,6 +285285,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -281249,6 +285738,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -281389,6 +285880,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -281534,6 +286027,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -281674,6 +286169,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -281819,6 +286316,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -281959,6 +286458,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -282160,6 +286661,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -282300,6 +286803,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -282451,6 +286956,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -282591,6 +287098,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -282742,6 +287251,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -282882,6 +287393,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -283138,6 +287651,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -283278,6 +287793,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -283479,6 +287996,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -283619,6 +288138,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -283798,6 +288319,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -283938,6 +288461,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -284083,6 +288608,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -284223,6 +288750,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -284424,6 +288953,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -284564,6 +289095,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -284715,6 +289248,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -284855,6 +289390,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -285115,6 +289652,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -285255,6 +289794,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -285489,6 +290030,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -285629,6 +290172,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -285934,6 +290479,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -286074,6 +290621,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -286433,6 +290982,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -286573,6 +291124,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -286921,6 +291474,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -287061,6 +291616,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -287421,6 +291978,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -287561,6 +292120,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -287866,6 +292427,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -288006,6 +292569,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -288151,6 +292716,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -288291,6 +292858,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -288618,6 +293187,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -288758,6 +293329,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -288909,6 +293482,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -289049,6 +293624,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -289189,6 +293766,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -289329,6 +293908,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -289485,6 +294066,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -289625,6 +294208,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -289765,6 +294350,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -289905,6 +294492,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -290050,6 +294639,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -290190,6 +294781,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -290374,6 +294967,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -290514,6 +295109,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -290665,6 +295262,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -290805,6 +295404,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -291195,6 +295796,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -291335,6 +295938,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -291480,6 +296085,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -291620,6 +296227,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -291947,6 +296556,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -292087,6 +296698,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -292238,6 +296851,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -292378,6 +296993,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -292683,6 +297300,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -292823,6 +297442,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -293150,6 +297771,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -293290,6 +297913,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -293430,6 +298055,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -293570,6 +298197,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -293715,6 +298344,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -293855,6 +298486,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -294035,6 +298668,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -294175,6 +298810,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -294326,6 +298963,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -294466,6 +299105,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -294656,6 +299297,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
@@ -294796,6 +299439,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
@@ -294991,6 +299636,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
@@ -295131,6 +299778,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
@@ -295270,6 +299919,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -295410,6 +300061,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -295555,6 +300208,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -295695,6 +300350,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -295851,6 +300508,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -295991,6 +300650,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -296142,6 +300803,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -296282,6 +300945,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -296587,6 +301252,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -296727,6 +301394,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -297054,6 +301723,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -297194,6 +301865,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -297550,6 +302223,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -297690,6 +302365,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -298132,6 +302809,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -298272,6 +302951,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -298569,6 +303250,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -298709,6 +303392,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -298906,6 +303591,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -299046,6 +303733,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -299396,6 +304085,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -299536,6 +304227,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -299692,6 +304385,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -299832,6 +304527,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -300137,6 +304834,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -300277,6 +304976,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -300604,6 +305305,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -300744,6 +305447,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -300965,6 +305670,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -301105,6 +305812,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -301250,6 +305959,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -301390,6 +306101,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -301581,6 +306294,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -301721,6 +306436,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -301872,6 +306589,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -302012,6 +306731,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -302152,6 +306873,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -302292,6 +307015,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -302437,6 +307162,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -302577,6 +307304,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -302733,6 +307462,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -302873,6 +307604,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -303024,6 +307757,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -303164,6 +307899,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -303305,6 +308042,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -303445,6 +308184,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -303590,6 +308331,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -303730,6 +308473,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -303875,6 +308620,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -304015,6 +308762,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -304171,6 +308920,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -304311,6 +309062,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -304462,6 +309215,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -304602,6 +309357,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -304753,6 +309510,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -304893,6 +309652,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -305032,6 +309793,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -305172,6 +309935,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -305328,6 +310093,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -305468,6 +310235,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -305773,6 +310542,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -305913,6 +310684,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -306240,6 +311013,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -306380,6 +311155,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -306685,6 +311462,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -306825,6 +311604,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -307152,6 +311933,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -307292,6 +312075,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -307432,6 +312217,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -307572,6 +312359,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -307717,6 +312506,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -307857,6 +312648,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -308013,6 +312806,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -308153,6 +312948,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -308304,6 +313101,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -308444,6 +313243,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -308584,6 +313385,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -308724,6 +313527,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -308880,6 +313685,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -309020,6 +313827,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -309325,6 +314134,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -309465,6 +314276,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -309610,6 +314423,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -309750,6 +314565,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -309791,6 +314608,50 @@ export namespace Prisma {
   export type UtilizadorCreateOrConnectWithoutConsentimentosCriadosInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutConsentimentosCriadosInput, UtilizadorUncheckedCreateWithoutConsentimentosCriadosInput>
+  }
+
+  export type RegistoTransfusaoCreateWithoutConsentimentoInput = {
+    id?: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    observacoes?: string | null
+    pedido: PedidoTransfusaoCreateNestedOneWithoutRegistosInput
+    bolsa: BolsaSangueCreateNestedOneWithoutRegistoTransfusaoInput
+    doente: DoenteCreateNestedOneWithoutRegistosTransfusaoInput
+    administradoPor: UtilizadorCreateNestedOneWithoutTransfusoesAdministradasInput
+    segundoVerificador?: UtilizadorCreateNestedOneWithoutTransfusoesSegundaVerificacaoInput
+    reacao?: ReacaoTransfusionalCreateNestedOneWithoutRegistoInput
+  }
+
+  export type RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput = {
+    id?: string
+    pedidoTransfusaoId: string
+    bolsaId: string
+    doenteId: string
+    administradoPorId: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    segundoVerificadorId?: string | null
+    observacoes?: string | null
+    reacao?: ReacaoTransfusionalUncheckedCreateNestedOneWithoutRegistoInput
+  }
+
+  export type RegistoTransfusaoCreateOrConnectWithoutConsentimentoInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    create: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput>
+  }
+
+  export type RegistoTransfusaoCreateManyConsentimentoInputEnvelope = {
+    data: RegistoTransfusaoCreateManyConsentimentoInput | RegistoTransfusaoCreateManyConsentimentoInput[]
+    skipDuplicates?: boolean
   }
 
   export type DoenteUpsertWithoutConsentimentosInput = {
@@ -310077,6 +314938,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -310217,6 +315080,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -310368,6 +315233,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -310508,6 +315375,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -310544,6 +315413,22 @@ export namespace Prisma {
     transfusoesPrescritas?: PedidoTransfusaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
     transfusoesAdministradas?: RegistoTransfusaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
     reacoesTransfusionaisRegisto?: ReacaoTransfusionalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type RegistoTransfusaoUpsertWithWhereUniqueWithoutConsentimentoInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    update: XOR<RegistoTransfusaoUpdateWithoutConsentimentoInput, RegistoTransfusaoUncheckedUpdateWithoutConsentimentoInput>
+    create: XOR<RegistoTransfusaoCreateWithoutConsentimentoInput, RegistoTransfusaoUncheckedCreateWithoutConsentimentoInput>
+  }
+
+  export type RegistoTransfusaoUpdateWithWhereUniqueWithoutConsentimentoInput = {
+    where: RegistoTransfusaoWhereUniqueInput
+    data: XOR<RegistoTransfusaoUpdateWithoutConsentimentoInput, RegistoTransfusaoUncheckedUpdateWithoutConsentimentoInput>
+  }
+
+  export type RegistoTransfusaoUpdateManyWithWhereWithoutConsentimentoInput = {
+    where: RegistoTransfusaoScalarWhereInput
+    data: XOR<RegistoTransfusaoUpdateManyMutationInput, RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoInput>
   }
 
   export type UtilizadorCreateWithoutBreakGlassUsadosInput = {
@@ -310648,6 +315533,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -310788,6 +315675,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -311109,6 +315998,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -311249,6 +316140,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -311725,6 +316618,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -311865,6 +316760,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -312220,6 +317117,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -312360,6 +317259,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -312539,6 +317440,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -312679,6 +317582,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -312864,6 +317769,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -313004,6 +317911,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -313309,6 +318218,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -313449,6 +318360,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -313776,6 +318689,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -313916,6 +318831,8 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -314222,6 +319139,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
@@ -314362,6 +319281,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
@@ -314689,6 +319610,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
@@ -314829,6 +319752,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
@@ -314969,6 +319894,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
@@ -315109,6 +320036,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
@@ -315265,6 +320194,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
@@ -315405,6 +320336,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
@@ -315545,6 +320478,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -315685,6 +320620,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -315841,6 +320778,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -315981,6 +320920,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -316286,6 +321227,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -316426,6 +321369,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -316571,6 +321516,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -316711,6 +321658,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -317038,6 +321987,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -317178,6 +322129,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -317329,6 +322282,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -317469,6 +322424,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -318782,6 +323739,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -318922,6 +323881,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -319067,6 +324028,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -319207,6 +324170,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -319534,6 +324499,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -319674,6 +324641,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -319825,6 +324794,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -319965,6 +324936,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -320105,6 +325078,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -320245,6 +325220,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -320390,6 +325367,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -320530,6 +325509,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -320686,6 +325667,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -320826,6 +325809,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -320977,6 +325962,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -321117,6 +326104,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -321422,6 +326411,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -321562,6 +326553,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -321889,6 +326882,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -322029,6 +327024,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -322771,6 +327768,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -322911,6 +327910,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -323056,6 +328057,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -323196,6 +328199,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -323558,6 +328563,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -323698,6 +328705,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -323849,6 +328858,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -323989,6 +329000,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -324129,6 +329142,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -324269,6 +329284,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -324425,6 +329442,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -324565,6 +329584,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -324870,6 +329891,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -325010,6 +330033,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -325337,6 +330362,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -325477,6 +330504,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -325782,6 +330811,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -325922,6 +330953,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -326249,6 +331282,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -326389,6 +331424,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -326582,6 +331619,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -326722,6 +331761,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -326937,6 +331978,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -327077,6 +332120,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -327217,6 +332262,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -327357,6 +332404,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -327513,6 +332562,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -327653,6 +332704,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -328382,6 +333435,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -328522,6 +333577,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -328849,6 +333906,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -328989,6 +334048,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -329129,6 +334190,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -329269,6 +334332,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -329425,6 +334490,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -329565,6 +334632,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -329870,6 +334939,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -330010,6 +335081,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -330337,6 +335410,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -330477,6 +335552,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -330617,6 +335694,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -330757,6 +335836,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -330913,6 +335994,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -331053,6 +336136,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -331193,6 +336278,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -331333,6 +336420,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -331489,6 +336578,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -331629,6 +336720,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -331934,6 +337027,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -332074,6 +337169,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -332219,6 +337316,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -332359,6 +337458,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -332686,6 +337787,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -332826,6 +337929,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -332977,6 +338082,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -333117,6 +338224,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -333257,6 +338366,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
@@ -333397,6 +338508,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedCreateNestedManyWithoutAutorInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedCreateNestedManyWithoutSegundoVerificadorInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
@@ -333553,6 +338666,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -333693,6 +338808,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -335260,6 +340377,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
   }
 
   export type RegistoMedicacaoCreateManyAdministradoPorInput = {
@@ -335267,6 +340387,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -335392,6 +340513,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -335779,6 +340903,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
   }
 
   export type ChecklistCirurgiaCreateManySignInPorInput = {
@@ -335998,6 +341125,7 @@ export namespace Prisma {
     doenteId: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoEm?: Date | string | null
@@ -336251,6 +341379,9 @@ export namespace Prisma {
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
   }
 
   export type NotaClinicaCreateManyAssinadaPorInput = {
@@ -336265,6 +341396,30 @@ export namespace Prisma {
     editadaEm?: Date | string | null
     deletedAt?: Date | string | null
     assinadaEm?: Date | string | null
+  }
+
+  export type NotaClinicaAdendaCreateManyAutorInput = {
+    id?: string
+    notaClinicaId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type RegistoTransfusaoCreateManySegundoVerificadorInput = {
+    id?: string
+    pedidoTransfusaoId: string
+    bolsaId: string
+    doenteId: string
+    administradoPorId: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    consentimentoId?: string | null
+    observacoes?: string | null
   }
 
   export type CulturaMicrobiologicaCreateManyRegistadoPorInput = {
@@ -336489,7 +341644,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -336700,6 +341855,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
   }
 
@@ -336904,9 +342061,12 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
@@ -336929,6 +342089,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
@@ -336951,6 +342114,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistoMedicacaoUpdateWithoutAdministradoPorInput = {
@@ -336958,6 +342124,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -336970,6 +342137,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -336982,6 +342150,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -337427,6 +342596,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -337450,6 +342622,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -337472,6 +342647,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -337620,6 +342798,7 @@ export namespace Prisma {
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
     assinadaPor?: UtilizadorUpdateOneWithoutNotasAssinadasNestedInput
+    adendas?: NotaClinicaAdendaUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateWithoutAutorInput = {
@@ -337634,6 +342813,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    adendas?: NotaClinicaAdendaUncheckedUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateManyWithoutAutorInput = {
@@ -338602,9 +343782,12 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
@@ -338627,6 +343810,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
@@ -338649,6 +343835,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChecklistCirurgiaUpdateWithoutSignInPorInput = {
@@ -339299,6 +344488,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -339312,6 +344502,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -339324,6 +344515,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -339691,6 +344883,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
@@ -339831,6 +345025,8 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    adendasNotasClinicas?: NotaClinicaAdendaUncheckedUpdateManyWithoutAutorNestedInput
+    transfusoesSegundaVerificacao?: RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorNestedInput
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
@@ -340079,6 +345275,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutConsentimentosNestedInput
     testemunha?: UtilizadorUpdateOneWithoutConsentimentosTestemunhaNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateWithoutCriadoPorInput = {
@@ -340092,6 +345289,7 @@ export namespace Prisma {
     recusado?: BoolFieldUpdateOperationsInput | boolean
     motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorInput = {
@@ -340118,6 +345316,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutConsentimentosNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutConsentimentosCriadosNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateWithoutTestemunhaInput = {
@@ -340131,6 +345330,7 @@ export namespace Prisma {
     motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaInput = {
@@ -340274,9 +345474,12 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
@@ -340299,6 +345502,9 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
@@ -340321,6 +345527,9 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotaClinicaUpdateWithoutAssinadaPorInput = {
@@ -340335,6 +345544,7 @@ export namespace Prisma {
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
     autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
+    adendas?: NotaClinicaAdendaUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateWithoutAssinadaPorInput = {
@@ -340349,6 +345559,7 @@ export namespace Prisma {
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    adendas?: NotaClinicaAdendaUncheckedUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateManyWithoutAssinadaPorInput = {
@@ -340363,6 +345574,80 @@ export namespace Prisma {
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotaClinicaAdendaUpdateWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    nota?: NotaClinicaUpdateOneRequiredWithoutAdendasNestedInput
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    notaClinicaId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateManyWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    notaClinicaId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegistoTransfusaoUpdateWithoutSegundoVerificadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    pedido?: PedidoTransfusaoUpdateOneRequiredWithoutRegistosNestedInput
+    bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
+    doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
+    administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
+    reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateWithoutSegundoVerificadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pedidoTransfusaoId?: StringFieldUpdateOperationsInput | string
+    bolsaId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    administradoPorId?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateManyWithoutSegundoVerificadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pedidoTransfusaoId?: StringFieldUpdateOperationsInput | string
+    bolsaId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    administradoPorId?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CulturaMicrobiologicaUpdateWithoutRegistadoPorInput = {
@@ -341022,7 +346307,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
     doente?: DoenteUpdateOneRequiredWithoutAcessosFamiliaresNestedInput
@@ -341034,7 +346319,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -341045,7 +346330,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -341651,6 +346936,8 @@ export namespace Prisma {
     pedido?: PedidoTransfusaoUpdateOneRequiredWithoutRegistosNestedInput
     bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
     reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
   }
 
@@ -341665,6 +346952,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
   }
@@ -341680,6 +346969,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -341766,6 +347057,9 @@ export namespace Prisma {
     motivoRejeicao?: string | null
     assinadoEm?: Date | string | null
     assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+    overrideAlergenioId?: string | null
   }
 
   export type RegistoMedicacaoCreateManyDoenteInput = {
@@ -341773,6 +347067,7 @@ export namespace Prisma {
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -341813,6 +347108,9 @@ export namespace Prisma {
     avpu?: string | null
     o2Suplementar?: boolean | null
     news2?: number | null
+    news2Completo?: boolean | null
+    news2ParametrosFalta?: SinalVitalCreatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: boolean | null
     pews?: number | null
     glasgow?: number | null
     pamMedia?: number | null
@@ -341841,6 +347139,7 @@ export namespace Prisma {
     id?: string
     tipo: string
     mensagem: string
+    severidade?: number
     lido?: boolean
     urgencia?: boolean
     acusadoPorId?: string | null
@@ -342210,7 +347509,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     nomeContacto: string
     email: string
-    accessToken?: string
+    accessTokenHash: string
     accessTokenExpiry: Date | string
     ativo?: boolean
   }
@@ -342341,6 +347640,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
   }
 
@@ -342503,9 +347804,12 @@ export namespace Prisma {
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
     validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
     assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    overrideAlergenio?: AlergiaUpdateOneWithoutMedicacoesOverrideNestedInput
     registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
   }
@@ -342528,6 +347832,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
     registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
     stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
   }
@@ -342550,6 +347857,9 @@ export namespace Prisma {
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergenioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistoMedicacaoUpdateWithoutDoenteInput = {
@@ -342557,6 +347867,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -342569,6 +347880,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -342581,6 +347893,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -342656,6 +347969,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -342679,6 +347995,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -342701,6 +348020,9 @@ export namespace Prisma {
     avpu?: NullableStringFieldUpdateOperationsInput | string | null
     o2Suplementar?: NullableBoolFieldUpdateOperationsInput | boolean | null
     news2?: NullableIntFieldUpdateOperationsInput | number | null
+    news2Completo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    news2ParametrosFalta?: SinalVitalUpdatenews2ParametrosFaltaInput | string[]
+    news2ParametroIsolado3?: NullableBoolFieldUpdateOperationsInput | boolean | null
     pews?: NullableIntFieldUpdateOperationsInput | number | null
     glasgow?: NullableIntFieldUpdateOperationsInput | number | null
     pamMedia?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -342715,6 +348037,7 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
   export type AlergiaUncheckedUpdateWithoutDoenteInput = {
@@ -342724,6 +348047,7 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
   export type AlergiaUncheckedUpdateManyWithoutDoenteInput = {
@@ -342763,6 +348087,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -342775,6 +348100,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -342787,6 +348113,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
     mensagem?: StringFieldUpdateOperationsInput | string
+    severidade?: IntFieldUpdateOperationsInput | number
     lido?: BoolFieldUpdateOperationsInput | boolean
     urgencia?: BoolFieldUpdateOperationsInput | boolean
     acusadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -342837,6 +348164,7 @@ export namespace Prisma {
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
     assinadaPor?: UtilizadorUpdateOneWithoutNotasAssinadasNestedInput
+    adendas?: NotaClinicaAdendaUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateWithoutDoenteInput = {
@@ -342851,6 +348179,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    adendas?: NotaClinicaAdendaUncheckedUpdateManyWithoutNotaNestedInput
   }
 
   export type NotaClinicaUncheckedUpdateManyWithoutDoenteInput = {
@@ -343514,6 +348843,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     testemunha?: UtilizadorUpdateOneWithoutConsentimentosTestemunhaNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutConsentimentosCriadosNestedInput
+    registosTransfusao?: RegistoTransfusaoUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateWithoutDoenteInput = {
@@ -343527,6 +348857,7 @@ export namespace Prisma {
     motivoRecusa?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
+    registosTransfusao?: RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoNestedInput
   }
 
   export type ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteInput = {
@@ -343887,7 +349218,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
     criadoPor?: UtilizadorUpdateOneRequiredWithoutAcessosFamiliaresCriadosNestedInput
@@ -343899,7 +349230,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -343910,7 +349241,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     nomeContacto?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    accessToken?: StringFieldUpdateOperationsInput | string
+    accessTokenHash?: StringFieldUpdateOperationsInput | string
     accessTokenExpiry?: DateTimeFieldUpdateOperationsInput | Date | string
     ativo?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -344276,6 +349607,8 @@ export namespace Prisma {
     pedido?: PedidoTransfusaoUpdateOneRequiredWithoutRegistosNestedInput
     bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
     reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
   }
 
@@ -344290,6 +349623,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
   }
@@ -344305,6 +349640,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -344713,11 +350050,44 @@ export namespace Prisma {
     desafioExpiradoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type NotaClinicaAdendaCreateManyNotaInput = {
+    id?: string
+    autorId: string
+    texto: string
+    motivo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaClinicaAdendaUpdateWithoutNotaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    autor?: UtilizadorUpdateOneRequiredWithoutAdendasNotasClinicasNestedInput
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateWithoutNotaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaClinicaAdendaUncheckedUpdateManyWithoutNotaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RegistoMedicacaoCreateManyMedicacaoInput = {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
     verificacao5Certas?: boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
     deletedAt?: Date | string | null
@@ -344730,6 +350100,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -344742,6 +350113,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -344754,6 +350126,7 @@ export namespace Prisma {
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    certosVerificados?: NullableJsonNullValueInput | InputJsonValue
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -344941,6 +350314,8 @@ export namespace Prisma {
     verificacaoUnidade?: boolean
     verificacaoValidade?: boolean
     compativel: boolean
+    segundoVerificadorId?: string | null
+    consentimentoId?: string | null
     observacoes?: string | null
   }
 
@@ -345003,6 +350378,8 @@ export namespace Prisma {
     bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    consentimento?: ConsentimentoInformadoUpdateOneWithoutRegistosTransfusaoNestedInput
     reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
   }
 
@@ -345017,6 +350394,8 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
   }
@@ -345032,7 +350411,105 @@ export namespace Prisma {
     verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
     verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
     compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    consentimentoId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MedicacaoCreateManyOverrideAlergenioInput = {
+    id?: string
+    tenantId?: string
+    nome: string
+    dose: string
+    via: string
+    frequencia: string
+    ativo?: boolean
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
+    doenteId: string
+    prescritoPorId: string
+    estadoValidacao?: string | null
+    validadoPorId?: string | null
+    validadaEm?: Date | string | null
+    motivoRejeicao?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    overrideAlergia?: boolean
+    overrideMotivo?: string | null
+  }
+
+  export type MedicacaoUpdateWithoutOverrideAlergenioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    via?: StringFieldUpdateOperationsInput | string
+    frequencia?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
+    validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    doente?: DoenteUpdateOneRequiredWithoutMedicacoesNestedInput
+    prescritoPor?: UtilizadorUpdateOneRequiredWithoutMedicacoesPrescritasNestedInput
+    validadoPor?: UtilizadorUpdateOneWithoutMedicacoesValidadasNestedInput
+    assinadoPor?: UtilizadorUpdateOneWithoutMedicacoesAssinadasNestedInput
+    registos?: RegistoMedicacaoUpdateManyWithoutMedicacaoNestedInput
+    stewardship?: StewardshipAntibioticoUpdateOneWithoutMedicacaoNestedInput
+  }
+
+  export type MedicacaoUncheckedUpdateWithoutOverrideAlergenioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    via?: StringFieldUpdateOperationsInput | string
+    frequencia?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doenteId?: StringFieldUpdateOperationsInput | string
+    prescritoPorId?: StringFieldUpdateOperationsInput | string
+    estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
+    validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    registos?: RegistoMedicacaoUncheckedUpdateManyWithoutMedicacaoNestedInput
+    stewardship?: StewardshipAntibioticoUncheckedUpdateOneWithoutMedicacaoNestedInput
+  }
+
+  export type MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    via?: StringFieldUpdateOperationsInput | string
+    frequencia?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doenteId?: StringFieldUpdateOperationsInput | string
+    prescritoPorId?: StringFieldUpdateOperationsInput | string
+    estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
+    validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    overrideAlergia?: BoolFieldUpdateOperationsInput | boolean
+    overrideMotivo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FicheiroExameCreateManyExameInput = {
@@ -345708,6 +351185,72 @@ export namespace Prisma {
     tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
     dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
     dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RegistoTransfusaoCreateManyConsentimentoInput = {
+    id?: string
+    pedidoTransfusaoId: string
+    bolsaId: string
+    doenteId: string
+    administradoPorId: string
+    iniciadoEm?: Date | string
+    terminadoEm?: Date | string | null
+    verificacaoABO?: boolean
+    verificacaoUnidade?: boolean
+    verificacaoValidade?: boolean
+    compativel: boolean
+    segundoVerificadorId?: string | null
+    observacoes?: string | null
+  }
+
+  export type RegistoTransfusaoUpdateWithoutConsentimentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    pedido?: PedidoTransfusaoUpdateOneRequiredWithoutRegistosNestedInput
+    bolsa?: BolsaSangueUpdateOneRequiredWithoutRegistoTransfusaoNestedInput
+    doente?: DoenteUpdateOneRequiredWithoutRegistosTransfusaoNestedInput
+    administradoPor?: UtilizadorUpdateOneRequiredWithoutTransfusoesAdministradasNestedInput
+    segundoVerificador?: UtilizadorUpdateOneWithoutTransfusoesSegundaVerificacaoNestedInput
+    reacao?: ReacaoTransfusionalUpdateOneWithoutRegistoNestedInput
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateWithoutConsentimentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pedidoTransfusaoId?: StringFieldUpdateOperationsInput | string
+    bolsaId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    administradoPorId?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    reacao?: ReacaoTransfusionalUncheckedUpdateOneWithoutRegistoNestedInput
+  }
+
+  export type RegistoTransfusaoUncheckedUpdateManyWithoutConsentimentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pedidoTransfusaoId?: StringFieldUpdateOperationsInput | string
+    bolsaId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    administradoPorId?: StringFieldUpdateOperationsInput | string
+    iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificacaoABO?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoUnidade?: BoolFieldUpdateOperationsInput | boolean
+    verificacaoValidade?: BoolFieldUpdateOperationsInput | boolean
+    compativel?: BoolFieldUpdateOperationsInput | boolean
+    segundoVerificadorId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,6 +10,28 @@ import { EstadoDoente } from '../common/enums';
 import * as jwt from 'jsonwebtoken';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { BreakGlassService } from '../break-glass/break-glass.service';
+import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
+
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
+// ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
+const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
+const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
+
+/** Confirma que os primeiros bytes correspondem ao mimetype declarado pelo cliente. */
+function validarMagicBytesImagem(buffer: Buffer, mimetype: string): boolean {
+  if (!buffer || buffer.length < 12) return false;
+  if (mimetype === 'image/jpeg') {
+    return buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF;
+  }
+  if (mimetype === 'image/png') {
+    return buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47;
+  }
+  if (mimetype === 'image/webp') {
+    // RIFF....WEBP
+    return buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP';
+  }
+  return false;
+}
 
 @Injectable()
 export class DoenteService {
@@ -65,7 +87,7 @@ export class DoenteService {
     else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
     else tipo = 'noite';
 
-    const diaStr = agora.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(agora);
     const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
     const dataBase = tipo === 'noite' && min < 8 * 60 + 30
       ? new Date(dataHoje.getTime() - 24 * 60 * 60 * 1000)
@@ -298,10 +320,13 @@ export class DoenteService {
   async darAlta(id: string, administrativoId: string) {
     const doente = await this.buscarPorId(id);
 
+    // `Doente.camaId` é `@unique`: se a alta não o limpar, a cama fica presa a um doente
+    // com alta e a próxima `admitir()` naquela cama viola a constraint. Libertar o vínculo
+    // e mudar o estado da cama têm de acontecer na MESMA transacção.
     const ops: any[] = [
       this.prisma.doente.update({
         where: { id },
-        data: { ativo: false, dataAlta: new Date(), estado: 'alta_prevista' },
+        data: { ativo: false, dataAlta: new Date(), estado: 'alta_prevista', camaId: null },
       }),
     ];
 
@@ -312,7 +337,7 @@ export class DoenteService {
       }));
     }
 
-    await this.prisma.$transaction(ops);
+    await this.prisma.$transaction(ops, { isolationLevel: 'Serializable' });
 
     // Agendar follow-ups (fire-and-forget)
     this.agendarFollowUps(id, doente.nome).catch((err) =>
@@ -347,9 +372,27 @@ export class DoenteService {
 
   async uploadFoto(id: string, file: Express.Multer.File, utilizadorId: string, role: string) {
     await this.assertAcessoDoente(utilizadorId, role, id);
+
+    // SEC-08: a foto do doente era aceite sem validação nenhuma de tipo, tamanho ou conteúdo.
+    // Mesmo padrão já usado em `comunicacao`, `documentos-saude` e `feridas`.
+    if (!file?.buffer?.length) throw new BadRequestException('Ficheiro obrigatório');
+    if (file.size > FOTO_TAMANHO_MAX) {
+      throw new BadRequestException(
+        `Ficheiro demasiado grande (máximo ${FOTO_TAMANHO_MAX / (1024 * 1024)} MB)`,
+      );
+    }
+    if (!FOTO_TIPOS_PERMITIDOS.includes(file.mimetype)) {
+      throw new BadRequestException(`Tipo de ficheiro não permitido: ${file.mimetype}`);
+    }
+    if (!validarMagicBytesImagem(file.buffer, file.mimetype)) {
+      // O mimetype é declarado pelo cliente; os primeiros bytes é que dizem o que o ficheiro é.
+      throw new BadRequestException('Conteúdo do ficheiro inválido — não corresponde ao tipo declarado');
+    }
+
+    const extensao = file.mimetype === 'image/png' ? 'png' : file.mimetype === 'image/webp' ? 'webp' : 'jpg';
     const { key } = await this.storage.upload(
       file.buffer,
-      `doentes/${id}/foto_${Date.now()}.jpg`,
+      `doentes/${id}/foto_${Date.now()}.${extensao}`,
       file.mimetype,
     );
     const fotoUrl = await this.storage.getSignedUrl(key, 86400 * 365);
@@ -455,7 +498,7 @@ export class DoenteService {
       if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
     }
 
-    const diaStr = dataRef.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(dataRef);
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
 
@@ -526,7 +569,7 @@ export class DoenteService {
       dataRef.setDate(dataRef.getDate() - 1);
     }
 
-    const diaStr = dataRef.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(dataRef);
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
 
@@ -585,9 +628,11 @@ export class DoenteService {
         },
       });
 
+      // Ver `darAlta()`: libertar `camaId` (que é `@unique`) faz parte da alta, senão a
+      // cama fica presa a este doente e a readmissão nela rebenta na constraint.
       await tx.doente.update({
         where: { id: doenteId },
-        data: { ativo: false, dataAlta: new Date() },
+        data: { ativo: false, dataAlta: new Date(), camaId: null },
       });
 
       if (doente.camaId) {
@@ -604,7 +649,7 @@ export class DoenteService {
       }
 
       return sumario;
-    }).then((sumario) => {
+    }, { isolationLevel: 'Serializable' }).then((sumario) => {
       // Fire-and-forget: gerar carta de alta e calcular risco de readmissão em background
       this.aiClinico.gerarCartaAlta(doenteId)
         .catch(err => this.logger.warn('gerarCartaAlta falhou', (err as any)?.message));
@@ -641,7 +686,7 @@ export class DoenteService {
         select: { data: true, pressaoSistolica: true, pressaoDiastolica: true, pulso: true, saturacaoO2: true, temperatura: true, frequenciaRespiratoria: true, news2: true },
       }),
       this.prisma.medicacao.findMany({
-        where: { doenteId, ativo: true },
+        where: { doenteId, ativo: true, deletedAt: null },
         select: { nome: true, dose: true, via: true, frequencia: true },
       }),
       this.prisma.notaClinica.findMany({
@@ -803,7 +848,7 @@ export class DoenteService {
       orderBy: { dataAdmissao: 'desc' },
     });
 
-    const hoje = new Date().toISOString().split('T')[0];
+    const hoje = chaveDiaClinico(new Date());
     return doentes.map(d => ({
       id: d.id,
       nome: d.nome,
@@ -814,7 +859,7 @@ export class DoenteService {
       cama: d.cama,
       news2: d.sinaisVitais[0]?.news2 ?? null,
       ultimoSinalEm: d.sinaisVitais[0]?.data ?? null,
-      altaPrevistHoje: d.dataAltaPrevista ? d.dataAltaPrevista.toISOString().split('T')[0] === hoje : false,
+      altaPrevistHoje: d.dataAltaPrevista ? chaveDiaClinico(d.dataAltaPrevista) === hoje : false,
     }));
   }
 
@@ -1108,58 +1153,68 @@ export class DoenteService {
     return { doente: { id: doente.id, nome: doente.nome }, total: eventos.length, eventos };
   }
 
+  /**
+   * Token de um terminal de quiosque. A validade assinada acompanha o tecto que o
+   * `QuiosqueGuard` impõe: emitir por 365 dias só dava a ilusão de um link que "dura um ano"
+   * e que deixava de funcionar ao fim de um mês.
+   */
   gerarTokenQuiosque(servicoId: string): string {
     const secret = this.config.get<string>('QUIOSQUE_SECRET');
     if (!secret) throw new Error('QUIOSQUE_SECRET não configurado');
-    return jwt.sign({ servicoId, purpose: 'quiosque' }, secret, { expiresIn: '365d' });
+    const dias = Number(this.config.get<string>('QUIOSQUE_TOKEN_MAX_DIAS') ?? MAX_IDADE_DIAS_OMISSAO);
+    return jwt.sign({ servicoId, purpose: 'quiosque' }, secret, { expiresIn: `${dias}d`, algorithm: 'HS256' });
   }
 
-  async dadosQuiosque(token: string, servicoId: string) {
-    const secret = this.config.get<string>('QUIOSQUE_SECRET');
-    if (!secret) throw new UnauthorizedException('Quiosque não configurado');
+  /**
+   * Dados agregados do ecrã de corredor de um serviço. A autenticação é do `QuiosqueGuard`.
+   *
+   * As consultas usavam campos que não existem — `acusado`, `registadoEm`, `news2Score`, e
+   * `severidade` como texto quando é um inteiro — escondidos por `as any` e `.catch(() => 0)`.
+   * O ecrã mostrava sempre zero alertas e "sem dados NEWS2": um painel clínico a dizer que
+   * estava tudo calmo sem nunca ter olhado. Agora uma falha rebenta em vez de passar por zero.
+   */
+  async dadosQuiosque(servicoId: string) {
+    const desde = new Date(Date.now() - 12 * 60 * 60 * 1000);
 
-    try {
-      const payload = jwt.verify(token, secret) as any;
-      if (payload.purpose !== 'quiosque' || payload.servicoId !== servicoId) {
-        throw new UnauthorizedException('Token inválido');
-      }
-    } catch {
-      throw new UnauthorizedException('Token inválido ou expirado');
-    }
-
-    const [camas, alertasCriticos, sinalVitais] = await Promise.all([
-      this.prisma.cama.findMany({ where: { servico: servicoId } }),
-      (this.prisma as any).alertaClinico.count({
-        where: {
-          acusado: false,
-          doente: { cama: { servico: servicoId } },
-          severidade: { in: ['critico', 'alta'] },
+    const [camas, alertasUrgentes, doentes] = await Promise.all([
+      this.prisma.cama.findMany({ where: { servico: servicoId }, select: { estado: true } }),
+      // "Urgente" é a definição do próprio AlertasService (severidade ≥ 4), não uma nova.
+      this.prisma.alertaClinico.count({
+        where: { urgencia: true, acusadoEm: null, doente: { ativo: true, cama: { servico: servicoId } } },
+      }),
+      // O último NEWS2 de cada doente, e não todos os registos: um doente com vitais de hora a
+      // hora contava doze vezes na distribuição.
+      this.prisma.doente.findMany({
+        where: { ativo: true, cama: { servico: servicoId } },
+        select: {
+          sinaisVitais: {
+            where: { data: { gte: desde }, news2: { not: null } },
+            orderBy: { data: 'desc' },
+            take: 1,
+            select: { news2: true },
+          },
         },
-      }).catch(() => 0),
-      (this.prisma as any).sinalVital.findMany({
-        where: {
-          doente: { cama: { servico: servicoId }, ativo: true },
-          registadoEm: { gte: new Date(Date.now() - 12 * 60 * 60 * 1000) },
-        },
-        select: { news2Score: true },
-      }).catch(() => []),
+      }),
     ]);
 
     const camasTotal = camas.length;
-    const camasOcupadas = camas.filter((c: any) => c.estado === 'ocupada').length;
-    const camasLivres = camas.filter((c: any) => c.estado === 'livre').length;
-    const camasLimpeza = camas.filter((c: any) => c.estado === 'em_limpeza').length;
+    const camasOcupadas = camas.filter((c) => c.estado === 'ocupada').length;
+    const camasLivres = camas.filter((c) => c.estado === 'livre').length;
+    const camasLimpeza = camas.filter((c) => c.estado === 'em_limpeza').length;
 
+    // Um doente sem NEWS2 recente fica fora da distribuição. Contá-lo como "normal" — o que
+    // o `?? 0` fazia — era afirmar uma avaliação que ninguém fez.
     const news2Counts = { normal: 0, medio: 0, alto: 0, critico: 0 };
-    for (const sv of sinalVitais as any[]) {
-      const s = sv.news2Score ?? 0;
+    for (const d of doentes) {
+      const s = d.sinaisVitais[0]?.news2;
+      if (s == null) continue;
       if (s <= 2) news2Counts.normal++;
       else if (s <= 4) news2Counts.medio++;
       else if (s <= 6) news2Counts.alto++;
       else news2Counts.critico++;
     }
 
-    return { camasTotal, camasOcupadas, camasLivres, camasLimpeza, news2Counts, alertasCriticosCount: alertasCriticos };
+    return { camasTotal, camasOcupadas, camasLivres, camasLimpeza, news2Counts, alertasCriticosCount: alertasUrgentes };
   }
 
   async exportarCsv(): Promise<string> {

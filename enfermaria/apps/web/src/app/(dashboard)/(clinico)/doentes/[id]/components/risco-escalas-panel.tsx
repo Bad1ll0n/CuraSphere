@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   doenteId: string;
@@ -14,6 +15,8 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
   const [escalas, setEscalas] = useState<{ braden: any; morse: any }>({ braden: null, morse: null });
   const [modalEscala, setModalEscala] = useState<'braden' | 'morse' | null>(null);
   const [escalaItens, setEscalaItens] = useState<Record<string, number>>({});
+  const dlgEscala = useDialogoAcessivel({ aberto: !!modalEscala, onFechar: () => setModalEscala(null), titulo: modalEscala === 'braden' ? 'Escala de Braden' : 'Escala de Morse' });
+
   const [salvando, setSalvando] = useState(false);
 
   const carregarEscalas = () =>
@@ -121,7 +124,7 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
 
         return (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-            <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh' }}>
+            <div {...dlgEscala.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                 <h2 className="text-xl font-bold text-slate-900">
                   {isBraden ? 'Escala de Braden' : 'Escala de Morse'}

@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
@@ -67,7 +68,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
         const inicial = turnoDoGrupo(lista, tipoAtual) ?? lista[0];
         setTurnoSelecionado((prev: any) => prev ? lista.find((t) => t.id === prev.id) ?? inicial : inicial);
       }
-    } catch {} finally {
+    } catch (e) { registarFalhaSilenciosa('AtribuicoesScreen', e); } finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -177,7 +178,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
                         if (turnoSelecionado) {
                           api.get(`/atribuicoes/turno/${turnoSelecionado.id}/historico`)
                             .then(r => setHistorico(r.data))
-                            .catch(() => {});
+                            .catch((e) => registarFalhaSilenciosa('AtribuicoesScreen', e));
                         }
                       }}
                       activeOpacity={souChefe ? 0.7 : 1}

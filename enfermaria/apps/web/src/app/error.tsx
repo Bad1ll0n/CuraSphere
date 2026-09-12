@@ -1,11 +1,10 @@
 'use client';
 import { useEffect } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).__Sentry__) {
-      (window as any).__Sentry__.captureException(error);
-    }
+    Sentry.captureException(error);
   }, [error]);
 
   return (

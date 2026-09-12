@@ -55,21 +55,27 @@ export class SepsisService {
 
     const doente = await this.prisma.doente.findUnique({
       where: { id: doenteId },
-      select: { nome: true, cama: { select: { numero: true } } },
+      select: { nome: true, cama: { select: { numero: true, quarto: true } } },
     });
 
     const msg = `🆘 ALERTA SÉPSIS — ${doente?.nome ?? doenteId} | ${criterio.toUpperCase()} ${score}/${criterio === 'qsofa' ? 3 : 3}`;
 
-    await this.alertas.criarAlerta(doenteId, 'sepsis', msg).catch(() => null);
+    // Severidade 4 — a da resposta imediata, a mesma do NEWS2 ≥ 7, que já activa este
+    // protocolo. Ficava na omissão (1), abaixo de um NEWS2 incompleto (2): o rastreio de
+    // sépsis positivo não marcava `urgencia` e não contava como alerta urgente em lado nenhum.
+    await this.alertas.criarAlerta(doenteId, 'sepsis', msg, 4).catch(() => null);
 
-    this.gateway.server?.emit('sos:alerta', {
+    // S-09: era `server.emit` sem sala — chegava a TODOS os sockets ligados, de qualquer papel,
+    // com o nome do doente. E como enviava `doenteName` e `cama` em vez dos campos que o banner
+    // lê (`doenteNome`, `quarto`), o alerta de sépsis aparecia como "SOS — " sem nome nem sítio.
+    await this.gateway.emitirAlertaCritico({
       tipo: 'sepsis',
       doenteId,
-      doenteName: doente?.nome,
-      cama: doente?.cama?.numero,
-      criterio,
-      score,
-      alertaSepsisId: alerta.id,
+      doenteNome: doente?.nome ?? 'Doente',
+      localizacao: doente?.cama
+        ? `Quarto ${doente.cama.quarto}, Cama ${doente.cama.numero}`
+        : 'Localização desconhecida',
+      detalhe: { criterio, score, alertaSepsisId: alerta.id },
     });
   }
 

@@ -12,7 +12,9 @@ import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
 import { filtrarMenus } from './nav-data';
 import { SosBanner } from './sos-banner';
+import { SocketStatusBanner } from '@/components/socket-status-banner';
 import { SidebarNav } from './sidebar-nav';
+import { RouteGuard } from './route-guard';
 import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
 import { TourOverlay } from '@/components/tour-overlay';
@@ -58,9 +60,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { data: notifData } = useNaoLidasCount();
   const naoLidas = notifData?.count ?? 0;
 
-  const [sosAlerta, setSosAlerta] = useState<{ doenteId: string; doenteNome: string; quarto: string; acionadoPor: string } | null>(null);
+  const [sosAlerta, setSosAlerta] = useState<{
+    doenteId: string;
+    doenteNome?: string;
+    quarto: string;
+    acionadoPor?: string;
+    acionadoPorNome?: string;
+    tipo?: 'sos' | 'sepsis';
+  } | null>(null);
   const sosTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useSocket(utilizador?.id, {
+  // O handshake autentica-se por bilhete pedido com o cookie de sessão (ver use-socket.ts).
+  // Antes passava-se aqui `utilizador?.id` na posição do token — não era um token, e o
+  // gateway, se o aceitasse, estaria a autenticar por identificador adivinhável.
+  const { estado: estadoTempoReal, reconectar: reconectarTempoReal } = useSocket({
     'sos:alerta': (data) => {
       setSosAlerta(data);
       if (sosTimeoutRef.current) clearTimeout(sosTimeoutRef.current);
@@ -125,7 +137,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </a>
 
       {sidebarAberta && (
-        <div
+        <div role="presentation"
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
           aria-hidden="true"
           onClick={() => setSidebarAberta(false)}
@@ -177,6 +189,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </svg>
         </button>
         <ToastProvider>
+          <SocketStatusBanner estado={estadoTempoReal} onReconectar={reconectarTempoReal} />
           {passwordAviso.ativo && (
             <div className="bg-amber-50 border-b border-amber-200 flex items-center justify-between gap-4" style={{ padding: '10px 24px' }}>
               <div className="flex items-center gap-2">
@@ -194,7 +207,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             </div>
           )}
-          {children}
+          <RouteGuard>{children}</RouteGuard>
         </ToastProvider>
       </main>
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
 
@@ -50,6 +51,8 @@ export default function FarmaciaPage() {
   const [doenteIdRec, setDoenteIdRec] = useState('');
   const [medsCasa, setMedsCasa] = useState([{ nome: '', dose: '', frequencia: '' }]);
   const [discrepancias, setDiscrepancias] = useState('');
+  const dlgRec = useDialogoAcessivel({ aberto: modalRec, onFechar: () => setModalRec(false), titulo: 'Reconciliação terapêutica' });
+
   const [salvandoRec, setSalvandoRec] = useState(false);
 
   const carregar = useCallback(async () => {
@@ -293,7 +296,7 @@ export default function FarmaciaPage() {
       {/* Modal Nova Reconciliação */}
       {modalRec && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRec.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Reconciliação de Medicação</h2>
               <button aria-label="Fechar" onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>

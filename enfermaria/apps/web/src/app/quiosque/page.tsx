@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { quiosqueFetch } from '@/lib/quiosque-token';
 
 const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
@@ -93,7 +94,7 @@ export default function QuiosquePage() {
     setEmissao(true);
     try {
       const prioridade = prioritario ? 'prioritario' : senior ? 'senior' : 'normal';
-      const res = await fetch(`${API}/quiosque`, {
+      const res = await quiosqueFetch(`${API}/quiosque`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tipo: tipoSelecionado.tipo, prioridade, nomeUtente: nome || undefined }),
@@ -137,7 +138,7 @@ export default function QuiosquePage() {
     setCarregandoMedicos(true);
     setErroMarcacao('');
     try {
-      const res = await fetch(`${API}/quiosque/medicos`);
+      const res = await quiosqueFetch(`${API}/quiosque/medicos`);
       const data = res.ok ? await res.json() : [];
       setMedicos(data);
       setEstado('nova_especialidade');
@@ -164,7 +165,7 @@ export default function QuiosquePage() {
 
     Promise.allSettled(
       dias.map(dia =>
-        fetch(`${API}/quiosque/medicos/${m.id}/slots?data=${dia}`)
+        quiosqueFetch(`${API}/quiosque/medicos/${m.id}/slots?data=${dia}`)
           .then(r => r.ok ? r.json() : [])
           .then((s: Slot[]) => ({ dia, slots: s.filter(x => x.disponivel) }))
           .catch(() => ({ dia, slots: [] as Slot[] }))
@@ -190,7 +191,7 @@ export default function QuiosquePage() {
     setEmissao(true);
     setErroMarcacao('');
     try {
-      const res = await fetch(`${API}/quiosque/marcacao-nova`, {
+      const res = await quiosqueFetch(`${API}/quiosque/marcacao-nova`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -217,7 +218,7 @@ export default function QuiosquePage() {
     setBuscandoNif(true);
     setNifErro('');
     try {
-      const res = await fetch(`${API}/quiosque/paciente?nif=${nifInput.trim()}`);
+      const res = await quiosqueFetch(`${API}/quiosque/paciente?nif=${nifInput.trim()}`);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         setNifErro(err.message ?? 'Nenhum utente encontrado com esse NIF');
@@ -234,7 +235,7 @@ export default function QuiosquePage() {
     if (!pacienteNif) return;
     setBuscandoMarcacoesHoje(true);
     try {
-      const res = await fetch(`${API}/quiosque/paciente/${pacienteNif.id}/marcacoes-hoje`);
+      const res = await quiosqueFetch(`${API}/quiosque/paciente/${pacienteNif.id}/marcacoes-hoje`);
       setMarcacoesHoje(res.ok ? await res.json() : []);
       setEstado('nif_marcacoes');
     } finally {
@@ -245,7 +246,7 @@ export default function QuiosquePage() {
   async function checkinMarcacaoNif(consultaId: string) {
     setEmissao(true);
     try {
-      const res = await fetch(`${API}/quiosque/marcacao/${consultaId}/checkin`, { method: 'POST' });
+      const res = await quiosqueFetch(`${API}/quiosque/marcacao/${consultaId}/checkin`, { method: 'POST' });
       const data = await res.json();
       if (data.jaFezCheckin) {
         alert('Este utente já fez check-in nesta marcação.');
@@ -272,7 +273,7 @@ export default function QuiosquePage() {
     setBuscandoMarcacao(true);
     setMarcacaoErro('');
     try {
-      const res = await fetch(`${API}/quiosque/marcacao?codigo=${codigoInput.trim().toUpperCase()}`);
+      const res = await quiosqueFetch(`${API}/quiosque/marcacao?codigo=${encodeURIComponent(codigoInput.trim())}`);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         setMarcacaoErro(err.message ?? 'Marcação não encontrada');
@@ -289,7 +290,7 @@ export default function QuiosquePage() {
     if (!marcacaoEncontrada) return;
     setEmissao(true);
     try {
-      const res = await fetch(`${API}/quiosque/marcacao/${marcacaoEncontrada.id}/checkin`, { method: 'POST' });
+      const res = await quiosqueFetch(`${API}/quiosque/marcacao/${marcacaoEncontrada.id}/checkin`, { method: 'POST' });
       const data = await res.json();
       if (data.jaFezCheckin) {
         setMarcacaoErro('Este utente já fez check-in anteriormente.');
@@ -547,8 +548,10 @@ export default function QuiosquePage() {
             type="text"
             value={codigoInput}
             onChange={e => { setCodigoInput(e.target.value.toUpperCase()); setMarcacaoErro(''); }}
-            placeholder="CON-XXXX"
-            maxLength={8}
+            // S-13: os códigos novos têm 8 caracteres (CON-XXXX-XXXX). Os antigos, de 4,
+            // continuam a funcionar — a API normaliza hífens, espaços e o prefixo.
+            placeholder="CON-XXXX-XXXX"
+            maxLength={16}
             style={{
               width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
               borderRadius: 12, padding: '16px', color: '#fff', fontSize: 28, fontWeight: 800,

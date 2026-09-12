@@ -7,6 +7,9 @@ import { RedisService } from '../redis/redis.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 import { hashPassword, verifyPassword } from '../common/password';
 import * as crypto from 'crypto';
+import {
+  AUD_MFA_CHALLENGE, AUD_MFA_SETUP, AUD_PASSWORD_EXPIRADA, AUD_SOCKET, JWT_ISSUER,
+} from './token-audiences';
 import { generateSecret, generateURI, verify } from 'otplib';
 import { toDataURL } from 'qrcode';
 
@@ -115,26 +118,33 @@ export class AuthService {
     this.anomaly.verificarIpLogin(utilizador.id, ip);
 
     if (utilizador.mfaAtivo) {
+      // SEC-03: audiência e `tipo` próprios — este token NÃO é uma sessão. A
+      // `JwtStrategy` do pessoal nem sequer o descodifica (audiência fora da
+      // allowlist), pelo que já não dá para saltar o 2.º factor apresentando-o
+      // como access token.
       const mfaChallengeToken = this.jwtService.sign(
-        { sub: utilizador.id, mfaChallenge: true },
-        { expiresIn: '5m' },
+        { sub: utilizador.id, tipo: 'mfa_challenge', mfaChallenge: true },
+        { expiresIn: '5m', audience: AUD_MFA_CHALLENGE },
       );
       return { mfaPendente: true as const, mfaChallengeToken };
     }
 
     const rolesClinicos = ['medico', 'enfermeiro', 'farmaceutico', 'tecnico_saude', 'auxiliar'];
     if (rolesClinicos.includes(utilizador.role) && !utilizador.mfaAtivo) {
+      // SEC-03: só aceite em GET /auth/mfa/setup e POST /auth/mfa/ativar
+      // (ver `@TiposToken('pessoal', 'mfa_setup')` no AuthController).
       const mfaSetupToken = this.jwtService.sign(
-        { sub: utilizador.id, mfaSetup: true },
-        { expiresIn: '30m' },
+        { sub: utilizador.id, tipo: 'mfa_setup', mfaSetup: true },
+        { expiresIn: '30m', audience: AUD_MFA_SETUP },
       );
       return { mfaPendente: false as const, mfaSetupObrigatorio: true as const, mfaSetupToken };
     }
 
     if (utilizador.passwordExpiresAt && utilizador.passwordExpiresAt < new Date()) {
+      // SEC-03: só aceite em PATCH /auth/alterar-password.
       const passwordExpiredToken = this.jwtService.sign(
-        { sub: utilizador.id, passwordExpired: true },
-        { expiresIn: '15m' },
+        { sub: utilizador.id, tipo: 'password_expirada', passwordExpired: true },
+        { expiresIn: '15m', audience: AUD_PASSWORD_EXPIRADA },
       );
       return { mfaPendente: false as const, passwordExpirada: true as const, passwordExpiredToken };
     }
@@ -149,13 +159,21 @@ export class AuthService {
   }
 
   async verificarMfaLogin(mfaChallengeToken: string, code: string) {
-    let payload: { sub: string; mfaChallenge: boolean };
+    let payload: { sub: string; tipo?: string; mfaChallenge?: boolean };
     try {
-      payload = this.jwtService.verify(mfaChallengeToken);
+      // A audiência é explícita: um access token de pessoal (aud 'curasphere') ou um
+      // token do portal apresentado aqui falha a verificação, em vez de ser aceite
+      // como desafio válido só por partilhar o segredo.
+      payload = this.jwtService.verify(mfaChallengeToken, {
+        audience: AUD_MFA_CHALLENGE,
+        issuer: JWT_ISSUER,
+      });
     } catch {
       throw new UnauthorizedException('Desafio MFA expirado ou inválido. Faça login novamente.');
     }
-    if (!payload.mfaChallenge) throw new UnauthorizedException('Token inválido');
+    if (payload.tipo !== 'mfa_challenge' || !payload.mfaChallenge) {
+      throw new UnauthorizedException('Token inválido');
+    }
 
     const utilizador = await this.prisma.utilizador.findUnique({ where: { id: payload.sub } });
     if (!utilizador || !utilizador.mfaAtivo || !utilizador.mfaSecret) {
@@ -315,7 +333,32 @@ export class AuthService {
   }
 
   private buildPayload(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {
-    return { sub: u.id, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
+    // `tipo: 'pessoal'` — obrigatório: a `JwtStrategy` recusa qualquer token sem ele.
+    return { sub: u.id, tipo: 'pessoal' as const, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
+  }
+
+  /**
+   * Emite um bilhete de curta duração para o handshake do websocket clínico.
+   *
+   * Chamado com uma sessão de pessoal já validada (cookie `httpOnly`), devolve um JWT com
+   * audiência própria (`AUD_SOCKET`) que o `EventsGateway` é o único a aceitar. Não é uma
+   * sessão: não abre rotas HTTP, expira em 60 s e não é renovável — o cliente pede um novo
+   * a cada tentativa de ligação, incluindo reconexões.
+   */
+  emitirBilheteSocket(u: {
+    sub: string; nome?: string; role: string; servico: string; tenantId?: string | null;
+  }) {
+    return this.jwtService.sign(
+      {
+        sub: u.sub,
+        tipo: 'socket' as const,
+        nome: u.nome,
+        role: u.role,
+        servico: u.servico,
+        tenantId: u.tenantId ?? 'default',
+      },
+      { expiresIn: '60s', audience: AUD_SOCKET },
+    );
   }
 
   /**

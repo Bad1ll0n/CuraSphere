@@ -2,12 +2,7 @@ import { Injectable, Logger, NotFoundException, ConflictException, ForbiddenExce
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-
-const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-function gerarCodigo(): string {
-  return 'CON-' + Array.from({ length: 4 }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join('');
-}
+import { gerarCodigoMarcacao } from './codigo-marcacao';
 
 @Injectable()
 export class ConsultasService {
@@ -124,7 +119,7 @@ export class ConsultasService {
       let codigo: string;
       let tentativas = 0;
       do {
-        codigo = gerarCodigo();
+        codigo = gerarCodigoMarcacao();
         tentativas++;
         if (tentativas > 20) throw new Error('Não foi possível gerar código único');
       } while (await tx.consulta.findUnique({ where: { codigo } }));

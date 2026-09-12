@@ -56,6 +56,22 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     }
   }, [open]);
 
+  // Escape ao nível do documento: o `onKeyDown` do <Command> só apanha teclas quando o foco
+  // já está dentro da paleta. Quem clique no fundo escuro perde o foco e ficava preso.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  // Devolve o foco ao elemento que abriu a paleta (WCAG 2.4.3).
+  useEffect(() => {
+    if (!open) return;
+    const gatilho = document.activeElement as HTMLElement | null;
+    return () => { gatilho?.focus?.(); };
+  }, [open]);
+
   useEffect(() => {
     if (isNLQ) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -101,14 +117,16 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const isSearching = isNLQ ? nlqLoading : loading;
 
   return (
-    <div
+    <div role="presentation"
       className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
       style={{ background: 'rgba(0,0,0,0.5)' }}
-      onClick={onClose}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Pesquisa rápida"
         className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700"
-        onClick={(e) => e.stopPropagation()}
       >
         <Command
           className="flex flex-col"

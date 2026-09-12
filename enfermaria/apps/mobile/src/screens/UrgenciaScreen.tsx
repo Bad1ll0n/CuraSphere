@@ -8,7 +8,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 
+
+/** Handler explícito para toques que devem ser absorvidos sem efeito. */
+const naoFazNada = () => undefined;
 interface EpisodioUrgencia {
   id: string;
   nomeTemporario?: string;
@@ -80,6 +85,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filtro, setFiltro] = useState<'ativos' | 'todos'>('ativos');
+  const [erroCarga, setErroCarga] = useState(false);
 
   // Modal nova entrada
   const [modalEntrada, setModalEntrada] = useState(false);
@@ -97,9 +103,14 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
 
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data } = await api.get('/urgencia/lista');
       setEpisodios(Array.isArray(data) ? data : []);
-    } catch { /* ignorar */ }
+    } catch (e) {
+      // A6: "ignorar" mostrava "Sem episódios activos" e contadores de triagem a zero.
+      registarFalhaSilenciosa('UrgenciaScreen.carregar', e);
+      setErroCarga(true);
+    }
     finally { setLoading(false); setRefreshing(false); }
   };
 
@@ -157,7 +168,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={s.headerTitulo}>Urgência</Text>
-          <Text style={s.headerSub}>{ativos.length} episódio(s) activo(s)</Text>
+          <Text style={s.headerSub}>{erroCarga ? 'Lista por carregar' : `${ativos.length} episódio(s) activo(s)`}</Text>
         </View>
         {podeTriar && (
           <TouchableOpacity onPress={() => setModalEntrada(true)} style={s.addBtn}>
@@ -186,7 +197,12 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
       </View>
 
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}>
-        {filtrados.length === 0 ? (
+        {erroCarga ? (
+          <ErroCarregamento
+            texto="Isto não quer dizer que não haja doentes na urgência. Verifique a ligação e tente de novo."
+            onTentarNovamente={() => { setLoading(true); carregar(); }}
+          />
+        ) : filtrados.length === 0 ? (
           <View style={s.vazio}>
             <Ionicons name="medical-outline" size={40} color="#cbd5e1" />
             <Text style={s.vazioTexto}>Sem episódios{filtro === 'ativos' ? ' activos' : ''}</Text>
@@ -331,7 +347,8 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
       {/* Modal: Acções de episódio */}
       <Modal visible={!!episodioSel} animationType="slide" transparent onRequestClose={() => setEpisodioSel(null)}>
         <TouchableOpacity style={s.modalOverlay} activeOpacity={1} onPress={() => setEpisodioSel(null)}>
-          <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+          {/* Intercepta o toque para que carregar no conteúdo não feche o modal. */}
+          <TouchableOpacity activeOpacity={1} onPress={naoFazNada}>
             <View style={s.modalSheet}>
               <View style={s.modalHandle} />
               {episodioSel && (() => {
