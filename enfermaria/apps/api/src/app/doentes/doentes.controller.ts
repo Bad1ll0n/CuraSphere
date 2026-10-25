@@ -6,6 +6,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EstadoDoente } from '../common/enums';
+import { AtualizarEstadoDto } from './dto/atualizar-estado.dto';
+import { AtualizarFichaPessoalDto } from './dto/atualizar-ficha-pessoal.dto';
+import { CriarProblemaDto } from './dto/criar-problema.dto';
+import { AtualizarProblemaDto } from './dto/atualizar-problema.dto';
+import { AtualizarIsolamentoDto } from './dto/atualizar-isolamento.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -90,8 +95,8 @@ export class DoenteController {
 
   @Roles('enfermeiro', 'medico')
   @Patch(':id/estado')
-  atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoDoente }) {
-    return this.doenteService.atualizarEstado(id, body.estado);
+  atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto) {
+    return this.doenteService.atualizarEstado(id, dto.estado);
   }
 
   @Roles('administrativo', 'enfermeiro')
@@ -178,10 +183,9 @@ export class DoenteController {
   @Roles('medico', 'enfermeiro')
   atualizarIsolamento(
     @Param('id') id: string,
-    @Body('emIsolamento') emIsolamento: boolean,
-    @Body('motivoIsolamento') motivoIsolamento?: string,
+    @Body() dto: AtualizarIsolamentoDto,
   ) {
-    return this.doenteService.atualizarIsolamento(id, emIsolamento, motivoIsolamento);
+    return this.doenteService.atualizarIsolamento(id, dto.emIsolamento, dto.motivoIsolamento);
   }
 
   @Get(':id/ficha-pessoal')
@@ -194,21 +198,10 @@ export class DoenteController {
   @Roles('administrativo')
   atualizarFicheiroPessoal(
     @Param('id') id: string,
-    @Body() body: {
-      nif?: string;
-      numeroSNS?: string;
-      morada?: string;
-      codigoPostal?: string;
-      localidade?: string;
-      telefone?: string;
-      email?: string;
-      entidadeSeguradora?: string;
-      numeroApolice?: string;
-      tipoCobertura?: string;
-    },
+    @Body() dto: AtualizarFichaPessoalDto,
     @Request() req: any,
   ) {
-    return this.doenteService.atualizarFicheiroPessoal(id, body, req.user.sub);
+    return this.doenteService.atualizarFicheiroPessoal(id, dto, req.user.sub);
   }
 
   // ─── Problemas Clínicos ─────────────────────────────────────────────────────
@@ -223,10 +216,10 @@ export class DoenteController {
   @Roles('medico', 'enfermeiro')
   criarProblema(
     @Param('id') id: string,
-    @Body() body: { descricao: string; tipo?: string; estado?: string; dataInicio?: string },
+    @Body() dto: CriarProblemaDto,
     @Request() req: any,
   ) {
-    return this.doenteService.criarProblema(id, body, req.user.sub);
+    return this.doenteService.criarProblema(id, dto, req.user.sub);
   }
 
   @Patch(':id/problemas/:problemaId')
@@ -234,8 +227,8 @@ export class DoenteController {
   atualizarProblema(
     @Param('id') _doenteId: string,
     @Param('problemaId') problemaId: string,
-    @Body() body: { estado?: string; descricao?: string; dataFim?: string },
+    @Body() dto: AtualizarProblemaDto,
   ) {
-    return this.doenteService.atualizarProblema(problemaId, body);
+    return this.doenteService.atualizarProblema(problemaId, dto);
   }
 }
