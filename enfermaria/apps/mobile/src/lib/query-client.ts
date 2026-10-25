@@ -23,3 +23,13 @@ persistQueryClient({
   persister: asyncStoragePersister,
   maxAge: 24 * 60 * 60_000, // expirar cache após 24h
 });
+
+/**
+ * A9: `queryClient.clear()` limpa a memória, mas a cópia em disco só é reescrita depois do
+ * intervalo do persister (1 s). Se a app for terminada nesse intervalo, os dados de doentes
+ * da sessão anterior ficam no AsyncStorage e são restaurados no arranque seguinte — num
+ * dispositivo partilhado, para quem vier a seguir. O logout apaga a cópia explicitamente.
+ */
+export async function apagarCacheOffline(): Promise<void> {
+  await asyncStoragePersister.removeClient();
+}

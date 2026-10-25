@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const roleLabel: Record<string, string> = {
@@ -66,7 +67,7 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
       ]);
       setUtilizadores(data);
       setRolesConfig(rolesData);
-    } catch {} finally {
+    } catch (e) { registarFalhaSilenciosa('UtilizadoresScreen', e); } finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -115,7 +116,7 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
     Alert.alert('Desativar', `Desativar ${u.nome}?`, [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Desativar', style: 'destructive', onPress: async () => {
-        try { await api.delete(`/utilizadores/${u.id}`); await carregar(); } catch {}
+        try { await api.delete(`/utilizadores/${u.id}`); await carregar(); } catch (e) { registarFalhaSilenciosa('UtilizadoresScreen', e); }
       }},
     ]);
   };

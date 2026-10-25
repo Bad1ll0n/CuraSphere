@@ -8,8 +8,8 @@ const meta: Meta<typeof ConfirmModal> = {
     isOpen: true,
     titulo: 'Eliminar registo?',
     mensagem: 'Esta ação não pode ser revertida. O registo será removido permanentemente.',
-    onConfirmar: () => {},
-    onCancelar: () => {},
+    onConfirmar: () => { /* vazio */ },
+    onCancelar: () => { /* vazio */ },
   },
   argTypes: { variant: { control: 'select', options: ['danger', 'warning', 'info'] } },
 };

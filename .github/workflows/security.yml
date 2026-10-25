@@ -1,0 +1,239 @@
+name: Security Scan
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Este ficheiro estava em `enfermaria/.github/workflows/`, pasta que o GitHub
+# Actions NUNCA lê — Trivy, gitleaks, Semgrep, `pnpm audit`, Snyk e ZAP nunca
+# correram uma única vez. Vive agora em `.github/workflows/` na raiz do git.
+#
+# Consequência da mudança: o checkout passa a colocar a RAIZ DO REPOSITÓRIO como
+# cwd, não `enfermaria/`. Todos os passos que dependem do workspace pnpm levam
+# `working-directory: enfermaria` (via `defaults.run`), e os inputs de actions —
+# que NÃO são afectados por `defaults.run` — levam o caminho completo.
+# Scanners de árvore (Trivy, gitleaks, Semgrep) ficam à raiz de propósito:
+# passam agora a cobrir o repositório inteiro, não só o subdirectório.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Segunda-feira às 06:00 UTC — scan semanal de vulnerabilidades
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: enfermaria
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          # Sem isto o setup-node procura o lockfile na raiz do git (onde não
+          # existe) e falha a preparar a cache.
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # Falha se encontrar vulnerabilidade de severidade alta ou crítica
+      - name: pnpm audit
+        run: pnpm audit --audit-level=high
+
+  snyk:
+    name: Snyk Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # O contexto `secrets` NÃO está disponível em `jobs.<id>.if` (nem em
+    # `steps.if`) — a condição anterior `if: ${{ secrets.SNYK_TOKEN != '' }}`
+    # era inválida e teria falhado no servidor. O padrão correcto é expor o
+    # segredo como env do job e testar o env no passo.
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Snyk (só se SNYK_TOKEN estiver configurado)
+        if: env.SNYK_TOKEN != ''
+        uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
+        with:
+          # --all-projects recorre a árvore a partir da raiz do git e descobre
+          # sozinho os manifests em enfermaria/.
+          args: --severity-threshold=high --all-projects
+
+  trivy:
+    name: Trivy Filesystem Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+          trivyignores: '.trivyignore'
+          format: 'table'
+
+  gitleaks:
+    name: Secrets Scanning (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  semgrep:
+    name: Semgrep SAST
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install semgrep
+
+      # SAST estático do código para falhas de segurança (injeção, XSS, auth, path traversal…).
+      # Rulesets adequados ao stack + OWASP Top 10. Introduzido em modo NÃO-bloqueante: reporta
+      # para o GitHub code scanning mas não falha o build enquanto o baseline não estiver limpo.
+      # Passar a bloquear (remover continue-on-error e usar `--error`) quando o baseline estabilizar.
+      - name: Semgrep scan
+        continue-on-error: true
+        run: >
+          semgrep scan --sarif --output semgrep.sarif
+          --config "p/typescript"
+          --config "p/nodejsscan"
+          --config "p/react"
+          --config "p/owasp-top-ten"
+
+      # O Semgrep marca os achados com `// nosemgrep` como `suppressions` no SARIF, mas o
+      # code scanning do GitHub ignora esse campo e abre-os como alertas na mesma. Os
+      # suprimidos saem do ficheiro antes do upload; a justificação fica no código.
+      - name: Retirar do SARIF os achados suprimidos com nosemgrep
+        if: always()
+        run: |
+          jq '.runs[].results |= map(select((.suppressions // []) | length == 0))' \
+            semgrep.sarif > semgrep.filtrado.sarif
+          mv semgrep.filtrado.sarif semgrep.sarif
+
+      - name: Upload SARIF para code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
+        with:
+          sarif_file: semgrep.sarif
+
+  zap-dast:
+    name: OWASP ZAP DAST (baseline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # DAST precisa da app a correr, por isso NUNCA bloqueia PRs: corre só no scan semanal
+    # (schedule) ou manualmente (workflow_dispatch). Arranca uma instância descartável da API
+    # (Postgres + Redis como services, env de teste inline — não são segredos reais) e faz-lhe
+    # um baseline scan. Se os comandos de build/migração mudarem, ajustar os passos abaixo.
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    defaults:
+      run:
+        working-directory: enfermaria
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: enfermaria
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria
+      REDIS_URL: redis://localhost:6379
+      # Valores efémeros só para a instância de teste do scan — NÃO são segredos de produção.
+      JWT_SECRET: ci-dast-throwaway-secret-000000000000000000000000000000000000
+      JWT_EXPIRES_IN: 1h
+      JWT_REFRESH_EXPIRES_IN: 7d
+      ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      NODE_ENV: production
+      LOG_PRETTY: 'false'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # O projecto NÃO tem directório de migrations (workflow db-push-only), por
+      # isso `prisma migrate deploy` não fazia nada; com `continue-on-error: true`
+      # falhava em silêncio e o ZAP acabava a fazer scan a uma API sem schema —
+      # quase todos os endpoints a responder 500 e o scan sem valor.
+      # `db push` é o comando correcto neste projecto, e sem continue-on-error
+      # para que um schema partido seja visível em vez de mascarado.
+      - name: Prisma db push + generate
+        run: |
+          pnpm exec prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          pnpm exec prisma generate --schema apps/api/prisma/schema.prisma
+
+      # Os triggers de auditoria não vêm do schema Prisma — sem eles a superfície
+      # testada não é a de produção.
+      - name: Reinstalar triggers de auditoria
+        run: node apps/api/scripts/apply-audit-triggers.mjs
+
+      - name: Build API
+        run: pnpm exec nx build @org/api
+
+      - name: Arrancar API em background
+        run: |
+          node apps/api/dist/main.js &
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:3333/v1/health >/dev/null 2>&1; then echo "API pronta"; exit 0; fi
+            sleep 5
+          done
+          echo "API não respondeu a tempo"; exit 1
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@66042c8e7e24680119199a017e5b0e8603bf4dae # v0.12.0
+        with:
+          target: 'http://localhost:3333'
+          # fail_action=false: reporta alertas (artefacto + issue) sem falhar o job no arranque
+          fail_action: false

@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Sessao {
@@ -33,23 +34,31 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [modal, setModal] = useState<'nova' | 'evolucao' | null>(null);
   const [sessaoSel, setSessaoSel] = useState<Sessao | null>(null);
-  const [form, setForm] = useState({ doenteId: '', tipo: '', data: '', duracao: '60', descricao: '' });
+  const [form, setForm] = useState({ doenteId: '', data: '', duracao: '60', descricao: '' });
   const [evolucaoTexto, setEvolucaoTexto] = useState('');
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
+  const [erroCarga, setErroCarga] = useState('');
 
   const titulo = SUBROLE_TITULO[utilizador.subRole ?? ''] ?? 'Especialidades';
 
+  // F2: as três chamadas iam para `/especialidades/sessoes`, que não existe. Os 404 caíam no
+  // reporte silencioso e o ecrã dizia "Sem sessões registadas". As rotas são as da API (e as
+  // que o web já usava): GET/POST /especialidades e PATCH /especialidades/:id/realizar.
   const carregar = async () => {
     try {
+      setErroCarga('');
       const [sR, dR] = await Promise.all([
-        api.get('/especialidades/sessoes'),
+        api.get('/especialidades'),
         api.get('/doentes').catch(() => ({ data: { data: [] } })),
       ]);
       setSessoes(sR.data ?? []);
       const dts = dR.data?.data ?? dR.data ?? [];
       setDoentes(Array.isArray(dts) ? dts.map((x: any) => ({ id: x.id, nome: x.nome })) : []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) {
+      registarFalhaSilenciosa('EspecialidadesScreen', e);
+      setErroCarga('Não foi possível carregar as sessões. Puxe para baixo para tentar de novo.');
+    } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
@@ -58,9 +67,16 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
     if (!form.doenteId || !form.data) { setErro('Selecione o doente e a data'); return; }
     setSalvando(true); setErro('');
     try {
-      await api.post('/especialidades/sessoes', { ...form, duracao: Number(form.duracao) });
+      // Sem `tipo`: o servidor deriva-o do sub-papel de quem regista, e recusa campos que o
+      // DTO não declara — enviá-lo dava 400.
+      await api.post('/especialidades', {
+        doenteId: form.doenteId,
+        data: form.data,
+        duracao: Number(form.duracao),
+        descricao: form.descricao || undefined,
+      });
       setModal(null);
-      setForm({ doenteId: '', tipo: '', data: '', duracao: '60', descricao: '' });
+      setForm({ doenteId: '', data: '', duracao: '60', descricao: '' });
       await carregar();
     } catch (e: any) { setErro(e.response?.data?.message ?? 'Erro'); }
     finally { setSalvando(false); }
@@ -70,7 +86,7 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
     if (!sessaoSel || !evolucaoTexto.trim()) return;
     setSalvando(true);
     try {
-      await api.patch(`/especialidades/sessoes/${sessaoSel.id}`, { evolucao: evolucaoTexto, estado: 'realizada' });
+      await api.patch(`/especialidades/${sessaoSel.id}/realizar`, { evolucao: evolucaoTexto });
       setModal(null); setSessaoSel(null); setEvolucaoTexto('');
       await carregar();
     } catch (e: any) { setErro(e.response?.data?.message ?? 'Erro'); }
@@ -99,7 +115,7 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />} style={{ flex: 1 }}>
           <View style={s.lista}>
             {sessoes.length === 0 ? (
-              <View style={s.vazio}><Text style={s.vazioTexto}>Sem sessões registadas</Text></View>
+              <View style={s.vazio}><Text style={s.vazioTexto}>{erroCarga || 'Sem sessões registadas'}</Text></View>
             ) : sessoes.map(s2 => (
               <TouchableOpacity key={s2.id} style={s.card} activeOpacity={0.7}
                 onPress={() => { if (s2.estado === 'agendada') { setSessaoSel(s2); setEvolucaoTexto(s2.evolucao ?? ''); setModal('evolucao'); } }}>
@@ -145,9 +161,6 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
                 </TouchableOpacity>
               ))}
             </ScrollView>
-
-            <Text style={s.formLabel}>Tipo de Sessão</Text>
-            <TextInput style={s.input} value={form.tipo} onChangeText={v => setForm(f => ({ ...f, tipo: v }))} placeholder={titulo} placeholderTextColor="#94a3b8" />
 
             <Text style={s.formLabel}>Data (AAAA-MM-DDTHH:MM)</Text>
             <TextInput style={s.input} value={form.data} onChangeText={v => setForm(f => ({ ...f, data: v }))} placeholder="2025-07-01T10:00" placeholderTextColor="#94a3b8" />

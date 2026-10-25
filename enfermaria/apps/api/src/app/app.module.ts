@@ -1,6 +1,7 @@
 import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { CsrfMiddleware } from './common/csrf.middleware';
+import { IdempotencyInterceptor } from './common/idempotency.interceptor';
 import { TenantMiddleware } from './prisma/tenant.middleware';
 import { RequestContextMiddleware } from './prisma/request-context.middleware';
 import { ConfigModule } from '@nestjs/config';
@@ -8,6 +9,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { randomUUID } from 'crypto';
+import { sanitizarUrlParaLog } from './common/sanitizar-url-log';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
@@ -82,7 +84,8 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         // Não logar passwords ou tokens no body
         serializers: {
           req(req) {
-            return { method: req.method, url: req.url, correlationId: req.id };
+            // O `redact` abaixo não chega ao texto do URL: ver sanitizarUrlParaLog.
+            return { method: req.method, url: sanitizarUrlParaLog(req.url), correlationId: req.id };
           },
           res(res) {
             return { statusCode: res.statusCode };
@@ -94,8 +97,8 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
             'req.headers.cookie',
             // PII — RGPD: redactar campos sensíveis em qualquer objecto logado
             '*.password', '*.passwordHash', '*.mfaSecret', '*.secret',
-            '*.contacto', '*.morada', '*.nif', '*.dataNascimento',
-            '[*].contacto', '[*].morada', '[*].nif',
+            '*.nome', '*.contacto', '*.morada', '*.nif', '*.dataNascimento',
+            '[*].nome', '[*].contacto', '[*].morada', '[*].nif',
           ],
           censor: '[REDACTED]',
         },
@@ -139,6 +142,9 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
   controllers: [AppController, AuditController, CspReportController],
   providers: [
     AppService,
+    // A idempotência corre ANTES da auditoria: um reenvio reconhecido devolve a resposta
+    // guardada sem executar nada, e não deve aparecer no registo como um novo acto.
+    { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 interface ExpoPushMessage {
   to: string;
   title: string;
@@ -160,13 +161,89 @@ export class NotificacoesService {
     await Promise.all(utilizadores.map((u) => this.enviarParaUtilizador(u.id, titulo, corpo, data)));
   }
 
-  async enviarParaDoente(doenteId: string, titulo: string, corpo: string): Promise<void> {
-    // Notifica todos os profissionais atribuídos ao doente no turno atual
+  /**
+   * Turno em curso, pelo relógio. Duplica deliberadamente o helper homónimo de
+   * `AlertasService`: esse serviço depende deste, e importá-lo aqui fecharia um ciclo.
+   */
+  private turnoAtual() {
+    const agora = new Date();
+    const min = agora.getHours() * 60 + agora.getMinutes();
+    let tipoTurno: string;
+    if (min >= 8 * 60 && min < 16 * 60 + 30) tipoTurno = 'manha';
+    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
+    else tipoTurno = 'noite';
+
+    const diaStr = chaveDiaClinico(agora);
+    const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
+    const dataFim = new Date(dataHoje.getTime() + 24 * 60 * 60 * 1000 - 1);
+    return { tipoTurno, dataHoje, dataFim };
+  }
+
+  /**
+   * Quem deve receber um alerta clínico deste doente, por ordem de proximidade.
+   *
+   * A versão anterior consultava apenas `AtribuicaoDoente.enfermeiroId`, sem filtro de turno
+   * nem de utilizador activo: um doente sem atribuição tinha **zero destinatários** (o alerta
+   * era criado e ninguém era avisado) e **nenhum médico** era alguma vez notificado.
+   */
+  private async destinatariosDoDoente(doenteId: string): Promise<string[]> {
+    const agora = new Date();
+    const ids = new Set<string>();
+
+    // 1. Enfermeiros atribuídos ao doente — restritos ao turno em curso quando existe um.
+    //    Sem turno aberto mantém-se o comportamento anterior (todas as atribuições) em vez
+    //    de deixar o doente sem destinatários.
+    const turnoAberto = await this.prisma.turno.findFirst({
+      where: { dataInicio: { lte: agora }, dataFim: { gte: agora } },
+      select: { id: true, chefeTurnoId: true },
+    });
     const atribuicoes = await this.prisma.atribuicaoDoente.findMany({
-      where: { doenteId },
+      where: { doenteId, ...(turnoAberto ? { turnoId: turnoAberto.id } : {}) },
       select: { enfermeiroId: true },
     });
-    const ids = [...new Set(atribuicoes.map((a) => a.enfermeiroId))];
+    atribuicoes.forEach((a) => ids.add(a.enfermeiroId));
+
+    // 2. Médico(s) responsáveis pelo doente no turno em curso.
+    const { tipoTurno, dataHoje, dataFim } = this.turnoAtual();
+    const atribuicoesHorario = await this.prisma.atribuicaoHorarioTurno.findMany({
+      where: {
+        doenteId,
+        horarioTurno: { tipo: tipoTurno as never, data: { gte: dataHoje, lte: dataFim } },
+      },
+      select: { utilizador: { select: { id: true, role: true } } },
+    });
+    atribuicoesHorario
+      .filter((a) => a.utilizador.role === 'medico')
+      .forEach((a) => ids.add(a.utilizador.id));
+
+    // 3. Fallback: chefe do turno em curso, e depois a chefia de serviço. Um alerta clínico
+    //    sem destinatário é um alerta perdido — nunca se devolve lista vazia por omissão.
+    if (ids.size === 0 && turnoAberto?.chefeTurnoId) ids.add(turnoAberto.chefeTurnoId);
+    if (ids.size === 0) {
+      const chefias = await this.prisma.utilizador.findMany({
+        where: { ativo: true, OR: [{ role: { in: ['chefe_turno', 'chefe_enfermeiros'] } }, { subRole: { in: ['chefe_turno', 'chefe_enfermeiros'] } }] },
+        select: { id: true },
+      });
+      chefias.forEach((u) => ids.add(u.id));
+    }
+
+    if (ids.size === 0) return [];
+
+    // 4. Só utilizadores activos (uma conta desactivada não recebe alertas clínicos).
+    const ativos = await this.prisma.utilizador.findMany({
+      where: { id: { in: [...ids] }, ativo: true },
+      select: { id: true },
+    });
+    return ativos.map((u) => u.id);
+  }
+
+  async enviarParaDoente(doenteId: string, titulo: string, corpo: string): Promise<void> {
+    const ids = await this.destinatariosDoDoente(doenteId);
+    if (ids.length === 0) {
+      // Visível nos logs: um alerta clínico que não chegou a ninguém é um incidente.
+      this.logger.error(`Alerta do doente ${doenteId} sem destinatários — "${titulo}"`);
+      return;
+    }
     await Promise.all(ids.map((id) => this.enviarParaUtilizador(id, titulo, corpo, { doenteId })));
   }
 }

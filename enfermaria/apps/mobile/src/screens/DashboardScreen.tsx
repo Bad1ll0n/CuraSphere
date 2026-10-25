@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -43,7 +44,7 @@ export default function DashboardScreen({ utilizador }: Props) {
       ]);
       setOcupacao(ocup.data);
       setDoentes(doc.data.data ?? doc.data);
-    } catch {} finally {
+    } catch (e) { registarFalhaSilenciosa('DashboardScreen', e); } finally {
       setLoading(false);
       setRefreshing(false);
     }

@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
+import {
+  chaveDiaClinico, inicioDoDiaClinico, inicioDoDiaClinicoHaDias, somarDiasClinicos,
+} from '../common/dia-clinico.helper';
 
 const ROLES_PODEM_REGISTAR = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros'];
 
@@ -32,11 +35,10 @@ export class BalancoHidricoService {
 
   async listar(doenteId: string, data?: string) {
     await this.assertDoente(doenteId);
-    const dia = data ? new Date(data) : new Date();
-    const inicio = new Date(dia);
-    inicio.setHours(0, 0, 0, 0);
-    const fim = new Date(dia);
-    fim.setHours(23, 59, 59, 999);
+    // BE-03: as fronteiras do dia são as do hospital, não as do relógio do servidor.
+    const dia = data ? new Date(`${data}T12:00:00Z`) : new Date();
+    const inicio = inicioDoDiaClinico(dia);
+    const fim = new Date(somarDiasClinicos(inicio, 1).getTime() - 1);
 
     const registos = await this.prisma.balancoHidrico.findMany({
       where: { doenteId, data: { gte: inicio, lte: fim } },
@@ -45,15 +47,13 @@ export class BalancoHidricoService {
     });
 
     const resumo = this.calcularResumo(registos);
-    return { registos, resumo, data: inicio.toISOString().split('T')[0] };
+    return { registos, resumo, data: chaveDiaClinico(inicio) };
   }
 
   async historico(doenteId: string, dias = 7) {
     await this.assertDoente(doenteId);
     const diasSeguro = Math.min(Math.max(dias, 1), 30);
-    const inicio = new Date();
-    inicio.setDate(inicio.getDate() - diasSeguro + 1);
-    inicio.setHours(0, 0, 0, 0);
+    const inicio = inicioDoDiaClinicoHaDias(diasSeguro - 1);
 
     const registos = await this.prisma.balancoHidrico.findMany({
       where: { doenteId, data: { gte: inicio } },
@@ -63,14 +63,12 @@ export class BalancoHidricoService {
     // Agrupar por dia
     const porDia: Record<string, { entradas: number; saidas: number; balanco: number }> = {};
     for (let i = 0; i < diasSeguro; i++) {
-      const d = new Date(inicio);
-      d.setDate(inicio.getDate() + i);
-      const chave = d.toISOString().split('T')[0];
+      const chave = chaveDiaClinico(somarDiasClinicos(inicio, i));
       porDia[chave] = { entradas: 0, saidas: 0, balanco: 0 };
     }
 
     for (const r of registos) {
-      const chave = r.data.toISOString().split('T')[0];
+      const chave = chaveDiaClinico(r.data);
       if (!porDia[chave]) porDia[chave] = { entradas: 0, saidas: 0, balanco: 0 };
       if (r.tipo === 'entrada') porDia[chave].entradas += r.quantidade;
       else porDia[chave].saidas += r.quantidade;

@@ -436,8 +436,8 @@ export default function FaturacaoPage() {
             <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '24px' }}>Novo Episódio de Faturação</h2>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Doente</label>
-              <select value={novoDoenteId} onChange={e => setNovoDoenteId(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Doente</label>
+              <select id="fpage-0" value={novoDoenteId} onChange={e => setNovoDoenteId(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Selecionar doente...</option>
@@ -446,8 +446,8 @@ export default function FaturacaoPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Tipo de Cobertura</label>
-              <select value={novoTipo} onChange={e => setNovoTipo(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Tipo de Cobertura</label>
+              <select id="fpage-1" value={novoTipo} onChange={e => setNovoTipo(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Não definido</option>
@@ -458,8 +458,8 @@ export default function FaturacaoPage() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Notas</label>
-              <textarea value={novoNotas} onChange={e => setNovoNotas(e.target.value)}
+              <label htmlFor="fpage-2" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Notas</label>
+              <textarea id="fpage-2" value={novoNotas} onChange={e => setNovoNotas(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none resize-none"
                 style={{ padding: '10px 14px' }} rows={2} placeholder="Observações..." />
             </div>
@@ -524,22 +524,22 @@ export default function FaturacaoPage() {
             <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '24px' }}>Registar Pagamento</h2>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Valor (€)</label>
-              <input type="number" min={0} step={0.01} value={novoPagamento.valor} onChange={e => setNovoPagamento(p => ({ ...p, valor: +e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Valor (€)</label>
+              <input id="fpage-4" type="number" min={0} step={0.01} value={novoPagamento.valor} onChange={e => setNovoPagamento(p => ({ ...p, valor: +e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '10px 14px' }} />
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Método</label>
-              <select value={novoPagamento.metodo} onChange={e => setNovoPagamento(p => ({ ...p, metodo: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Método</label>
+              <select id="fpage-5" value={novoPagamento.metodo} onChange={e => setNovoPagamento(p => ({ ...p, metodo: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '10px 14px' }}>
                 {Object.entries(metodoLabel).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Referência</label>
-              <input value={novoPagamento.referencia} onChange={e => setNovoPagamento(p => ({ ...p, referencia: e.target.value }))}
+              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Referência</label>
+              <input id="fpage-6" value={novoPagamento.referencia} onChange={e => setNovoPagamento(p => ({ ...p, referencia: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '10px 14px' }}
                 placeholder="Nº transação, comprovativo..." />
             </div>

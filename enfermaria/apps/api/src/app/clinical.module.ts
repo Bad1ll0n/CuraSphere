@@ -3,6 +3,11 @@ import { DoenteModule } from './doentes/doentes.module';
 import { CamasModule } from './camas/camas.module';
 import { TarefasModule } from './tarefas/tarefas.module';
 import { SinaisVitaisModule } from './sinais-vitais/sinais-vitais.module';
+import { PediatriaModule } from './pediatria/pediatria.module';
+import { MaternidadeModule } from './maternidade/maternidade.module';
+import { OncologiaModule } from './oncologia/oncologia.module';
+import { DialiseModule } from './dialise/dialise.module';
+import { RadiologiaModule } from './radiologia/radiologia.module';
 import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
@@ -50,7 +55,7 @@ import { StewardshipModule } from './stewardship/stewardship.module';
 
 const clinicalModules = [
   // Doente & Cama
-  DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule,
+  DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule, PediatriaModule,
   AlergiasModule, ContactosModule, AlertasModule, NotasClinicasModule,
   EscalasClinicasModule, DispositivosInvasivosModule, AtosClinicosModule,
   BreakGlassModule, ConsentimentosModule, EventosAdversosModule,
@@ -59,7 +64,8 @@ const clinicalModules = [
   ProtocolosModule, DietasModule,
   // Serviços Especializados
   ConsultasModule, InterconsultasModule, UrgenciaModule, BlocoModule,
-  FisioterapiaModule,
+  FisioterapiaModule, MaternidadeModule, OncologiaModule, DialiseModule,
+  RadiologiaModule,
   // Vigilância
   IacsModule,
   // Session 48

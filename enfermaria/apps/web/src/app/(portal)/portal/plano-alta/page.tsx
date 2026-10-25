@@ -4,18 +4,18 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function PlanoAltaContent() {
-  const { token, loading: authLoading } = usePortalAuth();
+  const { autenticado, loading: authLoading } = usePortalAuth();
   const [plano, setPlano] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) return;
-    portalFetch('/portal/plano-alta', token).then(setPlano).catch(() => setPlano(null)).finally(() => setLoading(false));
-  }, [token]);
+    if (!autenticado) return;
+    portalFetch('/portal/plano-alta').then(setPlano).catch(() => setPlano(null)).finally(() => setLoading(false));
+  }, [autenticado]);
 
   if (authLoading) return null;
 
-  if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
+  if (!autenticado) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 
   return (
     <div>

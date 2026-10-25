@@ -30,13 +30,16 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
 
   return (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-label={t('title')}
+      role="presentation"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-[400px] shadow-2xl border border-slate-200 dark:border-slate-700">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('title')}
+        className="bg-white dark:bg-slate-800 rounded-xl p-6 w-[400px] shadow-2xl border border-slate-200 dark:border-slate-700"
+      >
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-bold text-base text-slate-800 dark:text-slate-100">{t('title')}</h2>
           <button

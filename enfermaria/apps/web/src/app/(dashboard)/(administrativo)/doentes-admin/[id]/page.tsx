@@ -60,8 +60,8 @@ function Input({ label, value, onChange, type = 'text' }: {
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-      <input
+      <span className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+      <input aria-label={label}
         type={type}
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -78,8 +78,8 @@ function Select({ label, value, onChange, options }: {
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
-      <select
+      <span className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+      <select aria-label={label}
         value={value}
         onChange={e => onChange(e.target.value)}
         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 bg-white"
@@ -460,7 +460,7 @@ export default function DoenteAdminDetalhePage() {
               <div className="text-xs text-slate-500">
                 {c.especialidade}{c.medico?.nome ? ` · ${c.medico.nome}` : ''}
               </div>
-              {c.diagnostico && <p className="text-xs text-slate-500 italic" style={{ marginTop: '2px' }}>{c.diagnostico}</p>}
+              {/* Diagnóstico é dado clínico — não é exibido na ficha administrativa (RGPD). */}
             </div>
             {c.estado !== 'agendada' && (
               <button
@@ -588,7 +588,7 @@ export default function DoenteAdminDetalhePage() {
 
       {/* ── Modal Agendar Consulta ── */}
       {modalAgendar && (
-        <div
+        <div role="presentation"
           className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: '16px' }}
           onClick={(e) => { if (e.target === e.currentTarget) setModalAgendar(false); }}
@@ -600,7 +600,7 @@ export default function DoenteAdminDetalhePage() {
                 <p className="text-base font-bold text-slate-900">Agendar Consulta</p>
                 <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Passo {agStep} de 4</p>
               </div>
-              <button onClick={() => setModalAgendar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAgendar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             {/* Passo 1 — Especialidade */}

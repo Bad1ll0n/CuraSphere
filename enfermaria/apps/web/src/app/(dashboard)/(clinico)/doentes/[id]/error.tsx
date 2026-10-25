@@ -1,14 +1,13 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import * as Sentry from '@sentry/nextjs';
 
 export default function DoenteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).__Sentry__) {
-      (window as any).__Sentry__.captureException(error);
-    }
+    Sentry.captureException(error);
   }, [error]);
 
   return (

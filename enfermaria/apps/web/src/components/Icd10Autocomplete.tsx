@@ -87,6 +87,7 @@ export default function Icd10Autocomplete({ value, onChange, placeholder = 'Ex: 
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"
+          aria-controls="icd10-listbox"
           aria-owns="icd10-listbox"
         >
           <input

@@ -5,8 +5,11 @@ import api from './api';
 
 // Configurar o comportamento das notificações quando a app está em foreground
 Notifications.setNotificationHandler({
+  // `shouldShowAlert` foi substituído no SDK 54 por `shouldShowBanner` + `shouldShowList`,
+  // que separam o alerta em cima do ecrã da entrada no centro de notificações.
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),
@@ -64,7 +67,7 @@ export function configurarHandlers(
 
   // Retorna função de cleanup para usar em useEffect
   return () => {
-    Notifications.removeNotificationSubscription(subN);
-    Notifications.removeNotificationSubscription(subR);
+    subN.remove();
+    subR.remove();
   };
 }

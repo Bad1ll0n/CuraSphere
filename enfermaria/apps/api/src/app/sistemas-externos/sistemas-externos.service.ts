@@ -1,8 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { assertUrlDestinoPublico } from '../common/ssrf-guard';
 
 @Injectable()
 export class SistemasExternosService {
+  private readonly logger = new Logger(SistemasExternosService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   listar() {
@@ -19,10 +22,12 @@ export class SistemasExternosService {
     return this.prisma.sistemaExternoSaude.findUniqueOrThrow({ where: { id } });
   }
 
-  criar(data: {
+  async criar(data: {
     nome: string; tipo: string; endpoint?: string;
     authTipo?: string; authConfig?: string; ativo?: boolean;
   }) {
+    // SEC-05: validação preventiva na criação (lança BadRequestException).
+    if (data.endpoint) await assertUrlDestinoPublico(data.endpoint);
     return this.prisma.sistemaExternoSaude.create({ data });
   }
 
@@ -31,6 +36,7 @@ export class SistemasExternosService {
     authTipo?: string; authConfig?: string; ativo?: boolean;
   }) {
     await this.prisma.sistemaExternoSaude.findUniqueOrThrow({ where: { id } });
+    if (data.endpoint) await assertUrlDestinoPublico(data.endpoint);
     return this.prisma.sistemaExternoSaude.update({ where: { id }, data });
   }
 
@@ -50,24 +56,39 @@ export class SistemasExternosService {
       return { sucesso: false, erro: 'Sistema inactivo' };
     }
 
+    const url = `${sistema.endpoint}/metadata`;
+
+    // SEC-05: revalidar em CADA disparo, não só na criação — a resolução DNS do hostname
+    // pode mudar entre o registo e o pedido (DNS rebinding). Sem isto, um utilizador
+    // `ti`/`direcao` regista um endpoint que resolve para um IP público e, depois, aponta
+    // o mesmo hostname para 169.254.169.254 (metadata da cloud) ou para a rede interna do
+    // hospital, e usa este endpoint como sonda.
+    try {
+      await assertUrlDestinoPublico(url);
+    } catch {
+      return { sucesso: false, erro: 'Endpoint não permitido' };
+    }
+
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const { default: fetch } = await import('node-fetch');
-      const url = `${sistema.endpoint}/metadata`;
-      const inicio = Date.now();
       const res = await fetch(url, {
         headers: { Accept: 'application/fhir+json' },
         signal: AbortSignal.timeout(5000),
+        // Um redirect é uma segunda ligação, para um destino que o guard nunca viu.
+        redirect: 'manual',
       });
-      const latenciaMs = Date.now() - inicio;
 
-      if (res.ok) {
-        return { sucesso: true, latenciaMs };
-      }
-      return { sucesso: false, erro: `HTTP ${res.status}: ${res.statusText}`, latenciaMs };
+      // SEC-05: NÃO devolver `e.message` nem a latência ao chamador. Ambos eram um oráculo
+      // de varrimento: `ECONNREFUSED` imediato distingue-se de um timeout, e a latência
+      // distingue uma porta aberta de uma filtrada — o que permite mapear a rede interna
+      // mesmo com o destino bloqueado. O detalhe fica só no log do servidor.
+      if (res.ok) return { sucesso: true };
+      return { sucesso: false, erro: 'O sistema externo respondeu com erro' };
     } catch (e: any) {
-      return { sucesso: false, erro: e.message };
+      this.logger.warn(`Teste de conectividade falhou (sistema ${id}): ${e?.message ?? String(e)}`);
+      return { sucesso: false, erro: 'Não foi possível contactar o sistema externo' };
     }
   }
 

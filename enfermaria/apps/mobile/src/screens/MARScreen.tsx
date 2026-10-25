@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 interface MedicacaoMAR {
   id: string;
   medicamentoNome: string;
@@ -33,23 +35,42 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filtro, setFiltro] = useState<'pendentes' | 'todas'>('pendentes');
+  const [erroCarga, setErroCarga] = useState(false);
 
+  // A6: o `catch` vazio fazia uma falha de rede terminar em "Todas as medicações
+  // administradas", com um visto verde — o pior falso negativo possível num MAR.
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data } = await api.get('/medicacao/mar');
       setMedicacoes(data?.data ?? data ?? []);
-    } catch { /* ignorar */ }
-    finally { setLoading(false); setRefreshing(false); }
+    } catch (e) {
+      registarFalhaSilenciosa('MARScreen.carregar', e);
+      setErroCarga(true);
+    } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
 
-  const administrar = (id: string, nome: string) => {
+  const administrar = (id: string, nome: string, doenteId: string) => {
     const acao = async () => {
       try {
-        await api.post(`/medicacao/${id}/administrar`, {});
+        // `doenteId` é obrigatório no servidor desde que os 5 certos passaram a ser
+        // verificados a sério. Sem ele, todas as administrações a partir daqui devolviam
+        // 400 — e o `catch` vazio abaixo tornava a falha invisível: o enfermeiro dava o
+        // medicamento, o registo não existia, e ninguém ficava a saber.
+        //
+        // NÃO se envia `atestadoPeloEnfermeiro`: este diálogo confirma a administração,
+        // não é a lista dos 5 certos. Quem a percorre é o leitor de QR.
+        await api.post(`/medicacao/${id}/administrar`, { doenteId });
         await carregar();
-      } catch { /* ignorar */ }
+      } catch (e: any) {
+        registarFalhaSilenciosa('MARScreen.administrar', e);
+        const motivo = e?.response?.data?.message ?? 'Não foi possível registar a administração.';
+        Alert.alert('Administração NÃO registada', `${motivo}
+
+Confirma no processo do doente antes de repetir.`);
+      }
     };
     if (Platform.OS === 'web') {
       if ((window as any).confirm(`Confirmar administração de ${nome}?`)) acao();
@@ -77,7 +98,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={s.headerTitulo}>MAR — Medicação</Text>
-          <Text style={s.headerSub}>{pendentes} administração(ões) pendente(s)</Text>
+          <Text style={s.headerSub}>{erroCarga ? 'MAR por carregar' : `${pendentes} administração(ões) pendente(s)`}</Text>
         </View>
       </View>
 
@@ -93,7 +114,14 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
       </View>
 
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}>
-        {filtradas.length === 0
+        {erroCarga
+          ? (
+            <ErroCarregamento
+              texto="Isto não quer dizer que as medicações estejam administradas. Verifique a ligação e tente de novo antes de dar a ronda por concluída."
+              onTentarNovamente={() => { setLoading(true); carregar(); }}
+            />
+          )
+          : filtradas.length === 0
           ? (
             <View style={s.vazio}>
               <Ionicons name="checkmark-circle-outline" size={48} color="#22c55e" />
@@ -137,7 +165,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
                 {!m.administradoHoje && (
                   <TouchableOpacity
                     style={s.btnAdministrar}
-                    onPress={() => administrar(m.id, m.medicamentoNome)}
+                    onPress={() => administrar(m.id, m.medicamentoNome, m.doente.id)}
                   >
                     <Ionicons name="medical-outline" size={15} color="#1d4ed8" />
                     <Text style={s.btnAdministrarTexto}>Administrar</Text>

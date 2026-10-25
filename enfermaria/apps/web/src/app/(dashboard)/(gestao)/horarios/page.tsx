@@ -190,7 +190,7 @@ export default function HorariosPagina() {
           grupoDoChefe.includes(u.role) &&
           (utilizador?.role === 'administrativo' || u.servico === utilizador?.servico)
         ));
-      }).catch(() => {});
+      }).catch(() => { /* vazio */ });
     }
   }, [isChefe]);
 
@@ -931,7 +931,7 @@ export default function HorariosPagina() {
 
             {/* Tipo de turno */}
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</label>
+              <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</span>
               <div className="grid grid-cols-3 gap-3">
                 {(['manha', 'tarde', 'noite'] as const).map((t) => {
                   const jaExiste = modalDia ? (turnosPorDia[modalDia] ?? []).some((x) => x.tipo === t) : false;
@@ -1039,7 +1039,7 @@ export default function HorariosPagina() {
 
             {/* Tipo */}
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</label>
+              <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</span>
               <div className="grid grid-cols-3 gap-3">
                 {(['manha', 'tarde', 'noite'] as const).map((t) => (
                   <button key={t}
@@ -1230,8 +1230,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Com quem quer trocar?</label>
-              <select
+              <label htmlFor="fpage-2" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Com quem quer trocar?</label>
+              <select id="fpage-2"
                 value={trocaDestId}
                 onChange={e => setTrocaDestId(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
@@ -1244,8 +1244,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Dia da folga do colega (a receber)</label>
-              <input
+              <label htmlFor="fpage-3" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Dia da folga do colega (a receber)</label>
+              <input id="fpage-3"
                 type="date"
                 value={trocaDiaDest}
                 onChange={e => setTrocaDiaDest(e.target.value)}
@@ -1255,8 +1255,8 @@ export default function HorariosPagina() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo (opcional)</label>
-              <input
+              <label htmlFor="fpage-4" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo (opcional)</label>
+              <input id="fpage-4"
                 type="text"
                 value={trocaMotivo}
                 onChange={e => setTrocaMotivo(e.target.value)}
@@ -1296,7 +1296,7 @@ export default function HorariosPagina() {
         };
         return (
           <>
-            <div className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
+            <div role="presentation" className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
             <div className="fixed top-0 right-0 h-full bg-white shadow-2xl z-50 flex flex-col" style={{ width: '420px' }}>
 
               {/* Header */}

@@ -6,9 +6,10 @@ import { DoenteModule } from '../doentes/doentes.module';
 import { PdfService } from '../common/pdf.service';
 import { StewardshipModule } from '../stewardship/stewardship.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
+import { AlertasModule } from '../alertas/alertas.module';
 
 @Module({
-  imports: [NotificacoesModule, DoenteModule, StewardshipModule, WebhooksModule],
+  imports: [NotificacoesModule, DoenteModule, StewardshipModule, WebhooksModule, AlertasModule],
   controllers: [MedicacaoController],
   providers: [MedicacaoService, PdfService],
   exports: [MedicacaoService],

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
@@ -41,6 +42,8 @@ export default function BancoSanguePage() {
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ numeroUnidade: '', componente: 'concentrado_eritrocitos', grupoABO: 'O', rhD: 'positivo', volumeMl: '', dataValidade: '' });
   const [salvando, setSalvando] = useState(false);
+
+  const dlgBolsa = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: t('modalTitle') });
 
   const carregar = useCallback(() => {
     setLoading(true);
@@ -142,36 +145,36 @@ export default function BancoSanguePage() {
 
       {modal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '28px' }}>
+          <div {...dlgBolsa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '28px' }}>
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '18px' }}>{t('modalTitle')}</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldUnit')}</label>
-                <input value={form.numeroUnidade} onChange={e => setForm(f => ({ ...f, numeroUnidade: e.target.value }))} placeholder="Ex: U240115-A" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldUnit')}</span>
+                <input aria-label={t('fieldUnit')} value={form.numeroUnidade} onChange={e => setForm(f => ({ ...f, numeroUnidade: e.target.value }))} placeholder="Ex: U240115-A" className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldComponent')}</label>
-                <select value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldComponent')}</span>
+                <select aria-label={t('fieldComponent')} value={form.componente} onChange={e => setForm(f => ({ ...f, componente: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>
                   {Object.entries(COMPONENTES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldAbo')}</label>
-                  <select value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>{GRUPOS.map(g => <option key={g} value={g}>{g}</option>)}</select>
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldAbo')}</span>
+                  <select aria-label={t('fieldAbo')} value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>{GRUPOS.map(g => <option key={g} value={g}>{g}</option>)}</select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldRh')}</label>
-                  <select value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}><option value="positivo">+</option><option value="negativo">−</option></select>
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldRh')}</span>
+                  <select aria-label={t('fieldRh')} value={form.rhD} onChange={e => setForm(f => ({ ...f, rhD: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}><option value="positivo">+</option><option value="negativo">−</option></select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldVolume')}</label>
-                  <input type="number" value={form.volumeMl} onChange={e => setForm(f => ({ ...f, volumeMl: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldVolume')}</span>
+                  <input aria-label={t('fieldVolume')} type="number" value={form.volumeMl} onChange={e => setForm(f => ({ ...f, volumeMl: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldExpiry')}</label>
-                <input type="date" value={form.dataValidade} onChange={e => setForm(f => ({ ...f, dataValidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldExpiry')}</span>
+                <input aria-label={t('fieldExpiry')} type="date" value={form.dataValidade} onChange={e => setForm(f => ({ ...f, dataValidade: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '22px' }}>

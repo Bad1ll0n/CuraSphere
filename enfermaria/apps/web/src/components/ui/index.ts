@@ -8,3 +8,5 @@ export { Badge } from './badge';
 export type { BadgeProps, BadgeTone } from './badge';
 export { Input } from './input';
 export type { InputProps } from './input';
+export { Modal } from './modal';
+export { useDialogoAcessivel } from './use-dialogo-acessivel';

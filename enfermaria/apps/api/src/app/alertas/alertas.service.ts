@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 @Injectable()
 export class AlertasService {
   private readonly logger = new Logger(AlertasService.name);
@@ -50,7 +51,18 @@ export class AlertasService {
     });
   }
 
-  async criarAlerta(doenteId: string, tipo: string, mensagem: string): Promise<void> {
+  /**
+   * Cria um alerta clínico e notifica a equipa do doente.
+   *
+   * De-duplicação (janela de 5 min, por doente+tipo): **só suprime quando a severidade não
+   * sobe**. A versão anterior sobrescrevia a mensagem do alerta recente e saía sem notificar
+   * ninguém — um doente que passasse de NEWS2 5 para 9 dentro da janela via o alerta de 5
+   * substituído pelo texto do 9 e a equipa nunca era avisada da escalada.
+   * Um alerta nunca é sobrescrito: uma escalada gera sempre uma linha nova.
+   *
+   * @param severidade 1 informativo · 2 baixo · 3 alto · 4 crítico
+   */
+  async criarAlerta(doenteId: string, tipo: string, mensagem: string, severidade = 1): Promise<void> {
     const recente = await this.prisma.alertaClinico.findFirst({
       where: {
         doenteId,
@@ -58,18 +70,16 @@ export class AlertasService {
         lido: false,
         criadoEm: { gte: new Date(Date.now() - 5 * 60 * 1000) },
       },
-      select: { id: true },
+      orderBy: { criadoEm: 'desc' },
+      select: { id: true, severidade: true },
     });
 
-    if (recente) {
-      await this.prisma.alertaClinico.update({
-        where: { id: recente.id },
-        data: { mensagem },
-      });
-      return;
-    }
+    // Repetição do mesmo quadro sem agravamento → não duplica (e também não apaga nada).
+    if (recente && severidade <= recente.severidade) return;
 
-    await this.prisma.alertaClinico.create({ data: { doenteId, tipo, mensagem } });
+    await this.prisma.alertaClinico.create({
+      data: { doenteId, tipo, mensagem, severidade, urgencia: severidade >= 4 },
+    });
     this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem)
       .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
   }
@@ -108,7 +118,7 @@ export class AlertasService {
         select: { pressaoSistolica: true, pressaoDiastolica: true, pulso: true, saturacaoO2: true, temperatura: true, news2: true, data: true },
       }),
       this.prisma.medicacao.findMany({
-        where: { doenteId, ativo: true },
+        where: { doenteId, ativo: true, deletedAt: null },
         select: { nome: true, dose: true, via: true },
         take: 5,
         orderBy: { iniciadoEm: 'desc' },
@@ -236,11 +246,12 @@ export class AlertasService {
         .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
-    // Emitir via WebSocket para todos os médicos/enfermeiros online
+    // WebSocket: todos os médicos e enfermeiros ligados recebem o SOS com a localização; o
+    // nome só segue para a equipa do doente (ver EventsGateway.emitirAlertaCritico).
     const quarto = (alerta.doente as any)?.cama
       ? `Quarto ${(alerta.doente as any).cama.quarto}, Cama ${(alerta.doente as any).cama.numero}`
       : 'Localização desconhecida';
-    this.gateway.emitirSOS(
+    await this.gateway.emitirSOS(
       doenteId,
       (alerta.doente as any)?.nome ?? 'Doente',
       quarto,
@@ -268,7 +279,7 @@ export class AlertasService {
     else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
     else tipoTurno = 'noite';
 
-    const diaStr = agora.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(agora);
     const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(dataHoje.getTime() + 24 * 60 * 60 * 1000 - 1);
     return { tipoTurno, dataHoje, dataFim };

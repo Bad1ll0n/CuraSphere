@@ -34,13 +34,16 @@ async function validarMagicBytes(buffer: Buffer, mimetype: string): Promise<bool
 export class DocumentosSaudeController {
   constructor(private readonly service: DocumentosSaudeService) {}
 
-  @Get('doente/:id')
+  // S-01: as rotas por doente usavam `:id` e escapavam à verificação global de acesso (o
+  // AcessoDoenteInterceptor procura `doenteId`): os documentos de saúde de qualquer doente
+  // podiam ser listados, carregados e sincronizados. O URL é o mesmo.
+  @Get('doente/:doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'ti')
-  listar(@Param('id') id: string, @Query('tipo') tipo?: string) {
-    return this.service.listar(id, tipo);
+  listar(@Param('doenteId') doenteId: string, @Query('tipo') tipo?: string) {
+    return this.service.listar(doenteId, tipo);
   }
 
-  @Post('doente/:id/upload')
+  @Post('doente/:doenteId/upload')
   @Roles('medico', 'enfermeiro', 'tecnico_saude')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -53,7 +56,7 @@ export class DocumentosSaudeController {
     }),
   )
   async upload(
-    @Param('id') doenteId: string,
+    @Param('doenteId') doenteId: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: UploadDocumentoDto,
     @Request() req: any,
@@ -70,9 +73,9 @@ export class DocumentosSaudeController {
     return this.service.getDownloadUrl(docId, req.user.sub);
   }
 
-  @Post('doente/:id/sincronizar')
+  @Post('doente/:doenteId/sincronizar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sincronizar(@Param('id') doenteId: string, @Request() req: any) {
+  sincronizar(@Param('doenteId') doenteId: string, @Request() req: any) {
     return this.service.sincronizar(doenteId, req.user.sub);
   }
 

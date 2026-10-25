@@ -22,6 +22,10 @@ const mockPrisma = {
   utilizador: {
     findUnique: jest.fn(),
   },
+  notaClinicaAdenda: {
+    create: jest.fn(),
+    findMany: jest.fn(),
+  },
 };
 
 describe('NotasClinicasService', () => {
@@ -107,15 +111,27 @@ describe('NotasClinicasService', () => {
       ).rejects.toThrow(ForbiddenException);
     });
 
-    it('utilizador com role "direcao" pode editar nota de outro autor', async () => {
+    // BA-02: `direcao` é gestão, não clínica — não pode editar a nota clínica de um médico.
+    it('utilizador com role "direcao" NÃO pode editar nota de outro autor', async () => {
       mockPrisma.notaClinica.findUnique.mockResolvedValue({ id: 'nota-1', autorId: 'autor-diferente' });
-      mockPrisma.notaClinica.update.mockResolvedValue({ id: 'nota-1', subjetivo: 'editado por direcao' });
 
       await expect(
         service.atualizar('nota-1', 'diretor-1', 'direcao', { subjetivo: 'editado por direcao' }),
-      ).resolves.not.toThrow();
+      ).rejects.toThrow(ForbiddenException);
 
-      expect(mockPrisma.notaClinica.update).toHaveBeenCalled();
+      expect(mockPrisma.notaClinica.update).not.toHaveBeenCalled();
+    });
+
+    it('nota ASSINADA é imutável — nem o próprio autor a pode editar', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue({
+        id: 'nota-1', autorId: 'autor-1', assinadaEm: new Date(),
+      });
+
+      await expect(
+        service.atualizar('nota-1', 'autor-1', 'medico', { subjetivo: 'reescrito' }),
+      ).rejects.toThrow(ForbiddenException);
+
+      expect(mockPrisma.notaClinica.update).not.toHaveBeenCalled();
     });
 
     it('utilizador com role "chefe_medicos" pode editar nota de outro autor', async () => {
@@ -151,6 +167,83 @@ describe('NotasClinicasService', () => {
           data: expect.objectContaining({ deletedAt: expect.any(Date) }),
         }),
       );
+    });
+
+    it('nota ASSINADA não pode ser apagada (nem em soft delete)', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue({
+        id: 'nota-1', autorId: 'autor-1', assinadaEm: new Date(),
+      });
+
+      await expect(service.apagar('nota-1', 'autor-1', 'medico')).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.notaClinica.update).not.toHaveBeenCalled();
+    });
+
+    it('role "direcao" NÃO pode apagar nota de outro autor', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue({ id: 'nota-1', autorId: 'autor-diferente' });
+
+      await expect(service.apagar('nota-1', 'diretor-1', 'direcao')).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  // ── BA-02: nota assinada é imutável; correcções por adenda ───────────────────
+
+  describe('criarAdenda()', () => {
+    const notaAssinada = {
+      id: 'nota-1', doenteId: 'doente-1', autorId: 'autor-1',
+      assinadaEm: new Date(), deletedAt: null,
+    };
+    const adendaValida = { texto: 'Corrige a dose registada no plano.', motivo: 'erro de transcrição' };
+
+    it('cria adenda numa nota assinada, com autor e motivo', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue(notaAssinada);
+      mockPrisma.notaClinicaAdenda.create.mockResolvedValue({ id: 'adenda-1', ...adendaValida });
+
+      await service.criarAdenda('nota-1', 'autor-2', 'medico', adendaValida);
+
+      expect(mockPrisma.notaClinicaAdenda.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            notaClinicaId: 'nota-1',
+            autorId: 'autor-2',
+            texto: adendaValida.texto,
+            motivo: adendaValida.motivo,
+          }),
+        }),
+      );
+    });
+
+    it('rejeita adenda a nota ainda não assinada (editar directamente)', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue({ ...notaAssinada, assinadaEm: null });
+
+      await expect(
+        service.criarAdenda('nota-1', 'autor-1', 'medico', adendaValida),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('exige motivo e texto com conteúdo', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue(notaAssinada);
+
+      await expect(
+        service.criarAdenda('nota-1', 'autor-1', 'medico', { texto: 'curto', motivo: 'erro' }),
+      ).rejects.toThrow(BadRequestException);
+
+      await expect(
+        service.criarAdenda('nota-1', 'autor-1', 'medico', { texto: adendaValida.texto, motivo: ' ' }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejeita role sem competência clínica', async () => {
+      await expect(
+        service.criarAdenda('nota-1', 'admin-1', 'administrativo', adendaValida),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('rejeita adenda a nota apagada', async () => {
+      mockPrisma.notaClinica.findUnique.mockResolvedValue({ ...notaAssinada, deletedAt: new Date() });
+
+      await expect(
+        service.criarAdenda('nota-1', 'autor-1', 'medico', adendaValida),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 

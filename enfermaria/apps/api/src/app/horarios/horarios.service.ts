@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ConflictException, BadRequestException }
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoTurno } from '../common/enums';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 @Injectable()
 export class HorariosService {
   constructor(private readonly prisma: PrismaService) {}
@@ -66,7 +67,7 @@ export class HorariosService {
     const escala = await this.prisma.escala.findUnique({ where: { id: data.escalId } });
     if (!escala) throw new NotFoundException('Escala não encontrada');
 
-    const diaStr = new Date(data.data).toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(new Date(data.data));
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
     const dataNormalizada = dataInicio;
@@ -135,7 +136,7 @@ export class HorariosService {
     if (!turno) throw new NotFoundException('Turno não encontrado');
 
     if (data.tipo && data.tipo !== turno.tipo) {
-      const diaStr = new Date(turno.data).toISOString().split('T')[0];
+      const diaStr = chaveDiaClinico(new Date(turno.data));
       const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
       const dataFim = new Date(diaStr + 'T23:59:59.999Z');
 
@@ -164,7 +165,7 @@ export class HorariosService {
     }
 
     if (data.profissionaisIds) {
-      const diaStrE = new Date(turno.data).toISOString().split('T')[0];
+      const diaStrE = chaveDiaClinico(new Date(turno.data));
       const dataInicioE = new Date(diaStrE + 'T00:00:00.000Z');
       const dataFimE = new Date(diaStrE + 'T23:59:59.999Z');
       const emAusenciaE = await this.prisma.ausencia.findMany({

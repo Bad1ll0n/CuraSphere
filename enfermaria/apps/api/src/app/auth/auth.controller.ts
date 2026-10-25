@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { TiposToken } from './tipos-token.decorator';
 
 class MfaVerificarDto {
   @IsString() @IsNotEmpty() mfaChallengeToken: string;
@@ -67,7 +68,10 @@ export class AuthController {
     return { utilizador: result.utilizador };
   }
 
+  // Aceita uma sessão completa (utilizador que activa MFA voluntariamente) ou o
+  // `mfaSetupToken` do login de um role clínico ainda sem MFA. Nada mais.
   @UseGuards(JwtAuthGuard)
+  @TiposToken('pessoal', 'mfa_setup')
   @SkipThrottle()
   @Get('mfa/setup')
   mfaSetup(@Request() req: any) {
@@ -75,6 +79,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @TiposToken('pessoal', 'mfa_setup')
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
   mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
@@ -125,6 +130,17 @@ export class AuthController {
     return this.authService.getMe(req.user.sub);
   }
 
+  /**
+   * Bilhete para o handshake do websocket clínico. O cookie de sessão autentica este
+   * pedido; o bilhete devolvido vive 60 s e só é aceite pelo gateway (SEC-01 / FE-01).
+   */
+  @UseGuards(JwtAuthGuard)
+  @SkipThrottle()
+  @Get('socket-ticket')
+  socketTicket(@Request() req: any) {
+    return { ticket: this.authService.emitirBilheteSocket(req.user) };
+  }
+
   @UseGuards(JwtAuthGuard)
   @SkipThrottle()
   @Get('password-status')
@@ -132,7 +148,9 @@ export class AuthController {
     return this.authService.passwordStatus(req.user.sub);
   }
 
+  // O `passwordExpiredToken` só serve para isto — não é uma sessão.
   @UseGuards(JwtAuthGuard)
+  @TiposToken('pessoal', 'password_expirada')
   @Throttle({ default: { ttl: 3600000, limit: 3 } })
   @Patch('alterar-password')
   async alterarPassword(

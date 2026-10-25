@@ -132,27 +132,27 @@ export default function RelatoriosFinanceirosPage() {
         display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap',
       }}>
         <div>
-          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
+          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
             Data início
-          </label>
+          </span>
           <input
             type="date" value={inicio} onChange={(e) => setInicio(e.target.value)}
             style={{ border: '1px solid var(--border, #e2e8f0)', borderRadius: 8, padding: '7px 12px', fontSize: 14, background: 'var(--input-bg, #fff)', color: 'inherit' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
+          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
             Data fim
-          </label>
+          </span>
           <input
             type="date" value={fim} onChange={(e) => setFim(e.target.value)}
             style={{ border: '1px solid var(--border, #e2e8f0)', borderRadius: 8, padding: '7px 12px', fontSize: 14, background: 'var(--input-bg, #fff)', color: 'inherit' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
+          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--text-secondary, #64748b)' }}>
             Estado
-          </label>
+          </span>
           <select
             value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}
             style={{ border: '1px solid var(--border, #e2e8f0)', borderRadius: 8, padding: '7px 12px', fontSize: 14, background: 'var(--input-bg, #fff)', color: 'inherit' }}

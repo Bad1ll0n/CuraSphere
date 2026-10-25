@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Ausencia { id: string; utilizadorId?: string; utilizador: { id: string; nome: string }; dataInicio: string; dataFim: string; estado: string }
@@ -75,7 +76,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
       setEscala(escalR.data);
       setMeuHorario(meuR.data);
       setAusencias(ausR.data ?? []);
-    } catch {} finally {
+    } catch (e) { registarFalhaSilenciosa('HorariosScreen', e); } finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -86,7 +87,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
     try {
       const r = await api.get('/utilizadores');
       setProfissionais(r.data.filter((u: any) => grupoDoChefe.includes(u.role)));
-    } catch {}
+    } catch (e) { registarFalhaSilenciosa('HorariosScreen', e); }
   };
 
   useFocusEffect(useCallback(() => {
@@ -151,7 +152,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
           await api.delete(`/horarios/turno/${turnoEditando.id}`);
           setTurnoEditando(null);
           await carregar();
-        } catch {}
+        } catch (e) { registarFalhaSilenciosa('HorariosScreen', e); }
       }},
     ]);
   };

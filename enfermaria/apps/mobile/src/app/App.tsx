@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as Sentry from '@sentry/react-native';
 
-Sentry.init({
-  dsn: process.env['EXPO_PUBLIC_SENTRY_DSN'] ?? '',
-  enabled: process.env['NODE_ENV'] === 'production',
-  tracesSampleRate: 0.2,
-});
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, TouchableOpacity, Modal, ActivityIndicator, StyleSheet, AppState, AppStateStatus, Platform, Alert } from 'react-native';
@@ -29,6 +24,17 @@ import QRScannerScreen from '../screens/QRScannerScreen';
 import DoenteDetalheScreen from '../screens/DoenteDetalheScreen';
 import AuditoriaScreen from '../screens/AuditoriaScreen';
 import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
+
+import { registarFalhaSilenciosa } from '../lib/erros';
+// Os imports ES são içados: TODOS executam antes de qualquer instrução do corpo do
+// módulo. Ter esta chamada no meio da lista de imports não a tornava mais cedo — só
+// partia a regra `import/first` (22 erros de lint) e dava uma falsa ideia de
+// precedência. Aqui é o mais cedo que o corpo do módulo permite.
+Sentry.init({
+  dsn: process.env['EXPO_PUBLIC_SENTRY_DSN'] ?? '',
+  enabled: process.env['NODE_ENV'] === 'production',
+  tracesSampleRate: 0.2,
+});
 
 const Tab = createBottomTabNavigator();
 
@@ -119,7 +125,7 @@ function App() {
   // Configurar notificações push
   useEffect(() => {
     Notifications.setNotificationHandler({
-      handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: true, shouldSetBadge: false }),
+      handleNotification: async () => ({ shouldShowBanner: true, shouldShowList: true, shouldPlaySound: true, shouldSetBadge: false }),
     });
   }, []);
 
@@ -176,6 +182,26 @@ function App() {
         <QRScannerScreen
           onScan={(id) => { setScannerAberto(false); setScanDoente(id); }}
           onFechar={() => setScannerAberto(false)}
+          /*
+           * Sem esta prop o botão de administrar do leitor nunca renderizava, e toda a
+           * verificação dos 5 certos — checklist, confirmação manual, override com
+           * justificação — era código inalcançável. A verificação existia e não estava
+           * ligada a nada.
+           */
+          onAdministrar={async (medicacaoId, qrPayload, justificacao) => {
+            try {
+              await api.post(`/medicacao/${medicacaoId}/administrar`, {
+                qrPayload,
+                observacoes: justificacao || undefined,
+              });
+              setScannerAberto(false);
+              Alert.alert('Registado', 'Administração registada e verificada.');
+            } catch (e: any) {
+              registarFalhaSilenciosa('App.onAdministrar', e);
+              const motivo = e?.response?.data?.message ?? 'Não foi possível registar.';
+              Alert.alert('Administração NÃO registada', motivo);
+            }
+          }}
         />
       </Modal>
 

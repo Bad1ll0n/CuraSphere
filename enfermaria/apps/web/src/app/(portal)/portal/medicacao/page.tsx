@@ -4,18 +4,18 @@ import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../../portal-auth-context';
 
 function MedicacaoContent() {
-  const { token, loading: authLoading } = usePortalAuth();
+  const { autenticado, loading: authLoading } = usePortalAuth();
   const [medicacao, setMedicacao] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) return;
-    portalFetch('/portal/medicacao', token).then(setMedicacao).catch(() => setMedicacao([])).finally(() => setLoading(false));
-  }, [token]);
+    if (!autenticado) return;
+    portalFetch('/portal/medicacao').then(setMedicacao).catch(() => setMedicacao([])).finally(() => setLoading(false));
+  }, [autenticado]);
 
   if (authLoading) return null;
 
-  if (!token) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
+  if (!autenticado) { if (typeof window !== 'undefined') window.location.href = '/portal/login'; return null; }
 
   return (
     <div>

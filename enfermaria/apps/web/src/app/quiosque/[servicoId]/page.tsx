@@ -86,7 +86,10 @@ export default function QuiosqueServico() {
   const carregar = useCallback(async () => {
     if (!token || !servicoId) { setErro('Token ou serviço em falta'); return; }
     try {
-      const r = await fetch(`${API}/v1/doentes/quiosque-dados?token=${encodeURIComponent(token)}&servicoId=${encodeURIComponent(servicoId)}`);
+      // O token segue no cabeçalho: no URL ficava nos logs do proxy a cada 30 segundos.
+      const r = await fetch(`${API}/v1/doentes/quiosque-dados?servicoId=${encodeURIComponent(servicoId)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!r.ok) { setErro('Token inválido ou expirado'); return; }
       setDados(await r.json());
       setUltimaAtualizacao(new Date());

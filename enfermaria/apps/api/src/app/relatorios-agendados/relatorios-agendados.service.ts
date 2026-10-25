@@ -16,6 +16,7 @@ export class RelatoriosAgendadosService {
 
   @Cron('0 7 * * 1-5')
   async enviarRelatorioPassagemTurno(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('relatorio-turno', 3_600_000))) return;
     try {
       const turno = await this.prisma.turno.findFirst({
         where: { dataFim: { lte: new Date() } },

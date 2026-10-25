@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 @Injectable()
 export class AtribuicoesService {
   constructor(private readonly prisma: PrismaService) {}
@@ -16,7 +17,7 @@ export class AtribuicoesService {
     else if (hora >= 15 && hora < 23) tipo = 'tarde';
     else tipo = 'noite';
 
-    const diaStr = agora.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(agora);
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
 
@@ -153,7 +154,7 @@ export class AtribuicoesService {
 
   // Lista turnos do dia (para o chefe escolher qual gerir)
   async turnosDoDia(data?: string) {
-    const diaStr = data ?? new Date().toISOString().split('T')[0];
+    const diaStr = data ?? chaveDiaClinico(new Date());
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
 

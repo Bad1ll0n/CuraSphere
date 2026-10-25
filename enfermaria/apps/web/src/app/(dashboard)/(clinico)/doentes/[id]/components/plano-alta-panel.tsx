@@ -63,11 +63,11 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
       setPlano(r.data);
       setDataAlvo(r.data?.dataAlvoDia ? r.data.dataAlvoDia.split('T')[0] : '');
       setNotas(r.data?.notas ?? '');
-    }).catch(() => {});
+    }).catch(() => { /* vazio */ });
     api.get(`/doentes/${doenteId}/sumario-alta`).then(r => {
       if (r.data) setSumario(r.data);
-    }).catch(() => {});
-    api.get(`/doentes/${doenteId}/followups`).then(r => setFollowUps(r.data ?? [])).catch(() => {});
+    }).catch(() => { /* vazio */ });
+    api.get(`/doentes/${doenteId}/followups`).then(r => setFollowUps(r.data ?? [])).catch(() => { /* vazio */ });
   };
 
   useEffect(() => { carregar(); }, [doenteId]);
@@ -187,9 +187,9 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
 
           <div className="flex gap-3" style={{ marginBottom: '12px' }}>
             <div className="flex-1">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
                 Data Alvo de Alta
-              </label>
+              </span>
               <input
                 type="date"
                 value={dataAlvo}
@@ -202,8 +202,8 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
 
           <div style={{ marginBottom: '12px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
-            <textarea
+            <label htmlFor="fplanoalt-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
+            <textarea id="fplanoalt-0"
               value={notas}
               onChange={e => setNotas(e.target.value)}
               disabled={!podeEditar}

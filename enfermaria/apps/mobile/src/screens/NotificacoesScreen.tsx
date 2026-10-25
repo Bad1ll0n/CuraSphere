@@ -129,7 +129,7 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
                   <Text style={[s.cardTitulo, !n.lida && s.cardTituloNaoLido]} numberOfLines={1}>
                     {n.titulo}
                   </Text>
-                  <Text style={s.cardData}>{formatarData(n.criadaEm)}</Text>
+                  <Text style={s.cardData} numberOfLines={1}>{formatarData(n.criadaEm)}</Text>
                 </View>
                 <Text style={s.cardCorpo} numberOfLines={2}>{n.corpo}</Text>
                 {!n.lida && (
@@ -185,7 +185,7 @@ const s = StyleSheet.create({
   cardTopo: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
   cardTitulo: { flex: 1, fontSize: 14, fontWeight: '500', color: '#475569' },
   cardTituloNaoLido: { color: '#1e293b', fontWeight: '700' },
-  cardData: { fontSize: 11, color: '#94a3b8', whiteSpace: 'nowrap' as any },
+  cardData: { fontSize: 11, color: '#94a3b8' },
   cardCorpo: { fontSize: 13, color: '#64748b', marginTop: 4, lineHeight: 18 },
   tagNaoLida: {
     marginTop: 8, alignSelf: 'flex-start',

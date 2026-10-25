@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import QRCode from 'react-qr-code';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -65,7 +66,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -155,6 +156,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const [medHistorico, setMedHistorico] = useState<Medicacao[]>([]);
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
 
+  const dlgPropor = useDialogoAcessivel({ aberto: modalPropor, onFechar: () => setModalPropor(false), titulo: 'Propor medicação' });
+  const dlgRejeitarProposta = useDialogoAcessivel({ aberto: !!modalRejeitarProposta, onFechar: () => setModalRejeitarProposta(null), titulo: 'Rejeitar proposta' });
+  const dlgHistoricoMed = useDialogoAcessivel({ aberto: modalHistoricoMed, onFechar: () => setModalHistoricoMed(false), titulo: 'Histórico de medicação' });
+  const dlgQrMed = useDialogoAcessivel({ aberto: !!qrMed, onFechar: () => setQrMed(null), titulo: 'Código QR das 5 certas' });
+
   // Confirm modal
   const [confirmarAcao, setConfirmarAcao] = useState<{
     titulo: string; mensagem: string; variant: 'danger' | 'warning';
@@ -171,7 +177,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     try {
       const { data } = await api.get(`/medicacao/pendentes-aprovacao-medico`);
       setPropostasPendentes((data ?? []).filter((p: any) => p.doenteId === doenteId));
-    } catch {}
+    } catch { /* vazio */ }
   }, [doenteId, role]);
 
   useEffect(() => { carregarPropostas(); }, [carregarPropostas]);
@@ -179,7 +185,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   useEffect(() => {
     api.get(`/stewardship/${doenteId}`)
       .then(r => setStewardship(r.data ?? []))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [doenteId]);
 
   useEffect(() => {
@@ -454,8 +460,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         <Modal titulo="Prescrever Medicação" onClose={() => setModalMed(false)}>
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
-              <input autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
+              <label htmlFor="fmedicaca-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
+              <input id="fmedicaca-0" autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
                 placeholder="Ex: Paracetamol"
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
@@ -487,15 +493,15 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
-                <input type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
+                <label htmlFor="fmedicaca-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
+                <input id="fmedicaca-1" type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
                   placeholder="Ex: 500mg"
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
-                <select value={medVia} onChange={(e) => setMedVia(e.target.value)}
+                <label htmlFor="fmedicaca-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
+                <select id="fmedicaca-2" value={medVia} onChange={(e) => setMedVia(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Selecionar...</option>
@@ -509,8 +515,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Frequência *</label>
-              <select value={medFreq} onChange={(e) => setMedFreq(e.target.value)}
+              <label htmlFor="fmedicaca-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Frequência *</label>
+              <select id="fmedicaca-3" value={medFreq} onChange={(e) => setMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Selecionar...</option>
@@ -543,9 +549,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               })}
               {temInteracaoGrave && (
                 <div style={{ marginTop: '8px' }}>
-                  <label className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+                  <span className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
                     Justificação clínica obrigatória *
-                  </label>
+                  </span>
                   <textarea
                     rows={2}
                     value={justificativaInteracao}
@@ -567,29 +573,29 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Propor Prescrição (enfermeiro) */}
       {modalPropor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgPropor.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
                 <p className="text-xs text-violet-600 font-medium" style={{ marginTop: '2px' }}>Aguardará aprovação do médico responsável</p>
               </div>
-              <button onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
-              <input autoFocus type="text" value={propostaMedNome} onChange={e => setPropostaMedNome(e.target.value)}
+              <label htmlFor="fmedicaca-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
+              <input id="fmedicaca-4" autoFocus type="text" value={propostaMedNome} onChange={e => setPropostaMedNome(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Paracetamol 500mg" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dose *</label>
-              <input type="text" value={propostaMedDose} onChange={e => setPropostaMedDose(e.target.value)}
+              <label htmlFor="fmedicaca-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dose *</label>
+              <input id="fmedicaca-5" type="text" value={propostaMedDose} onChange={e => setPropostaMedDose(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: 500mg" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Via *</label>
-              <select value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
+              <label htmlFor="fmedicaca-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Via *</label>
+              <select id="fmedicaca-6" value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -597,8 +603,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Frequência *</label>
-              <select value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
+              <label htmlFor="fmedicaca-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Frequência *</label>
+              <select id="fmedicaca-7" value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -606,8 +612,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações clínicas</label>
-              <textarea value={propostaObs} onChange={e => setPropostaObs(e.target.value)} rows={2}
+              <label htmlFor="fmedicaca-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações clínicas</label>
+              <textarea id="fmedicaca-8" value={propostaObs} onChange={e => setPropostaObs(e.target.value)} rows={2}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Justificação clínica, alergias conhecidas..." />
             </div>
@@ -625,14 +631,14 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Rejeitar Proposta */}
       {modalRejeitarProposta && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitarProposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
-              <button onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={motivoRejProposta} onChange={e => setMotivoRejProposta(e.target.value)} rows={3}
+              <label htmlFor="fmedicaca-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fmedicaca-9" value={motivoRejProposta} onChange={e => setMotivoRejProposta(e.target.value)} rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>
@@ -648,7 +654,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {/* Modal Histórico de Medicação */}
       {modalHistoricoMed && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+          <div {...dlgHistoricoMed.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -713,17 +719,16 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
 
       {/* Modal QR 5 Certos */}
       {qrMed && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
           style={{ backdropFilter: 'blur(4px)' }}
-          onClick={() => setQrMed(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}
-            onClick={e => e.stopPropagation()}>
+          onClick={(e) => { if (e.target === e.currentTarget) setQrMed(null); }}>
+          <div {...dlgQrMed.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h3 className="text-base font-bold text-slate-900">QR — 5 Certos</h3>
               <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">

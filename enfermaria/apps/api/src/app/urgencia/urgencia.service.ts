@@ -9,6 +9,7 @@ import { ReTriagemDto } from './dto/re-triagem.dto';
 import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
 import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
 
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 const ORDEM_TRIAGEM: Record<string, number> = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 };
 
 const SLA_MINUTOS: Record<string, number> = {
@@ -419,7 +420,7 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
     if (min >= 8 * 60 && min < 16 * 60 + 30) tipoTurno = 'manha';
     else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
     else tipoTurno = 'noite';
-    const diaStr = agora.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(agora);
     const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(dataHoje.getTime() + 24 * 60 * 60 * 1000 - 1);
     return { tipoTurno, dataHoje, dataFim };

@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
@@ -47,20 +47,38 @@ export class FarmaciaService {
     });
   }
 
+  /**
+   * F5: a leitura acontecia FORA da transacção e a escrita era de valor absoluto. Dois ajustes
+   * ao mesmo tempo liam a mesma quantidade, e o segundo escrevia por cima do primeiro — e o
+   * `delta` guardado deixava de bater certo com o stock, portanto o rasto de auditoria do
+   * inventário deixava de reconciliar. O padrão certo já estava no `dispensar`, cem linhas
+   * abaixo: tudo dentro da mesma transacção Serializable.
+   */
   async atualizarQuantidade(id: string, novaQuantidade: number, motivo: string, tipo: string, utilizadorId: string) {
-    const item = await this.prisma.stockItem.findUnique({ where: { id } });
-    if (!item) throw new NotFoundException(`Item de stock (ID ${id}) não encontrado`);
+    if (!Number.isFinite(novaQuantidade) || novaQuantidade < 0) {
+      throw new BadRequestException('Quantidade inválida');
+    }
 
-    const delta = novaQuantidade - item.quantidade;
+    return this.prisma.$transaction(async (tx) => {
+      const item = await tx.stockItem.findUnique({ where: { id } });
+      if (!item) throw new NotFoundException(`Item de stock (ID ${id}) não encontrado`);
 
-    await this.prisma.$transaction([
-      this.prisma.stockItem.update({ where: { id }, data: { quantidade: novaQuantidade } }),
-      this.prisma.ajusteStock.create({
-        data: { stockItemId: id, delta, tipo, motivo, utilizadorId },
-      }),
-    ]);
+      const delta = novaQuantidade - item.quantidade;
 
-    return this.prisma.stockItem.findUnique({ where: { id } });
+      // O valor lido entra no `where`: se alguém mexeu entretanto, isto não escreve nada.
+      const actualizado = await tx.stockItem.updateMany({
+        where: { id, quantidade: item.quantidade },
+        data: { quantidade: novaQuantidade },
+      });
+      if (actualizado.count === 0) {
+        throw new ConflictException(
+          'O stock deste item mudou entretanto — confirme a quantidade actual e repita o ajuste',
+        );
+      }
+
+      await tx.ajusteStock.create({ data: { stockItemId: id, delta, tipo, motivo, utilizadorId } });
+      return tx.stockItem.findUnique({ where: { id } });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async historicoAjustes(stockItemId: string) {
@@ -208,22 +226,35 @@ export class FarmaciaService {
   }
 
   async confirmarTransferencia(transferenciaId: string, userId: string) {
-    const transf = await this.prisma.transferenciaStock.findUnique({
-      where: { id: transferenciaId },
-      include: { stockItem: true },
-    });
-    if (!transf) throw new NotFoundException('Transferência não encontrada');
-    if (transf.estado !== 'pendente') throw new BadRequestException('Transferência já processada');
-    if (transf.stockItem.quantidade < transf.quantidade) throw new BadRequestException('Quantidade insuficiente em stock');
-
-    const itemDestino = await this.prisma.stockItem.findFirst({
-      where: { nome: transf.stockItem.nome, servico: transf.servicoDestino },
-    });
-
+    // Toda a leitura-guarda-escrita corre dentro da mesma transacção Serializable
+    // (mesmo padrão de `dispensar`): fora dela, dois pedidos simultâneos passavam
+    // ambos nos guards e aplicavam a transferência duas vezes.
     await this.prisma.$transaction(async (tx) => {
-      await tx.stockItem.update({
-        where: { id: transf.stockItemId },
+      const transf = await tx.transferenciaStock.findUnique({
+        where: { id: transferenciaId },
+        include: { stockItem: true },
+      });
+      if (!transf) throw new NotFoundException('Transferência não encontrada');
+      if (transf.estado !== 'pendente') throw new BadRequestException('Transferência já processada');
+      if (transf.stockItem.quantidade < transf.quantidade) throw new BadRequestException('Quantidade insuficiente em stock');
+
+      // Fecha a transferência primeiro, com o estado esperado no `where`. Se outro
+      // pedido já a fechou, `count` vem a 0 e abortamos antes de tocar em stock.
+      const fecho = await tx.transferenciaStock.updateMany({
+        where: { id: transferenciaId, estado: 'pendente' },
+        data: { estado: 'confirmada', confirmadoPorId: userId },
+      });
+      if (fecho.count === 0) throw new BadRequestException('Transferência já processada');
+
+      // Débito com a quantidade disponível no `where` — nunca deixa o stock negativo.
+      const debito = await tx.stockItem.updateMany({
+        where: { id: transf.stockItemId, quantidade: { gte: transf.quantidade } },
         data: { quantidade: { decrement: transf.quantidade } },
+      });
+      if (debito.count === 0) throw new BadRequestException('Quantidade insuficiente em stock');
+
+      const itemDestino = await tx.stockItem.findFirst({
+        where: { nome: transf.stockItem.nome, servico: transf.servicoDestino },
       });
 
       if (itemDestino) {
@@ -273,21 +304,27 @@ export class FarmaciaService {
           utilizadorId: userId,
         },
       });
-
-      await tx.transferenciaStock.update({
-        where: { id: transferenciaId },
-        data: { estado: 'confirmada', confirmadoPorId: userId },
-      });
-    });
+    }, { isolationLevel: 'Serializable' });
 
     return { success: true };
   }
 
   async cancelarTransferencia(transferenciaId: string) {
-    const transf = await this.prisma.transferenciaStock.findUnique({ where: { id: transferenciaId } });
-    if (!transf) throw new NotFoundException('Transferência não encontrada');
-    if (transf.estado !== 'pendente') throw new BadRequestException('Apenas transferências pendentes podem ser canceladas');
-    return this.prisma.transferenciaStock.update({ where: { id: transferenciaId }, data: { estado: 'cancelada' } });
+    // Mesmo racional do confirmar: o estado esperado vai no `where` para que um
+    // cancelamento não possa vencer uma confirmação já em curso (ou vice-versa).
+    return this.prisma.$transaction(async (tx) => {
+      const transf = await tx.transferenciaStock.findUnique({ where: { id: transferenciaId } });
+      if (!transf) throw new NotFoundException('Transferência não encontrada');
+      if (transf.estado !== 'pendente') throw new BadRequestException('Apenas transferências pendentes podem ser canceladas');
+
+      const cancelada = await tx.transferenciaStock.updateMany({
+        where: { id: transferenciaId, estado: 'pendente' },
+        data: { estado: 'cancelada' },
+      });
+      if (cancelada.count === 0) throw new BadRequestException('Apenas transferências pendentes podem ser canceladas');
+
+      return tx.transferenciaStock.findUniqueOrThrow({ where: { id: transferenciaId } });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async listarTransferencias(servico?: string) {

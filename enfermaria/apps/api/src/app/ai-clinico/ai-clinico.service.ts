@@ -183,7 +183,7 @@ export class AiClinicoService {
         where: { doenteId }, orderBy: { data: 'desc' }, take: 5,
         select: { data: true, news2: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true },
       }),
-      this.prisma.medicacao.findMany({ where: { doenteId, ativo: true }, select: { nome: true, dose: true, via: true }, take: 10 }),
+      this.prisma.medicacao.findMany({ where: { doenteId, ativo: true, deletedAt: null }, select: { nome: true, dose: true, via: true }, take: 10 }),
       this.prisma.alertaClinico.findMany({ where: { doenteId, lido: false }, select: { mensagem: true, urgencia: true }, orderBy: { criadoEm: 'desc' }, take: 5 }),
       this.prisma.sinalizacaoPreocupante.findMany({ where: { doenteId, resolvida: false }, select: { motivo: true, nivelUrgencia: true }, take: 3 }),
       this.prisma.baselineDoente.findUnique({ where: { doenteId } }),
@@ -272,7 +272,7 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
         where: { doenteId }, orderBy: { data: 'desc' }, take: 5,
         select: { data: true, news2: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true },
       }),
-      this.prisma.medicacao.findMany({ where: { doenteId, ativo: true }, select: { nome: true, dose: true, via: true }, take: 10 }),
+      this.prisma.medicacao.findMany({ where: { doenteId, ativo: true, deletedAt: null }, select: { nome: true, dose: true, via: true }, take: 10 }),
       this.prisma.alertaClinico.findMany({ where: { doenteId, lido: false }, select: { mensagem: true, urgencia: true }, orderBy: { criadoEm: 'desc' }, take: 5 }),
       this.prisma.sinalizacaoPreocupante.findMany({ where: { doenteId, resolvida: false }, select: { motivo: true, nivelUrgencia: true }, take: 3 }),
       this.prisma.baselineDoente.findUnique({ where: { doenteId } }),
@@ -596,6 +596,8 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
 
   @Cron('*/15 * * * *')
   async escalarAlertasNaoRespondidos(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('escalar-alertas', 720_000))) return; // 12min < 15min
+
     const limite = new Date(Date.now() - 30 * 60_000);
 
     const alertas = await this.prisma.alertaClinico.findMany({
@@ -712,6 +714,8 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
 
   @Cron('0 */30 * * * *')
   async watchdogDeterioration(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('watchdog-deterioracao', 1_500_000))) return; // 25min < 30min
+
     const doentes = await this.prisma.doente.findMany({
       where: { ativo: true, estadoRegisto: 'internado' },
       select: { id: true, nome: true, estado: true, diagnosticoPrincipal: true },
@@ -1110,6 +1114,8 @@ Tabelas disponíveis e campos:
 
   @Cron('0 22 * * *')
   async cronStaffingPrevisao(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('staffing-previsao', 3_600_000))) return;
+
     try {
       await this.preverNecessidadesPessoal();
     } catch (err) {
@@ -1194,6 +1200,8 @@ Tabelas disponíveis e campos:
 
   @Cron('0 8 * * 1')
   async analisarFeedbackSemanal(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('feedback-semanal', 3_600_000))) return;
+
     try {
       const semanaPassada = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       const decisoes = await this.prisma.aiDecisao.findMany({
@@ -1282,6 +1290,8 @@ Tabelas disponíveis e campos:
 
   @Cron('0 8 * * 1')
   async relatorioSemanalOutcomes(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('outcomes-semanal', 3_600_000))) return;
+
     try {
       const correlacao = await this.correlacaoOutcomes();
       const corpo = `${correlacao.totalOutcomes} outcomes registados nos últimos 30 dias. `

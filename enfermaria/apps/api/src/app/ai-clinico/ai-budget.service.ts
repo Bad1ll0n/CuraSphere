@@ -18,6 +18,8 @@ export class AiBudgetService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async verificarBudgetDiario(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('ai-budget-diario', 3_600_000))) return;
+
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 

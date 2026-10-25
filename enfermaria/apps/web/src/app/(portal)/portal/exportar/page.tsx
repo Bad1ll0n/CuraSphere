@@ -6,14 +6,14 @@ import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
 function ExportarPage() {
-  const { token, loading: authLoading } = usePortalAuth();
+  const { autenticado, loading: authLoading } = usePortalAuth();
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [downloadingJson, setDownloadingJson] = useState(false);
   const [erro, setErro] = useState('');
 
   if (authLoading) return null;
 
-  if (!token) {
+  if (!autenticado) {
     if (typeof window !== 'undefined') window.location.href = '/portal/login';
     return null;
   }
@@ -23,7 +23,7 @@ function ExportarPage() {
     setDownloadingPdf(true);
     try {
       const r = await fetch(`${API}/portal/exportar/pdf`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       });
       if (!r.ok) throw new Error('Erro ao gerar PDF');
       const blob = await r.blob();
@@ -45,7 +45,7 @@ function ExportarPage() {
     setDownloadingJson(true);
     try {
       const r = await fetch(`${API}/portal/exportar/json`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       });
       if (!r.ok) throw new Error('Erro ao exportar dados');
       const data = await r.json();

@@ -22,7 +22,11 @@ const mockPrisma = {
   },
   cama: {
     findUnique: jest.fn(),
+    findMany: jest.fn(),
     update: jest.fn(),
+  },
+  alertaClinico: {
+    count: jest.fn(),
   },
   ficheiroPessoalDoente: {
     findFirst: jest.fn(),
@@ -119,6 +123,49 @@ describe('DoenteService', () => {
     }).compile();
 
     service = module.get<DoenteService>(DoenteService);
+  });
+
+  // ── dadosQuiosque() — S-05 ───────────────────────────────────────────────────
+
+  describe('dadosQuiosque()', () => {
+    beforeEach(() => {
+      mockPrisma.cama.findMany.mockResolvedValue([
+        { estado: 'ocupada' }, { estado: 'ocupada' }, { estado: 'livre' }, { estado: 'em_limpeza' },
+      ]);
+      mockPrisma.alertaClinico.count.mockResolvedValue(2);
+      mockPrisma.doente.findMany.mockResolvedValue([
+        { sinaisVitais: [{ news2: 1 }] },
+        { sinaisVitais: [{ news2: 7 }] },
+        { sinaisVitais: [] }, // sem NEWS2 nas últimas 12 horas
+      ]);
+    });
+
+    it('conta os alertas urgentes por acusar, pelos campos que existem', async () => {
+      const r = await service.dadosQuiosque('internamento');
+
+      expect(r.alertasCriticosCount).toBe(2);
+      expect(mockPrisma.alertaClinico.count).toHaveBeenCalledWith({
+        where: expect.objectContaining({ urgencia: true, acusadoEm: null }),
+      });
+    });
+
+    it('distribui o NEWS2 por doente e deixa de fora quem não tem avaliação recente', async () => {
+      const r = await service.dadosQuiosque('internamento');
+
+      expect(r.news2Counts).toEqual({ normal: 1, medio: 0, alto: 0, critico: 1 });
+    });
+
+    it('conta as camas por estado', async () => {
+      const r = await service.dadosQuiosque('internamento');
+
+      expect(r).toMatchObject({ camasTotal: 4, camasOcupadas: 2, camasLivres: 1, camasLimpeza: 1 });
+    });
+
+    it('uma falha na base de dados não se disfarça de "zero alertas"', async () => {
+      mockPrisma.alertaClinico.count.mockRejectedValue(new Error('coluna inexistente'));
+
+      await expect(service.dadosQuiosque('internamento')).rejects.toThrow('coluna inexistente');
+    });
   });
 
   // ── admitir() ────────────────────────────────────────────────────────────────
@@ -270,6 +317,54 @@ describe('DoenteService', () => {
       );
     });
 
+    it('liberta o vínculo doente→cama na alta (camaId=null)', async () => {
+      const doente = { id: 'doente-1', nome: 'João', camaId: 'cama-1', ativo: true };
+      mockPrisma.doente.findUnique.mockResolvedValue(doente);
+      mockPrisma.doente.update.mockResolvedValue({ ...doente, ativo: false, camaId: null });
+      mockPrisma.cama.update.mockResolvedValue({ id: 'cama-1', estado: 'em_limpeza' });
+
+      await service.darAlta('doente-1', 'admin-1');
+
+      expect(mockPrisma.doente.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'doente-1' },
+          data: expect.objectContaining({ ativo: false, camaId: null }),
+        }),
+      );
+    });
+
+    it('alta → readmissão na mesma cama: a cama deixa de estar presa ao doente anterior', async () => {
+      // 1. Alta do doente que ocupa a cama-1.
+      const anterior = { id: 'doente-1', nome: 'João', camaId: 'cama-1', ativo: true };
+      mockPrisma.doente.findUnique.mockResolvedValue(anterior);
+      mockPrisma.doente.update.mockResolvedValue({ ...anterior, ativo: false, camaId: null });
+      mockPrisma.cama.update.mockResolvedValue({ id: 'cama-1', estado: 'em_limpeza' });
+
+      await service.darAlta('doente-1', 'admin-1');
+
+      const dadosAlta = mockPrisma.doente.update.mock.calls[0][0].data;
+      expect(dadosAlta.camaId).toBeNull(); // sem isto o passo 2 violaria o @unique de camaId
+
+      // 2. A mesma cama, já limpa, é usada para admitir outro doente.
+      jest.clearAllMocks();
+      mockPrisma.cama.findUnique.mockResolvedValue({ id: 'cama-1', estado: 'livre' });
+      mockPrisma.doente.findFirst.mockResolvedValue(null);
+      mockPrisma.doente.create.mockResolvedValue({ id: 'doente-2', nome: 'Maria', camaId: 'cama-1' });
+      mockPrisma.cama.update.mockResolvedValue({ id: 'cama-1', estado: 'ocupada' });
+
+      const novo = await service.admitir({
+        nome: 'Maria',
+        dataNascimento: '1950-01-01',
+        camaId: 'cama-1',
+        administrativoAdmissaoId: 'admin-1',
+      } as never);
+
+      expect(novo).toMatchObject({ id: 'doente-2', camaId: 'cama-1' });
+      expect(mockPrisma.doente.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ camaId: 'cama-1' }) }),
+      );
+    });
+
     it('não actualiza cama quando doente não tem cama atribuída', async () => {
       const doente = { id: 'doente-1', nome: 'João', camaId: null, ativo: true };
       mockPrisma.doente.findUnique.mockResolvedValue(doente);
@@ -308,6 +403,73 @@ describe('DoenteService', () => {
       await Promise.resolve();
 
       expect(mockPrisma.followUpAgendado.createMany).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── SEC-08: upload da foto do doente ─────────────────────────────────────────
+
+  describe('uploadFoto()', () => {
+    const jpegValido = Buffer.concat([Buffer.from([0xFF, 0xD8, 0xFF, 0xE0]), Buffer.alloc(20)]);
+    const pngValido = Buffer.concat([Buffer.from([0x89, 0x50, 0x4E, 0x47]), Buffer.alloc(20)]);
+
+    const ficheiro = (over: Record<string, unknown> = {}) => ({
+      buffer: jpegValido, mimetype: 'image/jpeg', size: jpegValido.length, originalname: 'f.jpg', ...over,
+    }) as never;
+
+    beforeEach(() => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', ativo: true });
+      mockPrisma.doente.update.mockResolvedValue({ id: 'doente-1', fotoUrl: 'https://presigned.url' });
+      mockStorage.upload.mockResolvedValue({ key: 'doentes/doente-1/foto_1.jpg' });
+      mockStorage.getSignedUrl.mockResolvedValue('https://presigned.url');
+    });
+
+    it('aceita JPEG válido e guarda o URL', async () => {
+      const r: any = await service.uploadFoto('doente-1', ficheiro(), 'admin-1', 'direcao');
+      expect(r.fotoUrl).toBe('https://presigned.url');
+    });
+
+    it('rejeita ficheiro em falta', async () => {
+      await expect(
+        service.uploadFoto('doente-1', undefined as never, 'admin-1', 'direcao'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejeita tipo não permitido', async () => {
+      await expect(
+        service.uploadFoto('doente-1', ficheiro({ mimetype: 'application/pdf' }), 'admin-1', 'direcao'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejeita ficheiro acima do limite de tamanho', async () => {
+      await expect(
+        service.uploadFoto('doente-1', ficheiro({ size: 20 * 1024 * 1024 }), 'admin-1', 'direcao'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    // O mimetype é declarado pelo cliente — só os magic bytes dizem o que o ficheiro é.
+    it('rejeita executável disfarçado de imagem', async () => {
+      const exe = Buffer.concat([Buffer.from('MZ'), Buffer.alloc(30)]);
+      await expect(
+        service.uploadFoto('doente-1', ficheiro({ buffer: exe, size: exe.length }), 'admin-1', 'direcao'),
+      ).rejects.toThrow(BadRequestException);
+      expect(mockStorage.upload).not.toHaveBeenCalled();
+    });
+
+    it('rejeita PNG declarado como JPEG', async () => {
+      await expect(
+        service.uploadFoto('doente-1', ficheiro({ buffer: pngValido }), 'admin-1', 'direcao'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('usa a extensão real do ficheiro na chave de armazenamento', async () => {
+      await service.uploadFoto(
+        'doente-1',
+        ficheiro({ buffer: pngValido, mimetype: 'image/png', size: pngValido.length }),
+        'admin-1', 'direcao',
+      );
+      expect(mockStorage.upload).toHaveBeenCalledWith(
+        expect.any(Buffer), expect.stringMatching(/\.png$/), 'image/png',
+      );
     });
   });
 

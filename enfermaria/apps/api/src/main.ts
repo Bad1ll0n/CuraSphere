@@ -10,11 +10,13 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'express';
 import { join } from 'path';
+import { RedisIoAdapter } from './app/gateway/redis-io.adapter';
 import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
 
-const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao';
+// placeholder conhecido, usado só para RECUSAR arrancar com ele
+const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao'; // nosemgrep
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({
@@ -54,15 +56,13 @@ async function bootstrap() {
   // antes do processo terminar, em vez de derrubar ligações a meio.
   app.enableShutdownHooks();
 
-  // Servir uploads como anexos (nunca inline) para evitar XSS via SVG/HTML/PDF embutido
-  app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/uploads',
-    setHeaders: (res) => {
-      res.setHeader('Content-Disposition', 'attachment');
-      res.setHeader('X-Content-Type-Options', 'nosniff');
-      res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
-    },
-  });
+  // S-02: os anexos clínicos DEIXARAM de ser servidos como ficheiros estáticos.
+  //
+  // `useStaticAssets` entrega fora do pipeline do Nest — logo fora dos guards, fora do
+  // interceptor de auditoria e fora do limitador de tentativas. Qualquer pessoa com o URL
+  // descarregava o anexo de um doente, e nada ficava registado sobre quem o leu. Passaram
+  // a ser servidos pelo `FicheirosController`, que verifica o acesso contra a mensagem a
+  // que o anexo pertence.
 
   app.use((compression as any).default());
   app.use((helmet as any).default({
@@ -95,7 +95,10 @@ async function bootstrap() {
     },
   }));
   app.use((cookieParser as any).default());
-  app.use(json({ limit: '500kb' }));
+  // Os browsers enviam os relatórios de CSP como `application/csp-report` (report-uri) ou
+  // `application/reports+json` (Reporting API). O parser por omissão só aceita
+  // `application/json`, e o `CspReportController` recebia sempre um corpo vazio.
+  app.use(json({ limit: '500kb', type: ['application/json', 'application/csp-report', 'application/reports+json'] }));
   app.use(urlencoded({ limit: '500kb', extended: true }));
   // Raw text for HL7 v2 messages (MLLP transport over HTTP)
   const { text } = await import('express');
@@ -140,6 +143,11 @@ async function bootstrap() {
   } else {
     Logger.log('Swagger desativado em produção');
   }
+
+  // socket.io com adaptador Redis (broadcast entre instâncias em produção; fail-safe se Redis down).
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis(process.env.REDIS_URL ?? 'redis://localhost:6379');
+  app.useWebSocketAdapter(redisIoAdapter);
 
   const port = process.env.PORT || 3333;
   await app.listen(port);

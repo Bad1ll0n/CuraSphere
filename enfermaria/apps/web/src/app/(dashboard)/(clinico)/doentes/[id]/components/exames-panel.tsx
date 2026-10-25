@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   doenteId: string;
@@ -41,6 +42,9 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
   const [resultadoModal, setResultadoModal] = useState<any>(null);
   const [resultadoTexto, setResultadoTexto] = useState('');
   const [salvandoExame, setSalvandoExame] = useState(false);
+  const dlgExame = useDialogoAcessivel({ aberto: modalExame, onFechar: () => setModalExame(false), titulo: 'Solicitar exame' });
+  const dlgResultado = useDialogoAcessivel({ aberto: !!resultadoModal, onFechar: () => setResultadoModal(null), titulo: 'Registar resultado de exame' });
+
   const [confirmarAcao, setConfirmarAcao] = useState<{
     titulo: string; mensagem: string; variant: 'danger' | 'warning';
     onConfirmar: () => void;
@@ -164,13 +168,13 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Solicitar Exame */}
       {modalExame && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgExame.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Solicitar Exame</h2>
-              <button onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</span>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(TIPO_EXAME_LABELS).map(([v, l]) => (
                   <button key={v} onClick={() => setExameForm(f => ({ ...f, tipo: v }))}
@@ -181,8 +185,8 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
               </div>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={exameForm.descricao} onChange={e => setExameForm(f => ({ ...f, descricao: e.target.value }))}
+              <label htmlFor="fexamespa-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fexamespa-1" value={exameForm.descricao} onChange={e => setExameForm(f => ({ ...f, descricao: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o exame solicitado..." />
             </div>
@@ -208,17 +212,17 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
       {/* Modal: Registar Resultado */}
       {resultadoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>
               {TIPO_EXAME_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo} — {resultadoModal.descricao}
             </p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
-              <textarea value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
+              <label htmlFor="fexamespa-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
+              <textarea id="fexamespa-2" value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado do exame..." />
             </div>
@@ -241,7 +245,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
     </>

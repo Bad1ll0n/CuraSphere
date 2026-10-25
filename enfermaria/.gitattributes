@@ -1,0 +1,6 @@
+# Scripts de shell correm em Linux — no servidor, e dentro do contentor `backup`, que monta
+# ./scripts. Com `core.autocrlf=true`, um checkout em Windows passava-os a CRLF, e o `sh` do
+# contentor falha na primeira linha (`set: illegal option -`). Fins de linha fixos em LF.
+*.sh          text eol=lf
+Dockerfile    text eol=lf
+nginx/*.conf  text eol=lf

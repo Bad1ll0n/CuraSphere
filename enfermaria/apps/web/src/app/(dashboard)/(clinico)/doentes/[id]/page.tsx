@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { useAuth } from '@/lib/auth-context';
@@ -9,6 +10,7 @@ import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { SinaisVitaisPanel } from './components/sinais-vitais-panel';
+import { PediatriaPanel } from './components/pediatria-panel';
 import { RiscoEscalasPanel } from './components/risco-escalas-panel';
 import { ExamesPanel } from './components/exames-panel';
 import { NotasClinicasPanel } from './components/notas-clinicas-panel';
@@ -25,6 +27,9 @@ import { FaturacaoPanel } from './components/faturacao-panel';
 import { BalancoHidricoPanel } from './components/balanco-hidrico-panel';
 import { FeridasPanel } from './components/feridas-panel';
 import { TransfusaoPanel } from './components/transfusao-panel';
+import { MaternidadePanel } from './components/maternidade-panel';
+import { OncologiaPanel } from './components/oncologia-panel';
+import { DialisePanel } from './components/dialise-panel';
 import { SepsisPanel } from './components/sepsis-panel';
 import { PlanoAltaPanel } from './components/plano-alta-panel';
 import { AiClinicoPanel } from './components/ai-clinico-panel';
@@ -203,6 +208,13 @@ export default function DoenteDetalhe() {
   const [portalSenha, setPortalSenha] = useState('');
   const [criandoPortal, setCriandoPortal] = useState(false);
   const [portalCriado, setPortalCriado] = useState(false);
+  const dlgEditar = useDialogoAcessivel({ aberto: modalEditarDoente, onFechar: () => setModalEditarDoente(false), titulo: 'Editar doente' });
+  const dlgIsolamento = useDialogoAcessivel({ aberto: modalIsolamento, onFechar: () => setModalIsolamento(false), titulo: 'Activar isolamento' });
+  const dlgQR = useDialogoAcessivel({ aberto: modalQR, onFechar: () => setModalQR(false), titulo: 'Código QR do doente' });
+  const dlgAlta = useDialogoAcessivel({ aberto: modalAltaEstruturada, onFechar: () => setModalAltaEstruturada(false), titulo: 'Alta estruturada' });
+  const dlgSinalizar = useDialogoAcessivel({ aberto: modalSinalizar, onFechar: () => setModalSinalizar(false), titulo: 'Sinalizar doente como preocupante' });
+  const dlgPortal = useDialogoAcessivel({ aberto: modalPortal, onFechar: () => setModalPortal(false), titulo: 'Portal do doente' });
+
   const podeCriarPortal = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
 
   // Score de risco
@@ -250,7 +262,7 @@ export default function DoenteDetalhe() {
   const carregarSinalizacao = useCallback(() => {
     api.get(`/sinalizacoes/${id}/ativas`)
       .then(r => setSinalizacaoAtiva(r.data?.length > 0 ? r.data[0] : null))
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [id]);
 
   const carregar = useCallback(() => {
@@ -264,7 +276,7 @@ export default function DoenteDetalhe() {
     if (!eAdmin) return;
     api.get(`/doentes/${id}/ficha-pessoal`)
       .then((r) => { setFicheiroPessoal(r.data); setFichaForm(r.data); })
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [id, eAdmin]);
 
   const verificarTurnoAtivo = async () => {
@@ -772,8 +784,8 @@ export default function DoenteDetalhe() {
                 { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                  <input aria-label={label}
                     value={(fichaForm as any)[key] ?? ''}
                     onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
                     placeholder={placeholder}
@@ -832,6 +844,13 @@ export default function DoenteDetalhe() {
         <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
+      {/* Pediatria — só para doentes < 16 anos (PEWS + calculadora de dose por peso) */}
+      {doente.dataNascimento && calcIdade(doente.dataNascimento) < 16 && (
+        <PanelErrorBoundary name="Pediatria">
+          <PediatriaPanel doenteId={id!} utilizador={utilizador} />
+        </PanelErrorBoundary>
+      )}
+
       {/* Balanço Hídrico */}
       <PanelErrorBoundary name="Balanço Hídrico">
         <BalancoHidricoPanel doenteId={id!} utilizador={utilizador} />
@@ -845,6 +864,21 @@ export default function DoenteDetalhe() {
       {/* Sangue e Transfusão */}
       <PanelErrorBoundary name="Sangue e Transfusão">
         <TransfusaoPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Maternidade / Obstetrícia — auto-fino se não houver gravidez ativa */}
+      <PanelErrorBoundary name="Maternidade">
+        <MaternidadePanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Oncologia / Quimioterapia — auto-fino/oculto se não houver plano ativo */}
+      <PanelErrorBoundary name="Oncologia">
+        <OncologiaPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Diálise / Nefrologia — sessões de hemodiálise + ganho interdialítico */}
+      <PanelErrorBoundary name="Diálise">
+        <DialisePanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Plano de Alta */}
@@ -902,20 +936,20 @@ export default function DoenteDetalhe() {
       {/* Modal Editar Doente */}
       {modalEditarDoente && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Editar Dados Clínicos</h2>
-              <button onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
-              <input type="text" value={editDiagnostico} onChange={(e) => setEditDiagnostico(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
+              <input id="fpage-1" type="text" value={editDiagnostico} onChange={(e) => setEditDiagnostico(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
-              <input type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
+              <input id="fpage-2" type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -936,14 +970,14 @@ export default function DoenteDetalhe() {
       {/* Modal Activar Isolamento */}
       {modalIsolamento && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
-              <button onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
-              <textarea value={motivoIsolamentoInput} onChange={e => setMotivoIsolamentoInput(e.target.value)}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
+              <textarea id="fpage-3" value={motivoIsolamentoInput} onChange={e => setMotivoIsolamentoInput(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3}
                 placeholder="Ex: MRSA, Clostrídio, contacto suspeito COVID..." />
@@ -962,7 +996,7 @@ export default function DoenteDetalhe() {
       {/* Modal QR Code */}
       {modalQR && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
+          <div {...dlgQR.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h3 className="text-lg font-bold text-slate-900">QR Code do Doente</h3>
               <button onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
@@ -1000,8 +1034,8 @@ export default function DoenteDetalhe() {
 <div id="qr"></div>
 <p class="nome">${esc(doente.nome)}</p>
 <p class="sub">${esc(doente.numeroProcesso)} · Cama ${esc(String(doente.cama.quarto))}/${esc(String(doente.cama.numero))}</p>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"><\/script>
-<script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})<\/script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})</script>
 </body></html>`;
                   const blob = new Blob([html], { type: 'text/html' });
                   const url = URL.createObjectURL(blob);
@@ -1023,7 +1057,7 @@ export default function DoenteDetalhe() {
       {/* Modal Alta Estruturada */}
       {modalAltaEstruturada && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
+          <div {...dlgAlta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Dar Alta — {doente.nome}</h2>
               <button onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
@@ -1032,7 +1066,7 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo de Alta</label>
+              <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo de Alta</span>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { value: 'melhoria', label: 'Melhoria Clínica' },
@@ -1052,7 +1086,7 @@ export default function DoenteDetalhe() {
 
             {altaMotivo !== 'obito' && (
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Destino</label>
+                <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Destino</span>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'domicilio', label: 'Domicílio' },
@@ -1073,9 +1107,9 @@ export default function DoenteDetalhe() {
 
             <div style={{ marginBottom: '20px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
-                <label className="block text-sm font-semibold text-slate-700">
+                <span className="block text-sm font-semibold text-slate-700">
                   Resumo Clínico <span className="text-red-500">*</span>
-                </label>
+                </span>
                 {carregandoResumo && (
                   <span className="text-xs text-blue-500 animate-pulse">A gerar resumo automático...</span>
                 )}
@@ -1095,8 +1129,8 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
-              <textarea
+              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <textarea id="fpage-6"
                 value={altaPrescricao}
                 onChange={(e) => setAltaPrescricao(e.target.value)}
                 rows={2}
@@ -1107,8 +1141,8 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '28px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
-              <input
+              <label htmlFor="fpage-7" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <input id="fpage-7"
                 value={altaMedicoFamilia}
                 onChange={(e) => setAltaMedicoFamilia(e.target.value)}
                 placeholder="Nome ou contacto do médico de família..."
@@ -1136,20 +1170,20 @@ export default function DoenteDetalhe() {
       {/* Modal Sinalizar como Preocupante */}
       {modalSinalizar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgSinalizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">⚠ Sinalizar como Preocupante</h2>
-              <button onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={motivoSinalizar} onChange={e => setMotivoSinalizar(e.target.value)}
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-8" value={motivoSinalizar} onChange={e => setMotivoSinalizar(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3}
                 placeholder="Descreva a preocupação clínica observada..." />
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nível de Urgência</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nível de Urgência</span>
               <div className="flex gap-2">
                 {(['normal', 'urgente'] as const).map(n => (
                   <button key={n} onClick={() => setNivelUrgencia(n)}
@@ -1176,14 +1210,14 @@ export default function DoenteDetalhe() {
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
 
       {/* Modal Portal do Doente */}
       {modalPortal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgPortal.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Portal do Doente</h2>
@@ -1220,15 +1254,15 @@ export default function DoenteDetalhe() {
             ) : (
               <>
                 <div style={{ marginBottom: '16px' }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Email do Doente</label>
-                  <input type="email" value={portalEmail} onChange={e => setPortalEmail(e.target.value)}
+                  <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Email do Doente</label>
+                  <input id="fpage-10" type="email" value={portalEmail} onChange={e => setPortalEmail(e.target.value)}
                     placeholder="doente@exemplo.com"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />
                 </div>
                 <div style={{ marginBottom: '24px' }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
-                  <input type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
+                  <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
+                  <input id="fpage-11" type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
                     placeholder="Mínimo 8 caracteres"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />

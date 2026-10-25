@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 
 interface StockItem {
@@ -119,6 +120,14 @@ export default function FarmaciaPage() {
   const [motivoRejeicao, setMotivoRejeicao] = useState('');
   const [modalRejeitarPedido, setModalRejeitarPedido] = useState<string | null>(null);
   const [motivoRejPedido, setMotivoRejPedido] = useState('');
+
+  const dlgRejeitar = useDialogoAcessivel({ aberto: !!modalRejeitar, onFechar: () => setModalRejeitar(null), titulo: 'Rejeitar validação' });
+  const dlgRejeitarPedido = useDialogoAcessivel({ aberto: !!modalRejeitarPedido, onFechar: () => setModalRejeitarPedido(null), titulo: 'Rejeitar pedido' });
+  const dlgPedido = useDialogoAcessivel({ aberto: !!pedidoModal, onFechar: () => setPedidoModal(null), titulo: 'Pedido de reposição' });
+  const dlgAjustar = useDialogoAcessivel({ aberto: !!ajustarModal, onFechar: () => setAjustarModal(null), titulo: 'Ajustar stock' });
+  const dlgHistorico = useDialogoAcessivel({ aberto: !!historicoModal, onFechar: () => setHistoricoModal(null), titulo: 'Histórico de movimentos' });
+  const dlgTransferir = useDialogoAcessivel({ aberto: !!transferirModal, onFechar: () => setTransferirModal(null), titulo: 'Transferir stock' });
+  const dlgNovoItem = useDialogoAcessivel({ aberto: novoItemModal, onFechar: () => setNovoItemModal(false), titulo: 'Novo item de stock' });
 
   // Filtros relatório
   const [relServico, setRelServico] = useState('');
@@ -450,8 +459,8 @@ export default function FarmaciaPage() {
           {/* Filtros */}
           <div className="bg-white rounded-2xl border border-slate-200 flex flex-wrap gap-4 items-end" style={{ padding: '20px 24px', marginBottom: '20px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
-              <select value={relServico} onChange={e => setRelServico(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+              <select id="fpage-0" value={relServico} onChange={e => setRelServico(e.target.value)}
                 className="border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '8px 12px' }}>
                 <option value="">Todos</option>
@@ -459,14 +468,14 @@ export default function FarmaciaPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data início</label>
-              <input type="date" value={relInicio} onChange={e => setRelInicio(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data início</label>
+              <input id="fpage-1" type="date" value={relInicio} onChange={e => setRelInicio(e.target.value)}
                 className="border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '8px 12px' }} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data fim</label>
-              <input type="date" value={relFim} onChange={e => setRelFim(e.target.value)}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data fim</label>
+              <input id="fpage-2" type="date" value={relFim} onChange={e => setRelFim(e.target.value)}
                 className="border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '8px 12px' }} />
             </div>
@@ -598,14 +607,14 @@ export default function FarmaciaPage() {
       {/* Rejeitar Prescrição */}
       {modalRejeitar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Prescrição</h2>
-              <button onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={motivoRejeicao} onChange={e => setMotivoRejeicao(e.target.value)}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-3" value={motivoRejeicao} onChange={e => setMotivoRejeicao(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3} />
             </div>
@@ -621,14 +630,14 @@ export default function FarmaciaPage() {
       {/* Rejeitar Pedido Médico */}
       {modalRejeitarPedido && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRejeitarPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Pedido</h2>
-              <button onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo clínico *</label>
-              <textarea value={motivoRejPedido} onChange={e => setMotivoRejPedido(e.target.value)}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo clínico *</label>
+              <textarea id="fpage-4" value={motivoRejPedido} onChange={e => setMotivoRejPedido(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} rows={3} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>
@@ -645,21 +654,21 @@ export default function FarmaciaPage() {
       {/* Pedido de Reposição */}
       {pedidoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Pedido de Reposição</h2>
-              <button onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{pedidoModal.nome}</p>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade ({pedidoModal.unidade})</label>
-              <input type="number" value={pedidoForm.quantidade} onChange={e => setPedidoForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade ({pedidoModal.unidade})</label>
+              <input id="fpage-5" type="number" value={pedidoForm.quantidade} onChange={e => setPedidoForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} min={1} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-              <textarea value={pedidoForm.observacoes} onChange={e => setPedidoForm(f => ({ ...f, observacoes: e.target.value }))}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <textarea id="fpage-6" value={pedidoForm.observacoes} onChange={e => setPedidoForm(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -678,23 +687,23 @@ export default function FarmaciaPage() {
       {/* Ajustar Quantidade */}
       {ajustarModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgAjustar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Ajustar Stock</h2>
-              <button onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{ajustarModal.nome} — actual: {ajustarModal.quantidade} {ajustarModal.unidade}</p>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de movimento *</label>
-              <select value={ajustarForm.tipo} onChange={e => setAjustarForm(f => ({ ...f, tipo: e.target.value }))}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de movimento *</label>
+              <select id="fpage-7" value={ajustarForm.tipo} onChange={e => setAjustarForm(f => ({ ...f, tipo: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }}>
                 {TIPO_AJUSTE_OPTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nova quantidade ({ajustarModal.unidade}) *</label>
-              <input type="number" value={ajustarForm.quantidade} onChange={e => setAjustarForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nova quantidade ({ajustarModal.unidade}) *</label>
+              <input id="fpage-8" type="number" value={ajustarForm.quantidade} onChange={e => setAjustarForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} min={0} />
               {ajustarForm.quantidade !== ajustarModal.quantidade && (
@@ -704,8 +713,8 @@ export default function FarmaciaPage() {
               )}
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={ajustarForm.motivo} onChange={e => setAjustarForm(f => ({ ...f, motivo: e.target.value }))}
+              <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-9" value={ajustarForm.motivo} onChange={e => setAjustarForm(f => ({ ...f, motivo: e.target.value }))}
                 placeholder="Descreve o motivo do ajuste..."
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                 style={{ padding: '10px 14px' }} />
@@ -725,13 +734,13 @@ export default function FarmaciaPage() {
       {/* Histórico de Ajustes */}
       {historicoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '540px', padding: '32px', margin: '0 16px', maxHeight: '80vh', overflowY: 'auto' }}>
+          <div {...dlgHistorico.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '540px', padding: '32px', margin: '0 16px', maxHeight: '80vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Histórico de Ajustes</h2>
                 <p className="text-slate-500 text-sm">{historicoModal.nome}</p>
               </div>
-              <button onClick={() => setHistoricoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setHistoricoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {loadingHistorico ? (
               <div className="flex justify-center" style={{ padding: '32px 0' }}>
@@ -763,15 +772,15 @@ export default function FarmaciaPage() {
       {/* Transferir Stock */}
       {transferirModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgTransferir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Transferir Stock</h2>
-              <button onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{transferirModal.nome} — disponível: {transferirModal.quantidade} {transferirModal.unidade} ({transferirModal.servico})</p>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço destino *</label>
-              <select value={transferirForm.servicoDestino} onChange={e => setTransferirForm(f => ({ ...f, servicoDestino: e.target.value }))}
+              <label htmlFor="fpage-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço destino *</label>
+              <select id="fpage-10" value={transferirForm.servicoDestino} onChange={e => setTransferirForm(f => ({ ...f, servicoDestino: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar...</option>
@@ -779,14 +788,14 @@ export default function FarmaciaPage() {
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade ({transferirModal.unidade}) *</label>
-              <input type="number" value={transferirForm.quantidade} onChange={e => setTransferirForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
+              <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade ({transferirModal.unidade}) *</label>
+              <input id="fpage-11" type="number" value={transferirForm.quantidade} onChange={e => setTransferirForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} min={1} max={transferirModal.quantidade} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo</label>
-              <textarea value={transferirForm.motivo} onChange={e => setTransferirForm(f => ({ ...f, motivo: e.target.value }))}
+              <label htmlFor="fpage-12" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo</label>
+              <textarea id="fpage-12" value={transferirForm.motivo} onChange={e => setTransferirForm(f => ({ ...f, motivo: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Motivo opcional..." />
             </div>
@@ -805,14 +814,14 @@ export default function FarmaciaPage() {
       {/* Novo Item */}
       {novoItemModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovoItem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Novo Item de Stock</h2>
-              <button onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ligar ao Catálogo</label>
-              <select
+              <label htmlFor="fpage-13" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ligar ao Catálogo</label>
+              <select id="fpage-13"
                 value={novoItemForm.catalogoId}
                 onChange={e => {
                   const cat = (catalogoItems as Array<{ id: string; dci: string; nomeMarca?: string; unidade: string; classeTerap: string }>).find(c => c.id === e.target.value);
@@ -833,14 +842,14 @@ export default function FarmaciaPage() {
               {novoItemForm.catalogoId && <p className="text-xs text-emerald-600 mt-1">✓ Nome e unidade preenchidos automaticamente</p>}
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome *</label>
-              <input type="text" value={novoItemForm.nome} onChange={e => setNovoItemForm(f => ({ ...f, nome: e.target.value }))}
+              <label htmlFor="fpage-14" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome *</label>
+              <input id="fpage-14" type="text" value={novoItemForm.nome} onChange={e => setNovoItemForm(f => ({ ...f, nome: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Paracetamol 500mg" />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-              <select value={novoItemForm.tipo} onChange={e => setNovoItemForm(f => ({ ...f, tipo: e.target.value }))}
+              <label htmlFor="fpage-15" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+              <select id="fpage-15" value={novoItemForm.tipo} onChange={e => setNovoItemForm(f => ({ ...f, tipo: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="medicamento">Medicamento</option>
@@ -849,28 +858,28 @@ export default function FarmaciaPage() {
               </select>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidade</label>
-              <input type="text" value={novoItemForm.unidade} onChange={e => setNovoItemForm(f => ({ ...f, unidade: e.target.value }))}
+              <label htmlFor="fpage-16" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidade</label>
+              <input id="fpage-16" type="text" value={novoItemForm.unidade} onChange={e => setNovoItemForm(f => ({ ...f, unidade: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} placeholder="caixas, ampolas, unidades..." />
             </div>
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Qtd. inicial</label>
-                <input type="number" value={novoItemForm.quantidade} onChange={e => setNovoItemForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
+                <label htmlFor="fpage-17" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Qtd. inicial</label>
+                <input id="fpage-17" type="number" value={novoItemForm.quantidade} onChange={e => setNovoItemForm(f => ({ ...f, quantidade: Number(e.target.value) }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }} min={0} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Qtd. mínima</label>
-                <input type="number" value={novoItemForm.quantidadeMinima} onChange={e => setNovoItemForm(f => ({ ...f, quantidadeMinima: Number(e.target.value) }))}
+                <label htmlFor="fpage-18" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Qtd. mínima</label>
+                <input id="fpage-18" type="number" value={novoItemForm.quantidadeMinima} onChange={e => setNovoItemForm(f => ({ ...f, quantidadeMinima: Number(e.target.value) }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }} min={0} />
               </div>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço unitário (€)</label>
-              <input type="number" value={novoItemForm.precoUnitario} onChange={e => setNovoItemForm(f => ({ ...f, precoUnitario: e.target.value }))}
+              <label htmlFor="fpage-19" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço unitário (€)</label>
+              <input id="fpage-19" type="number" value={novoItemForm.precoUnitario} onChange={e => setNovoItemForm(f => ({ ...f, precoUnitario: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }} min={0} step="0.01" placeholder="0.00" />
             </div>

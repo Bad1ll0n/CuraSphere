@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { FormField } from '@/components/form-field';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -154,6 +155,9 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
   const [lightbox, setLightbox] = useState<string | null>(null); // URL da foto em lightbox
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const toast = useToast();
+
+  const dlgLightbox = useDialogoAcessivel({ aberto: !!lightbox, onFechar: () => setLightbox(null), titulo: 'Fotografia da ferida' });
+  const dlgAvaliacao = useDialogoAcessivel({ aberto: modalAberto, onFechar: () => setModalAberto(false), titulo: 'Nova avaliação de ferida' });
 
   const [feridasErrors, setFeridasErrors] = useState<Record<string, string>>({});
   const formDirty = modalAberto && (form.localizacao.trim().length > 0 || form.notas.trim().length > 0);
@@ -452,12 +456,18 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                               <div key={foto.id} className="flex flex-col gap-2">
                                 <div className="flex items-start gap-3">
                                   <div className="relative group shrink-0">
-                                    <img
-                                      src={foto.url}
-                                      alt="Fotografia da ferida"
+                                    <button
+                                      type="button"
                                       onClick={() => setLightbox(foto.url)}
-                                      className="w-20 h-20 object-cover rounded-xl border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
-                                    />
+                                      aria-label="Ampliar fotografia da ferida"
+                                      className="block rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                      <img
+                                        src={foto.url}
+                                        alt="Fotografia da ferida"
+                                        className="w-20 h-20 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity"
+                                      />
+                                    </button>
                                     {podeRegistar && (
                                       <button
                                         onClick={() => apagarFoto(foto.id)}
@@ -548,23 +558,27 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
       {/* Lightbox */}
       {lightbox && (
         <div
+          role="presentation"
           className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}
-          onClick={() => setLightbox(null)}>
-          <img src={lightbox} alt="Fotografia da ferida" className="max-w-full max-h-full rounded-xl" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-4 right-4 w-9 h-9 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
-            style={{ fontSize: '20px', lineHeight: 1 }}>
-            ×
-          </button>
+          onClick={(e) => { if (e.target === e.currentTarget) setLightbox(null); }}>
+          <div {...dlgLightbox.propsPainel} className="relative flex items-center justify-center">
+            <img src={lightbox} alt="Fotografia da ferida" className="max-w-full max-h-full rounded-xl" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            <button
+              onClick={() => setLightbox(null)}
+              aria-label="Fechar fotografia"
+              className="absolute top-4 right-4 w-11 h-11 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
+              style={{ fontSize: '20px', lineHeight: 1 }}>
+              ×
+            </button>
+          </div>
         </div>
       )}
 
       {/* Modal Nova Avaliação */}
       {modalAberto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-hidden flex flex-col" style={{ maxWidth: '580px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgAvaliacao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-hidden flex flex-col" style={{ maxWidth: '580px', maxHeight: '90vh', margin: '0 16px' }}>
 
             {/* Modal header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
@@ -599,7 +613,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'identificacao' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Ferida *</label>
+                    <label htmlFor="fferidasp-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Ferida *</label>
                     <div className="grid grid-cols-2 gap-2">
                       {TIPOS_FERIDA.map((t) => (
                         <button key={t.value} type="button" onClick={() => setForm(f => ({ ...f, tipo: t.value }))}
@@ -612,7 +626,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <FormField label="Localização" required error={feridasErrors['localizacao']}>
-                    <input type="text" value={form.localizacao}
+                    <input id="fferidasp-0" type="text" value={form.localizacao}
                       onChange={e => { setForm(f => ({ ...f, localizacao: e.target.value })); setFeridasErrors(prev => { const n = { ...prev }; delete n['localizacao']; return n; }); }}
                       placeholder="Ex: Sacro, Calcanhar direito, Maléolo..."
                       className={`w-full border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-400 transition ${feridasErrors['localizacao'] ? 'border-red-400' : 'border-slate-200'}`}
@@ -620,7 +634,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </FormField>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Estado de Cicatrização *</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Estado de Cicatrização *</span>
                     <div className="grid grid-cols-2 gap-2">
                       {ESTADOS_CICATRIZACAO.map((e) => (
                         <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, estadoCicatrizacao: e.value }))}
@@ -633,14 +647,14 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dimensões (cm) — opcional</label>
+                    <label htmlFor="fferidasp-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dimensões (cm) — opcional</label>
                     <div className="flex gap-2">
                       {[
                         { key: 'comprimento', placeholder: 'Compr.' },
                         { key: 'largura', placeholder: 'Larg.' },
                         { key: 'profundidade', placeholder: 'Prof.' },
                       ].map(({ key, placeholder }) => (
-                        <input key={key} type="number" min="0" step="0.1"
+                        <input id="fferidasp-2" key={key} type="number" min="0" step="0.1"
                           value={(form as any)[key]}
                           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                           placeholder={placeholder}
@@ -657,7 +671,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'caracteristicas' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Leito da Ferida</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Leito da Ferida</span>
                     <div className="flex flex-wrap gap-2">
                       {LEITO_OPTIONS.map((l) => (
                         <button key={l.value} type="button" onClick={() => setForm(f => ({ ...f, leito: f.leito === l.value ? '' : l.value }))}
@@ -671,7 +685,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Volume de Exsudado</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Volume de Exsudado</span>
                       <div className="flex flex-col gap-1.5">
                         {EXSUDADO_VOLUME.map((e) => (
                           <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, exsudadoVolume: f.exsudadoVolume === e.value ? '' : e.value }))}
@@ -683,7 +697,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Exsudado</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo de Exsudado</span>
                       <div className="flex flex-col gap-1.5">
                         {EXSUDADO_TIPO.map((e) => (
                           <button key={e.value} type="button" onClick={() => setForm(f => ({ ...f, exsudadoTipo: f.exsudadoTipo === e.value ? '' : e.value }))}
@@ -697,7 +711,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Periferia</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Periferia</span>
                     <div className="flex flex-wrap gap-2">
                       {PERIFERIA_OPTIONS.map((p) => (
                         <button key={p.value} type="button" onClick={() => setForm(f => ({ ...f, periferia: f.periferia === p.value ? '' : p.value }))}
@@ -711,15 +725,15 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dor NRS (0–10)</label>
-                      <input type="number" min="0" max="10" value={form.dor as string}
+                      <label htmlFor="fferidasp-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dor NRS (0–10)</label>
+                      <input id="fferidasp-7" type="number" min="0" max="10" value={form.dor as string}
                         onChange={e => setForm(f => ({ ...f, dor: e.target.value }))}
                         placeholder="0-10"
                         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
                         style={{ padding: '10px 14px' }} />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Odor</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Odor</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setForm(f => ({ ...f, odor: false }))}
                           className={`flex-1 text-xs font-semibold rounded-lg border transition-all ${!form.odor ? 'bg-green-600 text-white border-green-600' : 'border-slate-200 text-slate-600'}`}
@@ -741,16 +755,16 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {secaoAtiva === 'penso' && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Penso Aplicado</label>
-                    <input type="text" value={form.pensoAplicado}
+                    <label htmlFor="fferidasp-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Penso Aplicado</label>
+                    <input id="fferidasp-9" type="text" value={form.pensoAplicado}
                       onChange={e => setForm(f => ({ ...f, pensoAplicado: e.target.value }))}
                       placeholder="Ex: Mepilex Border, Hidrofibra, Alginato..."
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
                       style={{ padding: '10px 14px' }} maxLength={200} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Próxima Troca</label>
-                    <input type="date" value={form.proximaTroca}
+                    <label htmlFor="fferidasp-10" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Próxima Troca</label>
+                    <input id="fferidasp-10" type="date" value={form.proximaTroca}
                       onChange={e => setForm(f => ({ ...f, proximaTroca: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition"
                       style={{ padding: '10px 14px' }} />
@@ -761,8 +775,8 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               {/* Secção: Notas */}
               {secaoAtiva === 'notas' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Adicionais</label>
-                  <textarea value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
+                  <label htmlFor="fferidasp-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Adicionais</label>
+                  <textarea id="fferidasp-11" value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
                     rows={6} maxLength={2000}
                     placeholder="Observações sobre a evolução, procedimentos realizados, intercorrências..."
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition resize-none"

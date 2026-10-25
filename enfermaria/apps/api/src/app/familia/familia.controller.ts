@@ -32,10 +32,12 @@ export class FamiliaController {
     return this.service.listarAcessos(doenteId);
   }
 
+  // O doente vai no caminho para a rota passar pela verificação global de acesso ao doente
+  // (AcessoDoenteInterceptor). Com `DELETE /familia/:id` não passava.
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Delete(':id')
+  @Delete('acessos/:doenteId/:id')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  revogarAcesso(@Param('id') id: string) {
-    return this.service.revogarAcesso(id);
+  revogarAcesso(@Param('doenteId') doenteId: string, @Param('id') id: string) {
+    return this.service.revogarAcesso(doenteId, id);
   }
 }

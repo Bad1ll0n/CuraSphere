@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import EmptyState from '../../../components/EmptyState';
 
+import { registarFalhaSilenciosa } from '../../../lib/erros';
 // Lazy import to avoid crash if native module not linked in Expo Go
 let Voice: any = null;
 try {
@@ -34,7 +35,7 @@ export default function TabNotas({ notas, nota, setNota, gravandoNota, onGravar,
     Voice.onSpeechEnd = () => setGravandoVoz(false);
     Voice.onSpeechError = () => setGravandoVoz(false);
     return () => {
-      if (Voice) { Voice.destroy().catch(() => {}); }
+      if (Voice) { Voice.destroy().catch((e: unknown) => registarFalhaSilenciosa('TabNotas', e)); }
     };
   }, []);
 

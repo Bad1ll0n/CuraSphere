@@ -5,12 +5,34 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SistemasExternosService } from './sistemas-externos.service';
-import { IsString, IsOptional, IsBoolean, MaxLength } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsUrl, MaxLength } from 'class-validator';
 
 class CriarSistemaDto {
   @IsString() @MaxLength(200) nome: string;
   @IsString() @MaxLength(50) tipo: string;
-  @IsOptional() @IsString() @MaxLength(500) endpoint?: string;
+  // SEC-05: o `endpoint` é o destino de um `fetch` feito pelo servidor. Só http/https, e
+  // o IP resolvido é validado em `assertUrlDestinoPublico` (criação e cada disparo).
+  @IsOptional() @IsUrl({ protocols: ['http', 'https'], require_protocol: true }) @MaxLength(500) endpoint?: string;
+  @IsOptional() @IsString() @MaxLength(50) authTipo?: string;
+  @IsOptional() @IsString() @MaxLength(2000) authConfig?: string;
+  @IsOptional() @IsBoolean() ativo?: boolean;
+}
+
+/**
+ * SEC-13 — mass assignment. `PATCH /sistemas-externos/:id` recebia
+ * `@Body() dto: Partial<CriarSistemaDto>`. `Partial<T>` é um tipo puramente estrutural do
+ * TypeScript: não existe em runtime, o metatype emitido é `Object` e a `ValidationPipe`
+ * global (com `whitelist` + `forbidNonWhitelisted`) era desligada por completo neste
+ * handler. O corpo seguia inteiro para `prisma.sistemaExternoSaude.update({ data })`,
+ * pelo que qualquer coluna do modelo — incluindo as que o modelo venha a ganhar — era
+ * gravável pelo cliente.
+ *
+ * A lista explícita abaixo é o allowlist; não voltar a usar `Partial<>` num `@Body()`.
+ */
+class AtualizarSistemaDto {
+  @IsOptional() @IsString() @MaxLength(200) nome?: string;
+  @IsOptional() @IsString() @MaxLength(50) tipo?: string;
+  @IsOptional() @IsUrl({ protocols: ['http', 'https'], require_protocol: true }) @MaxLength(500) endpoint?: string;
   @IsOptional() @IsString() @MaxLength(50) authTipo?: string;
   @IsOptional() @IsString() @MaxLength(2000) authConfig?: string;
   @IsOptional() @IsBoolean() ativo?: boolean;
@@ -47,7 +69,7 @@ export class SistemasExternosController {
 
   @Patch(':id')
   @Roles('ti', 'direcao')
-  atualizar(@Param('id') id: string, @Body() dto: Partial<CriarSistemaDto>) {
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarSistemaDto) {
     return this.service.atualizar(id, dto);
   }
 

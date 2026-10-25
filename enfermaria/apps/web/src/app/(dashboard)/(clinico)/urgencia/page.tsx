@@ -7,6 +7,11 @@ import api from '@/lib/api';
 import { useSocket } from '@/lib/use-socket';
 import { useToast } from '@/components/toast';
 import { AiFeedback } from '@/components/ai-feedback';
+import { RoleGuard } from '@/components/role-guard';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { ErroCarregamento } from '@/components/erro-carregamento';
+
+const ROLES_CLINICOS_URGENCIA = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
 interface EpisodioUrgencia {
   id: string;
@@ -101,6 +106,16 @@ function sugerirEspecialidade(ep: { triagem: string; queixaPrincipal: string; me
 }
 
 export default function UrgenciaPage() {
+  // Camada 2: a Urgência é um quadro clínico (triagem, NEWS2, Glasgow). Só papéis clínicos
+  // entram — mesmo por navegação direta ao URL, não só via menu escondido.
+  return (
+    <RoleGuard allow={ROLES_CLINICOS_URGENCIA}>
+      <UrgenciaPageInner />
+    </RoleGuard>
+  );
+}
+
+function UrgenciaPageInner() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
   const toast = useToast();
@@ -124,6 +139,11 @@ export default function UrgenciaPage() {
   const [aiTriagem, setAiTriagem] = useState<{ alertasVermelhos: string[]; nivelSugerido: string; observacoes: string; discriminadoresAvaliar: string[]; disclaimer: string } | null>(null);
   const [pedindoAiTriagem, setPedindoAiTriagem] = useState(false);
 
+  const dlgNova = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Nova entrada na urgência' });
+  const dlgReTriagem = useDialogoAcessivel({ aberto: !!modalReTriagem, onFechar: () => setModalReTriagem(null), titulo: 'Re-triagem' });
+  const dlgAtribuir = useDialogoAcessivel({ aberto: !!modalAtribuir, onFechar: () => setModalAtribuir(null), titulo: 'Atribuir médico e sala' });
+  const dlgAmb = useDialogoAcessivel({ aberto: modalAmb, onFechar: () => setModalAmb(false), titulo: 'Pré-notificação de ambulância' });
+
   const [sseConectado, setSseConectado] = useState(false);
   const etaRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -137,7 +157,7 @@ export default function UrgenciaPage() {
     enabled: !!modalAtribuir,
   });
 
-  const { data: episodios = [], isLoading } = useQuery<EpisodioUrgencia[]>({
+  const { data: episodios = [], isLoading, isError, refetch } = useQuery<EpisodioUrgencia[]>({
     queryKey: ['urgencia-lista'],
     queryFn: () => api.get('/urgencia/lista').then(r => r.data),
     refetchInterval: 60_000,
@@ -175,8 +195,7 @@ export default function UrgenciaPage() {
     return () => clearInterval(etaRef.current!);
   }, []);
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
-  useSocket(token, {
+  useSocket({
     'urgencia:update':        () => invalidar(),
     'urgencia:ambulancia':    () => invalidar(),
     'urgencia:sla-excedido':  (data: any) => {
@@ -199,7 +218,6 @@ export default function UrgenciaPage() {
     });
     es.addEventListener('urgencia_atualizada', () => invalidar());
     return () => { es.close(); setSseConectado(false); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const invalidar = () => {
@@ -289,7 +307,7 @@ export default function UrgenciaPage() {
       setAiTriagem(r.data);
       const corSugerida = AI_NIVEL_COR[r.data.nivelSugerido];
       if (corSugerida) setFormAmb(f => ({ ...f, triagem: corSugerida }));
-    } catch {}
+    } catch { /* vazio */ }
     finally { setPedindoAiTriagem(false); }
   };
 
@@ -486,6 +504,16 @@ export default function UrgenciaPage() {
             <span className="text-sm">A carregar...</span>
           </div>
         </div>
+      ) : isError ? (
+        // F-08: sem isto, uma falha a carregar mostrava o coração verde de "Urgência sem
+        // doentes em espera" — com a sala cheia.
+        <div className="bg-white rounded-2xl border border-slate-200">
+          <ErroCarregamento
+            titulo="Não foi possível carregar a lista da urgência"
+            descricao="Isto não quer dizer que não haja doentes em espera. Verifique a ligação e tente de novo."
+            onTentarNovamente={() => refetch()}
+          />
+        </div>
       ) : ativos.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '64px 40px' }}>
           <div className="w-16 h-16 rounded-2xl bg-green-50 flex items-center justify-center mx-auto" style={{ marginBottom: '16px' }}>
@@ -601,19 +629,19 @@ export default function UrgenciaPage() {
       {/* Modal: Nova Entrada */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Entrada — Urgência</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
-              <textarea value={form.queixaPrincipal} onChange={e => setForm(f => ({ ...f, queixaPrincipal: e.target.value }))}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
+              <textarea id="fpage-0" value={form.queixaPrincipal} onChange={e => setForm(f => ({ ...f, queixaPrincipal: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva a queixa principal..." />
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Triagem de Manchester *</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Triagem de Manchester *</span>
               <div className="grid grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
@@ -628,14 +656,14 @@ export default function UrgenciaPage() {
               </div>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome do Doente (se desconhecido)</label>
-              <input value={form.nomeTemporario} onChange={e => setForm(f => ({ ...f, nomeTemporario: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome do Doente (se desconhecido)</label>
+              <input id="fpage-2" value={form.nomeTemporario} onChange={e => setForm(f => ({ ...f, nomeTemporario: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500"
                 style={{ padding: '10px 14px' }} placeholder="Nome temporário ou 'Desconhecido'" />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
-              <textarea value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
+              <textarea id="fpage-3" value={form.notas} onChange={e => setForm(f => ({ ...f, notas: e.target.value }))}
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Notas adicionais..." />
             </div>
@@ -656,13 +684,13 @@ export default function UrgenciaPage() {
       {/* Modal: Re-triagem */}
       {modalReTriagem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgReTriagem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Re-triagem</h2>
-              <button onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</label>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</span>
               <div className="grid grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
@@ -677,8 +705,8 @@ export default function UrgenciaPage() {
               </div>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
-              <textarea value={reTriagemForm.motivo} onChange={e => setReTriagemForm(f => ({ ...f, motivo: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea id="fpage-5" value={reTriagemForm.motivo} onChange={e => setReTriagemForm(f => ({ ...f, motivo: e.target.value }))}
                 rows={3} maxLength={500}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Justifique a alteração da triagem..." />
@@ -702,14 +730,14 @@ export default function UrgenciaPage() {
       {/* Modal: Atribuir Médico + Sala */}
       {modalAtribuir && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgAtribuir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Atribuir Médico Responsável</h2>
-              <button onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
-              <select value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
+              <select id="fpage-6" value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">— Seleccionar médico —</option>
@@ -719,8 +747,8 @@ export default function UrgenciaPage() {
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala / Box de atendimento</label>
-              <input value={salaInput} onChange={e => setSalaInput(e.target.value)}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala / Box de atendimento</label>
+              <input id="fpage-7" value={salaInput} onChange={e => setSalaInput(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }} placeholder="Ex: Sala 3, Box 2, Reanimação..." maxLength={50} />
             </div>
@@ -743,11 +771,11 @@ export default function UrgenciaPage() {
       {/* Modal: Pré-notificação Ambulância — 3 blocos */}
       {modalAmb && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden" style={{ maxWidth: '560px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgAmb.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden" style={{ maxWidth: '560px', maxHeight: '90vh', margin: '0 16px' }}>
             {/* Header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">🚑 Pré-notificação de Ambulância</h2>
-              <button onClick={() => setModalAmb(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAmb(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {/* Step indicators */}
             <div className="flex border-b border-slate-100 shrink-0" style={{ padding: '0 28px', marginTop: '16px' }}>
@@ -770,21 +798,21 @@ export default function UrgenciaPage() {
               {ambStep === 1 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome / Identificação (opcional)</label>
-                    <input value={formAmb.nomeTemporario} onChange={e => setFormAmb(f => ({ ...f, nomeTemporario: e.target.value }))}
+                    <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome / Identificação (opcional)</label>
+                    <input id="fpage-8" value={formAmb.nomeTemporario} onChange={e => setFormAmb(f => ({ ...f, nomeTemporario: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                       style={{ padding: '10px 14px' }} placeholder="Nome temporário ou descrição" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Idade Aproximada</label>
-                      <input type="number" min="0" max="120" value={formAmb.idadeAproximada}
+                      <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Idade Aproximada</label>
+                      <input id="fpage-9" type="number" min="0" max="120" value={formAmb.idadeAproximada}
                         onChange={e => setFormAmb(f => ({ ...f, idadeAproximada: e.target.value }))}
                         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                         style={{ padding: '10px 14px' }} placeholder="Ex: 65" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sexo</label>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sexo</span>
                       <div className="flex gap-2">
                         {[{ v: 'masculino', l: '♂ M' }, { v: 'feminino', l: '♀ F' }, { v: 'desconhecido', l: '?' }].map(({ v, l }) => (
                           <button key={v} type="button" onClick={() => setFormAmb(f => ({ ...f, sexo: v }))}
@@ -797,7 +825,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Consciência</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Consciência</span>
                     <div className="flex gap-2">
                       <button type="button" onClick={() => setFormAmb(f => ({ ...f, consciente: true, glasgow: '' }))}
                         className={`flex-1 text-sm font-semibold rounded-xl border transition-all ${formAmb.consciente ? 'bg-green-600 text-white border-green-600' : 'border-slate-200 text-slate-600'}`}
@@ -812,8 +840,8 @@ export default function UrgenciaPage() {
                     </div>
                     {!formAmb.consciente && (
                       <div style={{ marginTop: '10px' }}>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Glasgow (3–15)</label>
-                        <input type="number" min="3" max="15" value={formAmb.glasgow}
+                        <label htmlFor="fpage-12" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Glasgow (3–15)</label>
+                        <input id="fpage-12" type="number" min="3" max="15" value={formAmb.glasgow}
                           onChange={e => setFormAmb(f => ({ ...f, glasgow: e.target.value }))}
                           className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                           style={{ padding: '10px 14px' }} placeholder="3-15" />
@@ -827,13 +855,13 @@ export default function UrgenciaPage() {
               {ambStep === 2 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
-                    <textarea value={formAmb.queixaPrincipal} onChange={e => setFormAmb(f => ({ ...f, queixaPrincipal: e.target.value }))}
+                    <label htmlFor="fpage-13" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
+                    <textarea id="fpage-13" value={formAmb.queixaPrincipal} onChange={e => setFormAmb(f => ({ ...f, queixaPrincipal: e.target.value }))}
                       rows={3} className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 resize-none transition"
                       style={{ padding: '10px 14px' }} placeholder="Ex: PCR recuperada, dor torácica, trauma..." maxLength={500} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Triagem Estimada *</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Triagem Estimada *</span>
                     <div className="grid grid-cols-5 gap-2">
                       {ORDEM_CORES.map(cor => {
                         const cfg = CORES_TRIAGEM[cor];
@@ -848,7 +876,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Mecanismo</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Mecanismo</span>
                     <div className="flex flex-wrap gap-2">
                       {[
                         { v: 'medico', l: 'Médico' }, { v: 'trauma', l: 'Trauma' },
@@ -863,14 +891,14 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Condição Prévia</label>
-                    <input value={formAmb.condicaoPrevia} onChange={e => setFormAmb(f => ({ ...f, condicaoPrevia: e.target.value }))}
+                    <label htmlFor="fpage-16" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Condição Prévia</label>
+                    <input id="fpage-16" value={formAmb.condicaoPrevia} onChange={e => setFormAmb(f => ({ ...f, condicaoPrevia: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                       style={{ padding: '10px 14px' }} placeholder="Ex: HTA, DM, AC/FA..." maxLength={200} />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ETA — {formAmb.etaMinutos} minutos</label>
-                    <input type="range" min={1} max={60} value={formAmb.etaMinutos}
+                    <label htmlFor="fpage-17" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ETA — {formAmb.etaMinutos} minutos</label>
+                    <input id="fpage-17" type="range" min={1} max={60} value={formAmb.etaMinutos}
                       onChange={e => setFormAmb(f => ({ ...f, etaMinutos: parseInt(e.target.value) }))}
                       className="w-full accent-amber-500" />
                   </div>
@@ -881,7 +909,7 @@ export default function UrgenciaPage() {
                       <div className="rounded-xl border border-indigo-200 bg-indigo-50" style={{ padding: '14px 16px' }}>
                         <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                           <span className="text-xs font-bold text-indigo-700 uppercase tracking-wide">Apoio IA — Manchester</span>
-                          <button onClick={() => setAiTriagem(null)} className="text-indigo-400 hover:text-indigo-600 text-sm font-bold">✕</button>
+                          <button aria-label="Fechar" onClick={() => setAiTriagem(null)} className="text-indigo-400 hover:text-indigo-600 text-sm font-bold">✕</button>
                         </div>
                         {aiTriagem.alertasVermelhos.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-2">
@@ -948,7 +976,7 @@ export default function UrgenciaPage() {
               {ambStep === 3 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sinais Vitais en route</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sinais Vitais en route</span>
                     <div className="grid grid-cols-5 gap-2">
                       {[
                         { key: 'vitalsPASistolica', label: 'PAS', placeholder: '120' },
@@ -958,8 +986,8 @@ export default function UrgenciaPage() {
                         { key: 'vitalsFR', label: 'FR', placeholder: '16' },
                       ].map(({ key, label, placeholder }) => (
                         <div key={key}>
-                          <label className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</label>
-                          <input type="number" value={(formAmb as any)[key]}
+                          <span className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</span>
+                          <input aria-label={label} type="number" value={(formAmb as any)[key]}
                             onChange={e => setFormAmb(f => ({ ...f, [key]: e.target.value }))}
                             className="w-full border border-slate-200 rounded-xl text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"
                             style={{ padding: '8px 4px' }} placeholder={placeholder} />
@@ -968,7 +996,7 @@ export default function UrgenciaPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Intervenções INEM</label>
+                    <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Intervenções INEM</span>
                     <div className="flex flex-wrap gap-2">
                       {INTERVENCOES_INEM.map(({ key, label }) => {
                         const active = formAmb.intervencoes.includes(key);

@@ -50,7 +50,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -263,7 +263,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             <input id="alergia-alergenio" type="text" value={alergenio} onChange={(e) => setAlergenio(e.target.value)} placeholder="Ex: Penicilina, Ibuprofeno..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</span>
             <div className="flex gap-2 flex-wrap">
               {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
                 <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
@@ -271,7 +271,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             </div>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
+            <label htmlFor="alergia-notas" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
             <div className="flex gap-2 flex-wrap">
               {['ligeira', 'moderada', 'grave', 'anafilaxia'].map((s) => (
                 <button key={s} onClick={() => setAlergiaSev(s)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
@@ -290,11 +290,11 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
       {modalContacto && (
         <Modal titulo="Contacto de Emergência" onClose={() => setModalContacto(false)}>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome *</label>
-            <input type="text" value={ctNome} onChange={(e) => setCtNome(e.target.value)} placeholder="Nome completo" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+            <label htmlFor="falergias-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome *</label>
+            <input id="falergias-2" type="text" value={ctNome} onChange={(e) => setCtNome(e.target.value)} placeholder="Nome completo" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</label>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</span>
             <div className="flex gap-2 flex-wrap">
               {['cônjuge', 'filho/a', 'pai/mãe', 'outro'].map((r) => (
                 <button key={r} onClick={() => setCtRelacao(r)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
@@ -302,8 +302,8 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             </div>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Telefone *</label>
-            <input type="tel" value={ctTel} onChange={(e) => setCtTel(e.target.value)} placeholder="9xx xxx xxx" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+            <label htmlFor="falergias-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Telefone *</label>
+            <input id="falergias-4" type="tel" value={ctTel} onChange={(e) => setCtTel(e.target.value)} placeholder="9xx xxx xxx" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer" style={{ marginBottom: '16px' }}>
             <input type="checkbox" checked={ctPrincipal} onChange={(e) => setCtPrincipal(e.target.checked)} className="w-4 h-4 rounded" />
@@ -318,7 +318,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
         titulo={confirmarAcao?.titulo ?? ''}
         mensagem={confirmarAcao?.mensagem ?? ''}
         variant={confirmarAcao?.variant ?? 'danger'}
-        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => { /* vazio */ })}
         onCancelar={() => setConfirmarAcao(null)}
       />
     </>

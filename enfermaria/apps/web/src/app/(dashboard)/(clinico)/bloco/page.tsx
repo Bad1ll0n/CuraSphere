@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useSocket } from '@/lib/use-socket';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Checklist {
   signInEm: string | null;
@@ -128,6 +129,11 @@ export default function BlocoPage() {
   const [dadosFase, setDadosFase] = useState<Record<string, boolean>>({});
   const [enviando, setEnviando] = useState(false);
 
+  const dlgAgendar = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Agendar cirurgia' });
+  const dlgDetalhe = useDialogoAcessivel({ aberto: !!detalhe, onFechar: () => setDetalhe(null), titulo: 'Notas de pós-operatório' });
+  const dlgChecklist = useDialogoAcessivel({ aberto: !!checklistCirurgia && checklist !== null && !checklistFase, onFechar: () => setChecklistCirurgia(null), titulo: 'Checklist de segurança cirúrgica (OMS)' });
+  const dlgFase = useDialogoAcessivel({ aberto: !!checklistCirurgia && !!checklistFase, onFechar: () => setChecklistFase(null), titulo: 'Preencher fase do checklist' });
+
   // Vista de Sala
   const [statusSalas, setStatusSalas] = useState<SalaStatus[]>([]);
   const [loadingSalas, setLoadingSalas] = useState(false);
@@ -161,11 +167,11 @@ export default function BlocoPage() {
     setLoadingCal(true);
     api.get('/bloco/agenda/mes', { params: { mes: calMes, ano: calAno } })
       .then(r => setCalDados(r.data ?? []))
-      .catch(() => {})
+      .catch(() => { /* vazio */ })
       .finally(() => setLoadingCal(false));
   }, [vistaAtiva, calMes, calAno]);
 
-  useSocket(undefined, {
+  useSocket({
     'bloco:update': () => { carregar(); if (vistaAtiva === 'salas') carregarSalas(); },
   });
 
@@ -345,9 +351,13 @@ export default function BlocoPage() {
                   for (const c of cirurgiasDia) porSala[c.sala] = (porSala[c.sala] ?? 0) + 1;
                   return (
                     <div key={diaStr}
-                      className={`border-r border-b border-slate-100 cursor-pointer hover:bg-blue-50/30 transition-colors`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Ver agenda de ${diaStr}${total > 0 ? ` — ${total} cirurgia${total !== 1 ? 's' : ''}` : ''}`}
+                      className={`border-r border-b border-slate-100 cursor-pointer hover:bg-blue-50/30 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors`}
                       style={{ minHeight: '110px', padding: '8px 6px' }}
-                      onClick={() => { setDataFiltro(diaStr); setVistaAtiva('agenda'); }}>
+                      onClick={() => { setDataFiltro(diaStr); setVistaAtiva('agenda'); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setDataFiltro(diaStr); setVistaAtiva('agenda'); } }}>
                       <div style={{ marginBottom: '6px' }}>
                         <span className={`text-xs font-bold flex items-center justify-center rounded-full ${ehHoje ? 'bg-blue-600 text-white' : 'text-slate-500'}`}
                           style={{ width: '22px', height: '22px' }}>
@@ -571,10 +581,10 @@ export default function BlocoPage() {
       {/* Modal: Agendar Cirurgia */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgAgendar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Agendar Cirurgia</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'Designação *', key: 'designacao', type: 'text', placeholder: 'Ex: Colecistectomia laparoscópica' },
@@ -582,29 +592,29 @@ export default function BlocoPage() {
               { label: 'Data e Hora *', key: 'dataHora', type: 'datetime-local', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                <input aria-label={label} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
-              <input type="number" value={form.duracaoPrevista} onChange={e => setForm(f => ({ ...f, duracaoPrevista: Number(e.target.value) }))}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
+              <input id="fpage-1" type="number" value={form.duracaoPrevista} onChange={e => setForm(f => ({ ...f, duracaoPrevista: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} min={15} step={15} />
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala</label>
-              <select value={form.sala} onChange={e => setForm(f => ({ ...f, sala: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sala</label>
+              <select id="fpage-2" value={form.sala} onChange={e => setForm(f => ({ ...f, sala: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
                 {['Bloco 1', 'Bloco 2', 'Bloco 3', 'Bloco 4'].map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pré-Operatório</label>
-              <textarea value={form.notasPreOperatorio} onChange={e => setForm(f => ({ ...f, notasPreOperatorio: e.target.value }))}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pré-Operatório</label>
+              <textarea id="fpage-3" value={form.notasPreOperatorio} onChange={e => setForm(f => ({ ...f, notasPreOperatorio: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -625,15 +635,15 @@ export default function BlocoPage() {
       {/* Modal: Notas Pós-Operatório */}
       {detalhe && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgDetalhe.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Concluir Cirurgia</h2>
-              <button onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{detalhe.designacao} — {detalhe.doente?.nome}</p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pós-Operatório</label>
-              <textarea value={notasPos} onChange={e => setNotasPos(e.target.value)}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas Pós-Operatório</label>
+              <textarea id="fpage-4" value={notasPos} onChange={e => setNotasPos(e.target.value)}
                 rows={5} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado da cirurgia, intercorrências, estado do doente..." />
             </div>
@@ -654,13 +664,13 @@ export default function BlocoPage() {
       {/* Modal: WHO Surgical Safety Checklist */}
       {checklistCirurgia && checklist !== null && !checklistFase && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgChecklist.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-start justify-between" style={{ marginBottom: '8px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">WHO Surgical Safety Checklist</h2>
                 <p className="text-sm text-slate-500">{checklistCirurgia.designacao} — {checklistCirurgia.doente?.nome}</p>
               </div>
-              <button onClick={() => setChecklistCirurgia(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistCirurgia(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ marginTop: '24px' }}>
@@ -705,13 +715,13 @@ export default function BlocoPage() {
       {/* Modal: Preencher fase WHO */}
       {checklistCirurgia && checklistFase && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+          <div {...dlgFase.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-start justify-between" style={{ marginBottom: '8px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">WHO — {WHO_FASES[checklistFase].label}</h2>
                 <p className="text-sm text-slate-500">{WHO_FASES[checklistFase].sublabel}</p>
               </div>
-              <button onClick={() => setChecklistFase(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistFase(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ margin: '20px 0 24px' }}>

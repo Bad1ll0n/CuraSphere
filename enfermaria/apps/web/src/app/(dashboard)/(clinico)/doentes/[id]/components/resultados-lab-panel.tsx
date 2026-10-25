@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface ResultadoAnalise {
   id: string;
@@ -43,6 +44,8 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
   const [modalNovo, setModalNovo] = useState(false);
   const [salvando, setSalvando] = useState(false);
 
+  const dlgNovoResultado = useDialogoAcessivel({ aberto: modalNovo, onFechar: () => setModalNovo(false), titulo: 'Novo resultado laboratorial' });
+
   const [form, setForm] = useState({
     parametro: '',
     valor: '',
@@ -65,7 +68,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       ]);
       setResultados(rRes.data);
       setResumo(rResumo.data);
-    } catch {}
+    } catch { /* vazio */ }
     finally { setLoading(false); }
   }, [doenteId, painelAtivo]);
 
@@ -99,7 +102,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       setModalNovo(false);
       setForm({ parametro: '', valor: '', unidade: '', refMin: '', refMax: '', critico: false, painel: '', observacoes: '' });
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
     finally { setSalvando(false); }
   };
 
@@ -233,51 +236,51 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
       {/* Modal Novo Resultado */}
       {modalNovo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+          <div {...dlgNovoResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado Analítico</h2>
-              <button onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Parâmetro *</label>
-                <input value={form.parametro} onChange={e => setForm(f => ({ ...f, parametro: e.target.value }))}
+                <label htmlFor="fresultad-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Parâmetro *</label>
+                <input id="fresultad-0" value={form.parametro} onChange={e => setForm(f => ({ ...f, parametro: e.target.value }))}
                   placeholder="Ex: Hemoglobina, PCR, Leucócitos..."
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Valor *</label>
-                <input type="number" step="any" value={form.valor} onChange={e => setForm(f => ({ ...f, valor: e.target.value }))}
+                <label htmlFor="fresultad-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Valor *</label>
+                <input id="fresultad-1" type="number" step="any" value={form.valor} onChange={e => setForm(f => ({ ...f, valor: e.target.value }))}
                   placeholder="0.0"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidade *</label>
-                <input value={form.unidade} onChange={e => setForm(f => ({ ...f, unidade: e.target.value }))}
+                <label htmlFor="fresultad-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidade *</label>
+                <input id="fresultad-2" value={form.unidade} onChange={e => setForm(f => ({ ...f, unidade: e.target.value }))}
                   placeholder="g/dL, mmol/L..."
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ref. Mínimo</label>
-                <input type="number" step="any" value={form.refMin} onChange={e => setForm(f => ({ ...f, refMin: e.target.value }))}
+                <label htmlFor="fresultad-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ref. Mínimo</label>
+                <input id="fresultad-3" type="number" step="any" value={form.refMin} onChange={e => setForm(f => ({ ...f, refMin: e.target.value }))}
                   placeholder="—"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ref. Máximo</label>
-                <input type="number" step="any" value={form.refMax} onChange={e => setForm(f => ({ ...f, refMax: e.target.value }))}
+                <label htmlFor="fresultad-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ref. Máximo</label>
+                <input id="fresultad-4" type="number" step="any" value={form.refMax} onChange={e => setForm(f => ({ ...f, refMax: e.target.value }))}
                   placeholder="—"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />
               </div>
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Painel</label>
-                <select value={form.painel} onChange={e => setForm(f => ({ ...f, painel: e.target.value }))}
+                <label htmlFor="fresultad-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Painel</label>
+                <select id="fresultad-5" value={form.painel} onChange={e => setForm(f => ({ ...f, painel: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }}>
                   <option value="">Sem painel</option>
@@ -285,8 +288,8 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
                 </select>
               </div>
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-                <input value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
+                <label htmlFor="fresultad-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+                <input id="fresultad-6" value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
                   placeholder="Opcional..."
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30"
                   style={{ padding: '9px 12px' }} />

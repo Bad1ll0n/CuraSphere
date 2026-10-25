@@ -251,26 +251,26 @@ export default function EventosAdversosPage() {
 
       {/* Modal: Registar Evento */}
       {modalNovo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalNovo(false); }}>
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Evento Adverso</h2>
-              <button onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-                <select value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <select id="fpage-0" value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }}>
                   {Object.entries(TIPO_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Gravidade</label>
-                <select value={form.gravidade} onChange={e => setForm(f => ({ ...f, gravidade: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Gravidade</label>
+                <select id="fpage-1" value={form.gravidade} onChange={e => setForm(f => ({ ...f, gravidade: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }}>
                   {Object.entries(GRAVIDADE_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -280,8 +280,8 @@ export default function EventosAdversosPage() {
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
-                <select value={form.servicoId} onChange={e => setForm(f => ({ ...f, servicoId: e.target.value }))}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+                <select id="fpage-2" value={form.servicoId} onChange={e => setForm(f => ({ ...f, servicoId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Seleccionar...</option>
@@ -289,16 +289,16 @@ export default function EventosAdversosPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data/Hora</label>
-                <input type="datetime-local" value={form.ocorridoEm} onChange={e => setForm(f => ({ ...f, ocorridoEm: e.target.value }))}
+                <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Data/Hora</label>
+                <input id="fpage-3" type="datetime-local" value={form.ocorridoEm} onChange={e => setForm(f => ({ ...f, ocorridoEm: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }} />
               </div>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente (opcional)</label>
-              <select value={form.doenteId} onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
+              <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente (opcional)</label>
+              <select id="fpage-4" value={form.doenteId} onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Sem doente associado</option>
@@ -307,16 +307,16 @@ export default function EventosAdversosPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
+              <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fpage-5" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                 placeholder="Descreva o que aconteceu, circunstâncias, local..." rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ação Corretiva Imediata (opcional)</label>
-              <textarea value={form.acaoCorretiva} onChange={e => setForm(f => ({ ...f, acaoCorretiva: e.target.value }))}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ação Corretiva Imediata (opcional)</label>
+              <textarea id="fpage-6" value={form.acaoCorretiva} onChange={e => setForm(f => ({ ...f, acaoCorretiva: e.target.value }))}
                 placeholder="Medidas tomadas imediatamente após o evento..." rows={2}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                 style={{ padding: '10px 14px' }} />
@@ -338,17 +338,17 @@ export default function EventosAdversosPage() {
 
       {/* Modal: Gerir Ação */}
       {modalAcao && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalAcao(null); }}>
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Gerir Evento Adverso</h2>
-              <button onClick={() => setModalAcao(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAcao(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Estado</label>
-              <select value={novoEstado} onChange={e => setNovoEstado(e.target.value)}
+              <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Estado</label>
+              <select id="fpage-7" value={novoEstado} onChange={e => setNovoEstado(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 {Object.entries(ESTADO_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -356,8 +356,8 @@ export default function EventosAdversosPage() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ação Corretiva</label>
-              <textarea value={acaoTexto} onChange={e => setAcaoTexto(e.target.value)}
+              <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ação Corretiva</label>
+              <textarea id="fpage-8" value={acaoTexto} onChange={e => setAcaoTexto(e.target.value)}
                 placeholder="Descreva as ações corretivas e preventivas tomadas..." rows={4}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                 style={{ padding: '10px 14px' }} />

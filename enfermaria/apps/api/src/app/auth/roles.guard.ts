@@ -20,6 +20,13 @@ export class RolesGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
 
+    // SEC-01/SEC-03 (defesa em profundidade): um endpoint que exige papel só pode ser
+    // servido a uma sessão de pessoal completa. O `JwtAuthGuard` já rejeita tokens de
+    // outro domínio (portal, desafio de MFA, password expirada), mas se algum controlador
+    // vier a usar o `RolesGuard` atrás de outro guard, isto impede que um token sem
+    // `role` (todos os intermédios) passe por `requiredRoles.includes(undefined)`.
+    if (!user || (user.tipoToken && user.tipoToken !== 'pessoal') || !user.role) return false;
+
     // @Roles() corresponde ao papel base OU ao sub-papel do utilizador. Isto reflecte a
     // intenção com que os decorators foram escritos: listar 'chefe_enfermeiros' (que é um
     // sub-papel de 'enfermeiro') pretendia dar acesso à chefia de enfermagem. Como o guard

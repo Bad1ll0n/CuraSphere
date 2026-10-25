@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Interconsulta {
   id: string;
@@ -43,6 +44,9 @@ export default function InterconsultasPage() {
   const [novaMotivo, setNovaMotivo] = useState('');
   const [novaUrgente, setNovaUrgente] = useState(false);
   const [modalResposta, setModalResposta] = useState<string | null>(null);
+  const dlgResposta = useDialogoAcessivel({ aberto: !!modalResposta, onFechar: () => setModalResposta(null), titulo: 'Responder à interconsulta' });
+  const dlgNova = useDialogoAcessivel({ aberto: modalNova, onFechar: () => setModalNova(false), titulo: 'Nova interconsulta' });
+
   const [textoResposta, setTextoResposta] = useState('');
 
   const role = utilizador?.role ?? '';
@@ -182,16 +186,16 @@ export default function InterconsultasPage() {
 
       {/* Modal: Responder */}
       {modalResposta && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalResposta(null); }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgResposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Responder à Interconsulta</h2>
-              <button onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+            <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
               Resposta / Parecer Clínico
-            </label>
+            </span>
             <textarea
               value={textoResposta}
               onChange={e => setTextoResposta(e.target.value)}
@@ -216,17 +220,17 @@ export default function InterconsultasPage() {
 
       {/* Modal: Nova Interconsulta */}
       {modalNova && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModalNova(false); }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Interconsulta</h2>
-              <button onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente</label>
-              <select value={novaDoenteId} onChange={e => setNovaDoenteId(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente</label>
+              <select id="fpage-0" value={novaDoenteId} onChange={e => setNovaDoenteId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 <option value="">Seleccionar doente...</option>
@@ -235,8 +239,8 @@ export default function InterconsultasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade Alvo</label>
-              <select value={novaEspecialidade} onChange={e => setNovaEspecialidade(e.target.value)}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade Alvo</label>
+              <select id="fpage-1" value={novaEspecialidade} onChange={e => setNovaEspecialidade(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
                 {ESPECIALIDADES.map(e => <option key={e} value={e}>{e}</option>)}
@@ -244,8 +248,8 @@ export default function InterconsultasPage() {
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Pedido</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Pedido</label>
+              <textarea id="fpage-2"
                 value={novaMotivo}
                 onChange={e => setNovaMotivo(e.target.value)}
                 placeholder="Descreva o motivo da interconsulta..."

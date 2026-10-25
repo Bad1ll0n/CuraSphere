@@ -11,6 +11,12 @@ class RegistarVerificarDto {
   @IsOptional() @IsString() @MaxLength(50) nome?: string;
 }
 
+// BE-01: `authOptions` recebia `@Body() body: { numeroFuncionario?: string }` — tipo inline,
+// apagado na compilação, logo sem validação em runtime. Endpoint público (pré-sessão).
+class AuthOptionsDto {
+  @IsOptional() @IsString() @MaxLength(50) numeroFuncionario?: string;
+}
+
 class AutenticarVerificarDto {
   @IsString() numeroFuncionario: string;
   @IsString() response: any;
@@ -45,7 +51,7 @@ export class WebAuthnController {
 
   @Throttle({ default: { ttl: 60000, limit: 10 } })
   @Post('auth/options')
-  async authOptions(@Body() body: { numeroFuncionario?: string }) {
+  async authOptions(@Body() body: AuthOptionsDto) {
     if (!body.numeroFuncionario) {
       // Sem hint: retornar opções sem allowCredentials (discoverable credential)
       const { generateAuthenticationOptions } = await import('@simplewebauthn/server');

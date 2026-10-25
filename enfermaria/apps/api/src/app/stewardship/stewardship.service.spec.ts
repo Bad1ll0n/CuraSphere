@@ -11,6 +11,7 @@ jest.mock('@anthropic-ai/sdk', () => ({
 }));
 
 const mockPrisma = {
+  tryBecomeLeader: jest.fn().mockResolvedValue(true), // líder por omissão → o corpo do cron corre
   stewardshipAntibiotico: {
     upsert: jest.fn().mockResolvedValue({}),
     findMany: jest.fn().mockResolvedValue([]),

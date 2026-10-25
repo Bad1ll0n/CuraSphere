@@ -320,23 +320,23 @@ export default function UtilizadoresPagina() {
             </div>
             <form onSubmit={guardarEdicao}>
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nome completo</label>
-                <input required value={formEdit.nome} onChange={(e) => setFormEdit((f) => ({ ...f, nome: e.target.value }))}
+                <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nome completo</label>
+                <input id="fpage-0" required value={formEdit.nome} onChange={(e) => setFormEdit((f) => ({ ...f, nome: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Função</label>
-                  <select value={formEdit.role} onChange={(e) => setFormEdit((f) => ({ ...f, role: e.target.value, subRole: '' }))}
+                  <label htmlFor="fpage-1" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Função</label>
+                  <select id="fpage-1" value={formEdit.role} onChange={(e) => setFormEdit((f) => ({ ...f, role: e.target.value, subRole: '' }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                     style={{ padding: '10px 14px' }}>
                     {roles.map((r) => <option key={r.chave} value={r.chave}>{r.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Serviço</label>
-                  <select value={formEdit.servico} onChange={(e) => setFormEdit((f) => ({ ...f, servico: e.target.value }))}
+                  <label htmlFor="fpage-2" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Serviço</label>
+                  <select id="fpage-2" value={formEdit.servico} onChange={(e) => setFormEdit((f) => ({ ...f, servico: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                     style={{ padding: '10px 14px' }}>
                     {SERVICOS.map((s) => <option key={s} value={s}>{servicoLabel[s]}</option>)}
@@ -345,8 +345,8 @@ export default function UtilizadoresPagina() {
               </div>
               {subRolesParaRole(formEdit.role).length > 0 && (
                 <div style={{ marginBottom: '16px' }}>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Especialização</label>
-                  <select value={formEdit.subRole} onChange={(e) => setFormEdit((f) => ({ ...f, subRole: e.target.value }))}
+                  <label htmlFor="fpage-3" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Especialização</label>
+                  <select id="fpage-3" value={formEdit.subRole} onChange={(e) => setFormEdit((f) => ({ ...f, subRole: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                     style={{ padding: '10px 14px' }}>
                     <option value="">Sem especialização</option>
@@ -355,8 +355,8 @@ export default function UtilizadoresPagina() {
                 </div>
               )}
               <div style={{ marginBottom: '16px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Chefe Directo</label>
-                <select value={formEdit.chefeId} onChange={(e) => setFormEdit((f) => ({ ...f, chefeId: e.target.value }))}
+                <label htmlFor="fpage-4" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Chefe Directo</label>
+                <select id="fpage-4" value={formEdit.chefeId} onChange={(e) => setFormEdit((f) => ({ ...f, chefeId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                   style={{ padding: '10px 14px' }}>
                   <option value="">Sem chefe atribuído</option>
@@ -366,12 +366,12 @@ export default function UtilizadoresPagina() {
                 </select>
               </div>
               <div style={{ marginBottom: '16px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
-                <input type="number" min="1" value={formEdit.ordemExperiencia} onChange={(e) => setFormEdit((f) => ({ ...f, ordemExperiencia: e.target.value }))}
+                <label htmlFor="fpage-5" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
+                <input id="fpage-5" type="number" min="1" value={formEdit.ordemExperiencia} onChange={(e) => setFormEdit((f) => ({ ...f, ordemExperiencia: e.target.value }))}
                   placeholder="Ex: 1" className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition" style={{ padding: '10px 14px' }} />
               </div>
               <div style={{ marginBottom: '28px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Equipa</label>
+                <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Equipa</label>
                 {equipasExistentes.length > 0 && (
                   <div className="flex flex-wrap gap-2" style={{ marginBottom: '10px' }}>
                     <button type="button" onClick={() => setFormEdit((f) => ({ ...f, equipa: '' }))}
@@ -384,7 +384,7 @@ export default function UtilizadoresPagina() {
                     ))}
                   </div>
                 )}
-                <input value={formEdit.equipa} onChange={(e) => setFormEdit((f) => ({ ...f, equipa: e.target.value }))}
+                <input id="fpage-6" value={formEdit.equipa} onChange={(e) => setFormEdit((f) => ({ ...f, equipa: e.target.value }))}
                   placeholder="Nome da equipa (ex: A, Alfa, Turno 1...)"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />
@@ -413,37 +413,37 @@ export default function UtilizadoresPagina() {
             <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '28px' }}>Novo Utilizador</h2>
             <form onSubmit={criar}>
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nome completo</label>
-                <input required value={form.nome} onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
+                <label htmlFor="fpage-7" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nome completo</label>
+                <input id="fpage-7" required value={form.nome} onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />
               </div>
               <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '20px' }}>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nº Funcionário</label>
-                  <input required value={form.numeroFuncionario} onChange={(e) => setForm((f) => ({ ...f, numeroFuncionario: e.target.value }))}
+                  <label htmlFor="fpage-8" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Nº Funcionário</label>
+                  <input id="fpage-8" required value={form.numeroFuncionario} onChange={(e) => setForm((f) => ({ ...f, numeroFuncionario: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                     style={{ padding: '10px 14px' }} />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Password</label>
-                  <input type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                  <label htmlFor="fpage-9" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Password</label>
+                  <input id="fpage-9" type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                     style={{ padding: '10px 14px' }} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Função</label>
-                  <select value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value, subRole: '' }))}
+                  <label htmlFor="fpage-10" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Função</label>
+                  <select id="fpage-10" value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value, subRole: '' }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition bg-white"
                     style={{ padding: '10px 14px' }}>
                     {roles.map((r) => <option key={r.chave} value={r.chave}>{r.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Serviço</label>
-                  <select value={form.servico} onChange={(e) => setForm((f) => ({ ...f, servico: e.target.value }))}
+                  <label htmlFor="fpage-11" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Serviço</label>
+                  <select id="fpage-11" value={form.servico} onChange={(e) => setForm((f) => ({ ...f, servico: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition bg-white"
                     style={{ padding: '10px 14px' }}>
                     {SERVICOS.map((s) => <option key={s} value={s}>{servicoLabel[s]}</option>)}
@@ -452,8 +452,8 @@ export default function UtilizadoresPagina() {
               </div>
               {subRolesParaRole(form.role).length > 0 && (
                 <div style={{ marginBottom: '16px' }}>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Especialização</label>
-                  <select value={form.subRole} onChange={(e) => setForm((f) => ({ ...f, subRole: e.target.value }))}
+                  <label htmlFor="fpage-12" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Especialização</label>
+                  <select id="fpage-12" value={form.subRole} onChange={(e) => setForm((f) => ({ ...f, subRole: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                     style={{ padding: '10px 14px' }}>
                     <option value="">Sem especialização</option>
@@ -462,8 +462,8 @@ export default function UtilizadoresPagina() {
                 </div>
               )}
               <div style={{ marginBottom: '28px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
-                <input type="number" min="1" value={form.ordemExperiencia} onChange={(e) => setForm((f) => ({ ...f, ordemExperiencia: e.target.value }))}
+                <label htmlFor="fpage-13" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
+                <input id="fpage-13" type="number" min="1" value={form.ordemExperiencia} onChange={(e) => setForm((f) => ({ ...f, ordemExperiencia: e.target.value }))}
                   placeholder="Ex: 1"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />

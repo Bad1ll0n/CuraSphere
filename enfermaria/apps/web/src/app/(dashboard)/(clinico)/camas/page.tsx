@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 import type { Cama as SharedCama } from '@org/shared';
 
 interface Cama extends SharedCama {
@@ -39,21 +41,33 @@ export default function CamasPagina() {
   const { utilizador } = useAuth();
   const [camas, setCamas] = useState<Cama[]>([]);
   const [loading, setLoading] = useState(true);
+  const [erroCarga, setErroCarga] = useState(false);
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [mostrarFormCama, setMostrarFormCama] = useState(false);
   const [novaCama, setNovaCama] = useState({ numero: '', quarto: '' });
   const [qrCama, setQrCama] = useState<Cama | null>(null);
   const [filtroQuarto, setFiltroQuarto] = useState('');
 
+  const dlgNovaCama = useDialogoAcessivel({ aberto: mostrarFormCama, onFechar: () => setMostrarFormCama(false), titulo: 'Nova cama' });
+  const dlgQr = useDialogoAcessivel({ aberto: !!qrCama?.doente, onFechar: () => setQrCama(null), titulo: 'Código QR do doente' });
+
   const podeGerir = ['administrativo', 'enfermeiro'].includes(utilizador?.role ?? '');
   const podeCriar = utilizador?.role === 'administrativo';
 
   const [sseConectado, setSseConectado] = useState(false);
 
+  // F-08: sem try/catch, uma falha deixava o `setLoading(false)` por correr — o mapa ficava
+  // a carregar para sempre, e a promessa rejeitada não era tratada por ninguém.
   const carregar = async () => {
-    const r = await api.get('/camas');
-    setCamas(r.data);
-    setLoading(false);
+    try {
+      const r = await api.get('/camas');
+      setCamas(r.data);
+      setErroCarga(false);
+    } catch {
+      setErroCarga(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { carregar(); }, []);
@@ -153,6 +167,14 @@ export default function CamasPagina() {
           </svg>
           <span className="text-sm">A carregar...</span>
         </div>
+      ) : erroCarga ? (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <ErroCarregamento
+            titulo="Não foi possível carregar o mapa de camas"
+            descricao="O estado das camas não chegou a ser lido. Verifique a ligação e tente de novo antes de atribuir uma cama."
+            onTentarNovamente={carregar}
+          />
+        </div>
       ) : camas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
           <p className="text-slate-400 text-sm">Sem camas registadas</p>
@@ -226,12 +248,12 @@ export default function CamasPagina() {
       {/* Modal nova cama */}
       {mostrarFormCama && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm" style={{ padding: '32px' }}>
+          <div {...dlgNovaCama.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full max-w-sm" style={{ padding: '32px' }}>
             <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '24px' }}>Nova Cama</h2>
             <form onSubmit={criarCama}>
               <div style={{ marginBottom: '20px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Número</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Número</label>
+                <input id="fpage-0"
                   required
                   value={novaCama.numero}
                   onChange={(e) => setNovaCama((n) => ({ ...n, numero: e.target.value }))}
@@ -240,8 +262,8 @@ export default function CamasPagina() {
                 />
               </div>
               <div style={{ marginBottom: '28px' }}>
-                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Quarto</label>
-                <input
+                <label htmlFor="fpage-1" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Quarto</label>
+                <input id="fpage-1"
                   required
                   value={novaCama.quarto}
                   onChange={(e) => setNovaCama((n) => ({ ...n, quarto: e.target.value }))}
@@ -274,10 +296,10 @@ export default function CamasPagina() {
       {/* Modal QR Doente */}
       {qrCama && qrCama.doente && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', textAlign: 'center', maxWidth: '320px', width: '100%', margin: '0 16px' }}>
+          <div {...dlgQr.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', textAlign: 'center', maxWidth: '320px', width: '100%', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">QR — Doente</h2>
-              <button onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{qrCama.doente.nome}</p>
             <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>

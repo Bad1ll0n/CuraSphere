@@ -9,3 +9,7 @@ coverage/
 *.log
 .claude/worktrees/
 .claude/settings.local.json
+
+# Saida do Playwright e artefactos de build incremental do TypeScript
+enfermaria/apps/web-e2e/test-results/
+*.tsbuildinfo

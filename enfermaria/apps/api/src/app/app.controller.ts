@@ -38,8 +38,10 @@ export class AppController {
   @Get('health')
   async check() {
     const info: Record<string, ComponentStatus> = {};
+    const degraded: Record<string, ComponentStatus> = {};
     const error: Record<string, ComponentStatus> = {};
 
+    // Base de dados — dependência CRÍTICA: se estiver em baixo, a API não serve → 503.
     try {
       await this.prisma.$queryRaw`SELECT 1`;
       info['database'] = { status: 'up' };
@@ -47,23 +49,31 @@ export class AppController {
       error['database'] = { status: 'down' };
     }
 
+    // Redis — dependência NÃO-CRÍTICA: a app é fail-safe sem ele (broadcast socket.io local,
+    // throttle em memória, cache-miss). Em baixo → 'degraded' (reportado para observabilidade),
+    // mas NUNCA devolve 503: senão um Redis transitoriamente em baixo faria o orquestrador matar/
+    // despejar todos os pods ainda funcionais (falha em cascata). Ver DR-RUNBOOK.md §2.
     try {
       await this.redis.set('__health__', '1', 5);
       const val = await this.redis.get<string>('__health__');
       if (val === '1') info['redis'] = { status: 'up' };
-      else error['redis'] = { status: 'down' };
+      else degraded['redis'] = { status: 'down' };
     } catch {
-      error['redis'] = { status: 'down' };
+      degraded['redis'] = { status: 'down' };
     }
 
+    const critico = Object.keys(error).length > 0;
+    const status = critico ? ('error' as const) : Object.keys(degraded).length > 0 ? ('degraded' as const) : ('ok' as const);
     const body = {
-      status: Object.keys(error).length === 0 ? ('ok' as const) : ('error' as const),
+      status,
       info,
+      degraded,
       error,
-      details: { ...info, ...error },
+      details: { ...info, ...degraded, ...error },
     };
 
-    if (body.status === 'error') throw new ServiceUnavailableException(body);
+    // 503 só quando uma dependência crítica (BD) está em baixo; 'degraded' devolve 200.
+    if (critico) throw new ServiceUnavailableException(body);
     return body;
   }
 }

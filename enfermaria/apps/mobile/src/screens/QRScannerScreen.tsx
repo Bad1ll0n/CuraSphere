@@ -7,28 +7,51 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
+
+interface CertoVerificado {
+  certo: string;
+  estado: EstadoCerto;
+  motivo?: string;
+}
+
 interface Resultado5Certos {
+  /** Os cinco, sempre, cada um com o seu estado. */
+  certos: CertoVerificado[];
   valido: boolean;
   falhas: { certo: string; motivo: string }[];
-  medicacao: { id: string; nome: string; dose: string; via: string; frequencia: string };
+  porVerificar: string[];
+  erroEtiqueta?: string;
+  medicacao: { id: string; nome: string; dose: string; via: string; frequencia: string } | null;
 }
 
 interface Props {
   onScan: (doenteId: string) => void;
   onFechar: () => void;
   doenteIdEsperado?: string;
-  onAdministrar?: (medicacaoId: string, justificacao?: string) => void;
+  /** Recebe a etiqueta lida: é dela que o servidor extrai dose e via para verificar. */
+  onAdministrar?: (medicacaoId: string, qrPayload: string, justificacao?: string) => void;
 }
 
-const NOMES_5_CERTOS = ['Doente certo', 'Medicamento certo', 'Dose certa', 'Via certa', 'Hora certa'];
 
 export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, onAdministrar }: Props) {
+  // MB-10: o botão de fechar estava em `top: 52` fixo. Num iPhone com notch o inset
+  // superior chega a 59 — o botão ficava POR BAIXO da câmara, inalcançável, num ecrã de
+  // uso clínico constante e do qual não havia outra forma de sair.
+  const insets = useSafeAreaInsets();
+
   const [permissao, setPermissao] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [validando, setValidando] = useState(false);
   const [erro, setErro] = useState('');
   const [resultado, setResultado] = useState<Resultado5Certos | null>(null);
   const [justificacao, setJustificacao] = useState('');
+  // Certos que o servidor não conseguiu verificar e que o enfermeiro confirmou à mão.
+  const [confirmados, setConfirmados] = useState<Record<string, boolean>>({});
+  // A etiqueta em bruto tem de sobreviver ao ecrã de resultado: é ela que vai com a
+  // administração, para o servidor reconferir dose e via contra a prescrição.
+  const [qrLido, setQrLido] = useState<string | null>(null);
 
   useEffect(() => {
     BarCodeScanner.requestPermissionsAsync().then(({ status }) => {
@@ -55,6 +78,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
           doenteIdEsperado: idEsperado,
         });
         setResultado(res.data);
+        setQrLido(data);
       } else {
         // Modo doente (comportamento original — validar doente via GET)
         await api.get(`/doentes/${data}`);
@@ -69,16 +93,33 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
   };
 
   const handleAdministrar = () => {
-    if (!resultado || !onAdministrar) return;
-    onAdministrar(resultado.medicacao.id, resultado.valido ? undefined : justificacao.trim());
+    if (!resultado?.medicacao || !onAdministrar || !qrLido) return;
+    onAdministrar(resultado.medicacao.id, qrLido, resultado.valido ? undefined : justificacao.trim());
   };
 
-  const podeAdministrar =
-    resultado && (resultado.valido || (!resultado.valido && justificacao.trim().length >= 10));
+  const porConfirmar = (resultado?.certos ?? []).filter((c) => c.estado === 'nao_verificado');
+  const temFalhas = (resultado?.falhas.length ?? 0) > 0;
+
+  // MB-04: o que o servidor não verificou tem de ser confirmado explicitamente pelo
+  // enfermeiro contra a prescrição. Antes, um certo não verificado aparecia a verde e
+  // o botão de administrar ficava activo à mesma.
+  const todosConfirmados = porConfirmar.every((c) => confirmados[c.certo]);
+
+  const podeAdministrar = Boolean(
+    resultado?.medicacao &&
+      todosConfirmados &&
+      (!temFalhas || justificacao.trim().length >= 10),
+  );
 
   return (
-    <View style={s.container}>
-      <TouchableOpacity style={s.fechar} onPress={onFechar}>
+    <View style={[s.container, { paddingTop: insets.top + 8 }]}>
+      <TouchableOpacity
+        style={[s.fechar, { top: insets.top + 8 }]}
+        onPress={onFechar}
+        accessibilityRole="button"
+        accessibilityLabel="Fechar leitor de código"
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      >
         <Ionicons name="close" size={28} color="#fff" />
       </TouchableOpacity>
 
@@ -86,8 +127,10 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
       <Text style={s.subtitulo}>
         {resultado
           ? resultado.valido
-            ? 'Todos os certos verificados'
-            : 'Atenção — existem falhas na verificação'
+            ? 'Os cinco certos foram verificados'
+            : temFalhas
+              ? 'Atenção — existem falhas na verificação'
+              : 'Faltam certos por confirmar'
           : doenteIdEsperado
             ? 'Aponta para o QR code na carta de medicação'
             : 'Aponta a câmara para o QR code na cama ou pulseira'}
@@ -105,7 +148,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
 
           {permissao === false && (
             <View style={s.centro}>
-              <Ionicons name="camera-off-outline" size={56} color="#94a3b8" />
+              <Ionicons name="videocam-off-outline" size={56} color="#94a3b8" />
               <Text style={s.textoInfo}>Sem acesso à câmara.{'\n'}Activa a permissão nas definições.</Text>
             </View>
           )}
@@ -159,41 +202,77 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
               color={resultado.valido ? '#22c55e' : '#ef4444'}
             />
             <Text style={[s.bannerTexto, !resultado.valido && { color: '#fca5a5' }]}>
-              {resultado.valido ? 'Verificação completa — pode administrar' : `${resultado.falhas.length} falha(s) detectada(s)`}
+              {resultado.valido
+                ? 'Verificação completa — pode administrar'
+                : temFalhas
+                  ? `${resultado.falhas.length} falha(s) detectada(s)`
+                  : `${porConfirmar.length} certo(s) por confirmar`}
             </Text>
           </View>
 
-          {/* Info da medicação */}
-          <View style={s.medCard}>
-            <Text style={s.medNome}>{resultado.medicacao.nome}</Text>
-            <Text style={s.medDetalhe}>
-              {resultado.medicacao.dose} · {resultado.medicacao.via} · {resultado.medicacao.frequencia}
-            </Text>
-          </View>
+          {/* Info da medicação — ausente quando a etiqueta não foi legível */}
+          {resultado.medicacao && (
+            <View style={s.medCard}>
+              <Text style={s.medNome}>{resultado.medicacao.nome}</Text>
+              <Text style={s.medDetalhe}>
+                {resultado.medicacao.dose} · {resultado.medicacao.via} · {resultado.medicacao.frequencia}
+              </Text>
+            </View>
+          )}
 
           {/* Checklist 5 certos */}
-          {NOMES_5_CERTOS.map((nome, i) => {
-            const falha = resultado.falhas.find(
-              f => f.certo === nome || f.certo.toLowerCase().startsWith(nome.split(' ')[0].toLowerCase()),
-            );
-            const ok = !falha;
+          {resultado.certos.map((c) => {
+            const ok = c.estado === 'ok';
+            const falhou = c.estado === 'falha';
+            const confirmado = !!confirmados[c.certo];
+            const cor = ok ? '#22c55e' : falhou ? '#ef4444' : confirmado ? '#22c55e' : '#f59e0b';
+            const icone = ok
+              ? 'checkmark-circle'
+              : falhou
+                ? 'close-circle'
+                : confirmado
+                  ? 'checkmark-circle-outline'
+                  : 'help-circle';
+
             return (
-              <View key={i} style={[s.certoRow, ok ? s.certoOk : s.certoFalha]}>
-                <Ionicons
-                  name={ok ? 'checkmark-circle' : 'close-circle'}
-                  size={22}
-                  color={ok ? '#22c55e' : '#ef4444'}
-                />
+              <View
+                key={c.certo}
+                style={[s.certoRow, ok ? s.certoOk : falhou ? s.certoFalha : s.certoPorVerificar]}
+              >
+                <Ionicons name={icone as any} size={22} color={cor} />
                 <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={[s.certoNome, !ok && { color: '#fca5a5' }]}>{nome}</Text>
-                  {falha && <Text style={s.certoMotivo}>{falha.motivo}</Text>}
+                  <Text style={[s.certoNome, falhou && { color: '#fca5a5' }]}>{c.certo}</Text>
+                  {!!c.motivo && <Text style={s.certoMotivo}>{c.motivo}</Text>}
+
+                  {/* Um certo que o servidor não verificou nunca aparece confirmado sozinho:
+                      exige um gesto do enfermeiro contra a prescrição. */}
+                  {c.estado === 'nao_verificado' && (
+                    <TouchableOpacity
+                      style={[s.confirmarBtn, confirmado && s.confirmarBtnFeito]}
+                      onPress={() =>
+                        setConfirmados((prev) => ({ ...prev, [c.certo]: !prev[c.certo] }))
+                      }
+                      accessibilityRole="checkbox"
+                      accessibilityState={{ checked: confirmado }}
+                      accessibilityLabel={`Confirmar ${c.certo} contra a prescrição`}
+                    >
+                      <Ionicons
+                        name={confirmado ? 'checkbox' : 'square-outline'}
+                        size={18}
+                        color={confirmado ? '#22c55e' : '#f59e0b'}
+                      />
+                      <Text style={[s.confirmarTexto, confirmado && { color: '#22c55e' }]}>
+                        {confirmado ? 'Confirmado contra a prescrição' : 'Confirmo contra a prescrição'}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
             );
           })}
 
           {/* Override com justificação */}
-          {!resultado.valido && (
+          {temFalhas && (
             <View style={s.overrideBox}>
               <Text style={s.overrideTitulo}>Justificação para override obrigatória</Text>
               <TextInput
@@ -212,7 +291,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
           <View style={s.botoesRow}>
             <TouchableOpacity
               style={s.btnNovo}
-              onPress={() => { setResultado(null); setScanned(false); setJustificacao(''); }}
+              onPress={() => { setResultado(null); setScanned(false); setJustificacao(''); setConfirmados({}); setQrLido(null); }}
             >
               <Ionicons name="scan-outline" size={16} color="#94a3b8" />
               <Text style={s.btnNovoText}>Ler novo QR</Text>
@@ -242,16 +321,15 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0a0f1e',
-    paddingTop: 56,
     alignItems: 'center',
   },
   fechar: {
     position: 'absolute',
-    top: 52,
+    // `top` é definido em runtime a partir do inset seguro do dispositivo.
     right: 20,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -323,6 +401,13 @@ const s = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 6,
   },
+  certoPorVerificar: { backgroundColor: '#78350f22', borderColor: '#f59e0b55' },
+  confirmarBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8,
+    paddingVertical: 10, paddingHorizontal: 8, minHeight: 44,
+  },
+  confirmarBtnFeito: { opacity: 0.9 },
+  confirmarTexto: { fontSize: 13, color: '#f59e0b', fontWeight: '600' },
   certoOk:    { backgroundColor: 'rgba(34,197,94,0.08)' },
   certoFalha: { backgroundColor: 'rgba(239,68,68,0.08)' },
   certoNome:  { color: '#e2e8f0', fontSize: 14, fontWeight: '600' },

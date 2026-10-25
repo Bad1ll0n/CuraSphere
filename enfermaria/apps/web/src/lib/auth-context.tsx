@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!utilizador) return;
     api.get('/auth/password-status')
       .then(({ data }) => { if (data.aviso) setPasswordAviso({ ativo: true, diasRestantes: data.diasRestantes }); })
-      .catch(() => {});
+      .catch(() => { /* vazio */ });
   }, [utilizador?.id]);
 
   const login = async (numeroFuncionario: string, password: string): Promise<LoginResult> => {
@@ -93,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
-    api.post('/auth/logout').catch(() => {});
+    api.post('/auth/logout').catch(() => { /* vazio */ });
     sessionStorage.removeItem('mfaSetupToken');
     sessionStorage.removeItem('pwdExpiredToken');
     queryClient.clear();

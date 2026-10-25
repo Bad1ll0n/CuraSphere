@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
+import { headers } from 'next/headers';
 import { AuthProvider } from '../lib/auth-context';
 import { QueryProvider } from '../lib/query-provider';
 import { PwaRegister } from '../components/pwa-register';
@@ -36,11 +37,13 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();
+  // Nonce gerado no middleware: sem ele a CSP bloqueia este script e o tema escuro pisca no arranque.
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('curasphere-theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='high-contrast')document.documentElement.classList.add('high-contrast');else if(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.classList.add('dark');}catch(e){}})();` }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('curasphere-theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='high-contrast')document.documentElement.classList.add('high-contrast');else if(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.classList.add('dark');}catch(e){}})();` }} />
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>

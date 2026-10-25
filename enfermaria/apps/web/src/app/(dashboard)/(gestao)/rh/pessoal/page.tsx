@@ -193,8 +193,8 @@ export default function PessoalPage() {
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{modalPessoa.nome}</p>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tipo de Vínculo</label>
-                <select value={contrato.tipoVinculo} onChange={e => setContrato(c => ({ ...c, tipoVinculo: e.target.value }))}
+                <label htmlFor="fpage-0" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tipo de Vínculo</label>
+                <select id="fpage-0" value={contrato.tipoVinculo} onChange={e => setContrato(c => ({ ...c, tipoVinculo: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }}>
                   <option value="permanente">Permanente</option>
@@ -205,21 +205,21 @@ export default function PessoalPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Início</label>
-                  <input type="date" value={contrato.dataInicio} onChange={e => setContrato(c => ({ ...c, dataInicio: e.target.value }))}
+                  <label htmlFor="fpage-1" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Início</label>
+                  <input id="fpage-1" type="date" value={contrato.dataInicio} onChange={e => setContrato(c => ({ ...c, dataInicio: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Fim (opcional)</label>
-                  <input type="date" value={contrato.dataFimPrevista} onChange={e => setContrato(c => ({ ...c, dataFimPrevista: e.target.value }))}
+                  <label htmlFor="fpage-2" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Fim (opcional)</label>
+                  <input id="fpage-2" type="date" value={contrato.dataFimPrevista} onChange={e => setContrato(c => ({ ...c, dataFimPrevista: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Dias de Férias Anuais</label>
-                <input type="number" value={contrato.diasFeriasAnuais} min={22} max={30}
+                <label htmlFor="fpage-3" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Dias de Férias Anuais</label>
+                <input id="fpage-3" type="number" value={contrato.diasFeriasAnuais} min={22} max={30}
                   onChange={e => setContrato(c => ({ ...c, diasFeriasAnuais: +e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }} />
