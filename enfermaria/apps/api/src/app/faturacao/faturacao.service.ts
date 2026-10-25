@@ -51,7 +51,7 @@ export class FaturacaoService {
       where: { id: data.doenteId },
       select: { id: true, nome: true },
     });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
     return this.prisma.episodioFaturacao.create({
       data: {
@@ -80,7 +80,7 @@ export class FaturacaoService {
         criadoPor: { select: { id: true, nome: true } },
       },
     });
-    if (!ep) throw new NotFoundException('Episódio de faturação não encontrado');
+    if (!ep) throw new NotFoundException(`Episódio de faturação (ID ${id}) não encontrado`);
     return ep;
   }
 

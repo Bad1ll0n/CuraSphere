@@ -38,7 +38,7 @@ export class PedidosTIService {
       where: { id },
       include: { criadoPor: SELECT_USER, responsavel: SELECT_USER },
     });
-    if (!p) throw new NotFoundException('Pedido não encontrado');
+    if (!p) throw new NotFoundException(`Pedido TI (ID ${id}) não encontrado`);
     return p;
   }
 

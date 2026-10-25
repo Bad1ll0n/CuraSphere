@@ -106,7 +106,7 @@ export class SinaisVitaisService {
     }
 
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente || !doente.ativo) throw new NotFoundException('Doente não encontrado');
+    if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     const news2 = calcularNEWS2(dto);
     const data: any = { doenteId, registadoPorId: utilizadorId, ...dto };

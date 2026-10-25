@@ -29,7 +29,7 @@ export class FisioterapiaService {
 
   async realizarSessao(id: string, dto: { evolucao: string }) {
     const sessao = await this.prisma.sessaoFisioterapia.findUnique({ where: { id } });
-    if (!sessao) throw new NotFoundException('Sessão não encontrada');
+    if (!sessao) throw new NotFoundException(`Sessão de fisioterapia (ID ${id}) não encontrada`);
     return this.prisma.sessaoFisioterapia.update({ where: { id }, data: { estado: 'realizada', evolucao: dto.evolucao } });
   }
 

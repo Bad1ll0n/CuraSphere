@@ -98,7 +98,7 @@ export class TrocasService {
         escala: true,
       },
     });
-    if (!turno) throw new NotFoundException('Turno não encontrado');
+    if (!turno) throw new NotFoundException(`Turno (ID ${turnoId}) não encontrado`);
 
     const solicitante = turno.profissionais.find((p) => p.utilizadorId === solicitanteId);
     if (!solicitante) throw new BadRequestException('Não pertences a este turno');
@@ -118,7 +118,7 @@ export class TrocasService {
       where: { id: turnoId },
       include: { profissionais: true },
     });
-    if (!turno) throw new NotFoundException('Turno não encontrado');
+    if (!turno) throw new NotFoundException(`Turno (ID ${turnoId}) não encontrado`);
     if (!turno.profissionais.some((p) => p.utilizadorId === solicitanteId)) {
       throw new BadRequestException('Não pertences a este turno');
     }
@@ -147,7 +147,7 @@ export class TrocasService {
 
   async responderDestinatario(pedidoId: string, utilizadorId: string, aceitar: boolean) {
     const pedido = await this.prisma.pedidoTrocaTurno.findUnique({ where: { id: pedidoId } });
-    if (!pedido) throw new NotFoundException('Pedido não encontrado');
+    if (!pedido) throw new NotFoundException(`Pedido de troca (ID ${pedidoId}) não encontrado`);
     if (pedido.destinatarioId !== utilizadorId) throw new ForbiddenException('Não és o destinatário');
     if (pedido.estado !== 'pendente_destinatario') throw new BadRequestException('Pedido já respondido');
 
@@ -179,7 +179,7 @@ export class TrocasService {
 
   async aprovarChefe(pedidoId: string, chefeId: string, aprovar: boolean) {
     const pedido = await this.prisma.pedidoTrocaTurno.findUnique({ where: { id: pedidoId } });
-    if (!pedido) throw new NotFoundException('Pedido não encontrado');
+    if (!pedido) throw new NotFoundException(`Pedido de troca (ID ${pedidoId}) não encontrado`);
     if (pedido.estado !== 'pendente_chefe') throw new BadRequestException('Pedido não está pendente de aprovação');
 
     const eChefe = await this._eChefeDoPedido(pedidoId, chefeId);
@@ -227,7 +227,7 @@ export class TrocasService {
 
   async cancelar(pedidoId: string, utilizadorId: string) {
     const pedido = await this.prisma.pedidoTrocaTurno.findUnique({ where: { id: pedidoId } });
-    if (!pedido) throw new NotFoundException('Pedido não encontrado');
+    if (!pedido) throw new NotFoundException(`Pedido de troca (ID ${pedidoId}) não encontrado`);
     if (pedido.solicitanteId !== utilizadorId) throw new ForbiddenException('Apenas o solicitante pode cancelar');
     if (pedido.estado !== 'pendente_destinatario') throw new BadRequestException('Não é possível cancelar este pedido');
     return this.prisma.pedidoTrocaTurno.delete({ where: { id: pedidoId } });

@@ -43,7 +43,7 @@ export class BlocoService {
 
   async detalhe(id: string) {
     const c = await this.prisma.cirurgiaProgramada.findUnique({ where: { id }, include: this.includeRelations() });
-    if (!c) throw new NotFoundException('Cirurgia não encontrada');
+    if (!c) throw new NotFoundException(`Cirurgia (ID ${id}) não encontrada`);
     return c;
   }
 

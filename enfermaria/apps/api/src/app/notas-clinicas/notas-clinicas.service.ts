@@ -42,13 +42,13 @@ export class NotasClinicasService {
 
   private async buscarDoente(id: string) {
     const d = await this.prisma.doente.findUnique({ where: { id } });
-    if (!d) throw new NotFoundException('Doente não encontrado');
+    if (!d) throw new NotFoundException(`Doente (ID ${id}) não encontrado`);
     return d;
   }
 
   private async buscarNota(id: string) {
     const n = await this.prisma.notaClinica.findUnique({ where: { id } });
-    if (!n) throw new NotFoundException('Nota clínica não encontrada');
+    if (!n) throw new NotFoundException(`Nota clínica (ID ${id}) não encontrada`);
     return n;
   }
 }

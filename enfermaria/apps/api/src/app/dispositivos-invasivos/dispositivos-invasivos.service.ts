@@ -21,7 +21,7 @@ export class DispositivosInvasivosService {
     observacoes?: string;
   }) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     return this.prisma.dispositivoInvasivo.create({
       data: {
@@ -39,7 +39,7 @@ export class DispositivosInvasivosService {
 
   async remover(id: string) {
     const dispositivo = await this.prisma.dispositivoInvasivo.findUnique({ where: { id } });
-    if (!dispositivo) throw new NotFoundException('Dispositivo não encontrado');
+    if (!dispositivo) throw new NotFoundException(`Dispositivo (ID ${id}) não encontrado`);
 
     return this.prisma.dispositivoInvasivo.update({
       where: { id },

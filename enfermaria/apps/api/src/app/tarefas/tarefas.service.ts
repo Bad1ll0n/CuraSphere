@@ -173,7 +173,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
 
   async atualizarEstado(id: string, estado: EstadoTarefa) {
     const tarefa = await this.prisma.tarefa.findUnique({ where: { id } });
-    if (!tarefa) throw new NotFoundException('Tarefa não encontrada');
+    if (!tarefa) throw new NotFoundException(`Tarefa (ID ${id}) não encontrada`);
 
     return this.prisma.tarefa.update({
       where: { id },
@@ -189,7 +189,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
 
   async editar(id: string, dto: { descricao?: string; prioridade?: PrioridadeTarefa; prazo?: string | null; grupoResponsavel?: string }) {
     const tarefa = await this.prisma.tarefa.findUnique({ where: { id } });
-    if (!tarefa) throw new NotFoundException('Tarefa não encontrada');
+    if (!tarefa) throw new NotFoundException(`Tarefa (ID ${id}) não encontrada`);
     return this.prisma.tarefa.update({
       where: { id },
       data: {

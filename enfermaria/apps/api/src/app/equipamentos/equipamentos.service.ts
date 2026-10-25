@@ -41,7 +41,7 @@ export class EquipamentosService {
 
   async atualizar(id: string, dto: { nome?: string; tipo?: string; numeroSerie?: string; localizacao?: string; estado?: string; proximaManutencao?: string }) {
     const eq = await this.prisma.equipamento.findUnique({ where: { id }, select: { id: true } });
-    if (!eq) throw new NotFoundException('Equipamento não encontrado');
+    if (!eq) throw new NotFoundException(`Equipamento (ID ${id}) não encontrado`);
     return this.prisma.equipamento.update({
       where: { id },
       data: {
@@ -73,7 +73,7 @@ export class EquipamentosService {
     reportadoPorId: string,
   ) {
     const eq = await this.prisma.equipamento.findUnique({ where: { id: equipamentoId }, select: { id: true, estado: true } });
-    if (!eq) throw new NotFoundException('Equipamento não encontrado');
+    if (!eq) throw new NotFoundException(`Equipamento (ID ${equipamentoId}) não encontrado`);
 
     const manutencao = await this.prisma.manutencao.create({
       data: {
@@ -119,7 +119,7 @@ export class EquipamentosService {
       where: { id },
       select: { id: true, equipamentoId: true, estado: true },
     });
-    if (!man) throw new NotFoundException('Manutenção não encontrada');
+    if (!man) throw new NotFoundException(`Manutenção (ID ${id}) não encontrada`);
 
     const atualizado = await this.prisma.manutencao.update({
       where: { id },

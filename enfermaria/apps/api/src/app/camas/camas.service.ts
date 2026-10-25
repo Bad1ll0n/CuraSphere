@@ -22,7 +22,7 @@ export class CamasService {
 
   async atualizarEstado(id: string, estado: EstadoCama) {
     const cama = await this.prisma.cama.findUnique({ where: { id } });
-    if (!cama) throw new NotFoundException('Cama não encontrada');
+    if (!cama) throw new NotFoundException(`Cama (ID ${id}) não encontrada`);
 
     return this.prisma.cama.update({
       where: { id },
