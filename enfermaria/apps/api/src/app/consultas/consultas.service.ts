@@ -166,7 +166,7 @@ export class ConsultasService {
       where: { codigo },
       include: this.includeRelations(),
     });
-    if (!c) throw new NotFoundException('Marcação não encontrada');
+    if (!c) throw new NotFoundException(`Marcação (código: ${codigo}) não encontrada`);
     return c;
   }
 
@@ -360,7 +360,7 @@ export class ConsultasService {
       where: { id },
       include: this.includeRelations(),
     });
-    if (!c) throw new NotFoundException('Consulta não encontrada');
+    if (!c) throw new NotFoundException(`Consulta (ID ${id}) não encontrada`);
     return c;
   }
 
