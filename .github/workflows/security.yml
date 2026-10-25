@@ -135,6 +135,16 @@ jobs:
           --config "p/react"
           --config "p/owasp-top-ten"
 
+      # O Semgrep marca os achados com `// nosemgrep` como `suppressions` no SARIF, mas o
+      # code scanning do GitHub ignora esse campo e abre-os como alertas na mesma. Os
+      # suprimidos saem do ficheiro antes do upload; a justificação fica no código.
+      - name: Retirar do SARIF os achados suprimidos com nosemgrep
+        if: always()
+        run: |
+          jq '.runs[].results |= map(select((.suppressions // []) | length == 0))' \
+            semgrep.sarif > semgrep.filtrado.sarif
+          mv semgrep.filtrado.sarif semgrep.sarif
+
       - name: Upload SARIF para code scanning
         if: always()
         uses: github/codeql-action/upload-sarif@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3

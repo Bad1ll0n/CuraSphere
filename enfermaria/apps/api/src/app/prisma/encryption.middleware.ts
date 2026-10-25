@@ -36,7 +36,7 @@ const DELEGATE: Record<string, string> = {
 function encrypt(text: string): string {
   if (!KEY || !text) return text;
   const iv = randomBytes(12);
-  const cipher = createCipheriv('aes-256-gcm', KEY, iv);
+  const cipher = createCipheriv('aes-256-gcm', KEY, iv, { authTagLength: 16 });
   const enc = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
   const tag = cipher.getAuthTag();
   return `enc:${Buffer.concat([iv, tag, enc]).toString('base64')}`;
@@ -49,7 +49,7 @@ function decrypt(text: string): string {
     const iv = buf.subarray(0, 12);
     const tag = buf.subarray(12, 28);
     const enc = buf.subarray(28);
-    const decipher = createDecipheriv('aes-256-gcm', KEY, iv);
+    const decipher = createDecipheriv('aes-256-gcm', KEY, iv, { authTagLength: 16 });
     decipher.setAuthTag(tag);
     return Buffer.concat([decipher.update(enc), decipher.final()]).toString('utf8');
   } catch {
