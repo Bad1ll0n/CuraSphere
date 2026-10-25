@@ -17,8 +17,7 @@ const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
 const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 
 // credencial fixa do seed de TESTE (login E2E)
-// nosemgrep
-const PASSWORD = 'Teste1234!';
+const PASSWORD = 'Teste1234!'; // nosemgrep
 const PASS_HASH = bcrypt.hashSync(PASSWORD, 12);
 // 1 ano no futuro — sem avisos de password expirada
 const EXPIRES = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
@@ -27,8 +26,7 @@ const EXPIRES = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 // o código MFA programaticamente (otplib `generate({ secret })`) em vez de exigir
 // scan de QR code. APENAS para ambientes de teste — nunca usar em produção.
 // segredo TOTP fixo do seed de TESTE (MFA no E2E)
-// nosemgrep
-const TOTP_SECRET_TESTE = 'EWA62CRGBGCMZVKZOEQ7GL2YIMOUSIBV';
+const TOTP_SECRET_TESTE = 'EWA62CRGBGCMZVKZOEQ7GL2YIMOUSIBV'; // nosemgrep
 const ROLES_CLINICOS = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
 // Um utilizador por cada role da aplicação, mais os sub-roles privilegiados que
