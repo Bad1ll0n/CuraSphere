@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { AtribuicoesService } from './atribuicoes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AtribuirDoenteDto } from './dto/atribuir-doente.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('atribuicoes')
@@ -29,19 +30,19 @@ export class AtribuicoesController {
   @Post('turno/:turnoId')
   atribuir(
     @Param('turnoId') turnoId: string,
-    @Body() body: { doenteId: string; utilizadorId: string },
+    @Body() dto: AtribuirDoenteDto,
     @Request() req: any,
   ) {
-    return this.service.atribuir(turnoId, body.doenteId, body.utilizadorId, req.user.sub);
+    return this.service.atribuir(turnoId, dto.doenteId, dto.utilizadorId, req.user.sub);
   }
 
   // Remover atribuição
   @Delete('turno/:turnoId')
   remover(
     @Param('turnoId') turnoId: string,
-    @Body() body: { doenteId: string; utilizadorId: string },
+    @Body() dto: AtribuirDoenteDto,
     @Request() req: any,
   ) {
-    return this.service.remover(turnoId, body.doenteId, body.utilizadorId, req.user.sub);
+    return this.service.remover(turnoId, dto.doenteId, dto.utilizadorId, req.user.sub);
   }
 }
