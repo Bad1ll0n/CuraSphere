@@ -4912,8 +4912,9 @@ confirmadas por `docker build` e não por leitura:
 
 No lado da web havia mais duas: o `next.config.js` chamava `process.chdir()`, proibido no
 worker onde o Next 16 carrega a configuração, e o build corria com Turbopack, que **ignora**
-`output: 'standalone'` — compilava, e depois não havia nada para copiar. Passa a construir com
-`--webpack`, a mesma flag que o alvo de build do projecto já usava.
+`output: 'standalone'`. Passou a construir com `--webpack`, a mesma flag que o alvo de build do
+projecto já usava. **Correcção posterior:** isto não bastou — a imagem da web continuava sem
+`.next/standalone`. A causa verdadeira está na secção seguinte, e era mais grave do que o Docker.
 
 **O deploy (OPS-03 / OPS-07).** A versão anterior fazia `down` antes de saber se a nova
 arrancava, não tinha rollback e nunca aplicava schema nem triggers de auditoria. A ordem passou
@@ -4958,18 +4959,100 @@ declarada em duas regras estruturais novas (51 ecrãs na web, 36 no telemóvel) 
 encolher. O pior caso era o MAR do telemóvel: um `catch` vazio transformava uma falha de rede em
 "Todas as medicações administradas", com um visto verde.
 
+### P2 — concorrência (F3, F4, F5)
+
+Havia 15 transacções `Serializable` e nenhuma tratava o conflito de serialização. Três
+correcções, cada uma com o teste da corrida que fechava:
+
+- **F3 — a mesma bolsa de sangue reservada para dois doentes.** `reservarBolsa` lia
+  `disponivel` e escrevia incondicionalmente, no isolamento por omissão. Duas reservas
+  simultâneas passavam ambas. Agora a escrita leva o estado no `where`
+  (`updateMany({ id, estado: 'disponivel' })`), a transacção é `Serializable`, e se não actualizar
+  nenhuma linha devolve **409** sem tocar no pedido — o mesmo padrão que o `administrar` ao lado já
+  usava.
+- **F5 — ajuste de stock da farmácia perdido.** `atualizarQuantidade` lia fora da transacção e
+  escrevia um valor absoluto: dois ajustes concorrentes liam a mesma quantidade e o segundo
+  sobrepunha-se ao primeiro, com um `delta` gravado que já não reconciliava com o stock. Leitura e
+  escrita passam para dentro da mesma transacção `Serializable`, a escrita só acontece se a
+  quantidade ainda for a lida, e a quantidade é validada antes de abrir a transacção.
+- **F4 — um conflito legítimo chegava ao enfermeiro como 500.** O `$transaction` do
+  `PrismaService` repete agora as transacções `Serializable` em forma de callback até três vezes
+  quando o Postgres as aborta (`40001`/`P2034`, `40P01`), com espera exponencial dispersa
+  (`common/transacao.ts`). Um erro que não é de concorrência não se repete. A forma de array não se
+  repete: um `PrismaPromise` não se reexecuta.
+
+### A web nunca enviou um cabeçalho de segurança
+
+Ao investigar porque é que a imagem da web continuava sem `.next/standalone`, resolveu-se a
+configuração final exactamente como o `next build` a vê. Tinha **duas chaves**: `turbopack` e
+`webpack`. Tudo o resto desaparecia.
+
+A causa: `composePlugins(withNx)` devolve uma função `(phase, context) => Promise<config>`, e essa
+função era passada ao `withNextIntl`, que a espalhava como se fosse um objecto. Saíam perdidos
+`output: 'standalone'` (a imagem não tinha servidor), `transpilePackages` e **`headers()`** — ou
+seja, a CSP, o HSTS, o `X-Frame-Options` e o `nosniff` que o ficheiro declarava nunca foram
+enviados por esta aplicação. O nginx acrescenta cinco cabeçalhos, mas não CSP. O
+`next.config.js` passa a resolver a fase do Nx antes de embrulhar.
+
+Corrigir só isto teria partido a aplicação inteira: a CSP declarada tinha `script-src 'self'`, e o
+App Router hidrata com scripts inline. Por isso:
+
+- **A CSP passa a ser gerada por pedido no middleware, com nonce** (`src/lib/csp.ts`, oito
+  testes). O Next lê o nonce do cabeçalho do pedido e aplica-o aos seus scripts; o script inline do
+  tema no `layout.tsx` recebe-o por `x-nonce`; `strict-dynamic` deixa passar o que esses scripts
+  carregam (o `external_api.js` do Jitsi). O `connect-src` deixou de aceitar qualquer `https:`
+  e passa a nomear a API, o seu WebSocket, o armazenamento e o Sentry. Ganha `form-action`.
+- **`CSP_STORAGE_ORIGIN`** (runtime) — os documentos e as fotografias de feridas abrem-se por URL
+  assinado do MinIO/S3, noutra origem; sem ela ficariam em branco. **`CSP_MODO=report-only`** é a
+  válvula para um incidente, sem novo build. As duas foram confirmadas a serem lidas em runtime.
+- **Permissions-Policy** — `camera=()` desligava a câmara também dentro de iframes: activada, a
+  teleconsulta abriria o Jitsi sem imagem nem som. Passa a delegar câmara, microfone e partilha de
+  ecrã à origem do Jitsi.
+- **A teleconsulta carregava o `external_api.js` sempre de `meet.jit.si`**, mesmo com
+  `NEXT_PUBLIC_JITSI_SERVER` configurado. Passa a vir do servidor configurado.
+- **O endpoint de relatórios de CSP não recebia nada.** O parser JSON só aceitava
+  `application/json` (o browser envia `application/csp-report`), e o relatório — mesma origem,
+  com cookies de sessão — era recusado pelo middleware de CSRF. As duas coisas foram corrigidas; a
+  excepção de CSRF é só para esse caminho, exacto, com a query string removida antes de comparar
+  (o primeiro rascunho deixava passar `/v1/doentes?volta=/csp-report`, e o teste apanhou-o).
+
+Verificado num build de produção real servido com `next start`: cabeçalhos presentes, nonce nos
+24 scripts da página, hidratação feita, script do tema a correr, e **zero violações de CSP** em
+`/login`, `/quiosque`, `/painel`, `/portal` e `/familia`. As páginas autenticadas não foram
+percorridas no browser.
+
+**O service worker, a caminho, guardava fichas clínicas.** Na consola apareceu *"The script
+resource is behind a redirect"*: o middleware redireccionava `/sw.js` para `/login`, e a PWA nunca
+se registava. Antes de o desbloquear leu-se o `sw.js` — e ele guardava em cache **todas as páginas
+HTML** (rede primeiro, cópia para a cache). Todas as páginas são renderizadas no servidor com dados
+do doente: em computadores partilhados do serviço, a ficha ficaria no CacheStorage e sobreviveria
+ao logout. O redirect era a única coisa que o impedia. O `sw.js` v2 só guarda os ficheiros
+imutáveis de `_next/static`, nunca responde a uma navegação a partir da cache, mostra uma página
+sem conteúdo clínico quando não há rede e apaga a cache v1 ao activar. Confirmado no browser:
+registado e activo, com 21 ficheiros estáticos e o `manifest.json` na cache, nenhuma página. Um
+teste estrutural (`service-worker.spec.ts`) trava a regressão e o redirect.
+
+### Estado verificado — P2 e cabeçalhos
+
+| Projecto | typecheck | testes |
+|---|---|---|
+| api | 0 erros | **117 suites · 1007 testes** |
+| web | 0 erros | **10 suites · 69 testes** |
+
 ### Por fazer
 
-- **P1** — fica o commit (OPS-01: enquanto os workflows não forem commitados, o GitHub
-  Actions não os vê), a decisão sobre os papéis-fantasma (BA-05) e os restantes ecrãs do
-  F-08/A6, travados por teste estrutural.
-- **P2/P3** — concorrência em `reservarBolsa` e `atualizarQuantidade`; consentimento e alta;
-  NEWS2 Scale 2; denominador da cobertura; E2E com `test.skip` condicional.
+- **P1** — a decisão sobre os papéis-fantasma (BA-05) e os restantes ecrãs do F-08/A6, travados
+  por teste estrutural. Os workflows (OPS-01) foram commitados no ramo `ci/pnpm-fix`, ainda não
+  em `main`.
+- **P2/P3** — consentimento e alta; NEWS2 Scale 2; denominador da cobertura; E2E com
+  `test.skip` condicional; percorrer as páginas autenticadas com a CSP activa.
 - **Decisões da direcção (P4)** — classificação MDR do `ai-clinico`; backups encriptados fora da
   máquina; multi-tenancy; `Float` → `Decimal`; limiares clínicos (incluindo a severidade 4 da
   sépsis e as faixas do ecrã de corredor); índice cego para NIF e número SNS — a encriptação com
   IV aleatório impede a pesquisa por igualdade, por isso continuam em claro.
-- **Nada foi commitado.** Tudo continua no ramo `ci/pnpm-fix`, incluindo os workflows (OPS-01).
+- **Commits.** O P0, o P1 de infraestrutura e o código do P2 estão no commit `d2bbaf5` (ramo
+  `ci/pnpm-fix`, enviado). A verificação do P2, a correcção do `next.config.js`, a CSP com nonce
+  e o service worker v2 ainda não estão commitados.
 
 ---
 

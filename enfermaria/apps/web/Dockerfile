@@ -35,10 +35,10 @@ RUN pnpm install --frozen-lockfile --prefer-offline
 # devDependencies — e o build do Next precisa delas.
 ENV NODE_ENV=production
 
-# OPS-02: `--webpack` e obrigatorio. O Next 16 constroi com Turbopack por omissao, e o
-# Turbopack ignora `output: 'standalone'` - a imagem compilava e depois falhava a copiar
-# .next/standalone, que nunca chegava a existir. E a mesma flag que o alvo de build do
-# projecto ja usa.
+# OPS-02: `--webpack` é obrigatório — o Turbopack do Next 16 ignora `output: 'standalone'`.
+# Não chegava: o `next.config.js` perdia o `output` (e os `headers()`) ao passar a função do
+# `withNx` ao `withNextIntl` como se fosse objecto. As duas coisas são precisas para existir
+# .next/standalone.
 RUN cd apps/web && pnpm exec next build --webpack
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────

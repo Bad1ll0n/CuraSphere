@@ -1,4 +1,4 @@
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { TransfusaoService } from './transfusao.service';
 
 /**
@@ -168,6 +168,39 @@ describe('TransfusaoService — métodos com BD (mock)', () => {
     it('lança NotFoundException quando o pedido não existe', async () => {
       prisma.pedidoTransfusao.findUnique.mockResolvedValue(null);
       await expect(svc.bolsasCompativeis('nao-existe')).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+
+  describe('reservarBolsa()', () => {
+    const pedido = { id: 'p1', doenteId: 'd1', componente: 'concentrado_eritrocitos', grupoABO: 'O', rhD: 'negativo', estado: 'pendente', deletedAt: null };
+    const bolsa = { id: 'b1', numeroUnidade: 'U-001', grupoABO: 'O', rhD: 'negativo', estado: 'disponivel' };
+
+    beforeEach(() => {
+      prisma.pedidoTransfusao.findUnique.mockResolvedValue(pedido);
+      prisma.bolsaSangue.findUnique.mockResolvedValue(bolsa);
+      prisma.doente.findUnique.mockResolvedValue({ grupoSanguineo: 'O-' });
+    });
+
+    it('reserva só se a bolsa ainda estiver disponível, em transacção Serializable', async () => {
+      prisma.bolsaSangue.updateMany.mockResolvedValue({ count: 1 });
+
+      const r = await svc.reservarBolsa('p1', 'b1');
+
+      expect(r.ok).toBe(true);
+      expect(prisma.$transaction).toHaveBeenCalledWith(expect.any(Function), { isolationLevel: 'Serializable' });
+      expect(prisma.bolsaSangue.updateMany).toHaveBeenCalledWith({
+        where: { id: 'b1', estado: 'disponivel' },
+        data: { estado: 'reservada', reservadaParaId: 'p1' },
+      });
+      expect(prisma.pedidoTransfusao.update).toHaveBeenCalledWith({ where: { id: 'p1' }, data: { estado: 'reservado' } });
+    });
+
+    it('F3: se outro pedido reservou a mesma unidade entretanto, recusa e não mexe no pedido', async () => {
+      // A leitura ainda viu `disponivel`; a escrita condicional já não encontra a bolsa nesse estado.
+      prisma.bolsaSangue.updateMany.mockResolvedValue({ count: 0 });
+
+      await expect(svc.reservarBolsa('p1', 'b1')).rejects.toBeInstanceOf(ConflictException);
+      expect(prisma.pedidoTransfusao.update).not.toHaveBeenCalled();
     });
   });
 

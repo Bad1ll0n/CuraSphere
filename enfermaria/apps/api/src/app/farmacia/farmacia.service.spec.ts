@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { FarmaciaService } from './farmacia.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -60,20 +60,42 @@ describe('FarmaciaService', () => {
 
   describe('atualizarQuantidade()', () => {
     it('lança NotFoundException quando item não existe', async () => {
-      mockPrisma.stockItem.findUnique.mockResolvedValue(null);
+      mockTx.stockItem.findUnique.mockResolvedValue(null);
       await expect(service.atualizarQuantidade('x', 10, 'teste', 'ajuste', 'u1')).rejects.toThrow(NotFoundException);
     });
 
-    it('actualiza quantidade e cria ajuste de stock', async () => {
-      mockPrisma.stockItem.findUnique
-        .mockResolvedValueOnce({ ...itemBase, quantidade: 50 }) // findUnique antes da transação
-        .mockResolvedValueOnce({ ...itemBase, quantidade: 60 }); // findUnique final
-      mockPrisma.stockItem.update.mockResolvedValue({});
-      mockPrisma.ajusteStock.create.mockResolvedValue({});
+    it('rejeita quantidade negativa antes de abrir a transacção', async () => {
+      await expect(service.atualizarQuantidade('item-1', -1, 'teste', 'ajuste', 'u1')).rejects.toThrow(BadRequestException);
+      expect(mockPrisma.$transaction).not.toHaveBeenCalled();
+    });
+
+    it('lê e escreve dentro da mesma transacção Serializable, com o delta certo', async () => {
+      mockTx.stockItem.findUnique
+        .mockResolvedValueOnce({ ...itemBase, quantidade: 50 })
+        .mockResolvedValueOnce({ ...itemBase, quantidade: 60 });
+      mockTx.stockItem.updateMany.mockResolvedValue({ count: 1 });
+      mockTx.ajusteStock.create.mockResolvedValue({});
 
       const resultado = await service.atualizarQuantidade('item-1', 60, 'Reposição', 'entrada', 'u1');
 
       expect(resultado!.quantidade).toBe(60);
+      expect(mockPrisma.$transaction).toHaveBeenCalledWith(expect.any(Function), { isolationLevel: 'Serializable' });
+      // A escrita só acontece se o stock ainda for o que foi lido.
+      expect(mockTx.stockItem.updateMany).toHaveBeenCalledWith({
+        where: { id: 'item-1', quantidade: 50 },
+        data: { quantidade: 60 },
+      });
+      expect(mockTx.ajusteStock.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ stockItemId: 'item-1', delta: 10 }),
+      });
+    });
+
+    it('F5: se o stock mudou entre a leitura e a escrita, não grava nem regista o ajuste', async () => {
+      mockTx.stockItem.findUnique.mockResolvedValueOnce({ ...itemBase, quantidade: 50 });
+      mockTx.stockItem.updateMany.mockResolvedValue({ count: 0 });
+
+      await expect(service.atualizarQuantidade('item-1', 60, 'Reposição', 'entrada', 'u1')).rejects.toThrow(ConflictException);
+      expect(mockTx.ajusteStock.create).not.toHaveBeenCalled();
     });
   });
 

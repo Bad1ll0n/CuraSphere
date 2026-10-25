@@ -39,11 +39,9 @@ const nextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
   productionBrowserSourceMaps: false,
   transpilePackages: ['@org/shared', '@org/ui'],
+  // CSP e Permissions-Policy são por pedido (nonce) e vivem no middleware — ver src/lib/csp.ts.
+  // Aqui ficam os cabeçalhos estáticos, que também têm de chegar aos ficheiros de _next/static.
   async headers() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
-    const wsOrigins = apiUrl
-      ? `${apiUrl.replace(/^http/, 'ws')} ${apiUrl}`
-      : 'ws://localhost:3333 http://localhost:3333';
     return [
       {
         source: '/(.*)',
@@ -52,27 +50,8 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(self), payment=()',
-          },
-          {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self'",
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob:",
-              "font-src 'self' data:",
-              `connect-src 'self' ${wsOrigins} https:`,
-              "frame-ancestors 'none'",
-              "object-src 'none'",
-              "base-uri 'self'",
-              `report-uri ${apiUrl || 'http://localhost:3333'}/v1/csp-report`,
-            ].join('; '),
           },
         ],
       },
@@ -82,13 +61,20 @@ const nextConfig = {
 
 const plugins = [withNx];
 
-const baseConfig = composePlugins(...plugins)(nextConfig);
-
-const configWithIntl = withCwd(() => withNextIntl(baseConfig));
-
-module.exports = withSentryConfig(configWithIntl, {
+const sentryOpcoes = {
   silent: true,
   // Desactivar upload de source maps se não houver auth token configurado
   disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
   disableClientWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
-});
+};
+
+// O `composePlugins(withNx)` devolve uma função `(phase, context) => Promise<config>`, não um
+// objecto. Passava-se essa função directamente ao `withNextIntl`, que a espalhava como se fosse
+// objecto: a configuração final saía só com `turbopack` e `webpack` — sem `output: 'standalone'`
+// (a imagem Docker não tinha servidor), sem `transpilePackages` e sem `headers()`, portanto sem
+// um único cabeçalho de segurança. Resolve-se primeiro a fase do Nx e só depois se embrulha.
+module.exports = async (phase, context) => {
+  const baseConfig = await composePlugins(...plugins)(nextConfig)(phase, context);
+  const configWithIntl = withCwd(() => withNextIntl(baseConfig));
+  return withSentryConfig(configWithIntl, sentryOpcoes);
+};

@@ -377,7 +377,7 @@ services:
       args:
         # Build-arg, não variável de runtime: fica cozido no bundle do Next.js.
         # Alimenta o URL do WebSocket (src/lib/use-socket.ts) E o `connect-src`
-        # do CSP (next.config.js). Se ficar vazio, o build produz um bundle que
+        # do CSP (src/lib/csp.ts). Se ficar vazio, o build produz um bundle que
         # tenta falar com localhost — indisponibilidade total, não um detalhe.
         NEXT_PUBLIC_API_URL:        ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL em falta — o bundle do web ficaria a apontar para localhost (WebSocket + CSP)}
         NEXT_PUBLIC_SENTRY_DSN:     ${NEXT_PUBLIC_SENTRY_DSN:-}
@@ -397,6 +397,13 @@ services:
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET em falta — o middleware do web rejeitaria todas as sessões}
       # Sentry server-side do Next.js (o DSN público é build-arg, este não).
       SENTRY_DSN: ${SENTRY_DSN:-}
+      # Origem pública do MinIO/S3. Os documentos e fotografias clínicas abrem-se por URL
+      # assinado desse servidor; sem esta origem na CSP ficam em branco no browser.
+      # Vazio com STORAGE_PROVIDER=local (servidos pela própria API).
+      CSP_STORAGE_ORIGIN: ${CSP_STORAGE_ORIGIN:-}
+      # `report-only` desliga o bloqueio sem novo build (a CSP passa a só reportar para
+      # /api/v1/csp-report). Válvula para um incidente — não é para ficar assim.
+      CSP_MODO: ${CSP_MODO:-}
     depends_on:
       api:
         condition: service_healthy

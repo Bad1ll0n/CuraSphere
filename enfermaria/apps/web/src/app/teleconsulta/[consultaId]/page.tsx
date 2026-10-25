@@ -5,6 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import Script from 'next/script';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import { JITSI_POR_OMISSAO, origemDe } from '@/lib/csp';
+
+// O script da API tem de vir do MESMO servidor onde a sala é criada. Vinha sempre de meet.jit.si,
+// mesmo com NEXT_PUBLIC_JITSI_SERVER configurado — e a CSP só autoriza o servidor configurado.
+const JITSI_ORIGEM = origemDe(process.env['NEXT_PUBLIC_JITSI_SERVER']) ?? JITSI_POR_OMISSAO;
+const JITSI_DOMINIO = new URL(JITSI_ORIGEM).host;
 
 interface JitsiAPI {
   addEventListener: (event: string, handler: () => void) => void;
@@ -38,8 +44,7 @@ export default function TeleconsultaPage() {
 
   const montarJitsi = useCallback(() => {
     if (!roomId || !containerRef.current || apiRef.current) return;
-    const domain = process.env['NEXT_PUBLIC_JITSI_SERVER']?.replace('https://', '') ?? 'meet.jit.si';
-    apiRef.current = new window.JitsiMeetExternalAPI(domain, {
+    apiRef.current = new window.JitsiMeetExternalAPI(JITSI_DOMINIO, {
       roomName: roomId,
       parentNode: containerRef.current,
       width: '100%',
@@ -99,7 +104,7 @@ export default function TeleconsultaPage() {
   return (
     <>
       <Script
-        src="https://meet.jit.si/external_api.js"
+        src={`${JITSI_ORIGEM}/external_api.js`}
         strategy="afterInteractive"
         onLoad={() => setJitsiPronto(true)}
       />

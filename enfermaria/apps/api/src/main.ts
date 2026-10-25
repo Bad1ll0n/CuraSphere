@@ -94,7 +94,10 @@ async function bootstrap() {
     },
   }));
   app.use((cookieParser as any).default());
-  app.use(json({ limit: '500kb' }));
+  // Os browsers enviam os relatórios de CSP como `application/csp-report` (report-uri) ou
+  // `application/reports+json` (Reporting API). O parser por omissão só aceita
+  // `application/json`, e o `CspReportController` recebia sempre um corpo vazio.
+  app.use(json({ limit: '500kb', type: ['application/json', 'application/csp-report', 'application/reports+json'] }));
   app.use(urlencoded({ limit: '500kb', extended: true }));
   // Raw text for HL7 v2 messages (MLLP transport over HTTP)
   const { text } = await import('express');

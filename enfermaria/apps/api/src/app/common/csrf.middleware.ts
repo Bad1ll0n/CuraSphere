@@ -4,6 +4,13 @@ import { timingSafeEqual } from 'crypto';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
 /**
+ * Relatórios de CSP: é o browser que os envia, sem cabeçalhos nossos, e — como a API está na
+ * mesma origem que o web atrás do nginx — levam os cookies de sessão. Seriam sempre recusados.
+ * O endpoint só regista o relatório; não lê a sessão nem altera estado.
+ */
+const ROTA_RELATORIO_CSP = /\/csp-report\/?$/;
+
+/**
  * Cookies que fazem o browser autenticar o pedido sozinho. É a presença de um destes —
  * e só ela — que torna um pedido vulnerável a CSRF.
  */
@@ -34,6 +41,7 @@ function origemAceite(origem: string): boolean {
 export class CsrfMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     if (SAFE_METHODS.has(req.method)) return next();
+    if (req.method === 'POST' && ROTA_RELATORIO_CSP.test((req.originalUrl ?? req.url ?? '').split('?')[0])) return next();
 
     // SEC-16: a versão anterior fazia `if (!cookieToken) return next()` — ou seja, bastava
     // ao atacante que a vítima NÃO tivesse o cookie `csrf-token` para o middleware se
