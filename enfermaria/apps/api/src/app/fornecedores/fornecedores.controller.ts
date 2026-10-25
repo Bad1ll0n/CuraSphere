@@ -3,6 +3,10 @@ import { FornecedoresService } from './fornecedores.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { CriarFornecedorDto } from './dto/criar-fornecedor.dto';
+import { AtualizarFornecedorDto } from './dto/atualizar-fornecedor.dto';
+import { CriarEncomendaDto } from './dto/criar-encomenda.dto';
+import { ReceberEncomendaDto } from './dto/receber-encomenda.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('fornecedores')
@@ -16,14 +20,14 @@ export class FornecedoresController {
 
   @Roles('farmaceutico', 'administrativo')
   @Post()
-  criar(@Body() body: { nome: string; nif?: string; email?: string; telefone?: string; morada?: string }) {
-    return this.fornecedoresService.criar(body);
+  criar(@Body() dto: CriarFornecedorDto) {
+    return this.fornecedoresService.criar(dto);
   }
 
   @Roles('farmaceutico', 'administrativo')
   @Patch(':id')
-  atualizar(@Param('id') id: string, @Body() body: Partial<{ nome: string; nif: string; email: string; telefone: string; morada: string }>) {
-    return this.fornecedoresService.atualizar(id, body);
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarFornecedorDto) {
+    return this.fornecedoresService.atualizar(id, dto);
   }
 
   @Roles('farmaceutico', 'administrativo')
@@ -39,24 +43,17 @@ export class FornecedoresController {
 
   @Roles('farmaceutico', 'administrativo')
   @Post('encomendas')
-  criarEncomenda(@Body() body: {
-    fornecedorId: string;
-    stockItemId: string;
-    quantidadeEncomendada: number;
-    precoUnitario?: number;
-    dataEntregaPrevista?: string;
-    observacoes?: string;
-  }) {
-    return this.fornecedoresService.criarEncomenda(body);
+  criarEncomenda(@Body() dto: CriarEncomendaDto) {
+    return this.fornecedoresService.criarEncomenda(dto);
   }
 
   @Roles('farmaceutico', 'administrativo')
   @Patch('encomendas/:id/receber')
   receberEncomenda(
     @Param('id') id: string,
-    @Body() body: { quantidadeRecebida: number },
+    @Body() dto: ReceberEncomendaDto,
     @Request() req: any,
   ) {
-    return this.fornecedoresService.receberEncomenda(id, body.quantidadeRecebida, req.user.sub);
+    return this.fornecedoresService.receberEncomenda(id, dto.quantidadeRecebida, req.user.sub);
   }
 }
