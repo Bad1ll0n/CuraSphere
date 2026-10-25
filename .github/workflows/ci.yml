@@ -133,8 +133,10 @@ jobs:
       #   `run-many` salta o web em silêncio. Fechar isto exige acrescentar lá
       #   um target `typecheck` (`tsc --noEmit -p tsconfig.json`). Esse ficheiro
       #   pertence a outro agente; fica registado, não alterado aqui.
+      # `@org/mobile` fica de fora: o target `build` inferido pelo @nx/expo é um
+      # build EAS (cloud da Expo, exige `eas-cli` e conta), não uma compilação local.
       - name: Build (api + web + libs)
-        run: pnpm exec nx run-many -t build
+        run: pnpm exec nx run-many -t build --exclude=@org/mobile
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
