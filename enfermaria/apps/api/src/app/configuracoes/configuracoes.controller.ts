@@ -3,6 +3,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles, SubRoles } from '../auth/roles.decorator';
 import { ConfiguracoesService } from './configuracoes.service';
+import { CriarRoleDto } from './dto/criar-role.dto';
+import { EditarRoleDto } from './dto/editar-role.dto';
+import { CriarSubRoleDto } from './dto/criar-subrole.dto';
+import { EditarSubRoleDto } from './dto/editar-subrole.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('configuracoes')
@@ -19,15 +23,15 @@ export class ConfiguracoesController {
   @Post('roles')
   @Roles('ti')
   @SubRoles('it_admin')
-  criarRole(@Body() body: { chave: string; label: string; categoria: string; ordem?: number }) {
-    return this.service.criarRole(body);
+  criarRole(@Body() dto: CriarRoleDto) {
+    return this.service.criarRole(dto);
   }
 
   @Patch('roles/:id')
   @Roles('ti')
   @SubRoles('it_admin')
-  editarRole(@Param('id') id: string, @Body() body: { label?: string; categoria?: string; ordem?: number }) {
-    return this.service.editarRole(id, body);
+  editarRole(@Param('id') id: string, @Body() dto: EditarRoleDto) {
+    return this.service.editarRole(id, dto);
   }
 
   @Delete('roles/:id')
@@ -52,15 +56,15 @@ export class ConfiguracoesController {
   @Post('subroles')
   @Roles('ti')
   @SubRoles('it_admin')
-  criarSubRole(@Body() body: { chave: string; label: string; roleChave: string; ordem?: number }) {
-    return this.service.criarSubRole(body);
+  criarSubRole(@Body() dto: CriarSubRoleDto) {
+    return this.service.criarSubRole(dto);
   }
 
   @Patch('subroles/:id')
   @Roles('ti')
   @SubRoles('it_admin')
-  editarSubRole(@Param('id') id: string, @Body() body: { label?: string; ordem?: number }) {
-    return this.service.editarSubRole(id, body);
+  editarSubRole(@Param('id') id: string, @Body() dto: EditarSubRoleDto) {
+    return this.service.editarSubRole(id, dto);
   }
 
   @Delete('subroles/:id')

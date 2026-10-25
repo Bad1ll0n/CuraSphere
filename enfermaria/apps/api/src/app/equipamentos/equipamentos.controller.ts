@@ -3,6 +3,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EquipamentosService } from './equipamentos.service';
+import { CriarEquipamentoDto } from './dto/criar-equipamento.dto';
+import { AtualizarEquipamentoDto } from './dto/atualizar-equipamento.dto';
+import { CriarManutencaoDto } from './dto/criar-manutencao.dto';
+import { AtualizarManutencaoDto } from './dto/atualizar-manutencao.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipamentos')
