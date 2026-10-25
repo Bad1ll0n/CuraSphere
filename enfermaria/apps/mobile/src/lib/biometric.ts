@@ -2,7 +2,10 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
 
 import { registarFalhaSilenciosa } from './erros';
+// Nomes das chaves no SecureStore, não os valores guardados.
+// nosemgrep
 const KEY_USERNAME = 'bio_username';
+// nosemgrep
 const KEY_PASSWORD = 'bio_password';
 
 export async function biometriaDisponivel(): Promise<boolean> {

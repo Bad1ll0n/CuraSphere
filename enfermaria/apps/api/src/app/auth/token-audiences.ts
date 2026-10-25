@@ -45,6 +45,8 @@ export const AUD_MFA_SETUP = 'curasphere-mfa-setup';
 export const AUD_SOCKET = 'curasphere-socket';
 
 /** Token intermédio: password expirada, só serve para a trocar. */
+// nome de audience JWT, não é uma password
+// nosemgrep
 export const AUD_PASSWORD_EXPIRADA = 'curasphere-password-expirada';
 
 export type TipoToken =

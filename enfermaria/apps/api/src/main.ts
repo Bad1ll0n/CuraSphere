@@ -15,6 +15,8 @@ import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
 
+// placeholder conhecido, usado só para RECUSAR arrancar com ele
+// nosemgrep
 const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao';
 
 if (process.env.SENTRY_DSN) {
