@@ -12,7 +12,7 @@ import type { ServerOptions } from 'socket.io';
 // multi-instância degradado, mas o WebSocket single-instance funciona SEMPRE). Nunca impede o
 // arranque nem parte o tempo-real numa instância só.
 export class RedisIoAdapter extends IoAdapter {
-  private readonly logger = new Logger(RedisIoAdapter.name);
+  private readonly redisLogger = new Logger(RedisIoAdapter.name);
   private adapterConstructor?: ReturnType<typeof createAdapter>;
 
   async connectToRedis(url: string): Promise<void> {
@@ -34,9 +34,9 @@ export class RedisIoAdapter extends IoAdapter {
     try {
       await Promise.all([pubClient.connect(), subClient.connect()]);
       this.adapterConstructor = createAdapter(pubClient, subClient);
-      this.logger.log('socket.io: adaptador Redis ativo (broadcast entre instâncias)');
+      this.redisLogger.log('socket.io: adaptador Redis ativo (broadcast entre instâncias)');
     } catch (e) {
-      this.logger.warn(`socket.io sem adaptador Redis (broadcast só local): ${(e as Error)?.message ?? String(e)}`);
+      this.redisLogger.warn(`socket.io sem adaptador Redis (broadcast só local): ${(e as Error)?.message ?? String(e)}`);
       pubClient.disconnect();
       subClient.disconnect();
     }
