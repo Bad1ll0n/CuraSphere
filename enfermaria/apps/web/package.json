@@ -35,7 +35,7 @@
     "@storybook/react": "^9.1.21",
     "@tailwindcss/forms": "^0.5.11",
     "eslint-plugin-jsx-a11y": "6.10.1",
-    "storybook": "^9.1.21",
+    "storybook": "^10.6.5",
     "tailwindcss": "^4.2.2",
     "vite": "^6.4.5"
   }
