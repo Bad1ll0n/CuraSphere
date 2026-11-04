@@ -1,5 +1,6 @@
 'use client';
 import { giveAiConsent } from '@/lib/ai-consent';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   onAceitar: () => void;
@@ -7,6 +8,9 @@ interface Props {
 }
 
 export function AiConsentModal({ onAceitar, onRecusar }: Props) {
+  // Escape equivale a recusar — a opção segura.
+  const { propsPainel } = useDialogoAcessivel({ aberto: true, onFechar: onRecusar, titulo: 'Consentimento para funcionalidades de IA' });
+
   const aceitar = () => {
     giveAiConsent();
     onAceitar();
@@ -14,7 +18,7 @@ export function AiConsentModal({ onAceitar, onRecusar }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4" style={{ padding: '32px' }}>
+      <div {...propsPainel} className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4" style={{ padding: '32px' }}>
         <div className="flex items-center gap-3" style={{ marginBottom: '20px' }}>
           <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
             <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

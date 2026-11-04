@@ -4,6 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { criarClienteComEncriptacao } from './encryption.middleware';
 import { RequestContextService } from './request-context.service';
+import { comRetentativas } from '../common/transacao';
 
 const SLOW_QUERY_MS = 500;
 
@@ -43,7 +44,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     // (admitir, alta, prescrever, transfusão…) passam a ser atribuídas sem qualquer refactoring.
     (this as any).$transaction = function (arg: any, opts: any) {
       if (typeof arg === 'function') {
-        return encTx(async (tx: any) => {
+        const executar = () => encTx(async (tx: any) => {
           const ctx = reqCtxRef.get();
           if (ctx?.userId) {
             await tx.$executeRawUnsafe(
@@ -53,6 +54,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           }
           return arg(tx);
         }, opts);
+        // F4: o Postgres aborta uma das transacções concorrentes com 40001 (P2034 no Prisma).
+        // Não é um erro do pedido — é o preço do isolamento — e sem retentativa chegava ao
+        // enfermeiro como um 500 opaco. Só a forma de callback se repete: um array de
+        // PrismaPromise não se reexecuta.
+        return opts?.isolationLevel === 'Serializable'
+          ? comRetentativas(executar, { rotulo: 'transacção Serializable' })
+          : executar();
       }
       return encTx(arg, opts); // forma de array — passa-se tal e qual
     };
@@ -65,6 +73,37 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
    */
   escritaAuditada<T>(fn: (tx: any) => Promise<T>): Promise<T> {
     return (this as any).$transaction(fn);
+  }
+
+  /**
+   * Eleição de líder para tarefas @Cron: com várias instâncias da API, sem isto cada tarefa
+   * dispararia em TODAS (relatórios/lembretes/IA duplicados). Devolve `true` só a UMA instância por
+   * disparo. O claim é atómico (advisory-lock transacional, como o checkpointer) + uma lease temporal
+   * (`cron_locks`) que evita re-execução dentro do TTL, mesmo com as instâncias a disparar em
+   * simultâneo. Uso: `if (!(await this.prisma.tryBecomeLeader('nome', ttlMs))) return;` no topo do cron.
+   * `ttlMs` deve ser < intervalo do cron (barra o disparo simultâneo, liberta para o próximo).
+   */
+  async tryBecomeLeader(nome: string, ttlMs: number): Promise<boolean> {
+    try {
+      return await (this as any).$transaction(async (tx: any) => {
+        const [{ locked }] = (await tx.$queryRawUnsafe(
+          'SELECT pg_try_advisory_xact_lock(hashtext($1)::int8) AS locked', nome,
+        )) as { locked: boolean }[];
+        if (!locked) return false; // outra instância está a reclamar neste instante
+        const rows = (await tx.$queryRawUnsafe(
+          'SELECT "expiraEm" FROM cron_locks WHERE nome = $1', nome,
+        )) as { expiraEm: Date }[];
+        if (rows[0] && new Date(rows[0].expiraEm) > new Date()) return false; // já corrido no disparo
+        await tx.$executeRawUnsafe(
+          'INSERT INTO cron_locks (nome, "expiraEm") VALUES ($1, $2) ON CONFLICT (nome) DO UPDATE SET "expiraEm" = $2',
+          nome, new Date(Date.now() + ttlMs),
+        );
+        return true;
+      });
+    } catch (e) {
+      this.logger.warn(`tryBecomeLeader(${nome}) falhou: ${(e as Error)?.message ?? String(e)}`);
+      return false; // sem BD → não é líder (não corre, em vez de correr em todas às cegas)
+    }
   }
 
   async onModuleInit() {

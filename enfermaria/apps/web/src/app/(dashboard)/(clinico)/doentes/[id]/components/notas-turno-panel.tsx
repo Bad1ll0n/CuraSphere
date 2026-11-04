@@ -59,7 +59,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -272,8 +272,8 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
       {modalNota && (
         <Modal titulo="Adicionar Nota de Turno" onClose={() => setModalNota(false)}>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nota</label>
-            <textarea
+            <label htmlFor="fnotastur-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nota</label>
+            <textarea id="fnotastur-0"
               autoFocus
               rows={5}
               value={notaTexto}

@@ -48,12 +48,20 @@ echo "  Confirma que o alvo acima é o pretendido (idealmente uma base"
 echo "  de dados de staging/scratch, não produção sem plano de rollback)."
 echo "=============================================================="
 
-# Confirmação interativa — operação destrutiva, nunca correr sem confirmação explícita.
-printf "Escreve 'sim' para continuar com o restauro: "
-read -r CONFIRMACAO
-if [ "$CONFIRMACAO" != "sim" ]; then
-  echo "[$(date)] Restauro cancelado pelo utilizador."
-  exit 1
+# Operacao destrutiva: por omissao exige confirmacao escrita.
+#
+# OPS-04: o modo nao-interactivo existe para o ensaio de recuperacao poder correr em
+# CI ou por script — um runbook que so se consegue executar a mao nunca e ensaiado, e
+# um restauro que nunca foi ensaiado nao e uma capacidade, e uma esperanca.
+if [ "${RESTAURO_NAO_INTERATIVO:-}" = "sim" ]; then
+  echo "[$(date)] Modo nao-interactivo: confirmacao dispensada por RESTAURO_NAO_INTERATIVO=sim."
+else
+  printf "Escreve 'sim' para continuar com o restauro: "
+  read -r CONFIRMACAO
+  if [ "$CONFIRMACAO" != "sim" ]; then
+    echo "[$(date)] Restauro cancelado pelo utilizador."
+    exit 1
+  fi
 fi
 
 echo "[$(date)] A iniciar restauro de '$FILENAME' para '$TARGET_DB'..."

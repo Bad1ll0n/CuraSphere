@@ -5,7 +5,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
-import { logout, Utilizador } from '../lib/auth';
+import { logout, mensagemDeSaida, Utilizador } from '../lib/auth';
 import HorariosScreen from './HorariosScreen';
 import AtribuicoesScreen from './AtribuicoesScreen';
 import CamasScreen from './CamasScreen';
@@ -44,6 +44,7 @@ import DashboardExecutivoScreen from './DashboardExecutivoScreen';
 import RelatoriosScreen from './RelatoriosScreen';
 import ConformidadeScreen from './ConformidadeScreen';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 type SubTela =
   | null
   | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'bancosangue'
@@ -83,7 +84,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   useFocusEffect(useCallback(() => {
     api.get('/notificacoes/nao-lidas')
       .then(r => setNaoLidasNotif(r.data.count ?? 0))
-      .catch(() => {});
+      .catch((e) => registarFalhaSilenciosa('MaisScreen', e));
   }, []));
 
   const voltar = () => setSubTela(null);
@@ -127,13 +128,14 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'conformidade')        return <ConformidadeScreen utilizador={utilizador} onVoltar={voltar} />;
 
   const confirmarLogout = async () => {
+    const mensagem = await mensagemDeSaida();
     if (Platform.OS === 'web') {
-      if ((window as any).confirm('Tem a certeza que quer terminar a sessão?')) {
+      if ((window as any).confirm(mensagem)) {
         await logout();
         onLogout();
       }
     } else {
-      Alert.alert('Sair', 'Tem a certeza que quer sair?', [
+      Alert.alert('Sair', mensagem, [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Sair', style: 'destructive', onPress: async () => { await logout(); onLogout(); } },
       ]);

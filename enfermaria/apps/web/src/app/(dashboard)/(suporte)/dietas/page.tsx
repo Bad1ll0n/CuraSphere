@@ -199,8 +199,8 @@ export default function DietasPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">ID do Doente</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-sm font-medium text-slate-700 mb-1">ID do Doente</label>
+                <input id="fpage-0"
                   type="text"
                   value={doenteId}
                   onChange={(e) => setDoenteId(e.target.value)}
@@ -210,7 +210,7 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Tipo de Dieta</label>
+                <span className="block text-sm font-medium text-slate-700 mb-1">Tipo de Dieta</span>
                 <div className="grid grid-cols-3 gap-2">
                   {Object.entries(TIPOS_DIETA).map(([key, { label, cor }]) => (
                     <button
@@ -229,7 +229,7 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Restrições Alimentares</label>
+                <span className="block text-sm font-medium text-slate-700 mb-1">Restrições Alimentares</span>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(RESTRICOES_LABELS).map(([key, label]) => (
                     <button
@@ -248,8 +248,8 @@ export default function DietasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
-                <textarea
+                <label htmlFor="fpage-3" className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
+                <textarea id="fpage-3"
                   value={observacoes}
                   onChange={(e) => setObservacoes(e.target.value)}
                   rows={3}

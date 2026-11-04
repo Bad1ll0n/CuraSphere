@@ -1,0 +1,10 @@
+# Exceções do Trivy (job "Trivy Filesystem Scan" em .github/workflows/security.yml).
+# Cada entrada tem de dizer porquê e espelhar `pnpm.auditConfig.ignoreGhsas` em
+# enfermaria/package.json, para os dois scanners concordarem.
+
+# image-size 0.x/1.x — DoS (ciclo infinito) nos parsers JXL/HEIF/ICNS. A correção só
+# existe na 2.x, que muda a API; quem usa a 1.x é tooling de desenvolvimento (Metro do
+# Expo, Storybook) a ler imagens do próprio repositório, não input de utilizadores.
+# A 2.x vulnerável já é forçada para ^2.0.4 por override. (GHSA-5p2g-fcmc-qvqq, GHSA-w3rx-r6r6-pgpr)
+CVE-2025-71329
+CVE-2025-71330

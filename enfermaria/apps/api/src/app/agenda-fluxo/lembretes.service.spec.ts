@@ -5,6 +5,7 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { MailerService } from '../mailer/mailer.service';
 
 const mockPrisma = {
+  tryBecomeLeader: jest.fn().mockResolvedValue(true), // líder por omissão → o corpo do cron corre
   consulta: { findMany: jest.fn(), update: jest.fn().mockResolvedValue({}) },
 };
 const mockNotificacoes = { enviarParaUtilizador: jest.fn().mockResolvedValue(undefined) };

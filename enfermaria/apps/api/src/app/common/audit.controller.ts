@@ -6,7 +6,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from './audit.service';
 import { AuditCheckpointService } from './audit-checkpoint.service';
 import { AtualizarChecklistDto } from './dto/atualizar-checklist.dto';
-
+
+import { chaveDiaClinico } from './dia-clinico.helper';
 const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -137,7 +138,7 @@ export class AuditController {
 
     const acessosPorDiaAgrupados: Record<string, number> = {};
     for (const r of acessosPorDia) {
-      const dia = new Date(r.createdAt).toISOString().split('T')[0];
+      const dia = chaveDiaClinico(new Date(r.createdAt));
       acessosPorDiaAgrupados[dia] = (acessosPorDiaAgrupados[dia] ?? 0) + r._count.id;
     }
 

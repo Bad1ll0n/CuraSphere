@@ -21,9 +21,10 @@ export class OutcomesController {
     return this.service.dashboard();
   }
 
-  @Get('doente/:id')
+  // S-01: com `:id` a rota escapava à verificação global de acesso ao doente. O URL é o mesmo.
+  @Get('doente/:doenteId')
   @Roles('medico', 'enfermeiro', 'direcao', 'qualidade')
-  listarPorDoente(@Param('id') id: string) {
-    return this.service.listarPorDoente(id);
+  listarPorDoente(@Param('doenteId') doenteId: string) {
+    return this.service.listarPorDoente(doenteId);
   }
 }

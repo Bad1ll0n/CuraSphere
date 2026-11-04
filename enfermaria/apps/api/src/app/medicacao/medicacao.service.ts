@@ -12,9 +12,39 @@ import { StewardshipService } from '../stewardship/stewardship.service';
 import interacoesJson from './interacoes.json';
 import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
 import { WebhooksService } from '../webhooks/webhooks.service';
+import { AlertasService } from '../alertas/alertas.service';
+import { detetarConflitoAlergia } from './alergias.helper';
+
+
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
+/** Estado de verificação de um dos cinco certos. */
+export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
+
+/**
+ * Um certo avaliado. O estado é explícito de propósito: a versão anterior devolvia
+ * apenas a lista de falhas, e o ecrã do enfermeiro pintava a verde tudo o que não
+ * estivesse nessa lista — incluindo dose e via, que nunca eram sequer olhadas.
+ */
+export interface CertoVerificado {
+  certo: string;
+  estado: EstadoCerto;
+  motivo?: string;
+}
+
+const CERTO_DOENTE = 'Doente certo';
+const CERTO_MEDICAMENTO = 'Medicamento certo';
+const CERTO_DOSE = 'Dose certa';
+const CERTO_VIA = 'Via certa';
+const CERTO_HORA = 'Hora certa';
+
+/** Ordem canónica, tal como o enfermeiro a executa à cabeceira. */
+const NOMES_5_CERTOS = [CERTO_DOENTE, CERTO_MEDICAMENTO, CERTO_DOSE, CERTO_VIA, CERTO_HORA];
 
 export interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
 const INTERACOES: Interacao[] = interacoesJson as Interacao[];
+
+/** Justificação mínima para prescrever apesar de uma alergia documentada. */
+const MIN_JUSTIFICACAO_OVERRIDE = 20;
 
 function parsearFrequenciaHoras(frequencia: string): number | null {
   const m = frequencia.match(/(\d+)\s*\/\s*(\d+)\s*h/i);
@@ -22,6 +52,17 @@ function parsearFrequenciaHoras(frequencia: string): number | null {
   if (/^(sos|em\s+sos|se\s+necessário|s\.o\.s\.?)/i.test(frequencia)) return null;
   if (/^(contínuo|perfus)/i.test(frequencia)) return null;
   return null;
+}
+
+/**
+ * Compara um campo declarado à cabeceira (dose, via) com o prescrito.
+ * `null` = não declarado, logo o "certo" fica por confirmar; `true`/`false` = confere ou não.
+ */
+function compararCampoPrescrito(declarado: string | undefined, prescrito: string): boolean | null {
+  if (declarado == null || declarado.trim() === '') return null;
+  const normalizar = (v: string) =>
+    v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '').trim();
+  return normalizar(declarado) === normalizar(prescrito);
 }
 
 function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Interacao[] {
@@ -58,6 +99,7 @@ export class MedicacaoService {
     private readonly redis: RedisService,
     private readonly stewardship: StewardshipService,
     private readonly webhooks: WebhooksService,
+    private readonly alertas: AlertasService,
   ) {}
 
   private async verificarInteracaoIA(novoNome: string, ativas: string[]): Promise<{ bloqueante: boolean; aviso: string | null }> {
@@ -124,38 +166,50 @@ export class MedicacaoService {
       throw new ConflictException(`INTERAÇÃO CONTRAINDICADA: ${iaCheck.aviso}`);
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    const resultado = await this.prisma.$transaction(async (tx) => {
       const doente = await tx.doente.findUnique({ where: { id: data.doenteId } });
       if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
-      if (!data.forcarApesarDeAlergia) {
-        const alergias = await tx.alergia.findMany({ where: { doenteId: data.doenteId } });
-        const nomeNorm = data.nome.toLowerCase();
-        const alergiaMatch = alergias.find((a) => {
-          const alg = a.alergenio.toLowerCase();
-          const palavrasMed = nomeNorm.split(/\s+/).filter((w) => w.length > 3);
-          const palavrasAlg = alg.split(/\s+/).filter((w) => w.length > 3);
-          return (
-            palavrasAlg.some((w) => nomeNorm.includes(w)) ||
-            palavrasMed.some((w) => alg.includes(w))
-          );
-        });
-        if (alergiaMatch) {
-          throw new ConflictException(
-            `ALERGIA: ${doente.nome} tem alergia registada a "${alergiaMatch.alergenio}" (severidade: ${alergiaMatch.severidade}). Para prescrever mesmo assim, envie forcarApesarDeAlergia=true com justificativaOverride.`,
-          );
-        }
+      // As alergias são SEMPRE consultadas, mesmo com override: sem saber o que se está a
+      // ultrapassar não há registo possível do override (era este o defeito BA-03).
+      const alergias = await tx.alergia.findMany({ where: { doenteId: data.doenteId } });
+      const conflito = detetarConflitoAlergia(data.nome, alergias);
+
+      if (conflito && !data.forcarApesarDeAlergia) {
+        throw new ConflictException(
+          `ALERGIA: ${doente.nome} tem alergia registada a "${conflito.alergia.alergenio}" ` +
+          `(severidade: ${conflito.alergia.severidade}) — ${conflito.correspondencia.motivo}. ` +
+          `Para prescrever mesmo assim, envie forcarApesarDeAlergia=true com justificativaOverride ` +
+          `(mínimo ${MIN_JUSTIFICACAO_OVERRIDE} caracteres).`,
+        );
+      }
+
+      const justificacao = (data.justificativaOverride ?? '').trim();
+      if (conflito && data.forcarApesarDeAlergia && justificacao.length < MIN_JUSTIFICACAO_OVERRIDE) {
+        throw new BadRequestException(
+          `Override de alergia exige justificação clínica com pelo menos ` +
+          `${MIN_JUSTIFICACAO_OVERRIDE} caracteres.`,
+        );
       }
 
       const medicacoesAtivas = await tx.medicacao.findMany({
-        where: { doenteId: data.doenteId, ativo: true },
+        where: { doenteId: data.doenteId, ativo: true, deletedAt: null },
         select: { nome: true },
       });
       const interacoesDetectadas = verificarInteracao(data.nome, medicacoesAtivas.map((m) => m.nome));
 
       const { forcarApesarDeAlergia: _, justificativaOverride: __, ...dadosMedicacao } = data;
+      // Só é override se havia mesmo alergia a ultrapassar — `forcar` sozinho não marca nada.
+      const houveOverride = !!conflito && !!data.forcarApesarDeAlergia;
       const medicacao = await tx.medicacao.create({
-        data: dadosMedicacao,
+        data: {
+          ...dadosMedicacao,
+          overrideAlergia: houveOverride,
+          ...(houveOverride && {
+            overrideMotivo: `${justificacao} [${conflito.correspondencia.motivo}]`.slice(0, 1000),
+            overrideAlergenioId: conflito.alergia.id,
+          }),
+        },
         include: { prescritoPor: { select: { id: true, nome: true } } },
       });
 
@@ -163,24 +217,74 @@ export class MedicacaoService {
       this.stewardship.registarSeAntibiotico(data.doenteId, medicacao.id, data.nome)
         .catch((err) => this.logger.warn(`Stewardship registo falhou: ${err?.message}`));
 
-      return { ...medicacao, avisoInteracoes: interacoesDetectadas, avisoIA: iaCheck.aviso };
+      return {
+        medicacao,
+        interacoesDetectadas,
+        override: houveOverride
+          ? { doenteNome: doente.nome, alergenio: conflito.alergia.alergenio, severidade: conflito.alergia.severidade, motivo: conflito.correspondencia.motivo }
+          : null,
+      };
     }, { isolationLevel: 'Serializable' });
+
+    // Um override de alergia tem de ser visível: alerta clínico no doente + aviso à farmácia.
+    if (resultado.override) {
+      const o = resultado.override;
+      const msg =
+        `Prescrição de "${data.nome}" APESAR de alergia documentada a "${o.alergenio}" ` +
+        `(severidade: ${o.severidade}; ${o.motivo}). Justificação: ${(data.justificativaOverride ?? '').trim()}`;
+      await this.alertas.criarAlerta(data.doenteId, 'override_alergia', msg, 3)
+        .catch((err) => this.logger.warn('Alerta de override falhou', err?.message ?? String(err)));
+      await this.notificacoes.enviarParaRole(
+        'farmaceutico',
+        `⚠ Override de alergia — ${o.doenteNome}`,
+        msg,
+        { doenteId: data.doenteId, medicacaoId: resultado.medicacao.id, tipo: 'override_alergia' },
+      ).catch((err) => this.logger.warn('Notificação ao farmacêutico falhou', err?.message ?? String(err)));
+    }
+
+    return {
+      ...resultado.medicacao,
+      avisoInteracoes: resultado.interacoesDetectadas,
+      avisoIA: iaCheck.aviso,
+      overrideAlergia: resultado.override,
+    };
   }
 
   async verificarInteracoes(doenteId: string, nomeMed: string): Promise<Interacao[]> {
     const medicacoesAtivas = await this.prisma.medicacao.findMany({
-      where: { doenteId, ativo: true },
+      where: { doenteId, ativo: true, deletedAt: null },
       select: { nome: true },
     });
     return verificarInteracao(nomeMed, medicacoesAtivas.map((m) => m.nome));
   }
 
+  /**
+   * Registo de administração com os "5 certos" realmente verificados.
+   *
+   * Antes: `doenteId` era opcional e a verificação do doente condicional (`if (data.doenteId …)`),
+   * a dose e a via nunca eram comparadas com o prescrito, não havia verificação de alergia no
+   * momento da administração — e ainda assim gravava-se `verificacao5Certas: true` de forma
+   * incondicional. Passa a gravar-se o **resultado real**, com o detalhe do que foi confirmado.
+   *
+   * `doenteId` é obrigatório em runtime (o tipo mantém-se opcional só porque o DTO pertence a
+   * outro agente — ver relatório).
+   */
   async registarAdministracao(data: {
     medicacaoId: string;
     doenteId?: string;
     administradoPorId: string;
     observacoes?: string;
+    dose?: string;
+    via?: string;
+    atestadoPeloEnfermeiro?: boolean;
+    qrPayload?: string;
   }) {
+    if (!data.doenteId) {
+      throw new BadRequestException(
+        '5 certos: doenteId é obrigatório — confirme a identidade do doente antes de administrar',
+      );
+    }
+
     const registo = await this.prisma.$transaction(async (tx) => {
       const medicacao = await tx.medicacao.findUnique({
         where: { id: data.medicacaoId },
@@ -196,14 +300,48 @@ export class MedicacaoService {
       if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
       if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
 
-      // 1. Doente certo — validar se doenteId foi enviado
-      if (data.doenteId && data.doenteId !== medicacao.doenteId) {
+      // 1. Doente certo — agora incondicional.
+      if (data.doenteId !== medicacao.doenteId) {
         throw new BadRequestException(
-          '5 certas: doente incorrecto — esta medicação não pertence ao doente indicado',
+          '5 certos: doente incorrecto — esta medicação não pertence ao doente indicado',
         );
       }
 
-      // 4. Hora certa — verificar janela de frequência
+      // 2. Medicamento certo — a medicação existe, está activa e é deste doente.
+      //    Alergia reavaliada no acto: a alergia pode ter sido documentada DEPOIS da prescrição.
+      const alergias = await tx.alergia.findMany({ where: { doenteId: medicacao.doenteId } });
+      const conflito = detetarConflitoAlergia(medicacao.nome, alergias);
+      if (conflito && !medicacao.overrideAlergia) {
+        throw new BadRequestException(
+          `5 certos: ALERGIA — "${medicacao.nome}" colide com a alergia documentada a ` +
+          `"${conflito.alergia.alergenio}" (${conflito.correspondencia.motivo}). ` +
+          `Não administrar sem revisão da prescrição.`,
+        );
+      }
+
+      // A etiqueta assinada é a fonte independente: o que lá está impresso foi gerado no
+      // momento da emissão e não pode ser forjado pelo cliente. É dela que saem os valores
+      // a comparar — não do que o cliente diz ter lido.
+      const daEtiqueta = data.qrPayload ? this.lerPayloadQR(data.qrPayload) : null;
+      const doseDeclarada = daEtiqueta?.dose ?? data.dose;
+      const viaDeclarada = daEtiqueta?.via ?? data.via;
+
+      // 3. Dose certa e 4. Via certa — comparadas com o prescrito quando declaradas.
+      const doseConfirmada = compararCampoPrescrito(doseDeclarada, medicacao.dose);
+      if (doseConfirmada === false) {
+        throw new BadRequestException(
+          `5 certos: dose incorrecta — prescrito "${medicacao.dose}", na etiqueta "${doseDeclarada}"`,
+        );
+      }
+      const viaConfirmada = compararCampoPrescrito(viaDeclarada, medicacao.via);
+      if (viaConfirmada === false) {
+        throw new BadRequestException(
+          `5 certos: via incorrecta — prescrito "${medicacao.via}", na etiqueta "${viaDeclarada}"`,
+        );
+      }
+
+      // 5. Hora certa — janela de frequência. Em SOS/perfusão contínua não há janela a
+      //    conferir, e a hora dá-se por certa por definição.
       const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
       if (intervaloHoras !== null && medicacao.registos.length > 0) {
         const ultimaAdm = medicacao.registos[0].administradoEm;
@@ -217,13 +355,37 @@ export class MedicacaoService {
         }
       }
 
+      // Três estados, não dois. 'verificado' = o sistema comparou dois valores de origens
+      // independentes (etiqueta lida vs. prescrição). 'atestado' = o enfermeiro percorreu
+      // a lista e confirmou, sem o sistema ter comparado nada. 'nao_confirmado' = nem uma
+      // coisa nem outra. Colapsar 'atestado' em 'verificado' é o que fazia este registo
+      // afirmar uma verificação que nunca aconteceu.
+      const atestado = data.atestadoPeloEnfermeiro === true;
+      const estado = (verificado: boolean | null) =>
+        verificado === true ? 'verificado' : atestado ? 'atestado' : 'nao_confirmado';
+
+      const certos = {
+        doente: 'verificado' as const, // conferido contra a BD, não contra o pedido
+        medicamento: 'verificado' as const,
+        dose: estado(doseConfirmada),
+        via: estado(viaConfirmada),
+        hora: 'verificado' as const, // qualquer violação da janela já teria lançado acima
+      };
+
+      // `verificacao5Certas` continua a significar o que o nome diz: os CINCO conferidos
+      // pelo sistema. Uma atestação fica registada em `certosVerificados`, e é isso que
+      // uma auditoria clínica precisa de conseguir distinguir.
+      const todosConfirmados = Object.values(certos).every((e) => e === 'verificado');
+
       return tx.registoMedicacao.create({
         data: {
           medicacaoId: data.medicacaoId,
           doenteId: medicacao.doenteId,
           administradoPorId: data.administradoPorId,
           observacoes: data.observacoes,
-          verificacao5Certas: true,
+          // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
+          verificacao5Certas: todosConfirmados,
+          certosVerificados: certos,
         },
         include: {
           administradoPor: { select: { id: true, nome: true } },
@@ -291,7 +453,7 @@ export class MedicacaoService {
     else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
     else { tipo = 'noite'; if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1); }
 
-    const diaStr = dataRef.toISOString().split('T')[0];
+    const diaStr = chaveDiaClinico(dataRef);
     const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
 
@@ -306,7 +468,7 @@ export class MedicacaoService {
     const doenteIds = [...new Set(atribuicoes.map((a) => a.doenteId))];
 
     return this.prisma.medicacao.findMany({
-      where: { doenteId: { in: doenteIds }, ativo: true },
+      where: { doenteId: { in: doenteIds }, ativo: true, deletedAt: null },
       include: {
         doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
         prescritoPor: { select: { nome: true } },
@@ -322,7 +484,7 @@ export class MedicacaoService {
 
   async pendentesValidacao(page = 1, limit = 100) {
     return this.prisma.medicacao.findMany({
-      where: { ativo: true, estadoValidacao: null },
+      where: { ativo: true, estadoValidacao: null, deletedAt: null },
       include: {
         doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
         prescritoPor: { select: { nome: true, role: true } },
@@ -508,7 +670,7 @@ export class MedicacaoService {
     const { inicio, fim } = TURNOS[turno];
 
     const dataRef = dataStr ? new Date(dataStr) : new Date();
-    const dia = dataRef.toISOString().split('T')[0];
+    const dia = chaveDiaClinico(dataRef);
 
     const horaInicioDate = new Date(`${dia}T${String(inicio).padStart(2, '0')}:00:00.000Z`);
     const horaFimDate   = new Date(`${dia}T${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00:00.000Z`);
@@ -640,58 +802,231 @@ export class MedicacaoService {
 
   // ── Verificação QR 5 Certos ─────────────────────────────────────────────────
 
-  async verificar5Certos(qrPayload: string, doenteIdEsperado: string) {
-    let payload: { medicacaoId?: string; doenteId?: string; nome?: string; dose?: string; via?: string };
+  /** Segredo de assinatura das etiquetas QR. Cai no JWT_SECRET (obrigatório no boot). */
+  private get qrSecret(): string {
+    const secret = process.env.MEDICACAO_QR_SECRET || process.env.JWT_SECRET;
+    if (!secret) throw new Error('MEDICACAO_QR_SECRET/JWT_SECRET não configurado');
+    return secret;
+  }
+
+  private assinarQR(corpo: string): string {
+    return crypto.createHmac('sha256', this.qrSecret).update(corpo).digest('base64url');
+  }
+
+  /**
+   * Gera a etiqueta QR **assinada** de uma medicação. Sem isto o payload do QR era JSON
+   * simples produzido pelo cliente — qualquer pessoa podia fabricar um.
+   * Formato: `<base64url(json)>.<hmac>`.
+   */
+  async gerarPayloadQR(medicacaoId: string): Promise<{ qrPayload: string }> {
+    const medicacao = await this.prisma.medicacao.findUnique({
+      where: { id: medicacaoId },
+      select: { id: true, doenteId: true, nome: true, dose: true, via: true },
+    });
+    if (!medicacao) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);
+
+    const corpo = Buffer.from(JSON.stringify({
+      medicacaoId: medicacao.id,
+      doenteId: medicacao.doenteId,
+      // Dose e via vão na etiqueta para poderem ser confrontadas com a prescrição no
+      // momento da leitura. É isso que permite apanhar uma etiqueta impressa ANTES de
+      // uma alteração de dose — sem elas, os certos 3 e 4 não são verificáveis à
+      // cabeceira e não podem ser dados como verificados.
+      dose: medicacao.dose,
+      via: medicacao.via,
+      emitidoEm: new Date().toISOString(),
+    })).toString('base64url');
+    return { qrPayload: `${corpo}.${this.assinarQR(corpo)}` };
+  }
+
+  /** Valida a assinatura e devolve o conteúdo do QR, ou `null` se não for de confiança. */
+  private lerPayloadQR(qrPayload: string): {
+    medicacaoId?: string; doenteId?: string; dose?: string; via?: string;
+  } | null {
+    const partes = (qrPayload ?? '').split('.');
+    if (partes.length !== 2) return null;
+    const [corpo, assinatura] = partes;
+
+    const esperada = this.assinarQR(corpo);
+    const a = Buffer.from(assinatura);
+    const b = Buffer.from(esperada);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+
     try {
-      payload = JSON.parse(qrPayload);
+      return JSON.parse(Buffer.from(corpo, 'base64url').toString('utf8'));
     } catch {
-      return { valido: false, falhas: [{ certo: 'QR', motivo: 'Código QR inválido ou corrompido' }], medicacao: null };
+      return null;
+    }
+  }
+
+  /**
+   * Verificação dos 5 certos a partir da etiqueta QR.
+   *
+   * Antes: o payload era JSON não assinado vindo do cliente e o "doente certo" comparava
+   * `payload.doenteId` com `doenteIdEsperado` — **dois valores vindos do mesmo cliente**.
+   * Agora o QR é verificado por HMAC e o doente é confrontado com o que está na BD.
+   */
+  async verificar5Certos(qrPayload: string, doenteIdEsperado: string) {
+    const payload = this.lerPayloadQR(qrPayload);
+    if (!payload) {
+      return this.resultado5Certos(null, [], 'Etiqueta QR inválida, corrompida ou sem assinatura válida');
     }
 
-    const { medicacaoId, doenteId: doenteIdQR } = payload;
-    if (!medicacaoId) return { valido: false, falhas: [{ certo: 'QR', motivo: 'QR sem ID de medicação' }], medicacao: null };
+    const { medicacaoId } = payload;
+    if (!medicacaoId) {
+      return this.resultado5Certos(null, [], 'QR sem identificação de medicação');
+    }
 
     const medicacao = await this.prisma.medicacao.findUnique({
       where: { id: medicacaoId },
       include: { registos: { orderBy: { administradoEm: 'desc' }, take: 1 } },
     });
 
-    const falhas: { certo: string; motivo: string }[] = [];
-
-    // Certo 1 — Doente certo
-    if (!doenteIdQR || doenteIdQR !== doenteIdEsperado) {
-      falhas.push({ certo: 'Doente', motivo: 'QR pertence a outro doente' });
-    }
-
-    // Certo 2 — Medicamento certo
     if (!medicacao) {
-      return { valido: false, falhas: [{ certo: 'Medicamento', motivo: 'Medicação não encontrada' }], medicacao: null };
-    }
-    if (!medicacao.ativo) {
-      falhas.push({ certo: 'Medicamento', motivo: 'Medicação foi descontinuada' });
+      return this.resultado5Certos(null, [
+        { certo: CERTO_MEDICAMENTO, estado: 'falha', motivo: 'Medicação não encontrada' },
+      ]);
     }
 
-    // Certo 5 — Hora certa (verificação de janela)
-    const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
-    if (intervaloHoras && medicacao.registos.length > 0) {
-      const ultimaAdm = medicacao.registos[0].administradoEm;
-      const horasDesde = (Date.now() - ultimaAdm.getTime()) / 3_600_000;
-      const TOLERANCIA_H = 1;
-      if (horasDesde < intervaloHoras - TOLERANCIA_H) {
-        falhas.push({ certo: 'Hora', motivo: `Administração prematura — última há ${horasDesde.toFixed(1)}h (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)` });
-      }
+    const certos: CertoVerificado[] = [];
+
+    // Certo 1 — Doente certo. O lado autoritativo é a BD, não o QR.
+    certos.push(
+      !doenteIdEsperado || medicacao.doenteId !== doenteIdEsperado
+        ? { certo: CERTO_DOENTE, estado: 'falha', motivo: 'A medicação não pertence ao doente à cabeceira' }
+        : { certo: CERTO_DOENTE, estado: 'ok' },
+    );
+
+    // Certo 2 — Medicamento certo: activo e sem alergia por resolver.
+    const alergias = await this.prisma.alergia.findMany({ where: { doenteId: medicacao.doenteId } });
+    const conflito = detetarConflitoAlergia(medicacao.nome, alergias);
+    if (!medicacao.ativo) {
+      certos.push({ certo: CERTO_MEDICAMENTO, estado: 'falha', motivo: 'Medicação foi descontinuada' });
+    } else if (conflito && !medicacao.overrideAlergia) {
+      certos.push({
+        certo: CERTO_MEDICAMENTO,
+        estado: 'falha',
+        motivo: `Alergia documentada a "${conflito.alergia.alergenio}" — ${conflito.correspondencia.motivo}`,
+      });
+    } else {
+      certos.push({ certo: CERTO_MEDICAMENTO, estado: 'ok' });
     }
+
+    // Certos 3 e 4 — Dose e via. Compara-se o que está IMPRESSO na etiqueta com o que
+    // está prescrito agora: é assim que se apanha uma etiqueta emitida antes de uma
+    // alteração de dose. Uma etiqueta antiga, sem estes campos, não permite verificar —
+    // e nesse caso o resultado é 'não verificado', nunca 'ok'.
+    certos.push(this.compararComEtiqueta(CERTO_DOSE, payload.dose, medicacao.dose, 'dose'));
+    certos.push(this.compararComEtiqueta(CERTO_VIA, payload.via, medicacao.via, 'via'));
+
+    // Certo 5 — Hora certa.
+    certos.push(this.verificarHora(medicacao));
+
+    return this.resultado5Certos(medicacao, certos);
+  }
+
+  /** Confronta um campo impresso na etiqueta com o valor prescrito. */
+  private compararComEtiqueta(
+    certo: string,
+    naEtiqueta: string | undefined,
+    prescrito: string,
+    nomeCampo: string,
+  ): CertoVerificado {
+    if (!naEtiqueta) {
+      return {
+        certo,
+        estado: 'nao_verificado',
+        motivo: `Etiqueta antiga, sem ${nomeCampo} impressa. Confirme contra a prescrição (${prescrito}) e reimprima a etiqueta.`,
+      };
+    }
+    const normalizar = (v: string) => v.trim().toLowerCase().replace(/\s+/g, ' ');
+    if (normalizar(naEtiqueta) !== normalizar(prescrito)) {
+      return {
+        certo,
+        estado: 'falha',
+        motivo: `A etiqueta diz "${naEtiqueta}" e a prescrição actual diz "${prescrito}".`,
+      };
+    }
+    return { certo, estado: 'ok' };
+  }
+
+  /** Janela horária: só é verificável havendo frequência interpretável e administração anterior. */
+  private verificarHora(medicacao: {
+    frequencia: string;
+    registos: { administradoEm: Date }[];
+  }): CertoVerificado {
+    const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
+    if (!intervaloHoras) {
+      return {
+        certo: CERTO_HORA,
+        estado: 'nao_verificado',
+        motivo: `Frequência "${medicacao.frequencia}" não permite calcular a janela. Confirme o horário prescrito.`,
+      };
+    }
+    if (medicacao.registos.length === 0) {
+      return {
+        certo: CERTO_HORA,
+        estado: 'nao_verificado',
+        motivo: 'Primeira administração — não há anterior com que comparar. Confirme o horário prescrito.',
+      };
+    }
+    const horasDesde = (Date.now() - medicacao.registos[0].administradoEm.getTime()) / 3_600_000;
+    const TOLERANCIA_H = 1;
+    if (horasDesde < intervaloHoras - TOLERANCIA_H) {
+      return {
+        certo: CERTO_HORA,
+        estado: 'falha',
+        motivo: `Administração prematura — última há ${horasDesde.toFixed(1)}h (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)`,
+      };
+    }
+    return { certo: CERTO_HORA, estado: 'ok' };
+  }
+
+  /**
+   * Monta a resposta. Os cinco certos aparecem SEMPRE, cada um com o seu estado — é
+   * esta garantia que impede o cliente de inferir "verde" a partir da ausência de uma
+   * falha, que era como dose e via apareciam confirmadas sem nunca terem sido olhadas.
+   */
+  private resultado5Certos(
+    medicacao: { id: string; nome: string; dose: string; via: string; frequencia: string } | null,
+    avaliados: CertoVerificado[],
+    erroEtiqueta?: string,
+  ) {
+    // Uma etiqueta que não se consegue ler com confiança não torna o medicamento errado:
+    // torna TUDO por verificar. Marcá-la como falha de um certo específico daria a ideia
+    // de que os outros quatro tinham sido conferidos.
+    const porNome = new Map(avaliados.map((c) => [c.certo, c]));
+    const certos: CertoVerificado[] = NOMES_5_CERTOS.map(
+      (nome) =>
+        porNome.get(nome) ?? {
+          certo: nome,
+          estado: 'nao_verificado' as const,
+          motivo: erroEtiqueta ?? 'Não foi possível verificar este certo.',
+        },
+    );
 
     return {
-      valido: falhas.length === 0,
-      falhas,
-      medicacao: {
-        id: medicacao.id,
-        nome: medicacao.nome,
-        dose: medicacao.dose,
-        via: medicacao.via,
-        frequencia: medicacao.frequencia,
-      },
+      certos,
+      // `valido` só é verdade quando os CINCO estão confirmados. Um 'não verificado'
+      // não é uma aprovação silenciosa.
+      valido: certos.every((c) => c.estado === 'ok'),
+      erroEtiqueta,
+      falhas: [
+        ...(erroEtiqueta ? [{ certo: 'QR', motivo: erroEtiqueta }] : []),
+        ...certos
+          .filter((c) => c.estado === 'falha')
+          .map((c) => ({ certo: c.certo, motivo: c.motivo ?? '' })),
+      ],
+      porVerificar: certos.filter((c) => c.estado === 'nao_verificado').map((c) => c.certo),
+      medicacao: medicacao
+        ? {
+            id: medicacao.id,
+            nome: medicacao.nome,
+            dose: medicacao.dose,
+            via: medicacao.via,
+            frequencia: medicacao.frequencia,
+          }
+        : null,
     };
   }
 

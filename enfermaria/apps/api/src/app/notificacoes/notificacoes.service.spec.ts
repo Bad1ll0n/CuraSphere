@@ -13,6 +13,8 @@ const mockPrisma = {
   },
   utilizador: { findMany: jest.fn() },
   atribuicaoDoente: { findMany: jest.fn() },
+  atribuicaoHorarioTurno: { findMany: jest.fn() },
+  turno: { findFirst: jest.fn() },
 };
 
 describe('NotificacoesService', () => {
@@ -25,6 +27,10 @@ describe('NotificacoesService', () => {
     mockPrisma.notificacaoInApp.create.mockResolvedValue({ id: 'n-1' });
     mockPrisma.notificacaoInApp.findMany.mockResolvedValue([]);
     mockPrisma.notificacaoInApp.count.mockResolvedValue(0);
+    mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([]);
+    mockPrisma.atribuicaoHorarioTurno.findMany.mockResolvedValue([]);
+    mockPrisma.turno.findFirst.mockResolvedValue(null);
+    mockPrisma.utilizador.findMany.mockResolvedValue([]);
 
     // Mock global fetch before each test so circuit breaker state is fresh
     mockFetch = jest.fn().mockResolvedValue({ ok: true });
@@ -143,6 +149,99 @@ describe('NotificacoesService', () => {
           data: expect.objectContaining({ lida: true, lidaEm: expect.any(Date) }),
         }),
       );
+    });
+  });
+
+  // ── enviarParaDoente() — BA-04(a) destinatários ───────────────────────────────
+
+  describe('enviarParaDoente()', () => {
+    const turnoAberto = { id: 'turno-1', chefeTurnoId: 'chefe-1' };
+
+    /** Última chamada a utilizador.findMany é sempre o filtro de "activos". */
+    const mockAtivos = (ids: string[]) =>
+      mockPrisma.utilizador.findMany.mockResolvedValue(ids.map((id) => ({ id })));
+
+    it('notifica os enfermeiros atribuídos no turno em curso', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(turnoAberto);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([{ enfermeiroId: 'enf-1' }]);
+      mockAtivos(['enf-1']);
+
+      await service.enviarParaDoente('d1', 'T', 'C');
+
+      expect(mockPrisma.atribuicaoDoente.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { doenteId: 'd1', turnoId: 'turno-1' } }),
+      );
+      expect(mockPrisma.notificacaoInApp.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ utilizadorId: 'enf-1' }) }),
+      );
+    });
+
+    it('inclui o médico responsável do turno (antes nunca era notificado)', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(turnoAberto);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([{ enfermeiroId: 'enf-1' }]);
+      mockPrisma.atribuicaoHorarioTurno.findMany.mockResolvedValue([
+        { utilizador: { id: 'med-1', role: 'medico' } },
+        { utilizador: { id: 'aux-1', role: 'auxiliar' } },
+      ]);
+      mockAtivos(['enf-1', 'med-1']);
+
+      await service.enviarParaDoente('d1', 'T', 'C');
+
+      const notificados = mockPrisma.notificacaoInApp.create.mock.calls.map(
+        (c: [{ data: { utilizadorId: string } }]) => c[0].data.utilizadorId,
+      );
+      expect(notificados).toEqual(expect.arrayContaining(['enf-1', 'med-1']));
+      expect(notificados).not.toContain('aux-1');
+    });
+
+    it('doente sem atribuição cai no chefe de turno (antes: zero destinatários)', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(turnoAberto);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([]);
+      mockAtivos(['chefe-1']);
+
+      await service.enviarParaDoente('d1', 'T', 'C');
+
+      expect(mockPrisma.notificacaoInApp.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ utilizadorId: 'chefe-1' }) }),
+      );
+    });
+
+    it('sem turno aberto nem atribuições, recorre à chefia de serviço', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(null);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([]);
+      mockPrisma.utilizador.findMany
+        .mockResolvedValueOnce([{ id: 'chefe-enf' }]) // chefias
+        .mockResolvedValueOnce([{ id: 'chefe-enf' }]); // filtro de activos
+
+      await service.enviarParaDoente('d1', 'T', 'C');
+
+      expect(mockPrisma.notificacaoInApp.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ utilizadorId: 'chefe-enf' }) }),
+      );
+    });
+
+    it('exclui utilizadores desactivados', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(turnoAberto);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([
+        { enfermeiroId: 'enf-activo' }, { enfermeiroId: 'enf-inactivo' },
+      ]);
+      mockAtivos(['enf-activo']);
+
+      await service.enviarParaDoente('d1', 'T', 'C');
+
+      const notificados = mockPrisma.notificacaoInApp.create.mock.calls.map(
+        (c: [{ data: { utilizadorId: string } }]) => c[0].data.utilizadorId,
+      );
+      expect(notificados).toEqual(['enf-activo']);
+    });
+
+    it('não rebenta quando não há mesmo nenhum destinatário', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue(null);
+      mockPrisma.atribuicaoDoente.findMany.mockResolvedValue([]);
+      mockPrisma.utilizador.findMany.mockResolvedValue([]);
+
+      await expect(service.enviarParaDoente('d1', 'T', 'C')).resolves.toBeUndefined();
+      expect(mockPrisma.notificacaoInApp.create).not.toHaveBeenCalled();
     });
   });
 

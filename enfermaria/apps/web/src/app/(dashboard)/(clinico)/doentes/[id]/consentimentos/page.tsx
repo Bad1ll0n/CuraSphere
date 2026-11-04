@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 const TIPOS: Record<string, string> = {
   cirurgia: 'Cirurgia',
@@ -26,6 +27,10 @@ export default function ConsentimentosPage() {
   const [modalAssinar, setModalAssinar] = useState<string | null>(null);
   const [modalRecusar, setModalRecusar] = useState<string | null>(null);
   const [motivoRecusa, setMotivoRecusa] = useState('');
+
+  const dlgCriar = useDialogoAcessivel({ aberto: modalCriar, onFechar: () => setModalCriar(false), titulo: 'Criar consentimento' });
+  const dlgAssinar = useDialogoAcessivel({ aberto: !!modalAssinar, onFechar: () => setModalAssinar(null), titulo: 'Assinar consentimento' });
+  const dlgRecusar = useDialogoAcessivel({ aberto: !!modalRecusar, onFechar: () => setModalRecusar(null), titulo: 'Recusar consentimento' });
 
   // Form criar consentimento
   const [tipo, setTipo] = useState('cirurgia');
@@ -192,13 +197,13 @@ export default function ConsentimentosPage() {
       {/* Modal: Criar consentimento */}
       {modalCriar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+          <div {...dlgCriar.propsPainel} className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <h3 className="font-bold text-slate-800 text-lg mb-4">Novo Consentimento Informado</h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Tipo</label>
-                <select
+                <label htmlFor="fpage-0" className="block text-sm font-medium text-slate-700 mb-1">Tipo</label>
+                <select id="fpage-0"
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value)}
                   className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -210,8 +215,8 @@ export default function ConsentimentosPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Descrição do procedimento</label>
-                <textarea
+                <label htmlFor="fpage-1" className="block text-sm font-medium text-slate-700 mb-1">Descrição do procedimento</label>
+                <textarea id="fpage-1"
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   rows={4}
@@ -243,7 +248,7 @@ export default function ConsentimentosPage() {
       {/* Modal: Assinar */}
       {modalAssinar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+          <div {...dlgAssinar.propsPainel} className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <h3 className="font-bold text-slate-800 text-lg mb-2">Registar Assinatura</h3>
             <p className="text-sm text-slate-500 mb-5">
               Confirme que o doente foi devidamente informado e assinou o consentimento na presença de um testemunho.
@@ -283,15 +288,15 @@ export default function ConsentimentosPage() {
       {/* Modal: Recusar */}
       {modalRecusar && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+          <div {...dlgRecusar.propsPainel} className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <h3 className="font-bold text-slate-800 text-lg mb-2">Registar Recusa</h3>
             <p className="text-sm text-slate-500 mb-4">
               O registo de recusa de consentimento é obrigatório por lei e ficará no processo do doente.
             </p>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Motivo da recusa</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-sm font-medium text-slate-700 mb-1">Motivo da recusa</label>
+              <textarea id="fpage-2"
                 value={motivoRecusa}
                 onChange={(e) => setMotivoRecusa(e.target.value)}
                 rows={3}

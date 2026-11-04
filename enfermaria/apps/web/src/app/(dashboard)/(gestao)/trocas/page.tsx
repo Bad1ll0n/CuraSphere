@@ -222,9 +222,9 @@ export default function TrocasPage() {
 
             {/* Passo 1 */}
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
                 1. O teu turno
-              </label>
+              </span>
               {meusTurnos.length === 0 ? (
                 <p className="text-sm text-slate-400">Sem turnos futuros disponíveis</p>
               ) : (
@@ -246,9 +246,9 @@ export default function TrocasPage() {
             {/* Passo 2 */}
             {turnoSelecionado && (
               <div style={{ marginBottom: '24px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
                   2. Quem te vai cobrir
-                </label>
+                </span>
                 {colegas.length === 0 ? (
                   <p className="text-sm text-slate-400">Sem colegas disponíveis</p>
                 ) : (

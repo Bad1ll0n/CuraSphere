@@ -36,7 +36,7 @@ export function SepsisPanel({ doenteId, utilizador }: { doenteId: string; utiliz
   const podeMarcar = ['medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
 
   const carregar = () => {
-    api.get(`/sepsis/${doenteId}`).then(r => setAlertas(r.data)).catch(() => {});
+    api.get(`/sepsis/${doenteId}`).then(r => setAlertas(r.data)).catch(() => { /* vazio */ });
   };
 
   useEffect(() => { carregar(); }, [doenteId]);

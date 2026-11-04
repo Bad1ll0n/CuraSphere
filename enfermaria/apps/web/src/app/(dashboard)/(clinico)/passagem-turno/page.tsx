@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 import type { EstadoDoente, Turno as SharedTurno } from '@org/shared';
 
@@ -139,6 +140,8 @@ export default function PassagemTurnoPage() {
 
   const [expandido, setExpandido] = useState<Record<string, boolean>>({});
   const [modalFechar, setModalFechar] = useState(false);
+
+  const dlgFechar = useDialogoAcessivel({ aberto: modalFechar, onFechar: () => setModalFechar(false), titulo: 'Resumo do turno' });
   const [copiado, setCopiado] = useState(false);
 
   const carregar = useCallback(async () => {
@@ -425,7 +428,12 @@ export default function PassagemTurnoPage() {
 
                   {/* Header */}
                   <div
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={aberto}
+                    aria-label={`${aberto ? 'Fechar' : 'Abrir'} detalhe de ${doente.nome}`}
                     onClick={() => setExpandido(e => ({ ...e, [doente.id]: !e[doente.id] }))}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandido(prev => ({ ...prev, [doente.id]: !prev[doente.id] })); } }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 22px', cursor: 'pointer', background: aberto ? '#fafafa' : '#fff', borderBottom: aberto ? '1px solid #f1f5f9' : 'none' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -590,9 +598,9 @@ export default function PassagemTurnoPage() {
 
       {/* Modal Fechar Turno */}
       {modalFechar && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
+        <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}
              onClick={(e) => e.target === e.currentTarget && setModalFechar(false)}>
-          <div style={{ background: 'var(--bg-card)', borderRadius: 20, boxShadow: '0 25px 50px rgba(0,0,0,0.25)', width: '100%', maxWidth: 600, maxHeight: '90vh', display: 'flex', flexDirection: 'column', margin: '0 16px' }}>
+          <div {...dlgFechar.propsPainel} style={{ background: 'var(--bg-card)', borderRadius: 20, boxShadow: '0 25px 50px rgba(0,0,0,0.25)', width: '100%', maxWidth: 600, maxHeight: '90vh', display: 'flex', flexDirection: 'column', margin: '0 16px' }}>
 
             {/* Header modal */}
             <div style={{ padding: '24px 28px 16px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

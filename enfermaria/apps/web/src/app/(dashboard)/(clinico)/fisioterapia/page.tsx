@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface SessaoFisioterapia {
   id: string;
@@ -32,6 +33,9 @@ export default function FisioterapiaPage() {
   const [form, setForm] = useState({ doenteId: '', data: '', duracao: 45, descricao: '', planoId: '' });
   const [salvando, setSalvando] = useState(false);
   const [realizarModal, setRealizarModal] = useState<SessaoFisioterapia | null>(null);
+  const dlgNovaSessao = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Nova sessão de fisioterapia' });
+  const dlgRealizar = useDialogoAcessivel({ aberto: !!realizarModal, onFechar: () => setRealizarModal(null), titulo: 'Registar sessão realizada' });
+
   const [evolucao, setEvolucao] = useState('');
 
   const carregar = async () => {
@@ -138,31 +142,31 @@ export default function FisioterapiaPage() {
       {/* Modal: Agendar */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovaSessao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Sessão</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'ID do Doente *', key: 'doenteId', type: 'text', placeholder: 'UUID do doente' },
               { label: 'Data e Hora *', key: 'data', type: 'datetime-local', placeholder: '' },
             ].map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                <input aria-label={label} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500"
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
               </div>
             ))}
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
-              <input type="number" value={form.duracao} onChange={e => setForm(f => ({ ...f, duracao: Number(e.target.value) }))}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Duração (min)</label>
+              <input id="fpage-1" type="number" value={form.duracao} onChange={e => setForm(f => ({ ...f, duracao: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500"
                 style={{ padding: '10px 14px' }} min={15} step={15} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fpage-2" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                 rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva os exercícios ou técnicas previstos..." />
             </div>
@@ -183,15 +187,15 @@ export default function FisioterapiaPage() {
       {/* Modal: Realizar */}
       {realizarModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRealizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Sessão Realizada</h2>
-              <button onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{realizarModal.doente?.nome} — {realizarModal.descricao}</p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Evolução / Observações</label>
-              <textarea value={evolucao} onChange={e => setEvolucao(e.target.value)}
+              <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Evolução / Observações</label>
+              <textarea id="fpage-3" value={evolucao} onChange={e => setEvolucao(e.target.value)}
                 rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-lime-500 resize-none"
                 style={{ padding: '10px 14px' }} placeholder="Descreva a evolução observada durante a sessão..." />
             </div>

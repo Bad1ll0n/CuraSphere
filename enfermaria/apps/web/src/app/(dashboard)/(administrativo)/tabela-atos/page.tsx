@@ -61,7 +61,7 @@ export default function TabelaAtosPage() {
     try {
       const res = await api.get('/atos-clinicos?todos=true');
       setAtos(res.data);
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   useEffect(() => { carregar(); }, []);
@@ -121,14 +121,14 @@ export default function TabelaAtosPage() {
     try {
       await api.delete(`/atos-clinicos/${ato.id}`);
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   const reativar = async (ato: AtoClinico) => {
     try {
       await api.patch(`/atos-clinicos/${ato.id}`, { ativo: true });
       carregar();
-    } catch {}
+    } catch { /* vazio */ }
   };
 
   const atosFiltrados = atos.filter(a => tab === 'todos' || a.categoria === tab);
@@ -251,19 +251,19 @@ export default function TabelaAtosPage() {
 
       {/* Modal Criar/Editar */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        <div role="presentation" className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           onClick={e => { if (e.target === e.currentTarget) setModal(false); }}>
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '28px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{editando ? 'Editar Ato' : 'Novo Ato Clínico'}</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               {/* Código */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Código *</label>
-                <input
+                <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Código *</label>
+                <input id="fpage-0"
                   value={form.codigo}
                   onChange={e => setForm(f => ({ ...f, codigo: e.target.value }))}
                   placeholder="ex: CONS-001"
@@ -274,8 +274,8 @@ export default function TabelaAtosPage() {
 
               {/* Categoria */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria *</label>
-                <select
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Categoria *</label>
+                <select id="fpage-1"
                   value={form.categoria}
                   onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -287,8 +287,8 @@ export default function TabelaAtosPage() {
 
               {/* Descrição */}
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-                <input
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+                <input id="fpage-2"
                   value={form.descricao}
                   onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                   placeholder="ex: Consulta de Clínica Geral"
@@ -299,8 +299,8 @@ export default function TabelaAtosPage() {
 
               {/* Preço Base */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço Base (€) *</label>
-                <input
+                <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Preço Base (€) *</label>
+                <input id="fpage-3"
                   type="number"
                   min="0"
                   step="0.01"
@@ -314,8 +314,8 @@ export default function TabelaAtosPage() {
 
               {/* Especialidade */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade (auto-fatura)</label>
-                <select
+                <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade (auto-fatura)</label>
+                <select id="fpage-4"
                   value={form.especialidade}
                   onChange={e => setForm(f => ({ ...f, especialidade: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"

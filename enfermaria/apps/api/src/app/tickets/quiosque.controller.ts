@@ -1,12 +1,28 @@
-import { Controller, Post, Get, Param, Query, Body, Sse, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
-import { SkipThrottle } from '@nestjs/throttler';
+import { Controller, Post, Get, Param, Query, Body, Sse, UseGuards, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { map } from 'rxjs';
 import { TicketsService } from './tickets.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConsultasService } from '../consultas/consultas.service';
+import { normalizarCodigoMarcacao } from '../consultas/codigo-marcacao';
 import { CriarMarcacaoQuiosqueDto } from './dto/criar-marcacao-quiosque.dto';
 import { TirarSenhaDto } from './dto/tirar-senha.dto';
+import { QuiosqueGuard } from '../common/quiosque.guard';
 
+/**
+ * SEC-02: este controlador não tinha `@UseGuards` nenhum — o único APP_GUARD da app é o
+ * ThrottlerGuard. `GET /v1/quiosque/paciente?nif=X` devolvia id, nome e data de nascimento
+ * sem qualquer autenticação e, encadeando com `/paciente/:id/marcacoes-hoje`, a consulta e
+ * a especialidade (dado de saúde, art.º 9.º RGPD). Passa a exigir o token de quiosque que
+ * já existia no projecto (ver `QuiosqueGuard`).
+ *
+ * O guard cobre TODAS as rotas, incluindo as que alimentam o ecrã de parede `/painel`
+ * (`/fila`, `/ultimos`, `/stats`, `@Sse('eventos')`): `TicketsService.listarFila()` e
+ * `ultimos()` fazem `findMany` sem `select`, devolvendo a linha `Ticket` inteira — que
+ * inclui `nomeUtente` e `telefone`. O mesmo objecto vai nos eventos SSE. Não há aqui
+ * nenhuma rota que se possa deixar aberta sem expor dados pessoais.
+ */
+@UseGuards(QuiosqueGuard)
 @Controller('quiosque')
 export class QuiosqueController {
   constructor(
@@ -67,11 +83,17 @@ export class QuiosqueController {
 
   // ─── Marcações ───────────────────────────────────────────────────────────
 
+  // S-13: o código é a única chave desta pesquisa, e a resposta traz o nome e o número de
+  // processo do doente. O limite trava a enumeração dos códigos antigos de 4 caracteres, que
+  // continuam válidos até serem usados. Não é mais apertado porque os quiosques de um mesmo
+  // átrio costumam sair pelo mesmo IP.
   @Get('marcacao')
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
   async buscarMarcacao(@Query('codigo') codigo: string) {
-    if (!codigo) throw new BadRequestException('Código obrigatório');
+    const normalizado = normalizarCodigoMarcacao(codigo);
+    if (!normalizado) throw new BadRequestException('Código de marcação inválido');
     const consulta = await this.prisma.consulta.findUnique({
-      where: { codigo: codigo.toUpperCase() },
+      where: { codigo: normalizado },
       include: {
         doente: { select: { id: true, nome: true, numeroProcesso: true } },
         medico: { select: { id: true, nome: true, subRole: true } },

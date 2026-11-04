@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import type { Tarefa as SharedTarefa } from '@org/shared';
 
 interface TarefaDoente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
@@ -74,6 +75,9 @@ export default function TarefasPage() {
   const [ePrioridade, setEPrioridade] = useState<'baixa' | 'media' | 'alta' | 'urgente'>('media');
   const [eGrupo, setEGrupo] = useState('enfermeiro');
   const [ePrazo, setEPrazo] = useState('');
+  const dlgNovaTarefa = useDialogoAcessivel({ aberto: modalNovaTarefa, onFechar: () => setModalNovaTarefa(false), titulo: 'Nova tarefa' });
+  const dlgEditarTarefa = useDialogoAcessivel({ aberto: !!modalEditarTarefa, onFechar: () => setModalEditarTarefa(null), titulo: 'Editar tarefa' });
+
   const [editando, setEditando] = useState(false);
 
   const [sseConectado, setSseConectado] = useState(false);
@@ -347,14 +351,14 @@ export default function TarefasPage() {
       {/* Modal Nova Tarefa */}
       {modalNovaTarefa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgNovaTarefa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
-              <button onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
-              <input ref={inputRef} type="text" placeholder="Pesquisar doente..." value={searchDoente}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
+              <input id="fpage-0" ref={inputRef} type="text" placeholder="Pesquisar doente..." value={searchDoente}
                 onChange={(e) => { setSearchDoente(e.target.value); setDoenteSelId(''); }}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
@@ -372,14 +376,14 @@ export default function TarefasPage() {
               )}
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={tDesc} onChange={(e) => setTDesc(e.target.value)} placeholder="Descrever a tarefa..." rows={3}
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fpage-1" value={tDesc} onChange={(e) => setTDesc(e.target.value)} placeholder="Descrever a tarefa..." rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</span>
                 <div className="flex gap-2">
                   {(['clinica', 'logistica'] as const).map((t) => (
                     <button key={t} onClick={() => setTTipo(t)}
@@ -390,8 +394,8 @@ export default function TarefasPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
-                <select value={tPrioridade} onChange={(e) => setTPrioridade(e.target.value as any)}
+                <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
+                <select id="fpage-3" value={tPrioridade} onChange={(e) => setTPrioridade(e.target.value as any)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '8px 12px' }}>
                   <option value="baixa">Baixa</option>
@@ -403,8 +407,8 @@ export default function TarefasPage() {
             </div>
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '24px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
-                <select value={tGrupo} onChange={(e) => setTGrupo(e.target.value as any)}
+                <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
+                <select id="fpage-4" value={tGrupo} onChange={(e) => setTGrupo(e.target.value as any)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '8px 12px' }}>
                   <option value="enfermeiro">Enfermagem</option>
@@ -413,8 +417,8 @@ export default function TarefasPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
-                <input type="datetime-local" value={tPrazo} onChange={(e) => setTPrazo(e.target.value)}
+                <label htmlFor="fpage-5" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
+                <input id="fpage-5" type="datetime-local" value={tPrazo} onChange={(e) => setTPrazo(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '8px 12px' }} />
               </div>
@@ -436,24 +440,24 @@ export default function TarefasPage() {
       {/* Modal Editar Tarefa */}
       {modalEditarTarefa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgEditarTarefa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Editar Tarefa</h2>
                 <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{modalEditarTarefa.doente.nome}</p>
               </div>
-              <button onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={eDesc} onChange={e => setEDesc(e.target.value)} rows={3}
+              <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea id="fpage-6" value={eDesc} onChange={e => setEDesc(e.target.value)} rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '14px' }}>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
-                <select value={ePrioridade} onChange={e => setEPrioridade(e.target.value as any)}
+                <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
+                <select id="fpage-7" value={ePrioridade} onChange={e => setEPrioridade(e.target.value as any)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '8px 12px' }}>
                   <option value="baixa">Baixa</option>
@@ -463,8 +467,8 @@ export default function TarefasPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
-                <select value={eGrupo} onChange={e => setEGrupo(e.target.value)}
+                <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
+                <select id="fpage-8" value={eGrupo} onChange={e => setEGrupo(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '8px 12px' }}>
                   <option value="enfermeiro">Enfermagem</option>
@@ -474,8 +478,8 @@ export default function TarefasPage() {
               </div>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
-              <input type="datetime-local" value={ePrazo} onChange={e => setEPrazo(e.target.value)}
+              <label htmlFor="fpage-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
+              <input id="fpage-9" type="datetime-local" value={ePrazo} onChange={e => setEPrazo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '8px 12px' }} />
             </div>

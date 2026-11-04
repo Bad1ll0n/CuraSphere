@@ -34,6 +34,7 @@ import ModalAltaEstruturada from './doente-detalhe/modals/ModalAltaEstruturada';
 import ModalAvaliacaoEscala from './doente-detalhe/modals/ModalAvaliacaoEscala';
 import ModalEditarDoente from './doente-detalhe/modals/ModalEditarDoente';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -129,7 +130,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const carregarEscalas = async () => {
-    try { const r = await api.get(`/escalas/${doenteId}`); setEscalas(r.data); } catch { }
+    try { const r = await api.get(`/escalas/${doenteId}`); setEscalas(r.data); } catch (e) { registarFalhaSilenciosa('DoenteDetalheScreen', e); }
   };
 
   const verificarTurnoAtivo = async () => {
@@ -183,15 +184,23 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const registarMedicacao = async (id: string) => {
+    // `doenteId` é obrigatório no servidor. Sem ele o pedido dá 400 — e, na via offline,
+    // um 400 é tratado como definitivo e a operação sai da fila: a app dizia 'será enviado
+    // quando houver ligação' e depois descartava-a em silêncio.
+    const corpo = { doenteId };
     try {
       if (!isOnline) {
-        await enqueue({ method: 'POST', url: `/medicacao/${id}/administrar`, body: {} });
+        await enqueue({ method: 'POST', url: `/medicacao/${id}/administrar`, body: corpo });
         Alert.alert('Guardado localmente', 'Será enviado quando houver ligação.');
         return;
       }
-      await api.post(`/medicacao/${id}/administrar`, {});
+      await api.post(`/medicacao/${id}/administrar`, corpo);
       Alert.alert('Registado', 'Administração registada com sucesso');
-    } catch { Alert.alert('Erro', 'Não foi possível registar'); }
+    } catch (e: any) {
+      registarFalhaSilenciosa('DoenteDetalheScreen.registarMedicacao', e);
+      const motivo = e?.response?.data?.message ?? 'Não foi possível registar.';
+      Alert.alert('Administração NÃO registada', motivo);
+    }
   };
 
   const alterarEstado = async (novoEstado: string) => {

@@ -1,5 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, request as pwRequest } from '@playwright/test';
 import { loginAs } from './helpers';
+
+const API = process.env['API_URL'] ?? 'http://localhost:3333';
+const PASS = process.env['TEST_PASSWORD'] ?? 'Teste1234!';
 
 test.describe('RBAC — Controlo de Acesso por Role', () => {
   test('rota protegida sem autenticação redireciona para /login', async ({ page }) => {
@@ -59,27 +62,26 @@ test.describe('RBAC — Controlo de Acesso por Role', () => {
       await expect(page).not.toHaveURL(/\/login/);
     });
 
-    test('API responde 401 em endpoint protegido sem token', async ({ page }) => {
-      const response = await page.request.get('/v1/doentes');
+    test('API responde 401 em endpoint protegido sem sessão', async () => {
+      // Contexto limpo (sem cookies do login da suite) directamente contra a API.
+      const anon = await pwRequest.newContext({ baseURL: API });
+      const response = await anon.get('/v1/doentes');
       expect(response.status()).toBe(401);
+      await anon.dispose();
     });
 
-    test('API aceita token válido em endpoint protegido', async ({ page }) => {
-      // Fazer login via API para obter token
-      const loginResponse = await page.request.post('/v1/auth/login', {
-        data: {
-          numeroFuncionario: process.env['TEST_USER'] ?? '00001',
-          password: process.env['TEST_PASSWORD'] ?? 'Admin1234!',
-        },
+    test('API aceita uma sessão válida (cookie) em endpoint protegido', async () => {
+      // A app é cookie-based: o login (direção 00001, sem MFA) grava o cookie de sessão no
+      // contexto; a mesma instância acede depois ao endpoint protegido.
+      const ctx = await pwRequest.newContext({ baseURL: API });
+      const loginResponse = await ctx.post('/v1/auth/login', {
+        data: { numeroFuncionario: process.env['TEST_USER'] ?? '00001', password: PASS },
       });
-      expect(loginResponse.ok()).toBeTruthy();
-      const { accessToken } = await loginResponse.json();
+      expect(loginResponse.ok(), `login: ${loginResponse.status()}`).toBeTruthy();
 
-      // Usar token para aceder a endpoint protegido
-      const doenteResponse = await page.request.get('/v1/doentes', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const doenteResponse = await ctx.get('/v1/doentes');
       expect([200, 204]).toContain(doenteResponse.status());
+      await ctx.dispose();
     });
   });
 });

@@ -17,9 +17,11 @@ export class EspecialidadesController {
     return this.service.listar(req.user.sub, req.user.subRole);
   }
 
-  @Get('doente/:id')
-  porDoente(@Param('id') id: string, @Request() req: any) {
-    return this.service.porDoente(id, req.user.subRole);
+  // S-01: o doente chamava-se `:id`, e a rota escapava à verificação global de acesso
+  // (o AcessoDoenteInterceptor procura `doenteId`). O URL é o mesmo.
+  @Get('doente/:doenteId')
+  porDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    return this.service.porDoente(doenteId, req.user.subRole);
   }
 
   @Post()

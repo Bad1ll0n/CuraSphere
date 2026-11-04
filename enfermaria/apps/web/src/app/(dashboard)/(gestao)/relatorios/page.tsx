@@ -135,8 +135,8 @@ export default function RelatoriosPage() {
         {/* Filtro de período */}
         <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6 flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-slate-700">De</label>
-            <input
+            <label htmlFor="fpage-0" className="text-sm font-medium text-slate-700">De</label>
+            <input id="fpage-0"
               type="date"
               value={inicio}
               onChange={(e) => setInicio(e.target.value)}
@@ -144,8 +144,8 @@ export default function RelatoriosPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-slate-700">Até</label>
-            <input
+            <label htmlFor="fpage-1" className="text-sm font-medium text-slate-700">Até</label>
+            <input id="fpage-1"
               type="date"
               value={fim}
               onChange={(e) => setFim(e.target.value)}

@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Interconsulta {
@@ -53,7 +54,7 @@ export default function InterconsultasScreen({ utilizador, onVoltar }: Props) {
       setEnviadas(d.enviadas ?? []);
       const dts = dR.data?.data ?? dR.data ?? [];
       setDoentes(Array.isArray(dts) ? dts.map((x: any) => ({ id: x.id, nome: x.nome })) : []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) { registarFalhaSilenciosa('InterconsultasScreen', e); } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));

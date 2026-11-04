@@ -422,8 +422,8 @@ export default function RecepcaoPage() {
 
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                 <div>
-                  <label style={{ color: 'var(--text-soft)', fontSize: 12, display: 'block', marginBottom: 4 }}>Balcão</label>
-                  <input
+                  <label htmlFor="fpage-0" style={{ color: 'var(--text-soft)', fontSize: 12, display: 'block', marginBottom: 4 }}>Balcão</label>
+                  <input id="fpage-0"
                     type="text"
                     value={balcao}
                     onChange={(e) => setBalcao(e.target.value)}
@@ -749,9 +749,9 @@ export default function RecepcaoPage() {
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nome Completo <span style={{ color: '#ef4444' }}>*</span>
-                    </label>
+                    </span>
                     <input
                       value={novoUtenteForm.nome}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, nome: e.target.value })); setNovoUtenteErros(p => ({ ...p, nome: '' })); }}
@@ -763,9 +763,9 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Data de Nascimento <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input
                         type="date"
                         value={novoUtenteForm.dataNascimento}
@@ -775,9 +775,9 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.dataNascimento}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         NIF <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input
                         value={novoUtenteForm.nif}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, nif: '' })); }}
@@ -790,9 +790,9 @@ export default function RecepcaoPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nº SNS <span style={{ color: '#ef4444' }}>*</span>
-                    </label>
+                    </span>
                     <input
                       value={novoUtenteForm.numeroSNS}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroSNS: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, numeroSNS: '' })); }}
@@ -808,9 +808,9 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Telefone <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input
                         type="tel"
                         value={novoUtenteForm.telefone}
@@ -821,8 +821,8 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.telefone}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
-                      <input
+                      <label htmlFor="fpage-1" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
+                      <input id="fpage-1"
                         type="email"
                         value={novoUtenteForm.email}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, email: e.target.value })); setNovoUtenteErros(p => ({ ...p, email: '' })); }}
@@ -834,8 +834,8 @@ export default function RecepcaoPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
-                    <input
+                    <label htmlFor="fpage-2" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
+                    <input id="fpage-2"
                       value={novoUtenteForm.morada}
                       onChange={e => setNovoUtenteForm(f => ({ ...f, morada: e.target.value }))}
                       style={{ width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -845,8 +845,8 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
-                      <input
+                      <label htmlFor="fpage-3" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
+                      <input id="fpage-3"
                         value={novoUtenteForm.codigoPostal}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value })); setNovoUtenteErros(p => ({ ...p, codigoPostal: '' })); }}
                         style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.codigoPostal ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
@@ -855,8 +855,8 @@ export default function RecepcaoPage() {
                       {novoUtenteErros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.codigoPostal}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
-                      <input
+                      <label htmlFor="fpage-4" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
+                      <input id="fpage-4"
                         value={novoUtenteForm.localidade}
                         onChange={e => setNovoUtenteForm(f => ({ ...f, localidade: e.target.value }))}
                         style={{ width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -869,9 +869,9 @@ export default function RecepcaoPage() {
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Tipo de Cobertura
-                    </label>
+                    </span>
                     <select
                       value={novoUtenteForm.tipoCobertura}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
@@ -886,9 +886,9 @@ export default function RecepcaoPage() {
                   {novoUtenteForm.tipoCobertura === 'seguro' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
-                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Entidade Seguradora <span style={{ color: '#ef4444' }}>*</span>
-                        </label>
+                        </span>
                         <input
                           value={novoUtenteForm.entidadeSeguradora}
                           onChange={e => { setNovoUtenteForm(f => ({ ...f, entidadeSeguradora: e.target.value })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '' })); }}
@@ -898,9 +898,9 @@ export default function RecepcaoPage() {
                         {novoUtenteErros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.entidadeSeguradora}</p>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Nº Apólice <span style={{ color: '#ef4444' }}>*</span>
-                        </label>
+                        </span>
                         <input
                           value={novoUtenteForm.numeroApolice}
                           onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroApolice: e.target.value })); setNovoUtenteErros(p => ({ ...p, numeroApolice: '' })); }}

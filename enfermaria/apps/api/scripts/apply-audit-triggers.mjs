@@ -14,7 +14,7 @@ if (!DB) { console.error('DATABASE_URL em falta'); process.exit(1); }
 // Nunca auditar as próprias tabelas de auditoria (recursão) nem o trilho de leituras.
 // totp_consumidos é infra de auth de alta-escrita (1 linha por login) sem valor de auditoria —
 // auditá-la duplicaria escritas e poluiria o trilho. Fica de fora, como as próprias tabelas de auditoria.
-const DENY = new Set(['audit_logs', 'audit_checkpoints', 'acessos_leitura', 'totp_consumidos']);
+const DENY = new Set(['audit_logs', 'audit_checkpoints', 'acessos_leitura', 'totp_consumidos', 'cron_locks']);
 
 async function main() {
   const pool = new pg.Pool({ connectionString: DB });

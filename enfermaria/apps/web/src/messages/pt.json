@@ -172,7 +172,10 @@
     "route": "Via",
     "frequency": "Frequência",
     "startDate": "Início",
-    "endDate": "Fim"
+    "endDate": "Fim",
+    "confirmTitle": "Confirmar administração",
+    "confirmBody": "Vai registar a administração de {farmaco} a {doente} (cama {cama}). Esta acção fica no registo clínico e não pode ser desfeita.",
+    "administering": "A registar..."
   },
   "vitals": {
     "title": "Sinais Vitais",
@@ -205,7 +208,9 @@
     "notFound": "Recurso não encontrado",
     "serverError": "Erro de servidor. Tente novamente.",
     "networkError": "Sem ligação à rede",
-    "sessionExpired": "Sessão expirada. Por favor autentique-se novamente."
+    "sessionExpired": "Sessão expirada. Por favor autentique-se novamente.",
+    "forbiddenTitle": "Sem acesso a esta área",
+    "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho."
   },
   "roles": {
     "medico": "Médico",
@@ -431,5 +436,10 @@
     "saving": "A guardar...",
     "toastSaved": "Bolsa registada no banco",
     "toastError": "Erro ao registar bolsa"
+  },
+  "realtime": {
+    "offlineTitle": "Tempo real indisponível.",
+    "offlineBody": "Os alertas SOS, o SLA de urgência e a pré-notificação de ambulância não estão a chegar a este ecrã. Confirme os alertas por outra via.",
+    "retry": "Tentar ligar de novo"
   }
 }

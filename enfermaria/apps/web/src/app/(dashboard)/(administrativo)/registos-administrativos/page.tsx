@@ -319,7 +319,7 @@ export default function RegistosAdministrativosPage() {
                     <p style={{ margin: '4px 0 0 0', color: 'var(--text-soft)', fontSize: 13 }}>Dados legais e de identificação do utente</p>
                   </div>
                   <button type="button" onClick={fecharModal}
-                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }}>✕</button>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-soft)', fontSize: 20, cursor: 'pointer', padding: 4 }} aria-label="Fechar">✕</button>
                 </div>
 
                 {erro && (
@@ -353,9 +353,9 @@ export default function RegistosAdministrativosPage() {
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nome Completo <span style={{ color: '#ef4444' }}>*</span>
-                    </label>
+                    </span>
                     <input value={form.nome}
                       onChange={e => { setForm(f => ({ ...f, nome: e.target.value })); setErros(p => ({ ...p, nome: '' })); }}
                       style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.nome ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -365,18 +365,18 @@ export default function RegistosAdministrativosPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Data de Nascimento <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input type="date" value={form.dataNascimento}
                         onChange={e => { setForm(f => ({ ...f, dataNascimento: e.target.value })); setErros(p => ({ ...p, dataNascimento: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.dataNascimento ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }} />
                       {erros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.dataNascimento}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         NIF <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input value={form.nif}
                         onChange={e => { setForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') })); setErros(p => ({ ...p, nif: '' })); }}
                         maxLength={9}
@@ -387,9 +387,9 @@ export default function RegistosAdministrativosPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                       Nº SNS <span style={{ color: '#ef4444' }}>*</span>
-                    </label>
+                    </span>
                     <input value={form.numeroSNS}
                       onChange={e => { setForm(f => ({ ...f, numeroSNS: e.target.value.replace(/\D/g, '') })); setErros(p => ({ ...p, numeroSNS: '' })); }}
                       maxLength={9}
@@ -402,9 +402,9 @@ export default function RegistosAdministrativosPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                         Telefone <span style={{ color: '#ef4444' }}>*</span>
-                      </label>
+                      </span>
                       <input type="tel" value={form.telefone}
                         onChange={e => { setForm(f => ({ ...f, telefone: e.target.value })); setErros(p => ({ ...p, telefone: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.telefone ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
@@ -412,8 +412,8 @@ export default function RegistosAdministrativosPage() {
                       {erros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.telefone}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
-                      <input type="email" value={form.email}
+                      <label htmlFor="fpage-0" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
+                      <input id="fpage-0" type="email" value={form.email}
                         onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErros(p => ({ ...p, email: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.email ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="email@exemplo.pt" />
@@ -422,24 +422,24 @@ export default function RegistosAdministrativosPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
-                    <input value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
+                    <label htmlFor="fpage-1" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
+                    <input id="fpage-1" value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
                       style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="Rua, nº, andar" />
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
-                      <input value={form.codigoPostal}
+                      <label htmlFor="fpage-2" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
+                      <input id="fpage-2" value={form.codigoPostal}
                         onChange={e => { setForm(f => ({ ...f, codigoPostal: e.target.value })); setErros(p => ({ ...p, codigoPostal: '' })); }}
                         style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.codigoPostal ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="0000-000" />
                       {erros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.codigoPostal}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
-                      <input value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
+                      <label htmlFor="fpage-3" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
+                      <input id="fpage-3" value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
                         style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="Cidade" />
                     </div>
@@ -448,8 +448,8 @@ export default function RegistosAdministrativosPage() {
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
 
                   <div>
-                    <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo de Cobertura</label>
-                    <select value={form.tipoCobertura} onChange={e => { setForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
+                    <label htmlFor="fpage-4" style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo de Cobertura</label>
+                    <select id="fpage-4" value={form.tipoCobertura} onChange={e => { setForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
                       style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}>
                       <option value="sns">SNS</option>
                       <option value="seguro">Seguro de Saúde</option>
@@ -460,9 +460,9 @@ export default function RegistosAdministrativosPage() {
                   {form.tipoCobertura === 'seguro' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
-                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Entidade Seguradora <span style={{ color: '#ef4444' }}>*</span>
-                        </label>
+                        </span>
                         <input value={form.entidadeSeguradora}
                           onChange={e => { setForm(f => ({ ...f, entidadeSeguradora: e.target.value })); setErros(p => ({ ...p, entidadeSeguradora: '' })); }}
                           style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.entidadeSeguradora ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
@@ -470,9 +470,9 @@ export default function RegistosAdministrativosPage() {
                         {erros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.entidadeSeguradora}</p>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
                           Nº Apólice <span style={{ color: '#ef4444' }}>*</span>
-                        </label>
+                        </span>
                         <input value={form.numeroApolice}
                           onChange={e => { setForm(f => ({ ...f, numeroApolice: e.target.value })); setErros(p => ({ ...p, numeroApolice: '' })); }}
                           style={{ width: '100%', background: '#0f172a', border: `1px solid ${erros.numeroApolice ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}

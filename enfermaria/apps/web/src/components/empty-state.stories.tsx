@@ -11,5 +11,5 @@ export default meta;
 type Story = StoryObj<typeof EmptyState>;
 
 export const Doentes: Story = { args: { icon: 'patients' } };
-export const ComAcao: Story = { args: { icon: 'tasks', title: 'Sem tarefas', description: 'Cria a primeira tarefa do turno.', action: { label: 'Nova tarefa', onClick: () => {} } } };
+export const ComAcao: Story = { args: { icon: 'tasks', title: 'Sem tarefas', description: 'Cria a primeira tarefa do turno.', action: { label: 'Nova tarefa', onClick: () => { /* vazio */ } } } };
 export const Pesquisa: Story = { args: { icon: 'search', title: 'Sem resultados', description: 'Tenta outros termos de pesquisa.' } };

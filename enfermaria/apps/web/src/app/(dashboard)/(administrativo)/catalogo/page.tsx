@@ -148,7 +148,7 @@ export default function CatalogoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modal === 'criar' ? 'Adicionar Medicamento' : 'Editar Medicamento'}</h2>
-              <button onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               {[
@@ -159,23 +159,23 @@ export default function CatalogoPage() {
                 { label: 'Código ATC', key: 'codigoATC', placeholder: 'Ex: N02BE01' },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
-                  <input type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                  <input aria-label={label} type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                     className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     style={{ padding: '10px 14px' }} placeholder={placeholder} />
                 </div>
               ))}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Forma Farmacêutica *</label>
-                <select value={form.formaFarmaceutica} onChange={e => setForm(f => ({ ...f, formaFarmaceutica: e.target.value }))}
+                <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Forma Farmacêutica *</label>
+                <select id="fpage-1" value={form.formaFarmaceutica} onChange={e => setForm(f => ({ ...f, formaFarmaceutica: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
                   {FORMAS.map(f => <option key={f} value={f}>{f}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Classe Terapêutica *</label>
-                <select value={form.classeTerap} onChange={e => setForm(f => ({ ...f, classeTerap: e.target.value }))}
+                <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Classe Terapêutica *</label>
+                <select id="fpage-2" value={form.classeTerap} onChange={e => setForm(f => ({ ...f, classeTerap: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
                   {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}

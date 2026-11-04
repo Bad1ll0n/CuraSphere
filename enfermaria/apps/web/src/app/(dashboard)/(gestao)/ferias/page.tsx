@@ -240,8 +240,8 @@ export default function FeriasPage() {
             <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Pedir Ausência</h2>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tipo</label>
-                <select value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
+                <label htmlFor="fpage-0" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tipo</label>
+                <select id="fpage-0" value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px', marginTop: '6px' }}>
                   {TIPOS_AUSENCIA.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
@@ -249,15 +249,15 @@ export default function FeriasPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Início</label>
-                  <input type="date" value={form.dataInicio}
+                  <label htmlFor="fpage-1" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Início</label>
+                  <input id="fpage-1" type="date" value={form.dataInicio}
                     onChange={e => setForm(f => ({ ...f, dataInicio: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Fim</label>
-                  <input type="date" value={form.dataFim}
+                  <label htmlFor="fpage-2" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Fim</label>
+                  <input id="fpage-2" type="date" value={form.dataFim}
                     onChange={e => setForm(f => ({ ...f, dataFim: e.target.value }))}
                     className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{ padding: '10px 12px' }} />
@@ -274,8 +274,8 @@ export default function FeriasPage() {
               )}
 
               <div>
-                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações (opcional)</label>
-                <textarea value={form.observacoes} rows={2}
+                <label htmlFor="fpage-3" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Observações (opcional)</label>
+                <textarea id="fpage-3" value={form.observacoes} rows={2}
                   onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   style={{ padding: '10px 12px' }} />

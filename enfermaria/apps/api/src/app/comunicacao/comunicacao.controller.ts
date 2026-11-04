@@ -11,6 +11,7 @@ import { CriarAnuncioDto } from './dto/criar-anuncio.dto';
 import { EnviarMensagemDto } from './dto/enviar-mensagem.dto';
 import { EnviarBroadcastDto } from './dto/enviar-broadcast.dto';
 
+import { randomBytes } from 'crypto';
 const UPLOAD_DIR = join(process.cwd(), 'uploads', 'mensagens');
 
 async function validarMagicBytes(filePath: string, mimetype: string): Promise<boolean> {
@@ -100,7 +101,11 @@ export class ComunicacaoController {
     storage: diskStorage({
       destination: UPLOAD_DIR,
       filename: (_req, file, cb) => {
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        // `Math.random()` do V8 não é criptográfico: o estado interno reconstrói-se a
+        // partir de alguns valores observados, e quem recebesse dois anexos legítimos
+        // conseguia prever os nomes seguintes. Enquanto o nome era o único segredo que
+        // protegia o ficheiro, isso bastava para descarregar anexos de terceiros.
+        const unique = randomBytes(16).toString('hex');
         // Permitir só extensões alfanuméricas curtas (defesa contra `.php.jpg`, `.html`, etc.)
         const ext = extname(file.originalname).toLowerCase().match(/^\.[a-z0-9]{1,8}$/)?.[0] ?? '';
         cb(null, unique + ext);
@@ -130,7 +135,8 @@ export class ComunicacaoController {
       .slice(0, 200);
     return this.service.adicionarAnexo(mensagemId, req.user.sub, {
       nome: nomeOriginalSanitizado,
-      url: `/uploads/mensagens/${file.filename}`,
+      // Servido pelo `FicheirosController`, dentro do pipeline: com guard e auditoria.
+      url: `/v1/ficheiros/mensagens/${file.filename}`,
       mimeType: file.mimetype,
       tamanho: file.size,
     });

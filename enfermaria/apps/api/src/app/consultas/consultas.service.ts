@@ -2,12 +2,7 @@ import { Injectable, Logger, NotFoundException, ConflictException, ForbiddenExce
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-
-const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-function gerarCodigo(): string {
-  return 'CON-' + Array.from({ length: 4 }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join('');
-}
+import { gerarCodigoMarcacao } from './codigo-marcacao';
 
 @Injectable()
 export class ConsultasService {
@@ -124,7 +119,7 @@ export class ConsultasService {
       let codigo: string;
       let tentativas = 0;
       do {
-        codigo = gerarCodigo();
+        codigo = gerarCodigoMarcacao();
         tentativas++;
         if (tentativas > 20) throw new Error('Não foi possível gerar código único');
       } while (await tx.consulta.findUnique({ where: { codigo } }));
@@ -171,7 +166,7 @@ export class ConsultasService {
       where: { codigo },
       include: this.includeRelations(),
     });
-    if (!c) throw new NotFoundException('Marcação não encontrada');
+    if (!c) throw new NotFoundException(`Marcação (código: ${codigo}) não encontrada`);
     return c;
   }
 
@@ -365,7 +360,7 @@ export class ConsultasService {
       where: { id },
       include: this.includeRelations(),
     });
-    if (!c) throw new NotFoundException('Consulta não encontrada');
+    if (!c) throw new NotFoundException(`Consulta (ID ${id}) não encontrada`);
     return c;
   }
 

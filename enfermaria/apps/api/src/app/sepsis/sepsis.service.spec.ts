@@ -17,7 +17,7 @@ const mockPrisma = {
 };
 
 const mockAlertas = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
-const mockGateway = { server: { emit: jest.fn() } };
+const mockGateway = { emitirAlertaCritico: jest.fn().mockResolvedValue(undefined) };
 
 describe('SepsisService', () => {
   let service: SepsisService;
@@ -107,14 +107,24 @@ describe('SepsisService', () => {
     it('cria alerta sépsis quando qSOFA >= 2 e sem alerta recente', async () => {
       mockPrisma.alertaSepsis.findFirst.mockResolvedValue(null);
       mockPrisma.alertaSepsis.create.mockResolvedValue({ id: 'alerta-1' });
-      mockPrisma.doente.findUnique.mockResolvedValue({ nome: 'Maria', cama: { numero: '12A' } });
+      mockPrisma.doente.findUnique.mockResolvedValue({ nome: 'Maria', cama: { numero: '12A', quarto: '3' } });
 
       await service.avaliar('doente-1', { frequenciaRespiratoria: 25, pressaoSistolica: 90 });
 
       expect(mockPrisma.alertaSepsis.create).toHaveBeenCalledWith(
         expect.objectContaining({ data: expect.objectContaining({ doenteId: 'doente-1', criterio: 'qsofa' }) }),
       );
-      expect(mockGateway.server.emit).toHaveBeenCalledWith('sos:alerta', expect.objectContaining({ tipo: 'sepsis' }));
+      // Um rastreio positivo é resposta imediata: severidade 4, que marca `urgencia`.
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('doente-1', 'sepsis', expect.any(String), 4);
+      // Pelo gateway, que decide quem recebe o nome — e com os campos que o banner lê.
+      expect(mockGateway.emitirAlertaCritico).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tipo: 'sepsis',
+          doenteId: 'doente-1',
+          doenteNome: 'Maria',
+          localizacao: 'Quarto 3, Cama 12A',
+        }),
+      );
     });
 
     it('usa critério sirs quando SIRS >= 2 e qSOFA < 2', async () => {

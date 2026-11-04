@@ -311,12 +311,12 @@ export default function PedidosTIPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Novo Pedido TI</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
-              <input
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
+              <input id="fpage-0"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 placeholder="Ex: Acesso ao sistema de faturação"
@@ -326,8 +326,8 @@ export default function PedidosTIPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
-              <select
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+              <select id="fpage-1"
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
@@ -340,8 +340,8 @@ export default function PedidosTIPage() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
-              <textarea
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
+              <textarea id="fpage-2"
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 placeholder="Descreve o pedido em detalhe..."
@@ -351,7 +351,7 @@ export default function PedidosTIPage() {
               />
             </div>
 
-            <label className="flex items-center gap-3 cursor-pointer" style={{ marginBottom: '24px' }}>
+            <span className="flex items-center gap-3 cursor-pointer" style={{ marginBottom: '24px' }}>
               <div
                 onClick={() => setUrgente(!urgente)}
                 className={`w-10 h-6 rounded-full transition-colors relative ${urgente ? 'bg-red-500' : 'bg-slate-200'}`}
@@ -359,7 +359,7 @@ export default function PedidosTIPage() {
                 <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all ${urgente ? 'left-5' : 'left-1'}`} />
               </div>
               <span className="text-sm font-medium text-slate-700">Urgente</span>
-            </label>
+            </span>
 
             {erroModal && (
               <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '16px' }}>

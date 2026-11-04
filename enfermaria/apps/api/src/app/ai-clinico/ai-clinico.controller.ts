@@ -8,7 +8,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AiClinicoService } from './ai-clinico.service';
-import type { EpisodioTriagem, DoenteTurno } from './ai-clinico.service';
+import {
+  EpisodioTriagemDto, SumarizarTurnoDto, SumarizarTurnoServicoDto,
+  ExecutarNlqDto, FeedbackDecisaoDto,
+} from './dto/ai-clinico.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('ai-clinico')
@@ -17,25 +20,25 @@ export class AiClinicoController {
 
   @Post('triagem')
   @Roles('medico', 'enfermeiro')
-  analisarTriagem(@Body() episodio: EpisodioTriagem, @Request() req: any) {
+  analisarTriagem(@Body() episodio: EpisodioTriagemDto, @Request() req: any) {
     return this.service.analisarTriagem(episodio, req.user.sub);
   }
 
   @Post('sumarizar-turno')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sumarizarTurno(@Body() body: { doentes: DoenteTurno[] }, @Request() req: any) {
+  sumarizarTurno(@Body() body: SumarizarTurnoDto, @Request() req: any) {
     return this.service.sumarizarTurno(body.doentes, req.user.sub);
   }
 
   @Post('sumarizar-turno-servico')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sumarizarTurnoServico(@Body() body: { servico: string }, @Request() req: any) {
+  sumarizarTurnoServico(@Body() body: SumarizarTurnoServicoDto, @Request() req: any) {
     return this.service.sumarizarTurnoServico(body.servico, req.user.sub);
   }
 
   @Post('nlq')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
-  executarNLQ(@Body() body: { query: string }, @Request() req: any) {
+  executarNLQ(@Body() body: ExecutarNlqDto, @Request() req: any) {
     return this.service.executarNLQ(body.query, req.user.sub);
   }
 
@@ -109,7 +112,7 @@ export class AiClinicoController {
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   registarFeedback(
     @Param('id') id: string,
-    @Body() body: { aceite: boolean; overrideMotivo?: string },
+    @Body() body: FeedbackDecisaoDto,
   ) {
     return this.service.registarFeedback(id, body.aceite, body.overrideMotivo);
   }

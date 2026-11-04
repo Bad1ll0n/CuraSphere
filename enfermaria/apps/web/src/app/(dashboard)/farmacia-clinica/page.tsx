@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
 
@@ -50,6 +51,8 @@ export default function FarmaciaPage() {
   const [doenteIdRec, setDoenteIdRec] = useState('');
   const [medsCasa, setMedsCasa] = useState([{ nome: '', dose: '', frequencia: '' }]);
   const [discrepancias, setDiscrepancias] = useState('');
+  const dlgRec = useDialogoAcessivel({ aberto: modalRec, onFechar: () => setModalRec(false), titulo: 'Reconciliação terapêutica' });
+
   const [salvandoRec, setSalvandoRec] = useState(false);
 
   const carregar = useCallback(async () => {
@@ -242,8 +245,8 @@ export default function FarmaciaPage() {
           {reconciliacoes.map(r => {
             let medsCasaParsed: any[] = [];
             let discParsed: any[] = [];
-            try { medsCasaParsed = JSON.parse(r.medicacaoCasa); } catch {}
-            try { discParsed = JSON.parse(r.discrepancias); } catch {}
+            try { medsCasaParsed = JSON.parse(r.medicacaoCasa); } catch { /* vazio */ }
+            try { discParsed = JSON.parse(r.discrepancias); } catch { /* vazio */ }
             return (
               <div key={r.id} className="bg-white rounded-2xl border border-amber-200 shadow-sm" style={{ padding: '20px 24px' }}>
                 <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>
@@ -293,23 +296,23 @@ export default function FarmaciaPage() {
       {/* Modal Nova Reconciliação */}
       {modalRec && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
+          <div {...dlgRec.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Reconciliação de Medicação</h2>
-              <button onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ID do Doente *</label>
-              <input value={doenteIdRec} onChange={e => setDoenteIdRec(e.target.value)}
+              <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ID do Doente *</label>
+              <input id="fpage-0" value={doenteIdRec} onChange={e => setDoenteIdRec(e.target.value)}
                 placeholder="ID do doente no sistema"
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 style={{ padding: '9px 12px' }} />
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Medicação em Casa</label>
+              <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Medicação em Casa</label>
               {medsCasa.map((m, i) => (
                 <div key={i} className="grid grid-cols-3 gap-2" style={{ marginBottom: '6px' }}>
-                  <input value={m.nome} onChange={e => { const n = [...medsCasa]; n[i].nome = e.target.value; setMedsCasa(n); }}
+                  <input id="fpage-1" value={m.nome} onChange={e => { const n = [...medsCasa]; n[i].nome = e.target.value; setMedsCasa(n); }}
                     placeholder="Nome" className="border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '7px 10px' }} />
                   <input value={m.dose} onChange={e => { const n = [...medsCasa]; n[i].dose = e.target.value; setMedsCasa(n); }}
                     placeholder="Dose" className="border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '7px 10px' }} />
@@ -323,8 +326,8 @@ export default function FarmaciaPage() {
               </button>
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Discrepâncias encontradas</label>
-              <textarea value={discrepancias} onChange={e => setDiscrepancias(e.target.value)}
+              <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Discrepâncias encontradas</label>
+              <textarea id="fpage-2" value={discrepancias} onChange={e => setDiscrepancias(e.target.value)}
                 rows={3} placeholder="Descreva as discrepâncias encontradas..."
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none resize-none"
                 style={{ padding: '9px 12px' }} />

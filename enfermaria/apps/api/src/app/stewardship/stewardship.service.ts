@@ -56,6 +56,8 @@ export class StewardshipService {
 
   @Cron(CronExpression.EVERY_DAY_AT_6AM)
   async incrementarDOT(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('stewardship-dot', 3_600_000))) return;
+
     this.logger.log('Stewardship: incrementar DOT diário');
 
     const ativos = await this.prisma.stewardshipAntibiotico.findMany({

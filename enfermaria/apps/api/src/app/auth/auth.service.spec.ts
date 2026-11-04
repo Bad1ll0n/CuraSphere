@@ -27,6 +27,7 @@ const mockAuthenticator = require('otplib') as {
 const mockQrcode = require('qrcode') as { toDataURL: jest.Mock };
 
 const mockPrisma = {
+  tryBecomeLeader: jest.fn().mockResolvedValue(true), // líder por omissão → o corpo do cron corre
   utilizador: {
     findUnique: jest.fn(),
     update: jest.fn(),
@@ -84,6 +85,7 @@ describe('AuthService', () => {
     jest.resetAllMocks();
     mockJwt.sign.mockReturnValue('jwt-access-token');
     mockPrisma.refreshToken.create.mockResolvedValue({ token: 'refresh-token-xyz' });
+    mockPrisma.tryBecomeLeader.mockResolvedValue(true);
     mockPrisma.$queryRaw.mockResolvedValue([]);
     mockPrisma.$executeRaw.mockResolvedValue(0);
     mockRedis.get.mockResolvedValue(null);
@@ -260,22 +262,47 @@ describe('AuthService', () => {
     });
 
     it('lança UnauthorizedException quando token não tem mfaChallenge', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: false });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: false });
 
       await expect(service.verificarMfaLogin('token', '123456')).rejects.toThrow(
         /Token inválido/i,
       );
     });
 
+    // SEC-03 (regressão): antes da separação de domínios, os 4 tipos de token partilhavam
+    // segredo, issuer e audience. Um access token de pessoal apresentado aqui era aceite.
+    it('rejeita um token que não seja do tipo mfa_challenge', async () => {
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'pessoal', role: 'medico' });
+
+      await expect(service.verificarMfaLogin('access-token-de-pessoal', '123456')).rejects.toThrow(
+        /Token inválido/i,
+      );
+    });
+
+    it('verifica o desafio contra a audiência dedicada, não só a assinatura', async () => {
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
+      mockPrisma.utilizador.findUnique.mockResolvedValue({
+        id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
+        role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
+      });
+
+      await service.verificarMfaLogin('token', '123456');
+
+      expect(mockJwt.verify).toHaveBeenCalledWith(
+        'token',
+        expect.objectContaining({ audience: 'curasphere-mfa-challenge', issuer: 'curasphere-api' }),
+      );
+    });
+
     it('lança UnauthorizedException quando utilizador não existe', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: true });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
       mockPrisma.utilizador.findUnique.mockResolvedValue(null);
 
       await expect(service.verificarMfaLogin('token', '123456')).rejects.toThrow(UnauthorizedException);
     });
 
     it('lança UnauthorizedException quando mfaAtivo=false', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: true });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: false, mfaSecret: null,
         role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
@@ -285,7 +312,7 @@ describe('AuthService', () => {
     });
 
     it('lança UnauthorizedException para código TOTP inválido', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: true });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
         role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
@@ -298,7 +325,7 @@ describe('AuthService', () => {
     });
 
     it('lança UnauthorizedException quando código TOTP é replay', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: true });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
         role: 'medico', nome: 'Dr.', numeroFuncionario: '12345', servico: 'medicina',
@@ -312,7 +339,7 @@ describe('AuthService', () => {
     });
 
     it('devolve accessToken e refreshToken em verificação bem sucedida', async () => {
-      mockJwt.verify.mockReturnValue({ sub: '1', mfaChallenge: true });
+      mockJwt.verify.mockReturnValue({ sub: '1', tipo: 'mfa_challenge', mfaChallenge: true });
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', mfaAtivo: true, mfaSecret: 'SECRET',
         role: 'medico', nome: 'Dr. Teste', numeroFuncionario: '12345', servico: 'medicina',

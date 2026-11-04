@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface WorklistItem {
@@ -28,12 +30,18 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filtro, setFiltro] = useState('todos');
+  const [erroCarga, setErroCarga] = useState(false);
 
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data } = await api.get('/worklist');
       setItems(data ?? []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) {
+      // A6: a falha era reportada em silêncio e o ecrã dizia "Sem itens na worklist".
+      registarFalhaSilenciosa('WorklistScreen', e);
+      setErroCarga(true);
+    } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
@@ -75,7 +83,12 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
       ) : (
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />} style={{ flex: 1 }}>
           <View style={s.lista}>
-            {lista.length === 0 ? (
+            {erroCarga ? (
+              <ErroCarregamento
+                texto="Isto não quer dizer que a worklist esteja vazia. Verifique a ligação e tente de novo."
+                onTentarNovamente={() => { setLoading(true); carregar(); }}
+              />
+            ) : lista.length === 0 ? (
               <View style={s.vazio}><Text style={s.vazioTexto}>Sem itens na worklist</Text></View>
             ) : lista.map(item => (
               <View key={item.id} style={[s.card, { borderLeftColor: PRIORIDADE_COR[item.prioridade] ?? '#94a3b8', borderLeftWidth: 4 }]}>

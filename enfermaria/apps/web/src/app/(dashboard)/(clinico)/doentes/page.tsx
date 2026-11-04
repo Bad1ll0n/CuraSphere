@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { SkeletonTable } from '@/components/skeleton';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const SERVICOS_LISTA = ['Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
 
@@ -64,7 +65,7 @@ export default function DoentesPagina() {
   }, [pesquisa]);
 
   const todos = !isClinico || aba === 'todos';
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['doentes', pagina, todos, pesquisaDebounced],
     queryFn: () => {
       const params = new URLSearchParams({ page: String(pagina), limit: String(LIMIT) });
@@ -76,7 +77,7 @@ export default function DoentesPagina() {
     placeholderData: (prev) => prev,
   });
 
-  const { data: riscoData, isLoading: riscoLoading } = useQuery({
+  const { data: riscoData, isLoading: riscoLoading, isError: riscoErro, refetch: refetchRisco } = useQuery({
     queryKey: ['risco-turno', riscoServico],
     queryFn: () => api.get('/baselines/risco-turno', { params: { servico: riscoServico } }).then(r => r.data),
     enabled: aba === 'risco',
@@ -260,7 +261,15 @@ export default function DoentesPagina() {
                         </td>
                       </tr>
                     ))}
-                    {(riscoData ?? []).length === 0 && (
+                    {riscoErro ? (
+                      <tr><td colSpan={6}>
+                        <ErroCarregamento
+                          titulo="Não foi possível carregar o risco do turno"
+                          descricao="Isto não quer dizer que não haja doentes em risco neste serviço. Verifique a ligação e tente de novo."
+                          onTentarNovamente={() => refetchRisco()}
+                        />
+                      </td></tr>
+                    ) : (riscoData ?? []).length === 0 && (
                       <tr><td colSpan={6} className="text-center text-slate-400 text-sm" style={{ padding: '48px' }}>Sem doentes activos neste serviço</td></tr>
                     )}
                   </tbody>
@@ -272,6 +281,12 @@ export default function DoentesPagina() {
 
         {aba !== 'risco' && (isLoading ? (
           <SkeletonTable rows={8} />
+        ) : isError ? (
+          <ErroCarregamento
+            titulo="Não foi possível carregar os doentes"
+            descricao="Isto não quer dizer que não haja doentes atribuídos ou internados. Verifique a ligação e tente de novo."
+            onTentarNovamente={() => refetch()}
+          />
         ) : filtrados.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center" style={{ padding: '64px' }}>
             <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>

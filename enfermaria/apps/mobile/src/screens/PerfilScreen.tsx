@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Modal, TextInput, ActivityIndicator } from 'react-native';
-import { logout, Utilizador } from '../lib/auth';
+import { logout, mensagemDeSaida, Utilizador } from '../lib/auth';
 import api from '../lib/api';
 
 const roleLabel: Record<string, string> = {
@@ -25,8 +25,8 @@ export default function PerfilScreen({ utilizador, onLogout }: Props) {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [salvando, setSalvando] = useState(false);
 
-  const confirmarLogout = () => {
-    Alert.alert('Sair', 'Tem a certeza que quer sair?', [
+  const confirmarLogout = async () => {
+    Alert.alert('Sair', await mensagemDeSaida(), [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Sair', style: 'destructive', onPress: async () => { await logout(); onLogout(); } },
     ]);

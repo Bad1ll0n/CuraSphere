@@ -39,7 +39,7 @@ describe('CommandPalette', () => {
 
   it('links de navegação rápida são visíveis', () => {
     render(<CommandPalette open={true} onClose={jest.fn()} />);
-    expect(screen.getByText(/camas|horários|farmácia|urgência/i)).toBeTruthy();
+    expect(screen.getAllByText(/camas|horários|farmácia|urgência/i).length).toBeGreaterThan(0);
   });
 
   it('campo de pesquisa aceita input de texto', () => {

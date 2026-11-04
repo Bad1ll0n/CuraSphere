@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 
 const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
 
@@ -349,7 +350,7 @@ export class RhService {
     // Group by semana ISO string
     const grouped: Record<string, { semana: string; scores: number[]; count: number }> = {};
     for (const s of surveys) {
-      const key = s.semana.toISOString().split('T')[0];
+      const key = chaveDiaClinico(s.semana);
       if (!grouped[key]) {
         grouped[key] = { semana: key, scores: [], count: 0 };
       }

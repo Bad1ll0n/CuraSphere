@@ -72,7 +72,7 @@ export class ReconciliacaoService implements OnApplicationBootstrap, OnApplicati
     const [semValidacao, semMar, pedidosPendentes] = await Promise.all([
       // 1) Prescrições criadas há >2h sem validação farmacêutica
       this.prisma.medicacao.findMany({
-        where: { estadoValidacao: null, ativo: true, iniciadoEm: { lt: h2 } },
+        where: { estadoValidacao: null, ativo: true, deletedAt: null, iniciadoEm: { lt: h2 } },
         include: {
           doente: { select: { id: true, nome: true } },
           prescritoPor: { select: { nome: true } },
@@ -84,7 +84,7 @@ export class ReconciliacaoService implements OnApplicationBootstrap, OnApplicati
       // 2) Medicações activas sem nenhum registo MAR nas últimas 24h
       this.prisma.medicacao.findMany({
         where: {
-          ativo: true,
+          ativo: true, deletedAt: null,
           iniciadoEm: { lt: h8 },
           registos: {
             none: {

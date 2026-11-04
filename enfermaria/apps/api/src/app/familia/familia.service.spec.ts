@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { FamiliaService } from './familia.service';
+import { hashTokenFamilia } from './token-familia';
 import { PrismaService } from '../prisma/prisma.service';
 
 const mockPrisma = {
@@ -11,6 +13,8 @@ const mockPrisma = {
     update: jest.fn(),
   },
 };
+
+const dto = { nomeContacto: 'Maria Mãe', email: 'mae@test.com' };
 
 describe('FamiliaService', () => {
   let service: FamiliaService;
@@ -29,49 +33,80 @@ describe('FamiliaService', () => {
     service = module.get<FamiliaService>(FamiliaService);
   });
 
-  describe('criarAcesso()', () => {
-    it('cria acesso familiar com token', async () => {
-      const expiry = new Date(Date.now() + 7 * 24 * 3600000);
+  describe('criarAcesso() — S-15', () => {
+    beforeEach(() => {
       mockPrisma.acessoFamiliar.create.mockResolvedValue({
         id: 'ac-1', nomeContacto: 'Maria Mãe', email: 'mae@test.com',
-        accessToken: 'tok-abc', accessTokenExpiry: expiry, ativo: true,
+        accessTokenExpiry: new Date(Date.now() + 7 * 24 * 3600000), ativo: true,
         doente: { nome: 'Ana' },
       });
+    });
 
-      const resultado = await service.criarAcesso(
-        'd1',
-        { nomeContacto: 'Maria Mãe', email: 'mae@test.com' },
-        'med-1',
-      );
+    it('devolve o token uma vez e guarda só o hash', async () => {
+      const resultado = await service.criarAcesso('d1', dto, 'med-1');
 
-      expect(resultado).toHaveProperty('accessToken');
-      expect(mockPrisma.acessoFamiliar.create).toHaveBeenCalledTimes(1);
+      // 256 bits em base64url.
+      expect(resultado.accessToken).toMatch(/^[A-Za-z0-9_-]{43}$/);
+
+      const { data, select } = mockPrisma.acessoFamiliar.create.mock.calls[0][0];
+      expect(data.accessTokenHash).toBe(hashTokenFamilia(resultado.accessToken));
+      expect(data).not.toHaveProperty('accessToken');
+      // Nem o hash sai na resposta.
+      expect(select).not.toHaveProperty('accessTokenHash');
+    });
+
+    it('dois acessos nunca recebem o mesmo token', async () => {
+      const a = await service.criarAcesso('d1', dto, 'med-1');
+      const b = await service.criarAcesso('d1', dto, 'med-1');
+
+      expect(a.accessToken).not.toBe(b.accessToken);
     });
 
     it('lança NotFoundException quando doente não existe', async () => {
       mockPrisma.doente.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.criarAcesso('x', { nomeContacto: 'Maria', email: 'm@test.com' }, 'u1'),
-      ).rejects.toThrow();
+      await expect(service.criarAcesso('x', dto, 'u1')).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('portalDoente()', () => {
-    it('devolve dados do portal para token válido', async () => {
-      const expiry = new Date(Date.now() + 3600000);
-      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue({
-        id: 'ac-1', nomeContacto: 'Maria Mãe', ativo: true, accessTokenExpiry: expiry,
-        doente: {
-          id: 'd1', nome: 'Ana', dataAdmissao: new Date(), servico: 'cardiologia',
-          sinaisVitais: [], alertasClinicos: [], cama: null,
-        },
-      });
+    const acessoValido = () => ({
+      id: 'ac-1', nomeContacto: 'Maria Mãe', ativo: true,
+      accessTokenExpiry: new Date(Date.now() + 3600000),
+      doente: {
+        nome: 'Ana', dataAdmissao: new Date(), sinaisVitais: [],
+        cama: { numero: '12', quarto: '3', servico: 'cardiologia' },
+      },
+    });
+
+    it('procura pelo hash do token, nunca pelo token', async () => {
+      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue(acessoValido());
 
       const resultado = await service.portalDoente('tok-abc');
 
-      expect(resultado).toBeDefined();
+      expect(mockPrisma.acessoFamiliar.findUnique).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { accessTokenHash: hashTokenFamilia('tok-abc') } }),
+      );
       expect(resultado.doente.nome).toBe('Ana');
+    });
+
+    it('mostra o serviço da cama do doente', async () => {
+      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue(acessoValido());
+
+      const resultado = await service.portalDoente('tok-abc');
+
+      expect(resultado.doente.servico).toBe('cardiologia');
+    });
+
+    it('recusa um token desmesurado sem ir à base de dados', async () => {
+      await expect(service.portalDoente('x'.repeat(500))).rejects.toThrow(NotFoundException);
+      expect(mockPrisma.acessoFamiliar.findUnique).not.toHaveBeenCalled();
+    });
+
+    it('recusa um acesso revogado', async () => {
+      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue({ ...acessoValido(), ativo: false });
+
+      await expect(service.portalDoente('tok-abc')).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -86,15 +121,23 @@ describe('FamiliaService', () => {
   });
 
   describe('revogarAcesso()', () => {
-    it('revoga acesso familiar', async () => {
-      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue({ id: 'ac-1', ativo: true });
+    it('revoga o acesso do doente indicado', async () => {
+      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue({ id: 'ac-1', doenteId: 'd1' });
       mockPrisma.acessoFamiliar.update.mockResolvedValue({ id: 'ac-1', ativo: false });
 
-      await service.revogarAcesso('ac-1');
+      await service.revogarAcesso('d1', 'ac-1');
 
       expect(mockPrisma.acessoFamiliar.update).toHaveBeenCalledWith(
-        expect.objectContaining({ data: expect.objectContaining({ ativo: false }) }),
+        expect.objectContaining({ data: { ativo: false } }),
       );
+    });
+
+    it('não revoga o acesso da família de outro doente', async () => {
+      // O interceptor confirmou o acesso a d1; o id pedido pertence a d2.
+      mockPrisma.acessoFamiliar.findUnique.mockResolvedValue({ id: 'ac-9', doenteId: 'd2' });
+
+      await expect(service.revogarAcesso('d1', 'ac-9')).rejects.toThrow(NotFoundException);
+      expect(mockPrisma.acessoFamiliar.update).not.toHaveBeenCalled();
     });
   });
 });

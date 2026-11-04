@@ -47,11 +47,13 @@ export class FhirController {
     return this.service.lookupSns(numeroSNS);
   }
 
+  // S-01: a exportação FHIR é o registo inteiro do doente, e com `:id` escapava à verificação
+  // global de acesso (o AcessoDoenteInterceptor procura `doenteId`). O URL é o mesmo.
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('doentes/:id/exportar-fhir')
+  @Get('doentes/:doenteId/exportar-fhir')
   @Roles('medico', 'enfermeiro', 'ti', 'direcao', 'chefe_enfermeiros')
-  exportarFhir(@Param('id') id: string) {
-    return this.service.exportarBundleDoente(id);
+  exportarFhir(@Param('doenteId') doenteId: string) {
+    return this.service.exportarBundleDoente(doenteId);
   }
 
   // ── SPMS Integration ────────────────────────────────────────────────────────

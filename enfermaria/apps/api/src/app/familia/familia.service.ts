@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { gerarTokenFamilia, hashTokenFamilia } from './token-familia';
 import { IsEmail, IsString, MaxLength } from 'class-validator';
 
 export class CriarAcessoFamiliarDto {
@@ -10,6 +11,9 @@ export class CriarAcessoFamiliarDto {
   @IsEmail()
   email: string;
 }
+
+// Um token nosso tem 43 caracteres (32 bytes em base64url). Ver token-familia.ts (S-15).
+const TAMANHO_MAXIMO_TOKEN = 128;
 
 @Injectable()
 export class FamiliaService {
@@ -22,38 +26,45 @@ export class FamiliaService {
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + 7); // válido 7 dias
 
-    return this.prisma.acessoFamiliar.create({
+    const token = gerarTokenFamilia();
+
+    const acesso = await this.prisma.acessoFamiliar.create({
       data: {
         doenteId,
         criadoPorId,
         nomeContacto: dto.nomeContacto,
         email: dto.email,
+        accessTokenHash: hashTokenFamilia(token),
         accessTokenExpiry: expiry,
       },
       select: {
-        id: true, nomeContacto: true, email: true, accessToken: true, accessTokenExpiry: true, ativo: true,
+        id: true, nomeContacto: true, email: true, accessTokenExpiry: true, ativo: true,
         doente: { select: { nome: true } },
       },
     });
+
+    // É a única vez que o token sai do servidor: não fica guardado, por isso não há como o
+    // voltar a mostrar. Se o link se perder, revoga-se este acesso e cria-se outro.
+    return { ...acesso, accessToken: token };
   }
 
   async portalDoente(token: string) {
+    // Não vale a pena calcular o hash de lixo nem ir à base de dados por ele.
+    if (!token || token.length > TAMANHO_MAXIMO_TOKEN) {
+      throw new NotFoundException('Acesso não encontrado ou token inválido');
+    }
+
     const acesso = await this.prisma.acessoFamiliar.findUnique({
-      where: { accessToken: token },
+      where: { accessTokenHash: hashTokenFamilia(token) },
       include: {
         doente: {
           select: {
-            id: true, nome: true, dataAdmissao: true,
+            nome: true, dataAdmissao: true,
             cama: { select: { numero: true, quarto: true, servico: true } },
             sinaisVitais: {
               orderBy: { data: 'desc' },
               take: 1,
               select: { data: true, news2: true },
-            },
-            alertasClinicos: {
-              where: { lido: false, urgencia: false },
-              select: { mensagem: true },
-              take: 3,
             },
           },
         },
@@ -79,7 +90,9 @@ export class FamiliaService {
       doente: {
         nome: doente.nome,
         internamentoDesde: doente.dataAdmissao,
-        servico: doente.servico,
+        // O serviço é o da cama. Lia-se `doente.servico`, que não existe, e a família via
+        // sempre o serviço em branco.
+        servico: doente.cama?.servico ?? null,
         estadoGeral,
         ultimaAvaliacao: sv?.data ?? null,
       },
@@ -94,9 +107,23 @@ export class FamiliaService {
     });
   }
 
-  async revogarAcesso(id: string) {
-    const acesso = await this.prisma.acessoFamiliar.findUnique({ where: { id } });
-    if (!acesso) throw new NotFoundException('Acesso não encontrado');
-    return this.prisma.acessoFamiliar.update({ where: { id }, data: { ativo: false } });
+  /**
+   * O acesso procura-se dentro do doente do caminho. Antes bastava o id: sem `:doenteId` na
+   * rota, a revogação escapava à verificação global de acesso ao doente, e um médico ou
+   * enfermeiro que conhecesse o id revogava o acesso da família de um doente que não era seu.
+   */
+  async revogarAcesso(doenteId: string, id: string) {
+    const acesso = await this.prisma.acessoFamiliar.findUnique({
+      where: { id },
+      select: { id: true, doenteId: true },
+    });
+    // A mesma resposta para "não existe" e "é de outro doente": não confirmar ids alheios.
+    if (!acesso || acesso.doenteId !== doenteId) throw new NotFoundException('Acesso não encontrado');
+
+    return this.prisma.acessoFamiliar.update({
+      where: { id },
+      data: { ativo: false },
+      select: { id: true, nomeContacto: true, email: true, ativo: true, accessTokenExpiry: true },
+    });
   }
 }

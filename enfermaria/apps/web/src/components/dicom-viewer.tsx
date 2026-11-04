@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Props {
   url: string;
@@ -14,6 +15,10 @@ interface PixelCache {
 }
 
 export function DicomViewer({ url, titulo, onClose }: Props) {
+  // Visualizador em ecrã inteiro: Escape sai, o Tab não escapa para fora e o foco volta ao
+  // gatilho. Antes só saía por rato.
+  const { propsPainel } = useDialogoAcessivel({ aberto: true, onFechar: onClose, titulo: `Visualizador DICOM — ${titulo}` });
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -121,9 +126,9 @@ export function DicomViewer({ url, titulo, onClose }: Props) {
 
   return (
     <div
+      {...propsPainel}
       className="fixed inset-0 z-50 flex flex-col"
       style={{ backgroundColor: '#000' }}
-      onClick={e => e.stopPropagation()}
     >
       {/* Toolbar */}
       <div

@@ -166,6 +166,8 @@ model Utilizador {
   prescricoesDietaCriadas        PrescricaoDieta[]
   medicacoesAssinadas            Medicacao[]                 @relation("MedicacaoAssinatura")
   notasAssinadas                 NotaClinica[]               @relation("NotaAssinatura")
+  adendasNotasClinicas           NotaClinicaAdenda[]         @relation("NotaClinicaAdendaAutor")
+  transfusoesSegundaVerificacao  RegistoTransfusao[]         @relation("TransfusoesSegundaVerificacao")
   culturasRegistadas             CulturaMicrobiologica[]
   surtosRegistados               SurtoIACS[]
   notasIncidentesTI              NotaIncidenteTI[]           @relation("NotasIncidentesTI")
@@ -330,6 +332,9 @@ model Doente {
   pedidosTransfusao       PedidoTransfusao[]
   registosTransfusao      RegistoTransfusao[]
   reacoesTransfusionais   ReacaoTransfusional[]
+  gravidezes              Gravidez[]
+  planosQuimioterapia     PlanoQuimioterapia[]
+  sessoesDialise          SessaoDialise[]
 
   @@index([tenantId, estado])
   @@index([ativo])
@@ -380,6 +385,10 @@ model AtribuicaoDoente {
   turno      Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
 
   @@unique([doenteId, enfermeiroId, turnoId])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
   @@map("atribuicoes_doente")
 }
 
@@ -394,6 +403,10 @@ model HorarioEntrada {
   utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
 
   @@unique([turnoId, utilizadorId])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
   @@map("horarios_entrada")
 }
 
@@ -414,6 +427,10 @@ model PassagemTurno {
   doente        Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
 
   @@index([estadoDesafio])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("passagens_turno")
 }
 
@@ -463,10 +480,29 @@ model NotaClinica {
   assinadaPorId String?
   assinadaPor   Utilizador? @relation("NotaAssinatura", fields: [assinadaPorId], references: [id], onDelete: SetNull)
 
+  adendas NotaClinicaAdenda[]
+
   @@index([doenteId, criadaEm])
   @@index([deletedAt])
   @@index([doenteId, deletedAt])
   @@map("notas_clinicas")
+}
+
+// Adenda a uma nota clínica JÁ ASSINADA. Uma nota assinada é imutável (registo legal):
+// correcções/acrescentos entram como adenda append-only, com autor, momento e motivo.
+model NotaClinicaAdenda {
+  id            String   @id @default(uuid())
+  notaClinicaId String
+  autorId       String
+  texto         String   @db.Text
+  motivo        String   @db.VarChar(500)
+  criadaEm      DateTime @default(now())
+
+  nota  NotaClinica @relation(fields: [notaClinicaId], references: [id], onDelete: Cascade)
+  autor Utilizador  @relation("NotaClinicaAdendaAutor", fields: [autorId], references: [id], onDelete: Cascade)
+
+  @@index([notaClinicaId, criadaEm])
+  @@map("notas_clinicas_adendas")
 }
 
 // ─── Escalas Clínicas Especializadas ─────────────────────────────────────────
@@ -521,6 +557,11 @@ model NotaTurno {
   doente Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   autor  Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
+  @@index([doenteId])
   @@map("notas_turno")
 }
 
@@ -569,6 +610,10 @@ model Tarefa {
 
   @@index([doenteId, estado])
   @@index([responsavelId, estado])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
   @@map("tarefas")
 }
 
@@ -596,13 +641,21 @@ model Medicacao {
   assinadoEm      DateTime?
   assinadoPorId   String?
 
-  doente       Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  prescritoPor Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
-  validadoPor  Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
-  assinadoPor  Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
-  registos     RegistoMedicacao[]
-  stewardship  StewardshipAntibiotico?
+  // Override de alergia — prescrição feita apesar de alergia documentada.
+  // Persistido para rasto clínico/medico-legal (antes era descartado antes do create).
+  overrideAlergia     Boolean @default(false)
+  overrideMotivo      String? @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
+  overrideAlergenioId String?
 
+  doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  validadoPor       Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
+  assinadoPor       Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
+  overrideAlergenio Alergia?                @relation("MedicacaoOverrideAlergia", fields: [overrideAlergenioId], references: [id], onDelete: SetNull)
+  registos          RegistoMedicacao[]
+  stewardship       StewardshipAntibiotico?
+
+  @@index([doenteId, overrideAlergia])
   @@index([doenteId, ativo])
   @@index([doenteId, ativo, iniciadoEm])
   @@index([estadoValidacao])
@@ -634,7 +687,8 @@ model RegistoMedicacao {
   id                 String    @id @default(uuid())
   administradoEm     DateTime  @default(now())
   observacoes        String?
-  verificacao5Certas Boolean   @default(false)
+  verificacao5Certas Boolean   @default(false) // resultado REAL da verificação, não um literal
+  certosVerificados  Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
   naoAdministrada    Boolean   @default(false)
   motivoNaoAdmin     String?
   deletedAt          DateTime?
@@ -692,6 +746,10 @@ model HorarioTurnoProfissional {
   utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
 
   @@id([horarioTurnoId, utilizadorId])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
   @@map("horarios_turno_profissionais")
 }
 
@@ -718,6 +776,10 @@ model PedidoTrocaTurno {
   turno        HorarioTurno @relation("TrocaTurno", fields: [turnoId], references: [id], onDelete: Cascade)
   aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([turnoId])
   @@map("pedidos_troca_turno")
 }
 
@@ -735,6 +797,10 @@ model AtribuicaoHorarioTurno {
 
   @@unique([horarioTurnoId, doenteId, utilizadorId])
   @@index([utilizadorId, horarioTurnoId])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("atribuicoes_horario_turno")
 }
 
@@ -758,7 +824,13 @@ model SinalVital {
   notas                  String?
   avpu                   String? // A=Alert V=Voice P=Pain U=Unresponsive (NEWS2)
   o2Suplementar          Boolean? // parâmetro NEWS2 Scale 2
-  news2                  Int? // score NEWS2 calculado automaticamente
+  news2                  Int? // score NEWS2 calculado automaticamente (adulto)
+  // Um NEWS2 calculado sobre dados parciais NÃO é um NEWS2 "baixo" — é um score incompleto.
+  // Estes dois campos distinguem "não medido" de "normal" para quem lê o registo.
+  news2Completo          Boolean? // true = os 7 parâmetros NEWS2 estavam presentes
+  news2ParametrosFalta   String[] @default([]) // parâmetros em falta no cálculo
+  news2ParametroIsolado3 Boolean? // gatilho RCP: 3 pontos num único parâmetro
+  pews                   Int? // score PEWS calculado automaticamente (pediátrico, por faixa etária)
   glasgow                Int? // Glasgow Coma Scale 3-15 (para SOFA SNC)
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)
@@ -907,18 +979,25 @@ model RegistoTransfusao {
   iniciadoEm         DateTime  @default(now())
   terminadoEm        DateTime?
 
-  // Dupla verificação de segurança à cabeceira (análogo aos "5 certos" do MAR)
-  verificacaoABO      Boolean @default(false) // doente certo + grupo ABO/Rh compatível conferido
-  verificacaoUnidade  Boolean @default(false) // nº da unidade confere com a etiqueta
-  verificacaoValidade Boolean @default(false) // dentro da validade
-  compativel          Boolean // resultado do check de compatibilidade ABO/Rh (calculado em serviço)
-  observacoes         String? @db.VarChar(1000)
+  // Dupla verificação de segurança à cabeceira (análogo aos "5 certos" do MAR).
+  // "Dupla" implica DOIS profissionais: segundoVerificadorId tem de existir e ser
+  // distinto de administradoPorId (validado no serviço; nullable na BD só para não
+  // partir os registos históricos anteriores a esta regra — ver relatório).
+  verificacaoABO       Boolean @default(false) // doente certo + grupo ABO/Rh compatível conferido
+  verificacaoUnidade   Boolean @default(false) // nº da unidade confere com a etiqueta
+  verificacaoValidade  Boolean @default(false) // dentro da validade
+  compativel           Boolean // resultado do check de compatibilidade ABO/Rh (calculado em serviço)
+  segundoVerificadorId String?
+  consentimentoId      String? // consentimento informado de transfusão validado no acto
+  observacoes          String? @db.VarChar(1000)
 
-  pedido          PedidoTransfusao     @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
-  bolsa           BolsaSangue          @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
-  doente          Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  administradoPor Utilizador           @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
-  reacao          ReacaoTransfusional?
+  pedido             PedidoTransfusao        @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
+  bolsa              BolsaSangue             @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
+  doente             Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  administradoPor    Utilizador              @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
+  segundoVerificador Utilizador?             @relation("TransfusoesSegundaVerificacao", fields: [segundoVerificadorId], references: [id], onDelete: SetNull)
+  consentimento      ConsentimentoInformado? @relation("TransfusaoConsentimento", fields: [consentimentoId], references: [id], onDelete: SetNull)
+  reacao             ReacaoTransfusional?
 
   @@index([doenteId, iniciadoEm])
   @@map("registos_transfusao")
@@ -1032,6 +1111,17 @@ model TotpConsumido {
   @@map("totp_consumidos")
 }
 
+// Eleição de líder para tarefas @Cron: em produção com várias instâncias da API, cada @Cron
+// dispararia em TODAS (relatórios/lembretes/IA duplicados). Uma lease temporal (por nome) garante
+// que só uma instância corre cada tarefa em cada disparo. Alta-escrita de coordenação → sem valor
+// de auditoria (deny-list dos triggers).
+model CronLock {
+  nome     String   @id
+  expiraEm DateTime
+
+  @@map("cron_locks")
+}
+
 // Prova de integridade tamper-evident: raízes (Merkle/encadeadas) assinadas sobre intervalos
 // de audit_logs, seladas em diferido pelo checkpointer (com watermark de commit) e ancoradas
 // fora da BD. As linhas de audit_logs nunca são alteradas (WORM) — a prova está aqui.
@@ -1099,6 +1189,8 @@ model Alergia {
   notas      String?
   criadaEm   DateTime @default(now())
 
+  medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
+
   @@index([doenteId])
   @@map("alergias")
 }
@@ -1114,6 +1206,10 @@ model ContactoEmergencia {
   telefone  String
   principal Boolean @default(false)
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("contactos_emergencia")
 }
 
@@ -1125,6 +1221,9 @@ model AlertaClinico {
   doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo         String
   mensagem     String
+  // Severidade numérica (1 = informativo … 4 = crítico). Usada na de-duplicação:
+  // só se de-duplica quando a severidade NÃO sobe — uma escalada gera sempre linha nova.
+  severidade   Int         @default(1)
   lido         Boolean     @default(false)
   urgencia     Boolean     @default(false)
   acusadoPorId String?
@@ -1153,6 +1252,10 @@ model AvaliacaoRisco {
   registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadaEm       DateTime   @default(now())
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("avaliacoes_risco")
 }
 
@@ -1189,6 +1292,10 @@ model DispositivoToken {
   plataforma   String
   criadoEm     DateTime   @default(now())
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
   @@map("dispositivos_tokens")
 }
 
@@ -1250,10 +1357,26 @@ model Exame {
   criadoEm        DateTime    @default(now())
 
   ficheiros FicheiroExame[]
+  laudo     LaudoRadiologico?
 
   @@index([estado, urgente])
   @@index([doenteId, estado])
   @@map("exames")
+}
+
+model LaudoRadiologico {
+  id             String    @id @default(uuid())
+  exameId        String    @unique
+  exame          Exame     @relation(fields: [exameId], references: [id], onDelete: Cascade)
+  radiologistaId String
+  tecnica        String?
+  achados        String
+  conclusao      String
+  estado         String    @default("rascunho") // rascunho | assinado
+  assinadoEm     DateTime?
+  criadoEm       DateTime  @default(now())
+
+  @@map("laudos_radiologicos")
 }
 
 model FicheiroExame {
@@ -1338,6 +1461,10 @@ model EpisodioUrgencia {
   atualizacoes AtualizacaoTransporte[]
 
   @@index([estadoEpisodio, dataEntrada])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("episodios_urgencia")
 }
 
@@ -1388,6 +1515,10 @@ model CirurgiaProgramada {
 
   @@index([dataHora])
   @@index([estado])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("cirurgias_programadas")
 }
 
@@ -1450,6 +1581,10 @@ model Consulta {
 
   @@index([medicoId, dataHora])
   @@index([codigo])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("consultas")
 }
 
@@ -1591,6 +1726,10 @@ model AjusteStock {
 
   @@index([stockItemId])
   @@index([criadoEm])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
   @@map("ajustes_stock")
 }
 
@@ -1667,6 +1806,10 @@ model PlanoReabilitacao {
 
   sessoes SessaoFisioterapia[]
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("planos_reabilitacao")
 }
 
@@ -1691,6 +1834,10 @@ model SessaoFisioterapia {
   evolucao         String?
   estado           EstadoSessao      @default(agendada)
 
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("sessoes_fisioterapia")
 }
 
@@ -1729,6 +1876,10 @@ model PedidoInterno {
   concluidoEm     DateTime?
 
   @@index([estado, criadoEm])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("pedidos_internos")
 }
 
@@ -2230,6 +2381,10 @@ model EventoAdverso {
   @@index([gravidade])
   @@index([estado])
   @@index([ocorridoEm])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("eventos_adversos")
 }
 
@@ -2311,8 +2466,11 @@ model ConsentimentoInformado {
   criadoPorId          String
   criadoPor            Utilizador  @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
+  registosTransfusao RegistoTransfusao[] @relation("TransfusaoConsentimento")
+
   @@index([doenteId])
   @@index([tipo])
+  @@index([doenteId, tipo])
   @@map("consentimentos_informados")
 }
 
@@ -2332,6 +2490,10 @@ model BreakGlassAccess {
 
   @@index([utilizadorId, doenteId, ativo])
   @@index([expiradoEm])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([doenteId])
   @@map("break_glass_access")
 }
 
@@ -2599,7 +2761,10 @@ model AcessoFamiliar {
   criadoEm          DateTime @default(now())
   nomeContacto      String
   email             String
-  accessToken       String   @unique @default(cuid())
+  // S-15: guarda-se o SHA-256 do token, nunca o token. Era um `cuid()` — que não é aleatório
+  // criptográfico — guardado em claro: quem lesse esta tabela entrava no portal de todas as
+  // famílias. O token tem 256 bits e só é mostrado uma vez, na criação.
+  accessTokenHash   String   @unique
   accessTokenExpiry DateTime
   ativo             Boolean  @default(true)
 
@@ -2607,7 +2772,6 @@ model AcessoFamiliar {
   criadoPor Utilizador @relation("AcessoFamiliarCriado", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
   @@index([doenteId, ativo])
-  @@index([accessToken])
   @@map("acessos_familiares")
 }
 
@@ -2617,7 +2781,11 @@ model DispositivoFhir {
   id         String    @id @default(uuid())
   nome       String
   tipo       String // 'monitor_vitais' | 'ventilador' | 'bomba_infusao'
-  apiKey     String    @unique @default(cuid())
+  // S-03: guarda-se o SHA-256 da chave, nunca a chave. Um `cuid()` em claro numa coluna
+  // legível por qualquer leitura da tabela — e devolvido inteiro pelo endpoint de
+  // listagem — era uma credencial partilhada à vista de todos. A chave é aleatória de
+  // 256 bits, portanto o hash simples chega: não há dicionário que a ataque.
+  apiKeyHash String    @unique
   doenteId   String?
   ativo      Boolean   @default(true)
   ultimoPing DateTime?
@@ -2709,6 +2877,10 @@ model AiDecisao {
 
   @@index([doenteId, criadoEm])
   @@index([tipo, criadoEm])
+  // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
+  // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
+  // um varrimento sequencial da tabela inteira.
+  @@index([utilizadorId])
   @@map("ai_decisoes")
 }
 
@@ -3052,4 +3224,121 @@ model SsoProvider {
   criadoEm DateTime @default(now())
 
   @@map("sso_providers")
+}
+
+// ─── Maternidade / Obstetrícia ──────────────────────────────────────────────
+
+model Gravidez {
+  id                    String              @id @default(uuid())
+  doenteId              String
+  doente                Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  dataUltimaMenstruacao DateTime? // DUM
+  dataPrevistaParto     DateTime? // DPP (calculada da DUM se não indicada)
+  gravida               Int? // G — nº de gestações
+  para                  Int? // P — nº de partos
+  grupoSanguineo        String?
+  fatoresRisco          String?
+  estado                String              @default("ativa") // ativa | concluida | interrompida
+  criadoPorId           String
+  criadoEm              DateTime            @default(now())
+  registosPartograma    RegistoPartograma[]
+  parto                 Parto?
+
+  @@index([doenteId, estado])
+  @@map("gravidezes")
+}
+
+model RegistoPartograma {
+  id                  String   @id @default(uuid())
+  gravidezId          String
+  gravidez            Gravidez @relation(fields: [gravidezId], references: [id], onDelete: Cascade)
+  momento             DateTime @default(now())
+  dilatacaoCm         Int? // 0-10
+  fcFetal             Int? // bpm
+  contracoes10min     Int? // contrações por 10 min
+  descidaApresentacao Int? // estação -3..+3
+  notas               String?
+  registadoPorId      String
+
+  @@index([gravidezId, momento])
+  @@map("registos_partograma")
+}
+
+model Parto {
+  id             String   @id @default(uuid())
+  gravidezId     String   @unique
+  gravidez       Gravidez @relation(fields: [gravidezId], references: [id], onDelete: Cascade)
+  dataHora       DateTime @default(now())
+  tipo           String // eutocico | cesariana | ventosa | forceps
+  complicacoes   String?
+  apgar1         Int? // 0-10
+  apgar5         Int? // 0-10
+  pesoRN         Float? // peso do recém-nascido (kg)
+  sexoRN         String?
+  registadoPorId String
+
+  @@map("partos")
+}
+
+// ─── Oncologia / Quimioterapia ──────────────────────────────────────────────
+
+model PlanoQuimioterapia {
+  id                   String               @id @default(uuid())
+  doenteId             String
+  doente               Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  protocoloNome        String
+  ciclosPrevistos      Int
+  intervaloDias        Int                  @default(21)
+  alturaCm             Float?
+  pesoKg               Float?
+  superficieCorporalM2 Float? // BSA (Mosteller)
+  farmacos             Json // [{ nome, mgPorM2, doseMaximaMg? }]
+  estado               String               @default("ativo") // ativo | concluido | suspenso
+  criadoPorId          String
+  criadoEm             DateTime             @default(now())
+  ciclos               CicloQuimioterapia[]
+
+  @@index([doenteId, estado])
+  @@map("planos_quimioterapia")
+}
+
+model CicloQuimioterapia {
+  id                String             @id @default(uuid())
+  planoId           String
+  plano             PlanoQuimioterapia @relation(fields: [planoId], references: [id], onDelete: Cascade)
+  numero            Int
+  dataPrevista      DateTime?
+  dataAdministracao DateTime?
+  estado            String             @default("agendado") // agendado | administrado | adiado | cancelado
+  toxicidadeGrau    Int? // CTCAE 0-4
+  notas             String?
+  registadoPorId    String?
+
+  @@index([planoId, numero])
+  @@map("ciclos_quimioterapia")
+}
+
+// ─── Diálise / Nefrologia ───────────────────────────────────────────────────
+
+model SessaoDialise {
+  id               String   @id @default(uuid())
+  doenteId         String
+  doente           Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  data             DateTime @default(now())
+  modalidade       String // hemodialise | dialise_peritoneal
+  duracaoMin       Int?
+  pesoSecoKg       Float? // peso seco alvo
+  pesoPreKg        Float?
+  pesoPosKg        Float?
+  ultrafiltracaoMl Int? // volume removido
+  fluxoSangueMlMin Int?
+  acessoVascular   String? // fistula | cateter | protese
+  paSistolicaPre   Int?
+  paSistolicaPos   Int?
+  complicacoes     String?
+  notas            String?
+  registadoPorId   String
+
+  @@index([doenteId, data])
+  @@map("sessoes_dialise")
 }

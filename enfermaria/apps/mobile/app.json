@@ -9,14 +9,24 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "pt.curasphere.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Usar o Face ID para iniciar sessão sem escrever a palavra-passe no posto de trabalho.",
+        "NSCameraUsageDescription": "Ler os códigos QR da pulseira do doente e da etiqueta de medicação, e fotografar feridas.",
+        "NSPhotoLibraryUsageDescription": "Anexar imagens já existentes ao registo clínico do doente.",
+        "NSMicrophoneUsageDescription": "Ditar notas clínicas por voz.",
+        "NSSpeechRecognitionUsageDescription": "Transcrever notas clínicas ditadas por voz.",
+        "NSLocationWhenInUseUsageDescription": "Identificar o serviço onde o registo clínico está a ser feito."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "pt.curasphere.app"
     },
     "web": {
       "bundler": "metro",

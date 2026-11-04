@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
 interface Tarefa {
   id: string;
@@ -66,7 +67,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
     return () => document.removeEventListener('keydown', trap);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    <div role="presentation" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
          style={{ backdropFilter: 'blur(4px)' }}
          onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={ref} role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
@@ -154,6 +155,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
   const [modalHistorico, setModalHistorico] = useState(false);
   const [tarefasHistorico, setTarefasHistorico] = useState<Tarefa[]>([]);
   const [loadingHistorico, setLoadingHistorico] = useState(false);
+
+  const dlgHistorico = useDialogoAcessivel({ aberto: modalHistorico, onFechar: () => setModalHistorico(false), titulo: 'Histórico de tarefas' });
 
   const abrirModalTarefa = () => {
     setTarefaDesc(''); setTarefaTipo('clinica'); setTarefaPrioridade('media');
@@ -288,16 +291,16 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
         <Modal titulo="Criar Tarefa" onClose={() => setModalTarefa(false)}>
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição *</label>
-              <input autoFocus type="text" value={tarefaDesc} onChange={(e) => setTarefaDesc(e.target.value)}
+              <label htmlFor="ftarefasp-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição *</label>
+              <input id="ftarefasp-0" autoFocus type="text" value={tarefaDesc} onChange={(e) => setTarefaDesc(e.target.value)}
                 placeholder="Descrição da tarefa..."
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo</label>
-                <select value={tarefaTipo} onChange={(e) => setTarefaTipo(e.target.value)}
+                <label htmlFor="ftarefasp-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Tipo</label>
+                <select id="ftarefasp-1" value={tarefaTipo} onChange={(e) => setTarefaTipo(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="clinica">Clínica</option>
@@ -305,8 +308,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
-                <select value={tarefaPrioridade} onChange={(e) => setTarefaPrioridade(e.target.value)}
+                <label htmlFor="ftarefasp-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
+                <select id="ftarefasp-2" value={tarefaPrioridade} onChange={(e) => setTarefaPrioridade(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   style={{ padding: '10px 14px' }}>
                   <option value="baixa">Baixa</option>
@@ -317,8 +320,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Para</label>
-              <select value={tarefaGrupo} onChange={(e) => setTarefaGrupo(e.target.value)}
+              <label htmlFor="ftarefasp-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Para</label>
+              <select id="ftarefasp-3" value={tarefaGrupo} onChange={(e) => setTarefaGrupo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }}>
                 {gruposDisponiveis.map((g) => (
@@ -327,8 +330,8 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prazo (opcional)</label>
-              <input type="datetime-local" value={tarefaPrazo} onChange={(e) => setTarefaPrazo(e.target.value)}
+              <label htmlFor="ftarefasp-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prazo (opcional)</label>
+              <input id="ftarefasp-4" type="datetime-local" value={tarefaPrazo} onChange={(e) => setTarefaPrazo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }} />
             </div>
@@ -342,7 +345,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
       {/* Modal Histórico de Tarefas */}
       {modalHistorico && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+          <div {...dlgHistorico.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

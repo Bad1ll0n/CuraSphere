@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
+import { registarFalhaSilenciosa } from '../lib/erros';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface PedidoInterno {
@@ -44,7 +45,7 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
     try {
       const { data } = await api.get('/pedidos-internos');
       setPedidos(data ?? []);
-    } catch {} finally { setLoading(false); setRefreshing(false); }
+    } catch (e) { registarFalhaSilenciosa('PedidosInternosScreen', e); } finally { setLoading(false); setRefreshing(false); }
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
 
 @Injectable()
 export class DashboardService {
@@ -16,9 +17,11 @@ export class DashboardService {
       tipoTurno = 'noite';
       if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
     }
-    const diaStr = dataRef.toISOString().split('T')[0];
-    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFimDia = new Date(diaStr + 'T23:59:59.999Z');
+    // BE-03: a janela do turno é o dia DO HOSPITAL. Derivada de `toISOString()`, a partir
+    // de uma hora local, deslocava-se um dia durante o horário de verão — precisamente na
+    // madrugada, que é quando o turno da noite a consulta.
+    const dataInicio = inicioDoDiaClinico(dataRef);
+    const dataFimDia = new Date(somarDiasClinicos(dataInicio, 1).getTime() - 1);
     return { tipoTurno, dataInicio, dataFimDia, agora };
   }
 
@@ -29,18 +32,15 @@ export class DashboardService {
     const totalCamas = await this.prisma.cama.count();
     const diasOcupacao = await Promise.all(
       Array.from({ length: 14 }, (_, i) => {
-        const dia = new Date(agora);
-        dia.setDate(dia.getDate() - (13 - i));
-        dia.setHours(23, 59, 59, 999);
-        const iniciodia = new Date(dia);
-        iniciodia.setHours(0, 0, 0, 0);
+        const iniciodia = somarDiasClinicos(inicioDoDiaClinico(agora), i - 13);
+        const dia = new Date(somarDiasClinicos(iniciodia, 1).getTime() - 1);
         return this.prisma.doente.count({
           where: {
             dataAdmissao: { lte: dia },
             OR: [{ dataAlta: null }, { dataAlta: { gte: iniciodia } }],
           },
         }).then((ocupadas) => ({
-          data: iniciodia.toISOString().split('T')[0],
+          data: chaveDiaClinico(iniciodia),
           total: totalCamas,
           ocupadas,
         }));
@@ -169,12 +169,12 @@ export class DashboardService {
     const totalCamas = await this.prisma.cama.count();
     const tendenciaOcupacao = await Promise.all(
       Array.from({ length: 14 }, (_, i) => {
-        const dia = new Date(agora); dia.setDate(dia.getDate() - (13 - i)); dia.setHours(23, 59, 59, 999);
-        const inicioDia = new Date(dia); inicioDia.setHours(0, 0, 0, 0);
+        const inicioDia = somarDiasClinicos(inicioDoDiaClinico(agora), i - 13);
+        const dia = new Date(somarDiasClinicos(inicioDia, 1).getTime() - 1);
         return this.prisma.doente.count({
           where: { dataAdmissao: { lte: dia }, OR: [{ dataAlta: null }, { dataAlta: { gte: inicioDia } }] },
         }).then((ocupadas) => ({
-          data: inicioDia.toISOString().split('T')[0],
+          data: chaveDiaClinico(inicioDia),
           ocupadas,
           total: totalCamas,
           taxa: totalCamas > 0 ? Math.round((ocupadas / totalCamas) * 100) : 0,
@@ -358,12 +358,12 @@ export class DashboardService {
 
     const tendenciaIsolamentos = Array.from({ length: 7 }, (_, i) => {
       const offset = 6 - i;
-      const dia = new Date(agora); dia.setDate(dia.getDate() - offset); dia.setHours(23, 59, 59, 999);
-      const iniciodia = new Date(dia); iniciodia.setHours(0, 0, 0, 0);
+      const iniciodia = somarDiasClinicos(inicioDoDiaClinico(agora), -offset);
+      const dia = new Date(somarDiasClinicos(iniciodia, 1).getTime() - 1);
       const total = isoladosHistorico.filter(d =>
         d.dataAdmissao <= dia && (d.dataAlta === null || d.dataAlta >= iniciodia),
       ).length;
-      return { data: iniciodia.toISOString().split('T')[0], total };
+      return { data: chaveDiaClinico(iniciodia), total };
     });
 
     const taxaAlta = doentesComAlta30Dias > 0 ? Math.round((doentesComSumarioAlta / doentesComAlta30Dias) * 100) : 0;

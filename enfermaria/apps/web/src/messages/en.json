@@ -172,7 +172,10 @@
     "route": "Route",
     "frequency": "Frequency",
     "startDate": "Start",
-    "endDate": "End"
+    "endDate": "End",
+    "confirmTitle": "Confirm administration",
+    "confirmBody": "You are about to record administration of {farmaco} to {doente} (bed {cama}). This is written to the clinical record and cannot be undone.",
+    "administering": "Recording..."
   },
   "vitals": {
     "title": "Vital Signs",
@@ -205,7 +208,9 @@
     "notFound": "Resource not found",
     "serverError": "Server error. Please try again.",
     "networkError": "No network connection",
-    "sessionExpired": "Session expired. Please sign in again."
+    "sessionExpired": "Session expired. Please sign in again.",
+    "forbiddenTitle": "No access to this area",
+    "forbiddenBody": "Your profile is not allowed to view this. Redirecting to your workspace."
   },
   "roles": {
     "medico": "Doctor",
@@ -431,5 +436,10 @@
     "saving": "Saving...",
     "toastSaved": "Unit registered in the bank",
     "toastError": "Error registering unit"
+  },
+  "realtime": {
+    "offlineTitle": "Real-time channel unavailable.",
+    "offlineBody": "SOS alerts, emergency SLA and ambulance pre-notification are not reaching this screen. Confirm alerts through another channel.",
+    "retry": "Try connecting again"
   }
 }

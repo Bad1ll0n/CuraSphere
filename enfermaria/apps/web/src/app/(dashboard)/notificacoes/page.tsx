@@ -80,9 +80,13 @@ export default function NotificacoesPage() {
 
             return (
               <div key={n.id}
-                className={`bg-white rounded-2xl border flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50 ${borderClass}`}
+                role="button"
+                tabIndex={0}
+                aria-label={n.lida ? n.titulo : `${n.titulo} — marcar como lida`}
+                className={`bg-white rounded-2xl border flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${borderClass}`}
                 style={{ padding: '18px 20px' }}
-                onClick={() => { if (!n.lida) mutLer.mutate(n.id); }}>
+                onClick={() => { if (!n.lida) mutLer.mutate(n.id); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!n.lida) mutLer.mutate(n.id); } }}>
                 <div className={`w-6 h-6 rounded-full shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold ${
                   isEscalacao ? 'bg-red-100 text-red-600' :
                   isWatchdog ? 'bg-violet-100 text-violet-600' :

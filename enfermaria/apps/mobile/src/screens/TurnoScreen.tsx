@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import { registarFalhaSilenciosa } from '../lib/erros';
+import ErroCarregamento from '../components/ErroCarregamento';
 
 interface Doente {
   id: string;
@@ -49,12 +51,15 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   const [checkInFeito, setCheckInFeito] = useState(false);
   const [checkInLoading, setCheckInLoading] = useState(false);
   const [passagemLoading, setPassagemLoading] = useState(false);
+  const [erroCarga, setErroCarga] = useState(false);
 
   const meuGrupoChave = utilizador.role === 'medico' ? 'medico'
     : utilizador.role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
 
+  // A6: sem `catch`, uma falha a carregar os doentes terminava em "Sem doentes atribuídos".
   const carregar = async () => {
     try {
+      setErroCarga(false);
       const { data: doentesResp } = await api.get('/doentes');
       const doentesData = doentesResp.data ?? doentesResp;
       setDoentes(doentesData);
@@ -67,6 +72,9 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
         } catch { tarefasMap[d.id] = []; }
       }));
       setTarefasPorDoente(tarefasMap);
+    } catch (e) {
+      registarFalhaSilenciosa('TurnoScreen.carregar', e);
+      setErroCarga(true);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -161,7 +169,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
         )}
         <Text style={s.headerTitulo}>O Meu Turno</Text>
         <Text style={s.headerSubtitulo}>
-          {doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
+          {erroCarga ? 'Lista por carregar' : doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
         </Text>
       </View>
 
@@ -190,7 +198,12 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
         </TouchableOpacity>
       </View>
 
-      {doentes.length === 0 && (
+      {erroCarga ? (
+        <ErroCarregamento
+          texto="Isto não quer dizer que não tenha doentes atribuídos. Verifique a ligação e tente de novo."
+          onTentarNovamente={() => { setLoading(true); carregar(); }}
+        />
+      ) : doentes.length === 0 && (
         <View style={s.centro}>
           <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
           <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>

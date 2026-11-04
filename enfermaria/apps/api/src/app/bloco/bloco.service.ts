@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EventsGateway } from '../gateway/events.gateway';
+import { chaveDiaClinico } from '../common/dia-clinico.helper';
 
 @Injectable()
 export class BlocoService {
@@ -60,7 +61,7 @@ export class BlocoService {
     });
     const porDia: Record<string, typeof cirurgias> = {};
     for (const c of cirurgias) {
-      const dia = new Date(c.dataHora).toISOString().split('T')[0];
+      const dia = chaveDiaClinico(new Date(c.dataHora));
       if (!porDia[dia]) porDia[dia] = [];
       porDia[dia].push(c);
     }

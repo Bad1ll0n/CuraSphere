@@ -27,7 +27,7 @@ interface Registo {
 }
 
 function PROContent() {
-  const { user, token, loading: authLoading } = usePortalAuth();
+  const { user, autenticado, loading: authLoading } = usePortalAuth();
   const router = useRouter();
 
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -40,13 +40,13 @@ function PROContent() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!token) { router.push('/portal/login'); return; }
-    const h = { Authorization: `Bearer ${token}` };
-    fetch(`${API}/portal/pro/templates`, { headers: h })
-      .then(r => r.json()).then(setTemplates).catch(() => {});
-    fetch(`${API}/portal/pro/historico`, { headers: h })
-      .then(r => r.json()).then(setHistorico).catch(() => {});
-  }, [token, authLoading, router]);
+    if (!autenticado) { router.push('/portal/login'); return; }
+    const opcoes: RequestInit = { credentials: 'include' };
+    fetch(`${API}/portal/pro/templates`, opcoes)
+      .then(r => r.json()).then(setTemplates).catch(() => { /* vazio */ });
+    fetch(`${API}/portal/pro/historico`, opcoes)
+      .then(r => r.json()).then(setHistorico).catch(() => { /* vazio */ });
+  }, [autenticado, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,15 +56,16 @@ function PROContent() {
     try {
       const r = await fetch(`${API}/portal/pro/submeter`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ templateId: templateSel.id, respostas }),
       });
       if (!r.ok) throw new Error();
       setMensagem('Obrigado! O seu registo foi guardado.');
       setRespostas({});
       setTemplateSel(null);
-      const h = { Authorization: `Bearer ${token}` };
-      fetch(`${API}/portal/pro/historico`, { headers: h }).then(r2 => r2.json()).then(setHistorico).catch(() => {});
+      const opcoes: RequestInit = { credentials: 'include' };
+      fetch(`${API}/portal/pro/historico`, opcoes).then(r2 => r2.json()).then(setHistorico).catch(() => { /* vazio */ });
     } catch {
       setMensagem('Erro ao guardar. Tente novamente.');
     } finally {
@@ -117,10 +118,10 @@ function PROContent() {
               <div className="space-y-6">
                 {templateSel.campos.map(campo => (
                   <div key={campo.id}>
-                    <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>{campo.label}</label>
+                    <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>{campo.label}</span>
                     {campo.tipo === 'scale' && (
                       <div>
-                        <input type="range"
+                        <input aria-label={campo.label} type="range"
                           min={campo.min ?? 0} max={campo.max ?? 10} step={1}
                           value={(respostas[campo.id] as number) ?? Math.floor(((campo.max ?? 10) + (campo.min ?? 0)) / 2)}
                           onChange={e => setRespostas(r => ({ ...r, [campo.id]: parseInt(e.target.value) }))}
