@@ -100,7 +100,7 @@
     "@nestjs/swagger": "^11.4.7",
     "@nestjs/throttler": "^6.7.1",
     "@nestjs/websockets": "^11.2.8",
-    "@node-rs/bcrypt": "^1.10.7",
+    "@node-rs/bcrypt": "^2.0.0",
     "@node-saml/node-saml": "^5.1.0",
     "@opentelemetry/auto-instrumentations-node": "^0.78.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.220.0",
