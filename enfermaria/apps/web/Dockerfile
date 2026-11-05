@@ -1,11 +1,12 @@
 # ─── Stage 1: Store do pnpm a partir do lockfile ─────────────────────────────
-FROM node:22-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /workspace
 
 # OPS-14: `pnpm@latest` torna a imagem irreprodutível — a mesma etiqueta de imagem
 # construída amanhã pode resolver dependências de forma diferente da de hoje, e uma
 # regressão deixa de ser rastreável ao commit. Versão fixa, alinhada com o lockfile.
-RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+# Via npm e não corepack: o Node 25+ deixou de trazer o corepack incluído.
+RUN npm install -g pnpm@10.33.0
 
 # OPS-02: ver a nota equivalente em apps/api/Dockerfile. Aqui era pior: o web depende de
 # @org/shared (libs/shared), e nenhum package.json de libs/ chegava a ser copiado.
@@ -39,10 +40,14 @@ ENV NODE_ENV=production
 # Não chegava: o `next.config.js` perdia o `output` (e os `headers()`) ao passar a função do
 # `withNx` ao `withNextIntl` como se fosse objecto. As duas coisas são precisas para existir
 # .next/standalone.
+#
+# O `next build` é chamado directamente (não pelo nx), por isso o @org/shared tem de ser
+# compilado antes: o type-check do web lê libs/shared/dist via project reference (TS6305).
+RUN pnpm exec nx run @org/shared:build --skip-nx-cache
 RUN cd apps/web && pnpm exec next build --webpack
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
-FROM node:22-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

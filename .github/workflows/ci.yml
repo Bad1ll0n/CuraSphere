@@ -63,9 +63,10 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  # O projecto exige pnpm >=10 e Node >=22.12 (engines em package.json).
+  # O projecto exige pnpm >=10 e Node >=22.12 (engines em package.json). O CI corre
+  # na mesma major das imagens Docker de produção (apps/*/Dockerfile) — mudar as duas juntas.
   PNPM_VERSION: '10'
-  NODE_VERSION: '22'
+  NODE_VERSION: '26'
 
 jobs:
   # ═══════════════════════════════════════════════════════════════════════════

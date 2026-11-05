@@ -1487,7 +1487,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="data" tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => new Date(v).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })} />
                 <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} allowDecimals={false} />
-                <Tooltip labelFormatter={(l) => new Date(l).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long' })} formatter={(v, name) => [v, name === 'ocupadas' ? 'Ocupadas' : 'Total']} />
+                <Tooltip labelFormatter={(l) => new Date(String(l)).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long' })} formatter={(v, name) => [v, name === 'ocupadas' ? 'Ocupadas' : 'Total']} />
                 <Area type="monotone" dataKey="total" stroke="#e2e8f0" fill="none" strokeDasharray="4 2" strokeWidth={1.5} dot={false} />
                 <Area type="monotone" dataKey="ocupadas" stroke="#2563eb" fill="url(#gradExec)" strokeWidth={2} dot={false} />
               </AreaChart>
@@ -1672,7 +1672,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis dataKey="data" tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => new Date(v).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })} />
                     <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} allowDecimals={false} />
-                    <Tooltip formatter={(v, n) => [v, n === 'ocupadas' ? 'Ocupadas' : 'Total']} labelFormatter={(l) => new Date(l).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long' })} />
+                    <Tooltip formatter={(v, n) => [v, n === 'ocupadas' ? 'Ocupadas' : 'Total']} labelFormatter={(l) => new Date(String(l)).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long' })} />
                     <Area type="monotone" dataKey="total" stroke="#e2e8f0" fill="none" strokeDasharray="4 2" strokeWidth={1.5} dot={false} />
                     <Area type="monotone" dataKey="ocupadas" stroke="#2563eb" fill="url(#gradG)" strokeWidth={2} dot={false} />
                   </AreaChart>
