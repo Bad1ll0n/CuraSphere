@@ -63,7 +63,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  # O projecto exige pnpm >=10 e Node >=22.12 (engines em package.json). O CI corre
+  # O projecto exige pnpm >=10 e Node >=24.9 (engines em package.json): o NestJS 12 é só ESM
+  # e o Jest só o carrega com require(esm) a partir do Node 24.9. O CI corre
   # na mesma major das imagens Docker de produção (apps/*/Dockerfile) — mudar as duas juntas.
   PNPM_VERSION: '10'
   NODE_VERSION: '26'

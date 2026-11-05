@@ -15,6 +15,9 @@ const OPTIONAL_UNUSED_PEERS = [
   /^bufferutil$/,
   /^utf-8-validate$/,
   /^@react-email\/render$/,
+  // @nestjs/swagger 12 importa o @fastify/static só quando a app usa o adaptador Fastify;
+  // esta API usa Express.
+  /^@fastify\/static$/,
 ];
 
 module.exports = {
