@@ -23,6 +23,24 @@ if (process.env.SENTRY_DSN) {
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'development',
     tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.05 : 1.0,
+    // RGPD / dados clínicos: no Sentry v11, `dataCollection` por omissão envia corpos HTTP,
+    // queries à BD, inputs/outputs da IA clínica, cookies e dados do utilizador — também nos
+    // spans de tracing, onde o `beforeSend` abaixo não chega. Tudo desligado explicitamente
+    // (baseline restritivo da v10, e sem query params, que podem levar IDs de doentes).
+    dataCollection: {
+      userInfo: false,
+      cookies: false,
+      httpHeaders: {
+        request: { deny: ['forwarded', '-ip', 'remote-', 'via', '-user', 'authorization', 'cookie'] },
+        response: { deny: ['forwarded', '-ip', 'remote-', 'via', '-user', 'set-cookie'] },
+      },
+      httpBodies: [],
+      urlQueryParams: false,
+      genAI: { inputs: false, outputs: false },
+      databaseQueryData: false,
+      queues: false,
+      graphQL: { document: false, variables: false },
+    },
     beforeSend: (event) => {
       // RGPD: não enviar corpo do request nem cookies
       if (event.request) {
