@@ -167,7 +167,7 @@ jobs:
           ANTHROPIC_API_KEY: placeholder
 
       - name: Publicar relatório de cobertura
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: coverage-report
@@ -346,7 +346,7 @@ jobs:
           TEST_PASSWORD: Admin1234!
 
       - name: Publicar relatório Playwright
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: playwright-report
@@ -354,7 +354,7 @@ jobs:
           retention-days: 7
 
       - name: Publicar screenshots de falha
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure()
         with:
           name: playwright-test-results

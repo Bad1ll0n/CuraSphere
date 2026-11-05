@@ -1,28 +1,20 @@
 version: 2
 updates:
+  # Workspace pnpm: o `pnpm-lock.yaml` está em /enfermaria, por isso o `directory` é a
+  # raiz do workspace e não cada app. Com `/enfermaria/apps/api` e `/enfermaria/apps/web`
+  # o Dependabot só mudava o package.json da app, sem lockfile, e os PRs partiam no
+  # `pnpm install --frozen-lockfile` do CI. A partir da raiz atualiza os dois.
   - package-ecosystem: npm
-    directory: /enfermaria/apps/api
+    directory: /enfermaria
     schedule:
       interval: weekly
       day: monday
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
     labels:
       - dependencies
-      - backend
     ignore:
       - dependency-name: "@prisma/*"
         update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: npm
-    directory: /enfermaria/apps/web
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-      - frontend
-    ignore:
       - dependency-name: "next"
         update-types: ["version-update:semver-major"]
 
