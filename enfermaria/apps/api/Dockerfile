@@ -1,11 +1,12 @@
 # ─── Stage 1: Store do pnpm a partir do lockfile ─────────────────────────────
-FROM node:22-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /workspace
 
 # OPS-14: `pnpm@latest` torna a imagem irreprodutível — a mesma etiqueta de imagem
 # construída amanhã pode resolver dependências de forma diferente da de hoje, e uma
 # regressão deixa de ser rastreável ao commit. Versão fixa, alinhada com o lockfile.
-RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+# Via npm e não corepack: o Node 25+ deixou de trazer o corepack incluído.
+RUN npm install -g pnpm@10.33.0
 
 # OPS-02: esta fase copiava três package.json de um workspace com vários projectos
 # (apps/*, libs/*, packages/*). Com `--frozen-lockfile`, o pnpm não instala um workspace
@@ -37,11 +38,17 @@ RUN cd apps/api && pnpm exec prisma generate --schema prisma/schema.prisma
 # Nx Cloud) em vez de recompilar, servindo um main.js stale que não reflecte o código atual.
 RUN pnpm exec nx run @org/api:prune --skip-nx-cache
 
+# O prune copia a secção `overrides:` do lockfile da raiz para o lockfile podado, mas não
+# a configuração que a declara (`overrides:` no pnpm-workspace.yaml) — e o
+# `pnpm install --frozen-lockfile` abaixo recusa a diferença
+# (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH). Leva-se o bloco para junto do lockfile podado.
+RUN tr -d '\r' < pnpm-workspace.yaml | awk '/^overrides:/{f=1} f&&/^$/{exit} f' > apps/api/dist/pnpm-workspace.yaml
+
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
-FROM node:22-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+RUN npm install -g pnpm@10.33.0
 
 # Utilizador sem privilégios
 RUN addgroup --system --gid 1001 nodejs \
