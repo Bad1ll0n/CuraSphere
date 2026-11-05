@@ -58,6 +58,11 @@ model Utilizador {
   mfaSecret         String?
   mfaAtivo          Boolean   @default(false)
   passwordExpiresAt DateTime?
+  // Bloqueio de conta por tentativas falhadas (SEC-08): em Postgres, não em Redis — sem
+  // Redis o bloqueio desligava-se em silêncio e a força bruta passava.
+  tentativasLoginFalhadas Int       @default(0)
+  ultimaFalhaLoginEm      DateTime?
+  bloqueadoAte            DateTime?
   role              String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
   subRole           String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
   servico           Servico   @default(internamento)

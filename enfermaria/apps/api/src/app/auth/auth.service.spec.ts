@@ -133,8 +133,9 @@ describe('AuthService', () => {
         id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
         role: 'medico', nome: 'Dr. Teste', numeroFuncionario: '12345', servico: 'medicina',
       });
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 1 });
 
-      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(UnauthorizedException);
+      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(/Credenciais inválidas/);
     });
 
     it('retorna mfaPendente=true quando MFA está ativo', async () => {
@@ -182,36 +183,58 @@ describe('AuthService', () => {
       expect(resultado.diasRestantesSenha).toBeLessThanOrEqual(10);
     });
 
-    it('lança UnauthorizedException quando conta está bloqueada', async () => {
+    it('lança UnauthorizedException quando a conta está bloqueada — mesmo com a password certa', async () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
         role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345', servico: 'ti',
+        bloqueadoAte: new Date(Date.now() + 10 * 60 * 1000), tentativasLoginFalhadas: 0,
       });
-      // lockKey tem valor → conta bloqueada
-      mockRedis.get.mockResolvedValue('1');
 
-      await expect(service.login('12345', 'passwordCorreta')).rejects.toThrow(
-        /bloqueada/i,
-      );
+      await expect(service.login('12345', 'passwordCorreta')).rejects.toThrow(/bloqueada/i);
     });
 
-    it('bloqueia conta após 5 falhas consecutivas', async () => {
+    it('bloqueia a conta à 5.ª falha dentro da janela, em Postgres (SEC-08)', async () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
         role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345', servico: 'ti',
+        tentativasLoginFalhadas: 4, ultimaFalhaLoginEm: new Date(Date.now() - 60 * 1000),
       });
-      // lockKey → null (não bloqueada); failKey → 4 (4 falhas anteriores, esta é a 5ª)
-      mockRedis.get
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(4);
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 5 });
 
-      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(UnauthorizedException);
+      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(/bloqueada/i);
 
-      expect(mockRedis.set).toHaveBeenCalledWith(
-        expect.stringContaining('login:lock:1'),
-        '1',
-        900,
-      );
+      expect(mockPrisma.utilizador.update).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        data: expect.objectContaining({ tentativasLoginFalhadas: { increment: 1 } }),
+      }));
+      expect(mockPrisma.utilizador.update).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        data: expect.objectContaining({ bloqueadoAte: expect.any(Date), tentativasLoginFalhadas: 0 }),
+      }));
+    });
+
+    it('o bloqueio funciona sem Redis — o Redis em baixo já não o desliga (SEC-08)', async () => {
+      mockRedis.get.mockResolvedValue(null); // o que o RedisService devolve quando está em baixo
+      mockPrisma.utilizador.findUnique.mockResolvedValue({
+        id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
+        role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345', servico: 'ti',
+        tentativasLoginFalhadas: 4, ultimaFalhaLoginEm: new Date(),
+      });
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 5 });
+
+      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(/bloqueada/i);
+    });
+
+    it('fora da janela de 15 min, as falhas recomeçam em 1', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({
+        id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
+        role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345', servico: 'ti',
+        tentativasLoginFalhadas: 4, ultimaFalhaLoginEm: new Date(Date.now() - 60 * 60 * 1000),
+      });
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 1 });
+
+      await expect(service.login('12345', 'passwordErrada')).rejects.toThrow(/Credenciais inválidas/);
+      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ tentativasLoginFalhadas: 1 }),
+      }));
     });
 
     it('retorna mfaSetupObrigatorio para role clínico sem MFA configurado', async () => {
