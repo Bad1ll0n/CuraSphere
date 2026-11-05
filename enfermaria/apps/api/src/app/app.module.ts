@@ -56,7 +56,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         DATABASE_URL: Joi.string().required(),
         REDIS_URL: Joi.string().default('redis://localhost:6379'),
         JWT_SECRET: Joi.string().min(32).required(),
-        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('1h'),
+        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('15m'),
         ENCRYPTION_KEY: Joi.string().hex().min(64).required(),
         ALLOWED_ORIGINS: Joi.when('NODE_ENV', {
           is: 'production',

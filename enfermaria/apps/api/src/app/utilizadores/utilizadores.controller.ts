@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { UtilizadoresService } from './utilizadores.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -45,14 +45,15 @@ export class UtilizadoresController {
   atualizar(
     @Param('id') id: string,
     @Body() dto: EditarUtilizadorDto,
+    @Req() req: { user: { sub: string } },
   ) {
-    return this.utilizadoresService.atualizar(id, dto);
+    return this.utilizadoresService.atualizar(id, dto, req.user.sub);
   }
 
   @Roles('ti')
   @SubRoles('it_admin')
   @Delete(':id')
-  desativar(@Param('id') id: string) {
-    return this.utilizadoresService.desativar(id);
+  desativar(@Param('id') id: string, @Req() req: { user: { sub: string } }) {
+    return this.utilizadoresService.desativar(id, req.user.sub);
   }
 }

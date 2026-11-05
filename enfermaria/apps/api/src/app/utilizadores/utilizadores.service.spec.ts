@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 jest.mock('../common/password', () => ({
   hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
   verifyPassword: jest.fn(),
@@ -27,6 +27,9 @@ const mockPrisma = {
     create: jest.fn(),
     update: jest.fn(),
     count: jest.fn(),
+  },
+  refreshToken: {
+    updateMany: jest.fn(),
   },
   $transaction: jest.fn(),
 };
@@ -78,7 +81,7 @@ describe('UtilizadoresService', () => {
       expect(hashPassword).toHaveBeenCalledWith('senhaSegura123', 12);
     });
 
-    it('define passwordExpiresAt ~90 dias no futuro', async () => {
+    it('SEC-03: a password inicial definida pelo TI nasce expirada', async () => {
       const antes = Date.now();
       mockPrisma.$transaction.mockImplementation(async (fn: any) => {
         mockTx.utilizador.findUnique.mockResolvedValue(null);
@@ -106,10 +109,10 @@ describe('UtilizadoresService', () => {
 
       const chamadaCreate = mockTx.utilizador.create.mock.calls[0][0];
       const expiresAt: Date = chamadaCreate.data.passwordExpiresAt;
-      const noventaDiasMs = 90 * 24 * 60 * 60 * 1000;
 
-      expect(expiresAt.getTime()).toBeGreaterThanOrEqual(antes + noventaDiasMs - 5000);
-      expect(expiresAt.getTime()).toBeLessThanOrEqual(antes + noventaDiasMs + 5000);
+      // O primeiro login obriga a mudar a password (fluxo `passwordExpirada`).
+      expect(expiresAt.getTime()).toBeGreaterThanOrEqual(antes);
+      expect(expiresAt.getTime()).toBeLessThanOrEqual(Date.now());
     });
 
     it('lança ConflictException quando número de funcionário já existe', async () => {
@@ -215,6 +218,40 @@ describe('UtilizadoresService', () => {
       );
       expect(resultado).toHaveProperty('nome', 'Ana Costa');
     });
+
+    it('SEC-03: o próprio utilizador não altera o seu papel', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ id: 'ti-1', role: 'ti', subRole: 'it_admin' });
+
+      await expect(service.atualizar('ti-1', { role: 'direcao' }, 'ti-1')).rejects.toThrow(ForbiddenException);
+      await expect(service.atualizar('ti-1', { subRole: null }, 'ti-1')).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.utilizador.update).not.toHaveBeenCalled();
+    });
+
+    it('alterar campos que não vão no token não termina sessões', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ id: 'ti-1', nome: 'Ana', role: 'ti' });
+      mockPrisma.utilizador.update.mockResolvedValue({ id: 'ti-1' });
+
+      await service.atualizar('ti-1', { ordemExperiencia: 2 }, 'ti-1');
+
+      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(expect.objectContaining({
+        data: { ordemExperiencia: 2 },
+      }));
+      expect(mockPrisma.refreshToken.updateMany).not.toHaveBeenCalled();
+    });
+
+    it('SEC-04: mudar o papel de outro utilizador termina as sessões dele', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ id: 'u2', role: 'enfermeiro', servico: 'internamento' });
+      mockPrisma.utilizador.update.mockResolvedValue({ id: 'u2' });
+
+      await service.atualizar('u2', { role: 'chefe_enfermeiros' }, 'ti-1');
+
+      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(expect.objectContaining({
+        data: { role: 'chefe_enfermeiros', versaoSessao: { increment: 1 } },
+      }));
+      expect(mockPrisma.refreshToken.updateMany).toHaveBeenCalledWith({
+        where: { utilizadorId: 'u2', revogado: false }, data: { revogado: true },
+      });
+    });
   });
 
   // ── desativar() ──────────────────────────────────────────────────────────────
@@ -235,9 +272,18 @@ describe('UtilizadoresService', () => {
       expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'user-1' },
-          data: expect.objectContaining({ ativo: false }),
+          data: { ativo: false, versaoSessao: { increment: 1 } },
         }),
       );
+      // SEC-04: as sessões abertas morrem já, não só no próximo refresh.
+      expect(mockPrisma.refreshToken.updateMany).toHaveBeenCalledWith({
+        where: { utilizadorId: 'user-1', revogado: false }, data: { revogado: true },
+      });
+    });
+
+    it('não deixa um utilizador desactivar a própria conta', async () => {
+      await expect(service.desativar('ti-1', 'ti-1')).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.utilizador.update).not.toHaveBeenCalled();
     });
   });
 });

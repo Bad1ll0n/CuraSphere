@@ -189,6 +189,11 @@ export type ReceitaEletronica = $Result.DefaultSelection<Prisma.$ReceitaEletroni
  */
 export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
 /**
+ * Model DesafioMfa
+ * 
+ */
+export type DesafioMfa = $Result.DefaultSelection<Prisma.$DesafioMfaPayload>
+/**
  * Model TotpConsumido
  * 
  */
@@ -1219,7 +1224,7 @@ export class PrismaClient<
    * Read more in our [docs](https://pris.ly/d/client).
    */
 
-  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.PrismaClientConstructorArgs<ClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
@@ -1649,6 +1654,16 @@ export class PrismaClient<
     * ```
     */
   get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.desafioMfa`: Exposes CRUD operations for the **DesafioMfa** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DesafioMfas
+    * const desafioMfas = await prisma.desafioMfa.findMany()
+    * ```
+    */
+  get desafioMfa(): Prisma.DesafioMfaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.totpConsumido`: Exposes CRUD operations for the **TotpConsumido** model.
@@ -2739,8 +2754,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.8.0
-   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+   * Prisma Client JS version: 7.10.1
+   * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
    */
   export type PrismaVersion = {
     client: string
@@ -2875,6 +2890,19 @@ export namespace Prisma {
   };
 
   /**
+   * Resolved type of the argument passed to the `PrismaClient` constructor.
+   *
+   * When called without a narrower options type (the common case), this resolves
+   * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+   * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+   * the argument is missing or incomplete. When the user supplies a narrower
+   * options type (e.g. via a literal), it falls back to `Subset` to keep
+   * filtering out unknown properties.
+   */
+  export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> =
+    [PrismaClientOptions] extends [Options] ? PrismaClientOptions : Subset<Options, PrismaClientOptions>;
+
+  /**
    * SelectSubset
    * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
    * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -2906,7 +2934,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
+      ((Without<T, U> & U) | (Without<U, T> & T)) & object
     : U : T
 
 
@@ -3158,6 +3186,7 @@ export namespace Prisma {
     ListaEspera: 'ListaEspera',
     ReceitaEletronica: 'ReceitaEletronica',
     AuditLog: 'AuditLog',
+    DesafioMfa: 'DesafioMfa',
     TotpConsumido: 'TotpConsumido',
     CronLock: 'CronLock',
     AuditCheckpoint: 'AuditCheckpoint',
@@ -3277,7 +3306,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "notaClinicaAdenda" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "laudoRadiologico" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "notaClinicaAdenda" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "stewardshipAntibiotico" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "dispositivoMonitor" | "balancoHidrico" | "avaliacaoFerida" | "bolsaSangue" | "pedidoTransfusao" | "registoTransfusao" | "reacaoTransfusional" | "listaEspera" | "receitaEletronica" | "auditLog" | "desafioMfa" | "totpConsumido" | "cronLock" | "auditCheckpoint" | "acessoLeitura" | "featureFlag" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "laudoRadiologico" | "ficheiroExame" | "episodioUrgencia" | "atualizacaoTransporte" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "anexoMensagem" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem" | "sinalizacaoPreocupante" | "alertaSepsis" | "baselineDoente" | "planoAlta" | "reconciliacaoMedicacao" | "relatorioPassagemTurno" | "acessoFamiliar" | "dispositivoFhir" | "sistemaExternoSaude" | "identificadorExterno" | "documentoSaude" | "aiDecisao" | "aiMetrica" | "outcomeClinico" | "resultadoAnalise" | "fotoFerida" | "guidelineClinica" | "cohortDefinition" | "templatePRO" | "registoPRO" | "portalDoente" | "hl7Mensagem" | "dashboardConfig" | "followUpAgendado" | "webhook" | "webAuthnCredential" | "aiPromptInsight" | "aiStaffingPrevisao" | "wellbeingSurvey" | "transferenciaExterna" | "regraClinica" | "ssoProvider" | "gravidez" | "registoPartograma" | "parto" | "planoQuimioterapia" | "cicloQuimioterapia" | "sessaoDialise"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5868,6 +5897,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AuditLogCountArgs<ExtArgs>
             result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      DesafioMfa: {
+        payload: Prisma.$DesafioMfaPayload<ExtArgs>
+        fields: Prisma.DesafioMfaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DesafioMfaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DesafioMfaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          findFirst: {
+            args: Prisma.DesafioMfaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DesafioMfaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          findMany: {
+            args: Prisma.DesafioMfaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>[]
+          }
+          create: {
+            args: Prisma.DesafioMfaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          createMany: {
+            args: Prisma.DesafioMfaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DesafioMfaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>[]
+          }
+          delete: {
+            args: Prisma.DesafioMfaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          update: {
+            args: Prisma.DesafioMfaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          deleteMany: {
+            args: Prisma.DesafioMfaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DesafioMfaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DesafioMfaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>[]
+          }
+          upsert: {
+            args: Prisma.DesafioMfaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DesafioMfaPayload>
+          }
+          aggregate: {
+            args: Prisma.DesafioMfaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDesafioMfa>
+          }
+          groupBy: {
+            args: Prisma.DesafioMfaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DesafioMfaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DesafioMfaCountArgs<ExtArgs>
+            result: $Utils.Optional<DesafioMfaCountAggregateOutputType> | number
           }
         }
       }
@@ -13635,11 +13738,26 @@ export namespace Prisma {
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+     * 
+     * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+     * 
+     * Learn more: https://pris.ly/d/driver-adapters
+     * 
+     * @example
+     * ```ts
+     * import { PrismaPg } from '@prisma/adapter-pg'
+     * import { PrismaClient } from './generated/prisma/client'
+     * 
+     * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+     * const prisma = new PrismaClient({ adapter })
+     * ```
      */
     adapter?: runtime.SqlDriverAdapterFactory
     /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+     * 
+     * Learn more: https://pris.ly/d/accelerate
      */
     accelerateUrl?: string
     /**
@@ -13710,6 +13828,7 @@ export namespace Prisma {
     listaEspera?: ListaEsperaOmit
     receitaEletronica?: ReceitaEletronicaOmit
     auditLog?: AuditLogOmit
+    desafioMfa?: DesafioMfaOmit
     totpConsumido?: TotpConsumidoOmit
     cronLock?: CronLockOmit
     auditCheckpoint?: AuditCheckpointOmit
@@ -18675,10 +18794,12 @@ export namespace Prisma {
   }
 
   export type UtilizadorAvgAggregateOutputType = {
+    versaoSessao: number | null
     ordemExperiencia: number | null
   }
 
   export type UtilizadorSumAggregateOutputType = {
+    versaoSessao: number | null
     ordemExperiencia: number | null
   }
 
@@ -18690,6 +18811,8 @@ export namespace Prisma {
     passwordHash: string | null
     mfaSecret: string | null
     mfaAtivo: boolean | null
+    mfaSecretPendente: string | null
+    versaoSessao: number | null
     passwordExpiresAt: Date | null
     role: string | null
     subRole: string | null
@@ -18710,6 +18833,8 @@ export namespace Prisma {
     passwordHash: string | null
     mfaSecret: string | null
     mfaAtivo: boolean | null
+    mfaSecretPendente: string | null
+    versaoSessao: number | null
     passwordExpiresAt: Date | null
     role: string | null
     subRole: string | null
@@ -18730,6 +18855,8 @@ export namespace Prisma {
     passwordHash: number
     mfaSecret: number
     mfaAtivo: number
+    mfaSecretPendente: number
+    versaoSessao: number
     passwordExpiresAt: number
     role: number
     subRole: number
@@ -18745,10 +18872,12 @@ export namespace Prisma {
 
 
   export type UtilizadorAvgAggregateInputType = {
+    versaoSessao?: true
     ordemExperiencia?: true
   }
 
   export type UtilizadorSumAggregateInputType = {
+    versaoSessao?: true
     ordemExperiencia?: true
   }
 
@@ -18760,6 +18889,8 @@ export namespace Prisma {
     passwordHash?: true
     mfaSecret?: true
     mfaAtivo?: true
+    mfaSecretPendente?: true
+    versaoSessao?: true
     passwordExpiresAt?: true
     role?: true
     subRole?: true
@@ -18780,6 +18911,8 @@ export namespace Prisma {
     passwordHash?: true
     mfaSecret?: true
     mfaAtivo?: true
+    mfaSecretPendente?: true
+    versaoSessao?: true
     passwordExpiresAt?: true
     role?: true
     subRole?: true
@@ -18800,6 +18933,8 @@ export namespace Prisma {
     passwordHash?: true
     mfaSecret?: true
     mfaAtivo?: true
+    mfaSecretPendente?: true
+    versaoSessao?: true
     passwordExpiresAt?: true
     role?: true
     subRole?: true
@@ -18907,6 +19042,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret: string | null
     mfaAtivo: boolean
+    mfaSecretPendente: string | null
+    versaoSessao: number
     passwordExpiresAt: Date | null
     role: string
     subRole: string | null
@@ -18946,6 +19083,8 @@ export namespace Prisma {
     passwordHash?: boolean
     mfaSecret?: boolean
     mfaAtivo?: boolean
+    mfaSecretPendente?: boolean
+    versaoSessao?: boolean
     passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
@@ -19091,6 +19230,8 @@ export namespace Prisma {
     passwordHash?: boolean
     mfaSecret?: boolean
     mfaAtivo?: boolean
+    mfaSecretPendente?: boolean
+    versaoSessao?: boolean
     passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
@@ -19112,6 +19253,8 @@ export namespace Prisma {
     passwordHash?: boolean
     mfaSecret?: boolean
     mfaAtivo?: boolean
+    mfaSecretPendente?: boolean
+    versaoSessao?: boolean
     passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
@@ -19133,6 +19276,8 @@ export namespace Prisma {
     passwordHash?: boolean
     mfaSecret?: boolean
     mfaAtivo?: boolean
+    mfaSecretPendente?: boolean
+    versaoSessao?: boolean
     passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
@@ -19145,7 +19290,7 @@ export namespace Prisma {
     chefeId?: boolean
   }
 
-  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "numeroFuncionario" | "nome" | "passwordHash" | "mfaSecret" | "mfaAtivo" | "passwordExpiresAt" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
+  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "numeroFuncionario" | "nome" | "passwordHash" | "mfaSecret" | "mfaAtivo" | "mfaSecretPendente" | "versaoSessao" | "passwordExpiresAt" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
   export type UtilizadorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     turnosComoChefe?: boolean | Utilizador$turnosComoChefeArgs<ExtArgs>
     horariosEntrada?: boolean | Utilizador$horariosEntradaArgs<ExtArgs>
@@ -19416,6 +19561,8 @@ export namespace Prisma {
       passwordHash: string
       mfaSecret: string | null
       mfaAtivo: boolean
+      mfaSecretPendente: string | null
+      versaoSessao: number
       passwordExpiresAt: Date | null
       role: string
       subRole: string | null
@@ -19980,6 +20127,8 @@ export namespace Prisma {
     readonly passwordHash: FieldRef<"Utilizador", 'String'>
     readonly mfaSecret: FieldRef<"Utilizador", 'String'>
     readonly mfaAtivo: FieldRef<"Utilizador", 'Boolean'>
+    readonly mfaSecretPendente: FieldRef<"Utilizador", 'String'>
+    readonly versaoSessao: FieldRef<"Utilizador", 'Int'>
     readonly passwordExpiresAt: FieldRef<"Utilizador", 'DateTime'>
     readonly role: FieldRef<"Utilizador", 'String'>
     readonly subRole: FieldRef<"Utilizador", 'String'>
@@ -62462,6 +62611,1053 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DesafioMfa
+   */
+
+  export type AggregateDesafioMfa = {
+    _count: DesafioMfaCountAggregateOutputType | null
+    _avg: DesafioMfaAvgAggregateOutputType | null
+    _sum: DesafioMfaSumAggregateOutputType | null
+    _min: DesafioMfaMinAggregateOutputType | null
+    _max: DesafioMfaMaxAggregateOutputType | null
+  }
+
+  export type DesafioMfaAvgAggregateOutputType = {
+    tentativas: number | null
+  }
+
+  export type DesafioMfaSumAggregateOutputType = {
+    tentativas: number | null
+  }
+
+  export type DesafioMfaMinAggregateOutputType = {
+    jti: string | null
+    utilizadorId: string | null
+    tentativas: number | null
+    consumidoEm: Date | null
+    expiraEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type DesafioMfaMaxAggregateOutputType = {
+    jti: string | null
+    utilizadorId: string | null
+    tentativas: number | null
+    consumidoEm: Date | null
+    expiraEm: Date | null
+    criadoEm: Date | null
+  }
+
+  export type DesafioMfaCountAggregateOutputType = {
+    jti: number
+    utilizadorId: number
+    tentativas: number
+    consumidoEm: number
+    expiraEm: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type DesafioMfaAvgAggregateInputType = {
+    tentativas?: true
+  }
+
+  export type DesafioMfaSumAggregateInputType = {
+    tentativas?: true
+  }
+
+  export type DesafioMfaMinAggregateInputType = {
+    jti?: true
+    utilizadorId?: true
+    tentativas?: true
+    consumidoEm?: true
+    expiraEm?: true
+    criadoEm?: true
+  }
+
+  export type DesafioMfaMaxAggregateInputType = {
+    jti?: true
+    utilizadorId?: true
+    tentativas?: true
+    consumidoEm?: true
+    expiraEm?: true
+    criadoEm?: true
+  }
+
+  export type DesafioMfaCountAggregateInputType = {
+    jti?: true
+    utilizadorId?: true
+    tentativas?: true
+    consumidoEm?: true
+    expiraEm?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type DesafioMfaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DesafioMfa to aggregate.
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DesafioMfas to fetch.
+     */
+    orderBy?: DesafioMfaOrderByWithRelationInput | DesafioMfaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DesafioMfaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DesafioMfas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DesafioMfas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DesafioMfas
+    **/
+    _count?: true | DesafioMfaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DesafioMfaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DesafioMfaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DesafioMfaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DesafioMfaMaxAggregateInputType
+  }
+
+  export type GetDesafioMfaAggregateType<T extends DesafioMfaAggregateArgs> = {
+        [P in keyof T & keyof AggregateDesafioMfa]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDesafioMfa[P]>
+      : GetScalarType<T[P], AggregateDesafioMfa[P]>
+  }
+
+
+
+
+  export type DesafioMfaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DesafioMfaWhereInput
+    orderBy?: DesafioMfaOrderByWithAggregationInput | DesafioMfaOrderByWithAggregationInput[]
+    by: DesafioMfaScalarFieldEnum[] | DesafioMfaScalarFieldEnum
+    having?: DesafioMfaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DesafioMfaCountAggregateInputType | true
+    _avg?: DesafioMfaAvgAggregateInputType
+    _sum?: DesafioMfaSumAggregateInputType
+    _min?: DesafioMfaMinAggregateInputType
+    _max?: DesafioMfaMaxAggregateInputType
+  }
+
+  export type DesafioMfaGroupByOutputType = {
+    jti: string
+    utilizadorId: string
+    tentativas: number
+    consumidoEm: Date | null
+    expiraEm: Date
+    criadoEm: Date
+    _count: DesafioMfaCountAggregateOutputType | null
+    _avg: DesafioMfaAvgAggregateOutputType | null
+    _sum: DesafioMfaSumAggregateOutputType | null
+    _min: DesafioMfaMinAggregateOutputType | null
+    _max: DesafioMfaMaxAggregateOutputType | null
+  }
+
+  type GetDesafioMfaGroupByPayload<T extends DesafioMfaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DesafioMfaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DesafioMfaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DesafioMfaGroupByOutputType[P]>
+            : GetScalarType<T[P], DesafioMfaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DesafioMfaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    jti?: boolean
+    utilizadorId?: boolean
+    tentativas?: boolean
+    consumidoEm?: boolean
+    expiraEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["desafioMfa"]>
+
+  export type DesafioMfaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    jti?: boolean
+    utilizadorId?: boolean
+    tentativas?: boolean
+    consumidoEm?: boolean
+    expiraEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["desafioMfa"]>
+
+  export type DesafioMfaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    jti?: boolean
+    utilizadorId?: boolean
+    tentativas?: boolean
+    consumidoEm?: boolean
+    expiraEm?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["desafioMfa"]>
+
+  export type DesafioMfaSelectScalar = {
+    jti?: boolean
+    utilizadorId?: boolean
+    tentativas?: boolean
+    consumidoEm?: boolean
+    expiraEm?: boolean
+    criadoEm?: boolean
+  }
+
+  export type DesafioMfaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"jti" | "utilizadorId" | "tentativas" | "consumidoEm" | "expiraEm" | "criadoEm", ExtArgs["result"]["desafioMfa"]>
+
+  export type $DesafioMfaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DesafioMfa"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      jti: string
+      utilizadorId: string
+      tentativas: number
+      consumidoEm: Date | null
+      expiraEm: Date
+      criadoEm: Date
+    }, ExtArgs["result"]["desafioMfa"]>
+    composites: {}
+  }
+
+  type DesafioMfaGetPayload<S extends boolean | null | undefined | DesafioMfaDefaultArgs> = $Result.GetResult<Prisma.$DesafioMfaPayload, S>
+
+  type DesafioMfaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DesafioMfaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DesafioMfaCountAggregateInputType | true
+    }
+
+  export interface DesafioMfaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DesafioMfa'], meta: { name: 'DesafioMfa' } }
+    /**
+     * Find zero or one DesafioMfa that matches the filter.
+     * @param {DesafioMfaFindUniqueArgs} args - Arguments to find a DesafioMfa
+     * @example
+     * // Get one DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DesafioMfaFindUniqueArgs>(args: SelectSubset<T, DesafioMfaFindUniqueArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DesafioMfa that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DesafioMfaFindUniqueOrThrowArgs} args - Arguments to find a DesafioMfa
+     * @example
+     * // Get one DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DesafioMfaFindUniqueOrThrowArgs>(args: SelectSubset<T, DesafioMfaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DesafioMfa that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaFindFirstArgs} args - Arguments to find a DesafioMfa
+     * @example
+     * // Get one DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DesafioMfaFindFirstArgs>(args?: SelectSubset<T, DesafioMfaFindFirstArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DesafioMfa that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaFindFirstOrThrowArgs} args - Arguments to find a DesafioMfa
+     * @example
+     * // Get one DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DesafioMfaFindFirstOrThrowArgs>(args?: SelectSubset<T, DesafioMfaFindFirstOrThrowArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DesafioMfas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DesafioMfas
+     * const desafioMfas = await prisma.desafioMfa.findMany()
+     * 
+     * // Get first 10 DesafioMfas
+     * const desafioMfas = await prisma.desafioMfa.findMany({ take: 10 })
+     * 
+     * // Only select the `jti`
+     * const desafioMfaWithJtiOnly = await prisma.desafioMfa.findMany({ select: { jti: true } })
+     * 
+     */
+    findMany<T extends DesafioMfaFindManyArgs>(args?: SelectSubset<T, DesafioMfaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DesafioMfa.
+     * @param {DesafioMfaCreateArgs} args - Arguments to create a DesafioMfa.
+     * @example
+     * // Create one DesafioMfa
+     * const DesafioMfa = await prisma.desafioMfa.create({
+     *   data: {
+     *     // ... data to create a DesafioMfa
+     *   }
+     * })
+     * 
+     */
+    create<T extends DesafioMfaCreateArgs>(args: SelectSubset<T, DesafioMfaCreateArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DesafioMfas.
+     * @param {DesafioMfaCreateManyArgs} args - Arguments to create many DesafioMfas.
+     * @example
+     * // Create many DesafioMfas
+     * const desafioMfa = await prisma.desafioMfa.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DesafioMfaCreateManyArgs>(args?: SelectSubset<T, DesafioMfaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DesafioMfas and returns the data saved in the database.
+     * @param {DesafioMfaCreateManyAndReturnArgs} args - Arguments to create many DesafioMfas.
+     * @example
+     * // Create many DesafioMfas
+     * const desafioMfa = await prisma.desafioMfa.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DesafioMfas and only return the `jti`
+     * const desafioMfaWithJtiOnly = await prisma.desafioMfa.createManyAndReturn({
+     *   select: { jti: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DesafioMfaCreateManyAndReturnArgs>(args?: SelectSubset<T, DesafioMfaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DesafioMfa.
+     * @param {DesafioMfaDeleteArgs} args - Arguments to delete one DesafioMfa.
+     * @example
+     * // Delete one DesafioMfa
+     * const DesafioMfa = await prisma.desafioMfa.delete({
+     *   where: {
+     *     // ... filter to delete one DesafioMfa
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DesafioMfaDeleteArgs>(args: SelectSubset<T, DesafioMfaDeleteArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DesafioMfa.
+     * @param {DesafioMfaUpdateArgs} args - Arguments to update one DesafioMfa.
+     * @example
+     * // Update one DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DesafioMfaUpdateArgs>(args: SelectSubset<T, DesafioMfaUpdateArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DesafioMfas.
+     * @param {DesafioMfaDeleteManyArgs} args - Arguments to filter DesafioMfas to delete.
+     * @example
+     * // Delete a few DesafioMfas
+     * const { count } = await prisma.desafioMfa.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DesafioMfaDeleteManyArgs>(args?: SelectSubset<T, DesafioMfaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DesafioMfas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DesafioMfas
+     * const desafioMfa = await prisma.desafioMfa.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DesafioMfaUpdateManyArgs>(args: SelectSubset<T, DesafioMfaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DesafioMfas and returns the data updated in the database.
+     * @param {DesafioMfaUpdateManyAndReturnArgs} args - Arguments to update many DesafioMfas.
+     * @example
+     * // Update many DesafioMfas
+     * const desafioMfa = await prisma.desafioMfa.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DesafioMfas and only return the `jti`
+     * const desafioMfaWithJtiOnly = await prisma.desafioMfa.updateManyAndReturn({
+     *   select: { jti: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DesafioMfaUpdateManyAndReturnArgs>(args: SelectSubset<T, DesafioMfaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DesafioMfa.
+     * @param {DesafioMfaUpsertArgs} args - Arguments to update or create a DesafioMfa.
+     * @example
+     * // Update or create a DesafioMfa
+     * const desafioMfa = await prisma.desafioMfa.upsert({
+     *   create: {
+     *     // ... data to create a DesafioMfa
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DesafioMfa we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DesafioMfaUpsertArgs>(args: SelectSubset<T, DesafioMfaUpsertArgs<ExtArgs>>): Prisma__DesafioMfaClient<$Result.GetResult<Prisma.$DesafioMfaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DesafioMfas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaCountArgs} args - Arguments to filter DesafioMfas to count.
+     * @example
+     * // Count the number of DesafioMfas
+     * const count = await prisma.desafioMfa.count({
+     *   where: {
+     *     // ... the filter for the DesafioMfas we want to count
+     *   }
+     * })
+    **/
+    count<T extends DesafioMfaCountArgs>(
+      args?: Subset<T, DesafioMfaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DesafioMfaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DesafioMfa.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DesafioMfaAggregateArgs>(args: Subset<T, DesafioMfaAggregateArgs>): Prisma.PrismaPromise<GetDesafioMfaAggregateType<T>>
+
+    /**
+     * Group by DesafioMfa.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DesafioMfaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DesafioMfaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DesafioMfaGroupByArgs['orderBy'] }
+        : { orderBy?: DesafioMfaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DesafioMfaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDesafioMfaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DesafioMfa model
+   */
+  readonly fields: DesafioMfaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DesafioMfa.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DesafioMfaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DesafioMfa model
+   */
+  interface DesafioMfaFieldRefs {
+    readonly jti: FieldRef<"DesafioMfa", 'String'>
+    readonly utilizadorId: FieldRef<"DesafioMfa", 'String'>
+    readonly tentativas: FieldRef<"DesafioMfa", 'Int'>
+    readonly consumidoEm: FieldRef<"DesafioMfa", 'DateTime'>
+    readonly expiraEm: FieldRef<"DesafioMfa", 'DateTime'>
+    readonly criadoEm: FieldRef<"DesafioMfa", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DesafioMfa findUnique
+   */
+  export type DesafioMfaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter, which DesafioMfa to fetch.
+     */
+    where: DesafioMfaWhereUniqueInput
+  }
+
+  /**
+   * DesafioMfa findUniqueOrThrow
+   */
+  export type DesafioMfaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter, which DesafioMfa to fetch.
+     */
+    where: DesafioMfaWhereUniqueInput
+  }
+
+  /**
+   * DesafioMfa findFirst
+   */
+  export type DesafioMfaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter, which DesafioMfa to fetch.
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DesafioMfas to fetch.
+     */
+    orderBy?: DesafioMfaOrderByWithRelationInput | DesafioMfaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DesafioMfas.
+     */
+    cursor?: DesafioMfaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DesafioMfas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DesafioMfas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DesafioMfas.
+     */
+    distinct?: DesafioMfaScalarFieldEnum | DesafioMfaScalarFieldEnum[]
+  }
+
+  /**
+   * DesafioMfa findFirstOrThrow
+   */
+  export type DesafioMfaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter, which DesafioMfa to fetch.
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DesafioMfas to fetch.
+     */
+    orderBy?: DesafioMfaOrderByWithRelationInput | DesafioMfaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DesafioMfas.
+     */
+    cursor?: DesafioMfaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DesafioMfas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DesafioMfas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DesafioMfas.
+     */
+    distinct?: DesafioMfaScalarFieldEnum | DesafioMfaScalarFieldEnum[]
+  }
+
+  /**
+   * DesafioMfa findMany
+   */
+  export type DesafioMfaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter, which DesafioMfas to fetch.
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DesafioMfas to fetch.
+     */
+    orderBy?: DesafioMfaOrderByWithRelationInput | DesafioMfaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DesafioMfas.
+     */
+    cursor?: DesafioMfaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DesafioMfas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DesafioMfas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DesafioMfas.
+     */
+    distinct?: DesafioMfaScalarFieldEnum | DesafioMfaScalarFieldEnum[]
+  }
+
+  /**
+   * DesafioMfa create
+   */
+  export type DesafioMfaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * The data needed to create a DesafioMfa.
+     */
+    data: XOR<DesafioMfaCreateInput, DesafioMfaUncheckedCreateInput>
+  }
+
+  /**
+   * DesafioMfa createMany
+   */
+  export type DesafioMfaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DesafioMfas.
+     */
+    data: DesafioMfaCreateManyInput | DesafioMfaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DesafioMfa createManyAndReturn
+   */
+  export type DesafioMfaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * The data used to create many DesafioMfas.
+     */
+    data: DesafioMfaCreateManyInput | DesafioMfaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DesafioMfa update
+   */
+  export type DesafioMfaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * The data needed to update a DesafioMfa.
+     */
+    data: XOR<DesafioMfaUpdateInput, DesafioMfaUncheckedUpdateInput>
+    /**
+     * Choose, which DesafioMfa to update.
+     */
+    where: DesafioMfaWhereUniqueInput
+  }
+
+  /**
+   * DesafioMfa updateMany
+   */
+  export type DesafioMfaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DesafioMfas.
+     */
+    data: XOR<DesafioMfaUpdateManyMutationInput, DesafioMfaUncheckedUpdateManyInput>
+    /**
+     * Filter which DesafioMfas to update
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * Limit how many DesafioMfas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DesafioMfa updateManyAndReturn
+   */
+  export type DesafioMfaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * The data used to update DesafioMfas.
+     */
+    data: XOR<DesafioMfaUpdateManyMutationInput, DesafioMfaUncheckedUpdateManyInput>
+    /**
+     * Filter which DesafioMfas to update
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * Limit how many DesafioMfas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DesafioMfa upsert
+   */
+  export type DesafioMfaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * The filter to search for the DesafioMfa to update in case it exists.
+     */
+    where: DesafioMfaWhereUniqueInput
+    /**
+     * In case the DesafioMfa found by the `where` argument doesn't exist, create a new DesafioMfa with this data.
+     */
+    create: XOR<DesafioMfaCreateInput, DesafioMfaUncheckedCreateInput>
+    /**
+     * In case the DesafioMfa was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DesafioMfaUpdateInput, DesafioMfaUncheckedUpdateInput>
+  }
+
+  /**
+   * DesafioMfa delete
+   */
+  export type DesafioMfaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
+    /**
+     * Filter which DesafioMfa to delete.
+     */
+    where: DesafioMfaWhereUniqueInput
+  }
+
+  /**
+   * DesafioMfa deleteMany
+   */
+  export type DesafioMfaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DesafioMfas to delete
+     */
+    where?: DesafioMfaWhereInput
+    /**
+     * Limit how many DesafioMfas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DesafioMfa without action
+   */
+  export type DesafioMfaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DesafioMfa
+     */
+    select?: DesafioMfaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DesafioMfa
+     */
+    omit?: DesafioMfaOmit<ExtArgs> | null
   }
 
 
@@ -181812,6 +183008,8 @@ export namespace Prisma {
     passwordHash: 'passwordHash',
     mfaSecret: 'mfaSecret',
     mfaAtivo: 'mfaAtivo',
+    mfaSecretPendente: 'mfaSecretPendente',
+    versaoSessao: 'versaoSessao',
     passwordExpiresAt: 'passwordExpiresAt',
     role: 'role',
     subRole: 'subRole',
@@ -182345,6 +183543,18 @@ export namespace Prisma {
   };
 
   export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+  export const DesafioMfaScalarFieldEnum: {
+    jti: 'jti',
+    utilizadorId: 'utilizadorId',
+    tentativas: 'tentativas',
+    consumidoEm: 'consumidoEm',
+    expiraEm: 'expiraEm',
+    criadoEm: 'criadoEm'
+  };
+
+  export type DesafioMfaScalarFieldEnum = (typeof DesafioMfaScalarFieldEnum)[keyof typeof DesafioMfaScalarFieldEnum]
 
 
   export const TotpConsumidoScalarFieldEnum: {
@@ -184683,6 +185893,8 @@ export namespace Prisma {
     passwordHash?: StringFilter<"Utilizador"> | string
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    mfaSecretPendente?: StringNullableFilter<"Utilizador"> | string | null
+    versaoSessao?: IntFilter<"Utilizador"> | number
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
@@ -184827,6 +186039,8 @@ export namespace Prisma {
     passwordHash?: SortOrder
     mfaSecret?: SortOrderInput | SortOrder
     mfaAtivo?: SortOrder
+    mfaSecretPendente?: SortOrderInput | SortOrder
+    versaoSessao?: SortOrder
     passwordExpiresAt?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
@@ -184974,6 +186188,8 @@ export namespace Prisma {
     passwordHash?: StringFilter<"Utilizador"> | string
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    mfaSecretPendente?: StringNullableFilter<"Utilizador"> | string | null
+    versaoSessao?: IntFilter<"Utilizador"> | number
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
@@ -185118,6 +186334,8 @@ export namespace Prisma {
     passwordHash?: SortOrder
     mfaSecret?: SortOrderInput | SortOrder
     mfaAtivo?: SortOrder
+    mfaSecretPendente?: SortOrderInput | SortOrder
+    versaoSessao?: SortOrder
     passwordExpiresAt?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
@@ -185146,6 +186364,8 @@ export namespace Prisma {
     passwordHash?: StringWithAggregatesFilter<"Utilizador"> | string
     mfaSecret?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolWithAggregatesFilter<"Utilizador"> | boolean
+    mfaSecretPendente?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
+    versaoSessao?: IntWithAggregatesFilter<"Utilizador"> | number
     passwordExpiresAt?: DateTimeNullableWithAggregatesFilter<"Utilizador"> | Date | string | null
     role?: StringWithAggregatesFilter<"Utilizador"> | string
     subRole?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
@@ -188119,6 +189339,65 @@ export namespace Prisma {
     contentHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     prevHash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     hash?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+  }
+
+  export type DesafioMfaWhereInput = {
+    AND?: DesafioMfaWhereInput | DesafioMfaWhereInput[]
+    OR?: DesafioMfaWhereInput[]
+    NOT?: DesafioMfaWhereInput | DesafioMfaWhereInput[]
+    jti?: StringFilter<"DesafioMfa"> | string
+    utilizadorId?: StringFilter<"DesafioMfa"> | string
+    tentativas?: IntFilter<"DesafioMfa"> | number
+    consumidoEm?: DateTimeNullableFilter<"DesafioMfa"> | Date | string | null
+    expiraEm?: DateTimeFilter<"DesafioMfa"> | Date | string
+    criadoEm?: DateTimeFilter<"DesafioMfa"> | Date | string
+  }
+
+  export type DesafioMfaOrderByWithRelationInput = {
+    jti?: SortOrder
+    utilizadorId?: SortOrder
+    tentativas?: SortOrder
+    consumidoEm?: SortOrderInput | SortOrder
+    expiraEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DesafioMfaWhereUniqueInput = Prisma.AtLeast<{
+    jti?: string
+    AND?: DesafioMfaWhereInput | DesafioMfaWhereInput[]
+    OR?: DesafioMfaWhereInput[]
+    NOT?: DesafioMfaWhereInput | DesafioMfaWhereInput[]
+    utilizadorId?: StringFilter<"DesafioMfa"> | string
+    tentativas?: IntFilter<"DesafioMfa"> | number
+    consumidoEm?: DateTimeNullableFilter<"DesafioMfa"> | Date | string | null
+    expiraEm?: DateTimeFilter<"DesafioMfa"> | Date | string
+    criadoEm?: DateTimeFilter<"DesafioMfa"> | Date | string
+  }, "jti">
+
+  export type DesafioMfaOrderByWithAggregationInput = {
+    jti?: SortOrder
+    utilizadorId?: SortOrder
+    tentativas?: SortOrder
+    consumidoEm?: SortOrderInput | SortOrder
+    expiraEm?: SortOrder
+    criadoEm?: SortOrder
+    _count?: DesafioMfaCountOrderByAggregateInput
+    _avg?: DesafioMfaAvgOrderByAggregateInput
+    _max?: DesafioMfaMaxOrderByAggregateInput
+    _min?: DesafioMfaMinOrderByAggregateInput
+    _sum?: DesafioMfaSumOrderByAggregateInput
+  }
+
+  export type DesafioMfaScalarWhereWithAggregatesInput = {
+    AND?: DesafioMfaScalarWhereWithAggregatesInput | DesafioMfaScalarWhereWithAggregatesInput[]
+    OR?: DesafioMfaScalarWhereWithAggregatesInput[]
+    NOT?: DesafioMfaScalarWhereWithAggregatesInput | DesafioMfaScalarWhereWithAggregatesInput[]
+    jti?: StringWithAggregatesFilter<"DesafioMfa"> | string
+    utilizadorId?: StringWithAggregatesFilter<"DesafioMfa"> | string
+    tentativas?: IntWithAggregatesFilter<"DesafioMfa"> | number
+    consumidoEm?: DateTimeNullableWithAggregatesFilter<"DesafioMfa"> | Date | string | null
+    expiraEm?: DateTimeWithAggregatesFilter<"DesafioMfa"> | Date | string
+    criadoEm?: DateTimeWithAggregatesFilter<"DesafioMfa"> | Date | string
   }
 
   export type TotpConsumidoWhereInput = {
@@ -196618,6 +197897,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -196761,6 +198042,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -196904,6 +198187,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -197047,6 +198332,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -197190,6 +198477,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -197210,6 +198499,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -197229,6 +198520,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -200442,6 +201735,69 @@ export namespace Prisma {
     contentHash?: NullableStringFieldUpdateOperationsInput | string | null
     prevHash?: NullableStringFieldUpdateOperationsInput | string | null
     hash?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DesafioMfaCreateInput = {
+    jti: string
+    utilizadorId: string
+    tentativas?: number
+    consumidoEm?: Date | string | null
+    expiraEm: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type DesafioMfaUncheckedCreateInput = {
+    jti: string
+    utilizadorId: string
+    tentativas?: number
+    consumidoEm?: Date | string | null
+    expiraEm: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type DesafioMfaUpdateInput = {
+    jti?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    tentativas?: IntFieldUpdateOperationsInput | number
+    consumidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DesafioMfaUncheckedUpdateInput = {
+    jti?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    tentativas?: IntFieldUpdateOperationsInput | number
+    consumidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DesafioMfaCreateManyInput = {
+    jti: string
+    utilizadorId: string
+    tentativas?: number
+    consumidoEm?: Date | string | null
+    expiraEm: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type DesafioMfaUpdateManyMutationInput = {
+    jti?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    tentativas?: IntFieldUpdateOperationsInput | number
+    consumidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DesafioMfaUncheckedUpdateManyInput = {
+    jti?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    tentativas?: IntFieldUpdateOperationsInput | number
+    consumidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiraEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TotpConsumidoCreateInput = {
@@ -210569,6 +211925,8 @@ export namespace Prisma {
     passwordHash?: SortOrder
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
+    mfaSecretPendente?: SortOrder
+    versaoSessao?: SortOrder
     passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
@@ -210582,6 +211940,7 @@ export namespace Prisma {
   }
 
   export type UtilizadorAvgOrderByAggregateInput = {
+    versaoSessao?: SortOrder
     ordemExperiencia?: SortOrder
   }
 
@@ -210593,6 +211952,8 @@ export namespace Prisma {
     passwordHash?: SortOrder
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
+    mfaSecretPendente?: SortOrder
+    versaoSessao?: SortOrder
     passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
@@ -210613,6 +211974,8 @@ export namespace Prisma {
     passwordHash?: SortOrder
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
+    mfaSecretPendente?: SortOrder
+    versaoSessao?: SortOrder
     passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
@@ -210626,6 +211989,7 @@ export namespace Prisma {
   }
 
   export type UtilizadorSumOrderByAggregateInput = {
+    versaoSessao?: SortOrder
     ordemExperiencia?: SortOrder
   }
 
@@ -212632,6 +213996,41 @@ export namespace Prisma {
 
   export type AuditLogSumOrderByAggregateInput = {
     seq?: SortOrder
+  }
+
+  export type DesafioMfaCountOrderByAggregateInput = {
+    jti?: SortOrder
+    utilizadorId?: SortOrder
+    tentativas?: SortOrder
+    consumidoEm?: SortOrder
+    expiraEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DesafioMfaAvgOrderByAggregateInput = {
+    tentativas?: SortOrder
+  }
+
+  export type DesafioMfaMaxOrderByAggregateInput = {
+    jti?: SortOrder
+    utilizadorId?: SortOrder
+    tentativas?: SortOrder
+    consumidoEm?: SortOrder
+    expiraEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DesafioMfaMinOrderByAggregateInput = {
+    jti?: SortOrder
+    utilizadorId?: SortOrder
+    tentativas?: SortOrder
+    consumidoEm?: SortOrder
+    expiraEm?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DesafioMfaSumOrderByAggregateInput = {
+    tentativas?: SortOrder
   }
 
   export type TotpConsumidoCountOrderByAggregateInput = {
@@ -234171,6 +235570,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -234313,6 +235714,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -234460,6 +235863,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -234602,6 +236007,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -238554,6 +239961,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -238696,6 +240105,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -238857,6 +240268,8 @@ export namespace Prisma {
     passwordHash?: StringFilter<"Utilizador"> | string
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    mfaSecretPendente?: StringNullableFilter<"Utilizador"> | string | null
+    versaoSessao?: IntFilter<"Utilizador"> | number
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
@@ -240663,6 +242076,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -240805,6 +242220,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -243115,6 +244532,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -243257,6 +244676,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -244589,6 +246010,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -244731,6 +246154,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -245063,6 +246488,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -245205,6 +246632,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -245608,6 +247037,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -245750,6 +247181,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -246110,6 +247543,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -246252,6 +247687,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -246462,6 +247899,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -246604,6 +248043,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -246799,6 +248240,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -246941,6 +248384,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -247555,6 +249000,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -247697,6 +249144,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -247855,6 +249304,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -247997,6 +249448,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -248139,6 +249592,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -248281,6 +249736,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -248439,6 +249896,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -248581,6 +250040,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -248888,6 +250349,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -249030,6 +250493,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -249177,6 +250642,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -249319,6 +250786,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -249674,6 +251143,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -249816,6 +251287,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -249969,6 +251442,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -250111,6 +251586,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -250304,6 +251781,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -250446,6 +251925,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -250645,6 +252126,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -250787,6 +252270,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -251094,6 +252579,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -251236,6 +252723,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -251565,6 +253054,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -251707,6 +253198,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -252045,6 +253538,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -252187,6 +253682,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -252553,6 +254050,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -252695,6 +254194,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -253002,6 +254503,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -253144,6 +254647,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -253291,6 +254796,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -253433,6 +254940,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -253793,6 +255302,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -253935,6 +255446,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -254088,6 +255601,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -254230,6 +255745,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -254574,6 +256091,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -254716,6 +256235,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -254863,6 +256384,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -255005,6 +256528,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -255152,6 +256677,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -255294,6 +256821,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -255713,6 +257242,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -255855,6 +257386,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -256008,6 +257541,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -256150,6 +257685,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -256303,6 +257840,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -256445,6 +257984,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -257341,6 +258882,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -257483,6 +259026,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -257873,6 +259418,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -258015,6 +259562,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -258157,6 +259706,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -258299,6 +259850,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -258485,6 +260038,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -258627,6 +260182,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -258986,6 +260543,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -259128,6 +260687,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -259315,6 +260876,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -259457,6 +261020,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -259599,6 +261164,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -259741,6 +261308,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -259888,6 +261457,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -260030,6 +261601,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -260200,6 +261773,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -260342,6 +261917,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -260500,6 +262077,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -260642,6 +262221,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -260795,6 +262376,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -260937,6 +262520,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -261119,6 +262704,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -261261,6 +262848,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -261591,6 +263180,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -261733,6 +263324,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -261880,6 +263473,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -262022,6 +263617,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -262380,6 +263977,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -262522,6 +264121,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -262675,6 +264276,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -262817,6 +264420,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -263124,6 +264729,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -263266,6 +264873,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -263595,6 +265204,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -263737,6 +265348,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -264044,6 +265657,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -264186,6 +265801,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -264515,6 +266132,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -264657,6 +266276,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -264964,6 +266585,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -265106,6 +266729,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -265465,6 +267090,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -265607,6 +267234,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -266102,6 +267731,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -266244,6 +267875,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -266659,6 +268292,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -266801,6 +268436,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -267237,6 +268874,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -267379,6 +269018,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -267526,6 +269167,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -267668,6 +269311,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -268149,6 +269794,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -268291,6 +269938,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -268444,6 +270093,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -268586,6 +270237,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -269006,6 +270659,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -269148,6 +270803,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -269522,6 +271179,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -269664,6 +271323,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -269806,6 +271467,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -269948,6 +271611,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -270106,6 +271771,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -270248,6 +271915,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -271303,6 +272972,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -271445,6 +273116,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -271774,6 +273447,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -271916,6 +273591,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -272223,6 +273900,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -272365,6 +274044,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -272694,6 +274375,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -272836,6 +274519,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -273143,6 +274828,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -273285,6 +274972,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -273614,6 +275303,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -273756,6 +275447,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -273898,6 +275591,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -274040,6 +275735,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -274198,6 +275895,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -274340,6 +276039,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -274482,6 +276183,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -274624,6 +276327,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -274782,6 +276487,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -274924,6 +276631,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -275231,6 +276940,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -275373,6 +277084,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -275753,6 +277466,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -275895,6 +277610,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -276414,6 +278131,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -276556,6 +278275,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -276703,6 +278424,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -276845,6 +278568,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -276992,6 +278717,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -277134,6 +278861,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -277489,6 +279218,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -277631,6 +279362,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -277784,6 +279517,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -277926,6 +279661,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -278079,6 +279816,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -278221,6 +279960,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -278456,6 +280197,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -278598,6 +280341,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -278839,6 +280584,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -278981,6 +280728,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -279288,6 +281037,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -279430,6 +281181,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -279577,6 +281330,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -279719,6 +281474,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -280079,6 +281836,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -280221,6 +281980,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -280374,6 +282135,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -280516,6 +282279,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -280734,6 +282499,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -280876,6 +282643,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -281023,6 +282792,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -281165,6 +282936,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -281312,6 +283085,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -281454,6 +283229,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -281657,6 +283434,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -281799,6 +283578,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -281952,6 +283733,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -282094,6 +283877,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -282247,6 +284032,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -282389,6 +284176,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -282696,6 +284485,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -282838,6 +284629,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -283228,6 +285021,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -283370,6 +285165,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -283581,6 +285378,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -283723,6 +285522,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -283881,6 +285682,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -284023,6 +285826,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -284165,6 +285970,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -284307,6 +286114,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -284454,6 +286263,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -284596,6 +286407,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -284754,6 +286567,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -284896,6 +286711,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -285049,6 +286866,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -285191,6 +287010,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -285644,6 +287465,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -285786,6 +287609,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -285933,6 +287758,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -286075,6 +287902,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -286222,6 +288051,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -286364,6 +288195,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -286567,6 +288400,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -286709,6 +288544,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -286862,6 +288699,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -287004,6 +288843,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -287157,6 +288998,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -287299,6 +289142,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -287557,6 +289402,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -287699,6 +289546,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -287902,6 +289751,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -288044,6 +289895,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -288225,6 +290078,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -288367,6 +290222,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -288514,6 +290371,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -288656,6 +290515,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -288859,6 +290720,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -289001,6 +290864,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -289154,6 +291019,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -289296,6 +291163,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -289558,6 +291427,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -289700,6 +291571,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -289936,6 +291809,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -290078,6 +291953,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -290385,6 +292262,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -290527,6 +292406,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -290888,6 +292769,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -291030,6 +292913,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -291380,6 +293265,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -291522,6 +293409,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -291884,6 +293773,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -292026,6 +293917,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -292333,6 +294226,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -292475,6 +294370,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -292622,6 +294519,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -292764,6 +294663,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -293093,6 +294994,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -293235,6 +295138,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -293388,6 +295293,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -293530,6 +295437,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -293672,6 +295581,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -293814,6 +295725,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -293972,6 +295885,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -294114,6 +296029,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -294256,6 +296173,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -294398,6 +296317,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -294545,6 +296466,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -294687,6 +296610,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -294873,6 +296798,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -295015,6 +296942,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -295168,6 +297097,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -295310,6 +297241,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -295702,6 +297635,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -295844,6 +297779,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -295991,6 +297928,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -296133,6 +298072,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -296462,6 +298403,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -296604,6 +298547,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -296757,6 +298702,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -296899,6 +298846,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -297206,6 +299155,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -297348,6 +299299,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -297677,6 +299630,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -297819,6 +299774,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -297961,6 +299918,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -298103,6 +300062,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -298250,6 +300211,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -298392,6 +300355,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -298574,6 +300539,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -298716,6 +300683,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -298869,6 +300838,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -299011,6 +300982,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -299202,6 +301175,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -299344,6 +301319,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -299541,6 +301518,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -299683,6 +301662,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -299825,6 +301806,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -299967,6 +301950,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -300114,6 +302099,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -300256,6 +302243,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -300414,6 +302403,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -300556,6 +302547,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -300709,6 +302702,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -300851,6 +302846,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -301158,6 +303155,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -301300,6 +303299,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -301629,6 +303630,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -301771,6 +303774,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -302129,6 +304134,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -302271,6 +304278,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -302715,6 +304724,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -302857,6 +304868,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -303156,6 +305169,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -303298,6 +305313,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -303497,6 +305514,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -303639,6 +305658,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -303991,6 +306012,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -304133,6 +306156,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -304291,6 +306316,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -304433,6 +306460,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -304740,6 +306769,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -304882,6 +306913,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -305211,6 +307244,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -305353,6 +307388,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -305576,6 +307613,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -305718,6 +307757,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -305865,6 +307906,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -306007,6 +308050,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -306200,6 +308245,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -306342,6 +308389,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -306495,6 +308544,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -306637,6 +308688,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -306779,6 +308832,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -306921,6 +308976,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -307068,6 +309125,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -307210,6 +309269,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -307368,6 +309429,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -307510,6 +309573,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -307663,6 +309728,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -307805,6 +309872,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -307947,6 +310016,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308089,6 +310160,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308236,6 +310309,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308378,6 +310453,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308525,6 +310602,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308667,6 +310746,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -308825,6 +310906,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -308967,6 +311050,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -309120,6 +311205,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -309262,6 +311349,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -309415,6 +311504,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -309557,6 +311648,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -309699,6 +311792,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -309841,6 +311936,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -309999,6 +312096,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -310141,6 +312240,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -310448,6 +312549,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -310590,6 +312693,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -310919,6 +313024,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -311061,6 +313168,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -311368,6 +313477,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -311510,6 +313621,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -311839,6 +313952,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -311981,6 +314096,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -312123,6 +314240,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -312265,6 +314384,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -312412,6 +314533,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -312554,6 +314677,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -312712,6 +314837,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -312854,6 +314981,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -313007,6 +315136,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -313149,6 +315280,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -313291,6 +315424,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -313433,6 +315568,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -313591,6 +315728,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -313733,6 +315872,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -314040,6 +316181,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -314182,6 +316325,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -314329,6 +316474,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -314471,6 +316618,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -314844,6 +316993,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -314986,6 +317137,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -315139,6 +317292,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -315281,6 +317436,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -315439,6 +317596,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -315581,6 +317740,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -315904,6 +318065,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -316046,6 +318209,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -316524,6 +318689,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -316666,6 +318833,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -317023,6 +319192,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -317165,6 +319336,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -317346,6 +319519,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -317488,6 +319663,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -317675,6 +319852,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -317817,6 +319996,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -318124,6 +320305,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -318266,6 +320449,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -318595,6 +320780,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -318737,6 +320924,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -319044,6 +321233,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -319186,6 +321377,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -319515,6 +321708,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -319657,6 +321852,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -319799,6 +321996,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -319941,6 +322140,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -320099,6 +322300,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -320241,6 +322444,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -320383,6 +322588,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -320525,6 +322732,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -320683,6 +322892,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -320825,6 +323036,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -321132,6 +323345,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -321274,6 +323489,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -321421,6 +323638,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -321563,6 +323782,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -321892,6 +324113,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -322034,6 +324257,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -322187,6 +324412,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -322329,6 +324556,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -323644,6 +325873,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -323786,6 +326017,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -323933,6 +326166,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -324075,6 +326310,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -324404,6 +326641,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -324546,6 +326785,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -324699,6 +326940,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -324841,6 +327084,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -324983,6 +327228,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -325125,6 +327372,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -325272,6 +327521,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -325414,6 +327665,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -325572,6 +327825,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -325714,6 +327969,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -325867,6 +328124,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -326009,6 +328268,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -326316,6 +328577,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -326458,6 +328721,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -326787,6 +329052,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -326929,6 +329196,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -327673,6 +329942,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -327815,6 +330086,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -327962,6 +330235,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -328104,6 +330379,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -328468,6 +330745,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -328610,6 +330889,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -328763,6 +331044,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -328905,6 +331188,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -329047,6 +331332,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -329189,6 +331476,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -329347,6 +331636,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -329489,6 +331780,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -329796,6 +332089,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -329938,6 +332233,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -330267,6 +332564,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -330409,6 +332708,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -330716,6 +333017,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -330858,6 +333161,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -331187,6 +333492,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -331329,6 +333636,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -331524,6 +333833,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -331666,6 +333977,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -331883,6 +334196,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -332025,6 +334340,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -332167,6 +334484,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -332309,6 +334628,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -332467,6 +334788,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -332609,6 +334932,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -333340,6 +335665,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -333482,6 +335809,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -333811,6 +336140,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -333953,6 +336284,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -334095,6 +336428,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -334237,6 +336572,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -334395,6 +336732,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -334537,6 +336876,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -334844,6 +337185,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -334986,6 +337329,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -335315,6 +337660,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -335457,6 +337804,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -335599,6 +337948,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -335741,6 +338092,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -335899,6 +338252,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -336041,6 +338396,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -336183,6 +338540,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -336325,6 +338684,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -336483,6 +338844,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -336625,6 +338988,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -336932,6 +339297,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -337074,6 +339441,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -337221,6 +339590,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -337363,6 +339734,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -337692,6 +340065,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -337834,6 +340209,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -337987,6 +340364,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -338129,6 +340508,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -338271,6 +340652,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -338413,6 +340796,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -338571,6 +340956,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -338713,6 +341100,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -341227,6 +343616,8 @@ export namespace Prisma {
     passwordHash: string
     mfaSecret?: string | null
     mfaAtivo?: boolean
+    mfaSecretPendente?: string | null
+    versaoSessao?: number
     passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
@@ -344789,6 +347180,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -344931,6 +347324,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
@@ -345073,6 +347468,8 @@ export namespace Prisma {
     passwordHash?: StringFieldUpdateOperationsInput | string
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecretPendente?: NullableStringFieldUpdateOperationsInput | string | null
+    versaoSessao?: IntFieldUpdateOperationsInput | number
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
