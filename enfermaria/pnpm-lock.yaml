@@ -316,11 +316,11 @@ importers:
         specifier: ^11.2.8
         version: 11.2.8(@nestjs/common@11.2.8(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.2.8)(@nestjs/platform-socket.io@11.2.8)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@node-rs/bcrypt':
-        specifier: ^1.10.7
-        version: 1.10.7
+        specifier: ^2.0.0
+        version: 2.0.0
       '@node-saml/node-saml':
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.2.0
+        version: 5.2.0
       '@opentelemetry/auto-instrumentations-node':
         specifier: ^0.78.0
         version: 0.78.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))
@@ -385,8 +385,8 @@ importers:
         specifier: ^3.3.14
         version: 3.3.14
       helmet:
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^8.3.0
+        version: 8.3.0
       ioredis:
         specifier: ^5.10.1
         version: 5.10.1
@@ -415,8 +415,8 @@ importers:
         specifier: ^6.8.4
         version: 6.8.4
       otplib:
-        specifier: ^13.4.0
-        version: 13.4.0
+        specifier: ^13.6.0
+        version: 13.6.0
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -646,11 +646,11 @@ importers:
         specifier: ^4.2.2
         version: 4.2.2
       '@tanstack/react-query':
-        specifier: ^5.100.10
-        version: 5.100.10(react@19.2.4)
+        specifier: ^5.106.1
+        version: 5.106.1(@types/react@19.3.0)(react@19.2.4)
       '@tanstack/react-query-devtools':
         specifier: ^5.100.10
-        version: 5.100.10(@tanstack/react-query@5.100.10(react@19.2.4))(react@19.2.4)
+        version: 5.100.10(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       '@types/react-grid-layout':
         specifier: ^2.1.0
         version: 2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -682,14 +682,14 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-qr-code:
-        specifier: ^2.0.18
-        version: 2.0.18(react@19.2.4)
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.2.4)
       react-resizable:
         specifier: ^3.2.0
         version: 3.2.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       recharts:
-        specifier: ^3.8.1
-        version: 3.8.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1)
+        specifier: ^3.10.1
+        version: 3.10.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1)
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.3
@@ -3610,106 +3610,101 @@ packages:
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@noble/hashes@2.2.0':
-    resolution: {integrity: sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==}
+  '@noble/hashes@2.4.0':
+    resolution: {integrity: sha512-X5XaVWZIBCT7HHZGm5I7ZQXDwLG+bGXuSrMQAW+7Zvl87h1kmc1ZB1VSRJcpUfoUrGQp4Fkoxm5kZ+Ms+aW+eA==}
     engines: {node: '>= 20.19.0'}
 
   '@nodable/entities@2.1.1':
     resolution: {integrity: sha512-Pig3HxDIoMgjdEH8OCf/dkcTmLFjJRjWuq8jSnklu284/TKOPibSRERmOykiwmyXTtv61mP+44f3GMx0tLAyjg==}
 
-  '@node-rs/bcrypt-android-arm-eabi@1.10.7':
-    resolution: {integrity: sha512-8dO6/PcbeMZXS3VXGEtct9pDYdShp2WBOWlDvSbcRwVqyB580aCBh0BEFmKYtXLzLvUK8Wf+CG3U6sCdILW1lA==}
+  '@node-rs/bcrypt-android-arm-eabi@2.0.0':
+    resolution: {integrity: sha512-BGxkS6uXxDphPoMWevOVCXd3A07x45o1p4uYoXTjcvG7K+6iZXaXzOL5ZrGMUP71BAJ6b89/QStjuhGlMmuxOQ==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [android]
 
-  '@node-rs/bcrypt-android-arm64@1.10.7':
-    resolution: {integrity: sha512-UASFBS/CucEMHiCtL/2YYsAY01ZqVR1N7vSb94EOvG5iwW7BQO06kXXCTgj+Xbek9azxixrCUmo3WJnkJZ0hTQ==}
+  '@node-rs/bcrypt-android-arm64@2.0.0':
+    resolution: {integrity: sha512-aKS02ZDZ26mLM5resokCCXHFhmlixytN0G7GbR1Xm3kq76mL9munu7vS0xk/5OszEls69o7oHH+NDe8xWyolnQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
 
-  '@node-rs/bcrypt-darwin-arm64@1.10.7':
-    resolution: {integrity: sha512-DgzFdAt455KTuiJ/zYIyJcKFobjNDR/hnf9OS7pK5NRS13Nq4gLcSIIyzsgHwZHxsJWbLpHmFc1H23Y7IQoQBw==}
+  '@node-rs/bcrypt-darwin-arm64@2.0.0':
+    resolution: {integrity: sha512-gHKuT+80v2jAeJujfmJPbbDt5zzE/ne5x/eoG52Twyfx/1bCWAN+cZoDEnzuD0Yduw484bDFtgq5PKXBPV2PYw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@node-rs/bcrypt-darwin-x64@1.10.7':
-    resolution: {integrity: sha512-SPWVfQ6sxSokoUWAKWD0EJauvPHqOGQTd7CxmYatcsUgJ/bruvEHxZ4bIwX1iDceC3FkOtmeHO0cPwR480n/xA==}
+  '@node-rs/bcrypt-darwin-x64@2.0.0':
+    resolution: {integrity: sha512-v8xBU+AZshfQ5fDNUvUDQsmc1mYGASnHXD2yVxjuDvKu/gaEHEz5gHtTFqzkNR9NPdWx3YxJ1UiW8fwSuN4XCQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@node-rs/bcrypt-freebsd-x64@1.10.7':
-    resolution: {integrity: sha512-gpa+Ixs6GwEx6U6ehBpsQetzUpuAGuAFbOiuLB2oo4N58yU4AZz1VIcWyWAHrSWRs92O0SHtmo2YPrMrwfBbSw==}
+  '@node-rs/bcrypt-freebsd-x64@2.0.0':
+    resolution: {integrity: sha512-XSFyizSOH0CWw+60XL4xaeOIRn5F9bgd919EvaIXQcjV7mWuhWbtGc2Z1eOcI8o7Yzh6LSkcIbZJ4fT094S7ww==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [freebsd]
 
-  '@node-rs/bcrypt-linux-arm-gnueabihf@1.10.7':
-    resolution: {integrity: sha512-kYgJnTnpxrzl9sxYqzflobvMp90qoAlaX1oDL7nhNTj8OYJVDIk0jQgblj0bIkjmoPbBed53OJY/iu4uTS+wig==}
+  '@node-rs/bcrypt-linux-arm-gnueabihf@2.0.0':
+    resolution: {integrity: sha512-YYXkdl4rQuTayFB7MeQva8/H5AVeaaIkzuTNtD0RDEjBSQCKYMalM23pP673ScCvBAWLuiYHtviMITdubiER6Q==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
 
-  '@node-rs/bcrypt-linux-arm64-gnu@1.10.7':
-    resolution: {integrity: sha512-7cEkK2RA+gBCj2tCVEI1rDSJV40oLbSq7bQ+PNMHNI6jCoXGmj9Uzo7mg7ZRbNZ7piIyNH5zlJqutjo8hh/tmA==}
+  '@node-rs/bcrypt-linux-arm64-gnu@2.0.0':
+    resolution: {integrity: sha512-jLbuJ/MVa4xvFV5lmd71xx6DOfkQvpj4zR0X0AuOopofP0z6SmyA/zKQOrVrfDUCbBwAHoi22VD9umfU8HsrGA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@node-rs/bcrypt-linux-arm64-musl@1.10.7':
-    resolution: {integrity: sha512-X7DRVjshhwxUqzdUKDlF55cwzh+wqWJ2E/tILvZPboO3xaNO07Um568Vf+8cmKcz+tiZCGP7CBmKbBqjvKN/Pw==}
+  '@node-rs/bcrypt-linux-arm64-musl@2.0.0':
+    resolution: {integrity: sha512-31ORIUbGuBPGyqvZMppQc99l7hdKZrhDxtfsqFcWyeQ5ie4iR7QHv7FGXj+uTLQtJDFVBQQFpVIXTL4jNW7OPQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@node-rs/bcrypt-linux-x64-gnu@1.10.7':
-    resolution: {integrity: sha512-LXRZsvG65NggPD12hn6YxVgH0W3VR5fsE/o1/o2D5X0nxKcNQGeLWnRzs5cP8KpoFOuk1ilctXQJn8/wq+Gn/Q==}
+  '@node-rs/bcrypt-linux-x64-gnu@2.0.0':
+    resolution: {integrity: sha512-Kyo2iGkvtGDcfPcqjRQXS1DYDucpAMJbIw0aPmdiKFLAt8tdOeafK2+zfwuWq8/BDs/n9jKV2ajlda53AqFHMA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@node-rs/bcrypt-linux-x64-musl@1.10.7':
-    resolution: {integrity: sha512-tCjHmct79OfcO3g5q21ME7CNzLzpw1MAsUXCLHLGWH+V6pp/xTvMbIcLwzkDj6TI3mxK6kehTn40SEjBkZ3Rog==}
+  '@node-rs/bcrypt-linux-x64-musl@2.0.0':
+    resolution: {integrity: sha512-NkQN7yL4yRQOPpK80SAgHDlYE352QJmnSP3oKp1SXHS/G92b1IwjGlTB2+9ZKIGEDdqxnyI3dRzP0P/Sabv9zg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@node-rs/bcrypt-wasm32-wasi@1.10.7':
-    resolution: {integrity: sha512-4qXSihIKeVXYglfXZEq/QPtYtBUvR8d3S85k15Lilv3z5B6NSGQ9mYiNleZ7QHVLN2gEc5gmi7jM353DMH9GkA==}
-    engines: {node: '>=14.0.0'}
-    cpu: [wasm32]
-
-  '@node-rs/bcrypt-win32-arm64-msvc@1.10.7':
-    resolution: {integrity: sha512-FdfUQrqmDfvC5jFhntMBkk8EI+fCJTx/I1v7Rj+Ezlr9rez1j1FmuUnywbBj2Cg15/0BDhwYdbyZ5GCMFli2aQ==}
+  '@node-rs/bcrypt-win32-arm64-msvc@2.0.0':
+    resolution: {integrity: sha512-7BzjgPzfE9GktBafMaOTQR5klfcQ4SnzLS5dPKKdXEJ/rHilKbqm8EBszhGimlBMkutIBd53OE7MAqFVhtgIZw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@node-rs/bcrypt-win32-ia32-msvc@1.10.7':
-    resolution: {integrity: sha512-lZLf4Cx+bShIhU071p5BZft4OvP4PGhyp542EEsb3zk34U5GLsGIyCjOafcF/2DGewZL6u8/aqoxbSuROkgFXg==}
+  '@node-rs/bcrypt-win32-ia32-msvc@2.0.0':
+    resolution: {integrity: sha512-nbbwy8LOd4NxSJ2HrLTrXq5zNy0B6+LtX9wberLp9+DOQZVBfZF7PHlH4KlXi9aHrOpZHoXZNGIhWANtOpJlNA==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
 
-  '@node-rs/bcrypt-win32-x64-msvc@1.10.7':
-    resolution: {integrity: sha512-hdw7tGmN1DxVAMTzICLdaHpXjy+4rxaxnBMgI8seG1JL5e3VcRGsd1/1vVDogVp2cbsmgq+6d6yAY+D9lW/DCg==}
+  '@node-rs/bcrypt-win32-x64-msvc@2.0.0':
+    resolution: {integrity: sha512-9KdovFbXWVUhhdsUjtMR8WLw7+U4dCFMyYFRogmdpe+a4SMy8IcN8rv3azxmGYgtoH5wW63BQ0COKZq6C7O96g==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
 
-  '@node-rs/bcrypt@1.10.7':
-    resolution: {integrity: sha512-1wk0gHsUQC/ap0j6SJa2K34qNhomxXRcEe3T8cI5s+g6fgHBgLTN7U9LzWTG/HE6G4+2tWWLeCabk1wiYGEQSA==}
+  '@node-rs/bcrypt@2.0.0':
+    resolution: {integrity: sha512-perB+8PsvBsJeUJ0pE2GgOFAZZ3IXSfKhQ3Pkr+y/L5yZm6W727659g+ZtHmlhIi9obs3y2euUMjVqRB/DVlvA==}
     engines: {node: '>= 10'}
 
-  '@node-saml/node-saml@5.1.0':
-    resolution: {integrity: sha512-t3cJnZ4aC7HhPZ6MGylGZULvUtBOZ6FzuUndaHGXjmIZHXnLfC/7L8a57O9Q9V7AxJGKAiRM5zu2wNm9EsvQpw==}
+  '@node-saml/node-saml@5.2.0':
+    resolution: {integrity: sha512-bWjGrSZmenN+SiFcDxQ7Di2C108nK2jofJ0NT56C/NC/ELmjZS+6QOpf6YByM6f+eLTgfisrYVdwsNRV+XZsxg==}
     engines: {node: '>= 18'}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -4435,23 +4430,23 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ~1.9.1
 
-  '@otplib/core@13.4.0':
-    resolution: {integrity: sha512-JqOGcvZQi2wIkEQo8f3/iAjstavpXy6gouIDMHygjNuH6Q0FjbHOiXMdcE94RwfgDNMABhzwUmvaPsxvgm9NYw==}
+  '@otplib/core@13.6.0':
+    resolution: {integrity: sha512-TL6/FKKzR55Vr7zo3YGFtPMCSV3SpYPtuvE3T1XcwjFczD9pHU4dYYQBl0AcNvGcqAt4/fPqhZEFfB2OBcnlPA==}
 
-  '@otplib/hotp@13.4.0':
-    resolution: {integrity: sha512-MJjE0x06mn2ptymz5qZmQveb+vWFuaIftqE0b5/TZZqUOK7l97cV8lRTmid5BpAQMwJDNLW6RnYxGeCRiNdekw==}
+  '@otplib/hotp@13.6.0':
+    resolution: {integrity: sha512-oPpaQBkAYjBxAs+FWdGNumsEwWJhIZVcsv0vEi+w4OzzLQ6UDZ2qXZNSeF9NljTj6/8d4e1Z4o6RgJa3aIxAOA==}
 
-  '@otplib/plugin-base32-scure@13.4.0':
-    resolution: {integrity: sha512-/t9YWJmMbB8bF5z8mXrBZc2FXBe8B/3hG5FhWr9K8cFwFhyxScbPysmZe8s1UTzSA6N+s8Uv8aIfCtVXPNjJWw==}
+  '@otplib/plugin-base32-scure@13.6.0':
+    resolution: {integrity: sha512-s6uMbj4MBebvAPnBns1y2RhQ765/U04qHlZmFLV02dlD1S06pU46g/7tHX0vkCx5Pnty723loXto/PM5gFEEdg==}
 
-  '@otplib/plugin-crypto-noble@13.4.0':
-    resolution: {integrity: sha512-KrvE4m7Zv+TT1944HzgqFJWJpKb6AyoxDbvhPStmBqdMlv5Gekb80d66cuFRL08kkPgJ5gXUSb5SFpYeB+bACg==}
+  '@otplib/plugin-crypto-noble@13.6.0':
+    resolution: {integrity: sha512-m/8mOhtIhsr4zLtb9MlLI6+w7ZNiKSFnT8Dv7eHR9TCyf2Sxva5e+MbV0wONmF7ZLuvo9F3DtzfPjc748PhJcw==}
 
-  '@otplib/totp@13.4.0':
-    resolution: {integrity: sha512-dK+vl0f0ekzf6mCENRI9AKS2NJUC7OjI3+X8e7QSnhQ2WM7I+i4PGpb3QxKi5hxjTtwVuoZwXR2CFtXdcRtNdQ==}
+  '@otplib/totp@13.6.0':
+    resolution: {integrity: sha512-bMlq0MaUaQE3lOSH352Mrzcwpau5pMf7pMLROS+llk2evpC/sE7SHl9ajBl+PiPnGGb6LGYEjDvKqX8caXkGdw==}
 
-  '@otplib/uri@13.4.0':
-    resolution: {integrity: sha512-x1ozBa5bPbdZCrrTL/HK21qchiK7jYElTu+0ft22abeEhiLYgH1+SIULvOcVk3CK8YwF4kdcidvkq4ciejucJA==}
+  '@otplib/uri@13.6.0':
+    resolution: {integrity: sha512-CiLFMONTpCi3ara6yQQX3nlpYhafCALKJweA7+7Z+aDkRrW3QmD5a/9thKmQ0cGp2W70AMG/6BSTy82h74LHRw==}
 
   '@oxc-resolver/binding-android-arm-eabi@11.19.1':
     resolution: {integrity: sha512-aUs47y+xyXHUKlbhqHUjBABjvycq6YSD7bpxSW7vplUmdzAlJ93yXY6ZR0c1o1x5A/QKbENCvs3+NlY8IpIVzg==}
@@ -5724,8 +5719,8 @@ packages:
   '@schummar/icu-type-parser@1.21.5':
     resolution: {integrity: sha512-bXHSaW5jRTmke9Vd0h5P7BtWZG9Znqb8gSDxZnxaGSJnGwPLDPfS+3g0BKzeWqzgZPsIVZkM7m2tbo18cm5HBw==}
 
-  '@scure/base@2.2.0':
-    resolution: {integrity: sha512-b8XEupJibegiXV+tDUseI8oLQc8ei3d/4Jkb2RpbHh3MfE054ov3uIz2dhFkB3FI8iwYkEh0gGCApkrYggkPNg==}
+  '@scure/base@2.4.0':
+    resolution: {integrity: sha512-thZ1TuJwFwBblOhgsjDKvvGirBxNp+wSvY/DR6tJBJOTDhdAAcHJ8Vbr2eFnqaxeca4+t0i9KBf+uHYGWwZORg==}
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -6495,11 +6490,11 @@ packages:
   '@tanstack/query-async-storage-persister@5.102.8':
     resolution: {integrity: sha512-9smqFJWyhRo+0l3NqaGFo6CQVr+3jpKOVZBQXI/LL+GoTIGhhxq1wTZegeI63dy0oResZx/EyazGzDjW8harbg==}
 
-  '@tanstack/query-core@5.100.10':
-    resolution: {integrity: sha512-8UR0yJR+GiQ40m3lPhUr0xbfAupe6GSQiksSBSa9SM2NjezFyxXCIA69/lz8cSoNKZLrw1/PktIyQBJcVeMi3w==}
-
   '@tanstack/query-core@5.102.8':
     resolution: {integrity: sha512-ZNjkJ33CqvPNec/6lZBnHqLc3EVGPZ9ySLhYahU9TcuRFdmwXewuj0c4hwSWcGHqEUwcSrKeZ+oGcvPBqXcQcg==}
+
+  '@tanstack/query-core@5.106.1':
+    resolution: {integrity: sha512-erYv/UACddcdgjOL2ixmFdK6tO/AVBeUcTCOtX2N51yZpDQ2U7KJ+xgB/bCNfsF3uoCDTqGHEEbDiFsIO9YUmQ==}
 
   '@tanstack/query-devtools@5.100.10':
     resolution: {integrity: sha512-3DmJf25hDPus5IpVvp6ujXv6bKV2zPzI9vpbAmpJigsL/H6DPvPjmf7/Q9yVKEke//8fgeQ45abjgnLuyYxAiw==}
@@ -6519,15 +6514,19 @@ packages:
       '@tanstack/react-query': ^5.102.8
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.100.10':
-    resolution: {integrity: sha512-FLaZf2RCrA/Zgp4aiu5tG3TyasTRO7aZ99skxQpr3Hg/zXOhu6yq5FZCYQ/tRaJtM9ylnoK8tFK7PolXQadv6Q==}
-    peerDependencies:
-      react: ^18 || ^19
-
   '@tanstack/react-query@5.102.8':
     resolution: {integrity: sha512-TYBea4OuXWD7MhaSHq069TWbFe7rcwWN6kzT7JF0OKi1K6c1gTv2IzD6A6ExJsCMozdkqBWeuIUZmu4KQg0O5A==}
     peerDependencies:
       react: ^18 || ^19
+
+  '@tanstack/react-query@5.106.1':
+    resolution: {integrity: sha512-ORDvJG/DSfmlFL9lQ8GDkE0VjtQbLeRDY7BL8xjKkQFGLfjFGfNWNuteWgPqA2gPJgLLuWfQ7IX0FlsHCJriyg==}
+    peerDependencies:
+      '@types/react': ^18 || ^19
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -6706,9 +6705,6 @@ packages:
 
   '@types/d3-timer@3.0.2':
     resolution: {integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==}
-
-  '@types/debug@4.1.13':
-    resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==}
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
@@ -10305,8 +10301,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  helmet@8.1.0:
-    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
+  helmet@8.3.0:
+    resolution: {integrity: sha512-Qgpiaws3Sm30Av8Eah6sjMCZZwjlBu+E68rhpCWBshY1lb09HtLwj5GviX0OyQIn+ulUS0iX0AxN5n3tLZzz1w==}
     engines: {node: '>=18.0.0'}
 
   help-me@5.0.0:
@@ -10498,11 +10494,8 @@ packages:
   immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
 
-  immer@10.2.0:
-    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
-
-  immer@11.1.4:
-    resolution: {integrity: sha512-XREFCPo6ksxVzP4E0ekD5aMdf8WMwmdNaz6vuvxgI40UaEiu6q3p8X52aU6GdyvLY3XXX/8R7JOTXStz/nBbRw==}
+  immer@11.2.9:
+    resolution: {integrity: sha512-IQ4UEtXjZjyefyWjtLEDXUSrF6T2hwjKPi6BIJl3bY/2XXW24d6cNGdXJSBOA/+KNnuiXkZY6DR0C3efolhitA==}
 
   immutable@5.1.9:
     resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
@@ -12506,8 +12499,8 @@ packages:
     resolution: {integrity: sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==}
     engines: {node: '>=10'}
 
-  otplib@13.4.0:
-    resolution: {integrity: sha512-RUcYcRMCgRWhUE/XabRppXpUwCwaWBNHe5iPXhdvP8wwDGpGpsIf/kxX/ec3zFsOaM1Oq8lEhUqDwk6W7DHkwg==}
+  otplib@13.6.0:
+    resolution: {integrity: sha512-PCx6+14PYndCRk0G3JuJHmlExzENs43gafqMUVmSFmzMbEweVhBiYcBCL8B32ZMEDPZA4OsMxFEeAob1H+YFZg==}
 
   own-keys@1.0.1:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
@@ -13218,8 +13211,8 @@ packages:
     resolution: {integrity: sha512-BbubeCEyTuQjVMakvJQ/Sxbc93F2pwmbsxONT/ZRrwU7Ua38d8unYTwXpTVLAKJ4BDuH9IGztCjQcd/N/39Dvg==}
     engines: {node: '>=16.0.0'}
 
-  qr.js@0.0.0:
-    resolution: {integrity: sha512-c4iYnWb+k2E+vYpRimHqSu575b1/wKl4XFeJGpFmrJQz5I88v9aY2czh7s0w36srfCM1sXgC/xpoJz5dJfq+OQ==}
+  qrcode-generator@2.0.4:
+    resolution: {integrity: sha512-mZSiP6RnbHl4xL2Ap5HfkjLnmxfKcPWpWe/c+5XxCuetEenqmNFf1FH/ftXPCtFG5/TDobjsjz6sSNL0Sr8Z9g==}
 
   qrcode-terminal@0.11.0:
     resolution: {integrity: sha512-Uu7ii+FQy4Qf82G4xu7ShHhjhGahEpCWc3x8UavY3CTcWV+ufmmCtwkr7ZKsX42jdL0kr1B5FKUeqJvAn51jzQ==}
@@ -13325,9 +13318,6 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-is@19.2.4:
-    resolution: {integrity: sha512-W+EWGn2v0ApPKgKKCy/7s7WHXkboGcsrXE+2joLyVxkbyVQfO3MUEaUQDHoSmb8TFFrSKYa9mw64WZHNHSDzYA==}
-
   react-is@19.3.1:
     resolution: {integrity: sha512-RRieF6IyxQBkcK6pP8xOHprLTPW6QjRkbGdImtqNme+/hYVwCZkLQLdlZGOhUqXwkS9IEynaGvPJtv6XB/cz0Q==}
 
@@ -13378,8 +13368,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-qr-code@2.0.18:
-    resolution: {integrity: sha512-v1Jqz7urLMhkO6jkgJuBYhnqvXagzceg3qJUWayuCK/c6LTIonpWbwxR1f1APGd4xrW/QcQEovNrAojbUz65Tg==}
+  react-qr-code@2.2.0:
+    resolution: {integrity: sha512-e5nS0UUN22K3Nf8KBRUzemfdJ6OmnN5w+kbnj1lvJaol9RyVRFeGl05bCkxSN2ZegbLxjjYjX1+mmAoX9+fAhw==}
     peerDependencies:
       react: '*'
 
@@ -13480,8 +13470,8 @@ packages:
     resolution: {integrity: sha512-dEWRjcINDu/F4l2dYx57ugBtD7HV9KXESyxhzw/MqWLeglJrsjJKqACPyUPg+6AF8mIgm+Zi0dZ3ACoIg+QtpA==}
     engines: {node: '>= 4'}
 
-  recharts@3.8.1:
-    resolution: {integrity: sha512-mwzmO1s9sFL0TduUpwndxCUNoXsBw3u3E/0+A+cLcrSfQitSG62L32N69GhqUrrT5qKcAE3pCGVINC6pqkBBQg==}
+  recharts@3.10.1:
+    resolution: {integrity: sha512-QXFrvt6IVcw7eeZCoyXTwkIJAX3Dv1nyVhMicXJ47GsGDDpcN8z6o644DibE9XjpBTThtsomLKnTV6lc+cVFUA==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -13587,8 +13577,8 @@ packages:
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
-  reselect@5.1.1:
-    resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
+  reselect@5.2.0:
+    resolution: {integrity: sha512-AgZ3UOZm3YndfrJ4OYjgrT7bmCm/1iqkjvEfH/oYjzh6PD2qw4QuT3jjnXIrpdt4MTpMXclMT3lXbmRY+XRakw==}
 
   resend@6.12.4:
     resolution: {integrity: sha512-lRpJ2Hxd+ht+JPDm97juRcUp9HOMuZyxaRFRFmc9Tx8iNWiei94Dx9v6SWufgKk2667C/uCeKKspMotOHSpCSg==}
@@ -15606,8 +15596,8 @@ packages:
     resolution: {integrity: sha512-kCz5k7J7XbJtjABOvkc5lJmkiDh8VhjVCGNiqdKCscmVpdVUpEAyXv1xmCLkQJ5dsHqx3IPO4XW+NTDhU/fatA==}
     engines: {node: '>=10.0.0'}
 
-  xml-crypto@6.1.2:
-    resolution: {integrity: sha512-leBOVQdVi8FvPJrMYoum7Ici9qyxfE4kVi+AkpUoYCSXaQF4IlBm1cneTK9oAxR61LpYxTx7lNcsnBIeRpGW2w==}
+  xml-crypto@6.4.0:
+    resolution: {integrity: sha512-d21ModhBO/+QWWAmOjyDeQJuHNmsR/HtOxyBchiTbKfGNKuHYwQNd+SlLhwyyrwoAGLp4Qc6BQ7nAtnM47dHSQ==}
     engines: {node: '>=16'}
 
   xml-encryption@3.1.0:
@@ -15668,8 +15658,8 @@ packages:
     resolution: {integrity: sha512-NNXnzrkDrAzalLhIUc01jO2mOzXGXh1JwPgkihcLLzw98c0WgYDmmjSh1Kl3wzaxSVWMuA+fe0WTWOBDWCBmNA==}
     engines: {node: '>=0.6.0'}
 
-  xpath@0.0.34:
-    resolution: {integrity: sha512-FxF6+rkr1rNSQrhUNYrAFJpRXNzlDoMxeXN5qI84939ylEv3qqPFKa85Oxr6tDaJKqwW6KKyo2v26TSv3k6LeA==}
+  xpath@0.0.35:
+    resolution: {integrity: sha512-8O+m2N04SwLpGw/1Grz2HD8ejnWDV7M1dMPgKKuOjhYh5W9H4pel/+06kInohIdpS2FeSbL4i8ID8c4tpxwq9Q==}
     engines: {node: '>=0.6.0'}
 
   xtend@4.0.2:
@@ -16349,7 +16339,7 @@ snapshots:
 
   '@babel/helper-wrap-function@7.28.6':
     dependencies:
-      '@babel/template': 7.28.6
+      '@babel/template': 7.29.7
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.11
     transitivePeerDependencies:
@@ -19528,87 +19518,77 @@ snapshots:
 
   '@noble/hashes@1.8.0': {}
 
-  '@noble/hashes@2.2.0': {}
+  '@noble/hashes@2.4.0': {}
 
   '@nodable/entities@2.1.1': {}
 
-  '@node-rs/bcrypt-android-arm-eabi@1.10.7':
+  '@node-rs/bcrypt-android-arm-eabi@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-android-arm64@1.10.7':
+  '@node-rs/bcrypt-android-arm64@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-darwin-arm64@1.10.7':
+  '@node-rs/bcrypt-darwin-arm64@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-darwin-x64@1.10.7':
+  '@node-rs/bcrypt-darwin-x64@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-freebsd-x64@1.10.7':
+  '@node-rs/bcrypt-freebsd-x64@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-linux-arm-gnueabihf@1.10.7':
+  '@node-rs/bcrypt-linux-arm-gnueabihf@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-linux-arm64-gnu@1.10.7':
+  '@node-rs/bcrypt-linux-arm64-gnu@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-linux-arm64-musl@1.10.7':
+  '@node-rs/bcrypt-linux-arm64-musl@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-linux-x64-gnu@1.10.7':
+  '@node-rs/bcrypt-linux-x64-gnu@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-linux-x64-musl@1.10.7':
+  '@node-rs/bcrypt-linux-x64-musl@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-wasm32-wasi@1.10.7':
-    dependencies:
-      '@napi-rs/wasm-runtime': 0.2.12
+  '@node-rs/bcrypt-win32-arm64-msvc@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-win32-arm64-msvc@1.10.7':
+  '@node-rs/bcrypt-win32-ia32-msvc@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-win32-ia32-msvc@1.10.7':
+  '@node-rs/bcrypt-win32-x64-msvc@2.0.0':
     optional: true
 
-  '@node-rs/bcrypt-win32-x64-msvc@1.10.7':
-    optional: true
-
-  '@node-rs/bcrypt@1.10.7':
+  '@node-rs/bcrypt@2.0.0':
     optionalDependencies:
-      '@node-rs/bcrypt-android-arm-eabi': 1.10.7
-      '@node-rs/bcrypt-android-arm64': 1.10.7
-      '@node-rs/bcrypt-darwin-arm64': 1.10.7
-      '@node-rs/bcrypt-darwin-x64': 1.10.7
-      '@node-rs/bcrypt-freebsd-x64': 1.10.7
-      '@node-rs/bcrypt-linux-arm-gnueabihf': 1.10.7
-      '@node-rs/bcrypt-linux-arm64-gnu': 1.10.7
-      '@node-rs/bcrypt-linux-arm64-musl': 1.10.7
-      '@node-rs/bcrypt-linux-x64-gnu': 1.10.7
-      '@node-rs/bcrypt-linux-x64-musl': 1.10.7
-      '@node-rs/bcrypt-wasm32-wasi': 1.10.7
-      '@node-rs/bcrypt-win32-arm64-msvc': 1.10.7
-      '@node-rs/bcrypt-win32-ia32-msvc': 1.10.7
-      '@node-rs/bcrypt-win32-x64-msvc': 1.10.7
+      '@node-rs/bcrypt-android-arm-eabi': 2.0.0
+      '@node-rs/bcrypt-android-arm64': 2.0.0
+      '@node-rs/bcrypt-darwin-arm64': 2.0.0
+      '@node-rs/bcrypt-darwin-x64': 2.0.0
+      '@node-rs/bcrypt-freebsd-x64': 2.0.0
+      '@node-rs/bcrypt-linux-arm-gnueabihf': 2.0.0
+      '@node-rs/bcrypt-linux-arm64-gnu': 2.0.0
+      '@node-rs/bcrypt-linux-arm64-musl': 2.0.0
+      '@node-rs/bcrypt-linux-x64-gnu': 2.0.0
+      '@node-rs/bcrypt-linux-x64-musl': 2.0.0
+      '@node-rs/bcrypt-win32-arm64-msvc': 2.0.0
+      '@node-rs/bcrypt-win32-ia32-msvc': 2.0.0
+      '@node-rs/bcrypt-win32-x64-msvc': 2.0.0
 
-  '@node-saml/node-saml@5.1.0':
+  '@node-saml/node-saml@5.2.0':
     dependencies:
-      '@types/debug': 4.1.13
-      '@types/qs': 6.15.0
+      '@types/qs': 6.15.1
       '@types/xml-encryption': 1.2.4
       '@types/xml2js': 0.4.14
       '@xmldom/is-dom-node': 1.0.1
       '@xmldom/xmldom': 0.8.15
-      debug: 4.4.3(supports-color@7.2.0)
-      xml-crypto: 6.1.2
+      xml-crypto: 6.4.0
       xml-encryption: 3.1.0
       xml2js: 0.6.2
       xmlbuilder: 15.1.1
-      xpath: 0.0.34
-    transitivePeerDependencies:
-      - supports-color
+      xpath: 0.0.35
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -21061,32 +21041,32 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.12.0(@opentelemetry/api@1.9.1)
 
-  '@otplib/core@13.4.0': {}
+  '@otplib/core@13.6.0': {}
 
-  '@otplib/hotp@13.4.0':
+  '@otplib/hotp@13.6.0':
     dependencies:
-      '@otplib/core': 13.4.0
-      '@otplib/uri': 13.4.0
+      '@otplib/core': 13.6.0
+      '@otplib/uri': 13.6.0
 
-  '@otplib/plugin-base32-scure@13.4.0':
+  '@otplib/plugin-base32-scure@13.6.0':
     dependencies:
-      '@otplib/core': 13.4.0
-      '@scure/base': 2.2.0
+      '@otplib/core': 13.6.0
+      '@scure/base': 2.4.0
 
-  '@otplib/plugin-crypto-noble@13.4.0':
+  '@otplib/plugin-crypto-noble@13.6.0':
     dependencies:
-      '@noble/hashes': 2.2.0
-      '@otplib/core': 13.4.0
+      '@noble/hashes': 2.4.0
+      '@otplib/core': 13.6.0
 
-  '@otplib/totp@13.4.0':
+  '@otplib/totp@13.6.0':
     dependencies:
-      '@otplib/core': 13.4.0
-      '@otplib/hotp': 13.4.0
-      '@otplib/uri': 13.4.0
+      '@otplib/core': 13.6.0
+      '@otplib/hotp': 13.6.0
+      '@otplib/uri': 13.6.0
 
-  '@otplib/uri@13.4.0':
+  '@otplib/uri@13.6.0':
     dependencies:
-      '@otplib/core': 13.4.0
+      '@otplib/core': 13.6.0
 
   '@oxc-resolver/binding-android-arm-eabi@11.19.1':
     optional: true
@@ -21892,7 +21872,7 @@ snapshots:
       nanoid: 3.3.20
       query-string: 7.1.3
       react: 19.2.4
-      react-is: 19.2.4
+      react-is: 19.3.1
       use-latest-callback: 0.2.6(react@19.2.4)
       use-sync-external-store: 1.6.0(react@19.2.4)
 
@@ -21938,10 +21918,10 @@ snapshots:
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@standard-schema/utils': 0.3.0
-      immer: 11.1.4
+      immer: 11.2.9
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
-      reselect: 5.1.1
+      reselect: 5.2.0
     optionalDependencies:
       react: 19.2.4
       react-redux: 9.2.0(@types/react@19.3.0)(react@19.2.4)(redux@5.0.1)
@@ -22252,7 +22232,7 @@ snapshots:
 
   '@schummar/icu-type-parser@1.21.5': {}
 
-  '@scure/base@2.2.0': {}
+  '@scure/base@2.4.0': {}
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -23075,9 +23055,9 @@ snapshots:
       '@tanstack/query-core': 5.102.8
       '@tanstack/query-persist-client-core': 5.102.8
 
-  '@tanstack/query-core@5.100.10': {}
-
   '@tanstack/query-core@5.102.8': {}
+
+  '@tanstack/query-core@5.106.1': {}
 
   '@tanstack/query-devtools@5.100.10': {}
 
@@ -23085,10 +23065,10 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.102.8
 
-  '@tanstack/react-query-devtools@5.100.10(@tanstack/react-query@5.100.10(react@19.2.4))(react@19.2.4)':
+  '@tanstack/react-query-devtools@5.100.10(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/query-devtools': 5.100.10
-      '@tanstack/react-query': 5.100.10(react@19.2.4)
+      '@tanstack/react-query': 5.106.1(@types/react@19.3.0)(react@19.2.4)
       react: 19.2.4
 
   '@tanstack/react-query-persist-client@5.102.8(@tanstack/react-query@5.102.8(react@19.2.4))(react@19.2.4)':
@@ -23097,15 +23077,17 @@ snapshots:
       '@tanstack/react-query': 5.102.8(react@19.2.4)
       react: 19.2.4
 
-  '@tanstack/react-query@5.100.10(react@19.2.4)':
-    dependencies:
-      '@tanstack/query-core': 5.100.10
-      react: 19.2.4
-
   '@tanstack/react-query@5.102.8(react@19.2.4)':
     dependencies:
       '@tanstack/query-core': 5.102.8
       react: 19.2.4
+
+  '@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4)':
+    dependencies:
+      '@tanstack/query-core': 5.106.1
+      react: 19.2.4
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -23270,7 +23252,7 @@ snapshots:
 
   '@types/d3-interpolate@3.0.1':
     dependencies:
-      '@types/d3-color': 3.1.0
+      '@types/d3-color': 3.1.3
 
   '@types/d3-interpolate@3.0.4':
     dependencies:
@@ -23280,7 +23262,7 @@ snapshots:
 
   '@types/d3-scale@4.0.2':
     dependencies:
-      '@types/d3-time': 3.0.0
+      '@types/d3-time': 3.0.4
 
   '@types/d3-scale@4.0.9':
     dependencies:
@@ -23301,10 +23283,6 @@ snapshots:
   '@types/d3-time@3.0.4': {}
 
   '@types/d3-timer@3.0.2': {}
-
-  '@types/debug@4.1.13':
-    dependencies:
-      '@types/ms': 2.1.0
 
   '@types/deep-eql@4.0.2': {}
 
@@ -27806,7 +27784,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  helmet@8.1.0: {}
+  helmet@8.3.0: {}
 
   help-me@5.0.0: {}
 
@@ -28018,9 +27996,7 @@ snapshots:
 
   immediate@3.0.6: {}
 
-  immer@10.2.0: {}
-
-  immer@11.1.4: {}
+  immer@11.2.9: {}
 
   immutable@5.1.9: {}
 
@@ -28325,7 +28301,7 @@ snapshots:
   istanbul-lib-instrument@5.2.1:
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/parser': 7.29.11
+      '@babel/parser': 7.29.13
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
       semver: 6.3.1
@@ -30793,14 +30769,14 @@ snapshots:
       strip-ansi: 6.0.1
       wcwidth: 1.0.1
 
-  otplib@13.4.0:
+  otplib@13.6.0:
     dependencies:
-      '@otplib/core': 13.4.0
-      '@otplib/hotp': 13.4.0
-      '@otplib/plugin-base32-scure': 13.4.0
-      '@otplib/plugin-crypto-noble': 13.4.0
-      '@otplib/totp': 13.4.0
-      '@otplib/uri': 13.4.0
+      '@otplib/core': 13.6.0
+      '@otplib/hotp': 13.6.0
+      '@otplib/plugin-base32-scure': 13.6.0
+      '@otplib/plugin-crypto-noble': 13.6.0
+      '@otplib/totp': 13.6.0
+      '@otplib/uri': 13.6.0
 
   own-keys@1.0.1:
     dependencies:
@@ -31538,7 +31514,7 @@ snapshots:
 
   pvutils@1.2.0: {}
 
-  qr.js@0.0.0: {}
+  qrcode-generator@2.0.4: {}
 
   qrcode-terminal@0.11.0: {}
 
@@ -31665,8 +31641,6 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
-
-  react-is@19.2.4: {}
 
   react-is@19.3.1: {}
 
@@ -31841,10 +31815,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-qr-code@2.0.18(react@19.2.4):
+  react-qr-code@2.2.0(react@19.2.4):
     dependencies:
       prop-types: 15.8.1
-      qr.js: 0.0.0
+      qrcode-generator: 2.0.4
       react: 19.2.4
 
   react-redux@9.2.0(@types/react@19.3.0)(react@19.2.4)(redux@5.0.1):
@@ -31895,7 +31869,7 @@ snapshots:
   react-test-renderer@19.2.0(react@19.2.4):
     dependencies:
       react: 19.2.4
-      react-is: 19.2.4
+      react-is: 19.3.1
       scheduler: 0.27.0
 
   react@19.2.4: {}
@@ -31942,19 +31916,19 @@ snapshots:
       tiny-invariant: 1.3.3
       tslib: 2.8.1
 
-  recharts@3.8.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1):
+  recharts@3.10.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1):
     dependencies:
       '@reduxjs/toolkit': 2.11.2(react-redux@9.2.0(@types/react@19.3.0)(react@19.2.4)(redux@5.0.1))(react@19.2.4)
       clsx: 2.1.1
       decimal.js-light: 2.5.1
       es-toolkit: 1.45.1
       eventemitter3: 5.0.4
-      immer: 10.2.0
+      immer: 11.2.9
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
       react-is: 19.3.1
       react-redux: 9.2.0(@types/react@19.3.0)(react@19.2.4)(redux@5.0.1)
-      reselect: 5.1.1
+      reselect: 5.2.0
       tiny-invariant: 1.3.3
       use-sync-external-store: 1.6.0(react@19.2.4)
       victory-vendor: 37.3.6
@@ -32072,7 +32046,7 @@ snapshots:
 
   requires-port@1.0.0: {}
 
-  reselect@5.1.1: {}
+  reselect@5.2.0: {}
 
   resend@6.12.4:
     dependencies:
@@ -34412,7 +34386,7 @@ snapshots:
       simple-plist: 1.3.1
       uuid: 7.0.3
 
-  xml-crypto@6.1.2:
+  xml-crypto@6.4.0:
     dependencies:
       '@xmldom/is-dom-node': 1.0.1
       '@xmldom/xmldom': 0.8.15
@@ -34463,7 +34437,7 @@ snapshots:
 
   xpath@0.0.33: {}
 
-  xpath@0.0.34: {}
+  xpath@0.0.35: {}
 
   xtend@4.0.2: {}
 
