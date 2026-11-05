@@ -39,9 +39,10 @@ RUN cd apps/api && pnpm exec prisma generate --schema prisma/schema.prisma
 RUN pnpm exec nx run @org/api:prune --skip-nx-cache
 
 # O prune copia a secção `overrides:` do lockfile da raiz para o lockfile podado, mas não
-# leva `pnpm.overrides` para o package.json podado — e o `pnpm install --frozen-lockfile`
-# abaixo recusa a diferença (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH). Repõe-se a partir da raiz.
-RUN node -e "const fs=require('fs');const f='apps/api/dist/package.json';const p=JSON.parse(fs.readFileSync(f,'utf8'));p.pnpm={...(p.pnpm||{}),overrides:require('./package.json').pnpm.overrides};fs.writeFileSync(f,JSON.stringify(p,null,2))"
+# a configuração que a declara (`overrides:` no pnpm-workspace.yaml) — e o
+# `pnpm install --frozen-lockfile` abaixo recusa a diferença
+# (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH). Leva-se o bloco para junto do lockfile podado.
+RUN tr -d '\r' < pnpm-workspace.yaml | awk '/^overrides:/{f=1} f&&/^$/{exit} f' > apps/api/dist/pnpm-workspace.yaml
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
 FROM node:26-alpine AS runner
