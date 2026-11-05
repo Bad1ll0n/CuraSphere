@@ -24,6 +24,9 @@ interface SumarioAlta {
   fatoresReadmissao: string | null;
   recomendacoesAlta: string | null;
   cartaAlta: string | null;
+  // PROD-11: rascunho (IA) → revista (médico) → assinada (médico + TOTP)
+  cartaAltaEstado?: 'rascunho' | 'revista' | 'assinada' | null;
+  cartaAltaAssinadaEm?: string | null;
 }
 
 const CRITERIOS: { campo: keyof PlanoAlta; label: string }[] = [
@@ -53,6 +56,10 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
   const [calculandoRisco, setCalculandoRisco] = useState(false);
   const [gerandoCarta, setGerandoCarta] = useState(false);
   const [cartaAberta, setCartaAberta] = useState(false);
+  const [textoCarta, setTextoCarta] = useState('');
+  const [guardandoCarta, setGuardandoCarta] = useState(false);
+  const [codigoAssinatura, setCodigoAssinatura] = useState('');
+  const [assinandoCarta, setAssinandoCarta] = useState(false);
   const [followUps, setFollowUps] = useState<any[]>([]);
   const toast = useToast();
 
@@ -85,6 +92,42 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
     }
   };
 
+  const ehMedico = utilizador?.role === 'medico';
+  const estadoCarta = sumario?.cartaAltaEstado ?? (sumario?.cartaAlta ? 'rascunho' : null);
+  const cartaAssinada = estadoCarta === 'assinada';
+
+  useEffect(() => { setTextoCarta(sumario?.cartaAlta ?? ''); }, [sumario?.cartaAlta]);
+
+  const recarregarSumario = () =>
+    api.get(`/doentes/${doenteId}/sumario-alta`).then(r => { if (r.data) setSumario(r.data); });
+
+  const guardarRevisao = async () => {
+    setGuardandoCarta(true);
+    try {
+      await api.patch(`/doentes/${doenteId}/carta-alta`, { texto: textoCarta });
+      await recarregarSumario();
+      toast.success('Carta revista — pode assinar');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar a carta');
+    } finally {
+      setGuardandoCarta(false);
+    }
+  };
+
+  const assinarCarta = async () => {
+    setAssinandoCarta(true);
+    try {
+      await api.post(`/doentes/${doenteId}/carta-alta/assinar`, { totpCode: codigoAssinatura });
+      setCodigoAssinatura('');
+      await recarregarSumario();
+      toast.success('Carta de alta assinada');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao assinar a carta');
+    } finally {
+      setAssinandoCarta(false);
+    }
+  };
+
   const gerarCarta = async () => {
     setGerandoCarta(true);
     try {
@@ -92,8 +135,8 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
       await api.get(`/doentes/${doenteId}/sumario-alta`).then(r => { if (r.data) setSumario(r.data); });
       setCartaAberta(true);
       toast.success('Carta de alta gerada');
-    } catch {
-      toast.error('Erro ao gerar carta');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao gerar carta');
     } finally {
       setGerandoCarta(false);
     }
@@ -288,6 +331,11 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
             <div className="flex items-center justify-between" style={{ marginBottom: sumario?.cartaAlta ? '10px' : '0' }}>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">Carta de Alta (Médico de Família)</span>
+                {estadoCarta && (
+                  <span className={`text-[10px] font-bold uppercase rounded-full ${cartaAssinada ? 'bg-green-100 text-green-700' : estadoCarta === 'revista' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-800'}`} style={{ padding: '2px 8px' }}>
+                    {cartaAssinada ? 'Assinada' : estadoCarta === 'revista' ? 'Revista — por assinar' : 'Rascunho IA'}
+                  </span>
+                )}
                 {sumario?.cartaAlta && (
                   <button onClick={() => setCartaAberta(v => !v)} className="text-xs text-slate-400 hover:text-slate-600">
                     {cartaAberta ? '▲ Ocultar' : '▼ Ver'}
@@ -295,12 +343,12 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                 )}
               </div>
               <div className="flex items-center gap-2">
-                {sumario?.cartaAlta && (
+                {cartaAssinada && (
                   <button onClick={() => window.print()} className="text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 rounded-lg" style={{ padding: '3px 10px' }}>
                     Imprimir
                   </button>
                 )}
-                {sumario?.cartaAlta && ['medico', 'chefe_enfermeiros', 'direcao'].includes(utilizador?.role ?? '') && (
+                {cartaAssinada && ['medico', 'chefe_enfermeiros', 'direcao'].includes(utilizador?.role ?? '') && (
                   <a
                     href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/v1/doentes/${doenteId}/carta-alta/pdf`}
                     download
@@ -309,7 +357,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                     📄 PDF
                   </a>
                 )}
-                {['medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao'].includes(utilizador?.role ?? '') && (
+                {!cartaAssinada && ['medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao'].includes(utilizador?.role ?? '') && (
                   <button onClick={gerarCarta} disabled={gerandoCarta}
                     className="text-xs font-semibold text-violet-600 hover:text-violet-800 disabled:opacity-50 flex items-center gap-1">
                     {gerandoCarta ? (
@@ -319,10 +367,54 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                 )}
               </div>
             </div>
-            {sumario?.cartaAlta && cartaAberta && (
+            {sumario?.cartaAlta && cartaAberta && !cartaAssinada && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 text-xs text-amber-900" style={{ padding: '8px 12px', marginBottom: '8px' }}>
+                ⚠️ Rascunho gerado por IA. Confirme todos os dados clínicos antes de assinar — a medicação de saída é anexada a partir das prescrições, não do texto.
+              </div>
+            )}
+            {sumario?.cartaAlta && cartaAberta && (cartaAssinada || !ehMedico) && (
               <div className="rounded-lg bg-white border border-slate-200 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap font-mono" style={{ padding: '14px', maxHeight: '400px', overflowY: 'auto' }}>
                 {sumario.cartaAlta}
               </div>
+            )}
+            {sumario?.cartaAlta && cartaAberta && !cartaAssinada && ehMedico && (
+              <div className="flex flex-col gap-2">
+                <textarea
+                  value={textoCarta}
+                  onChange={e => setTextoCarta(e.target.value)}
+                  rows={14}
+                  aria-label="Texto da carta de alta"
+                  className="rounded-lg bg-white border border-slate-200 text-sm text-slate-700 leading-relaxed font-mono w-full"
+                  style={{ padding: '14px' }}
+                />
+                <div className="flex flex-wrap items-center gap-2">
+                  <button onClick={guardarRevisao} disabled={guardandoCarta || !textoCarta.trim()}
+                    className="text-xs font-semibold text-blue-700 border border-blue-200 rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+                    {guardandoCarta ? 'A guardar…' : estadoCarta === 'revista' ? 'Guardar alterações' : 'Confirmar revisão'}
+                  </button>
+                  {estadoCarta === 'revista' && textoCarta === sumario.cartaAlta && (
+                    <>
+                      <input
+                        value={codigoAssinatura}
+                        onChange={e => setCodigoAssinatura(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        inputMode="numeric"
+                        placeholder="Código 2FA"
+                        aria-label="Código do autenticador para assinar"
+                        className="text-xs rounded-lg border border-slate-300 w-28" style={{ padding: '6px 8px' }}
+                      />
+                      <button onClick={assinarCarta} disabled={assinandoCarta || codigoAssinatura.length !== 6}
+                        className="text-xs font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+                        {assinandoCarta ? 'A assinar…' : '✍️ Assinar'}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+            {cartaAssinada && sumario?.cartaAltaAssinadaEm && (
+              <p className="text-xs text-green-700" style={{ marginTop: '6px' }}>
+                Assinada em {new Date(sumario.cartaAltaAssinadaEm).toLocaleString('pt-PT')}.
+              </p>
             )}
             {!sumario?.cartaAlta && (
               <p className="text-xs text-slate-400 italic" style={{ marginTop: '6px' }}>Não gerada. Clique em "Gerar carta IA" para criar automaticamente.</p>

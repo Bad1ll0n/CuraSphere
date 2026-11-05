@@ -35,6 +35,13 @@ interface RegistoAdmin {
   };
 }
 
+interface CamaLivre {
+  id: string;
+  numero: string;
+  quarto: string;
+  estado: string;
+}
+
 const TIPOS_VISITA_FORM = [
   { value: 'consulta',     label: 'Consulta',     icon: '👨‍⚕️', desc: 'Marcação com médico' },
   { value: 'exame',        label: 'Exame',        icon: '🔬', desc: 'Análises / Imagiologia' },
@@ -68,6 +75,36 @@ export default function RegistosAdministrativosPage() {
   const [erro, setErro] = useState('');
   const [erros, setErros] = useState<Record<string, string>>({});
   const [sucesso, setSucesso] = useState<{ nome: string; numeroProcesso: string; tipoVisita: string } | null>(null);
+
+  // PROD-01: dar cama a quem foi registado para internamento (pendente_cama → internado)
+  const [atribuirPara, setAtribuirPara] = useState<string | null>(null);
+  const [camasLivres, setCamasLivres] = useState<CamaLivre[]>([]);
+  const [camaEscolhida, setCamaEscolhida] = useState('');
+  const [atribuindo, setAtribuindo] = useState(false);
+  const [erroCama, setErroCama] = useState('');
+
+  async function abrirAtribuirCama(doenteId: string) {
+    setAtribuirPara(doenteId);
+    setCamaEscolhida('');
+    setErroCama('');
+    const r = await api.get('/camas').catch(() => ({ data: [] }));
+    setCamasLivres((r.data ?? []).filter((c: CamaLivre) => c.estado === 'livre' || c.estado === 'reservada'));
+  }
+
+  async function confirmarCama() {
+    if (!atribuirPara || !camaEscolhida) return;
+    setAtribuindo(true);
+    setErroCama('');
+    try {
+      await api.post(`/doentes/${atribuirPara}/atribuir-cama`, { camaId: camaEscolhida });
+      setAtribuirPara(null);
+      carregar();
+    } catch (e: any) {
+      setErroCama(e?.response?.data?.message ?? 'Não foi possível atribuir a cama');
+    } finally {
+      setAtribuindo(false);
+    }
+  }
 
   function validar(f: typeof form): Record<string, string> {
     const e: Record<string, string> = {};
@@ -256,6 +293,41 @@ export default function RegistosAdministrativosPage() {
                   </div>
                 </div>
 
+                {/* PROD-01: atribuir cama a quem aguarda internamento */}
+                {r.estadoRegisto === 'pendente_cama' && (
+                  atribuirPara === r.id ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0, minWidth: 220 }}>
+                      <select
+                        value={camaEscolhida}
+                        onChange={e => setCamaEscolhida(e.target.value)}
+                        aria-label={`Cama para ${r.nome}`}
+                        style={{ background: '#0f172a', color: '#fff', border: '1px solid #334155', borderRadius: 8, padding: '6px 8px', fontSize: 13 }}
+                      >
+                        <option value="">{camasLivres.length ? 'Escolher cama…' : 'Sem camas livres'}</option>
+                        {camasLivres.map(c => (
+                          <option key={c.id} value={c.id}>Quarto {c.quarto} · Cama {c.numero}{c.estado === 'reservada' ? ' (reservada)' : ''}</option>
+                        ))}
+                      </select>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button onClick={confirmarCama} disabled={!camaEscolhida || atribuindo}
+                          style={{ flex: 1, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 10px', fontSize: 13, fontWeight: 600, opacity: !camaEscolhida || atribuindo ? 0.5 : 1 }}>
+                          {atribuindo ? 'A atribuir…' : 'Confirmar'}
+                        </button>
+                        <button onClick={() => setAtribuirPara(null)}
+                          style={{ background: 'transparent', color: 'var(--text-soft)', border: '1px solid #334155', borderRadius: 8, padding: '6px 10px', fontSize: 13 }}>
+                          Cancelar
+                        </button>
+                      </div>
+                      {erroCama && <span role="alert" style={{ color: '#fca5a5', fontSize: 12 }}>{erroCama}</span>}
+                    </div>
+                  ) : (
+                    <button onClick={() => abrirAtribuirCama(r.id)}
+                      style={{ flexShrink: 0, background: '#f59e0b20', color: '#f59e0b', border: '1px solid #f59e0b55', borderRadius: 8, padding: '6px 12px', fontSize: 13, fontWeight: 600 }}>
+                      🛏️ Atribuir cama
+                    </button>
+                  )
+                )}
+
                 {/* Data registo + cobertura */}
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   <div style={{ color: 'var(--text-soft)', fontSize: 12 }}>
@@ -291,7 +363,7 @@ export default function RegistosAdministrativosPage() {
                 {(() => {
                   const tv = TIPOS_VISITA_FORM.find(t => t.value === sucesso.tipoVisita);
                   const msgs: Record<string, string> = {
-                    internamento: 'Aguarda atribuição de cama pela equipa clínica.',
+                    internamento: 'Aguarda cama — use "Atribuir cama" na lista quando houver uma livre.',
                     consulta: 'Pode tirar senha no quiosque para consulta.',
                     exame: 'Dirija-se ao serviço de exames.',
                     urgencia: 'Dirija-se à urgência imediatamente.',

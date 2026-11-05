@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DoenteService } from './doentes.service';
+import { CartaAltaService } from './carta-alta.service';
 import { AcessoDoenteInterceptor } from './acesso-doente.interceptor';
 import { VERIFICADOR_ACESSO_DOENTE } from './acesso-doente.token';
 import { DoenteController } from './doentes.controller';
@@ -17,6 +18,7 @@ import { BreakGlassModule } from '../break-glass/break-glass.module';
   controllers: [DoenteController, QuiosqueController],
   providers: [
     DoenteService,
+    CartaAltaService,
     PdfService,
     // S-01: global, apesar de declarado aqui — um APP_INTERCEPTOR aplica-se a toda a
     // aplicação seja qual for o módulo que o regista. Fica junto do DoenteService porque

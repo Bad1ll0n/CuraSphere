@@ -1,10 +1,11 @@
+// otplib v13: `verify` assíncrono que devolve `{ valid }` (o `authenticator` já não existe).
 jest.mock('otplib', () => ({
-  authenticator: { verify: jest.fn() },
+  verify: jest.fn(),
 }));
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
-const { authenticator } = require('otplib') as { authenticator: { verify: jest.Mock } };
+const { verify: verifyTotp } = require('otplib') as { verify: jest.Mock };
 import { NotasClinicasService } from './notas-clinicas.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -22,6 +23,9 @@ const mockPrisma = {
   utilizador: {
     findUnique: jest.fn(),
   },
+  // Anti-replay durável do TOTP (tabela totp_consumidos).
+  $queryRaw: jest.fn(),
+  $executeRaw: jest.fn(),
   notaClinicaAdenda: {
     create: jest.fn(),
     findMany: jest.fn(),
@@ -33,6 +37,8 @@ describe('NotasClinicasService', () => {
 
   beforeEach(async () => {
     jest.resetAllMocks();
+    mockPrisma.$queryRaw.mockResolvedValue([]);
+    mockPrisma.$executeRaw.mockResolvedValue(1);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -272,7 +278,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      (authenticator.verify as jest.Mock).mockReturnValue(false);
+      verifyTotp.mockResolvedValue({ valid: false });
 
       await expect(
         service.assinar('nota-1', 'user-1', '000000'),
@@ -283,7 +289,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      (authenticator.verify as jest.Mock).mockReturnValue(true);
+      verifyTotp.mockResolvedValue({ valid: true });
       mockPrisma.notaClinica.findUnique.mockResolvedValue({
         id: 'nota-1', assinadaEm: new Date(),
       });
@@ -297,7 +303,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      (authenticator.verify as jest.Mock).mockReturnValue(true);
+      verifyTotp.mockResolvedValue({ valid: true });
       mockPrisma.notaClinica.findUnique.mockResolvedValue({
         id: 'nota-1', assinadaEm: null,
       });
@@ -316,6 +322,15 @@ describe('NotasClinicasService', () => {
         }),
       );
       expect(resultado).toHaveProperty('assinadaEm');
+    });
+
+    it('recusa reutilizar o mesmo código TOTP (anti-replay durável)', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123' });
+      verifyTotp.mockResolvedValue({ valid: true });
+      mockPrisma.$queryRaw.mockResolvedValue([{ existe: 1 }]);
+
+      await expect(service.assinar('nota-1', 'user-1', '123456')).rejects.toThrow(/já utilizado/);
+      expect(mockPrisma.notaClinica.update).not.toHaveBeenCalled();
     });
   });
 });

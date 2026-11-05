@@ -1262,22 +1262,29 @@ model AvaliacaoRisco {
 // ─── Sumário de Alta ──────────────────────────────────────────────────────────
 
 model SumarioAlta {
-  id                String     @id @default(uuid())
-  doenteId          String     @unique
-  doente            Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  motivoAlta        String
-  destino           String?
-  resumoClinical    String
-  prescricaoSaida   String?
-  medicoFamilia     String?
-  criadoPorId       String
-  criadoPor         Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
-  criadoEm          DateTime   @default(now())
-  riscReadmissao    String?
-  fatoresReadmissao String?    @db.Text
-  recomendacoesAlta String?    @db.Text
-  cartaAlta         String?    @db.Text
-  icd10Code         String?
+  id                     String     @id @default(uuid())
+  doenteId               String     @unique
+  doente                 Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  motivoAlta             String
+  destino                String?
+  resumoClinical         String
+  prescricaoSaida        String?
+  medicoFamilia          String?
+  criadoPorId            String
+  criadoPor              Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoEm               DateTime   @default(now())
+  riscReadmissao         String?
+  fatoresReadmissao      String?    @db.Text
+  recomendacoesAlta      String?    @db.Text
+  cartaAlta              String?    @db.Text
+  // PROD-11: a IA só escreve um RASCUNHO. rascunho → revista (médico edita/aceita o texto)
+  // → assinada (médico, com TOTP). Só a assinada sai em PDF; depois de assinada é imutável.
+  cartaAltaEstado        String?
+  cartaAltaRevistaPorId  String?
+  cartaAltaRevistaEm     DateTime?
+  cartaAltaAssinadaPorId String?
+  cartaAltaAssinadaEm    DateTime?
+  icd10Code              String?
 
   @@map("sumarios_alta")
 }

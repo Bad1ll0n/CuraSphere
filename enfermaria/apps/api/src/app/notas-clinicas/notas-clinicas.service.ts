@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
-const { authenticator } = require('otplib') as any;
 import { PrismaService } from '../prisma/prisma.service';
+import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
 // `direcao` foi deliberadamente removido destas listas: é um papel de gestão, não clínico,
 // e não deve poder editar nem apagar a nota clínica de um médico. Continua a ter leitura
@@ -123,14 +122,7 @@ export class NotasClinicasService {
   }
 
   async assinar(notaId: string, utilizadorId: string, totpCode: string) {
-    const utilizador = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId } });
-    if (!utilizador) throw new NotFoundException('Utilizador não encontrado');
-    if (!utilizador.mfaAtivo || !utilizador.mfaSecret) {
-      throw new ForbiddenException('MFA não configurado. Configure o autenticador antes de assinar.');
-    }
-
-    const valido = authenticator.verify({ token: totpCode, secret: utilizador.mfaSecret });
-    if (!valido) throw new ForbiddenException('Código TOTP inválido');
+    await verificarTotpAssinatura(this.prisma, utilizadorId, totpCode, 'nota');
 
     const nota = await this.buscarNota(notaId);
     if (nota.deletedAt) throw new NotFoundException(`Nota clínica (ID ${notaId}) não encontrada`);

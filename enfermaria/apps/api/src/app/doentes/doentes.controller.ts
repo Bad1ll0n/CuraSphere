@@ -14,6 +14,9 @@ import { AtualizarProblemaDto } from './dto/atualizar-problema.dto';
 import { AtualizarIsolamentoDto } from './dto/atualizar-isolamento.dto';
 import { RegistroRapidoDto } from './dto/registro-rapido.dto';
 import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
+import { AtribuirCamaDto } from './dto/atribuir-cama.dto';
+import { AssinarCartaAltaDto, ReverCartaAltaDto } from './dto/carta-alta.dto';
+import { CartaAltaService } from './carta-alta.service';
 import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
 import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
@@ -25,6 +28,7 @@ export class DoenteController {
   constructor(
     private readonly doenteService: DoenteService,
     private readonly pdfService: PdfService,
+    private readonly cartaAlta: CartaAltaService,
   ) {}
 
   @Get()
@@ -108,6 +112,14 @@ export class DoenteController {
   @Post('admitir')
   admitir(@Body() dto: AdmitirDoenteDto, @Request() req: any) {
     return this.doenteService.admitir({ ...dto, dataNascimento: new Date(dto.dataNascimento), dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined, administrativoAdmissaoId: req.user.sub } as any);
+  }
+
+  // PROD-01: doente registado para internamento (`pendente_cama`) → cama → `internado`.
+  // Mesmos papéis que a admissão; o doente ainda não tem equipa atribuída.
+  @Roles('administrativo', 'enfermeiro')
+  @Post(':id/atribuir-cama')
+  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto) {
+    return this.doenteService.atribuirCama(id, dto.camaId);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
@@ -206,10 +218,27 @@ export class DoenteController {
     res.send(buffer);
   }
 
+  // PROD-11: o médico revê (edita ou aceita) o rascunho da IA…
+  @Roles('medico')
+  @Patch(':id/carta-alta')
+  async reverCartaAlta(@Param('id') doenteId: string, @Body() dto: ReverCartaAltaDto, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    return this.cartaAlta.rever(doenteId, req.user.sub, dto.texto);
+  }
+
+  // …e assina-o com o TOTP. Só a carta assinada sai em PDF.
+  @Roles('medico')
+  @Post(':id/carta-alta/assinar')
+  async assinarCartaAlta(@Param('id') doenteId: string, @Body() dto: AssinarCartaAltaDto, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    return this.cartaAlta.assinar(doenteId, req.user.sub, dto.totpCode);
+  }
+
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   @Get(':id/carta-alta/pdf')
   async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    await this.cartaAlta.garantirAssinada(doenteId);
     const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
     const buffer = await this.pdfService.gerarCartaAltaPdf(doenteId);
     res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="carta-alta-${safeId}.pdf"` });

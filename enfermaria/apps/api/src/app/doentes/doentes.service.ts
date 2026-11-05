@@ -255,6 +255,9 @@ export class DoenteService {
           diagnosticoPrincipal: data.diagnosticoPrincipal,
           ...(data.icd10Code && { icd10Code: data.icd10Code }),
           camaId: data.camaId,
+          // PROD-01: admitido com cama = internado. O default do schema (`pendente_cama`)
+          // deixava-o fora da lista clínica, da cozinha e do contador de internados.
+          estadoRegisto: 'internado',
           dataAltaPrevista: data.dataAltaPrevista ? new Date(data.dataAltaPrevista) : undefined,
           administrativoAdmissaoId: data.administrativoAdmissaoId,
         },
@@ -314,6 +317,39 @@ export class DoenteService {
       where: { id },
       data: { estado },
       select: { id: true, nome: true, estado: true },
+    });
+  }
+
+  /**
+   * PROD-01: dá cama a um doente registado para internamento (`pendente_cama`) e passa-o a
+   * `internado`. Até aqui não existia nenhuma operação que o fizesse: o registo rápido
+   * dizia "aguarda cama pela equipa clínica", e o doente ficava à espera para sempre.
+   */
+  async atribuirCama(doenteId: string, camaId: string) {
+    return this.prisma.$transaction(async (tx) => {
+      const doente = await tx.doente.findUnique({
+        where: { id: doenteId },
+        select: { id: true, ativo: true, estadoRegisto: true, camaId: true },
+      });
+      if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+      if (!doente.ativo || doente.estadoRegisto !== 'pendente_cama' || doente.camaId) {
+        throw new BadRequestException('O doente não está a aguardar cama');
+      }
+      // Reservar a cama de forma atómica: só passa se ainda estiver livre ou reservada.
+      const reservada = await tx.cama.updateMany({
+        where: { id: camaId, estado: { in: ['livre', 'reservada'] } },
+        data: { estado: 'ocupada' },
+      });
+      if (reservada.count !== 1) {
+        const existe = await tx.cama.findUnique({ where: { id: camaId }, select: { id: true } });
+        if (!existe) throw new NotFoundException(`Cama (ID ${camaId}) não encontrada`);
+        throw new BadRequestException('Cama não está disponível');
+      }
+      return tx.doente.update({
+        where: { id: doenteId },
+        data: { camaId, estadoRegisto: 'internado', dataAdmissao: new Date() },
+        include: { cama: true },
+      });
     });
   }
 

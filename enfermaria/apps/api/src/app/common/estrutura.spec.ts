@@ -376,3 +376,33 @@ describe('estrutura — soft-delete', () => {
     expect(infratores).toEqual([]);
   });
 });
+
+describe('estrutura — assinaturas clínicas e carta de alta', () => {
+  // O otplib v13 deixou de exportar `authenticator`: quem o usasse assinava sempre com erro
+  // 500. As assinaturas passam todas por `verificarTotpAssinatura` (anti-replay durável).
+  it('ninguém usa o `authenticator` do otplib (removido na v13)', () => {
+    const infratores = ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .filter((f) => /\bauthenticator\s*\.\s*(verify|check|generate)\b/.test(lerCodigo(f)))
+      .map(caminhoRelativo);
+    expect(infratores).toEqual([]);
+  });
+
+  // PROD-11: o PDF da carta só existe depois de revista e assinada por um médico.
+  it('o PDF da carta de alta passa por garantirAssinada', () => {
+    const controller = ler(join(RAIZ_APP, 'doentes', 'doentes.controller.ts'));
+    const rota = controller.slice(controller.indexOf("@Get(':id/carta-alta/pdf')"));
+    const corpo = rota.slice(0, rota.indexOf('\n  }'));
+    expect(corpo).toContain('garantirAssinada(');
+  });
+
+  // PROD-11: a IA escreve um rascunho — sem medicação inventada e sem assinar pelo produto.
+  it('o prompt da carta de alta não pede medicação nem assina pelo produto', () => {
+    const servico = ler(join(RAIZ_APP, 'ai-clinico', 'ai-clinico.service.ts'));
+    const inicio = servico.indexOf('async gerarCartaAlta(');
+    const metodo = servico.slice(inicio, servico.indexOf('\n  }\n', inicio));
+    expect(metodo).not.toMatch(/medicação de saída \(com doses/);
+    expect(metodo).not.toMatch(/Assina como/);
+    expect(metodo).toContain("cartaAltaEstado: 'rascunho'");
+  });
+});
