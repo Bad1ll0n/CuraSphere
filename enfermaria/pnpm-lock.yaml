@@ -337,8 +337,8 @@ importers:
         specifier: ^7.10.1
         version: 7.10.1(prisma@7.10.1(@types/node@26.6.5)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
       '@prisma/client-runtime-utils':
-        specifier: ^7.8.0
-        version: 7.8.0
+        specifier: ^7.10.1
+        version: 7.10.1
       '@sentry/node':
         specifier: ^10.56.0
         version: 10.56.0(@opentelemetry/exporter-trace-otlp-http@0.220.0(@opentelemetry/api@1.9.1))
@@ -433,8 +433,8 @@ importers:
         specifier: ^0.3.8
         version: 0.3.8
       pg:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^8.23.1
+        version: 8.23.1
       pino-http:
         specifier: ^11.0.0
         version: 11.0.0
@@ -488,8 +488,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       '@types/pg':
-        specifier: ^8.11.10
-        version: 8.20.0
+        specifier: ^8.23.1
+        version: 8.23.1
       '@types/pino-http':
         specifier: ^6.1.0
         version: 6.1.0
@@ -532,8 +532,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))
       '@react-navigation/bottom-tabs':
-        specifier: ^7.15.9
-        version: 7.15.9(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-screens@4.24.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
+        specifier: ^7.21.0
+        version: 7.21.0(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-screens@4.24.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       '@react-navigation/native':
         specifier: ^7.2.2
         version: 7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
@@ -691,8 +691,8 @@ importers:
         specifier: ^3.10.1
         version: 3.10.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1)
       socket.io-client:
-        specifier: ^4.8.3
-        version: 4.8.3
+        specifier: ^4.8.4
+        version: 4.8.4
     devDependencies:
       '@storybook/addon-themes':
         specifier: ^9.1.21
@@ -4797,9 +4797,6 @@ packages:
   '@prisma/client-runtime-utils@7.10.1':
     resolution: {integrity: sha512-AzoATVIgmO3lcZfM443+9SI7+cyLMW2+Psw4op8WQHpHvHCX//CKxv8fwhiL0yGWF8DjdQrFewxrZo5McBdB8g==}
 
-  '@prisma/client-runtime-utils@7.8.0':
-    resolution: {integrity: sha512-5NQZztQ0oY/ADFkmd9gPuweH5A1/CCY8YQPorLLO0Mu6a87mY5gsnDkzmFmIHs9NFaLnZojzgddFVN4RpKYrdw==}
-
   '@prisma/client@7.10.1':
     resolution: {integrity: sha512-5tgAbFGh//zVOC6WPNVgziOErJHYkUE+wmqCwbIyq6IrTXUYtv9y2iBFGh/Owo99Mx0+cr0j1FOrxkYBMuyhaQ==}
     engines: {node: ^20.19 || ^22.12 || >=24.0}
@@ -5215,10 +5212,10 @@ packages:
       '@types/react':
         optional: true
 
-  '@react-navigation/bottom-tabs@7.15.9':
-    resolution: {integrity: sha512-Ou28A1aZLj5wiFQ3F93aIsrI4NCwn3IJzkkjNo9KLFXsc0Yks+UqrVaFlffHFLsrbajuGRG/OQpnMA1ljayY5Q==}
+  '@react-navigation/bottom-tabs@7.21.0':
+    resolution: {integrity: sha512-G3P88TPiHw9rxGhstwdeVgaBj3YQl8emiF8zLgyfXOF2AIk31myIrtDQeu2Mg5Ad7YWMs4W8zkXuD78xChlTHQ==}
     peerDependencies:
-      '@react-navigation/native': ^7.2.2
+      '@react-navigation/native': ^7.5.1
       react: '>= 18.2.0'
       react-native: '*'
       react-native-safe-area-context: '>= 4.0.0'
@@ -5234,6 +5231,18 @@ packages:
     peerDependencies:
       '@react-native-masked-view/masked-view': '>= 0.2.0'
       '@react-navigation/native': ^7.2.2
+      react: '>= 18.2.0'
+      react-native: '*'
+      react-native-safe-area-context: '>= 4.0.0'
+    peerDependenciesMeta:
+      '@react-native-masked-view/masked-view':
+        optional: true
+
+  '@react-navigation/elements@2.9.45':
+    resolution: {integrity: sha512-r64qCgjA6asQo4Zlv2lAl68ARkfPbV+BNRm3n9JlMoFr4Ma2A+92Z+sWT1coJRoSXkAwVNb70+LjpM6fo6/D4A==}
+    peerDependencies:
+      '@react-native-masked-view/masked-view': '>= 0.2.0'
+      '@react-navigation/native': ^7.5.1
       react: '>= 18.2.0'
       react-native: '*'
       react-native-safe-area-context: '>= 4.0.0'
@@ -6927,8 +6936,8 @@ packages:
   '@types/pg@8.15.6':
     resolution: {integrity: sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ==}
 
-  '@types/pg@8.20.0':
-    resolution: {integrity: sha512-bEPFOaMAHTEP1EzpvHTbmwR8UsFyHSKsRisLIHVMXnpNefSbGA1bD6CVy+qKjGSqmZqNqBDV2azOBo8TgkcVow==}
+  '@types/pg@8.23.1':
+    resolution: {integrity: sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==}
 
   '@types/pino-http@6.1.0':
     resolution: {integrity: sha512-rjPOSk2yI0714Pi8LdjIhDynXWqOvswmjRiTHj/1TOh1+0R26aKJ8vAVZRc4Ky5dQ5M5Bly1vrV/Klew6lThkA==}
@@ -12779,11 +12788,11 @@ packages:
   perfect-debounce@2.1.0:
     resolution: {integrity: sha512-LjgdTytVFXeUgtHZr9WYViYSM/g8MkcTPYDlPa3cDqMirHjKiSZPYd6DoL7pK8AJQr+uWkQvCjHNdiMqsrJs+g==}
 
-  pg-cloudflare@1.4.0:
-    resolution: {integrity: sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A==}
+  pg-cloudflare@1.4.1:
+    resolution: {integrity: sha512-6PQbsFWZcp9EmJEwy5cGQ2La+AMWpP46lgbb8X+U/XsHIUweYDNCpeuKck5RxL2MdVFi7krbbEi5nX4Zh7JhrQ==}
 
-  pg-connection-string@2.13.0:
-    resolution: {integrity: sha512-EMnU9E2fSULdsbErBbMaXJvFeD9B4+nPcM3f+4lsiCR0BHLPrLVjv3DbyM2hgQQviKJaTWIRRTjKjWlHg3p2ig==}
+  pg-connection-string@2.14.1:
+    resolution: {integrity: sha512-qR3kGNPBLpCNtz0evbKA0Y/MRFXwSSdT+pTJvYp/bXTcReZbvX1kzF0IyTc1QnxqF7AZbOeBhNL8R5mYQZV/MA==}
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
@@ -12794,15 +12803,15 @@ packages:
     peerDependencies:
       pg: '>=8.0'
 
-  pg-protocol@1.14.0:
-    resolution: {integrity: sha512-n5taZ1kO3s9ngDTVxsEznOqCyToTgz0FLuPq0B33COy5pPpuWJpY3/2oRBVETuOgzdqRXfWpM9HIhp2LBBT1BA==}
+  pg-protocol@1.16.1:
+    resolution: {integrity: sha512-p9VOFMiHB/ZbJATetbg+99PxssTVSQRnyuPSQ67mN1+1KBOjZaZ83ZQzltnxPhJwSsC3nwVjJ10DVJlerbFzLg==}
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
 
-  pg@8.21.0:
-    resolution: {integrity: sha512-AUP1EYJuHraQGsVoCQVIcM7TEJVGtDzxWtGFZd8rds9d+CCXlU5Js1rYgfLNvxy9iJrpHjGrRjoi/3BT9fRyiA==}
+  pg@8.23.1:
+    resolution: {integrity: sha512-aL96AHANtWjPLDOLqnhx+ngp9+UK7ETEU8VJrDCGvsSSi/mGLcWYsS6Herg7lmaBJe4uwrfqsa7gTEFaSizDoQ==}
     engines: {node: '>= 16.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -14242,8 +14251,8 @@ packages:
   socket.io-adapter@2.5.6:
     resolution: {integrity: sha512-DkkO/dz7MGln0dHn5bmN3pPy+JmywNICWrJqVWiVOyvXjWQFIv9c2h24JrQLLFJ2aQVQf/Cvl1vblnd4r2apLQ==}
 
-  socket.io-client@4.8.3:
-    resolution: {integrity: sha512-uP0bpjWrjQmUt5DTHq9RuoCBdFJF10cdX9X+a368j/Ft0wmaVgxlrjvK3kjvgCODOMMOz9lcaRzxmso0bTWZ/g==}
+  socket.io-client@4.8.4:
+    resolution: {integrity: sha512-7wjKAvVXYOJsbmUgkWbnhPD4bFpkqrUR0++XOjpGFmqDqsqV1CI93VTraeExLxpjxEqrWgFoSRZu1ihjLWfkAA==}
     engines: {node: '>=10.0.0'}
 
   socket.io-parser@4.2.7:
@@ -18155,7 +18164,7 @@ snapshots:
       postcss: 8.5.31
       resolve-from: 5.0.0
     optionalDependencies:
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -18247,7 +18256,7 @@ snapshots:
       '@expo/json-file': 10.0.13
       '@react-native/normalize-colors': 0.81.5
       debug: 4.4.3(supports-color@7.2.0)
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       resolve-from: 5.0.0
       semver: 7.7.4
       xml2js: 0.6.0
@@ -21472,15 +21481,13 @@ snapshots:
   '@prisma/adapter-pg@7.8.0':
     dependencies:
       '@prisma/driver-adapter-utils': 7.8.0
-      '@types/pg': 8.20.0
-      pg: 8.21.0
+      '@types/pg': 8.23.1
+      pg: 8.23.1
       postgres-array: 3.0.4
     transitivePeerDependencies:
       - pg-native
 
   '@prisma/client-runtime-utils@7.10.1': {}
-
-  '@prisma/client-runtime-utils@7.8.0': {}
 
   '@prisma/client@7.10.1(prisma@7.10.1(@types/node@26.6.5)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
@@ -21946,9 +21953,9 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
-  '@react-navigation/bottom-tabs@7.15.9(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-screens@4.24.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
+  '@react-navigation/bottom-tabs@7.21.0(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-screens@4.24.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@react-navigation/elements': 2.9.14(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
+      '@react-navigation/elements': 2.9.45(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       '@react-navigation/native': 7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       color: 4.2.3
       react: 19.2.4
@@ -21972,6 +21979,16 @@ snapshots:
       use-sync-external-store: 1.6.0(react@19.2.4)
 
   '@react-navigation/elements@2.9.14(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@react-navigation/native': 7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
+      color: 4.2.3
+      react: 19.2.4
+      react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4)
+      react-native-safe-area-context: 5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
+      use-latest-callback: 0.2.6(react@19.2.4)
+      use-sync-external-store: 1.6.0(react@19.2.4)
+
+  '@react-navigation/elements@2.9.45(@react-navigation/native@7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native-safe-area-context@5.7.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@react-navigation/native': 7.2.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       color: 4.2.3
@@ -23585,18 +23602,18 @@ snapshots:
 
   '@types/pg-pool@2.0.7':
     dependencies:
-      '@types/pg': 8.20.0
+      '@types/pg': 8.23.1
 
   '@types/pg@8.15.6':
     dependencies:
       '@types/node': 20.19.9
-      pg-protocol: 1.14.0
+      pg-protocol: 1.16.1
       pg-types: 2.2.0
 
-  '@types/pg@8.20.0':
+  '@types/pg@8.23.1':
     dependencies:
       '@types/node': 20.19.9
-      pg-protocol: 1.14.0
+      pg-protocol: 1.16.1
       pg-types: 2.2.0
 
   '@types/pino-http@6.1.0':
@@ -24952,7 +24969,7 @@ snapshots:
       resolve-from: 5.0.0
     optionalDependencies:
       '@babel/runtime': 7.27.6
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -27039,7 +27056,7 @@ snapshots:
 
   expo-keep-awake@15.0.8(expo@54.0.33)(react@19.2.4):
     dependencies:
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       react: 19.2.4
 
   expo-local-authentication@15.0.2(expo@54.0.33):
@@ -27098,7 +27115,7 @@ snapshots:
   expo-splash-screen@31.0.13(expo@54.0.33):
     dependencies:
       '@expo/prebuild-config': 54.0.8(expo@54.0.33)
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -31116,18 +31133,18 @@ snapshots:
 
   perfect-debounce@2.1.0: {}
 
-  pg-cloudflare@1.4.0:
+  pg-cloudflare@1.4.1:
     optional: true
 
-  pg-connection-string@2.13.0: {}
+  pg-connection-string@2.14.1: {}
 
   pg-int8@1.0.1: {}
 
-  pg-pool@3.14.0(pg@8.21.0):
+  pg-pool@3.14.0(pg@8.23.1):
     dependencies:
-      pg: 8.21.0
+      pg: 8.23.1
 
-  pg-protocol@1.14.0: {}
+  pg-protocol@1.16.1: {}
 
   pg-types@2.2.0:
     dependencies:
@@ -31137,15 +31154,15 @@ snapshots:
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
 
-  pg@8.21.0:
+  pg@8.23.1:
     dependencies:
-      pg-connection-string: 2.13.0
-      pg-pool: 3.14.0(pg@8.21.0)
-      pg-protocol: 1.14.0
+      pg-connection-string: 2.14.1
+      pg-pool: 3.14.0(pg@8.23.1)
+      pg-protocol: 1.16.1
       pg-types: 2.2.0
       pgpass: 1.0.5
     optionalDependencies:
-      pg-cloudflare: 1.4.0
+      pg-cloudflare: 1.4.1
 
   pgpass@1.0.5:
     dependencies:
@@ -32894,7 +32911,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  socket.io-client@4.8.3:
+  socket.io-client@4.8.4:
     dependencies:
       '@socket.io/component-emitter': 3.1.2
       debug: 4.4.3(supports-color@7.2.0)
