@@ -8,3 +8,10 @@
 # A 2.x vulnerável já é forçada para ^2.0.4 por override. (GHSA-5p2g-fcmc-qvqq, GHSA-w3rx-r6r6-pgpr)
 CVE-2025-71329
 CVE-2025-71330
+
+# decode-uri-component 0.2.2 — DoS (substituição quadrática de sequências %XX). A correção
+# só existe na 0.5.1, que é só ESM; quem a usa é o query-string 7 (CJS, `require`) do
+# React Navigation no mobile, por isso forçar a 0.5 arrisca partir o bundle do Metro.
+# Corre no dispositivo a ler deep links: o pior caso é a app do próprio utilizador
+# encravar com um link malformado. (GHSA-qr28-fpjm-wq7f)
+CVE-2026-118664
