@@ -1196,6 +1196,11 @@ model Alergia {
   severidade String
   notas      String?
   criadaEm   DateTime @default(now())
+  // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
+  // mas fica o registo de quem a removeu e porquê.
+  deletedAt     DateTime?
+  removidaPorId String?
+  motivoRemocao String?
 
   medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 

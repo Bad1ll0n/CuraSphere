@@ -7,8 +7,10 @@ import { DoenteService } from '../doentes/doentes.service';
 import { CriarNotaClinicaDto } from './dto/criar-nota-clinica.dto';
 import { AtualizarNotaClinicaDto } from './dto/atualizar-nota-clinica.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('notaClinica')
 @Controller('notas-clinicas')
 export class NotasClinicasController {
   constructor(

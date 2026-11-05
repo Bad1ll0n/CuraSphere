@@ -9,8 +9,10 @@ import { EstadoTarefa } from '../common/enums';
 import { CriarTarefaDto } from './dto/criar-tarefa.dto';
 import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
 import { EditarTarefaDto } from './dto/editar-tarefa.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('tarefa')
 @Controller('tarefas')
 export class TarefasController {
   constructor(

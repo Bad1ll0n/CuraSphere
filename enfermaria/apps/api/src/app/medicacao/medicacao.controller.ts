@@ -13,8 +13,10 @@ import { AdministrarMedicacaoDto } from './dto/administrar-medicacao.dto';
 import { NaoAdministrarDto } from './dto/nao-administrar.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
 import { Verificar5CertosDto } from './dto/verificar-5-certos.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('medicacao')
 @Controller('medicacao')
 export class MedicacaoController {
   constructor(

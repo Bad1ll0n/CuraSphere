@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Body, Param, Query, UseGuards, Request }
 import { AtribuicoesService } from './atribuicoes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AtribuirDoenteDto } from './dto/atribuir-doente.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('atribuicoes')
@@ -33,6 +34,7 @@ export class AtribuicoesController {
   }
 
   // Atribuir doente a profissional
+  @AcessoDoenteIsento('atribuição: é o ato que cria a relação do profissional com o doente')
   @Post('turno/:turnoId')
   atribuir(
     @Param('turnoId') turnoId: string,

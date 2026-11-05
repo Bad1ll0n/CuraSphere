@@ -1219,7 +1219,7 @@ export class PrismaClient<
    * Read more in our [docs](https://pris.ly/d/client).
    */
 
-  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.PrismaClientConstructorArgs<ClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
@@ -2739,8 +2739,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.8.0
-   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+   * Prisma Client JS version: 7.10.1
+   * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
    */
   export type PrismaVersion = {
     client: string
@@ -2875,6 +2875,19 @@ export namespace Prisma {
   };
 
   /**
+   * Resolved type of the argument passed to the `PrismaClient` constructor.
+   *
+   * When called without a narrower options type (the common case), this resolves
+   * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+   * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+   * the argument is missing or incomplete. When the user supplies a narrower
+   * options type (e.g. via a literal), it falls back to `Subset` to keep
+   * filtering out unknown properties.
+   */
+  export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> =
+    [PrismaClientOptions] extends [Options] ? PrismaClientOptions : Subset<Options, PrismaClientOptions>;
+
+  /**
    * SelectSubset
    * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
    * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -2906,7 +2919,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
+      ((Without<T, U> & U) | (Without<U, T> & T)) & object
     : U : T
 
 
@@ -13635,11 +13648,26 @@ export namespace Prisma {
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+     * 
+     * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+     * 
+     * Learn more: https://pris.ly/d/driver-adapters
+     * 
+     * @example
+     * ```ts
+     * import { PrismaPg } from '@prisma/adapter-pg'
+     * import { PrismaClient } from './generated/prisma/client'
+     * 
+     * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+     * const prisma = new PrismaClient({ adapter })
+     * ```
      */
     adapter?: runtime.SqlDriverAdapterFactory
     /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+     * 
+     * Learn more: https://pris.ly/d/accelerate
      */
     accelerateUrl?: string
     /**
@@ -67655,6 +67683,9 @@ export namespace Prisma {
     severidade: string | null
     notas: string | null
     criadaEm: Date | null
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
   }
 
   export type AlergiaMaxAggregateOutputType = {
@@ -67665,6 +67696,9 @@ export namespace Prisma {
     severidade: string | null
     notas: string | null
     criadaEm: Date | null
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
   }
 
   export type AlergiaCountAggregateOutputType = {
@@ -67675,6 +67709,9 @@ export namespace Prisma {
     severidade: number
     notas: number
     criadaEm: number
+    deletedAt: number
+    removidaPorId: number
+    motivoRemocao: number
     _all: number
   }
 
@@ -67687,6 +67724,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
   }
 
   export type AlergiaMaxAggregateInputType = {
@@ -67697,6 +67737,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
   }
 
   export type AlergiaCountAggregateInputType = {
@@ -67707,6 +67750,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
     _all?: true
   }
 
@@ -67790,6 +67836,9 @@ export namespace Prisma {
     severidade: string
     notas: string | null
     criadaEm: Date
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
     _count: AlergiaCountAggregateOutputType | null
     _min: AlergiaMinAggregateOutputType | null
     _max: AlergiaMaxAggregateOutputType | null
@@ -67817,6 +67866,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
     _count?: boolean | AlergiaCountOutputTypeDefaultArgs<ExtArgs>
@@ -67830,6 +67882,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alergia"]>
 
@@ -67841,6 +67896,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alergia"]>
 
@@ -67852,9 +67910,12 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
   }
 
-  export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm", ExtArgs["result"]["alergia"]>
+  export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm" | "deletedAt" | "removidaPorId" | "motivoRemocao", ExtArgs["result"]["alergia"]>
   export type AlergiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
@@ -67881,6 +67942,9 @@ export namespace Prisma {
       severidade: string
       notas: string | null
       criadaEm: Date
+      deletedAt: Date | null
+      removidaPorId: string | null
+      motivoRemocao: string | null
     }, ExtArgs["result"]["alergia"]>
     composites: {}
   }
@@ -68313,6 +68377,9 @@ export namespace Prisma {
     readonly severidade: FieldRef<"Alergia", 'String'>
     readonly notas: FieldRef<"Alergia", 'String'>
     readonly criadaEm: FieldRef<"Alergia", 'DateTime'>
+    readonly deletedAt: FieldRef<"Alergia", 'DateTime'>
+    readonly removidaPorId: FieldRef<"Alergia", 'String'>
+    readonly motivoRemocao: FieldRef<"Alergia", 'String'>
   }
     
 
@@ -182417,7 +182484,10 @@ export namespace Prisma {
     tipo: 'tipo',
     severidade: 'severidade',
     notas: 'notas',
-    criadaEm: 'criadaEm'
+    criadaEm: 'criadaEm',
+    deletedAt: 'deletedAt',
+    removidaPorId: 'removidaPorId',
+    motivoRemocao: 'motivoRemocao'
   };
 
   export type AlergiaScalarFieldEnum = (typeof AlergiaScalarFieldEnum)[keyof typeof AlergiaScalarFieldEnum]
@@ -188436,6 +188506,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     medicacoesOverride?: MedicacaoListRelationFilter
   }
@@ -188448,6 +188521,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrderInput | SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    removidaPorId?: SortOrderInput | SortOrder
+    motivoRemocao?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     medicacoesOverride?: MedicacaoOrderByRelationAggregateInput
   }
@@ -188463,6 +188539,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     medicacoesOverride?: MedicacaoListRelationFilter
   }, "id">
@@ -188475,6 +188554,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrderInput | SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    removidaPorId?: SortOrderInput | SortOrder
+    motivoRemocao?: SortOrderInput | SortOrder
     _count?: AlergiaCountOrderByAggregateInput
     _max?: AlergiaMaxOrderByAggregateInput
     _min?: AlergiaMinOrderByAggregateInput
@@ -188491,6 +188573,9 @@ export namespace Prisma {
     severidade?: StringWithAggregatesFilter<"Alergia"> | string
     notas?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
     criadaEm?: DateTimeWithAggregatesFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
   }
 
   export type ContactoEmergenciaWhereInput = {
@@ -200787,6 +200872,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     doente: DoenteCreateNestedOneWithoutAlergiasInput
     medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
@@ -200799,6 +200887,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -200809,6 +200900,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
     medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
@@ -200821,6 +200915,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -200832,6 +200929,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type AlergiaUpdateManyMutationInput = {
@@ -200841,6 +200941,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AlergiaUncheckedUpdateManyInput = {
@@ -200851,6 +200954,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ContactoEmergenciaCreateInput = {
@@ -212802,6 +212908,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type AlergiaMaxOrderByAggregateInput = {
@@ -212812,6 +212921,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type AlergiaMinOrderByAggregateInput = {
@@ -212822,6 +212934,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type ContactoEmergenciaCountOrderByAggregateInput = {
@@ -241251,6 +241366,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -241261,6 +241379,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -243560,6 +243681,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
   }
 
   export type ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -255440,6 +255564,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     doente: DoenteCreateNestedOneWithoutAlergiasInput
   }
 
@@ -255451,6 +255578,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type AlergiaCreateOrConnectWithoutMedicacoesOverrideInput = {
@@ -256597,6 +256727,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
   }
 
@@ -256608,6 +256741,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -347125,6 +347261,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type ContactoEmergenciaCreateManyDoenteInput = {
@@ -348037,6 +348176,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -348047,6 +348189,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -348057,6 +348202,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ContactoEmergenciaUpdateWithoutDoenteInput = {
