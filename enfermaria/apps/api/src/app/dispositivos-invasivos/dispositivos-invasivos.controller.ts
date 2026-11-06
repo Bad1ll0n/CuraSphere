@@ -3,8 +3,10 @@ import { DispositivosInvasivosService } from './dispositivos-invasivos.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CriarDispositivoDto } from './dto/criar-dispositivo.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard)
+@AcessoDoentePor('dispositivoInvasivo')
 @Controller('dispositivos-invasivos')
 export class DispositivosInvasivosController {
   constructor(

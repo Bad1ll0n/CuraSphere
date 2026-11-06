@@ -1,13 +1,16 @@
-// virtual: true — o caminho `pdfmake/src/printer` é resolvido de forma inconsistente entre
-// ambientes (pnpm estrito no CI vs local); virtual evita exigir a resolução do módulo real.
-jest.mock('pdfmake/src/printer', () => {
-  return function() { return { createPdfKitDocument: jest.fn().mockReturnValue({ pipe: jest.fn(), end: jest.fn(), on: jest.fn() }) }; };
-}, { virtual: true });
+// pdfmake 0.3: API de topo (`setFonts` + `createPdf().getBuffer()`). O mock evita gerar PDFs reais.
+jest.mock('pdfmake', () => ({
+  setFonts: jest.fn(),
+  setUrlAccessPolicy: jest.fn(),
+  setLocalAccessPolicy: jest.fn(),
+  createPdf: jest.fn(() => ({ getBuffer: jest.fn().mockResolvedValue(Buffer.from('pdf')) })),
+}));
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { DoenteController } from './doentes.controller';
 import { DoenteService } from './doentes.service';
 import { PdfService } from '../common/pdf.service';
+import { CartaAltaService } from './carta-alta.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 
@@ -52,6 +55,7 @@ describe('DoenteController', () => {
       providers: [
         { provide: DoenteService, useValue: mockDoenteService },
         { provide: PdfService, useValue: mockPdfService },
+        { provide: CartaAltaService, useValue: { rever: jest.fn(), assinar: jest.fn(), garantirAssinada: jest.fn() } },
       ],
     })
       .overrideGuard(JwtAuthGuard).useValue(mockGuard)

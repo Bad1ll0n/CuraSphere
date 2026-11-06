@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-// pdfmake server-side with built-in standard PDF fonts. Required lazily (inside
-// `build()`, not at module load) because pdfmake's own internal `printer.js`
-// does an extensionless `require('./PDFDocument')` that Node's module loader
-// fails to resolve in some execution contexts — deferring the require means
-// that only breaks PDF generation itself, not the whole app's bootstrap.
-let PdfPrinter: any;
+// pdfmake 0.3 do lado do servidor, com as fontes-padrão do PDF. Carregado de forma
+// preguiçosa (em `build()`, não ao carregar o módulo): se o pdfmake falhar a carregar,
+// falha só a geração de PDFs e não o arranque da API.
+//
+// Antes usava-se `require('pdfmake/src/printer')`, a API da 0.2. Na 0.3 esse ficheiro já
+// não existe e o `Printer` mudou de assinatura: TODOS os PDFs (sumário e carta de alta,
+// relatórios, etiquetas) davam erro 500 "PdfPrinter is not a constructor".
+let pdfmake: any;
 
 const FONTS = {
   Helvetica: {
@@ -16,6 +18,9 @@ const FONTS = {
     bolditalics: 'Helvetica-BoldOblique',
   },
 };
+// Os documentos levam texto clínico livre. O pdfmake resolve imagens/fontes por URL ou por
+// caminho local: nega-se tudo menos os nomes das fontes-padrão (que não são ficheiros).
+const FONTES_PADRAO = new Set(Object.values(FONTS.Helvetica));
 
 function dataPt(d: Date | string | null | undefined): string {
   if (!d) return '—';
@@ -30,22 +35,16 @@ function dtPt(d: Date | string | null | undefined): string {
 export class PdfService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private build(docDefinition: any): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        PdfPrinter ??= require('pdfmake/src/printer');
-        const printer = new PdfPrinter(FONTS);
-        const chunks: Buffer[] = [];
-        const pdfDoc = printer.createPdfKitDocument(docDefinition);
-        pdfDoc.on('data', (chunk: Buffer) => chunks.push(chunk));
-        pdfDoc.on('end', () => resolve(Buffer.concat(chunks)));
-        pdfDoc.on('error', reject);
-        pdfDoc.end();
-      } catch (e) {
-        reject(e);
-      }
-    });
+  private async build(docDefinition: any): Promise<Buffer> {
+    if (!pdfmake) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const pm = require('pdfmake');
+      pm.setFonts(FONTS);
+      pm.setUrlAccessPolicy(() => false);
+      pm.setLocalAccessPolicy((caminho: string) => FONTES_PADRAO.has(caminho));
+      pdfmake = pm;
+    }
+    return pdfmake.createPdf(docDefinition).getBuffer();
   }
 
   async gerarSumarioAlta(doenteId: string): Promise<Buffer> {
@@ -53,7 +52,7 @@ export class PdfService {
       where: { id: doenteId },
       include: {
         cama: true,
-        alergias: true,
+        alergias: { where: { deletedAt: null } },
         medicacoes: {
           where: { ativo: true },
           include: { prescritoPor: { select: { nome: true } } },
@@ -399,7 +398,7 @@ export class PdfService {
       where: { id: doenteId },
       include: {
         medicacoes: { where: { ativo: true }, take: 20 },
-        alergias: { take: 10 },
+        alergias: { where: { deletedAt: null }, take: 10 },
         sumarioAlta: { include: { criadoPor: { select: { nome: true } } } },
         ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
       },
@@ -409,6 +408,14 @@ export class PdfService {
 
     const now = new Date();
     const sumario = (doente as any).sumarioAlta;
+    // PROD-11: o PDF só é pedido para cartas assinadas (ver CartaAltaService.garantirAssinada);
+    // o rodapé identifica o médico que assinou, não o produto.
+    const assinante = sumario?.cartaAltaAssinadaPorId
+      ? await this.prisma.utilizador.findUnique({
+          where: { id: sumario.cartaAltaAssinadaPorId },
+          select: { nome: true, numeroFuncionario: true },
+        })
+      : null;
 
     const docDefinition: any = {
       defaultStyle: { font: 'Helvetica', fontSize: 10.5, lineHeight: 1.4 },
@@ -445,9 +452,9 @@ export class PdfService {
           margin: [0, 0, 0, 12],
         },
 
-        // Resumo clínico da IA
+        // Texto da carta, revisto e assinado pelo médico
         ...(sumario?.cartaAlta ? [
-          { text: 'RESUMO CLÍNICO', style: 'titulo' },
+          { text: 'CARTA AO MÉDICO DE FAMÍLIA', style: 'titulo' },
           { text: sumario.cartaAlta, fontSize: 10.5, margin: [0, 0, 0, 12] },
         ] : []),
 
@@ -480,9 +487,12 @@ export class PdfService {
         ] : []),
 
         // Médico emitente e rodapé
-        ...(sumario?.criadoPor?.nome ? [{ text: `Emitido por: ${sumario.criadoPor.nome}`, style: 'label', margin: [0, 8, 0, 0] }] : []),
+        ...(assinante && sumario?.cartaAltaAssinadaEm ? [{
+          text: `Assinado por: ${assinante.nome} (n.º ${assinante.numeroFuncionario}) em ${dtPt(new Date(sumario.cartaAltaAssinadaEm))}`,
+          style: 'label', margin: [0, 8, 0, 0],
+        }] : []),
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#d1d5db' }], margin: [0, 16, 0, 0] },
-        { text: 'Documento gerado electronicamente pelo sistema CuraSphere. Assinatura digital do médico responsável requerida para validade legal.', style: 'small', alignment: 'center', margin: [0, 6, 0, 0] },
+        { text: 'Carta revista e assinada pelo médico identificado acima, com autenticação de dois fatores.', style: 'small', alignment: 'center', margin: [0, 6, 0, 0] },
         { text: `Emitido em: ${dtPt(now)}`, style: 'small', alignment: 'center', margin: [0, 2, 0, 0] },
       ],
       pageSize: 'A4',

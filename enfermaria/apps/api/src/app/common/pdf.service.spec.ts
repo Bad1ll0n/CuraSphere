@@ -1,15 +1,10 @@
-jest.mock('pdfmake/src/printer', () => {
-  const mockDoc = {
-    on: jest.fn((event: string, cb: (data?: Buffer) => void) => {
-      if (event === 'data') cb(Buffer.from('pdf'));
-      if (event === 'end') cb();
-    }),
-    end: jest.fn(),
-  };
-  return jest.fn().mockImplementation(() => ({
-    createPdfKitDocument: jest.fn().mockReturnValue(mockDoc),
-  }));
-}, { virtual: true }); // caminho resolvido de forma inconsistente entre ambientes (pnpm estrito)
+// pdfmake 0.3: API de topo (`setFonts` + `createPdf().getBuffer()`). O mock evita gerar PDFs reais.
+jest.mock('pdfmake', () => ({
+  setFonts: jest.fn(),
+  setUrlAccessPolicy: jest.fn(),
+  setLocalAccessPolicy: jest.fn(),
+  createPdf: jest.fn(() => ({ getBuffer: jest.fn().mockResolvedValue(Buffer.from('pdf')) })),
+}));
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { PdfService } from './pdf.service';

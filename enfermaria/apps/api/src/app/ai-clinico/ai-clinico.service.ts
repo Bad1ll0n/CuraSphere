@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import type { MessageEvent } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
@@ -908,7 +908,17 @@ Tabelas disponíveis e campos:
 
   // ── 11. Carta de Alta para Médico de Família ──────────────────────────────────
 
+  /**
+   * PROD-11: gera apenas um RASCUNHO da carta (estado `rascunho`). Um médico tem de o rever
+   * e assinar (`CartaAltaService`) antes de existir PDF. A medicação de saída NÃO é pedida
+   * ao modelo — o PDF lista-a a partir das prescrições estruturadas — e a carta não é
+   * "assinada" pelo produto. Uma carta já assinada nunca é reescrita.
+   */
   async gerarCartaAlta(doenteId: string): Promise<void> {
+    const atual = await this.prisma.sumarioAlta.findUnique({ where: { doenteId }, select: { cartaAltaEstado: true } });
+    if (atual?.cartaAltaEstado === 'assinada') {
+      throw new ConflictException('A carta de alta já está assinada e não pode ser regenerada.');
+    }
     const doente = await this.prisma.doente.findUnique({
       where: { id: doenteId },
       select: {
@@ -920,7 +930,6 @@ Tabelas disponíveis e campos:
           select: { motivoAlta: true, resumoClinical: true, prescricaoSaida: true, medicoFamilia: true, criadoEm: true },
         },
         sinaisVitais: { orderBy: { data: 'desc' }, take: 1, select: { news2: true, pulso: true, pressaoSistolica: true, saturacaoO2: true, temperatura: true } },
-        medicacoes: { where: { ativo: false }, orderBy: { iniciadoEm: 'desc' }, take: 10, select: { nome: true, dose: true, via: true } },
         problemas: { where: { estado: 'ativo' }, select: { descricao: true }, take: 5 },
         notasClincias: { orderBy: { criadaEm: 'desc' }, take: 2, select: { subjetivo: true, plano: true } },
       },
@@ -944,23 +953,24 @@ Tabelas disponíveis e campos:
       resumoClinical: doente.sumarioAlta.resumoClinical,
       prescricaoSaida: doente.sumarioAlta.prescricaoSaida,
       medicoFamilia: doente.sumarioAlta.medicoFamilia,
-      medicacoes: doente.medicacoes.map(m => `${m.nome}${m.dose ? ' ' + m.dose : ''}${m.via ? ' (' + m.via + ')' : ''}`),
       problemasActivos: doente.problemas.map(p => p.descricao),
     });
 
     const msg = await this.callAI('carta_alta', {
       model: this.MODEL_CLINICAL,
       max_tokens: 900,
-      system: [{ type: 'text' as const, text: 'Gera uma carta de alta médica em português europeu formal (formato A4, 280-350 palavras). A carta é enviada ao médico de família. Inclui: cabeçalho com data, identificação do doente, diagnóstico principal, resumo da evolução clínica, medicação de saída (com doses e via), recomendações pós-alta e follow-up. Assina como "Equipa Clínica — CuraSphere". Responde APENAS com o texto da carta, sem JSON, sem markdown.', cache_control: { type: 'ephemeral' as const } }],
+      system: [{ type: 'text' as const, text: 'Gera uma carta de alta médica em português europeu formal (formato A4, 280-350 palavras). A carta é enviada ao médico de família. Inclui: cabeçalho com data, identificação do doente, diagnóstico principal, resumo da evolução clínica, recomendações pós-alta e follow-up. NÃO escrevas medicação nem doses: a medicação de saída é anexada pelo sistema a partir das prescrições. NÃO assines a carta nem inventes nomes: termina com "O médico assistente" — a carta é um rascunho que um médico vai rever e assinar. Usa só os dados fornecidos; se faltar informação, omite-a. Responde APENAS com o texto da carta, sem JSON, sem markdown.', cache_control: { type: 'ephemeral' as const } }],
       messages: [{ role: 'user', content: contexto }],
     });
 
     const carta = msg.content[0].type === 'text' ? msg.content[0].text : '';
     if (!carta) return;
 
-    await this.prisma.sumarioAlta.update({
-      where: { doenteId },
-      data: { cartaAlta: carta },
+    // Rascunho: qualquer revisão anterior deixa de valer, porque o texto mudou. Condicional
+    // ao estado: se a carta foi assinada enquanto o modelo escrevia, não é reescrita.
+    await this.prisma.sumarioAlta.updateMany({
+      where: { doenteId, OR: [{ cartaAltaEstado: null }, { cartaAltaEstado: { not: 'assinada' } }] },
+      data: { cartaAlta: carta, cartaAltaEstado: 'rascunho', cartaAltaRevistaPorId: null, cartaAltaRevistaEm: null },
     }).catch(err => this.logger.warn('Erro ao guardar carta de alta', (err as any)?.message));
   }
 

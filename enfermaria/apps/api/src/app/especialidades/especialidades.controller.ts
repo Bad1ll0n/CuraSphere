@@ -5,9 +5,11 @@ import { Roles } from '../auth/roles.decorator';
 import { EspecialidadesService } from './especialidades.service';
 import { CriarSessaoEspecialidadeDto } from './dto/criar-sessao-especialidade.dto';
 import { RealizarEspecialidadeDto } from './dto/realizar-especialidade.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('tecnico_saude')
+@AcessoDoentePor('sessaoEspecialidade')
 @Controller('especialidades')
 export class EspecialidadesController {
   constructor(private readonly service: EspecialidadesService) {}

@@ -24,6 +24,7 @@ const mockPrisma = {
     findUnique: jest.fn(),
     findMany: jest.fn(),
     update: jest.fn(),
+    updateMany: jest.fn(),
   },
   alertaClinico: {
     count: jest.fn(),
@@ -170,6 +171,46 @@ describe('DoenteService', () => {
 
   // ── admitir() ────────────────────────────────────────────────────────────────
 
+  describe('atribuirCama() — PROD-01', () => {
+    it('passa o doente pendente a internado e ocupa a cama', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true, estadoRegisto: 'pendente_cama', camaId: null });
+      mockPrisma.cama.updateMany.mockResolvedValue({ count: 1 });
+      mockPrisma.doente.update.mockResolvedValue({ id: 'd1', estadoRegisto: 'internado', camaId: 'cama-1' });
+
+      await service.atribuirCama('d1', 'cama-1');
+
+      expect(mockPrisma.cama.updateMany).toHaveBeenCalledWith({
+        where: { id: 'cama-1', estado: { in: ['livre', 'reservada'] } },
+        data: { estado: 'ocupada' },
+      });
+      expect(mockPrisma.doente.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: 'd1' },
+        data: expect.objectContaining({ camaId: 'cama-1', estadoRegisto: 'internado' }),
+      }));
+    });
+
+    it('recusa um doente que não está à espera de cama', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true, estadoRegisto: 'internado', camaId: 'cama-9' });
+      await expect(service.atribuirCama('d1', 'cama-1')).rejects.toThrow(BadRequestException);
+      expect(mockPrisma.cama.updateMany).not.toHaveBeenCalled();
+    });
+
+    it('recusa uma cama ocupada (ou ocupada entretanto) sem tocar no doente', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true, estadoRegisto: 'pendente_cama', camaId: null });
+      mockPrisma.cama.updateMany.mockResolvedValue({ count: 0 });
+      mockPrisma.cama.findUnique.mockResolvedValue({ id: 'cama-1' });
+      await expect(service.atribuirCama('d1', 'cama-1')).rejects.toThrow(/não está disponível/);
+      expect(mockPrisma.doente.update).not.toHaveBeenCalled();
+    });
+
+    it('404 para cama inexistente', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true, estadoRegisto: 'pendente_cama', camaId: null });
+      mockPrisma.cama.updateMany.mockResolvedValue({ count: 0 });
+      mockPrisma.cama.findUnique.mockResolvedValue(null);
+      await expect(service.atribuirCama('d1', 'cama-x')).rejects.toThrow(NotFoundException);
+    });
+  });
+
   describe('admitir()', () => {
     const dadosBase = {
       nome: 'Maria Teste',
@@ -240,6 +281,22 @@ describe('DoenteService', () => {
         expect.objectContaining({ where: { id: 'cama-1' }, data: { estado: 'ocupada' } }),
       );
       expect(resultado).toMatchObject({ nome: 'Maria Teste' });
+    });
+
+    it('PROD-01: o doente admitido com cama fica internado (não pendente_cama)', async () => {
+      mockPrisma.cama.findUnique.mockResolvedValue({ id: 'cama-1', estado: 'livre' });
+      mockPrisma.ficheiroPessoalDoente.findFirst.mockResolvedValue(null);
+      mockPrisma.doente.findFirst.mockResolvedValue(null);
+      mockPrisma.doente.create.mockImplementation(({ data }: any) =>
+        Promise.resolve({ id: 'doente-1', ...data, cama: {} }),
+      );
+      mockPrisma.cama.update.mockResolvedValue({});
+
+      await service.admitir(dadosBase);
+
+      expect(mockPrisma.doente.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ camaId: 'cama-1', estadoRegisto: 'internado' }),
+      }));
     });
 
     it('gera numeroProcesso YYYY-00000001 para o primeiro doente do ano', async () => {

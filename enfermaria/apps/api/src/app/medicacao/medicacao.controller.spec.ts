@@ -1,7 +1,10 @@
-// virtual: true — ver nota em doentes.controller.spec.ts (resolução inconsistente do caminho).
-jest.mock('pdfmake/src/printer', () => {
-  return function() { return { createPdfKitDocument: jest.fn().mockReturnValue({ pipe: jest.fn(), end: jest.fn(), on: jest.fn() }) }; };
-}, { virtual: true });
+// pdfmake 0.3: API de topo (`setFonts` + `createPdf().getBuffer()`). O mock evita gerar PDFs reais.
+jest.mock('pdfmake', () => ({
+  setFonts: jest.fn(),
+  setUrlAccessPolicy: jest.fn(),
+  setLocalAccessPolicy: jest.fn(),
+  createPdf: jest.fn(() => ({ getBuffer: jest.fn().mockResolvedValue(Buffer.from('pdf')) })),
+}));
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { MedicacaoController } from './medicacao.controller';

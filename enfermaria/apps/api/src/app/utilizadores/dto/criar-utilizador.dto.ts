@@ -1,5 +1,5 @@
-import { IsString, IsNotEmpty, MinLength, Matches, IsEnum, IsOptional, IsInt, Min } from 'class-validator';
-import { Servico } from '../../common/enums';
+import { IsString, IsNotEmpty, MinLength, Matches, IsEnum, IsOptional, IsInt, Min, IsIn } from 'class-validator';
+import { ROLES, Servico } from '../../common/enums';
 
 export class CriarUtilizadorDto {
   @IsString()
@@ -17,8 +17,8 @@ export class CriarUtilizadorDto {
   })
   password!: string;
 
-  @IsString()
-  @IsNotEmpty()
+  // SEC-03: só papéis conhecidos — um papel inventado passava a validação e ficava na BD.
+  @IsIn(Object.values(ROLES), { message: 'Role inválida' })
   role!: string;
 
   @IsOptional()

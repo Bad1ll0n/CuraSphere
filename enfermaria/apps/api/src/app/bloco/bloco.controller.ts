@@ -6,12 +6,15 @@ import { BlocoService } from './bloco.service';
 import { AgendarCirurgiaDto } from './dto/agendar-cirurgia.dto';
 import { RegistarNotasPosDto } from './dto/registar-notas-pos.dto';
 import { ChecklistBlocoDto } from './dto/checklist-bloco.dto';
+import { AcessoDoenteIsento, AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('cirurgiaProgramada')
 @Controller('bloco')
 export class BlocoController {
   constructor(private readonly service: BlocoService) {}
 
+  @AcessoDoenteIsento('agendamento: não lê nem altera dados clínicos e o doente pode ainda não estar atribuído ao profissional')
   @Post('cirurgia')
   @Roles('medico', 'enfermeiro', 'administrativo')
   agendar(@Body() dto: AgendarCirurgiaDto, @Request() req: any) {

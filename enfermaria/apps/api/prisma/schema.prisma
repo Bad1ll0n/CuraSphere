@@ -57,7 +57,17 @@ model Utilizador {
   passwordHash      String
   mfaSecret         String?
   mfaAtivo          Boolean   @default(false)
+  // Segredo proposto no setup do MFA: fica no servidor até ser confirmado por um código.
+  mfaSecretPendente String?
+  // SEC-04: incrementada no logout, desactivação, mudança de papel/password/MFA.
+  // Os access tokens levam-na na claim `sv`; a JwtStrategy recusa os de versão antiga.
+  versaoSessao      Int       @default(0)
   passwordExpiresAt DateTime?
+  // Bloqueio de conta por tentativas falhadas (SEC-08): em Postgres, não em Redis — sem
+  // Redis o bloqueio desligava-se em silêncio e a força bruta passava.
+  tentativasLoginFalhadas Int       @default(0)
+  ultimaFalhaLoginEm      DateTime?
+  bloqueadoAte            DateTime?
   role              String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
   subRole           String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
   servico           Servico   @default(internamento)
@@ -250,6 +260,7 @@ model Doente {
   id                   String       @id @default(uuid())
   tenantId             String       @default("default")
   nome                 String
+  nomeBusca            String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
   dataNascimento       DateTime?
   numeroProcesso       String       @unique
   estado               EstadoDoente @default(estavel)
@@ -1111,6 +1122,22 @@ model AuditLog {
 // dura do login (lê o utilizador, escreve o refresh token), pelo que ancorar aqui NÃO acrescenta
 // ponto único de falha — ao contrário do Redis, cuja indisponibilidade bloqueava TODO o staff
 // clínico (fail-closed). `chave` = sha256(scope:secret:code); nunca guarda secret/código em claro.
+// QA-19: desafio MFA de uso único. O `jti` do mfaChallengeToken é gravado aqui no login;
+// a verificação conta tentativas (máx. 5 por desafio) e marca-o consumido no primeiro
+// sucesso, pelo que o mesmo desafio não abre segunda sessão nem aceita força bruta.
+model DesafioMfa {
+  jti          String    @id
+  utilizadorId String
+  tentativas   Int       @default(0)
+  consumidoEm  DateTime?
+  expiraEm     DateTime
+  criadoEm     DateTime  @default(now())
+
+  @@index([utilizadorId, criadoEm])
+  @@index([expiraEm])
+  @@map("desafios_mfa")
+}
+
 model TotpConsumido {
   chave    String   @id
   expiraEm DateTime
@@ -1196,6 +1223,11 @@ model Alergia {
   severidade String
   notas      String?
   criadaEm   DateTime @default(now())
+  // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
+  // mas fica o registo de quem a removeu e porquê.
+  deletedAt     DateTime?
+  removidaPorId String?
+  motivoRemocao String?
 
   medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 
@@ -1287,6 +1319,13 @@ model SumarioAlta {
   fatoresReadmissao String?    @db.Text
   recomendacoesAlta String?    @db.Text
   cartaAlta         String?    @db.Text
+  // PROD-11: a IA só escreve um RASCUNHO. rascunho → revista (médico edita/aceita o texto)
+  // → assinada (médico, com TOTP). Só a assinada sai em PDF; depois de assinada é imutável.
+  cartaAltaEstado        String?
+  cartaAltaRevistaPorId  String?
+  cartaAltaRevistaEm     DateTime?
+  cartaAltaAssinadaPorId String?
+  cartaAltaAssinadaEm    DateTime?
   icd10Code         String?
 
   @@map("sumarios_alta")

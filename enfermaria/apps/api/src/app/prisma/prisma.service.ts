@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
-import { criarClienteComEncriptacao } from './encryption.middleware';
+import { criarClienteComEncriptacao, delegatesDoCliente } from './encryption.middleware';
 import { RequestContextService } from './request-context.service';
 import { comRetentativas } from '../common/transacao';
 
@@ -29,8 +29,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     // `this.prisma.doente...`/`.contacto...` call site elsewhere in the app
     // keeps working unchanged while getting encrypt/decrypt behavior.
     this.encClient = criarClienteComEncriptacao(this);
-    (this as any).doente = this.encClient.doente;
-    (this as any).contacto = this.encClient.contacto;
+    // ARQ-01/QA-03: aqui trocavam-se à mão `doente` e `contacto` — e `contacto` não existe.
+    // `contactoEmergencia` e `ficheiroPessoalDoente` ficavam com o delegate cru e gravavam
+    // telefones, moradas e emails EM CLARO. Agora trocam-se TODOS os delegates, gerados do
+    // próprio cliente: os cifrados cifram, e todos decifram as relações que trazem PII.
+    for (const delegate of delegatesDoCliente(this)) {
+      if (this.encClient[delegate]) (this as any)[delegate] = this.encClient[delegate];
+    }
     // CRÍTICO (PII): o swap acima só encripta `this.doente.create()` DIRETO. Dentro de uma
     // transação interativa, `tx.doente` era o delegate CRU → nomes de doentes gravados EM CLARO
     // (ver doentes.service admitir/darAlta). Encaminhar `$transaction` para o cliente estendido

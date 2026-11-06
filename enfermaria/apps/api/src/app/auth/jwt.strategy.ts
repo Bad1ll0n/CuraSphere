@@ -4,10 +4,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { AUDIENCIAS_PESSOAL, JWT_ISSUER, type TipoToken } from './token-audiences';
+import { PrismaService } from '../prisma/prisma.service';
+import { gravarCacheSessao, lerCacheSessao, type EstadoSessao } from './sessao-cache';
 
 interface PayloadPessoal {
   sub: string;
   tipo?: TipoToken;
+  /** Versão da sessão (SEC-04) — tem de coincidir com `Utilizador.versaoSessao`. */
+  sv?: number;
   nome?: string;
   numeroFuncionario?: string;
   role?: string;
@@ -18,7 +22,7 @@ interface PayloadPessoal {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(config: ConfigService) {
+  constructor(config: ConfigService, private readonly prisma: PrismaService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => req?.cookies?.access_token ?? null,
@@ -48,6 +52,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (!payload.role || !payload.servico) {
           throw new UnauthorizedException('Token de pessoal incompleto');
         }
+        // SEC-04: logout, desactivação e mudança de papel/password/MFA incrementam a
+        // versão da sessão; os access tokens emitidos antes deixam de valer de imediato
+        // (e não só quando expiram).
+        const estado = await this.estadoSessao(payload.sub);
+        if (!estado || !estado.ativo || typeof payload.sv !== 'number' || payload.sv !== estado.versaoSessao) {
+          throw new UnauthorizedException('Sessão terminada. Faça login novamente.');
+        }
         return {
           sub: payload.sub,
           nome: payload.nome,
@@ -68,5 +79,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       default:
         throw new UnauthorizedException('Token inválido para esta API');
     }
+  }
+
+  private async estadoSessao(utilizadorId: string): Promise<EstadoSessao | null> {
+    const emCache = lerCacheSessao(utilizadorId);
+    if (emCache) return emCache;
+    const u = await this.prisma.utilizador.findUnique({
+      where: { id: utilizadorId },
+      select: { versaoSessao: true, ativo: true },
+    });
+    if (!u) return null;
+    gravarCacheSessao(utilizadorId, u);
+    return u;
   }
 }

@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
 import { assertUrlDestinoPublico } from '../common/ssrf-guard';
-
+
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
 import { createHash, randomBytes } from 'crypto';
@@ -192,7 +192,7 @@ export class FhirService {
       include: {
         medicacoes: { where: { ativo: true }, select: { id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true } },
         sinaisVitais: { orderBy: { data: 'desc' }, take: 10, select: { id: true, data: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true } },
-        alergias: { select: { id: true, alergenio: true, notas: true, severidade: true } },
+        alergias: { where: { deletedAt: null }, select: { id: true, alergenio: true, notas: true, severidade: true } },
         problemas: { where: { estado: 'ativo' }, select: { id: true, descricao: true, tipo: true } },
       },
     });

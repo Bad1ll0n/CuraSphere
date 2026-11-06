@@ -19,6 +19,8 @@ export default function PerfilPage() {
   const [confirmarDesativar, setConfirmarDesativar] = useState(false);
   const [mensagem, setMensagem] = useState<{ tipo: 'ok' | 'erro'; texto: string } | null>(null);
   const [mfaAtivo, setMfaAtivo] = useState(utilizador?.mfaAtivo ?? false);
+  // A API recusa desativar o MFA a papéis clínicos (é obrigatório para eles).
+  const mfaObrigatorio = ['medico', 'enfermeiro', 'farmaceutico', 'tecnico_saude', 'auxiliar'].includes(utilizador?.role ?? '');
 
   // Password
   const [passwordAtual, setPasswordAtual] = useState('');
@@ -199,6 +201,9 @@ export default function PerfilPage() {
             </div>
 
             {mfaAtivo ? (
+              mfaObrigatorio ? (
+                <span className="shrink-0 text-xs font-semibold text-slate-500">Obrigatório</span>
+              ) : (
               <button
                 onClick={() => setConfirmarDesativar(true)}
                 className="shrink-0 text-xs font-semibold text-red-500 hover:text-red-600 border border-red-200 hover:border-red-300 rounded-lg transition-colors"
@@ -206,6 +211,7 @@ export default function PerfilPage() {
               >
                 Desativar
               </button>
+              )
             ) : (
               !qrCode && (
                 <button

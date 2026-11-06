@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Patch, UseGuards, Request, Req, Res } from '@nestjs/common';
+import { Controller, Post, Get, Body, Patch, UseGuards, Request, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { Throttle, SkipThrottle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
@@ -14,7 +14,9 @@ class MfaVerificarDto {
 }
 
 class MfaAtivarDto {
-  @IsString() @IsNotEmpty() secret: string;
+  // SEC-02: ignorado — o servidor usa o segredo que ele próprio gerou em `mfa/setup`.
+  // Mantido opcional para os clientes antigos que ainda o enviam.
+  @IsOptional() @IsString() secret?: string;
   @IsString() @Length(6, 6) code: string;
   @IsOptional() @IsString() setupToken?: string;
 }
@@ -30,7 +32,9 @@ const COOKIE_MAX_AGE_REFRESH = 7 * 24 * 60 * 60 * 1000;
 // para ambientes de teste/E2E que autenticam várias personas em sequência.
 const LOGIN_THROTTLE_LIMIT = Number(process.env['LOGIN_THROTTLE_LIMIT'] ?? 5);
 // Verificações MFA por IP em 10 min. Elevar em teste (várias personas clínicas em sequência).
-const MFA_THROTTLE_LIMIT = Number(process.env['LOGIN_THROTTLE_LIMIT'] ?? 10);
+// QA-19: variável própria — antes lia `LOGIN_THROTTLE_LIMIT`, e elevar o limite de login em
+// teste levantava também o das tentativas de código MFA.
+const MFA_THROTTLE_LIMIT = Number(process.env['MFA_THROTTLE_LIMIT'] ?? 10);
 
 @Controller('auth')
 export class AuthController {
@@ -64,6 +68,9 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.verificarMfaLogin(dto.mfaChallengeToken, dto.code);
+    if ('passwordExpirada' in result) {
+      return { passwordExpirada: true, passwordExpiredToken: result.passwordExpiredToken };
+    }
     this.setTokenCookies(res, result.accessToken, result.refreshToken);
     return { utilizador: result.utilizador };
   }
@@ -83,7 +90,7 @@ export class AuthController {
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
   mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
-    return this.authService.ativarMfa(req.user.sub, dto.secret, dto.code, dto.setupToken);
+    return this.authService.ativarMfa(req.user.sub, dto.code, dto.setupToken);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -101,9 +108,11 @@ export class AuthController {
   ) {
     const token = req.cookies?.refresh_token;
     if (!token) {
-      res.clearCookie('access_token');
-      res.clearCookie('refresh_token');
-      return res.status(401).json({ mensagem: 'Sessão expirada. Faça login novamente.' });
+      // Com `passthrough: true` o Nest envia a resposta; um `res.json()` aqui fazia-o duas
+      // vezes e o pedido acabava em 500 ("headers already sent") em vez de 401.
+      res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'strict' });
+      res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'strict' });
+      throw new UnauthorizedException('Sessão expirada. Faça login novamente.');
     }
     const result = await this.authService.refresh(token);
     this.setTokenCookies(res, result.accessToken, result.refreshToken);

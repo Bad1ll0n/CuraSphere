@@ -50,6 +50,7 @@ jobs:
       NODE_ENV: production
       LOG_PRETTY: 'false'
       LOGIN_THROTTLE_LIMIT: '100'
+      MFA_THROTTLE_LIMIT: '100'
       THROTTLE_LIMIT: '10000'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
