@@ -20,6 +20,7 @@ import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { ultimasAdministracoes } from '../common/ultimos-registos';
+import { iaPermitida } from '../common/funcoes-ia';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -99,6 +100,9 @@ export class MedicacaoService {
 
   private async verificarInteracaoIA(novoNome: string, ativas: string[]): Promise<{ bloqueante: boolean; aviso: string | null }> {
     if (ativas.length === 0) return { bloqueante: false, aviso: null };
+    // PROD-19: um LLM não bloqueia prescrições sem enquadramento regulamentar. A tabela
+    // determinística de interacções (interacoes.json) continua a correr na prescrição.
+    if (!iaPermitida('interacoes_medicacao')) return { bloqueante: false, aviso: null };
     try {
       const msg = await this.anthropic.messages.create({
         model: AI_MODELS.FAST,
@@ -1152,6 +1156,11 @@ export class MedicacaoService {
       141 * Math.pow(Math.min(cr / 0.9, 1), -0.411) * Math.pow(Math.max(cr / 0.9, 1), -1.209) * Math.pow(0.993, idade),
     );
 
+    // PROD-19: a TFG (CKD-EPI) é determinística e é sempre devolvida; a dose ajustada por LLM só
+    // com activação explícita.
+    if (!iaPermitida('ajuste_renal')) {
+      return { gfr, aviso: `TFG ${gfr} mL/min/1,73m² — ajuste de dose por IA desactivado; ajustar segundo o RCM/formulário.` };
+    }
     const msg = await this.anthropic.messages.create({
       model: AI_MODELS.FAST,
       max_tokens: 400,

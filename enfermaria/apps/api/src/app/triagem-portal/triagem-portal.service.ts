@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
 import { AI_MODELS } from '../common/ai-models';
 import { OrientarDto } from './dto/orientar.dto';
+import { iaPermitida } from '../common/funcoes-ia';
 
 const DISCLAIMER =
   'Esta orientação é informativa e NÃO substitui uma avaliação médica. Em caso de dúvida ou agravamento, contacte o SNS 24 (808 24 24 24) ou dirija-se a um serviço de urgência. Perante sinais de emergência (dor no peito, dificuldade em respirar, perda de consciência), ligue 112.';
@@ -21,6 +22,9 @@ export class TriagemPortalService {
   private readonly client = new Anthropic();
 
   async orientar(dto: OrientarDto) {
+    // PROD-19: triagem de sintomas ao público por LLM — a função de maior risco. Desligada, o
+    // portal dá a orientação conservadora (SNS 24 / sinais de alarme) e o texto do doente não sai.
+    if (!iaPermitida('triagem_portal')) return orientacaoConservadora();
     const contexto = [
       dto.idade ? `Idade: ${dto.idade}` : '',
       dto.duracaoDias ? `Duração: ${dto.duracaoDias} dia(s)` : '',
@@ -47,14 +51,18 @@ export class TriagemPortalService {
     } catch (e: any) {
       this.logger.warn('Symptom checker indisponível — fallback seguro', e?.message ?? String(e));
       // Fallback conservador quando a IA não está disponível (ex.: sem ANTHROPIC_API_KEY).
-      return {
-        nivelUrgencia: 'marcar_consulta',
-        titulo: 'Aconselhamento de cuidados',
-        recomendacao: 'Não foi possível analisar os sintomas automaticamente neste momento. Recomendamos que contacte o SNS 24 (808 24 24 24) ou marque uma consulta para avaliação.',
-        sinaisAlarme: ['Dor no peito', 'Dificuldade em respirar', 'Perda de consciência', 'Hemorragia que não pára'],
-        disclaimer: DISCLAIMER,
-        indisponivel: true,
-      };
+      return orientacaoConservadora();
     }
   }
+}
+
+function orientacaoConservadora() {
+  return {
+    nivelUrgencia: 'marcar_consulta',
+    titulo: 'Aconselhamento de cuidados',
+    recomendacao: 'Não foi possível analisar os sintomas automaticamente neste momento. Recomendamos que contacte o SNS 24 (808 24 24 24) ou marque uma consulta para avaliação.',
+    sinaisAlarme: ['Dor no peito', 'Dificuldade em respirar', 'Perda de consciência', 'Hemorragia que não pára'],
+    disclaimer: DISCLAIMER,
+    indisponivel: true,
+  };
 }
