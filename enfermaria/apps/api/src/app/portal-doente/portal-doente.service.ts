@@ -115,7 +115,7 @@ export class PortalDoenteService {
 
   async meusDocumentos(doenteId: string) {
     const docs = await this.prisma.documentoSaude.findMany({
-      where: { doenteId },
+      where: { doenteId, deletedAt: null },
       orderBy: { dataDocumento: 'desc' },
       select: { id: true, titulo: true, tipo: true, formato: true, origem: true, dataDocumento: true, tamanhoBytes: true, storageKey: true, urlExterna: true },
     });
@@ -177,7 +177,7 @@ export class PortalDoenteService {
         take: 100,
       }),
       this.prisma.documentoSaude.findMany({
-        where: { doenteId },
+        where: { doenteId, deletedAt: null },
         select: { titulo: true, tipo: true, formato: true, origem: true, dataDocumento: true },
         orderBy: { dataDocumento: 'desc' },
       }),

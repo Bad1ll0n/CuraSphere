@@ -11,6 +11,7 @@ import { DoenteService } from '../doentes/doentes.service';
 import { FeridasService } from './feridas.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 
 const TIPOS_FOTO = ['image/jpeg', 'image/png'];
 
@@ -96,8 +97,8 @@ export class FeridasController {
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @AcessoDoentePor('fotoFerida', 'fotoId', 'avaliacao.doenteId')
   @Delete('fotos/:fotoId')
-  removerFoto(@Param('fotoId') fotoId: string, @Request() req: any) {
-    return this.service.removerFoto(fotoId, req.user.sub, req.user.role);
+  removerFoto(@Param('fotoId') fotoId: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+    return this.service.removerFoto(fotoId, req.user.sub, req.user.role, dto.motivo);
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')

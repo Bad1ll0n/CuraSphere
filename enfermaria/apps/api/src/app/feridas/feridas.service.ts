@@ -14,7 +14,7 @@ IMPORTANTE: Análise de apoio à decisão clínica. Não substitui avaliação p
 
 const ROLES_PODEM_REGISTAR = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros'];
 
-const fotoInclude = { fotos: { orderBy: { ordem: 'asc' as const } } };
+const fotoInclude = { fotos: { where: { deletedAt: null }, orderBy: { ordem: 'asc' as const } } };
 
 @Injectable()
 export class FeridasService {
@@ -96,7 +96,11 @@ export class FeridasService {
     const key = `feridas/${avaliacaoId}/${uuid()}.${ext}`;
     await this.storage.upload(buffer, key, mimeType);
 
-    const count = await this.prisma.fotoFerida.count({ where: { avaliacaoId } });
+    // A ordem conta também as removidas (deletedAt: null ou não): uma foto nova nunca
+    // reutiliza o número de uma removida.
+    const count = await this.prisma.fotoFerida.count({
+      where: { avaliacaoId, OR: [{ deletedAt: null }, { deletedAt: { not: null } }] },
+    });
     const foto = await this.prisma.fotoFerida.create({
       data: { avaliacaoId, storageKey: key, mimeType, ordem: count, criadaPorId: userId },
     });
@@ -107,20 +111,23 @@ export class FeridasService {
 
   async listarFotos(avaliacaoId: string) {
     const fotos = await this.prisma.fotoFerida.findMany({
-      where: { avaliacaoId },
+      where: { avaliacaoId, deletedAt: null },
       orderBy: { ordem: 'asc' },
     });
     return Promise.all(fotos.map(async f => ({ ...f, url: await this.storage.getSignedUrl(f.storageKey) })));
   }
 
-  async removerFoto(fotoId: string, userId: string, role: string) {
+  async removerFoto(fotoId: string, userId: string, role: string, motivo: string) {
     const foto = await this.prisma.fotoFerida.findUnique({ where: { id: fotoId } });
-    if (!foto) throw new NotFoundException('Fotografia não encontrada');
+    if (!foto || foto.deletedAt) throw new NotFoundException('Fotografia não encontrada');
     if (foto.criadaPorId !== userId && !['medico', 'chefe_enfermeiros'].includes(role)) {
       throw new ForbiddenException('Sem permissão para remover esta fotografia');
     }
-    await this.storage.delete(foto.storageKey);
-    await this.prisma.fotoFerida.delete({ where: { id: fotoId } });
+    // ARQ-04: remoção lógica; a fotografia fica no armazenamento (processo clínico).
+    await this.prisma.fotoFerida.update({
+      where: { id: fotoId },
+      data: { deletedAt: new Date(), removidoPorId: userId, motivoRemocao: motivo },
+    });
     return { mensagem: 'Fotografia removida' };
   }
 

@@ -4,6 +4,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { DicomViewer } from '@/components/dicom-viewer';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { pedirMotivoRemocao } from '@/components/motivo-remocao';
 
 interface Props {
   doenteId: string;
@@ -115,10 +116,11 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   };
 
   const apagarDocumento = async (docId: string) => {
-    if (!confirm('Apagar este documento permanentemente?')) return;
+    const motivo = await pedirMotivoRemocao('Remover documento', 'O documento deixa de aparecer na lista, mas o ficheiro e o motivo ficam no processo clínico.');
+    if (!motivo) return;
     try {
-      await api.delete(`/documentos-saude/${docId}`);
-      toast.success('Documento apagado');
+      await api.delete(`/documentos-saude/${docId}`, { data: { motivo } });
+      toast.success('Documento removido');
       carregar();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao apagar');

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { pedirMotivoRemocao } from '@/components/motivo-remocao';
 
 interface Registo {
   id: string;
@@ -159,9 +160,11 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
   };
 
   const apagar = async (id: string) => {
+    const motivo = await pedirMotivoRemocao('Remover registo de balanço hídrico');
+    if (!motivo) return;
     try {
-      await api.delete(`/balanco-hidrico/${id}`);
-      toast.success('Registo apagado');
+      await api.delete(`/balanco-hidrico/${id}`, { data: { motivo } });
+      toast.success('Registo removido');
       carregar();
     } catch {
       toast.error('Erro ao apagar registo');

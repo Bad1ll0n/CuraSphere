@@ -10,6 +10,7 @@ import { Roles } from '../auth/roles.decorator';
 import { DocumentosSaudeService } from './documentos-saude.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 
 const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
 const TIPOS_PERMITIDOS = [
@@ -89,7 +90,7 @@ export class DocumentosSaudeController {
 
   @Delete(':id')
   @Roles('medico', 'chefe_enfermeiros', 'ti')
-  remover(@Param('id') docId: string, @Request() req: any) {
-    return this.service.remover(docId, req.user.sub, req.user.role);
+  remover(@Param('id') docId: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+    return this.service.remover(docId, req.user.sub, req.user.role, dto.motivo);
   }
 }

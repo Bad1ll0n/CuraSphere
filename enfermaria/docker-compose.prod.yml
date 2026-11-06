@@ -341,9 +341,11 @@ services:
   # da API, que tem o workspace, o CLI do Prisma e os scripts — a imagem final só
   # leva o bundle.
   #
-  # `prisma db push` SEM `--accept-data-loss`: uma alteração destrutiva faz o
-  # deploy parar aqui, com a versão antiga ainda a servir. Uma alteração dessas
-  # precisa de migração prévia (ver apps/api/scripts/migrar-tokens-familia.mjs).
+  # ARQ-11: `prisma migrate deploy` — aplica só as migrações versionadas em
+  # apps/api/prisma/migrations, revistas em PR, na ordem e uma única vez. Se uma
+  # falhar, o deploy pára aqui com a versão antiga ainda a servir. Os triggers de
+  # auditoria aplicam-se depois (idempotente; cobre as tabelas novas).
+  # Primeira vez numa BD criada por `db push`: ver apps/api/prisma/MIGRACOES.md.
   migrate:
     profiles: ["deploy"]
     build:
@@ -355,7 +357,7 @@ services:
     working_dir: /workspace/apps/api
     environment:
       DATABASE_URL: "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
-    command: ["sh", "-c", "pnpm exec prisma db push && node scripts/apply-audit-triggers.mjs"]
+    command: ["sh", "-c", "pnpm exec prisma migrate deploy && node scripts/apply-audit-triggers.mjs"]
     depends_on:
       postgres:
         condition: service_healthy

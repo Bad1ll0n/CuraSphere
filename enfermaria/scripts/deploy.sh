@@ -10,9 +10,8 @@
 #   1. guardar as imagens em serviço, para haver para onde voltar;
 #   2. construir as imagens novas sem tocar no que está a correr;
 #   3. cópia de segurança antes de mexer no schema;
-#   4. schema e triggers (serviço `migrate`). O `prisma db push` recusa alterações
-#      destrutivas: se a versão nova precisar de uma, o deploy pára aqui com a versão antiga
-#      a servir;
+#   4. schema e triggers (serviço `migrate`: `prisma migrate deploy` — ARQ-11). Se uma
+#      migração falhar, o deploy pára aqui com a versão antiga a servir;
 #   5. só então substituir api e web — sem `down`: base de dados, cache, nginx e backup
 #      nunca param;
 #   6. se a API nova não ficar saudável, voltar às imagens anteriores.

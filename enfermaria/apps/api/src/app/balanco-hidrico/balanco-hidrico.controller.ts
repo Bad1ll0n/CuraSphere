@@ -6,6 +6,7 @@ import { DoenteService } from '../doentes/doentes.service';
 import { BalancoHidricoService } from './balanco-hidrico.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('balancoHidrico')
@@ -49,7 +50,7 @@ export class BalancoHidricoController {
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Delete(':id')
-  apagar(@Param('id') id: string, @Request() req: any) {
-    return this.service.apagar(id, req.user.sub, req.user.role);
+  apagar(@Param('id') id: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+    return this.service.apagar(id, req.user.sub, req.user.role, dto.motivo);
   }
 }
