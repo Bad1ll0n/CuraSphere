@@ -250,6 +250,7 @@ model Doente {
   id                   String       @id @default(uuid())
   tenantId             String       @default("default")
   nome                 String
+  nomeBusca            String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
   dataNascimento       DateTime?
   numeroProcesso       String       @unique
   estado               EstadoDoente @default(estavel)

@@ -172,6 +172,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   nome: 'nome',
+  nomeBusca: 'nomeBusca',
   dataNascimento: 'dataNascimento',
   numeroProcesso: 'numeroProcesso',
   estado: 'estado',

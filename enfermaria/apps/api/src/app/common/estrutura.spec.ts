@@ -450,6 +450,33 @@ describe('estrutura — fronteiras de dia', () => {
  */
 const DUAS_CONVENCOES_DE_REMOCAO = ['Doente', 'Medicacao'];
 
+/* ------------------------------------------------------------------ *
+ * Cifragem de dados pessoais (ARQ-01 / QA-03 / QA-05)
+ * ------------------------------------------------------------------ */
+
+describe('estrutura — cifragem de dados pessoais', () => {
+  it('o PrismaService troca TODOS os delegates pelo cliente cifrado, gerados do próprio cliente', () => {
+    // A versão anterior trocava à mão `doente` e `contacto` — e `contacto` não existia, por
+    // isso contactos de emergência e fichas pessoais eram gravados em claro.
+    const codigo = lerCodigo(join(RAIZ_APP, 'prisma', 'prisma.service.ts'));
+
+    expect(codigo).toContain('delegatesDoCliente(this)');
+    expect(codigo).not.toMatch(/\(this as any\)\.(doente|contacto\w*|ficheiroPessoal\w*)\s*=/);
+  });
+
+  it('nenhum serviço filtra o nome de um doente com contains — o nome está cifrado', () => {
+    // `nome: { contains }` sobre `Doente` nunca encontra nada (QA-05). Usa-se o índice cego,
+    // `filtroPesquisaNome`. Os outros modelos com `nome` (equipamentos, etc.) não são cifrados.
+    const infratores = ficheiros(RAIZ_APP, '.service.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .filter((f) => /prisma\.doente\.|tx\.doente\./.test(lerCodigo(f)))
+      .filter((f) => /\bnome:\s*\{\s*contains/.test(lerCodigo(f)))
+      .map(caminhoRelativo);
+
+    expect(infratores).toEqual([]);
+  });
+});
+
 describe('estrutura — soft-delete', () => {
   const schema = readFileSync(join(RAIZ_APP, '..', '..', 'prisma', 'schema.prisma'), 'utf8');
 
