@@ -1,7 +1,11 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Servico } from '../common/enums';
 import { hashPassword } from '../common/password';
+import { invalidarCacheSessao } from '../auth/sessao-cache';
+
+// Campos que viajam no access token: mudá-los obriga a terminar as sessões abertas.
+const CAMPOS_DO_TOKEN = ['nome', 'role', 'subRole', 'servico'] as const;
 
 @Injectable()
 export class UtilizadoresService {
@@ -29,7 +33,9 @@ export class UtilizadoresService {
           numeroFuncionario: data.numeroFuncionario,
           nome: data.nome,
           passwordHash,
-          passwordExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+          // SEC-03: a password inicial é definida pelo TI e por isso conhecida por ele —
+          // nasce expirada, e o primeiro login obriga o utilizador a escolher a sua.
+          passwordExpiresAt: new Date(),
           role: data.role,
           subRole: data.subRole,
           servico: data.servico ?? Servico.internamento,
@@ -105,11 +111,25 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null }) {
-    await this.buscarPorId(id);
-    return this.prisma.utilizador.update({
+  async atualizar(
+    id: string,
+    data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null },
+    atorId?: string,
+  ) {
+    const atual = await this.buscarPorId(id);
+    // SEC-03: ninguém altera o próprio papel — um TI não se promove a si mesmo.
+    if (atorId === id && (data.role !== undefined || data.subRole !== undefined)) {
+      throw new ForbiddenException('Não pode alterar o seu próprio papel.');
+    }
+    const mudaToken = CAMPOS_DO_TOKEN.some(
+      (c) => data[c] !== undefined && data[c] !== (atual as Record<string, unknown>)[c],
+    );
+    // SEC-04: com papel/serviço novos, os tokens antigos levariam as permissões velhas
+    // até expirarem — a versão da sessão sobe e são recusados já.
+    const sessao = mudaToken ? { versaoSessao: { increment: 1 } } : {};
+    const atualizado = await this.prisma.utilizador.update({
       where: { id },
-      data,
+      data: { ...data, ...sessao },
       select: {
         id: true,
         numeroFuncionario: true,
@@ -122,14 +142,25 @@ export class UtilizadoresService {
         ativo: true,
       },
     });
+    if (mudaToken) await this.revogarRefreshTokens(id);
+    return atualizado;
   }
 
-  async desativar(id: string) {
+  async desativar(id: string, atorId?: string) {
+    if (atorId === id) throw new ForbiddenException('Não pode desativar a sua própria conta.');
     await this.buscarPorId(id);
-    return this.prisma.utilizador.update({
+    // SEC-04: a conta desactivada perde já todas as sessões, não só no próximo refresh.
+    const desativado = await this.prisma.utilizador.update({
       where: { id },
-      data: { ativo: false },
+      data: { ativo: false, versaoSessao: { increment: 1 } },
       select: { id: true, nome: true, ativo: true },
     });
+    await this.revogarRefreshTokens(id);
+    return desativado;
+  }
+
+  private async revogarRefreshTokens(utilizadorId: string) {
+    await this.prisma.refreshToken.updateMany({ where: { utilizadorId, revogado: false }, data: { revogado: true } });
+    invalidarCacheSessao(utilizadorId);
   }
 }

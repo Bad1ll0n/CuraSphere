@@ -5,8 +5,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoenteIsento('break-glass: é o pedido de acesso de emergência ao próprio doente')
 @Controller('break-glass')
 export class BreakGlassController {
   constructor(private readonly service: BreakGlassService) {}
@@ -18,7 +20,7 @@ export class BreakGlassController {
     @Body() dto: AtivarBreakGlassDto,
     @Request() req: any,
   ) {
-    const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
+    const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
     return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
   }
 

@@ -1,4 +1,6 @@
-import { Injectable, UnauthorizedException, BadRequestException, Logger } from '@nestjs/common';
+import {
+  Injectable, UnauthorizedException, BadRequestException, ConflictException, ForbiddenException, Logger,
+} from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -12,10 +14,24 @@ import {
 } from './token-audiences';
 import { generateSecret, generateURI, verify } from 'otplib';
 import { toDataURL } from 'qrcode';
+import { invalidarCacheSessao } from './sessao-cache';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta
 // quando o utilizador não existe. Evita user-enumeration timing attack.
 const DUMMY_BCRYPT_HASH = '$2a$12$CwTycUXWue0Thq9StjUM0uJ8L1z/Bm5wQq6zP2N5p8m7rUcD3xK2C';
+
+/** Papéis que não podem ter sessão sem 2.º factor (login, refresh e desactivação do MFA). */
+export const ROLES_CLINICOS_MFA = ['medico', 'enfermeiro', 'farmaceutico', 'tecnico_saude', 'auxiliar'];
+
+// QA-19: tentativas de código por desafio MFA, e falhas por conta numa janela.
+export const MAX_TENTATIVAS_DESAFIO_MFA = 5;
+export const MAX_FALHAS_MFA_CONTA = 10;
+const JANELA_FALHAS_MFA_MS = 15 * 60 * 1000;
+const VALIDADE_DESAFIO_MFA_MS = 5 * 60 * 1000;
+
+/** Bloqueio de conta: 5 falhas numa janela de 15 min → bloqueada 15 min. */
+const MAX_FALHAS_LOGIN = 5;
+const JANELA_FALHAS_MS = 15 * 60 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -92,28 +108,44 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    const lockKey = `login:lock:${utilizador.id}`;
-    const failKey = `login:fail:${utilizador.id}`;
-    const lockAtivo = await this.redis.get<string>(lockKey);
-    if (lockAtivo) {
+    // SEC-08: bloqueio de conta em Postgres. Era em Redis, e sem Redis o `get` devolvia
+    // `null` — o bloqueio desligava-se em silêncio (verificado: 8 falhas e a 9.ª entrava).
+    const agora = new Date();
+    if (utilizador.bloqueadoAte && utilizador.bloqueadoAte > agora) {
       throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
     }
 
     const passwordValida = await verifyPassword(password, utilizador.passwordHash);
     if (!passwordValida) {
-      const falhas = (await this.redis.get<number>(failKey) ?? 0) + 1;
-      if (falhas >= 5) {
-        await this.redis.set(lockKey, '1', 900);
-        await this.redis.del(failKey);
+      // As falhas contam numa janela de 15 min a partir da última; fora dela recomeçam em 1.
+      const naJanela =
+        utilizador.ultimaFalhaLoginEm && agora.getTime() - utilizador.ultimaFalhaLoginEm.getTime() < JANELA_FALHAS_MS;
+      const { tentativasLoginFalhadas: falhas } = await this.prisma.utilizador.update({
+        where: { id: utilizador.id },
+        data: {
+          tentativasLoginFalhadas: naJanela ? { increment: 1 } : 1,
+          ultimaFalhaLoginEm: agora,
+        },
+        select: { tentativasLoginFalhadas: true },
+      });
+      if (falhas >= MAX_FALHAS_LOGIN) {
+        await this.prisma.utilizador.update({
+          where: { id: utilizador.id },
+          data: { bloqueadoAte: new Date(agora.getTime() + JANELA_FALHAS_MS), tentativasLoginFalhadas: 0 },
+        });
         this.logger.warn(`Conta bloqueada por excesso de falhas: ${utilizador.numeroFuncionario}`);
         throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
       }
-      await this.redis.set(failKey, falhas, 900);
-      this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/5)`);
+      this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/${MAX_FALHAS_LOGIN})`);
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    await this.redis.del(failKey);
+    if (utilizador.tentativasLoginFalhadas > 0 || utilizador.bloqueadoAte) {
+      await this.prisma.utilizador.update({
+        where: { id: utilizador.id },
+        data: { tentativasLoginFalhadas: 0, ultimaFalhaLoginEm: null, bloqueadoAte: null },
+      });
+    }
 
     this.anomaly.verificarIpLogin(utilizador.id, ip);
 
@@ -122,15 +154,19 @@ export class AuthService {
       // `JwtStrategy` do pessoal nem sequer o descodifica (audiência fora da
       // allowlist), pelo que já não dá para saltar o 2.º factor apresentando-o
       // como access token.
+      // QA-19: o desafio tem `jti` gravado em BD — uso único e tentativas contadas.
+      const jti = crypto.randomUUID();
+      await this.prisma.desafioMfa.create({
+        data: { jti, utilizadorId: utilizador.id, expiraEm: new Date(Date.now() + VALIDADE_DESAFIO_MFA_MS) },
+      });
       const mfaChallengeToken = this.jwtService.sign(
         { sub: utilizador.id, tipo: 'mfa_challenge', mfaChallenge: true },
-        { expiresIn: '5m', audience: AUD_MFA_CHALLENGE },
+        { expiresIn: '5m', audience: AUD_MFA_CHALLENGE, jwtid: jti },
       );
       return { mfaPendente: true as const, mfaChallengeToken };
     }
 
-    const rolesClinicos = ['medico', 'enfermeiro', 'farmaceutico', 'tecnico_saude', 'auxiliar'];
-    if (rolesClinicos.includes(utilizador.role) && !utilizador.mfaAtivo) {
+    if (ROLES_CLINICOS_MFA.includes(utilizador.role) && !utilizador.mfaAtivo) {
       // SEC-03: só aceite em GET /auth/mfa/setup e POST /auth/mfa/ativar
       // (ver `@TiposToken('pessoal', 'mfa_setup')` no AuthController).
       const mfaSetupToken = this.jwtService.sign(
@@ -140,13 +176,9 @@ export class AuthService {
       return { mfaPendente: false as const, mfaSetupObrigatorio: true as const, mfaSetupToken };
     }
 
-    if (utilizador.passwordExpiresAt && utilizador.passwordExpiresAt < new Date()) {
-      // SEC-03: só aceite em PATCH /auth/alterar-password.
-      const passwordExpiredToken = this.jwtService.sign(
-        { sub: utilizador.id, tipo: 'password_expirada', passwordExpired: true },
-        { expiresIn: '15m', audience: AUD_PASSWORD_EXPIRADA },
-      );
-      return { mfaPendente: false as const, passwordExpirada: true as const, passwordExpiredToken };
+    const expirada = this.respostaPasswordExpirada(utilizador);
+    if (expirada) {
+      return { mfaPendente: false as const, passwordExpirada: true as const, passwordExpiredToken: expirada.passwordExpiredToken };
     }
 
     const accessToken = this.jwtService.sign(this.buildPayload(utilizador));
@@ -159,7 +191,7 @@ export class AuthService {
   }
 
   async verificarMfaLogin(mfaChallengeToken: string, code: string) {
-    let payload: { sub: string; tipo?: string; mfaChallenge?: boolean };
+    let payload: { sub: string; tipo?: string; mfaChallenge?: boolean; jti?: string };
     try {
       // A audiência é explícita: um access token de pessoal (aud 'curasphere') ou um
       // token do portal apresentado aqui falha a verificação, em vez de ser aceite
@@ -171,12 +203,39 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException('Desafio MFA expirado ou inválido. Faça login novamente.');
     }
-    if (payload.tipo !== 'mfa_challenge' || !payload.mfaChallenge) {
+    if (payload.tipo !== 'mfa_challenge' || !payload.mfaChallenge || !payload.jti) {
       throw new UnauthorizedException('Token inválido');
+    }
+    const jti = payload.jti;
+
+    // QA-19: limite por conta — somadas as tentativas falhadas dos desafios recentes.
+    const recentes = await this.prisma.desafioMfa.aggregate({
+      where: { utilizadorId: payload.sub, consumidoEm: null, criadoEm: { gt: new Date(Date.now() - JANELA_FALHAS_MFA_MS) } },
+      _sum: { tentativas: true },
+    });
+    if ((recentes._sum.tentativas ?? 0) >= MAX_FALHAS_MFA_CONTA) {
+      this.logger.warn(`MFA bloqueado por excesso de falhas para utilizador ${payload.sub}`);
+      throw new UnauthorizedException('Demasiados códigos MFA errados. Tente novamente em 15 minutos.');
+    }
+
+    // Reserva uma tentativa de forma atómica: só conta se o desafio existe, é deste
+    // utilizador, não foi consumido, não expirou e ainda tem tentativas.
+    const reservada = await this.prisma.desafioMfa.updateMany({
+      where: {
+        jti,
+        utilizadorId: payload.sub,
+        consumidoEm: null,
+        expiraEm: { gt: new Date() },
+        tentativas: { lt: MAX_TENTATIVAS_DESAFIO_MFA },
+      },
+      data: { tentativas: { increment: 1 } },
+    });
+    if (reservada.count !== 1) {
+      throw new UnauthorizedException('Desafio MFA expirado ou já utilizado. Faça login novamente.');
     }
 
     const utilizador = await this.prisma.utilizador.findUnique({ where: { id: payload.sub } });
-    if (!utilizador || !utilizador.mfaAtivo || !utilizador.mfaSecret) {
+    if (!utilizador || !utilizador.ativo || !utilizador.mfaAtivo || !utilizador.mfaSecret) {
       throw new UnauthorizedException('MFA não configurado para este utilizador');
     }
 
@@ -190,9 +249,56 @@ export class AuthService {
       throw new UnauthorizedException('Código MFA já utilizado. Aguarde o próximo código.');
     }
 
+    // Consome o desafio: só um pedido concorrente o consegue marcar.
+    const consumido = await this.prisma.desafioMfa.updateMany({
+      where: { jti, consumidoEm: null },
+      data: { consumidoEm: new Date() },
+    });
+    if (consumido.count !== 1) {
+      throw new UnauthorizedException('Desafio MFA já utilizado. Faça login novamente.');
+    }
+
+    // A verificação da validade da password não pode ser saltada por ter MFA activo.
+    const expirada = this.respostaPasswordExpirada(utilizador);
+    if (expirada) return expirada;
+
     const accessToken = this.jwtService.sign(this.buildPayload(utilizador));
     const refreshToken = await this.criarRefreshToken(utilizador.id);
     return { accessToken, refreshToken, utilizador: this.buildUtilizadorDto(utilizador) };
+  }
+
+  /** Housekeeping: remove desafios MFA expirados há mais de 1 dia. */
+  @Cron('17 * * * *')
+  async limparDesafiosMfa(): Promise<void> {
+    if (!(await this.prisma.tryBecomeLeader('mfa-desafios-limpeza', 3_000_000))) return;
+    try {
+      await this.prisma.desafioMfa.deleteMany({ where: { expiraEm: { lt: new Date(Date.now() - 86_400_000) } } });
+    } catch (e) {
+      this.logger.warn(`Limpeza de desafios MFA falhou: ${(e as Error)?.message ?? String(e)}`);
+    }
+  }
+
+  /** Token para `PATCH /auth/alterar-password` quando a password expirou; `null` se não expirou. */
+  private respostaPasswordExpirada(u: { id: string; passwordExpiresAt: Date | null }) {
+    if (!u.passwordExpiresAt || u.passwordExpiresAt >= new Date()) return null;
+    // SEC-03: só aceite em PATCH /auth/alterar-password.
+    const passwordExpiredToken = this.jwtService.sign(
+      { sub: u.id, tipo: 'password_expirada', passwordExpired: true },
+      { expiresIn: '15m', audience: AUD_PASSWORD_EXPIRADA },
+    );
+    return { passwordExpirada: true as const, passwordExpiredToken };
+  }
+
+  /**
+   * SEC-04: invalida já todos os access tokens emitidos ao utilizador (claim `sv`) e
+   * revoga os refresh tokens. Usado no logout, desactivação e mudança de papel/password/MFA.
+   */
+  async terminarSessoes(utilizadorId: string): Promise<void> {
+    await this.prisma.$transaction([
+      this.prisma.utilizador.update({ where: { id: utilizadorId }, data: { versaoSessao: { increment: 1 } } }),
+      this.prisma.refreshToken.updateMany({ where: { utilizadorId, revogado: false }, data: { revogado: true } }),
+    ]);
+    invalidarCacheSessao(utilizadorId);
   }
 
   async setupMfa(utilizadorId: string, setupToken?: string) {
@@ -212,12 +318,28 @@ export class AuthService {
     if (utilizador.mfaAtivo) throw new BadRequestException('MFA já está ativo. Desative primeiro.');
 
     const secret = generateSecret();
+    // SEC-02: o segredo proposto fica no servidor; `ativarMfa` só aceita este.
+    await this.prisma.utilizador.update({ where: { id: utilizadorId }, data: { mfaSecretPendente: secret } });
     const otpAuthUrl = generateURI({ issuer: 'CuraSphere', label: utilizador.numeroFuncionario, secret });
     const qrCodeDataUrl = await toDataURL(otpAuthUrl);
     return { secret, qrCodeDataUrl };
   }
 
-  async ativarMfa(utilizadorId: string, secret: string, code: string, setupToken?: string) {
+  /**
+   * SEC-02: activa o MFA com o segredo que o próprio servidor gerou em `setupMfa`. O cliente
+   * já não escolhe o segredo, e com o MFA activo isto recusa — antes, quem tivesse a sessão
+   * trocava o 2.º factor da vítima por um seu sem saber o código actual.
+   */
+  async ativarMfa(utilizadorId: string, code: string, setupToken?: string) {
+    const atual = await this.prisma.utilizador.findUnique({
+      where: { id: utilizadorId },
+      select: { mfaAtivo: true, mfaSecretPendente: true },
+    });
+    if (!atual) throw new UnauthorizedException('Utilizador não encontrado');
+    if (atual.mfaAtivo) throw new ConflictException('MFA já está ativo. Desative primeiro.');
+    const secret = atual.mfaSecretPendente;
+    if (!secret) throw new BadRequestException('Inicie primeiro a configuração do MFA.');
+
     const { valid: isValid } = await verify({ token: code, secret });
     if (!isValid) throw new BadRequestException('Código inválido. Verifique a aplicação autenticadora.');
 
@@ -228,7 +350,7 @@ export class AuthService {
 
     await this.prisma.utilizador.update({
       where: { id: utilizadorId },
-      data: { mfaSecret: secret, mfaAtivo: true },
+      data: { mfaSecret: secret, mfaAtivo: true, mfaSecretPendente: null },
     });
 
     // Invalidate the mfaSetupToken so it cannot be replayed to trigger another setup
@@ -244,6 +366,9 @@ export class AuthService {
     if (!utilizador?.mfaAtivo || !utilizador?.mfaSecret) {
       throw new BadRequestException('MFA não está ativo');
     }
+    if (ROLES_CLINICOS_MFA.includes(utilizador.role)) {
+      throw new ForbiddenException('O MFA é obrigatório para o seu perfil e não pode ser desativado.');
+    }
     const { valid: isValid } = await verify({ token: code, secret: utilizador.mfaSecret });
     if (!isValid) throw new BadRequestException('Código inválido');
 
@@ -256,6 +381,7 @@ export class AuthService {
       where: { id: utilizadorId },
       data: { mfaSecret: null, mfaAtivo: false },
     });
+    await this.terminarSessoes(utilizadorId);
     return { mensagem: 'Autenticação em 2 passos desativada' };
   }
 
@@ -271,15 +397,17 @@ export class AuthService {
     // alguém o capturou. Revogamos TODAS as sessões do utilizador (token theft).
     if (registro.revogado) {
       this.logger.warn(`Refresh-token reuse detectado para utilizador ${registro.utilizadorId} — revogando todas as sessões`);
-      await this.prisma.refreshToken.updateMany({
-        where: { utilizadorId: registro.utilizadorId, revogado: false },
-        data: { revogado: true },
-      });
+      await this.terminarSessoes(registro.utilizadorId);
       throw new UnauthorizedException('Sessão comprometida. Faça login novamente.');
     }
 
     const utilizador = await this.prisma.utilizador.findUnique({ where: { id: registro.utilizadorId } });
     if (!utilizador || !utilizador.ativo) throw new UnauthorizedException('Utilizador inativo');
+    // SEC-03: a renovação não pode manter viva uma sessão clínica sem 2.º factor.
+    if (ROLES_CLINICOS_MFA.includes(utilizador.role) && !utilizador.mfaAtivo) {
+      await this.prisma.refreshToken.update({ where: { token }, data: { revogado: true } });
+      throw new UnauthorizedException('MFA obrigatório. Faça login novamente.');
+    }
 
     await this.prisma.refreshToken.update({ where: { token }, data: { revogado: true } });
 
@@ -288,11 +416,17 @@ export class AuthService {
     return { accessToken, refreshToken: novoRefreshToken, utilizador: this.buildUtilizadorDto(utilizador) };
   }
 
-  async logout(token: string) {
-    await this.prisma.refreshToken.updateMany({
-      where: { token, revogado: false },
-      data: { revogado: true },
-    });
+  /**
+   * SEC-04: o logout termina TODAS as sessões do utilizador (access tokens incluídos, via
+   * `versaoSessao`). Sem `utilizadorId` (cookie de acesso já expirado), chega o refresh token.
+   */
+  async logout(token: string | undefined, utilizadorId?: string) {
+    let id = utilizadorId;
+    if (!id && token) {
+      const registo = await this.prisma.refreshToken.findUnique({ where: { token }, select: { utilizadorId: true } });
+      id = registo?.utilizadorId;
+    }
+    if (id) await this.terminarSessoes(id);
     return { mensagem: 'Sessão terminada' };
   }
 
@@ -318,10 +452,7 @@ export class AuthService {
         passwordExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       },
     });
-    await this.prisma.refreshToken.updateMany({
-      where: { utilizadorId, revogado: false },
-      data: { revogado: true },
-    });
+    await this.terminarSessoes(utilizadorId);
     return { mensagem: 'Password alterada com sucesso' };
   }
 
@@ -332,9 +463,10 @@ export class AuthService {
     return { expira: dias <= 0, diasRestantes: dias, aviso: dias <= 10 };
   }
 
-  private buildPayload(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {
+  private buildPayload(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null; versaoSessao: number }) {
     // `tipo: 'pessoal'` — obrigatório: a `JwtStrategy` recusa qualquer token sem ele.
-    return { sub: u.id, tipo: 'pessoal' as const, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
+    // `sv` — versão da sessão (SEC-04): a estratégia recusa tokens de versão antiga.
+    return { sub: u.id, tipo: 'pessoal' as const, sv: u.versaoSessao, nome: u.nome, numeroFuncionario: u.numeroFuncionario, role: u.role, subRole: u.subRole ?? undefined, servico: u.servico, tenantId: u.tenantId ?? 'default' };
   }
 
   /**
@@ -370,8 +502,9 @@ export class AuthService {
    */
   async emitirSessaoExterna(utilizador: {
     id: string; nome: string; numeroFuncionario: string; role: string;
-    subRole?: string | null; servico: string; tenantId?: string | null;
+    subRole?: string | null; servico: string; tenantId?: string | null; versaoSessao: number; ativo?: boolean;
   }) {
+    if (utilizador.ativo === false) throw new UnauthorizedException('Utilizador inativo');
     const accessToken = this.jwtService.sign(this.buildPayload(utilizador));
     const refreshToken = await this.criarRefreshToken(utilizador.id);
     return { accessToken, refreshToken, utilizador: this.buildUtilizadorDto(utilizador) };

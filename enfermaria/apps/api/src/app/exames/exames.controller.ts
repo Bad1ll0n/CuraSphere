@@ -6,8 +6,10 @@ import { ExamesService } from './exames.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { SolicitarExameDto } from './dto/solicitar-exame.dto';
 import { RegistarResultadoDto } from './dto/registar-resultado.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('exame')
 @Controller('exames')
 export class ExamesController {
   constructor(

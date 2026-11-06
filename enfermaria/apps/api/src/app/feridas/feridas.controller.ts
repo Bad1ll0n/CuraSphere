@@ -10,6 +10,7 @@ import { Roles } from '../auth/roles.decorator';
 import { DoenteService } from '../doentes/doentes.service';
 import { FeridasService } from './feridas.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 const TIPOS_FOTO = ['image/jpeg', 'image/png'];
 
@@ -52,6 +53,7 @@ export class FeridasController {
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
+  @AcessoDoentePor('avaliacaoFerida', 'avaliacaoId')
   @Post(':avaliacaoId/fotos')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -74,12 +76,14 @@ export class FeridasController {
     return this.service.adicionarFoto(avaliacaoId, file.buffer, file.mimetype, req.user.sub);
   }
 
+  @AcessoDoentePor('avaliacaoFerida', 'avaliacaoId')
   @Get(':avaliacaoId/fotos')
   listarFotos(@Param('avaliacaoId') avaliacaoId: string) {
     return this.service.listarFotos(avaliacaoId);
   }
 
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
+  @AcessoDoentePor('avaliacaoFerida', 'avaliacaoId')
   @Post(':avaliacaoId/fotos/:fotoId/analisar')
   analisarFoto(
     @Param('avaliacaoId') avaliacaoId: string,
@@ -90,12 +94,14 @@ export class FeridasController {
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
+  @AcessoDoentePor('fotoFerida', 'fotoId', 'avaliacao.doenteId')
   @Delete('fotos/:fotoId')
   removerFoto(@Param('fotoId') fotoId: string, @Request() req: any) {
     return this.service.removerFoto(fotoId, req.user.sub, req.user.role);
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
+  @AcessoDoentePor('avaliacaoFerida')
   @Delete(':id')
   apagar(@Param('id') id: string, @Request() req: any) {
     return this.service.apagar(id, req.user.sub, req.user.role);

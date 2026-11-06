@@ -146,7 +146,12 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   passwordHash: 'passwordHash',
   mfaSecret: 'mfaSecret',
   mfaAtivo: 'mfaAtivo',
+  mfaSecretPendente: 'mfaSecretPendente',
+  versaoSessao: 'versaoSessao',
   passwordExpiresAt: 'passwordExpiresAt',
+  tentativasLoginFalhadas: 'tentativasLoginFalhadas',
+  ultimaFalhaLoginEm: 'ultimaFalhaLoginEm',
+  bloqueadoAte: 'bloqueadoAte',
   role: 'role',
   subRole: 'subRole',
   servico: 'servico',
@@ -172,6 +177,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   nome: 'nome',
+  nomeBusca: 'nomeBusca',
   dataNascimento: 'dataNascimento',
   numeroProcesso: 'numeroProcesso',
   estado: 'estado',
@@ -582,6 +588,15 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   hash: 'hash'
 };
 
+exports.Prisma.DesafioMfaScalarFieldEnum = {
+  jti: 'jti',
+  utilizadorId: 'utilizadorId',
+  tentativas: 'tentativas',
+  consumidoEm: 'consumidoEm',
+  expiraEm: 'expiraEm',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.TotpConsumidoScalarFieldEnum = {
   chave: 'chave',
   expiraEm: 'expiraEm'
@@ -637,7 +652,10 @@ exports.Prisma.AlergiaScalarFieldEnum = {
   tipo: 'tipo',
   severidade: 'severidade',
   notas: 'notas',
-  criadaEm: 'criadaEm'
+  criadaEm: 'criadaEm',
+  deletedAt: 'deletedAt',
+  removidaPorId: 'removidaPorId',
+  motivoRemocao: 'motivoRemocao'
 };
 
 exports.Prisma.ContactoEmergenciaScalarFieldEnum = {
@@ -2194,6 +2212,7 @@ exports.Prisma.ModelName = {
   ListaEspera: 'ListaEspera',
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  DesafioMfa: 'DesafioMfa',
   TotpConsumido: 'TotpConsumido',
   CronLock: 'CronLock',
   AuditCheckpoint: 'AuditCheckpoint',

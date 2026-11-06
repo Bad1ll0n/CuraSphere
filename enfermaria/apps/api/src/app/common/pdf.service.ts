@@ -52,7 +52,7 @@ export class PdfService {
       where: { id: doenteId },
       include: {
         cama: true,
-        alergias: true,
+        alergias: { where: { deletedAt: null } },
         medicacoes: {
           where: { ativo: true },
           include: { prescritoPor: { select: { nome: true } } },
@@ -398,7 +398,7 @@ export class PdfService {
       where: { id: doenteId },
       include: {
         medicacoes: { where: { ativo: true }, take: 20 },
-        alergias: { take: 10 },
+        alergias: { where: { deletedAt: null }, take: 10 },
         sumarioAlta: { include: { criadoPor: { select: { nome: true } } } },
         ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
       },

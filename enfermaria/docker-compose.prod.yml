@@ -178,7 +178,7 @@ services:
     environment:
       DATABASE_URL:            "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
       JWT_SECRET:              ${JWT_SECRET:?JWT_SECRET em falta (min. 32 chars) — validado por Joi no arranque}
-      JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-1h}
+      JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}
       ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS:?ALLOWED_ORIGINS em falta — obrigatório em produção (Joi)}
       REDIS_URL:               redis://redis:6379
@@ -285,8 +285,11 @@ services:
       HOSPITAL_GEOFENCE_METROS: ${HOSPITAL_GEOFENCE_METROS:-500}
 
       # ── Limites de pedidos e observabilidade ───────────────────────────────
-      THROTTLE_LIMIT:          ${THROTTLE_LIMIT:-60}
+      THROTTLE_LIMIT:          ${THROTTLE_LIMIT:-600}
+      # Proxies de confiança para o req.ip (nginx na rede Docker). Ver main.ts.
+      TRUST_PROXY:             ${TRUST_PROXY:-loopback, linklocal, uniquelocal}
       LOGIN_THROTTLE_LIMIT:    ${LOGIN_THROTTLE_LIMIT:-5}
+      MFA_THROTTLE_LIMIT:      ${MFA_THROTTLE_LIMIT:-10}
       LOG_PRETTY:              ${LOG_PRETTY:-false}
       # Vazio = tracing OpenTelemetry desligado (gated em src/tracing.ts).
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}

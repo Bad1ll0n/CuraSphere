@@ -27,7 +27,9 @@ export class RequestContextMiddleware implements NestMiddleware {
     const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
     const payload = token ? decodeJwtPayload(token) : null;
 
-    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || req.ip || null;
+    // SEC-08: o primeiro X-Forwarded-For é o que o CLIENTE escreveu (o nginx acrescenta).
+    // Com `trust proxy` (main.ts), `req.ip` já é o IP real, resolvido pelos proxies de confiança.
+    const ip = req.ip || null;
     this.ctx.run({
       userId: (payload?.['sub'] as string) ?? null,
       nome: (payload?.['nome'] as string) ?? null,

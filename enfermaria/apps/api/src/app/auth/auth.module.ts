@@ -23,7 +23,7 @@ import { SsoController } from './sso/sso.controller';
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: config.get<string>('JWT_EXPIRES_IN', '1h') as any,
+          expiresIn: config.get<string>('JWT_EXPIRES_IN', '15m') as any,
           algorithm: 'HS256',
           issuer: 'curasphere-api',
           audience: 'curasphere',

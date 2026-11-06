@@ -74,6 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginMfa = async (mfaChallengeToken: string, code: string) => {
     const { data } = await api.post('/auth/mfa/verificar', { mfaChallengeToken, code });
+    // A API já não salta a validade da password por o utilizador ter MFA.
+    if (data.passwordExpirada && data.passwordExpiredToken) {
+      sessionStorage.setItem('passwordExpiredToken', data.passwordExpiredToken);
+      router.push('/login/alterar-password');
+      return;
+    }
     setUtilizador(data.utilizador);
     router.push('/');
   };

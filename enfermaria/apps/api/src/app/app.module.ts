@@ -5,7 +5,8 @@ import { IdempotencyInterceptor } from './common/idempotency.interceptor';
 import { TenantMiddleware } from './prisma/tenant.middleware';
 import { RequestContextMiddleware } from './prisma/request-context.middleware';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { randomUUID } from 'crypto';
@@ -56,7 +57,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         DATABASE_URL: Joi.string().required(),
         REDIS_URL: Joi.string().default('redis://localhost:6379'),
         JWT_SECRET: Joi.string().min(32).required(),
-        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('1h'),
+        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('15m'),
         ENCRYPTION_KEY: Joi.string().hex().min(64).required(),
         ALLOWED_ORIGINS: Joi.when('NODE_ENV', {
           is: 'production',
@@ -105,7 +106,8 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
         autoLogging: { ignore: (req) => req.url === '/v1/health' },
       },
     }),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 60) }]),
+    // Por utilizador autenticado (ThrottlerPorUtilizadorGuard), não por IP — ver PERF-02.
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 600) }]),
     ScheduleModule.forRoot(),
     PrismaModule,
     AuditModule,
@@ -146,7 +148,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     // guardada sem executar nada, e não deve aparecer no registo como um novo acto.
     { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: ThrottlerPorUtilizadorGuard },
   ],
 })
 export class AppModule implements NestModule {

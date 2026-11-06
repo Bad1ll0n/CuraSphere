@@ -7,8 +7,10 @@ import { MaternidadeService } from './maternidade.service';
 import { CriarGravidezDto } from './dto/criar-gravidez.dto';
 import { RegistoPartogramaDto } from './dto/registo-partograma.dto';
 import { RegistarPartoDto } from './dto/registar-parto.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('gravidez', 'gravidezId')
 @Controller('maternidade')
 export class MaternidadeController {
   constructor(
