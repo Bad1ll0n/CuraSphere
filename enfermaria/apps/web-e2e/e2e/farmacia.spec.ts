@@ -3,7 +3,8 @@ import { loginAs } from './helpers';
 
 test.describe('Farmácia', () => {
   test.beforeEach(async ({ page }) => {
-    await loginAs(page);
+    // QA-22: a direção (admin) não tem esta rota (nav-data.tsx) e era redireccionada.
+    await loginAs(page, '00006');
   });
 
   test('página /farmacia carrega sem erros', async ({ page }) => {

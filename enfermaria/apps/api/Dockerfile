@@ -1,5 +1,7 @@
 # ─── Stage 1: Store do pnpm a partir do lockfile ─────────────────────────────
-FROM node:26-alpine AS deps
+# OPS-15: imagem base fixada por digest (o Dependabot actualiza-o); uma tag flutuante
+# mudava o que se construía sem nenhuma alteração no repositório.
+FROM node:26-alpine@sha256:8996bb5821d62a8fd9bb27c1cb07462f3fdce6e47d640c6a881ead0b064ce216 AS deps
 WORKDIR /workspace
 
 # OPS-14: `pnpm@latest` torna a imagem irreprodutível — a mesma etiqueta de imagem
@@ -45,7 +47,7 @@ RUN pnpm exec nx run @org/api:prune --skip-nx-cache
 RUN tr -d '\r' < pnpm-workspace.yaml | awk '/^overrides:/{f=1} f&&/^$/{exit} f' > apps/api/dist/pnpm-workspace.yaml
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
-FROM node:26-alpine AS runner
+FROM node:26-alpine@sha256:8996bb5821d62a8fd9bb27c1cb07462f3fdce6e47d640c6a881ead0b064ce216 AS runner
 WORKDIR /app
 
 RUN npm install -g pnpm@10.33.0

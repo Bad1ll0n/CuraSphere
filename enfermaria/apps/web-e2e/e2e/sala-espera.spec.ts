@@ -3,7 +3,8 @@ import { loginAs } from './helpers';
 
 test.describe('Sala de Espera', () => {
   test.beforeEach(async ({ page }) => {
-    await loginAs(page, 'admin');
+    // QA-22: a direção (admin) não tem esta rota (nav-data.tsx) e era redireccionada.
+    await loginAs(page, '00007');
   });
 
   test('página /sala-espera carrega sem erros', async ({ page }) => {

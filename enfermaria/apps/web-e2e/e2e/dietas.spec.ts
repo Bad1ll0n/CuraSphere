@@ -3,7 +3,8 @@ import { loginAs } from './helpers';
 
 test.describe('Dietas', () => {
   test.beforeEach(async ({ page }) => {
-    await loginAs(page);
+    // QA-22: a direção (admin) não tem esta rota (nav-data.tsx) e era redireccionada.
+    await loginAs(page, '00008');
   });
 
   test('página /dietas carrega sem erros', async ({ page }) => {

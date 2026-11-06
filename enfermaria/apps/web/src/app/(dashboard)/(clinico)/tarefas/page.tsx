@@ -369,7 +369,7 @@ export default function TarefasPage() {
                       className="w-full text-left text-sm hover:bg-slate-50 transition-colors"
                       style={{ padding: '10px 14px', borderBottom: '1px solid #f1f5f9' }}>
                       <span className="font-medium text-slate-800">{d.nome}</span>
-                      <span className="text-slate-500 text-xs" style={{ marginLeft: '8px' }}>Q{d.cama.quarto}/C{d.cama.numero}</span>
+                      <span className="text-slate-500 text-xs" style={{ marginLeft: '8px' }}>Q{(d.cama?.quarto ?? '—')}/C{(d.cama?.numero ?? '—')}</span>
                     </button>
                   ))}
                 </div>
@@ -547,7 +547,7 @@ function TarefaCard({ tarefa, atualizando, podeCriar, onVerDoente, onToggleProgr
               </span>
             </button>
             <span className="text-slate-200 text-xs">·</span>
-            <span className="text-xs text-slate-500">Q{tarefa.doente.cama.quarto} · C{tarefa.doente.cama.numero}</span>
+            <span className="text-xs text-slate-500">Q{(tarefa.doente.cama?.quarto ?? '—')} · C{(tarefa.doente.cama?.numero ?? '—')}</span>
             <span className="text-slate-200 text-xs">·</span>
             <span className="text-xs text-slate-500">{tarefa.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
             {tarefa.grupoResponsavel && (

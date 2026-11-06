@@ -1,5 +1,8 @@
-import { Page, request as pwRequest } from '@playwright/test';
+import { Page, request as pwRequest, test } from '@playwright/test';
 import { createHmac } from 'crypto';
+import { readFileSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
 
 const API = process.env['API_URL'] ?? 'http://localhost:3333';
 
@@ -49,11 +52,36 @@ function totp(secret: string): string {
  * Trata automaticamente o passo de MFA (roles clínicas 00002-00006, 00011-00017) gerando
  * o TOTP a partir do segredo fixo de teste.
  */
+/**
+ * QA-22 — anti-replay do TOTP: o servidor recusa o mesmo código duas vezes para o mesmo
+ * utilizador. A última janela de 30 s usada por cada utilizador fica num ficheiro (e não em
+ * memória) porque o Playwright reinicia o worker a seguir a uma falha e porque os specs de API
+ * fazem os seus próprios logins. Antes de enviar um código, quem o vai usar chama isto: se a
+ * janela actual já foi usada por esse utilizador, espera pela seguinte.
+ */
+const FICHEIRO_JANELAS = join(tmpdir(), 'curasphere-e2e-totp.json');
+export async function reservarJanelaTotp(user: string, esperar: (ms: number) => Promise<unknown>): Promise<void> {
+  let usadas: Record<string, number> = {};
+  try { usadas = JSON.parse(readFileSync(FICHEIRO_JANELAS, 'utf8')); } catch { /* primeira vez */ }
+  const janela = () => Math.floor(Date.now() / 30_000);
+  if (usadas[user] === janela()) {
+    const espera = 30_000 - (Date.now() % 30_000) + 500;
+    test.info().setTimeout(test.info().timeout + espera);
+    await esperar(espera);
+  }
+  usadas[user] = janela();
+  writeFileSync(FICHEIRO_JANELAS, JSON.stringify(usadas));
+}
+
 export async function loginAs(page: Page, roleOrNumero: Role | string = 'admin', password?: string): Promise<void> {
   const isKnownRole = Object.prototype.hasOwnProperty.call(CREDS, roleOrNumero);
   const user = isKnownRole ? CREDS[roleOrNumero as Role].user : roleOrNumero;
   const pass = isKnownRole ? CREDS[roleOrNumero as Role].password : (password ?? process.env['TEST_PASSWORD'] ?? 'Teste1234!');
 
+  // QA-22: com sessão aberta (p. ex. `beforeEach` como admin e o teste a entrar como
+  // enfermeiro), `/login` redireciona para a aplicação e o formulário nunca aparece — o teste
+  // esperava 30 s pelo campo e falhava. Cada login começa sem sessão.
+  await page.context().clearCookies();
   await page.goto('/login');
   // NOTA: o placeholder do campo de nº de funcionário passou de "Ex: 00001" para
   // "Ex: 12345" (ver apps/web/src/messages/pt.json:52, employeeNumberPlaceholder) —
@@ -79,6 +107,11 @@ export async function loginAs(page: Page, roleOrNumero: Role | string = 'admin',
     // código não colidem (ver persona-smoke, 17 users). Só o MESMO utilizador re-autenticado
     // dentro do mesmo intervalo de 30s colide; por isso cada spec usa um user clínico distinto
     // e um único login por ficheiro (esperar 30s por um código fresco estouraria o timeout).
+    // QA-22: anti-replay do TOTP — o mesmo utilizador não pode usar o mesmo código duas
+    // vezes (um `beforeEach` com vários testes entra várias vezes). Se este utilizador já usou
+    // a janela de 30 s actual, espera-se pela seguinte (com tempo extra para o teste). Um código
+    // rejeitado faz o formulário voltar ao início, por isso é preciso evitar, não repetir.
+    await reservarJanelaTotp(user, (ms) => page.waitForTimeout(ms));
     await mfaInput.fill(totp(TOTP_SECRET));
     await page.getByRole('button', { name: 'Verificar' }).click();
     await page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 10000 });
@@ -154,10 +187,14 @@ export async function prepararDoenteClinico(page: Page): Promise<string> {
   // enviado à mesma. Sem a URL absoluta, os POSTs iam para o web e davam 404 (break-glass falhava).
   const headers = { 'x-csrf-token': await csrfDaPagina(page) };
   // A sessão da página é o médico (00002): ativar break-glass dá-lhe acesso ao doente.
-  await page.request.post(`${API}/v1/break-glass`, {
+  // Só se pede break-glass quando ainda não há acesso: o endpoint tem limite de pedidos e
+  // vários specs preparam o mesmo doente com o mesmo utilizador (429 a meio da suite).
+  const jaTemAcesso = (await page.request.get(`${API}/v1/doentes/${doenteId}`)).ok();
+  const bg = jaTemAcesso ? null : await page.request.post(`${API}/v1/break-glass`, {
     data: { doenteId, motivo: 'Validação E2E de painéis clínicos — acesso de teste automatizado' },
     headers,
   });
+  if (bg && !bg.ok()) throw new Error(`prepararDoenteClinico: break-glass ${bg.status()} ${await bg.text()}`);
   // Garantir dados de sinais vitais (para os badges NEWS2 / scores de risco renderizarem).
   await page.request.post(`${API}/v1/sinais-vitais/${doenteId}`, {
     data: { pressaoSistolica: 120, pressaoDiastolica: 80, pulso: 84, temperatura: 37.1, saturacaoO2: 97, frequenciaRespiratoria: 18 },

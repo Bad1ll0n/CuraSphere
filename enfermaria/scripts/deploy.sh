@@ -1,7 +1,15 @@
 #!/bin/sh
 # Deploy CuraSphere para produção
-# Uso: ./scripts/deploy.sh
+# Uso: ./scripts/deploy.sh <versão>     ex.: ./scripts/deploy.sh v1.4.0
+#      ./scripts/deploy.sh local        constrói as imagens no próprio servidor (sem registry)
 # Requer: .env.prod na raiz do projecto
+#
+# OPS-10/OPS-11: o deploy instala uma VERSÃO, não "o que estiver no disco". As imagens são
+# construídas, analisadas (Trivy), assinadas (cosign) e publicadas pelo workflow de release
+# (.github/workflows/release.yml) a partir de uma tag vX.Y.Z; aqui só se descarregam. O
+# `git pull` que existia era código morto (o .git está na raiz do repositório, não aqui) e
+# o build no servidor de produção produzia sempre `:latest`, sem rasto do que estava a correr.
+# A versão em serviço fica em .versao-em-servico e o histórico em deploys.log.
 #
 # Ordem, e porquê (OPS-03 / OPS-07). A versão anterior fazia `down` antes de saber se a nova
 # arrancava, não tinha rollback, e nunca aplicava o schema nem os triggers de auditoria — uma
@@ -23,6 +31,16 @@ set -eu
 
 ENV_FILE=".env.prod"
 COMPOSE_FILE="docker-compose.prod.yml"
+FICHEIRO_VERSAO=".versao-em-servico"
+
+VERSAO="${1:-}"
+case "$VERSAO" in
+  v[0-9]*.[0-9]*.[0-9]*|local) ;;
+  *)
+    echo "Uso: $0 <vX.Y.Z | local>"
+    echo "  A versão é a tag publicada pelo workflow de release (ver docs/RELEASE.md)."
+    exit 1 ;;
+esac
 
 if [ ! -f "$ENV_FILE" ]; then
   echo "ERRO: Ficheiro $ENV_FILE não encontrado."
@@ -31,6 +49,14 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 dc() { docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" "$@"; }
+
+PREFIXO=$(grep '^CURASPHERE_IMAGE_PREFIX=' "$ENV_FILE" | cut -d= -f2 | tr -d ' "')
+PREFIXO=${PREFIXO:-curasphere}
+if [ "$VERSAO" != "local" ] && [ "$PREFIXO" = "curasphere" ]; then
+  echo "ERRO: CURASPHERE_IMAGE_PREFIX em falta no $ENV_FILE (ex.: ghcr.io/<dono>/curasphere)."
+  exit 1
+fi
+ANTERIOR=$(cat "$FICHEIRO_VERSAO" 2>/dev/null || true)
 
 # Ler variáveis necessárias do env file
 DB_USER=$(grep '^DB_USER=' "$ENV_FILE" | cut -d= -f2 | tr -d ' ')
@@ -66,49 +92,64 @@ esperar_api() {
   echo ""
 }
 
-TEM_ANTERIOR=0
-
 reverter() {
-  if [ "$TEM_ANTERIOR" -ne 1 ]; then
-    echo "      Não há imagens anteriores (primeiro deploy com este script): não há para onde voltar."
+  if [ -z "$ANTERIOR" ]; then
+    echo "      Não há versão anterior registada ($FICHEIRO_VERSAO): não há para onde voltar."
     return 1
   fi
-  echo "[rollback] A repor as imagens anteriores..."
-  docker tag curasphere-api:anterior curasphere-api:latest
-  docker tag curasphere-web:anterior curasphere-web:latest
-  dc up -d --no-deps --force-recreate api web
+  echo "[rollback] A repor a versão $ANTERIOR..."
+  CURASPHERE_VERSION="$ANTERIOR" dc up -d --no-deps --force-recreate api web
   if esperar_api; then
-    echo "[rollback] A versão anterior voltou ao serviço."
+    echo "[rollback] A versão $ANTERIOR voltou ao serviço."
+    echo "$(date -u +%FT%TZ) rollback $VERSAO -> $ANTERIOR" >> deploys.log
     return 0
   fi
   echo "[rollback] FALHOU: a versão anterior também não ficou saudável. Intervenção manual."
   return 1
 }
 
-echo "=== CuraSphere Deploy $(date) ==="
+echo "=== CuraSphere Deploy $VERSAO $(date) (em serviço: ${ANTERIOR:-nenhuma}) ==="
+export CURASPHERE_VERSION="$VERSAO"
 
-# 1. Código
-if [ -d ".git" ]; then
-  echo "[1/8] A actualizar código..."
-  git pull --ff-only
-fi
-
-# 2. Guardar as imagens em serviço — antes do build, que reescreve a etiqueta :latest
-echo "[2/8] A guardar as imagens em serviço para rollback..."
-if docker image inspect curasphere-api:latest >/dev/null 2>&1 \
-  && docker image inspect curasphere-web:latest >/dev/null 2>&1; then
-  docker tag curasphere-api:latest curasphere-api:anterior
-  docker tag curasphere-web:latest curasphere-web:anterior
-  TEM_ANTERIOR=1
-  echo "  → curasphere-api:anterior e curasphere-web:anterior guardadas."
+# 1-3. Obter as imagens da versão — a versão em serviço continua a correr
+if [ "$VERSAO" = "local" ]; then
+  # Sem registry: constrói-se aqui. A etiqueta `local` é reescrita, por isso guarda-se a
+  # imagem em serviço como `local-anterior` para haver rollback.
+  echo "[1/8] Modo local: a guardar as imagens em serviço..."
+  if docker image inspect "$PREFIXO-api:local" >/dev/null 2>&1 && docker image inspect "$PREFIXO-web:local" >/dev/null 2>&1; then
+    docker tag "$PREFIXO-api:local" "$PREFIXO-api:local-anterior"
+    docker tag "$PREFIXO-web:local" "$PREFIXO-web:local-anterior"
+    ANTERIOR="local-anterior"
+  fi
+  echo "[2/8] (sem verificação de assinatura: imagens construídas localmente)"
+  echo "[3/8] A construir imagens Docker..."
+  dc build --no-cache api web
+  dc --profile deploy build migrate
 else
-  echo "  → Sem imagens anteriores: este deploy não terá rollback automático."
+  echo "[1/8] A descarregar as imagens $VERSAO de $PREFIXO..."
+  dc pull api web
+  dc --profile deploy pull migrate
+  # 2. Assinatura (OPS-15): só corre o que o workflow de release deste repositório assinou.
+  if command -v cosign >/dev/null 2>&1; then
+    echo "[2/8] A verificar assinaturas (cosign)..."
+    REPO_GH=$(grep '^CURASPHERE_GITHUB_REPO=' "$ENV_FILE" | cut -d= -f2 | tr -d ' "')
+    if [ -z "$REPO_GH" ]; then
+      echo "ERRO: CURASPHERE_GITHUB_REPO em falta no $ENV_FILE (ex.: dono/CuraSphere)."; exit 1
+    fi
+    for app in api web migrate; do
+      if ! cosign verify "$PREFIXO-$app:$VERSAO" \
+          --certificate-identity-regexp "^https://github.com/$REPO_GH/.github/workflows/release.yml@refs/tags/" \
+          --certificate-oidc-issuer https://token.actions.githubusercontent.com >/dev/null; then
+        echo "ERRO: a imagem $PREFIXO-$app:$VERSAO não tem assinatura válida do workflow de release."
+        exit 1
+      fi
+    done
+    echo "  → Assinaturas válidas."
+  else
+    echo "[2/8] AVISO: cosign não instalado — assinaturas NÃO verificadas (instalar: docs/RELEASE.md)."
+  fi
+  echo "[3/8] (imagens do registry: sem build no servidor)"
 fi
-
-# 3. Build — a versão em serviço continua a correr
-echo "[3/8] A construir imagens Docker..."
-dc build --no-cache api web
-dc --profile deploy build migrate
 
 # 4. Base de dados e cache (não fazem nada se já estiverem a correr)
 echo "[4/8] A garantir base de dados e cache..."
@@ -149,7 +190,9 @@ fi
 echo "[8/8] Estado dos serviços:"
 dc up -d --no-deps nginx backup
 dc ps
+echo "$VERSAO" > "$FICHEIRO_VERSAO"
+echo "$(date -u +%FT%TZ) deploy ${ANTERIOR:-nenhuma} -> $VERSAO" >> deploys.log
 
 echo ""
-echo "=== Deploy concluído ==="
+echo "=== Deploy de $VERSAO concluído ==="
 echo "Web: https://$(grep ALLOWED_ORIGINS "$ENV_FILE" | cut -d= -f2 | tr -d ' ' | sed 's|https://||' | cut -d, -f1)"
