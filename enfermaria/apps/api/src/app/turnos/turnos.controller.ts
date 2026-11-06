@@ -35,7 +35,7 @@ export class TurnosController {
     @Request() req: any,
     @Body() dto: CheckInDto = {},
   ) {
-    const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
+    const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
     return this.turnosService.checkIn(req.user.sub, {
       lat: dto.lat,
       lon: dto.lon,

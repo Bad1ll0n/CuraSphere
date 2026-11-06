@@ -68,6 +68,11 @@ async function bootstrap() {
   app.useLogger(app.get(PinoLogger));
   // Esconder fingerprint Express
   app.disable('x-powered-by');
+  // SEC-08/PERF-02: sem isto, atrás do nginx o `req.ip` é o IP do nginx para TODOS — os
+  // limites de login/MFA eram um único balde para o hospital e a auditoria não tinha o IP
+  // real. Confia-se só em proxies de redes privadas (o nginx na rede Docker); o nginx
+  // reescreve o X-Forwarded-For com o $remote_addr, por isso o cliente não o falsifica.
+  app.set('trust proxy', process.env['TRUST_PROXY'] ?? 'loopback, linklocal, uniquelocal');
 
   // Graceful shutdown: garante que SIGTERM/SIGINT (ex.: `docker stop` durante um deploy)
   // drena pedidos em curso e chama onModuleDestroy/beforeApplicationShutdown (Prisma, Redis)

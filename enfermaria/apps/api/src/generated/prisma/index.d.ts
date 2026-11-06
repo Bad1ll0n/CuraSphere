@@ -18703,10 +18703,12 @@ export namespace Prisma {
   }
 
   export type UtilizadorAvgAggregateOutputType = {
+    tentativasLoginFalhadas: number | null
     ordemExperiencia: number | null
   }
 
   export type UtilizadorSumAggregateOutputType = {
+    tentativasLoginFalhadas: number | null
     ordemExperiencia: number | null
   }
 
@@ -18719,6 +18721,9 @@ export namespace Prisma {
     mfaSecret: string | null
     mfaAtivo: boolean | null
     passwordExpiresAt: Date | null
+    tentativasLoginFalhadas: number | null
+    ultimaFalhaLoginEm: Date | null
+    bloqueadoAte: Date | null
     role: string | null
     subRole: string | null
     servico: $Enums.Servico | null
@@ -18739,6 +18744,9 @@ export namespace Prisma {
     mfaSecret: string | null
     mfaAtivo: boolean | null
     passwordExpiresAt: Date | null
+    tentativasLoginFalhadas: number | null
+    ultimaFalhaLoginEm: Date | null
+    bloqueadoAte: Date | null
     role: string | null
     subRole: string | null
     servico: $Enums.Servico | null
@@ -18759,6 +18767,9 @@ export namespace Prisma {
     mfaSecret: number
     mfaAtivo: number
     passwordExpiresAt: number
+    tentativasLoginFalhadas: number
+    ultimaFalhaLoginEm: number
+    bloqueadoAte: number
     role: number
     subRole: number
     servico: number
@@ -18773,10 +18784,12 @@ export namespace Prisma {
 
 
   export type UtilizadorAvgAggregateInputType = {
+    tentativasLoginFalhadas?: true
     ordemExperiencia?: true
   }
 
   export type UtilizadorSumAggregateInputType = {
+    tentativasLoginFalhadas?: true
     ordemExperiencia?: true
   }
 
@@ -18789,6 +18802,9 @@ export namespace Prisma {
     mfaSecret?: true
     mfaAtivo?: true
     passwordExpiresAt?: true
+    tentativasLoginFalhadas?: true
+    ultimaFalhaLoginEm?: true
+    bloqueadoAte?: true
     role?: true
     subRole?: true
     servico?: true
@@ -18809,6 +18825,9 @@ export namespace Prisma {
     mfaSecret?: true
     mfaAtivo?: true
     passwordExpiresAt?: true
+    tentativasLoginFalhadas?: true
+    ultimaFalhaLoginEm?: true
+    bloqueadoAte?: true
     role?: true
     subRole?: true
     servico?: true
@@ -18829,6 +18848,9 @@ export namespace Prisma {
     mfaSecret?: true
     mfaAtivo?: true
     passwordExpiresAt?: true
+    tentativasLoginFalhadas?: true
+    ultimaFalhaLoginEm?: true
+    bloqueadoAte?: true
     role?: true
     subRole?: true
     servico?: true
@@ -18936,6 +18958,9 @@ export namespace Prisma {
     mfaSecret: string | null
     mfaAtivo: boolean
     passwordExpiresAt: Date | null
+    tentativasLoginFalhadas: number
+    ultimaFalhaLoginEm: Date | null
+    bloqueadoAte: Date | null
     role: string
     subRole: string | null
     servico: $Enums.Servico
@@ -18975,6 +19000,9 @@ export namespace Prisma {
     mfaSecret?: boolean
     mfaAtivo?: boolean
     passwordExpiresAt?: boolean
+    tentativasLoginFalhadas?: boolean
+    ultimaFalhaLoginEm?: boolean
+    bloqueadoAte?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -19120,6 +19148,9 @@ export namespace Prisma {
     mfaSecret?: boolean
     mfaAtivo?: boolean
     passwordExpiresAt?: boolean
+    tentativasLoginFalhadas?: boolean
+    ultimaFalhaLoginEm?: boolean
+    bloqueadoAte?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -19141,6 +19172,9 @@ export namespace Prisma {
     mfaSecret?: boolean
     mfaAtivo?: boolean
     passwordExpiresAt?: boolean
+    tentativasLoginFalhadas?: boolean
+    ultimaFalhaLoginEm?: boolean
+    bloqueadoAte?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -19162,6 +19196,9 @@ export namespace Prisma {
     mfaSecret?: boolean
     mfaAtivo?: boolean
     passwordExpiresAt?: boolean
+    tentativasLoginFalhadas?: boolean
+    ultimaFalhaLoginEm?: boolean
+    bloqueadoAte?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -19173,7 +19210,7 @@ export namespace Prisma {
     chefeId?: boolean
   }
 
-  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "numeroFuncionario" | "nome" | "passwordHash" | "mfaSecret" | "mfaAtivo" | "passwordExpiresAt" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
+  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "numeroFuncionario" | "nome" | "passwordHash" | "mfaSecret" | "mfaAtivo" | "passwordExpiresAt" | "tentativasLoginFalhadas" | "ultimaFalhaLoginEm" | "bloqueadoAte" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
   export type UtilizadorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     turnosComoChefe?: boolean | Utilizador$turnosComoChefeArgs<ExtArgs>
     horariosEntrada?: boolean | Utilizador$horariosEntradaArgs<ExtArgs>
@@ -19445,6 +19482,9 @@ export namespace Prisma {
       mfaSecret: string | null
       mfaAtivo: boolean
       passwordExpiresAt: Date | null
+      tentativasLoginFalhadas: number
+      ultimaFalhaLoginEm: Date | null
+      bloqueadoAte: Date | null
       role: string
       subRole: string | null
       servico: $Enums.Servico
@@ -20009,6 +20049,9 @@ export namespace Prisma {
     readonly mfaSecret: FieldRef<"Utilizador", 'String'>
     readonly mfaAtivo: FieldRef<"Utilizador", 'Boolean'>
     readonly passwordExpiresAt: FieldRef<"Utilizador", 'DateTime'>
+    readonly tentativasLoginFalhadas: FieldRef<"Utilizador", 'Int'>
+    readonly ultimaFalhaLoginEm: FieldRef<"Utilizador", 'DateTime'>
+    readonly bloqueadoAte: FieldRef<"Utilizador", 'DateTime'>
     readonly role: FieldRef<"Utilizador", 'String'>
     readonly subRole: FieldRef<"Utilizador", 'String'>
     readonly servico: FieldRef<"Utilizador", 'Servico'>
@@ -181893,6 +181936,9 @@ export namespace Prisma {
     mfaSecret: 'mfaSecret',
     mfaAtivo: 'mfaAtivo',
     passwordExpiresAt: 'passwordExpiresAt',
+    tentativasLoginFalhadas: 'tentativasLoginFalhadas',
+    ultimaFalhaLoginEm: 'ultimaFalhaLoginEm',
+    bloqueadoAte: 'bloqueadoAte',
     role: 'role',
     subRole: 'subRole',
     servico: 'servico',
@@ -184768,6 +184814,9 @@ export namespace Prisma {
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    tentativasLoginFalhadas?: IntFilter<"Utilizador"> | number
+    ultimaFalhaLoginEm?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    bloqueadoAte?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -184912,6 +184961,9 @@ export namespace Prisma {
     mfaSecret?: SortOrderInput | SortOrder
     mfaAtivo?: SortOrder
     passwordExpiresAt?: SortOrderInput | SortOrder
+    tentativasLoginFalhadas?: SortOrder
+    ultimaFalhaLoginEm?: SortOrderInput | SortOrder
+    bloqueadoAte?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
     servico?: SortOrder
@@ -185059,6 +185111,9 @@ export namespace Prisma {
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    tentativasLoginFalhadas?: IntFilter<"Utilizador"> | number
+    ultimaFalhaLoginEm?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    bloqueadoAte?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -185203,6 +185258,9 @@ export namespace Prisma {
     mfaSecret?: SortOrderInput | SortOrder
     mfaAtivo?: SortOrder
     passwordExpiresAt?: SortOrderInput | SortOrder
+    tentativasLoginFalhadas?: SortOrder
+    ultimaFalhaLoginEm?: SortOrderInput | SortOrder
+    bloqueadoAte?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
     servico?: SortOrder
@@ -185231,6 +185289,9 @@ export namespace Prisma {
     mfaSecret?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolWithAggregatesFilter<"Utilizador"> | boolean
     passwordExpiresAt?: DateTimeNullableWithAggregatesFilter<"Utilizador"> | Date | string | null
+    tentativasLoginFalhadas?: IntWithAggregatesFilter<"Utilizador"> | number
+    ultimaFalhaLoginEm?: DateTimeNullableWithAggregatesFilter<"Utilizador"> | Date | string | null
+    bloqueadoAte?: DateTimeNullableWithAggregatesFilter<"Utilizador"> | Date | string | null
     role?: StringWithAggregatesFilter<"Utilizador"> | string
     subRole?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
     servico?: EnumServicoWithAggregatesFilter<"Utilizador"> | $Enums.Servico
@@ -196723,6 +196784,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -196866,6 +196930,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -197009,6 +197076,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -197152,6 +197222,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -197295,6 +197368,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -197315,6 +197391,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -197334,6 +197413,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -210702,6 +210784,9 @@ export namespace Prisma {
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
     passwordExpiresAt?: SortOrder
+    tentativasLoginFalhadas?: SortOrder
+    ultimaFalhaLoginEm?: SortOrder
+    bloqueadoAte?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -210714,6 +210799,7 @@ export namespace Prisma {
   }
 
   export type UtilizadorAvgOrderByAggregateInput = {
+    tentativasLoginFalhadas?: SortOrder
     ordemExperiencia?: SortOrder
   }
 
@@ -210726,6 +210812,9 @@ export namespace Prisma {
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
     passwordExpiresAt?: SortOrder
+    tentativasLoginFalhadas?: SortOrder
+    ultimaFalhaLoginEm?: SortOrder
+    bloqueadoAte?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -210746,6 +210835,9 @@ export namespace Prisma {
     mfaSecret?: SortOrder
     mfaAtivo?: SortOrder
     passwordExpiresAt?: SortOrder
+    tentativasLoginFalhadas?: SortOrder
+    ultimaFalhaLoginEm?: SortOrder
+    bloqueadoAte?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -210758,6 +210850,7 @@ export namespace Prisma {
   }
 
   export type UtilizadorSumOrderByAggregateInput = {
+    tentativasLoginFalhadas?: SortOrder
     ordemExperiencia?: SortOrder
   }
 
@@ -234318,6 +234411,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -234460,6 +234556,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -234607,6 +234706,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -234749,6 +234851,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -238702,6 +238807,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -238844,6 +238952,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -239005,6 +239116,9 @@ export namespace Prisma {
     mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
     mfaAtivo?: BoolFilter<"Utilizador"> | boolean
     passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    tentativasLoginFalhadas?: IntFilter<"Utilizador"> | number
+    ultimaFalhaLoginEm?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
+    bloqueadoAte?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -240815,6 +240929,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -240957,6 +241074,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -243273,6 +243393,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -243415,6 +243538,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -244750,6 +244876,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -244892,6 +245021,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -245224,6 +245356,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -245366,6 +245501,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -245771,6 +245909,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -245913,6 +246054,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -246275,6 +246419,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -246417,6 +246564,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -246627,6 +246777,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -246769,6 +246922,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -246964,6 +247120,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -247106,6 +247265,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -247724,6 +247886,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -247866,6 +248031,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -248024,6 +248192,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -248166,6 +248337,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -248308,6 +248482,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -248450,6 +248627,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -248608,6 +248788,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -248750,6 +248933,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -249059,6 +249245,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -249201,6 +249390,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -249348,6 +249540,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -249490,6 +249685,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -249847,6 +250045,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -249989,6 +250190,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -250142,6 +250346,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -250284,6 +250491,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -250477,6 +250687,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -250619,6 +250832,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -250818,6 +251034,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -250960,6 +251179,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -251269,6 +251491,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -251411,6 +251636,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -251742,6 +251970,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -251884,6 +252115,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -252224,6 +252458,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -252366,6 +252603,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -252734,6 +252974,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -252876,6 +253119,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -253185,6 +253431,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -253327,6 +253576,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -253474,6 +253726,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -253616,6 +253871,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -253978,6 +254236,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -254120,6 +254381,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -254273,6 +254537,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -254415,6 +254682,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -254761,6 +255031,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -254903,6 +255176,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -255050,6 +255326,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -255192,6 +255471,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -255339,6 +255621,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -255481,6 +255766,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -255908,6 +256196,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -256050,6 +256341,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -256203,6 +256497,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -256345,6 +256642,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -256498,6 +256798,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -256640,6 +256943,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -257548,6 +257854,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -257690,6 +257999,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -258082,6 +258394,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -258224,6 +258539,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -258366,6 +258684,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -258508,6 +258829,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -258694,6 +259018,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -258836,6 +259163,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -259195,6 +259525,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -259337,6 +259670,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -259524,6 +259860,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -259666,6 +260005,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -259808,6 +260150,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -259950,6 +260295,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -260097,6 +260445,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -260239,6 +260590,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -260409,6 +260763,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -260551,6 +260908,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -260709,6 +261069,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -260851,6 +261214,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -261004,6 +261370,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -261146,6 +261515,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -261328,6 +261700,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -261470,6 +261845,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -261802,6 +262180,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -261944,6 +262325,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -262091,6 +262475,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -262233,6 +262620,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -262593,6 +262983,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -262735,6 +263128,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -262888,6 +263284,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -263030,6 +263429,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -263339,6 +263741,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -263481,6 +263886,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -263812,6 +264220,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -263954,6 +264365,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -264263,6 +264677,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -264405,6 +264822,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -264736,6 +265156,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -264878,6 +265301,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -265187,6 +265613,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -265329,6 +265758,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -265690,6 +266122,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -265832,6 +266267,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -266329,6 +266767,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -266471,6 +266912,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -266888,6 +267332,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -267030,6 +267477,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -267468,6 +267918,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -267610,6 +268063,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -267757,6 +268213,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -267899,6 +268358,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -268382,6 +268844,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -268524,6 +268989,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -268677,6 +269145,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -268819,6 +269290,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -269241,6 +269715,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -269383,6 +269860,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -269759,6 +270239,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -269901,6 +270384,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -270043,6 +270529,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -270185,6 +270674,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -270343,6 +270835,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -270485,6 +270980,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -271550,6 +272048,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -271692,6 +272193,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -272023,6 +272527,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -272165,6 +272672,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -272474,6 +272984,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -272616,6 +273129,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -272947,6 +273463,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -273089,6 +273608,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -273398,6 +273920,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -273540,6 +274065,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -273871,6 +274399,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -274013,6 +274544,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -274155,6 +274689,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -274297,6 +274834,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -274455,6 +274995,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -274597,6 +275140,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -274739,6 +275285,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -274881,6 +275430,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -275039,6 +275591,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -275181,6 +275736,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -275490,6 +276048,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -275632,6 +276193,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -276014,6 +276578,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -276156,6 +276723,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -276677,6 +277247,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -276819,6 +277392,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -276966,6 +277542,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -277108,6 +277687,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -277255,6 +277837,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -277397,6 +277982,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -277754,6 +278342,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -277896,6 +278487,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -278049,6 +278643,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -278191,6 +278788,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -278344,6 +278944,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -278486,6 +279089,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -278721,6 +279327,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -278863,6 +279472,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -279104,6 +279716,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -279246,6 +279861,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -279555,6 +280173,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -279697,6 +280318,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -279844,6 +280468,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -279986,6 +280613,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -280348,6 +280978,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -280490,6 +281123,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -280643,6 +281279,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -280785,6 +281424,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -281003,6 +281645,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281145,6 +281790,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281292,6 +281940,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281434,6 +282085,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281581,6 +282235,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281723,6 +282380,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -281926,6 +282586,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282068,6 +282731,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282221,6 +282887,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282363,6 +283032,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282516,6 +283188,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282658,6 +283333,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -282967,6 +283645,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -283109,6 +283790,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -283501,6 +284185,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -283643,6 +284330,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -283854,6 +284544,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -283996,6 +284689,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -284154,6 +284850,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -284296,6 +284995,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -284438,6 +285140,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -284580,6 +285285,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -284727,6 +285435,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -284869,6 +285580,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -285027,6 +285741,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -285169,6 +285886,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -285322,6 +286042,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -285464,6 +286187,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -285917,6 +286643,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286059,6 +286788,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286206,6 +286938,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286348,6 +287083,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286495,6 +287233,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286637,6 +287378,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -286840,6 +287584,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -286982,6 +287729,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -287135,6 +287885,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -287277,6 +288030,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -287430,6 +288186,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -287572,6 +288331,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -287830,6 +288592,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -287972,6 +288737,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -288175,6 +288943,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -288317,6 +289088,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -288498,6 +289272,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -288640,6 +289417,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -288787,6 +289567,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -288929,6 +289712,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -289132,6 +289918,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -289274,6 +290063,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -289427,6 +290219,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -289569,6 +290364,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -289831,6 +290629,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -289973,6 +290774,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -290209,6 +291013,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -290351,6 +291158,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -290660,6 +291470,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -290802,6 +291615,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -291165,6 +291981,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -291307,6 +292126,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -291659,6 +292481,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -291801,6 +292626,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -292165,6 +292993,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -292307,6 +293138,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -292616,6 +293450,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -292758,6 +293595,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -292905,6 +293745,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -293047,6 +293890,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -293378,6 +294224,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -293520,6 +294369,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -293673,6 +294525,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -293815,6 +294670,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -293957,6 +294815,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -294099,6 +294960,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -294257,6 +295121,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -294399,6 +295266,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -294541,6 +295411,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -294683,6 +295556,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -294830,6 +295706,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -294972,6 +295851,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -295158,6 +296040,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -295300,6 +296185,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -295453,6 +296341,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -295595,6 +296486,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -295989,6 +296883,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -296131,6 +297028,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -296278,6 +297178,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -296420,6 +297323,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -296751,6 +297657,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -296893,6 +297802,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -297046,6 +297958,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -297188,6 +298103,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -297497,6 +298415,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -297639,6 +298560,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -297970,6 +298894,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -298112,6 +299039,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -298254,6 +299184,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -298396,6 +299329,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -298543,6 +299479,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -298685,6 +299624,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -298867,6 +299809,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -299009,6 +299954,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -299162,6 +300110,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -299304,6 +300255,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -299495,6 +300449,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -299637,6 +300594,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -299834,6 +300794,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -299976,6 +300939,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -300118,6 +301084,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -300260,6 +301229,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -300407,6 +301379,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -300549,6 +301524,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -300707,6 +301685,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -300849,6 +301830,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -301002,6 +301986,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -301144,6 +302131,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -301453,6 +302443,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -301595,6 +302588,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -301926,6 +302922,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -302068,6 +303067,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -302428,6 +303430,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -302570,6 +303575,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -303016,6 +304024,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -303158,6 +304169,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -303457,6 +304471,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -303599,6 +304616,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -303798,6 +304818,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -303940,6 +304963,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -304292,6 +305318,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -304434,6 +305463,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -304592,6 +305624,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -304734,6 +305769,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -305043,6 +306081,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -305185,6 +306226,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -305516,6 +306560,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -305658,6 +306705,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -305881,6 +306931,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -306023,6 +307076,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -306170,6 +307226,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -306312,6 +307371,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -306505,6 +307567,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -306647,6 +307712,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -306800,6 +307868,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -306942,6 +308013,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -307084,6 +308158,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -307226,6 +308303,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -307373,6 +308453,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -307515,6 +308598,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -307673,6 +308759,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -307815,6 +308904,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -307968,6 +309060,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -308110,6 +309205,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -308252,6 +309350,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -308394,6 +309495,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -308541,6 +309645,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -308683,6 +309790,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -308830,6 +309940,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -308972,6 +310085,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -309130,6 +310246,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -309272,6 +310391,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -309425,6 +310547,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -309567,6 +310692,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -309720,6 +310848,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -309862,6 +310993,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -310004,6 +311138,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -310146,6 +311283,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -310304,6 +311444,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -310446,6 +311589,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -310755,6 +311901,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -310897,6 +312046,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -311228,6 +312380,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -311370,6 +312525,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -311679,6 +312837,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -311821,6 +312982,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -312152,6 +313316,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -312294,6 +313461,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -312436,6 +313606,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -312578,6 +313751,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -312725,6 +313901,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -312867,6 +314046,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -313025,6 +314207,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -313167,6 +314352,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -313320,6 +314508,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -313462,6 +314653,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -313604,6 +314798,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -313746,6 +314943,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -313904,6 +315104,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -314046,6 +315249,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -314355,6 +315561,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -314497,6 +315706,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -314644,6 +315856,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -314786,6 +316001,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -315161,6 +316379,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -315303,6 +316524,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -315456,6 +316680,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -315598,6 +316825,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -315756,6 +316986,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -315898,6 +317131,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -316223,6 +317459,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -316365,6 +317604,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -316847,6 +318089,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -316989,6 +318234,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -317348,6 +318596,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -317490,6 +318741,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -317671,6 +318925,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -317813,6 +319070,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -318000,6 +319260,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -318142,6 +319405,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -318451,6 +319717,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -318593,6 +319862,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -318924,6 +320196,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -319066,6 +320341,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -319375,6 +320653,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -319517,6 +320798,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -319848,6 +321132,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -319990,6 +321277,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -320132,6 +321422,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -320274,6 +321567,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -320432,6 +321728,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -320574,6 +321873,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -320716,6 +322018,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -320858,6 +322163,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -321016,6 +322324,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -321158,6 +322469,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -321467,6 +322781,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -321609,6 +322926,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -321756,6 +323076,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -321898,6 +323221,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -322229,6 +323555,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -322371,6 +323700,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -322524,6 +323856,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -322666,6 +324001,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -323995,6 +325333,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -324137,6 +325478,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -324284,6 +325628,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -324426,6 +325773,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -324757,6 +326107,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -324899,6 +326252,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -325052,6 +326408,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -325194,6 +326553,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -325336,6 +326698,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -325478,6 +326843,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -325625,6 +326993,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -325767,6 +327138,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -325925,6 +327299,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -326067,6 +327444,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -326220,6 +327600,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -326362,6 +327745,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -326671,6 +328057,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -326813,6 +328202,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -327144,6 +328536,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -327286,6 +328681,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -328036,6 +329434,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -328178,6 +329579,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -328325,6 +329729,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -328467,6 +329874,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -328833,6 +330243,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -328975,6 +330388,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -329128,6 +330544,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -329270,6 +330689,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -329412,6 +330834,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -329554,6 +330979,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -329712,6 +331140,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -329854,6 +331285,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -330163,6 +331597,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -330305,6 +331742,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -330636,6 +332076,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -330778,6 +332221,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -331087,6 +332533,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -331229,6 +332678,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -331560,6 +333012,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -331702,6 +333157,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -331897,6 +333355,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -332039,6 +333500,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -332256,6 +333720,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -332398,6 +333865,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -332540,6 +334010,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -332682,6 +334155,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -332840,6 +334316,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -332982,6 +334461,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -333719,6 +335201,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -333861,6 +335346,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -334192,6 +335680,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -334334,6 +335825,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -334476,6 +335970,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -334618,6 +336115,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -334776,6 +336276,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -334918,6 +336421,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -335227,6 +336733,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -335369,6 +336878,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -335700,6 +337212,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -335842,6 +337357,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -335984,6 +337502,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -336126,6 +337647,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -336284,6 +337808,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -336426,6 +337953,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -336568,6 +338098,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -336710,6 +338243,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -336868,6 +338404,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -337010,6 +338549,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -337319,6 +338861,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -337461,6 +339006,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -337608,6 +339156,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -337750,6 +339301,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -338081,6 +339635,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -338223,6 +339780,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -338376,6 +339936,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -338518,6 +340081,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -338660,6 +340226,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -338802,6 +340371,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -338960,6 +340532,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -339102,6 +340677,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -341629,6 +343207,9 @@ export namespace Prisma {
     mfaSecret?: string | null
     mfaAtivo?: boolean
     passwordExpiresAt?: Date | string | null
+    tentativasLoginFalhadas?: number
+    ultimaFalhaLoginEm?: Date | string | null
+    bloqueadoAte?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -345194,6 +346775,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -345336,6 +346920,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -345478,6 +347065,9 @@ export namespace Prisma {
     mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
     mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
     passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tentativasLoginFalhadas?: IntFieldUpdateOperationsInput | number
+    ultimaFalhaLoginEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bloqueadoAte?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico

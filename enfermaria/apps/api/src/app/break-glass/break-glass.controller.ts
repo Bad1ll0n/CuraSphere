@@ -20,7 +20,7 @@ export class BreakGlassController {
     @Body() dto: AtivarBreakGlassDto,
     @Request() req: any,
   ) {
-    const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
+    const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
     return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
   }
 
