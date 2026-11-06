@@ -17,6 +17,7 @@ import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
 import { AtribuirCamaDto } from './dto/atribuir-cama.dto';
 import { AssinarCartaAltaDto, ReverCartaAltaDto } from './dto/carta-alta.dto';
 import { CartaAltaService } from './carta-alta.service';
+import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
 import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
@@ -30,6 +31,7 @@ export class DoenteController {
     private readonly doenteService: DoenteService,
     private readonly pdfService: PdfService,
     private readonly cartaAlta: CartaAltaService,
+    private readonly leituras: AcessoLeituraService,
   ) {}
 
   @Get()
@@ -58,11 +60,24 @@ export class DoenteController {
     );
   }
 
+  // SEC-09: trilho de acessos ao processo de um doente (DPO / auditoria interna).
+  @Roles('qualidade', 'direcao', 'ti')
+  @Get(':id/acessos')
+  listarAcessos(@Param('id') id: string, @Query('pagina') pagina?: string, @Query('limite') limite?: string) {
+    return this.leituras.listarPorDoente(id, { pagina: Number(pagina) || 1, limite: Number(limite) || 50 });
+  }
+
   @Roles('direcao', 'chefe_enfermeiros', 'qualidade')
   @Header('Content-Type', 'text/csv; charset=utf-8')
   @Header('Content-Disposition', 'attachment; filename="doentes.csv"')
   @Get('export')
-  async exportarCsv(@Res() res: Response) {
+  async exportarCsv(@Res() res: Response, @Request() req: any) {
+    // SEC-09: exportação de TODOS os doentes — o acesso mais amplo que existe; fica registado.
+    this.leituras.registar({
+      utilizadorId: req.user.sub, utilizadorNome: req.user.nome ?? null, utilizadorRole: req.user.role ?? null,
+      entidadeTipo: 'doentes', entidadeId: null, rota: 'GET /doentes/export (todos os doentes)',
+      ip: req.ip ?? null, correlationId: (req.headers?.['x-correlation-id'] as string) ?? null, resultado: 'concedido',
+    });
     const csv = await this.doenteService.exportarCsv();
     res.send(csv);
   }

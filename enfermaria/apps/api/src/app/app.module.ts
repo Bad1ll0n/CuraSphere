@@ -4,6 +4,7 @@ import { CsrfMiddleware } from './common/csrf.middleware';
 import { IdempotencyInterceptor } from './common/idempotency.interceptor';
 import { TenantMiddleware } from './prisma/tenant.middleware';
 import { RequestContextMiddleware } from './prisma/request-context.middleware';
+import { ContextoPedidoInterceptor } from './prisma/contexto-pedido.interceptor';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
@@ -146,6 +147,9 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     AppService,
     // A idempotência corre ANTES da auditoria: um reenvio reconhecido devolve a resposta
     // guardada sem executar nada, e não deve aparecer no registo como um novo acto.
+    // SEC-07: primeiro de todos — preenche o "quem" e o tenant a partir de `req.user`
+    // (sessão já verificada pelos guards) antes de qualquer outro interceptor ou escrita.
+    { provide: APP_INTERCEPTOR, useClass: ContextoPedidoInterceptor },
     { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerPorUtilizadorGuard },

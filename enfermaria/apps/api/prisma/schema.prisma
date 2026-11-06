@@ -1188,6 +1188,8 @@ model AcessoLeitura {
   rota           String?
   ip             String?
   correlationId  String?
+  // SEC-09: 'concedido' | 'negado' — um acesso recusado também é um acesso a registar.
+  resultado      String?
   createdAt      DateTime @default(now())
 
   @@index([utilizadorId, createdAt])

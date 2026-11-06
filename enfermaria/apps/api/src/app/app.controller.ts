@@ -4,6 +4,7 @@ import { randomBytes } from 'crypto';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from './prisma/prisma.service';
 import { RedisService } from './redis/redis.service';
+import { AuditoriaInstaladaService } from './common/auditoria-instalada.service';
 
 type ComponentStatus = { status: 'up' | 'down' };
 
@@ -13,6 +14,7 @@ export class AppController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly auditoria: AuditoriaInstaladaService,
   ) {}
 
   @Get()
@@ -60,6 +62,19 @@ export class AppController {
       else degraded['redis'] = { status: 'down' };
     } catch {
       degraded['redis'] = { status: 'down' };
+    }
+
+    // QA-13: trilho de auditoria. Sem ele as escritas continuam a funcionar, mas sem prova de
+    // quem fez o quê — reportado como erro para o alarme disparar (o arranque em produção já
+    // recusa sem triggers; isto apanha um trigger removido depois).
+    // Em produção é crítico (503); noutros ambientes (CI de carga, dev sem triggers) é degradado.
+    const semAuditoria = process.env['NODE_ENV'] === 'production' ? error : degraded;
+    try {
+      const a = await this.auditoria.verificar();
+      if (a.funcao && a.tabelasSemTrigger.length === 0) info['audit'] = { status: 'up' };
+      else semAuditoria['audit'] = { status: 'down' };
+    } catch {
+      semAuditoria['audit'] = { status: 'down' };
     }
 
     const critico = Object.keys(error).length > 0;
