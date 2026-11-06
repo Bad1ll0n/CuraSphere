@@ -67,9 +67,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Prisma db push + generate
+      - name: Prisma migrate deploy + generate
         run: |
-          pnpm exec prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          pnpm exec prisma migrate deploy --schema apps/api/prisma/schema.prisma
           pnpm exec prisma generate --schema apps/api/prisma/schema.prisma
 
       # Sem os triggers, as escritas do teste de carga não pagam o custo real da

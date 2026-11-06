@@ -203,15 +203,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # O projecto NÃO tem directório de migrations (workflow db-push-only), por
-      # isso `prisma migrate deploy` não fazia nada; com `continue-on-error: true`
-      # falhava em silêncio e o ZAP acabava a fazer scan a uma API sem schema —
-      # quase todos os endpoints a responder 500 e o scan sem valor.
-      # `db push` é o comando correcto neste projecto, e sem continue-on-error
-      # para que um schema partido seja visível em vez de mascarado.
-      - name: Prisma db push + generate
+      # ARQ-11: as migrações versionadas (apps/api/prisma/migrations) criam o schema,
+      # como em produção. Sem continue-on-error: um schema partido tem de ser visível
+      # (antes o ZAP chegou a fazer scan a uma API sem schema, tudo a responder 500).
+      - name: Prisma migrate deploy + generate
         run: |
-          pnpm exec prisma db push --schema apps/api/prisma/schema.prisma --accept-data-loss
+          pnpm exec prisma migrate deploy --schema apps/api/prisma/schema.prisma
           pnpm exec prisma generate --schema apps/api/prisma/schema.prisma
 
       # Os triggers de auditoria não vêm do schema Prisma — sem eles a superfície

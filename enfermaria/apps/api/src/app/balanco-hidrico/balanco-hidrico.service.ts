@@ -41,7 +41,7 @@ export class BalancoHidricoService {
     const fim = new Date(somarDiasClinicos(inicio, 1).getTime() - 1);
 
     const registos = await this.prisma.balancoHidrico.findMany({
-      where: { doenteId, data: { gte: inicio, lte: fim } },
+      where: { doenteId, deletedAt: null, data: { gte: inicio, lte: fim } },
       orderBy: { data: 'asc' },
       include: { registadoPor: { select: { id: true, nome: true } } },
     });
@@ -56,7 +56,7 @@ export class BalancoHidricoService {
     const inicio = inicioDoDiaClinicoHaDias(diasSeguro - 1);
 
     const registos = await this.prisma.balancoHidrico.findMany({
-      where: { doenteId, data: { gte: inicio } },
+      where: { doenteId, deletedAt: null, data: { gte: inicio } },
       orderBy: { data: 'asc' },
     });
 
@@ -78,13 +78,17 @@ export class BalancoHidricoService {
     return Object.entries(porDia).map(([data, v]) => ({ data, ...v }));
   }
 
-  async apagar(id: string, userId: string, role: string) {
+  async apagar(id: string, userId: string, role: string, motivo: string) {
     const registo = await this.prisma.balancoHidrico.findUnique({ where: { id } });
-    if (!registo) throw new NotFoundException('Registo não encontrado');
+    if (!registo || registo.deletedAt) throw new NotFoundException('Registo não encontrado');
     if (registo.registadoPorId !== userId && !['medico', 'chefe_enfermeiros', 'chefe_turno'].includes(role)) {
       throw new ForbiddenException('Só pode apagar os seus próprios registos');
     }
-    return this.prisma.balancoHidrico.delete({ where: { id } });
+    // ARQ-04: remoção lógica — o registo e o motivo ficam no processo.
+    return this.prisma.balancoHidrico.update({
+      where: { id },
+      data: { deletedAt: new Date(), removidoPorId: userId, motivoRemocao: motivo },
+    });
   }
 
   private calcularResumo(registos: { tipo: string; categoria: string; quantidade: number }[]) {
