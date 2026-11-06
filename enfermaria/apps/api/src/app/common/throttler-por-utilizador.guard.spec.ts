@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { randomBytes } from 'crypto';
 import { ThrottlerPorUtilizadorGuard } from './throttler-por-utilizador.guard';
 import { JWT_ISSUER } from '../auth/token-audiences';
 
@@ -7,7 +8,8 @@ import { JWT_ISSUER } from '../auth/token-audiences';
  * Estes testes fixam a chave: utilizador de uma sessão VERIFICADA, ou o IP.
  */
 describe('ThrottlerPorUtilizadorGuard — chave do limite', () => {
-  const SEGREDO = 'segredo-de-teste-com-pelo-menos-32-caracteres!!';
+  // Gerado por execução — um literal aqui é um "segredo no código" para o Semgrep.
+  const SEGREDO = randomBytes(32).toString('hex');
   let anterior: string | undefined;
   const guard = Object.create(ThrottlerPorUtilizadorGuard.prototype) as any;
   const chave = (req: Record<string, any>) => guard.getTracker(req);
@@ -39,7 +41,7 @@ describe('ThrottlerPorUtilizadorGuard — chave do limite', () => {
   });
 
   it('um token com assinatura inválida NÃO escolhe o balde (cai no IP) — nunca se confia num JWT só descodificado', async () => {
-    const forjado = token({}, 'outro-segredo-qualquer-com-32-caracteres!!');
+    const forjado = token({}, randomBytes(32).toString('hex'));
     await expect(chave({ ip: '10.0.0.5', cookies: { access_token: forjado } })).resolves.toBe('ip:10.0.0.5');
   });
 
