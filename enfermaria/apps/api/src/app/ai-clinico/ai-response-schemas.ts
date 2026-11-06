@@ -65,7 +65,7 @@ export function parseWithSchema<T>(
   fallback: T,
 ): T {
   try {
-    const match = texto.match(/[\[{][\s\S]*/);
+    const match = texto.match(/[[{][\s\S]*/);
     if (!match) return fallback;
     const jsonMatch = texto.match(/\{[\s\S]*\}/);
     if (!jsonMatch) return fallback;

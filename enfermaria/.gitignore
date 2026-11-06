@@ -78,3 +78,6 @@ apps/**/.env.local
 # OPS-01: credenciais do rclone para a cópia de backups fora do host
 backup-remoto/
 backups/
+
+# ARQ-10: cliente Prisma gerado — regenerado pelo target Nx `prisma-generate`
+apps/api/src/generated/
