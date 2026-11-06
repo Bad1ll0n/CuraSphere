@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { CriarProtocoloDto } from './dto/criar-protocolo.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('protocolos')
@@ -22,18 +23,21 @@ export class ProtocolosController {
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar')
+  @AcessoDoentePor('itemProtocolo', 'itemId', 'protocolo.doenteId')
   @Patch('item/:itemId/concluir')
   concluirItem(@Param('itemId') itemId: string, @Request() req: any) {
     return this.service.concluirItem(itemId, req.user.sub);
   }
 
   @Roles('medico')
+  @AcessoDoentePor('protocoloClinico')
   @Patch(':id/concluir')
   concluir(@Param('id') id: string) {
     return this.service.concluir(id);
   }
 
   @Roles('medico')
+  @AcessoDoentePor('protocoloClinico')
   @Patch(':id/cancelar')
   cancelar(@Param('id') id: string) {
     return this.service.cancelar(id);

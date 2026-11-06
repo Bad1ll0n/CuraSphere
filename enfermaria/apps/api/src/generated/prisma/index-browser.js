@@ -149,6 +149,9 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   mfaSecretPendente: 'mfaSecretPendente',
   versaoSessao: 'versaoSessao',
   passwordExpiresAt: 'passwordExpiresAt',
+  tentativasLoginFalhadas: 'tentativasLoginFalhadas',
+  ultimaFalhaLoginEm: 'ultimaFalhaLoginEm',
+  bloqueadoAte: 'bloqueadoAte',
   role: 'role',
   subRole: 'subRole',
   servico: 'servico',
@@ -174,6 +177,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   nome: 'nome',
+  nomeBusca: 'nomeBusca',
   dataNascimento: 'dataNascimento',
   numeroProcesso: 'numeroProcesso',
   estado: 'estado',
@@ -648,7 +652,10 @@ exports.Prisma.AlergiaScalarFieldEnum = {
   tipo: 'tipo',
   severidade: 'severidade',
   notas: 'notas',
-  criadaEm: 'criadaEm'
+  criadaEm: 'criadaEm',
+  deletedAt: 'deletedAt',
+  removidaPorId: 'removidaPorId',
+  motivoRemocao: 'motivoRemocao'
 };
 
 exports.Prisma.ContactoEmergenciaScalarFieldEnum = {

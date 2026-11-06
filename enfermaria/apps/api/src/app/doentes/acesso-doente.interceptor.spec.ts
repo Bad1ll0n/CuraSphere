@@ -1,4 +1,6 @@
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { ACESSO_DOENTE_ISENTO, ACESSO_DOENTE_POR } from './acesso-doente.decorator';
 import { firstValueFrom, of } from 'rxjs';
 import { AcessoDoenteInterceptor } from './acesso-doente.interceptor';
 
@@ -6,10 +8,15 @@ import { AcessoDoenteInterceptor } from './acesso-doente.interceptor';
  * S-01: o `assertAcessoDoente` estava aplicado à mão em 26 de 44 controladores. Estes testes
  * fixam as regras do interceptor que o passou a aplicar a todas as rotas.
  */
-function contexto(req: Record<string, unknown>) {
+/** `meta`: metadados de decorators (`@AcessoDoentePor`, `@AcessoDoenteIsento`) no handler. */
+function contexto(req: Record<string, unknown>, meta: Record<string, unknown> = {}) {
+  const handler = () => undefined;
+  for (const [chave, valor] of Object.entries(meta)) Reflect.defineMetadata(chave, valor, handler);
   return {
     getType: () => 'http',
     switchToHttp: () => ({ getRequest: () => req }),
+    getHandler: () => handler,
+    getClass: () => class {},
   } as any;
 }
 
@@ -17,17 +24,22 @@ const enfermeira = { sub: 'enf-1', role: 'enfermeiro', tipoToken: 'pessoal' };
 
 describe('AcessoDoenteInterceptor', () => {
   let doentes: { assertAcessoDoente: jest.Mock };
+  let prisma: Record<string, { findUnique: jest.Mock }>;
   let interceptor: AcessoDoenteInterceptor;
   let handler: { handle: jest.Mock };
 
   beforeEach(() => {
     doentes = { assertAcessoDoente: jest.fn().mockResolvedValue(undefined) };
-    interceptor = new AcessoDoenteInterceptor(doentes as any);
+    prisma = {
+      medicacao: { findUnique: jest.fn() },
+      fotoFerida: { findUnique: jest.fn() },
+    };
+    interceptor = new AcessoDoenteInterceptor(doentes as any, new Reflector(), prisma as any);
     handler = { handle: jest.fn(() => of('resposta')) };
   });
 
-  const correr = async (req: Record<string, unknown>) =>
-    firstValueFrom(await interceptor.intercept(contexto(req), handler as any));
+  const correr = async (req: Record<string, unknown>, meta: Record<string, unknown> = {}) =>
+    firstValueFrom(await interceptor.intercept(contexto(req, meta), handler as any));
 
   it('não interfere em rotas sem doente', async () => {
     await expect(correr({ params: {}, query: {}, user: enfermeira })).resolves.toBe('resposta');
@@ -85,6 +97,100 @@ describe('AcessoDoenteInterceptor', () => {
     await expect(
       correr({ params: { doenteId: 'd2' }, query: {}, user: doenteNoPortal }),
     ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  describe('doente no corpo do pedido (QA-01, QA-10, SEC-01)', () => {
+    it('verifica o doenteId do corpo — prescrever ou criar acesso ao portal sem acesso ao doente', async () => {
+      doentes.assertAcessoDoente.mockRejectedValue(new ForbiddenException('Sem permissão'));
+
+      await expect(
+        correr({ params: {}, query: {}, body: { doenteId: 'd7', email: 'x@y.pt' }, user: enfermeira }),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd7');
+      expect(handler.handle).not.toHaveBeenCalled();
+    });
+
+    it('verifica todos os doentes de uma lista doenteIds', async () => {
+      await correr({ params: {}, query: {}, body: { doenteIds: ['d1', 'd2'] }, user: enfermeira });
+
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledTimes(2);
+    });
+
+    it('não repete a verificação quando o mesmo doente vem no caminho e no corpo', async () => {
+      await correr({ params: { doenteId: 'd1' }, query: {}, body: { doenteId: 'd1' }, user: enfermeira });
+
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledTimes(1);
+    });
+
+    it('uma rota isenta (ex.: break-glass) não verifica o corpo — mas continua a verificar o caminho', async () => {
+      const isenta = { [ACESSO_DOENTE_ISENTO]: 'break-glass' };
+
+      await correr({ params: {}, query: {}, body: { doenteId: 'd7' }, user: enfermeira }, isenta);
+      expect(doentes.assertAcessoDoente).not.toHaveBeenCalled();
+
+      await correr({ params: { doenteId: 'd8' }, query: {}, body: { doenteId: 'd7' }, user: enfermeira }, isenta);
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd8');
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('entidade clínica identificada pelo seu id (@AcessoDoentePor)', () => {
+    const porMedicacao = { [ACESSO_DOENTE_POR]: { modelo: 'medicacao', parametro: 'id', campo: 'doenteId' } };
+
+    it('resolve a medicação até ao doente e verifica-o — administrar sem atribuição (QA-01)', async () => {
+      prisma.medicacao.findUnique.mockResolvedValue({ doenteId: 'd5' });
+      doentes.assertAcessoDoente.mockRejectedValue(new ForbiddenException('Sem permissão'));
+
+      await expect(
+        correr({ params: { id: 'm1' }, query: {}, body: {}, user: enfermeira }, porMedicacao),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.medicacao.findUnique).toHaveBeenCalledWith({ where: { id: 'm1' }, select: { doenteId: true } });
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd5');
+      expect(handler.handle).not.toHaveBeenCalled();
+    });
+
+    it('segue uma relação quando o doente está noutra entidade (foto → avaliação → doente)', async () => {
+      prisma.fotoFerida.findUnique.mockResolvedValue({ avaliacao: { doenteId: 'd6' } });
+      const porFoto = { [ACESSO_DOENTE_POR]: { modelo: 'fotoFerida', parametro: 'fotoId', campo: 'avaliacao.doenteId' } };
+
+      await correr({ params: { fotoId: 'f1' }, query: {}, user: enfermeira }, porFoto);
+
+      expect(prisma.fotoFerida.findUnique).toHaveBeenCalledWith({
+        where: { id: 'f1' },
+        select: { avaliacao: { select: { doenteId: true } } },
+      });
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd6');
+    });
+
+    it('entidade inexistente → 404 antes do handler', async () => {
+      prisma.medicacao.findUnique.mockResolvedValue(null);
+
+      await expect(
+        correr({ params: { id: 'nao-existe' }, query: {}, user: enfermeira }, porMedicacao),
+      ).rejects.toBeInstanceOf(NotFoundException);
+      expect(handler.handle).not.toHaveBeenCalled();
+    });
+
+    it('rota da mesma classe sem o parâmetro não é afetada', async () => {
+      await expect(correr({ params: {}, query: {}, user: enfermeira }, porMedicacao)).resolves.toBe('resposta');
+      expect(prisma.medicacao.findUnique).not.toHaveBeenCalled();
+    });
+
+    it('o doente no portal só mexe em entidades suas', async () => {
+      prisma.medicacao.findUnique.mockResolvedValue({ doenteId: 'd2' });
+
+      await expect(
+        correr({ params: { id: 'm1' }, query: {}, user: { sub: 'p1', doenteId: 'd1', tipo: 'portal' } }, porMedicacao),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
+
+    it('modelo mal escrito no decorator falha fechado', async () => {
+      const errado = { [ACESSO_DOENTE_POR]: { modelo: 'naoExiste', parametro: 'id', campo: 'doenteId' } };
+
+      await expect(
+        correr({ params: { id: 'x' }, query: {}, user: enfermeira }, errado),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
   });
 
   it('sem identidade, deixa a decisão ao guard da própria rota (quiosque)', async () => {

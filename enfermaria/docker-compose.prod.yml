@@ -285,7 +285,9 @@ services:
       HOSPITAL_GEOFENCE_METROS: ${HOSPITAL_GEOFENCE_METROS:-500}
 
       # ── Limites de pedidos e observabilidade ───────────────────────────────
-      THROTTLE_LIMIT:          ${THROTTLE_LIMIT:-60}
+      THROTTLE_LIMIT:          ${THROTTLE_LIMIT:-600}
+      # Proxies de confiança para o req.ip (nginx na rede Docker). Ver main.ts.
+      TRUST_PROXY:             ${TRUST_PROXY:-loopback, linklocal, uniquelocal}
       LOGIN_THROTTLE_LIMIT:    ${LOGIN_THROTTLE_LIMIT:-5}
       MFA_THROTTLE_LIMIT:      ${MFA_THROTTLE_LIMIT:-10}
       LOG_PRETTY:              ${LOG_PRETTY:-false}

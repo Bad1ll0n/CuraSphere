@@ -29,6 +29,10 @@ export const MAX_FALHAS_MFA_CONTA = 10;
 const JANELA_FALHAS_MFA_MS = 15 * 60 * 1000;
 const VALIDADE_DESAFIO_MFA_MS = 5 * 60 * 1000;
 
+/** Bloqueio de conta: 5 falhas numa janela de 15 min → bloqueada 15 min. */
+const MAX_FALHAS_LOGIN = 5;
+const JANELA_FALHAS_MS = 15 * 60 * 1000;
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -104,28 +108,44 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    const lockKey = `login:lock:${utilizador.id}`;
-    const failKey = `login:fail:${utilizador.id}`;
-    const lockAtivo = await this.redis.get<string>(lockKey);
-    if (lockAtivo) {
+    // SEC-08: bloqueio de conta em Postgres. Era em Redis, e sem Redis o `get` devolvia
+    // `null` — o bloqueio desligava-se em silêncio (verificado: 8 falhas e a 9.ª entrava).
+    const agora = new Date();
+    if (utilizador.bloqueadoAte && utilizador.bloqueadoAte > agora) {
       throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
     }
 
     const passwordValida = await verifyPassword(password, utilizador.passwordHash);
     if (!passwordValida) {
-      const falhas = (await this.redis.get<number>(failKey) ?? 0) + 1;
-      if (falhas >= 5) {
-        await this.redis.set(lockKey, '1', 900);
-        await this.redis.del(failKey);
+      // As falhas contam numa janela de 15 min a partir da última; fora dela recomeçam em 1.
+      const naJanela =
+        utilizador.ultimaFalhaLoginEm && agora.getTime() - utilizador.ultimaFalhaLoginEm.getTime() < JANELA_FALHAS_MS;
+      const { tentativasLoginFalhadas: falhas } = await this.prisma.utilizador.update({
+        where: { id: utilizador.id },
+        data: {
+          tentativasLoginFalhadas: naJanela ? { increment: 1 } : 1,
+          ultimaFalhaLoginEm: agora,
+        },
+        select: { tentativasLoginFalhadas: true },
+      });
+      if (falhas >= MAX_FALHAS_LOGIN) {
+        await this.prisma.utilizador.update({
+          where: { id: utilizador.id },
+          data: { bloqueadoAte: new Date(agora.getTime() + JANELA_FALHAS_MS), tentativasLoginFalhadas: 0 },
+        });
         this.logger.warn(`Conta bloqueada por excesso de falhas: ${utilizador.numeroFuncionario}`);
         throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
       }
-      await this.redis.set(failKey, falhas, 900);
-      this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/5)`);
+      this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/${MAX_FALHAS_LOGIN})`);
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    await this.redis.del(failKey);
+    if (utilizador.tentativasLoginFalhadas > 0 || utilizador.bloqueadoAte) {
+      await this.prisma.utilizador.update({
+        where: { id: utilizador.id },
+        data: { tentativasLoginFalhadas: 0, ultimaFalhaLoginEm: null, bloqueadoAte: null },
+      });
+    }
 
     this.anomaly.verificarIpLogin(utilizador.id, ip);
 

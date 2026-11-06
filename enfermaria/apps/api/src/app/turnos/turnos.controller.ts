@@ -10,6 +10,7 @@ import { CheckInDto } from './dto/check-in.dto';
 import { NotaTurnoDto } from './dto/nota-turno.dto';
 import { CriarTurnoDto } from './dto/criar-turno.dto';
 import { AtribuirDoentesTurnoDto } from './dto/atribuir-doentes-turno.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -34,7 +35,7 @@ export class TurnosController {
     @Request() req: any,
     @Body() dto: CheckInDto = {},
   ) {
-    const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
+    const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
     return this.turnosService.checkIn(req.user.sub, {
       lat: dto.lat,
       lon: dto.lon,
@@ -59,6 +60,7 @@ export class TurnosController {
   }
 
   @Roles('enfermeiro')
+  @AcessoDoenteIsento('atribuição: é o ato que cria a relação do profissional com o doente')
   @Post(':id/atribuir-doentes')
   atribuirDoentes(
     @Param('id') turnoId: string,

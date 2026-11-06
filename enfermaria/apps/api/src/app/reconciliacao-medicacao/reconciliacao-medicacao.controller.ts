@@ -3,8 +3,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ReconciliacaoMedicacaoService, CriarReconciliacaoDto } from './reconciliacao-medicacao.service';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('reconciliacaoMedicacao')
 @Controller('reconciliacao-medicacao')
 export class ReconciliacaoMedicacaoController {
   constructor(private readonly service: ReconciliacaoMedicacaoService) {}

@@ -63,6 +63,11 @@ model Utilizador {
   // Os access tokens levam-na na claim `sv`; a JwtStrategy recusa os de versão antiga.
   versaoSessao      Int       @default(0)
   passwordExpiresAt DateTime?
+  // Bloqueio de conta por tentativas falhadas (SEC-08): em Postgres, não em Redis — sem
+  // Redis o bloqueio desligava-se em silêncio e a força bruta passava.
+  tentativasLoginFalhadas Int       @default(0)
+  ultimaFalhaLoginEm      DateTime?
+  bloqueadoAte            DateTime?
   role              String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
   subRole           String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
   servico           Servico   @default(internamento)
@@ -255,6 +260,7 @@ model Doente {
   id                   String       @id @default(uuid())
   tenantId             String       @default("default")
   nome                 String
+  nomeBusca            String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
   dataNascimento       DateTime?
   numeroProcesso       String       @unique
   estado               EstadoDoente @default(estavel)
@@ -1217,6 +1223,11 @@ model Alergia {
   severidade String
   notas      String?
   criadaEm   DateTime @default(now())
+  // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
+  // mas fica o registo de quem a removeu e porquê.
+  deletedAt     DateTime?
+  removidaPorId String?
+  motivoRemocao String?
 
   medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 
