@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { AuditService } from './audit.service';
 import { AuditCheckpointService } from './audit-checkpoint.service';
 import { AcessoLeituraService } from './acesso-leitura.service';
+import { AuditoriaInstaladaService } from './auditoria-instalada.service';
 
 /**
  * @Global. AuditService (eventos não-escrita), AuditCheckpointService (prova tamper-proof) e
@@ -9,7 +10,7 @@ import { AcessoLeituraService } from './acesso-leitura.service';
  */
 @Global()
 @Module({
-  providers: [AuditService, AuditCheckpointService, AcessoLeituraService],
-  exports: [AuditService, AuditCheckpointService, AcessoLeituraService],
+  providers: [AuditService, AuditCheckpointService, AcessoLeituraService, AuditoriaInstaladaService],
+  exports: [AuditService, AuditCheckpointService, AcessoLeituraService, AuditoriaInstaladaService],
 })
 export class AuditModule {}

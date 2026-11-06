@@ -27,6 +27,8 @@ describe('AcessoDoenteInterceptor', () => {
   let prisma: Record<string, { findUnique: jest.Mock }>;
   let interceptor: AcessoDoenteInterceptor;
   let handler: { handle: jest.Mock };
+  let leituras: { registar: jest.Mock };
+  let anomalia: { rastrearAcessoDoente: jest.Mock };
 
   beforeEach(() => {
     doentes = { assertAcessoDoente: jest.fn().mockResolvedValue(undefined) };
@@ -34,12 +36,40 @@ describe('AcessoDoenteInterceptor', () => {
       medicacao: { findUnique: jest.fn() },
       fotoFerida: { findUnique: jest.fn() },
     };
-    interceptor = new AcessoDoenteInterceptor(doentes as any, new Reflector(), prisma as any);
+    leituras = { registar: jest.fn() };
+    anomalia = { rastrearAcessoDoente: jest.fn() };
+    interceptor = new AcessoDoenteInterceptor(doentes as any, new Reflector(), prisma as any, leituras as any, anomalia as any);
     handler = { handle: jest.fn(() => of('resposta')) };
   });
 
   const correr = async (req: Record<string, unknown>, meta: Record<string, unknown> = {}) =>
     firstValueFrom(await interceptor.intercept(contexto(req, meta), handler as any));
+
+  describe('SEC-09 — trilho de leituras', () => {
+    it('regista a leitura concedida de qualquer rota com doente (não só /doentes/:id)', async () => {
+      await correr({ method: 'GET', originalUrl: '/v1/sinais-vitais/d1?x=1', params: { doenteId: 'd1' }, query: {}, user: { ...enfermeira, nome: 'Ana' }, headers: {} });
+      expect(leituras.registar).toHaveBeenCalledWith(expect.objectContaining({
+        utilizadorId: 'enf-1', entidadeTipo: 'doentes', entidadeId: 'd1', rota: 'GET /v1/sinais-vitais/d1', resultado: 'concedido',
+      }));
+      expect(anomalia.rastrearAcessoDoente).toHaveBeenCalledWith('enf-1', 'd1');
+    });
+
+    it('regista a tentativa recusada como negado', async () => {
+      doentes.assertAcessoDoente.mockRejectedValue(new ForbiddenException('não'));
+      await expect(correr({ method: 'GET', originalUrl: '/v1/alergias/d9', params: { doenteId: 'd9' }, query: {}, user: enfermeira, headers: {} })).rejects.toThrow(ForbiddenException);
+      expect(leituras.registar).toHaveBeenCalledWith(expect.objectContaining({ entidadeId: 'd9', resultado: 'negado' }));
+    });
+
+    it('regista as leituras do portal, que identificam o doente pela sessão', async () => {
+      await correr({ method: 'GET', originalUrl: '/v1/portal/exportar/json', params: {}, query: {}, user: { tipo: 'portal', sub: 'p1', doenteId: 'd5' }, headers: {} });
+      expect(leituras.registar).toHaveBeenCalledWith(expect.objectContaining({ entidadeId: 'd5', utilizadorRole: 'portal', resultado: 'concedido' }));
+    });
+
+    it('não regista escritas (essas estão nos triggers de auditoria)', async () => {
+      await correr({ method: 'POST', originalUrl: '/v1/sinais-vitais/d1', params: { doenteId: 'd1' }, query: {}, body: {}, user: enfermeira, headers: {} });
+      expect(leituras.registar).not.toHaveBeenCalled();
+    });
+  });
 
   it('não interfere em rotas sem doente', async () => {
     await expect(correr({ params: {}, query: {}, user: enfermeira })).resolves.toBe('resposta');

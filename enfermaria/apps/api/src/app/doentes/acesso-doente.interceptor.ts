@@ -10,6 +10,8 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 import {
   ACESSO_DOENTE_ISENTO,
   ACESSO_DOENTE_POR,
@@ -49,7 +51,36 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
     private readonly doentes: DoenteService,
     private readonly reflector: Reflector,
     private readonly prisma: PrismaService,
+    private readonly leituras: AcessoLeituraService,
+    private readonly anomalia: AnomalyDetectionService,
   ) {}
+
+  /**
+   * SEC-09: "quem viu que doente". Antes só `GET /doentes/:id` ficava registado; as outras 57
+   * rotas clínicas por doente (sinais vitais, medicação, alergias, notas, exames, IA, FHIR…)
+   * não deixavam rasto, e um acesso recusado aparecia como acesso. Regista-se aqui — onde o
+   * doente de qualquer rota já está resolvido — e com o resultado.
+   */
+  private registarLeitura(req: any, utilizador: any, doentes: string[], resultado: 'concedido' | 'negado') {
+    if (req.method !== 'GET' && req.method !== 'HEAD') return;
+    const rota = `${req.method} ${String(req.originalUrl ?? req.url ?? '').split('?')[0]}`;
+    for (const doenteId of new Set(doentes)) {
+      this.leituras.registar({
+        utilizadorId: utilizador.sub ?? null,
+        utilizadorNome: utilizador.nome ?? null,
+        utilizadorRole: utilizador.tipo === 'portal' ? 'portal' : (utilizador.role ?? null),
+        entidadeTipo: 'doentes',
+        entidadeId: doenteId,
+        rota,
+        ip: req.ip ?? null,
+        correlationId: (req.headers?.['x-correlation-id'] as string) ?? null,
+        resultado,
+      });
+      if (resultado === 'concedido' && utilizador.sub && utilizador.tipo !== 'portal') {
+        this.anomalia.rastrearAcessoDoente(utilizador.sub, doenteId);
+      }
+    }
+  }
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<unknown>> {
     if (context.getType() !== 'http') return next.handle();
@@ -70,6 +101,15 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
     const idEntidade = porEntidade ? req.params?.[porEntidade.parametro] : undefined;
 
     const unicos = [...new Set(alvos)];
+
+    // SEC-09: o portal lê sempre os dados do próprio doente pela sessão (`req.user.doenteId`),
+    // nunca pela rota — as consultas ao portal (incluindo as exportações) não deixavam rasto.
+    const sessaoPortal = req.user?.tipo === 'portal' ? req.user : null;
+    if (sessaoPortal?.doenteId && unicos.length === 0 && typeof idEntidade !== 'string') {
+      this.registarLeitura(req, sessaoPortal, [sessaoPortal.doenteId], 'concedido');
+      return next.handle();
+    }
+
     if (unicos.length === 0 && typeof idEntidade !== 'string') return next.handle();
 
     const utilizador = req.user;
@@ -88,8 +128,10 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
     // Sessão do portal do doente: só o próprio doente.
     if (utilizador.tipo === 'portal') {
       if (unicos.some((id) => id !== utilizador.doenteId)) {
+        this.registarLeitura(req, utilizador, unicos, 'negado');
         throw new ForbiddenException('Sem acesso aos dados de outro doente');
       }
+      this.registarLeitura(req, utilizador, unicos, 'concedido');
       return next.handle();
     }
 
@@ -99,9 +141,15 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
       throw new ForbiddenException('Sessão incompleta — conclua a autenticação');
     }
 
-    for (const doenteId of new Set(unicos)) {
-      await this.doentes.assertAcessoDoente(utilizador.sub, utilizador.role, doenteId);
+    try {
+      for (const doenteId of new Set(unicos)) {
+        await this.doentes.assertAcessoDoente(utilizador.sub, utilizador.role, doenteId);
+      }
+    } catch (e) {
+      this.registarLeitura(req, utilizador, unicos, 'negado');
+      throw e;
     }
+    this.registarLeitura(req, utilizador, unicos, 'concedido');
 
     return next.handle();
   }

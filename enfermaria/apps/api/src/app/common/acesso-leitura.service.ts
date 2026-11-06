@@ -10,6 +10,8 @@ export interface EntradaLeitura {
   rota?: string | null;
   ip?: string | null;
   correlationId?: string | null;
+  /** SEC-09: 'concedido' | 'negado'. */
+  resultado?: string | null;
 }
 
 const FLUSH_MS = 2000;
@@ -33,12 +35,49 @@ export class AcessoLeituraService implements OnModuleDestroy {
     this.timer = setInterval(() => { this.flush().catch(() => { /* logado dentro */ }); }, FLUSH_MS);
     this.timer.unref?.();
   }
-  onModuleDestroy() { clearInterval(this.timer); }
+  // SEC-09: ao parar a API (deploy), escreve o que está na fila em vez de o perder.
+  async onModuleDestroy() {
+    clearInterval(this.timer);
+    for (let i = 0; i < 5 && this.fila.length > 0; i++) await this.flush();
+  }
+
+  private descartadas = 0;
 
   registar(e: EntradaLeitura): void {
-    if (this.fila.length >= FILA_MAX) return; // teto anti-OOM
+    if (this.fila.length >= FILA_MAX) {
+      // Teto anti-OOM — mas nunca em silêncio: um buraco no trilho tem de ser visível.
+      if (++this.descartadas % 1000 === 1) {
+        this.logger.error(`Trilho de leituras: fila cheia (${FILA_MAX}) — ${this.descartadas} acesso(s) por registar`);
+      }
+      return;
+    }
     this.fila.push(e);
     if (this.fila.length >= BATCH_MAX && !this.aEscrever) void this.flush();
+  }
+
+  /**
+   * SEC-09: "quem consultou este processo" — para o DPO e para o titular (art. 15.º RGPD).
+   * Com `paraTitular`, não se expõe o IP nem a rota técnica.
+   */
+  async listarPorDoente(doenteId: string, opts: { pagina?: number; limite?: number; paraTitular?: boolean } = {}) {
+    await this.flush(); // o que está na fila também conta
+    const limite = Math.min(Math.max(opts.limite ?? 50, 1), 200);
+    const pagina = Math.max(opts.pagina ?? 1, 1);
+    const where = { entidadeTipo: 'doentes', entidadeId: doenteId };
+    const [total, registos] = await Promise.all([
+      this.prisma.acessoLeitura.count({ where }),
+      this.prisma.acessoLeitura.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: limite,
+        skip: (pagina - 1) * limite,
+        select: {
+          createdAt: true, utilizadorNome: true, utilizadorRole: true, resultado: true,
+          ...(opts.paraTitular ? {} : { utilizadorId: true, rota: true, ip: true }),
+        },
+      }),
+    ]);
+    return { total, pagina, limite, registos };
   }
 
   private async flush(): Promise<void> {
@@ -56,6 +95,7 @@ export class AcessoLeituraService implements OnModuleDestroy {
           rota: e.rota ?? null,
           ip: e.ip ?? null,
           correlationId: e.correlationId ?? null,
+          resultado: e.resultado ?? null,
         })),
       });
     } catch (err) {
