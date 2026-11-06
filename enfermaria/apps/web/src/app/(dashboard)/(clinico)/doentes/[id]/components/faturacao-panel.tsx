@@ -96,7 +96,7 @@ export function FaturacaoPanel({ doenteId, utilizador }: Props) {
       )}
 
       {faturacao.length === 0 ? (
-        <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem episódios de faturação</p>
+        <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem episódios de faturação</p>
       ) : (
         <div className="flex flex-col gap-3">
           {faturacao.map((e) => {
@@ -109,16 +109,16 @@ export function FaturacaoPanel({ doenteId, utilizador }: Props) {
                     {ESTADO_LABEL[e.estado] ?? e.estado}
                   </span>
                   {e.dataEmissao && <span className="text-xs text-slate-500">{fmtData(e.dataEmissao)}</span>}
-                  {e.tipoCobertura && <span className="text-xs text-slate-400">{e.tipoCobertura}</span>}
+                  {e.tipoCobertura && <span className="text-xs text-slate-500">{e.tipoCobertura}</span>}
                   <span className="text-xs font-semibold text-slate-700" style={{ marginLeft: 'auto' }}>{fmtEur(e.totalCobrado ?? 0)}</span>
                 </div>
 
                 {(e.itens ?? []).length > 0 && (
                   <div style={{ marginBottom: '8px' }}>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Itens</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Itens</p>
                     {(e.itens ?? []).map((it) => (
                       <div key={it.id} className="flex justify-between text-xs text-slate-500 py-0.5">
-                        <span>{it.descricao} <span className="text-slate-400">({it.categoria})</span></span>
+                        <span>{it.descricao} <span className="text-slate-500">({it.categoria})</span></span>
                         <span>{it.quantidade} × {fmtEur(it.precoUnitario)} = {fmtEur(it.total)}</span>
                       </div>
                     ))}
@@ -127,7 +127,7 @@ export function FaturacaoPanel({ doenteId, utilizador }: Props) {
 
                 {(e.pagamentos ?? []).length > 0 && (
                   <div style={{ marginBottom: '6px' }}>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Pagamentos</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Pagamentos</p>
                     {(e.pagamentos ?? []).map((p) => (
                       <div key={p.id} className="flex justify-between text-xs text-slate-500 py-0.5">
                         <span>{p.metodo}{p.referencia ? ` · ${p.referencia}` : ''} · {fmtData(p.criadoEm)}</span>

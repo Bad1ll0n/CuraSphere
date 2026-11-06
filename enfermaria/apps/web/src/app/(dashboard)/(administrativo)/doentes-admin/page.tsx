@@ -81,7 +81,7 @@ export default function DoentesAdminPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '60px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -90,7 +90,7 @@ export default function DoentesAdminPage() {
         </div>
       ) : filtrados.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
-          <p className="text-slate-400 text-sm">{pesquisa ? 'Sem resultados para a pesquisa.' : 'Sem utentes registados.'}</p>
+          <p className="text-slate-500 text-sm">{pesquisa ? 'Sem resultados para a pesquisa.' : 'Sem utentes registados.'}</p>
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
@@ -115,16 +115,16 @@ export default function DoentesAdminPage() {
                 >
                   <td style={{ padding: '16px 20px 16px 32px' }}>
                     <p className="font-semibold text-slate-800">{d.nome}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Proc. {d.numeroProcesso}</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Proc. {d.numeroProcesso}</p>
                   </td>
                   <td style={{ padding: '16px 12px' }}>
                     {d.cama ? (
                       <div>
                         <p className="font-medium text-slate-700">Quarto {d.cama.quarto}</p>
-                        <p className="text-xs text-slate-400">Cama {d.cama.numero}</p>
+                        <p className="text-xs text-slate-500">Cama {d.cama.numero}</p>
                       </div>
                     ) : (
-                      <span className="text-slate-400 text-xs italic">Sem cama</span>
+                      <span className="text-slate-500 text-xs italic">Sem cama</span>
                     )}
                   </td>
                   <td style={{ padding: '16px 12px' }}>
@@ -133,7 +133,7 @@ export default function DoentesAdminPage() {
                         {ESTADO_REGISTO_LABEL[d.estadoRegisto] ?? d.estadoRegisto}
                       </span>
                       {d.tipoVisita && (
-                        <span className="text-xs text-slate-400">{TIPO_VISITA_LABEL[d.tipoVisita] ?? d.tipoVisita}</span>
+                        <span className="text-xs text-slate-500">{TIPO_VISITA_LABEL[d.tipoVisita] ?? d.tipoVisita}</span>
                       )}
                     </div>
                   </td>

@@ -316,7 +316,7 @@ export default function FarmaciaPage() {
 
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -334,14 +334,14 @@ export default function FarmaciaPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                     <p className="font-semibold text-slate-900 text-sm">{item.nome}</p>
-                    <span className="text-xs text-slate-400 bg-slate-100 badge-pad py-0.5 rounded-full">{TIPO_LABELS[item.tipo] ?? item.tipo}</span>
+                    <span className="text-xs text-slate-500 bg-slate-100 badge-pad py-0.5 rounded-full">{TIPO_LABELS[item.tipo] ?? item.tipo}</span>
                     {item.catalogo && <span className="text-xs text-indigo-600 bg-indigo-50 badge-pad py-0.5 rounded-full">{item.catalogo.classeTerap}</span>}
                   </div>
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className={`text-sm font-bold ${baixo ? 'text-red-600' : 'text-slate-700'}`}>{item.quantidade} {item.unidade}</span>
-                    <span className="text-xs text-slate-400">mín: {item.quantidadeMinima} {item.unidade}</span>
-                    {item.validade && <span className="text-xs text-slate-400">val: {new Date(item.validade).toLocaleDateString('pt-PT')}</span>}
-                    {item.precoUnitario && <span className="text-xs text-slate-400">{item.precoUnitario.toFixed(2)}€/{item.unidade}</span>}
+                    <span className="text-xs text-slate-500">mín: {item.quantidadeMinima} {item.unidade}</span>
+                    {item.validade && <span className="text-xs text-slate-500">val: {new Date(item.validade).toLocaleDateString('pt-PT')}</span>}
+                    {item.precoUnitario && <span className="text-xs text-slate-500">{item.precoUnitario.toFixed(2)}€/{item.unidade}</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap justify-end">
@@ -380,7 +380,7 @@ export default function FarmaciaPage() {
                   <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{p.quantidade} {p.stockItem?.unidade} — Pedido por {p.solicitadoPor?.nome}</p>
                   <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
                     <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
-                    <span className="text-xs text-slate-400">{new Date(p.criadoEm).toLocaleDateString('pt-PT')}</span>
+                    <span className="text-xs text-slate-500">{new Date(p.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </div>
                 </div>
                 {p.estado === 'aprovado' && isFarmacia && (
@@ -400,7 +400,7 @@ export default function FarmaciaPage() {
                 <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               </div>
               <p className="text-slate-700 font-semibold">Sem alertas</p>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Todo o stock está dentro dos níveis mínimos.</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Todo o stock está dentro dos níveis mínimos.</p>
             </div>
           ) : alertasItems.map(item => (
             <div key={item.id} className="bg-white rounded-2xl border border-red-200 flex items-center justify-between gap-4" style={{ padding: '20px 24px' }}>
@@ -418,7 +418,7 @@ export default function FarmaciaPage() {
         <div className="grid gap-3">
           {loadingTransf ? (
             <div className="flex justify-center" style={{ padding: '40px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
             </div>
           ) : (transferencias as Transferencia[]).length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
@@ -434,10 +434,10 @@ export default function FarmaciaPage() {
                     <span className="text-xs text-slate-500">{t.quantidade} {t.stockItem?.unidade}</span>
                   </div>
                   <p className="text-slate-500 text-xs">{t.servicoOrigem} → {t.servicoDestino}</p>
-                  {t.motivo && <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>{t.motivo}</p>}
+                  {t.motivo && <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{t.motivo}</p>}
                   <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
                     <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
-                    <span className="text-xs text-slate-400">por {t.solicitadoPor?.nome} · {new Date(t.criadoEm).toLocaleDateString('pt-PT')}</span>
+                    <span className="text-xs text-slate-500">por {t.solicitadoPor?.nome} · {new Date(t.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </div>
                 </div>
                 {t.estado === 'pendente' && isFarmaceutico && (
@@ -485,15 +485,15 @@ export default function FarmaciaPage() {
           </div>
           {loadingRelatorio ? (
             <div className="flex justify-center" style={{ padding: '40px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
             </div>
           ) : relatorio ? (
             <div>
               <div className="bg-slate-900 text-white rounded-2xl flex items-center justify-between" style={{ padding: '20px 28px', marginBottom: '16px' }}>
                 <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Custo total de consumo</p>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide font-semibold">Custo total de consumo</p>
                   <p className="text-3xl font-bold" style={{ marginTop: '4px' }}>{relatorio.custoTotal?.toFixed(2)}€</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Calculado com base em saídas × preço unitário</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Calculado com base em saídas × preço unitário</p>
                 </div>
               </div>
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
@@ -546,7 +546,7 @@ export default function FarmaciaPage() {
                   <span className="text-xs bg-slate-100 text-slate-600 badge-pad py-0.5 rounded-md">{p.via} · {p.frequencia}</span>
                 </div>
                 <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>Prescrição de {p.prescritoPor?.nome} — {p.doente?.nome}</p>
-                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Quarto {p.doente?.cama?.quarto} · Cama {p.doente?.cama?.numero} · {new Date(p.iniciadoEm).toLocaleDateString('pt-PT')}</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Quarto {p.doente?.cama?.quarto} · Cama {p.doente?.cama?.numero} · {new Date(p.iniciadoEm).toLocaleDateString('pt-PT')}</p>
               </div>
               <div className="flex gap-2 shrink-0">
                 <Link href={`/doentes/${p.doente?.id}`}
@@ -568,7 +568,7 @@ export default function FarmaciaPage() {
         <div className="grid gap-3">
           {loadingPendentes ? (
             <div className="flex justify-center" style={{ padding: '40px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
             </div>
           ) : pendentesAprovacao.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-100 text-center" style={{ padding: '60px 40px' }}>
@@ -576,7 +576,7 @@ export default function FarmaciaPage() {
                 <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               </div>
               <p className="text-slate-700 font-semibold">Sem pedidos para aprovar</p>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Todos os pedidos de medicação estão tratados.</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Todos os pedidos de medicação estão tratados.</p>
             </div>
           ) : pendentesAprovacao.map((p) => (
             <div key={p.id} className="bg-white rounded-2xl border border-blue-100 flex items-center justify-between gap-4" style={{ padding: '20px 24px' }}>
@@ -586,8 +586,8 @@ export default function FarmaciaPage() {
                   <span className="text-xs font-semibold text-blue-600 bg-blue-50 badge-pad py-0.5 rounded-full">Aguarda aprovação</span>
                 </div>
                 <p className="text-slate-500 text-xs">{p.quantidade} {p.stockItem?.unidade} — Solicitado por {p.solicitadoPor?.nome} ({p.solicitadoPor?.role})</p>
-                {p.observacoes && <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>Obs: {p.observacoes}</p>}
-                <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Serviço: {p.servico} · Stock disponível: {p.stockItem?.quantidade} {p.stockItem?.unidade} · {new Date(p.criadoEm).toLocaleDateString('pt-PT')}</p>
+                {p.observacoes && <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>Obs: {p.observacoes}</p>}
+                <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Serviço: {p.servico} · Stock disponível: {p.stockItem?.quantidade} {p.stockItem?.unidade} · {new Date(p.criadoEm).toLocaleDateString('pt-PT')}</p>
               </div>
               <div className="flex gap-2 shrink-0">
                 <button onClick={() => { setModalRejeitarPedido(p.id); setMotivoRejPedido(''); }}
@@ -610,7 +610,7 @@ export default function FarmaciaPage() {
           <div {...dlgRejeitar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Prescrição</h2>
-              <button aria-label="Fechar" onClick={() => setModalRejeitar(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitar(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -633,7 +633,7 @@ export default function FarmaciaPage() {
           <div {...dlgRejeitarPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Pedido</h2>
-              <button aria-label="Fechar" onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarPedido(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo clínico *</label>
@@ -657,7 +657,7 @@ export default function FarmaciaPage() {
           <div {...dlgPedido.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Pedido de Reposição</h2>
-              <button aria-label="Fechar" onClick={() => setPedidoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setPedidoModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{pedidoModal.nome}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -690,7 +690,7 @@ export default function FarmaciaPage() {
           <div {...dlgAjustar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Ajustar Stock</h2>
-              <button aria-label="Fechar" onClick={() => setAjustarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setAjustarModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{ajustarModal.nome} — actual: {ajustarModal.quantidade} {ajustarModal.unidade}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -740,11 +740,11 @@ export default function FarmaciaPage() {
                 <h2 className="text-lg font-bold text-slate-900">Histórico de Ajustes</h2>
                 <p className="text-slate-500 text-sm">{historicoModal.nome}</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setHistoricoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setHistoricoModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {loadingHistorico ? (
               <div className="flex justify-center" style={{ padding: '32px 0' }}>
-                <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+                <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
               </div>
             ) : historico.length === 0 ? (
               <p className="text-slate-500 text-center" style={{ padding: '32px 0' }}>Nenhum ajuste registado.</p>
@@ -754,12 +754,12 @@ export default function FarmaciaPage() {
                   <div key={a.id} className="border border-slate-100 rounded-xl" style={{ padding: '14px 16px' }}>
                     <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
                       <span className={`text-sm font-bold ${a.delta > 0 ? 'text-green-600' : 'text-red-600'}`}>{fmtDelta(a.delta)} {historicoModal.unidade}</span>
-                      <span className="text-xs text-slate-400">{new Date(a.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="text-xs text-slate-500">{new Date(a.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                     <p className="text-xs text-slate-500">{a.motivo}</p>
                     <div className="flex items-center gap-2" style={{ marginTop: '6px' }}>
                       <span className="text-xs bg-slate-100 text-slate-600 badge-pad py-0.5 rounded-md">{a.tipo}</span>
-                      <span className="text-xs text-slate-400">por {a.utilizador?.nome}</span>
+                      <span className="text-xs text-slate-500">por {a.utilizador?.nome}</span>
                     </div>
                   </div>
                 ))}
@@ -775,7 +775,7 @@ export default function FarmaciaPage() {
           <div {...dlgTransferir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Transferir Stock</h2>
-              <button aria-label="Fechar" onClick={() => setTransferirModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setTransferirModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm font-medium" style={{ marginBottom: '20px' }}>{transferirModal.nome} — disponível: {transferirModal.quantidade} {transferirModal.unidade} ({transferirModal.servico})</p>
             <div style={{ marginBottom: '14px' }}>
@@ -817,7 +817,7 @@ export default function FarmaciaPage() {
           <div {...dlgNovoItem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Novo Item de Stock</h2>
-              <button aria-label="Fechar" onClick={() => setNovoItemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setNovoItemModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-13" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Ligar ao Catálogo</label>

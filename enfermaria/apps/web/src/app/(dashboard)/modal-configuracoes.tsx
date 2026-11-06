@@ -33,10 +33,10 @@ export function ModalConfiguracoes({ onClose, onAlterarPassword }: Props) {
         className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '28px', margin: '0 16px' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
           <h2 id="modal-config-titulo" className="text-lg font-bold text-slate-900">Configurações</h2>
-          <button onClick={onClose} aria-label="Fechar configurações" className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+          <button onClick={onClose} aria-label="Fechar configurações" className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
         </div>
 
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Tema</p>
+        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Tema</p>
         <div className="grid grid-cols-3 gap-3" style={{ marginBottom: '28px' }}>
           {OPCOES.map(({ tema: op, label, ariaKey, caminho }) => {
             const activo = tema === op;
@@ -49,7 +49,7 @@ export function ModalConfiguracoes({ onClose, onAlterarPassword }: Props) {
                 className={`flex flex-col items-center gap-2 border-2 rounded-xl transition-all ${activo ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
                 style={{ padding: '16px 8px', minHeight: '44px' }}
               >
-                <svg className={`w-6 h-6 ${activo ? 'text-blue-500' : 'text-slate-400'}`} aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-6 h-6 ${activo ? 'text-blue-500' : 'text-slate-500'}`} aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={caminho} />
                 </svg>
                 <span className={`text-xs font-semibold text-center ${activo ? 'text-blue-600' : 'text-slate-500'}`}>{label}</span>
@@ -59,7 +59,7 @@ export function ModalConfiguracoes({ onClose, onAlterarPassword }: Props) {
         </div>
 
         <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Conta</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Conta</p>
           <button
             onClick={() => { onClose(); onAlterarPassword(); }}
             className="w-full flex items-center gap-3 text-sm text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"

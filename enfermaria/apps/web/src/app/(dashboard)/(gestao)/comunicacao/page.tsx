@@ -238,7 +238,7 @@ export default function ComunicacaoPage() {
 
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -258,7 +258,7 @@ export default function ComunicacaoPage() {
                     <p className="text-sm font-semibold text-slate-700">{m.assunto ?? '(sem assunto)'}</p>
                   </div>
                   <p className="text-slate-600 text-sm" style={{ marginBottom: '8px' }}>{m.texto}</p>
-                  <p className="text-slate-400 text-xs">
+                  <p className="text-slate-500 text-xs">
                     Para {(m as any).destinatario?.nome ?? '—'} · {new Date(m.criadaEm).toLocaleDateString('pt-PT')}
                   </p>
                 </div>
@@ -276,7 +276,7 @@ export default function ComunicacaoPage() {
                       <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                       </svg>
-                      <span className="text-xs font-semibold text-slate-400">Não lida</span>
+                      <span className="text-xs font-semibold text-slate-500">Não lida</span>
                     </>
                   )}
                 </div>
@@ -295,12 +295,12 @@ export default function ComunicacaoPage() {
               <div className="flex items-start justify-between gap-4" style={{ marginBottom: '12px' }}>
                 <h3 className="font-bold text-slate-900">{a.titulo}</h3>
                 <div className="flex items-center gap-2 shrink-0">
-                  {a.servico && <span className="text-xs text-slate-400 bg-slate-100 badge-pad py-0.5 rounded-full">{a.servico}</span>}
-                  <span className="text-xs text-slate-400">{new Date(a.criadoEm).toLocaleDateString('pt-PT')}</span>
+                  {a.servico && <span className="text-xs text-slate-500 bg-slate-100 badge-pad py-0.5 rounded-full">{a.servico}</span>}
+                  <span className="text-xs text-slate-500">{new Date(a.criadoEm).toLocaleDateString('pt-PT')}</span>
                 </div>
               </div>
               <p className="text-slate-600 text-sm leading-relaxed">{a.texto}</p>
-              <p className="text-slate-400 text-xs" style={{ marginTop: '12px' }}>Publicado por {a.autor?.nome}</p>
+              <p className="text-slate-500 text-xs" style={{ marginTop: '12px' }}>Publicado por {a.autor?.nome}</p>
             </div>
           ))}
         </div>
@@ -334,7 +334,7 @@ export default function ComunicacaoPage() {
                     ))}
                   </div>
                 )}
-                <p className="text-slate-400 text-xs">De {m.remetente?.nome} · {new Date(m.criadaEm).toLocaleDateString('pt-PT')}</p>
+                <p className="text-slate-500 text-xs">De {m.remetente?.nome} · {new Date(m.criadaEm).toLocaleDateString('pt-PT')}</p>
               </div>
               {!m.lida && (
                 <button onClick={() => marcarLida(m.id)}
@@ -355,9 +355,9 @@ export default function ComunicacaoPage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
               <h2 className="text-lg font-bold text-slate-900">Enviar Broadcast</h2>
               <button onClick={() => { setBroadcastModal(false); setBroadcastForm({ servicoAlvo: '', roleAlvo: '', assunto: '', texto: '' }); }}
-                className="text-slate-400 hover:text-slate-600 text-xl font-bold" aria-label="Fechar">✕</button>
+                className="text-slate-500 hover:text-slate-600 text-xl font-bold" aria-label="Fechar">✕</button>
             </div>
-            <p className="text-slate-400 text-sm" style={{ marginBottom: '24px' }}>Envia uma mensagem para todos os utilizadores que correspondam ao filtro.</p>
+            <p className="text-slate-500 text-sm" style={{ marginBottom: '24px' }}>Envia uma mensagem para todos os utilizadores que correspondam ao filtro.</p>
 
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '14px' }}>
               <div>
@@ -423,7 +423,7 @@ export default function ComunicacaoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Publicar Anúncio</h2>
-              <button aria-label="Fechar" onClick={() => setAnuncioModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setAnuncioModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título *</label>
@@ -476,7 +476,7 @@ export default function ComunicacaoPage() {
             onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Mensagem</h2>
-              <button aria-label="Fechar" onClick={() => setMensagemModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setMensagemModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             {/* Destinatário com pesquisa */}
@@ -494,7 +494,7 @@ export default function ComunicacaoPage() {
                     <span className="text-sm font-semibold text-slate-800">{destNome}</span>
                   </div>
                   <button onClick={() => { setMensagemForm(f => ({ ...f, destinatarioId: '' })); setDestNome(''); setPesquisa(''); setTimeout(() => pesquisaRef.current?.focus(), 50); }}
-                    className="text-slate-400 hover:text-slate-600 font-bold text-base leading-none" aria-label="Fechar">✕</button>
+                    className="text-slate-500 hover:text-slate-600 font-bold text-base leading-none" aria-label="Fechar">✕</button>
                 </div>
               ) : (
                 <>
@@ -529,12 +529,12 @@ export default function ComunicacaoPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-slate-800 truncate">{u.nome}</p>
-                              <p className="text-xs text-slate-400 truncate">{ROLE_LABEL[u.role] ?? u.role} · {u.servico}</p>
+                              <p className="text-xs text-slate-500 truncate">{ROLE_LABEL[u.role] ?? u.role} · {u.servico}</p>
                             </div>
                           </button>
                         ))}
                       {utilizadores.filter(u => u.id !== utilizador?.id && (pesquisa === '' || u.nome.toLowerCase().includes(pesquisa.toLowerCase()) || (ROLE_LABEL[u.role] ?? u.role).toLowerCase().includes(pesquisa.toLowerCase()))).length === 0 && (
-                        <p className="text-sm text-slate-400 text-center" style={{ padding: '16px' }}>Nenhum utilizador encontrado</p>
+                        <p className="text-sm text-slate-500 text-center" style={{ padding: '16px' }}>Nenhum utilizador encontrado</p>
                       )}
                     </div>
                   )}
@@ -568,10 +568,10 @@ export default function ComunicacaoPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                     </svg>
                     <span className="text-sm text-slate-700 truncate">{anexoFile.name}</span>
-                    <span className="text-xs text-slate-400 shrink-0">({(anexoFile.size / 1024).toFixed(0)} KB)</span>
+                    <span className="text-xs text-slate-500 shrink-0">({(anexoFile.size / 1024).toFixed(0)} KB)</span>
                   </div>
                   <button onClick={() => { setAnexoFile(null); if (anexoInputRef.current) anexoInputRef.current.value = ''; }}
-                    className="text-slate-400 hover:text-red-500 font-bold ml-2 shrink-0" aria-label="Fechar">✕</button>
+                    className="text-slate-500 hover:text-red-500 font-bold ml-2 shrink-0" aria-label="Fechar">✕</button>
                 </div>
               ) : (
                 <button onClick={() => anexoInputRef.current?.click()}

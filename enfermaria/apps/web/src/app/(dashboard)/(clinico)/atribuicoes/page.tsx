@@ -168,7 +168,7 @@ export default function AtribuicoesPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -178,19 +178,19 @@ export default function AtribuicoesPage() {
       ) : turnos.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
           <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
           <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem turnos hoje</p>
-          <p className="text-slate-400 text-sm">Não existem turnos agendados para hoje</p>
+          <p className="text-slate-500 text-sm">Não existem turnos agendados para hoje</p>
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-6">
 
           {/* Coluna esquerda — seleção de turno */}
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Turnos de hoje</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Turnos de hoje</p>
             <div className="flex flex-col gap-3">
               {(['manha', 'tarde', 'noite'] as const).map((tipo) => {
                 const turno = turnoDoGrupo(turnos, tipo);
@@ -211,7 +211,7 @@ export default function AtribuicoesPage() {
                         {turno.atribuicoes.length} atrib.
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400" style={{ marginBottom: '4px' }}>
+                    <p className="text-xs text-slate-500" style={{ marginBottom: '4px' }}>
                       {turno.profissionais.filter(p => meuGrupo.includes(p.utilizador.role)).length} profissionais
                     </p>
                     {chefe && (
@@ -258,17 +258,17 @@ export default function AtribuicoesPage() {
 
                 {doentes.length === 0 ? (
                   <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '60px' }}>
-                    <p className="text-slate-400 text-sm">Sem doentes internados</p>
+                    <p className="text-slate-500 text-sm">Sem doentes internados</p>
                   </div>
                 ) : (
                   <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-slate-100">
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 24px 13px 36px' }}>Doente</th>
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Profissional Atribuído</th>
+                          <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '13px 24px 13px 36px' }}>Doente</th>
+                          <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
+                          <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
+                          <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Profissional Atribuído</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -278,7 +278,7 @@ export default function AtribuicoesPage() {
                             <tr key={d.id} className="hover:bg-slate-50 transition-colors" style={{ borderTop: i > 0 ? '1px solid #f8fafc' : undefined }}>
                               <td style={{ padding: '14px 24px 14px 36px' }}>
                                 <p className="font-semibold text-slate-800">{d.nome}</p>
-                                <p className="text-xs text-slate-400 font-mono" style={{ marginTop: '2px' }}>{d.numeroProcesso}</p>
+                                <p className="text-xs text-slate-500 font-mono" style={{ marginTop: '2px' }}>{d.numeroProcesso}</p>
                               </td>
                               <td style={{ padding: '14px 16px' }}>
                                 <span className={`text-xs font-medium rounded-lg ${estadoCor[d.estado]}`} style={{ padding: '4px 8px' }}>

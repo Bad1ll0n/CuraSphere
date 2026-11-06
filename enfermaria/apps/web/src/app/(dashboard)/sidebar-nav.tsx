@@ -113,7 +113,7 @@ export function SidebarNav({
                 className={`group items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-150 ${
                   active
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-                    : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    : 'text-slate-500 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <span className={`transition-colors ${active ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
@@ -136,11 +136,11 @@ export function SidebarNav({
             <div className="flex-1 min-w-0">
               <p className="text-white text-[13px] font-semibold truncate leading-snug">{utilizador.nome}</p>
               <div className="flex items-center gap-2 mt-1.5">
-                <span className={`shrink-0 text-[10px] font-semibold badge-pad py-0.5 rounded-full ${roleColor[utilizador.role] ?? 'bg-slate-500/15 text-slate-400'}`}>
+                <span className={`shrink-0 text-[10px] font-semibold badge-pad py-0.5 rounded-full ${roleColor[utilizador.role] ?? 'bg-slate-500/15 text-slate-500'}`}>
                   {roleLabel[utilizador.role] ?? utilizador.role}
                 </span>
                 {utilizador.subRole && (
-                  <span className="text-[10px] text-slate-400 truncate">
+                  <span className="text-[10px] text-slate-500 truncate">
                     {subRoleLabel[utilizador.subRole] ?? utilizador.subRole}
                   </span>
                 )}

@@ -60,7 +60,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -184,7 +184,7 @@ export function DispositivosPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {ativos.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem dispositivos invasivos ativos</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem dispositivos invasivos ativos</p>
         ) : (
           <div className="flex flex-col gap-2">
             {ativos.map((d: any) => {
@@ -196,7 +196,7 @@ export function DispositivosPanel({ doenteId, utilizador }: Props) {
                   </span>
                   <div className="flex-1 min-w-0">
                     {d.localizacao && <p className="text-xs text-slate-600">{d.localizacao}</p>}
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       Inserido há {dias} dia{dias !== 1 ? 's' : ''} · {d.inseridoPor?.nome}
                     </p>
                     {dias >= 3 && (

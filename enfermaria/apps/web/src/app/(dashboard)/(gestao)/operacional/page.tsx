@@ -142,7 +142,7 @@ export default function OperacionalPage() {
 
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -177,7 +177,7 @@ export default function OperacionalPage() {
             </h2>
             {pedidosPendentes.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '40px' }}>
-                <p className="text-sm text-slate-400">Sem pedidos pendentes</p>
+                <p className="text-sm text-slate-500">Sem pedidos pendentes</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -193,7 +193,7 @@ export default function OperacionalPage() {
                           {ESTADO_LABEL[p.estado] ?? p.estado}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         {p.servico}{p.criadoPor ? ` · ${p.criadoPor.nome}` : ''} · {new Date(p.criadoEm).toLocaleDateString('pt-PT')}
                       </p>
                     </div>
@@ -214,7 +214,7 @@ export default function OperacionalPage() {
             <h2 className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Tarefas Activas</h2>
             {tarefasAtivas.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '40px' }}>
-                <p className="text-sm text-slate-400">Sem tarefas activas</p>
+                <p className="text-sm text-slate-500">Sem tarefas activas</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -232,7 +232,7 @@ export default function OperacionalPage() {
                         </p>
                       )}
                       {t.prazo && (
-                        <p className="text-xs text-slate-400">Prazo: {new Date(t.prazo).toLocaleDateString('pt-PT')}</p>
+                        <p className="text-xs text-slate-500">Prazo: {new Date(t.prazo).toLocaleDateString('pt-PT')}</p>
                       )}
                     </div>
                     <button

@@ -113,7 +113,7 @@ export default function PedidosInternosPage() {
 
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -138,14 +138,14 @@ export default function PedidosInternosPage() {
                     </div>
                     <p className="text-slate-600 text-sm">{p.descricao}</p>
                     {(p.localOrigem || p.localDestino) && (
-                      <p className="text-slate-400 text-xs" style={{ marginTop: '4px' }}>
+                      <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>
                         {p.localOrigem && `De: ${p.localOrigem}`}{p.localOrigem && p.localDestino && ' → '}{p.localDestino && `Para: ${p.localDestino}`}
                       </p>
                     )}
                     <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
                       <span className={`text-xs font-medium badge-pad py-1 rounded-full ${est.bg} ${est.text}`}>{est.label}</span>
-                      <span className="text-xs text-slate-400">por {p.solicitadoPor?.nome}</span>
-                      {p.executadoPor && <span className="text-xs text-slate-400">· {p.executadoPor.nome}</span>}
+                      <span className="text-xs text-slate-500">por {p.solicitadoPor?.nome}</span>
+                      {p.executadoPor && <span className="text-xs text-slate-500">· {p.executadoPor.nome}</span>}
                     </div>
                   </div>
                 </div>
@@ -177,7 +177,7 @@ export default function PedidosInternosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Novo Pedido Interno</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>

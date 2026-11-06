@@ -40,7 +40,7 @@ export function Modal({ isOpen, onClose, titulo, children, maxWidth = '480px', f
       >
         <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
           <h2 className="text-lg font-bold text-slate-900">{titulo}</h2>
-          <button onClick={onClose} aria-label="Fechar" className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+          <button onClick={onClose} aria-label="Fechar" className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
         </div>
         {children}
       </div>

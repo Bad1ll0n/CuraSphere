@@ -168,7 +168,7 @@ export default function GuidelinesPage() {
 
       {/* Lista */}
       {guidelines.length === 0 ? (
-        <div className="text-center text-slate-400 text-sm" style={{ padding: '60px 0' }}>
+        <div className="text-center text-slate-500 text-sm" style={{ padding: '60px 0' }}>
           Nenhuma guideline encontrada
         </div>
       ) : (
@@ -181,10 +181,10 @@ export default function GuidelinesPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '6px' }}>
                       <span className={`text-xs font-semibold rounded-lg ${cat.color}`} style={{ padding: '2px 8px' }}>{cat.label}</span>
-                      <span className="text-xs text-slate-400 font-medium">{g.fonte}{g.versao ? ` · ${g.versao}` : ''}</span>
+                      <span className="text-xs text-slate-500 font-medium">{g.fonte}{g.versao ? ` · ${g.versao}` : ''}</span>
                     </div>
                     <p className="text-sm font-semibold text-slate-800 truncate">{g.titulo}</p>
-                    <p className="text-xs text-slate-400 line-clamp-2" style={{ marginTop: '4px' }}>{g.conteudo.slice(0, 160)}...</p>
+                    <p className="text-xs text-slate-500 line-clamp-2" style={{ marginTop: '4px' }}>{g.conteudo.slice(0, 160)}...</p>
                   </div>
                   {podeGerir && (
                     <button onClick={() => remover(g.id)}
@@ -209,7 +209,7 @@ export default function GuidelinesPage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Nova Guideline Clínica</h2>
               <button onClick={() => setModal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -256,7 +256,7 @@ export default function GuidelinesPage() {
                 placeholder="Texto clínico relevante — máx. 2000 tokens (~3000 caracteres)..."
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 resize-none transition"
                 style={{ padding: '10px 14px' }} />
-              <p className="text-xs text-slate-400 text-right" style={{ marginTop: '4px' }}>{form.conteudo.length}/3000</p>
+              <p className="text-xs text-slate-500 text-right" style={{ marginTop: '4px' }}>{form.conteudo.length}/3000</p>
             </div>
 
             <div className="flex gap-3">

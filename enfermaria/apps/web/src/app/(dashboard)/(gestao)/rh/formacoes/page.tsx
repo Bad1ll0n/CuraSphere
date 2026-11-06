@@ -95,7 +95,7 @@ export default function FormacoesPage() {
       {/* Header */}
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div className="flex items-center gap-3">
-          <Link href="/rh" className="text-slate-400 hover:text-slate-600">
+          <Link href="/rh" className="text-slate-500 hover:text-slate-600">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -133,14 +133,14 @@ export default function FormacoesPage() {
       {/* Lista */}
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         </div>
       ) : formacoes.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '60px 24px' }}>
-          <p className="text-sm text-slate-400">Sem formações registadas</p>
+          <p className="text-sm text-slate-500">Sem formações registadas</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -164,14 +164,14 @@ export default function FormacoesPage() {
                         {f.utilizador.nome} · {f.utilizador.role}
                       </p>
                     )}
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       Realizada em {new Date(f.dataRealizacao).toLocaleDateString('pt-PT')}
                       {f.entidade && ` · ${f.entidade}`}
                     </p>
                   </div>
                   {isGestor && (
                     <button onClick={() => mutApagar.mutate(f.id)}
-                      className="shrink-0 text-xs font-medium text-slate-400 hover:text-red-500 border border-slate-200 hover:border-red-200 rounded-lg transition-colors"
+                      className="shrink-0 text-xs font-medium text-slate-500 hover:text-red-500 border border-slate-200 hover:border-red-200 rounded-lg transition-colors"
                       style={{ padding: '5px 10px' }}>
                       Remover
                     </button>
@@ -190,7 +190,7 @@ export default function FormacoesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Formação</h2>
-              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>

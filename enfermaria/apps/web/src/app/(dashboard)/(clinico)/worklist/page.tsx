@@ -125,7 +125,7 @@ export default function WorklistPage() {
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Worklist de Imagiologia</h1>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
             Exames pendentes e em progresso · {new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function WorklistPage() {
           { label: 'Urgentes', value: counts.urgente, cor: 'red' },
         ].map(({ label, value, cor }) => (
           <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</p>
             <p className={`text-3xl font-bold text-${cor}-600`} style={{ marginTop: '4px' }}>{erroCarga ? '—' : value}</p>
           </div>
         ))}
@@ -184,7 +184,7 @@ export default function WorklistPage() {
 
       {/* Lista */}
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -206,7 +206,7 @@ export default function WorklistPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p className="text-slate-400 text-sm font-medium">Sem exames pendentes</p>
+          <p className="text-slate-500 text-sm font-medium">Sem exames pendentes</p>
           <p className="text-slate-300 text-xs" style={{ marginTop: '4px' }}>A worklist está limpa</p>
         </div>
       ) : (
@@ -240,15 +240,15 @@ export default function WorklistPage() {
                           {e.doente?.nome}
                         </Link>
                         <span className="text-slate-300 text-xs">·</span>
-                        <span className="text-xs text-slate-400">Processo {e.doente?.numeroProcesso}</span>
+                        <span className="text-xs text-slate-500">Processo {e.doente?.numeroProcesso}</span>
                         {e.doente?.cama && (
                           <>
                             <span className="text-slate-300 text-xs">·</span>
-                            <span className="text-xs text-slate-400">Cama {e.doente.cama.numero} · Quarto {e.doente.cama.quarto}</span>
+                            <span className="text-xs text-slate-500">Cama {e.doente.cama.numero} · Quarto {e.doente.cama.quarto}</span>
                           </>
                         )}
                         <span className="text-slate-300 text-xs">·</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-slate-500">
                           Solicitado por {e.solicitadoPor?.nome} · {new Date(e.criadoEm).toLocaleDateString('pt-PT')} {new Date(e.criadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
@@ -288,7 +288,7 @@ export default function WorklistPage() {
                     <p className="text-xs font-bold text-green-600 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Resultado</p>
                     <p className="text-sm text-slate-700">{e.resultado}</p>
                     {e.dataResultado && (
-                      <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                      <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
                         {new Date(e.dataResultado).toLocaleDateString('pt-PT')} {new Date(e.dataResultado).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     )}
@@ -306,7 +306,7 @@ export default function WorklistPage() {
           <div className="bg-slate-50 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
             <p className="text-sm font-semibold text-slate-700">{TIPO_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo}</p>
             <p className="text-sm text-slate-500">{resultadoModal.descricao}</p>
-            <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Doente: {resultadoModal.doente?.nome}</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Doente: {resultadoModal.doente?.nome}</p>
           </div>
           <div style={{ marginBottom: '20px' }}>
             <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
@@ -333,7 +333,7 @@ export default function WorklistPage() {
           <div className="bg-slate-50 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
             <p className="text-sm font-semibold text-slate-700">{TIPO_LABELS[laudoModal.tipo] ?? laudoModal.tipo}{laudoModal.urgente && <span className="text-red-600"> · URGENTE</span>}</p>
             <p className="text-sm text-slate-500">{laudoModal.descricao}</p>
-            <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Doente: {laudoModal.doente?.nome}</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Doente: {laudoModal.doente?.nome}</p>
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Técnica</label>

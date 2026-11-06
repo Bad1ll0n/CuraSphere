@@ -153,7 +153,7 @@ export default function FarmaciaPage() {
       </div>
 
       {loading && (
-        <div className="flex items-center justify-center gap-2 text-slate-400" style={{ paddingTop: '40px' }}>
+        <div className="flex items-center justify-center gap-2 text-slate-500" style={{ paddingTop: '40px' }}>
           <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -185,14 +185,14 @@ export default function FarmaciaPage() {
                         </span>
                       ))}
                       {p.medicacoes.length > 4 && (
-                        <span className="text-xs text-slate-400">+{p.medicacoes.length - 4}</span>
+                        <span className="text-xs text-slate-500">+{p.medicacoes.length - 4}</span>
                       )}
                     </div>
                   </td>
                 </tr>
               ))}
               {prescricoes.length === 0 && (
-                <tr><td colSpan={3} className="text-center text-slate-400 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
+                <tr><td colSpan={3} className="text-center text-slate-500 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
               )}
             </tbody>
           </table>
@@ -203,7 +203,7 @@ export default function FarmaciaPage() {
       {tab === 'interacoes' && !loading && (
         <div className="flex flex-col gap-3">
           {interacoes.length === 0 && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-400 text-sm" style={{ padding: '48px' }}>
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
               Nenhuma interacção medicamentosa activa detectada
             </div>
           )}
@@ -224,7 +224,7 @@ export default function FarmaciaPage() {
                   Ver doente →
                 </button>
               </div>
-              <div className="flex items-center gap-1 text-xs text-slate-400">
+              <div className="flex items-center gap-1 text-xs text-slate-500">
                 <span>Doente:</span>
                 <span className="font-medium text-slate-600">{i.doente?.nome}</span>
                 {i.doente?.cama && <span>· Cama {i.doente.cama.numero}</span>}
@@ -238,7 +238,7 @@ export default function FarmaciaPage() {
       {tab === 'reconciliacao' && !loading && (
         <div className="flex flex-col gap-3">
           {reconciliacoes.length === 0 && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-400 text-sm" style={{ padding: '48px' }}>
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
               Sem reconciliações pendentes de aprovação
             </div>
           )}
@@ -253,9 +253,9 @@ export default function FarmaciaPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold text-slate-800">{r.doente?.nome}</span>
-                      {r.doente?.cama && <span className="text-xs text-slate-400">Cama {r.doente.cama.numero}</span>}
+                      {r.doente?.cama && <span className="text-xs text-slate-500">Cama {r.doente.cama.numero}</span>}
                     </div>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                       Por {r.criadoPor?.nome} · {new Date(r.criadaEm).toLocaleDateString('pt-PT')}
                     </p>
                   </div>
@@ -299,7 +299,7 @@ export default function FarmaciaPage() {
           <div {...dlgRec.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Reconciliação de Medicação</h2>
-              <button aria-label="Fechar" onClick={() => setModalRec(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRec(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>ID do Doente *</label>

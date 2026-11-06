@@ -191,7 +191,7 @@ export default function SalaEsperaPage() {
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -218,7 +218,7 @@ export default function SalaEsperaPage() {
               A Aguardar ({aguardando.length})
             </h2>
             {aguardando.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-slate-100 text-center text-slate-400 text-sm" style={{ padding: '40px' }}>
+              <div className="bg-white rounded-2xl border border-slate-100 text-center text-slate-500 text-sm" style={{ padding: '40px' }}>
                 Nenhum utente em espera
               </div>
             ) : (
@@ -256,11 +256,11 @@ export default function SalaEsperaPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '92vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Entrada</h2>
-              <button aria-label="Fechar" onClick={() => { setModal(false); setErros({}); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModal(false); setErros({}); }} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             {/* ── Secção 1: Triagem ── */}
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Triagem</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Triagem</p>
 
             {([
               { label: 'Nome do Utente *', key: 'nomeDoente', type: 'text', placeholder: 'Nome completo' },
@@ -298,8 +298,8 @@ export default function SalaEsperaPage() {
 
             {/* ── Secção 2: Dados Administrativos ── */}
             <div className="border-t border-slate-100" style={{ paddingTop: '20px', marginBottom: '14px' }}>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '4px' }}>Dados Administrativos</p>
-              <p className="text-xs text-slate-400" style={{ marginBottom: '14px' }}>Se disponíveis, ficam associados ao processo do utente.</p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '4px' }}>Dados Administrativos</p>
+              <p className="text-xs text-slate-500" style={{ marginBottom: '14px' }}>Se disponíveis, ficam associados ao processo do utente.</p>
             </div>
 
             <div className="grid grid-cols-2 gap-x-4">
@@ -418,11 +418,11 @@ function CheckinCard({ c, podeChamar, onChamar, onConcluir }: {
           </div>
           <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{c.motivo}</p>
           <div className="flex items-center gap-3 flex-wrap" style={{ marginTop: '4px' }}>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-slate-500">
               {c.estado === 'aguardando' ? `Espera: ${tempoEspera(c.chegadaEm)}` : `Chegou: ${new Date(c.chegadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}`}
             </span>
-            {c.numeroUtente && <span className="text-xs text-slate-400">SNS: {c.numeroUtente}</span>}
-            {c.medico && <span className="text-xs text-slate-400">Dr(a). {c.medico.nome}</span>}
+            {c.numeroUtente && <span className="text-xs text-slate-500">SNS: {c.numeroUtente}</span>}
+            {c.medico && <span className="text-xs text-slate-500">Dr(a). {c.medico.nome}</span>}
           </div>
         </div>
       </div>

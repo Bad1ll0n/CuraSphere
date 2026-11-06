@@ -55,7 +55,7 @@ export default function FamiliaPortalPage() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            <p className="text-sm text-slate-400" style={{ marginTop: '12px' }}>A verificar acesso...</p>
+            <p className="text-sm text-slate-500" style={{ marginTop: '12px' }}>A verificar acesso...</p>
           </div>
         )}
 
@@ -69,7 +69,7 @@ export default function FamiliaPortalPage() {
               </div>
               <h2 className="text-base font-bold text-red-800" style={{ marginBottom: '8px' }}>Acesso não disponível</h2>
               <p className="text-sm text-red-600">{erro}</p>
-              <p className="text-xs text-slate-400" style={{ marginTop: '12px' }}>
+              <p className="text-xs text-slate-500" style={{ marginTop: '12px' }}>
                 O link pode ter expirado (válido 7 dias) ou sido revogado. Contacte o serviço de enfermagem para obter um novo link.
               </p>
             </div>
@@ -120,7 +120,7 @@ export default function FamiliaPortalPage() {
           </div>
         )}
 
-        <p className="text-center text-xs text-slate-400" style={{ marginTop: '24px' }}>
+        <p className="text-center text-xs text-slate-500" style={{ marginTop: '24px' }}>
           CuraSphere — Acesso seguro e privado. Este link expira ao fim de 7 dias.
         </p>
       </div>

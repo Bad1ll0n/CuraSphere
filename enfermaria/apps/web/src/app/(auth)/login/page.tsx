@@ -115,7 +115,7 @@ export default function LoginPage() {
               Gestão hospitalar<br />
               <span className="text-blue-400">sem papel.</span>
             </h1>
-            <p className="text-slate-400 text-sm leading-relaxed mb-10">
+            <p className="text-slate-500 text-sm leading-relaxed mb-10">
               Passagens de turno, tarefas, medicação e doentes — tudo centralizado e acessível em segundos.
             </p>
             <div className="grid grid-cols-3 gap-3" style={{ marginTop: '24px' }}>
@@ -139,7 +139,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex">
       {painelEsquerdo}
 
-      <div className="flex-1 flex items-center justify-center bg-[#f8fafc] px-16 xl:px-24">
+      <div className="flex-1 flex items-center justify-center bg-page px-16 xl:px-24">
         <div className="absolute top-4 right-4">
           <LanguageSwitcher />
         </div>
@@ -204,7 +204,7 @@ export default function LoginPage() {
                 <div style={{ marginTop: '16px' }}>
                   <div className="flex items-center gap-3 my-2">
                     <div className="flex-1 h-px bg-slate-200" />
-                    <span className="text-xs text-slate-400">ou</span>
+                    <span className="text-xs text-slate-500">ou</span>
                     <div className="flex-1 h-px bg-slate-200" />
                   </div>
                   <div className="space-y-2">
@@ -291,7 +291,7 @@ export default function LoginPage() {
             </>
           )}
 
-          <p className="text-center text-xs text-slate-400" style={{ marginTop: '28px' }}>
+          <p className="text-center text-xs text-slate-500" style={{ marginTop: '28px' }}>
             Acesso restrito a profissionais autorizados
           </p>
         </div>

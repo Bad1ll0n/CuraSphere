@@ -81,7 +81,7 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                 </div>
                 <div className="flex-1">
                   <span className="text-sm font-semibold text-slate-700">{titulo}</span>
-                  <p className="text-xs text-slate-400">{subtitulo}</p>
+                  <p className="text-xs text-slate-500">{subtitulo}</p>
                 </div>
                 {podeAvaliar && (
                   <button
@@ -96,19 +96,19 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                 <div className="flex items-center gap-4">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-slate-900">{av.pontuacao}</div>
-                    <div className="text-xs text-slate-400" style={{ marginTop: '2px' }}>pontos</div>
+                    <div className="text-xs text-slate-500" style={{ marginTop: '2px' }}>pontos</div>
                   </div>
                   <div className="flex-1">
                     <span className={`inline-block text-xs font-bold badge-pad py-1 rounded-full ${riscoConfig[av.risco]?.cor ?? 'bg-slate-100 text-slate-600'}`}>
                       {riscoConfig[av.risco]?.label ?? av.risco}
                     </span>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>
                       Avaliado por {av.registadoPor?.nome?.split(' ')[0]} · {new Date(av.criadaEm).toLocaleDateString('pt-PT')}
                     </p>
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem avaliação registada</p>
+                <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem avaliação registada</p>
               )}
             </div>
           );
@@ -130,10 +130,10 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                   {isBraden ? 'Escala de Braden' : 'Escala de Morse'}
                 </h2>
                 <button onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
-              <p className="text-sm text-slate-400" style={{ marginBottom: '24px' }}>
+              <p className="text-sm text-slate-500" style={{ marginBottom: '24px' }}>
                 {isBraden ? 'Avaliação do risco de úlceras de pressão (6–23 pts)' : 'Avaliação do risco de queda (0–125 pts)'}
               </p>
 

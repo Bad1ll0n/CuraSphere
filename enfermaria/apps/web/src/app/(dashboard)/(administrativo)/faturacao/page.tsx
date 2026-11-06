@@ -224,9 +224,9 @@ export default function FaturacaoPage() {
 
       {/* Lista */}
       {loading ? (
-        <div className="text-slate-400 text-sm text-center" style={{ paddingTop: '60px' }}>A carregar...</div>
+        <div className="text-slate-500 text-sm text-center" style={{ paddingTop: '60px' }}>A carregar...</div>
       ) : episodios.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-slate-400" style={{ padding: '80px' }}>
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-slate-500" style={{ padding: '80px' }}>
           <p className="text-sm font-medium">Sem episódios de faturação</p>
         </div>
       ) : (
@@ -234,9 +234,9 @@ export default function FaturacaoPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '14px 20px 14px 32px' }}>Doente</th>
+                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 20px 14px 32px' }}>Doente</th>
                 {['Processo', 'Cobertura', 'Total', 'Estado', 'Criado em', ''].map(h => (
-                  <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '14px 20px' }}>{h}</th>
+                  <th key={h} className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 20px' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -247,7 +247,7 @@ export default function FaturacaoPage() {
                   style={{ borderBottom: i < episodios.length - 1 ? undefined : 'none' }}>
                   <td style={{ padding: '16px 20px 16px 32px' }}>
                     <p className="font-medium text-slate-800">{ep.doente.nome}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>por {ep.criadoPor.nome}</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>por {ep.criadoPor.nome}</p>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
                     <span className="text-xs font-mono text-slate-500 bg-slate-100 badge-pad py-0.5 rounded">{ep.doente.numeroProcesso}</span>
@@ -262,7 +262,7 @@ export default function FaturacaoPage() {
                     <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${estadoCor[ep.estado]}`}>{estadoLabel[ep.estado]}</span>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
-                    <span className="text-xs text-slate-400">{new Date(ep.criadoEm).toLocaleDateString('pt-PT')}</span>
+                    <span className="text-xs text-slate-500">{new Date(ep.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
                     <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,7 +275,7 @@ export default function FaturacaoPage() {
           </table>
           {total > 20 && (
             <div className="flex items-center justify-between border-t border-slate-100" style={{ padding: '14px 20px' }}>
-              <span className="text-xs text-slate-400">{total} episódios no total</span>
+              <span className="text-xs text-slate-500">{total} episódios no total</span>
               <div className="flex gap-2">
                 <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
                   className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40 hover:bg-slate-50">Anterior</button>
@@ -295,12 +295,12 @@ export default function FaturacaoPage() {
               <div>
                 <div className="flex items-center gap-3" style={{ marginBottom: '4px' }}>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${estadoCor[detalhe.estado]}`}>{estadoLabel[detalhe.estado]}</span>
-                  {detalhe.tipoCobertura && <span className="text-xs text-slate-400 capitalize">{detalhe.tipoCobertura}</span>}
+                  {detalhe.tipoCobertura && <span className="text-xs text-slate-500 capitalize">{detalhe.tipoCobertura}</span>}
                 </div>
                 <h2 className="text-xl font-bold text-slate-900">{detalhe.doente.nome}</h2>
-                <p className="text-sm text-slate-400" style={{ marginTop: '2px' }}>Processo: {detalhe.doente.numeroProcesso}</p>
+                <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>Processo: {detalhe.doente.numeroProcesso}</p>
               </div>
-              <button onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <button onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -309,7 +309,7 @@ export default function FaturacaoPage() {
 
             <div style={{ overflowY: 'auto', padding: '24px 28px', flex: 1 }}>
               {loadingDetalhe ? (
-                <p className="text-slate-400 text-sm text-center" style={{ paddingTop: '20px' }}>A carregar...</p>
+                <p className="text-slate-500 text-sm text-center" style={{ paddingTop: '20px' }}>A carregar...</p>
               ) : (
                 <>
                   {/* Total */}
@@ -320,7 +320,7 @@ export default function FaturacaoPage() {
                       { label: 'Total Pago', valor: `${(detalhe.pagamentos ?? []).reduce((s, p) => s + p.valor, 0).toFixed(2)} €` },
                     ].map(({ label, valor }) => (
                       <div key={label} className="bg-slate-50 rounded-xl text-center" style={{ padding: '14px' }}>
-                        <p className="text-xs text-slate-400" style={{ marginBottom: '4px' }}>{label}</p>
+                        <p className="text-xs text-slate-500" style={{ marginBottom: '4px' }}>{label}</p>
                         <p className="text-lg font-bold text-slate-800">{valor}</p>
                       </div>
                     ))}
@@ -341,7 +341,7 @@ export default function FaturacaoPage() {
                       )}
                     </div>
                     {(detalhe.itens ?? []).length === 0 ? (
-                      <p className="text-xs text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem itens</p>
+                      <p className="text-xs text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem itens</p>
                     ) : (
                       <div className="border border-slate-100 rounded-xl overflow-hidden">
                         {detalhe.itens!.map((item, i) => (
@@ -349,7 +349,7 @@ export default function FaturacaoPage() {
                             style={{ padding: '12px 16px', borderBottom: i < detalhe.itens!.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-slate-800">{item.descricao}</p>
-                              <p className="text-xs text-slate-400">{categoriaLabel[item.categoria]} · {item.quantidade}x · {item.precoUnitario.toFixed(2)} €</p>
+                              <p className="text-xs text-slate-500">{categoriaLabel[item.categoria]} · {item.quantidade}x · {item.precoUnitario.toFixed(2)} €</p>
                             </div>
                             <span className="text-sm font-semibold text-slate-700">{item.total.toFixed(2)} €</span>
                             {detalhe.estado !== 'paga' && detalhe.estado !== 'anulada' && (
@@ -380,7 +380,7 @@ export default function FaturacaoPage() {
                       )}
                     </div>
                     {(detalhe.pagamentos ?? []).length === 0 ? (
-                      <p className="text-xs text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem pagamentos registados</p>
+                      <p className="text-xs text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem pagamentos registados</p>
                     ) : (
                       <div className="border border-slate-100 rounded-xl overflow-hidden">
                         {detalhe.pagamentos!.map((pag, i) => (
@@ -388,7 +388,7 @@ export default function FaturacaoPage() {
                             style={{ padding: '12px 16px', borderBottom: i < detalhe.pagamentos!.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-slate-800">{metodoLabel[pag.metodo]}</p>
-                              <p className="text-xs text-slate-400">
+                              <p className="text-xs text-slate-500">
                                 {pag.registadoPor.nome} · {new Date(pag.criadoEm).toLocaleDateString('pt-PT')}
                                 {pag.referencia && ` · ${pag.referencia}`}
                               </p>
@@ -501,7 +501,7 @@ export default function FaturacaoPage() {
             ))}
 
             <div className="bg-slate-50 rounded-xl text-center" style={{ padding: '12px', marginBottom: '20px' }}>
-              <p className="text-xs text-slate-400">Total</p>
+              <p className="text-xs text-slate-500">Total</p>
               <p className="text-lg font-bold text-slate-800">{(novoItem.quantidade * novoItem.precoUnitario).toFixed(2)} €</p>
             </div>
 

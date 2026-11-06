@@ -299,7 +299,7 @@ export default function RelatoriosPage() {
                     <tbody>
                       {(data.top20 ?? []).map((item: any, i: number) => (
                         <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
-                          <td className="py-2 text-slate-400 text-xs">{i + 1}</td>
+                          <td className="py-2 text-slate-500 text-xs">{i + 1}</td>
                           <td className="py-2">{item.diagnostico ?? item.medicamento}</td>
                           <td className="py-2 text-right font-semibold">{item.total ?? item.administracoes}</td>
                         </tr>
@@ -375,7 +375,7 @@ export default function RelatoriosPage() {
                               <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50 ${total === 0 ? 'opacity-40' : ''}`}>
                                 <td className="py-2.5 px-3 font-medium text-slate-800">{l.nome}</td>
                                 <td className="py-2.5 px-3 text-slate-500">{ROLE_LABEL[l.role] ?? l.role}</td>
-                                <td className="py-2.5 px-3 text-slate-400 text-xs">{l.servico}</td>
+                                <td className="py-2.5 px-3 text-slate-500 text-xs">{l.servico}</td>
                                 <td className="py-2.5 px-3 text-right">
                                   {l.consultasRealizadas > 0 ? <span className="font-semibold text-blue-700">{l.consultasRealizadas}</span> : <span className="text-slate-300">—</span>}
                                 </td>
@@ -394,7 +394,7 @@ export default function RelatoriosPage() {
                         </tbody>
                       </table>
                     </div>
-                    <p className="text-xs text-slate-400 mt-3">
+                    <p className="text-xs text-slate-500 mt-3">
                       Profissionais sem actividade no período aparecem a transparência reduzida. Inclui médicos, enfermeiros, auxiliares, técnicos de saúde e farmacêuticos activos.
                     </p>
                   </div>

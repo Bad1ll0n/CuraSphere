@@ -119,7 +119,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
           {podeSolicitar && <BtnAdd label="Solicitar exame" onClick={() => { setExameForm({ tipo: 'analise_clinica', descricao: '', urgente: false }); setModalExame(true); }} />}
         </div>
         {exames.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>Sem exames solicitados</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>Sem exames solicitados</p>
         ) : (
           <div className="flex flex-col gap-3">
             {exames.map((e: any) => {
@@ -138,7 +138,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
                         <span className="font-semibold text-green-700">Resultado:</span> {e.resultado}
                       </p>
                     )}
-                    <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>
                       Por {e.solicitadoPor?.nome} · {new Date(e.criadoEm).toLocaleDateString('pt-PT')}
                     </p>
                   </div>
@@ -171,7 +171,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
           <div {...dlgExame.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Solicitar Exame</h2>
-              <button aria-label="Fechar" onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalExame(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</span>
@@ -215,7 +215,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
           <div {...dlgResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>
               {TIPO_EXAME_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo} — {resultadoModal.descricao}

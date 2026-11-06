@@ -101,7 +101,7 @@ export function DialisePanel({ doenteId, utilizador }: Props) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
         <h3 className="text-base font-semibold text-slate-900">Diálise / Nefrologia</h3>
-        <div className="text-sm text-slate-400" style={{ marginTop: '8px' }}>A carregar…</div>
+        <div className="text-sm text-slate-500" style={{ marginTop: '8px' }}>A carregar…</div>
       </div>
     );
   }
@@ -111,7 +111,7 @@ export function DialisePanel({ doenteId, utilizador }: Props) {
       <div className="flex items-center justify-between gap-3" style={{ marginBottom: sessoes.length ? '16px' : '0' }}>
         <div>
           <h3 className="text-base font-semibold text-slate-900">Diálise / Nefrologia</h3>
-          {sessoes.length === 0 && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Sem sessões registadas.</p>}
+          {sessoes.length === 0 && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem sessões registadas.</p>}
         </div>
         <button onClick={() => setMostrarForm((v) => !v)}
           className="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
@@ -202,7 +202,7 @@ export function DialisePanel({ doenteId, utilizador }: Props) {
         </>
       )}
 
-      <p className="text-xs text-slate-400" style={{ marginTop: '12px' }}>
+      <p className="text-xs text-slate-500" style={{ marginTop: '12px' }}>
         Apoio à decisão — ganho interdialítico &gt; 2.5 kg (ou &gt; 4% do peso seco) gera alerta clínico.
       </p>
     </div>

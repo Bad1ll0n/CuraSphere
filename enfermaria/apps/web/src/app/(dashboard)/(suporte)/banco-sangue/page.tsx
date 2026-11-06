@@ -19,7 +19,7 @@ const ESTADO_COR: Record<string, string> = {
   reservada: 'bg-amber-50 text-amber-700 border-amber-200',
   transfundida: 'bg-slate-100 text-slate-500 border-slate-200',
   expirada: 'bg-red-50 text-red-600 border-red-200',
-  descartada: 'bg-slate-100 text-slate-400 border-slate-200',
+  descartada: 'bg-slate-100 text-slate-500 border-slate-200',
 };
 const GRUPOS = ['A', 'B', 'AB', 'O'];
 
@@ -104,10 +104,10 @@ export default function BancoSanguePage() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-slate-400 text-center" style={{ padding: '40px' }}>{tc('loading')}</p>
+        <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>{tc('loading')}</p>
       ) : bolsas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center" style={{ padding: '48px' }}>
-          <p className="text-sm text-slate-400">{t('empty')}</p>
+          <p className="text-sm text-slate-500">{t('empty')}</p>
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

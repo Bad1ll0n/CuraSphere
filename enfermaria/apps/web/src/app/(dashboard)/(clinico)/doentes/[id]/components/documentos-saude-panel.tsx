@@ -247,7 +247,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
 
         {/* Lista */}
         {docsVisiveis.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
             {podeUpload ? 'Sem documentos — sincroniza ou carrega em +' : 'Sem documentos de saúde registados'}
           </p>
         ) : (
@@ -267,13 +267,13 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                         {doc.sistemaOrigem?.nome ?? 'Externo'}
                       </span>
                     ) : (
-                      <span className="shrink-0 text-xs text-slate-400 bg-slate-100 rounded-full px-2 py-0.5">Upload</span>
+                      <span className="shrink-0 text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">Upload</span>
                     )}
                     {doc.modalidadeDicom && (
                       <span className="shrink-0 text-xs font-mono text-purple-600 bg-purple-50 rounded px-1.5 py-0.5">{doc.modalidadeDicom}</span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                     {new Date(doc.dataDocumento).toLocaleDateString('pt-PT')}
                     {doc.tamanhoBytes ? ` · ${formatBytes(doc.tamanhoBytes)}` : ''}
                     {doc.origem ? ` · ${doc.origem}` : ''}
@@ -319,7 +319,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                   {podeApagar && (
                     <button
                       onClick={() => apagarDocumento(doc.id)}
-                      className="text-xs text-slate-400 hover:text-red-500 transition-colors"
+                      className="text-xs text-slate-500 hover:text-red-500 transition-colors"
                       style={{ padding: '4px 8px' }}
                     >
                       ✕
@@ -342,7 +342,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                 onClick={() => setDocAberto(null)}
                 className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors"
               >
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -391,7 +391,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Carregar Documento</h2>
               <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
 
@@ -411,7 +411,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
               {fileSeleccionado ? (
                 <div className="text-center">
                   <p className="text-sm font-semibold text-slate-700">{fileSeleccionado.name}</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>{formatBytes(fileSeleccionado.size)}</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{formatBytes(fileSeleccionado.size)}</p>
                 </div>
               ) : (
                 <>
@@ -419,7 +419,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
                   <p className="text-sm text-slate-500">Arrasta ou clica para seleccionar</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>PDF, JPEG, PNG, DICOM — até 50 MB</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>PDF, JPEG, PNG, DICOM — até 50 MB</p>
                 </>
               )}
               <input

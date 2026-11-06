@@ -137,14 +137,14 @@ export default function AvaliacoesPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         </div>
       ) : avaliacoes.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '60px' }}>
-          <p className="text-sm text-slate-400">Sem avaliações registadas</p>
+          <p className="text-sm text-slate-500">Sem avaliações registadas</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -154,8 +154,8 @@ export default function AvaliacoesPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 flex-wrap" style={{ marginBottom: '8px' }}>
                     <p className="text-sm font-semibold text-slate-800">{a.utilizador.nome}</p>
-                    <span className="text-xs text-slate-400">{ROLE_LABEL[a.utilizador.role] ?? a.utilizador.role}</span>
-                    <span className="text-xs text-slate-400">·</span>
+                    <span className="text-xs text-slate-500">{ROLE_LABEL[a.utilizador.role] ?? a.utilizador.role}</span>
+                    <span className="text-xs text-slate-500">·</span>
                     <span className="text-xs font-medium text-slate-600">{a.periodo}</span>
                     <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
                       {ESTADO_LABEL[a.estado]}
@@ -163,7 +163,7 @@ export default function AvaliacoesPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Estrelas valor={a.pontuacaoGeral} />
-                    <span className="text-xs text-slate-400">Avaliado por {a.avaliador.nome} · {new Date(a.dataAvaliacao).toLocaleDateString('pt-PT')}</span>
+                    <span className="text-xs text-slate-500">Avaliado por {a.avaliador.nome} · {new Date(a.dataAvaliacao).toLocaleDateString('pt-PT')}</span>
                   </div>
                   {a.pontosFortes && (
                     <p className="text-xs text-slate-600" style={{ marginTop: '8px' }}>
