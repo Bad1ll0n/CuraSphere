@@ -146,6 +146,8 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   passwordHash: 'passwordHash',
   mfaSecret: 'mfaSecret',
   mfaAtivo: 'mfaAtivo',
+  mfaSecretPendente: 'mfaSecretPendente',
+  versaoSessao: 'versaoSessao',
   passwordExpiresAt: 'passwordExpiresAt',
   tentativasLoginFalhadas: 'tentativasLoginFalhadas',
   ultimaFalhaLoginEm: 'ultimaFalhaLoginEm',
@@ -584,6 +586,15 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   contentHash: 'contentHash',
   prevHash: 'prevHash',
   hash: 'hash'
+};
+
+exports.Prisma.DesafioMfaScalarFieldEnum = {
+  jti: 'jti',
+  utilizadorId: 'utilizadorId',
+  tentativas: 'tentativas',
+  consumidoEm: 'consumidoEm',
+  expiraEm: 'expiraEm',
+  criadoEm: 'criadoEm'
 };
 
 exports.Prisma.TotpConsumidoScalarFieldEnum = {
@@ -2196,6 +2207,7 @@ exports.Prisma.ModelName = {
   ListaEspera: 'ListaEspera',
   ReceitaEletronica: 'ReceitaEletronica',
   AuditLog: 'AuditLog',
+  DesafioMfa: 'DesafioMfa',
   TotpConsumido: 'TotpConsumido',
   CronLock: 'CronLock',
   AuditCheckpoint: 'AuditCheckpoint',

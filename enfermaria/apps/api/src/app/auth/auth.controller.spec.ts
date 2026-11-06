@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { AuthController } from './auth.controller';
@@ -87,9 +88,12 @@ describe('AuthController', () => {
         json: jest.fn(),
       };
 
-      await controller.refresh({ cookies: {} } as any, mockRes as any);
+      // 401 pelo filtro de excepções — escrever a resposta à mão com `passthrough`
+      // fazia o Nest enviá-la segunda vez e o pedido acabava em 500.
+      await expect(controller.refresh({ cookies: {} } as any, mockRes as any)).rejects.toThrow(UnauthorizedException);
 
-      expect(mockRes.status).toHaveBeenCalledWith(401);
+      expect(mockRes.clearCookie).toHaveBeenCalledTimes(2);
+      expect(mockRes.json).not.toHaveBeenCalled();
       expect(mockAuthService.refresh).not.toHaveBeenCalled();
     });
 
