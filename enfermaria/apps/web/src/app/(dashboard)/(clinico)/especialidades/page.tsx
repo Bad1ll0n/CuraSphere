@@ -127,7 +127,7 @@ export default function EspecialidadesPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -139,7 +139,7 @@ export default function EspecialidadesPage() {
             <h2 className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Próximas Sessões</h2>
             {agendadas.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '40px' }}>
-                <p className="text-sm text-slate-400">Sem sessões agendadas</p>
+                <p className="text-sm text-slate-500">Sem sessões agendadas</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -152,7 +152,7 @@ export default function EspecialidadesPage() {
                           {ESTADO_LABEL[s.estado]}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         {new Date(s.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })} · {s.duracao} min
                         {s.descricao && ` · ${s.descricao}`}
                       </p>
@@ -192,7 +192,7 @@ export default function EspecialidadesPage() {
                             {ESTADO_LABEL[s.estado]}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-slate-500">
                           {new Date(s.data).toLocaleDateString('pt-PT')} · {s.duracao} min
                         </p>
                         {s.evolucao && (

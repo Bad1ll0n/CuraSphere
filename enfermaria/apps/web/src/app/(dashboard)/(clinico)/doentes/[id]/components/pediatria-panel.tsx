@@ -91,9 +91,9 @@ export function PediatriaPanel({ doenteId }: Props) {
           PEWS — Pediatric Early Warning Score (calculado por faixa etária)
         </div>
         {loading ? (
-          <div className="text-sm text-slate-400">A carregar…</div>
+          <div className="text-sm text-slate-500">A carregar…</div>
         ) : ultimo?.pews == null || !cor ? (
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-slate-500">
             Sem PEWS registado — é calculado automaticamente ao registar sinais vitais.
           </div>
         ) : (
@@ -141,7 +141,7 @@ export function PediatriaPanel({ doenteId }: Props) {
           className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors">
           {calculando ? 'A calcular…' : 'Calcular dose'}
         </button>
-        <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
+        <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>
           Sem peso, usa o último registado nos sinais vitais. Apoio à decisão — validar contra o formulário.
         </p>
         {resultado && (

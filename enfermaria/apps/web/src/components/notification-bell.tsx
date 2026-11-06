@@ -100,7 +100,7 @@ export function NotificationBell() {
 
           <div className="max-h-96 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700">
             {notificacoes.length === 0 && (
-              <p className="text-sm text-slate-400 text-center py-8">Sem notificações</p>
+              <p className="text-sm text-slate-500 text-center py-8">Sem notificações</p>
             )}
             {notificacoes.map((n: any) => {
               const style = TIPO_LABEL[n.tipo] ?? { emoji: '🔔', cor: 'text-slate-600' };
@@ -120,7 +120,7 @@ export function NotificationBell() {
                       <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 line-clamp-2">{n.corpo}</p>
                     </div>
                     <div className="flex flex-col items-end gap-1 shrink-0">
-                      <span className="text-[10px] text-slate-400">{formatarHora(n.criadoEm)}</span>
+                      <span className="text-[10px] text-slate-500">{formatarHora(n.criadoEm)}</span>
                       {!n.lida && <span className="w-2 h-2 rounded-full bg-blue-500" />}
                     </div>
                   </div>

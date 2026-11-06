@@ -170,12 +170,12 @@ export default function FornecedoresPage() {
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-slate-900">{f.nome}</p>
                 <div className="flex gap-3 flex-wrap" style={{ marginTop: '4px' }}>
-                  {f.nif && <span className="text-xs text-slate-400">NIF: {f.nif}</span>}
-                  {f.email && <span className="text-xs text-slate-400">{f.email}</span>}
-                  {f.telefone && <span className="text-xs text-slate-400">{f.telefone}</span>}
-                  {f.morada && <span className="text-xs text-slate-400">{f.morada}</span>}
+                  {f.nif && <span className="text-xs text-slate-500">NIF: {f.nif}</span>}
+                  {f.email && <span className="text-xs text-slate-500">{f.email}</span>}
+                  {f.telefone && <span className="text-xs text-slate-500">{f.telefone}</span>}
+                  {f.morada && <span className="text-xs text-slate-500">{f.morada}</span>}
                 </div>
-                {f._count && <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>{f._count.encomendas} encomenda(s)</p>}
+                {f._count && <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{f._count.encomendas} encomenda(s)</p>}
               </div>
               {canEdit && (
                 <div className="flex gap-2">
@@ -206,7 +206,7 @@ export default function FornecedoresPage() {
           </div>
           {loadingEnc ? (
             <div className="flex justify-center" style={{ padding: '40px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
             </div>
           ) : encomendas.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
@@ -221,17 +221,17 @@ export default function FornecedoresPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                         <p className="font-semibold text-slate-900 text-sm">{e.stockItem?.nome}</p>
-                        <span className="text-xs text-slate-400">({e.stockItem?.servico})</span>
+                        <span className="text-xs text-slate-500">({e.stockItem?.servico})</span>
                       </div>
                       <p className="text-slate-500 text-xs">{e.quantidadeEncomendada} {e.stockItem?.unidade} de {e.fornecedor?.nome}{e.precoUnitario ? ` · ${e.precoUnitario.toFixed(2)}€/un` : ''}</p>
                       {e.dataEntregaPrevista && (
-                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Entrega prevista: {new Date(e.dataEntregaPrevista).toLocaleDateString('pt-PT')}</p>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Entrega prevista: {new Date(e.dataEntregaPrevista).toLocaleDateString('pt-PT')}</p>
                       )}
-                      {e.observacoes && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{e.observacoes}</p>}
+                      {e.observacoes && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{e.observacoes}</p>}
                       <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
                         <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
-                        <span className="text-xs text-slate-400">{new Date(e.criadoEm).toLocaleDateString('pt-PT')}</span>
-                        {e.recebioPor && <span className="text-xs text-slate-400">Recebido por {e.recebioPor.nome}</span>}
+                        <span className="text-xs text-slate-500">{new Date(e.criadoEm).toLocaleDateString('pt-PT')}</span>
+                        {e.recebioPor && <span className="text-xs text-slate-500">Recebido por {e.recebioPor.nome}</span>}
                       </div>
                     </div>
                     {e.estado === 'pendente' && canEdit && (
@@ -253,7 +253,7 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modalForn === 'criar' ? 'Novo Fornecedor' : 'Editar Fornecedor'}</h2>
-              <button aria-label="Fechar" onClick={() => { setModalForn(null); setEditForn(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModalForn(null); setEditForn(null); }} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               {[
@@ -290,7 +290,7 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Encomenda</h2>
-              <button aria-label="Fechar" onClick={() => setModalEncomenda(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEncomenda(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               <div>
@@ -356,10 +356,10 @@ export default function FornecedoresPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Receber Encomenda</h2>
-              <button aria-label="Fechar" onClick={() => setModalReceber(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalReceber(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '4px' }}>{modalReceber.stockItem?.nome}</p>
-            <p className="text-slate-400 text-xs" style={{ marginBottom: '20px' }}>Encomendado: {modalReceber.quantidadeEncomendada} {modalReceber.stockItem?.unidade}</p>
+            <p className="text-slate-500 text-xs" style={{ marginBottom: '20px' }}>Encomendado: {modalReceber.quantidadeEncomendada} {modalReceber.stockItem?.unidade}</p>
             <div style={{ marginBottom: '24px' }}>
               <label htmlFor="fpage-7" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Quantidade efectivamente recebida *</label>
               <input id="fpage-7" type="number" value={qtdRecebida} onChange={e => setQtdRecebida(Number(e.target.value))}

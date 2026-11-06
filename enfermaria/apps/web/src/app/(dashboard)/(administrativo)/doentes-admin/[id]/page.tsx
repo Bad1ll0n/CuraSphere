@@ -49,7 +49,7 @@ const TIPO_VISITA_LABEL: Record<string, string> = {
 function Campo({ label, valor }: { label: string; valor?: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '3px' }}>{label}</p>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '3px' }}>{label}</p>
       <p className="text-sm text-slate-700">{valor || <span className="text-slate-300 italic">—</span>}</p>
     </div>
   );
@@ -60,7 +60,7 @@ function Input({ label, value, onChange, type = 'text' }: {
 }) {
   return (
     <div>
-      <span className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
       <input aria-label={label}
         type={type}
         value={value}
@@ -78,7 +78,7 @@ function Select({ label, value, onChange, options }: {
 }) {
   return (
     <div>
-      <span className="block text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
+      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</span>
       <select aria-label={label}
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -96,7 +96,7 @@ function Secao({ titulo, children, action }: { titulo: string; children: React.R
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px 28px', marginBottom: '20px' }}>
       <div className="flex items-center justify-between" style={{ marginBottom: '18px' }}>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{titulo}</p>
+        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{titulo}</p>
         {action}
       </div>
       {children}
@@ -254,7 +254,7 @@ export default function DoenteAdminDetalhePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+      <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
         <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -267,7 +267,7 @@ export default function DoenteAdminDetalhePage() {
   if (!doente) {
     return (
       <div style={{ padding: '40px 48px', maxWidth: '900px', margin: '0 auto' }}>
-        <p className="text-slate-400 text-sm">Utente não encontrado.</p>
+        <p className="text-slate-500 text-sm">Utente não encontrado.</p>
       </div>
     );
   }
@@ -278,7 +278,7 @@ export default function DoenteAdminDetalhePage() {
       <div style={{ marginBottom: '32px' }}>
         <button
           onClick={() => router.push('/doentes-admin')}
-          className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors"
+          className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
           style={{ marginBottom: '20px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -290,7 +290,7 @@ export default function DoenteAdminDetalhePage() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">{doente.nome}</h1>
-            <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Processo n.º {doente.numeroProcesso}</p>
+            <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Processo n.º {doente.numeroProcesso}</p>
           </div>
           <div className="flex items-center gap-3">
             <span className={`text-sm font-semibold badge-pad py-1 rounded-full ${ESTADO_COR[doente.estadoRegisto] ?? 'bg-slate-100 text-slate-500'}`}>
@@ -417,7 +417,7 @@ export default function DoenteAdminDetalhePage() {
               <div key={i} className="flex items-center gap-6 bg-slate-50 rounded-xl" style={{ padding: '12px 16px' }}>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-slate-700">{c.nome}</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{c.relacao}</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{c.relacao}</p>
                 </div>
                 <p className="text-sm text-slate-600">{c.telefone}</p>
               </div>
@@ -455,7 +455,7 @@ export default function DoenteAdminDetalhePage() {
                 <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                   {ESTADO_LABEL_C[c.estado] ?? c.estado}
                 </span>
-                <span className="text-xs text-slate-400 font-mono">{c.codigo}</span>
+                <span className="text-xs text-slate-500 font-mono">{c.codigo}</span>
               </div>
               <div className="text-xs text-slate-500">
                 {c.especialidade}{c.medico?.nome ? ` · ${c.medico.nome}` : ''}
@@ -485,18 +485,18 @@ export default function DoenteAdminDetalhePage() {
             </button>
           }>
             {consultas.length === 0 ? (
-              <p className="text-sm text-slate-400 text-center" style={{ padding: '8px 0' }}>Sem consultas registadas</p>
+              <p className="text-sm text-slate-500 text-center" style={{ padding: '8px 0' }}>Sem consultas registadas</p>
             ) : (
               <div className="flex flex-col gap-4">
                 {proximas.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Próximas</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Próximas</p>
                     <div className="flex flex-col gap-2">{proximas.map((c: any) => <Row key={c.id} c={c} />)}</div>
                   </div>
                 )}
                 {historico.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Histórico</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Histórico</p>
                     <div className="flex flex-col gap-2">{historico.map((c: any) => <Row key={c.id} c={c} />)}</div>
                   </div>
                 )}
@@ -533,7 +533,7 @@ export default function DoenteAdminDetalhePage() {
               </div>
             )}
             {faturacao.length === 0 ? (
-              <p className="text-sm text-slate-400 text-center" style={{ padding: '8px 0' }}>Sem episódios de faturação</p>
+              <p className="text-sm text-slate-500 text-center" style={{ padding: '8px 0' }}>Sem episódios de faturação</p>
             ) : (
               <div className="flex flex-col gap-3">
                 {faturacao.map((e: any) => {
@@ -546,15 +546,15 @@ export default function DoenteAdminDetalhePage() {
                           {ESTADO_LABEL_F[e.estado] ?? e.estado}
                         </span>
                         {e.dataEmissao && <span className="text-xs text-slate-500">{fmtData(e.dataEmissao)}</span>}
-                        {e.tipoCobertura && <span className="text-xs text-slate-400">{e.tipoCobertura}</span>}
+                        {e.tipoCobertura && <span className="text-xs text-slate-500">{e.tipoCobertura}</span>}
                         <span className="text-xs font-semibold text-slate-700" style={{ marginLeft: 'auto' }}>{fmtEur(e.totalCobrado ?? 0)}</span>
                       </div>
                       {(e.itens ?? []).length > 0 && (
                         <div style={{ marginBottom: '8px' }}>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Itens</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Itens</p>
                           {(e.itens ?? []).map((it: any) => (
                             <div key={it.id} className="flex justify-between text-xs text-slate-500 py-0.5">
-                              <span>{it.descricao} <span className="text-slate-400">({it.categoria})</span></span>
+                              <span>{it.descricao} <span className="text-slate-500">({it.categoria})</span></span>
                               <span>{it.quantidade} × {fmtEur(it.precoUnitario)} = {fmtEur(it.total)}</span>
                             </div>
                           ))}
@@ -562,7 +562,7 @@ export default function DoenteAdminDetalhePage() {
                       )}
                       {(e.pagamentos ?? []).length > 0 && (
                         <div style={{ marginBottom: '6px' }}>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Pagamentos</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Pagamentos</p>
                           {(e.pagamentos ?? []).map((p: any) => (
                             <div key={p.id} className="flex justify-between text-xs text-slate-500 py-0.5">
                               <span>{p.metodo}{p.referencia ? ` · ${p.referencia}` : ''} · {fmtData(p.criadoEm)}</span>
@@ -598,9 +598,9 @@ export default function DoenteAdminDetalhePage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <p className="text-base font-bold text-slate-900">Agendar Consulta</p>
-                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Passo {agStep} de 4</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Passo {agStep} de 4</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setModalAgendar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAgendar(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             {/* Passo 1 — Especialidade */}
@@ -610,7 +610,7 @@ export default function DoenteAdminDetalhePage() {
                 <div>
                   <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '14px' }}>Selecionar Especialidade</p>
                   {especialidades.length === 0 ? (
-                    <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>A carregar médicos...</p>
+                    <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>A carregar médicos...</p>
                   ) : (
                     <div className="flex flex-col gap-2">
                       {especialidades.map((esp: string) => (
@@ -623,7 +623,7 @@ export default function DoenteAdminDetalhePage() {
                           <span className="text-sm font-medium text-slate-800">
                             {(SUBROLE_LABEL as any)[esp] ?? esp}
                           </span>
-                          <span className="text-xs text-slate-400" style={{ marginLeft: '8px' }}>
+                          <span className="text-xs text-slate-500" style={{ marginLeft: '8px' }}>
                             {medicos.filter((m: any) => m.subRole === esp).length} médico{medicos.filter((m: any) => m.subRole === esp).length !== 1 ? 's' : ''}
                           </span>
                         </button>
@@ -650,7 +650,7 @@ export default function DoenteAdminDetalhePage() {
                       style={{ padding: '12px 16px' }}
                     >
                       <p className="text-sm font-medium text-slate-800">{m.nome}</p>
-                      <p className="text-xs text-slate-400">{(SUBROLE_LABEL as any)[m.subRole] ?? m.subRole}</p>
+                      <p className="text-xs text-slate-500">{(SUBROLE_LABEL as any)[m.subRole] ?? m.subRole}</p>
                     </button>
                   ))}
                 </div>
@@ -676,7 +676,7 @@ export default function DoenteAdminDetalhePage() {
                   {/* Calendário */}
                   <div className="grid grid-cols-7 gap-1" style={{ marginBottom: '16px' }}>
                     {DIAS_SEMANA.map(d => (
-                      <div key={d} className="text-center text-xs font-semibold text-slate-400" style={{ padding: '4px 0' }}>{d}</div>
+                      <div key={d} className="text-center text-xs font-semibold text-slate-500" style={{ padding: '4px 0' }}>{d}</div>
                     ))}
                     {cells.map((d, i) => {
                       if (!d) return <div key={`empty-${i}`} />;
@@ -702,13 +702,13 @@ export default function DoenteAdminDetalhePage() {
                   {/* Slots */}
                   {agData && (
                     <div>
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
                         Horários disponíveis — {new Date(agData + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: '2-digit', month: 'long' })}
                       </p>
                       {agLoadingSlots ? (
-                        <p className="text-sm text-slate-400 text-center" style={{ padding: '12px 0' }}>A carregar horários...</p>
+                        <p className="text-sm text-slate-500 text-center" style={{ padding: '12px 0' }}>A carregar horários...</p>
                       ) : agSlots.length === 0 ? (
-                        <p className="text-sm text-slate-400 text-center" style={{ padding: '12px 0' }}>Sem horários disponíveis neste dia</p>
+                        <p className="text-sm text-slate-500 text-center" style={{ padding: '12px 0' }}>Sem horários disponíveis neste dia</p>
                       ) : (
                         <div className="grid grid-cols-4 gap-2">
                           {agSlots.map((s: any) => {
@@ -747,19 +747,19 @@ export default function DoenteAdminDetalhePage() {
                 <div className="border border-slate-100 rounded-xl" style={{ padding: '16px', marginBottom: '20px' }}>
                   <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Utente</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Utente</p>
                       <p className="text-sm font-medium text-slate-800">{doente?.nome}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Especialidade</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Especialidade</p>
                       <p className="text-sm font-medium text-slate-800">{(SUBROLE_LABEL as any)[agMedico?.subRole] ?? agMedico?.subRole}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Médico</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Médico</p>
                       <p className="text-sm font-medium text-slate-800">{agMedico?.nome}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Data e Hora</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Data e Hora</p>
                       <p className="text-sm font-medium text-slate-800">
                         {new Date(agSlot).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>

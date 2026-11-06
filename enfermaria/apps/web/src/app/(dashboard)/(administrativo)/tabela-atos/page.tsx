@@ -175,7 +175,7 @@ export default function TabelaAtosPage() {
       {/* Tabela */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         {atosFiltrados.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-slate-400" style={{ padding: '60px 24px' }}>
+          <div className="flex flex-col items-center justify-center text-slate-500" style={{ padding: '60px 24px' }}>
             <svg className="w-10 h-10" style={{ marginBottom: '12px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
@@ -215,25 +215,25 @@ export default function TabelaAtosPage() {
                       {ato.precoBase.toFixed(2)} €
                     </td>
                     <td className="text-center" style={{ padding: '14px 16px' }}>
-                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${ato.ativo ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${ato.ativo ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
                         {ato.ativo ? 'Ativo' : 'Inativo'}
                       </span>
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       <div className="flex items-center gap-2 justify-end">
-                        <button onClick={() => abrirEditar(ato)} className="text-slate-400 hover:text-blue-600 transition-colors" title="Editar">
+                        <button onClick={() => abrirEditar(ato)} className="text-slate-500 hover:text-blue-600 transition-colors" title="Editar">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
                         </button>
                         {ato.ativo ? (
-                          <button onClick={() => desativar(ato)} className="text-slate-400 hover:text-red-500 transition-colors" title="Desativar">
+                          <button onClick={() => desativar(ato)} className="text-slate-500 hover:text-red-500 transition-colors" title="Desativar">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>
                           </button>
                         ) : (
-                          <button onClick={() => reativar(ato)} className="text-slate-400 hover:text-emerald-600 transition-colors" title="Reativar">
+                          <button onClick={() => reativar(ato)} className="text-slate-500 hover:text-emerald-600 transition-colors" title="Reativar">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -256,7 +256,7 @@ export default function TabelaAtosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '28px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{editando ? 'Editar Ato' : 'Novo Ato Clínico'}</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

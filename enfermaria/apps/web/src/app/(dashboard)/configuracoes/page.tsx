@@ -55,7 +55,7 @@ function QuiosqueSection() {
         </div>
         <div>
           <span className="text-sm font-semibold text-slate-700">Terminais de quiosque</span>
-          <p className="text-xs text-slate-400">Links de provisionamento do ecrã de corredor, do quiosque de senhas e do painel de chamada. Expiram ao fim de 30 dias, por omissão.</p>
+          <p className="text-xs text-slate-500">Links de provisionamento do ecrã de corredor, do quiosque de senhas e do painel de chamada. Expiram ao fim de 30 dias, por omissão.</p>
         </div>
       </div>
       <div className="flex items-end gap-3" style={{ marginBottom: links.length ? '16px' : '0' }}>
@@ -191,7 +191,7 @@ export default function ConfiguracoesPage() {
 
   if (loading || carregando) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="flex items-center gap-3 text-slate-400">
+      <div className="flex items-center gap-3 text-slate-500">
         <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -241,27 +241,27 @@ export default function ConfiguracoesPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-slate-900">{role.label}</span>
-                  <span className="font-mono text-xs text-slate-400 bg-slate-100 rounded-md" style={{ padding: '2px 10px' }}>{role.chave}</span>
+                  <span className="font-mono text-xs text-slate-500 bg-slate-100 rounded-md" style={{ padding: '2px 10px' }}>{role.chave}</span>
                   <span className={`text-[11px] font-semibold rounded-full ${categoriaColor[role.categoria] ?? 'bg-slate-100 text-slate-500'}`} style={{ padding: '2px 10px' }}>
                     {categoriaLabel[role.categoria] ?? role.categoria}
                   </span>
                 </div>
-                <p className="text-slate-400 text-xs" style={{ marginTop: '4px' }}>
+                <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>
                   {role.subRoles.length} sub-{role.subRoles.length === 1 ? 'role' : 'roles'} · ordem {role.ordem}
                 </p>
               </div>
               <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                 <button
                   onClick={() => abrirEditarRole(role)}
-                  className="text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg text-sm transition-colors"
+                  className="text-slate-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg text-sm transition-colors"
                   style={{ padding: '6px 12px' }}
                 >Editar</button>
                 <button
                   onClick={() => desativarRole(role.id, role.chave)}
-                  className="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg text-sm transition-colors"
+                  className="text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-lg text-sm transition-colors"
                   style={{ padding: '6px 12px' }}
                 >Desativar</button>
-                <svg className={`w-4 h-4 text-slate-400 transition-transform ${expandido === role.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 text-slate-500 transition-transform ${expandido === role.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
@@ -284,25 +284,25 @@ export default function ConfiguracoesPage() {
                   </button>
                 </div>
                 {role.subRoles.length === 0 ? (
-                  <p className="text-slate-400 text-sm italic">Nenhum sub-role configurado</p>
+                  <p className="text-slate-500 text-sm italic">Nenhum sub-role configurado</p>
                 ) : (
                   <div className="flex flex-col gap-2">
                     {role.subRoles.map((sr) => (
                       <div key={sr.id} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '12px 16px' }}>
                         <div className="flex items-center gap-3">
                           <span className="text-slate-800 font-medium text-sm">{sr.label}</span>
-                          <span className="font-mono text-xs text-slate-400 bg-white border border-slate-100 rounded" style={{ padding: '2px 10px' }}>{sr.chave}</span>
-                          <span className="text-slate-400 text-xs">ordem {sr.ordem}</span>
+                          <span className="font-mono text-xs text-slate-500 bg-white border border-slate-100 rounded" style={{ padding: '2px 10px' }}>{sr.chave}</span>
+                          <span className="text-slate-500 text-xs">ordem {sr.ordem}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <button
                             onClick={() => abrirEditarSubRole(sr)}
-                            className="text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg text-xs transition-colors"
+                            className="text-slate-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg text-xs transition-colors"
                             style={{ padding: '4px 10px' }}
                           >Editar</button>
                           <button
                             onClick={() => desativarSubRole(sr.id, sr.chave)}
-                            className="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg text-xs transition-colors"
+                            className="text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-lg text-xs transition-colors"
                             style={{ padding: '4px 10px' }}
                           >Desativar</button>
                         </div>
@@ -325,7 +325,7 @@ export default function ConfiguracoesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modalTitulo}</h2>
-              <button aria-label="Fechar" onClick={fecharModal} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={fecharModal} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div className="flex flex-col gap-4">

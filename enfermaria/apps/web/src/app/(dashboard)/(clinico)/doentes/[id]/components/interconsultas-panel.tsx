@@ -59,7 +59,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -164,7 +164,7 @@ export function InterconsultasPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {interconsultas.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem interconsultas registadas</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem interconsultas registadas</p>
         ) : (
           <div className="flex flex-col gap-3">
             {interconsultas.map((ic: any) => (
@@ -177,7 +177,7 @@ export function InterconsultasPanel({ doenteId, utilizador }: Props) {
                       <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${estadoCorMap[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>{ic.estado}</span>
                     </div>
                     <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{ic.motivo}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
                       Por {ic.requisitante?.nome} · {new Date(ic.criadaEm).toLocaleDateString('pt-PT')}
                     </p>
                     {ic.resposta && (

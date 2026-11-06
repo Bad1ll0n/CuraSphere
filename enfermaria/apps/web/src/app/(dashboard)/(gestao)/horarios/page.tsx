@@ -497,7 +497,7 @@ export default function HorariosPagina() {
               <span className="text-sm font-semibold text-slate-700">Previsão de Necessidades de Pessoal (IA)</span>
               <span className="text-xs bg-violet-50 text-violet-600 border border-violet-200 rounded-md font-medium" style={{ padding: '2px 8px' }}>7 dias</span>
             </div>
-            <svg className={`w-4 h-4 text-slate-400 transition-transform ${staffingAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-4 h-4 text-slate-500 transition-transform ${staffingAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -515,11 +515,11 @@ export default function HorariosPagina() {
                 </button>
               </div>
 
-              {loadingStaffing && <p className="text-xs text-slate-400">A carregar previsões...</p>}
+              {loadingStaffing && <p className="text-xs text-slate-500">A carregar previsões...</p>}
 
               {!loadingStaffing && staffingPrevisoes.length === 0 && (
                 <div className="text-center" style={{ padding: '24px' }}>
-                  <p className="text-sm text-slate-400" style={{ marginBottom: '12px' }}>Sem previsões geradas ainda.</p>
+                  <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>Sem previsões geradas ainda.</p>
                   <button onClick={gerarStaffing} disabled={gerandoStaffing}
                     className="text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-700 border border-violet-200 rounded-xl disabled:opacity-50 transition-colors"
                     style={{ padding: '8px 20px' }}>
@@ -551,7 +551,7 @@ export default function HorariosPagina() {
                           return (
                             <tr key={dia} className="border-b border-slate-50 hover:bg-slate-50/50">
                               <td className="text-slate-700 font-medium" style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                <span className="text-xs text-slate-400 font-normal" style={{ marginRight: '6px' }}>{diasSemanaArr[d.getDay()]}</span>
+                                <span className="text-xs text-slate-500 font-normal" style={{ marginRight: '6px' }}>{diasSemanaArr[d.getDay()]}</span>
                                 {d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
                               </td>
                               {(['manha', 'tarde', 'noite'] as const).map(turno => {
@@ -561,8 +561,8 @@ export default function HorariosPagina() {
                                     {p ? (
                                       <div>
                                         <span className="text-lg font-bold text-slate-800">{p.pessoalRecomendado}</span>
-                                        <span className={`block text-xs font-medium ${corConfianca[p.confianca] ?? 'text-slate-400'}`}>{p.confianca}</span>
-                                        <span className="block text-xs text-slate-400" title={p.motivo} style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: '0 auto' }}>{p.motivo}</span>
+                                        <span className={`block text-xs font-medium ${corConfianca[p.confianca] ?? 'text-slate-500'}`}>{p.confianca}</span>
+                                        <span className="block text-xs text-slate-500" title={p.motivo} style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: '0 auto' }}>{p.motivo}</span>
                                       </div>
                                     ) : (
                                       <span className="text-slate-300">—</span>
@@ -584,7 +584,7 @@ export default function HorariosPagina() {
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '60px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -592,16 +592,16 @@ export default function HorariosPagina() {
           <span className="text-sm">A carregar...</span>
         </div>
       ) : erro ? (
-        <div className="text-slate-400 text-sm text-center" style={{ paddingTop: '60px' }}>{erro}</div>
+        <div className="text-slate-500 text-sm text-center" style={{ paddingTop: '60px' }}>{erro}</div>
       ) : !escala && isChefe ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
           <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
           <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem escala para {meses[mes - 1]} {ano}</p>
-          <p className="text-slate-400 text-sm" style={{ marginBottom: '24px' }}>Ainda não foi criada uma escala para este mês</p>
+          <p className="text-slate-500 text-sm" style={{ marginBottom: '24px' }}>Ainda não foi criada uma escala para este mês</p>
           {isChefe && (
             <div className="flex gap-3">
               <button onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
@@ -629,7 +629,7 @@ export default function HorariosPagina() {
         <>
           {verApenasSeus && mensagemSemTurnos[utilizador?.role ?? ''] && (
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
-              <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p className="text-slate-500 text-sm">{mensagemSemTurnos[utilizador?.role ?? '']}</p>
@@ -701,7 +701,7 @@ export default function HorariosPagina() {
                   <div key={f.id} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{f.utilizador.nome}</p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         {new Date(f.dataInicio).toLocaleDateString('pt-PT', { weekday: 'short', day: 'numeric', month: 'short' })}
                         {f.dataInicio !== f.dataFim && ` – ${new Date(f.dataFim).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}`}
                       </p>
@@ -747,7 +747,7 @@ export default function HorariosPagina() {
                       <p className="text-sm font-semibold text-slate-800">
                         {t.solicitante.nome} ↔ {t.destinatario.nome}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         {new Date(t.dataOrigem).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })} →{' '}
                         {new Date(t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
                       </p>
@@ -788,7 +788,7 @@ export default function HorariosPagina() {
                           <p className="text-sm font-semibold text-slate-800">
                             {euSouSolicitante ? `→ ${t.destinatario.nome}` : `← ${t.solicitante.nome}`}
                           </p>
-                          <p className="text-xs text-slate-400">
+                          <p className="text-xs text-slate-500">
                             Minha folga {new Date(euSouSolicitante ? t.dataOrigem : t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
                             {' ↔ '}
                             folga de {euSouSolicitante ? t.destinatario.nome.split(' ')[0] : t.solicitante.nome.split(' ')[0]}{' '}
@@ -837,7 +837,7 @@ export default function HorariosPagina() {
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
             <div className="grid grid-cols-7 border-b border-slate-100">
               {diasSemana.map((d) => (
-                <div key={d} className="text-center text-xs text-slate-400 font-semibold uppercase tracking-wide" style={{ padding: '14px 0' }}>{d}</div>
+                <div key={d} className="text-center text-xs text-slate-500 font-semibold uppercase tracking-wide" style={{ padding: '14px 0' }}>{d}</div>
               ))}
             </div>
             <div className="grid grid-cols-7">
@@ -924,7 +924,7 @@ export default function HorariosPagina() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Adicionar Turno</h2>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
                 {new Date(modalDia).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
@@ -980,8 +980,8 @@ export default function HorariosPagina() {
                       style={{ padding: '12px 16px', borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none' }}
                     >
                       <div>
-                        <p className={`text-sm font-medium ${ausente ? 'text-slate-400' : 'text-slate-800'}`}>{p.nome}</p>
-                        <p className="text-xs text-slate-400">
+                        <p className={`text-sm font-medium ${ausente ? 'text-slate-500' : 'text-slate-800'}`}>{p.nome}</p>
+                        <p className="text-xs text-slate-500">
                           {roleLabel[p.role] ?? p.role}
                           {ausente && <span className="ml-1 text-amber-500 font-semibold">(em férias)</span>}
                         </p>
@@ -1032,7 +1032,7 @@ export default function HorariosPagina() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Editar Turno</h2>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
                 {new Date(turnoEditando.data).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
@@ -1079,8 +1079,8 @@ export default function HorariosPagina() {
                       className={`flex items-center justify-between transition-colors ${ausente ? 'opacity-50 cursor-not-allowed bg-slate-50' : selected ? 'bg-blue-50 cursor-pointer' : 'hover:bg-slate-50 cursor-pointer'}`}
                       style={{ padding: '12px 16px', borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
                       <div>
-                        <p className={`text-sm font-medium ${ausente ? 'text-slate-400' : 'text-slate-800'}`}>{p.nome}</p>
-                        <p className="text-xs text-slate-400">
+                        <p className={`text-sm font-medium ${ausente ? 'text-slate-500' : 'text-slate-800'}`}>{p.nome}</p>
+                        <p className="text-xs text-slate-500">
                           {roleLabel[p.role] ?? p.role}{p.equipa ? ` · Equipa ${p.equipa}` : ''}
                           {ausente && <span className="ml-1 text-amber-500 font-semibold">(em férias)</span>}
                         </p>
@@ -1153,7 +1153,7 @@ export default function HorariosPagina() {
                   {tipoLabel[turnoVendo.tipo]}
                 </div>
                 <h2 className="text-xl font-bold text-slate-900">Equipa do Turno</h2>
-                <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+                <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
                   {new Date(turnoVendo.data).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
               </div>
@@ -1161,7 +1161,7 @@ export default function HorariosPagina() {
               {/* Chefe */}
               {chefe && (
                 <div style={{ marginBottom: '20px' }}>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
                     Chefe de Turno
                   </p>
                   <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl" style={{ padding: '12px 16px' }}>
@@ -1184,7 +1184,7 @@ export default function HorariosPagina() {
               {/* Restantes */}
               {outros.length > 0 && (
                 <div style={{ marginBottom: '24px' }}>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
                     Equipa
                   </p>
                   <div className="flex flex-col gap-2">
@@ -1196,7 +1196,7 @@ export default function HorariosPagina() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-slate-800">{p.utilizador.nome}</p>
-                            {p.utilizador.equipa && <p className="text-xs text-slate-400" style={{ marginTop: '1px' }}>Equipa {p.utilizador.equipa}</p>}
+                            {p.utilizador.equipa && <p className="text-xs text-slate-500" style={{ marginTop: '1px' }}>Equipa {p.utilizador.equipa}</p>}
                           </div>
                           {p.utilizador.id === utilizador?.id && (
                             <span className="text-xs font-semibold text-slate-500 bg-slate-200 badge-pad py-0.5 rounded-full">Tu</span>
@@ -1224,7 +1224,7 @@ export default function HorariosPagina() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px' }}>
             <div style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Pedir Troca de Folga</h2>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
                 A sua folga: <strong>{new Date(modalTroca.diaOrigem).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
               </p>
             </div>
@@ -1302,7 +1302,7 @@ export default function HorariosPagina() {
               {/* Header */}
               <div className="flex items-center justify-between border-b border-slate-100 shrink-0" style={{ padding: '24px 24px 20px' }}>
                 <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '2px' }}>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '2px' }}>
                     {diasSemana[dataObj.getDay()]}
                   </p>
                   <h2 className="text-xl font-bold text-slate-900">
@@ -1310,7 +1310,7 @@ export default function HorariosPagina() {
                   </h2>
                 </div>
                 <button onClick={() => setDiaSelecionado(null)}
-                  className="text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
+                  className="text-slate-500 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
                   style={{ padding: '8px' }}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1376,11 +1376,11 @@ export default function HorariosPagina() {
                         {/* Cabeçalho do bloco */}
                         <div className="flex items-center justify-between" style={{ marginBottom: turno ? '14px' : '0' }}>
                           <div className="flex items-center gap-2">
-                            <span className={`text-xs font-bold rounded-lg ${turno ? tipoCor[tipo].cal : 'bg-slate-100 text-slate-400'}`}
+                            <span className={`text-xs font-bold rounded-lg ${turno ? tipoCor[tipo].cal : 'bg-slate-100 text-slate-500'}`}
                               style={{ padding: '3px 10px' }}>
                               {tipoLabel[tipo]}
                             </span>
-                            <span className="text-xs text-slate-400">{horasLabel[tipo]}</span>
+                            <span className="text-xs text-slate-500">{horasLabel[tipo]}</span>
                           </div>
                           {turno && isChefe && (
                             <div className="flex gap-1">
@@ -1390,7 +1390,7 @@ export default function HorariosPagina() {
                                   setEditTurno({ tipo: turno.tipo, profissionaisIds: turno.profissionais.map((p) => p.utilizador.id) });
                                   setErroEdit('');
                                 }}
-                                className="text-xs text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                                className="text-xs text-slate-500 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
                                 style={{ padding: '3px 8px' }}>
                                 Editar
                               </button>
@@ -1400,7 +1400,7 @@ export default function HorariosPagina() {
                                   await api.delete(`/horarios/turno/${turno.id}`);
                                   await carregar();
                                 }}
-                                className="text-xs text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+                                className="text-xs text-slate-500 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
                                 style={{ padding: '3px 8px' }}>
                                 Apagar
                               </button>
@@ -1430,7 +1430,7 @@ export default function HorariosPagina() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium text-slate-800 truncate">{p.utilizador.nome}</p>
-                                    <p className="text-xs text-slate-400">{roleLabel[p.utilizador.role] ?? p.utilizador.role}</p>
+                                    <p className="text-xs text-slate-500">{roleLabel[p.utilizador.role] ?? p.utilizador.role}</p>
                                   </div>
                                   {p.utilizador.id === utilizador?.id && (
                                     <span className="text-xs font-semibold text-blue-600 bg-blue-100 rounded-full badge-pad py-0.5 shrink-0">Tu</span>
@@ -1439,7 +1439,7 @@ export default function HorariosPagina() {
                             ))}
                           </div>
                         ) : (
-                          <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Sem turno atribuído</p>
+                          <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem turno atribuído</p>
                         )}
                       </div>
                     );
@@ -1454,7 +1454,7 @@ export default function HorariosPagina() {
                   return (
                     <div style={{ marginTop: '20px' }}>
                       <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '10px' }}>Folga</p>
+                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '10px' }}>Folga</p>
                         {!f ? (
                           <button
                             onClick={() => pedirFolga(diaSelecionado)}
@@ -1479,13 +1479,13 @@ export default function HorariosPagina() {
                 {/* Consultas do dia (médicos) */}
                 {utilizador?.role === 'medico' && (
                   <div style={{ marginTop: '24px' }}>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '12px' }}>
                       Consultas
                     </p>
                     {loadingConsultas ? (
-                      <p className="text-xs text-slate-400">A carregar...</p>
+                      <p className="text-xs text-slate-500">A carregar...</p>
                     ) : consultasDia.length === 0 ? (
-                      <p className="text-xs text-slate-400">Sem consultas agendadas neste dia</p>
+                      <p className="text-xs text-slate-500">Sem consultas agendadas neste dia</p>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {consultasDia.map((c: any) => {
@@ -1502,13 +1502,13 @@ export default function HorariosPagina() {
                             <div key={c.id} className="flex items-start gap-3 bg-white border border-slate-100 rounded-2xl shadow-sm" style={{ padding: '14px' }}>
                               <div className="text-center shrink-0" style={{ minWidth: '44px' }}>
                                 <p className="text-sm font-bold text-slate-800">{hora}</p>
-                                <p className="text-xs text-slate-400">{c.duracao}min</p>
+                                <p className="text-xs text-slate-500">{c.duracao}min</p>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-slate-800 truncate">
                                   {c.doente?.nome ?? c.nomeDoente ?? 'Doente externo'}
                                 </p>
-                                <p className="text-xs text-slate-400">{c.especialidade}</p>
+                                <p className="text-xs text-slate-500">{c.especialidade}</p>
                               </div>
                               <span className={`text-xs font-semibold border rounded-lg shrink-0 ${estadoCor[c.estado] ?? 'bg-slate-50 text-slate-500 border-slate-200'}`}
                                 style={{ padding: '2px 8px' }}>

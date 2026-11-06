@@ -251,16 +251,16 @@ export default function IncidentesTIPage() {
           {TIPOS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
         </select>
         {(filtroEstado || filtroTipo) && (
-          <button onClick={() => { setFiltroEstado(''); setFiltroTipo(''); }} className="text-xs text-slate-400 hover:text-slate-600 underline">
+          <button onClick={() => { setFiltroEstado(''); setFiltroTipo(''); }} className="text-xs text-slate-500 hover:text-slate-600 underline">
             Limpar
           </button>
         )}
-        <span className="text-xs text-slate-400 ml-auto">{visiveis.length} incidente{visiveis.length !== 1 ? 's' : ''}</span>
+        <span className="text-xs text-slate-500 ml-auto">{visiveis.length} incidente{visiveis.length !== 1 ? 's' : ''}</span>
       </div>
 
       {/* ── Lista ── */}
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -271,7 +271,7 @@ export default function IncidentesTIPage() {
         <div className="text-center bg-white rounded-2xl border border-slate-100" style={{ padding: '72px 32px' }}>
           <div className="text-5xl" style={{ marginBottom: '16px' }}>✅</div>
           <p className="text-lg font-semibold text-slate-700">Tudo limpo por aqui</p>
-          <p className="text-sm text-slate-400" style={{ marginTop: '6px' }}>
+          <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>
             {filtroEstado || filtroTipo ? 'Sem incidentes com este filtro' : 'Nenhum incidente registado. Clique em "Novo Incidente" para começar.'}
           </p>
         </div>
@@ -301,7 +301,7 @@ export default function IncidentesTIPage() {
                         <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 rounded badge-pad py-0.5">⚠ Crítico</span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-400 truncate">{inc.descricao}</p>
+                    <p className="text-xs text-slate-500 truncate">{inc.descricao}</p>
                   </div>
 
                   {/* Badges */}
@@ -322,7 +322,7 @@ export default function IncidentesTIPage() {
                   </div>
 
                   {/* Chevron */}
-                  <svg className={`w-4 h-4 text-slate-400 transition-transform shrink-0 ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
@@ -343,12 +343,12 @@ export default function IncidentesTIPage() {
                           </p>
                           <div className="flex flex-col gap-2" style={{ marginBottom: '10px' }}>
                             {(notas[inc.id] ?? []).length === 0 ? (
-                              <p className="text-xs text-slate-400 italic">Sem notas ainda.</p>
+                              <p className="text-xs text-slate-500 italic">Sem notas ainda.</p>
                             ) : (notas[inc.id] ?? []).map(n => (
                               <div key={n.id} className="bg-white rounded-xl border border-slate-200" style={{ padding: '10px 14px' }}>
                                 <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
                                   <span className="text-xs font-semibold text-slate-700">{n.autor.nome}</span>
-                                  <span className="text-xs text-slate-400">{new Date(n.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+                                  <span className="text-xs text-slate-500">{new Date(n.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
                                 </div>
                                 <p className="text-sm text-slate-600 leading-relaxed">{n.conteudo}</p>
                               </div>
@@ -492,9 +492,9 @@ export default function IncidentesTIPage() {
             <div className="flex items-center justify-between border-b border-slate-100" style={{ padding: '20px 28px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Novo Incidente TI</h2>
-                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Será encaminhado automaticamente à equipa responsável</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Será encaminhado automaticamente à equipa responsável</p>
               </div>
-              <button onClick={() => setModalAberto(false)} className="text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
+              <button onClick={() => setModalAberto(false)} className="text-slate-500 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

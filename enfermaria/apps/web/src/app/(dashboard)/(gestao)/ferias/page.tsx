@@ -140,19 +140,19 @@ export default function FeriasPage() {
           <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
             <div>
               <p className="text-sm font-semibold text-slate-700">Saldo de Férias {saldo.anoAtual}</p>
-              <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{saldo.diasRestantes} dias disponíveis de {saldo.direitoAnual}</p>
+              <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{saldo.diasRestantes} dias disponíveis de {saldo.direitoAnual}</p>
             </div>
             <div className="text-right">
               <p className="text-3xl font-bold text-blue-700">{saldo.diasRestantes}</p>
-              <p className="text-xs text-slate-400">dias restantes</p>
+              <p className="text-xs text-slate-500">dias restantes</p>
             </div>
           </div>
           <div className="bg-slate-100 rounded-full" style={{ height: '10px' }}>
             <div className="bg-blue-500 rounded-full transition-all" style={{ width: `${pctUsado}%`, height: '10px' }} />
           </div>
           <div className="flex justify-between" style={{ marginTop: '6px' }}>
-            <span className="text-xs text-slate-400">{saldo.diasUsados} usados</span>
-            <span className="text-xs text-slate-400">{saldo.direitoAnual} direito anual</span>
+            <span className="text-xs text-slate-500">{saldo.diasUsados} usados</span>
+            <span className="text-xs text-slate-500">{saldo.direitoAnual} direito anual</span>
           </div>
         </div>
       )}
@@ -174,7 +174,7 @@ export default function FeriasPage() {
                     <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                       {new Date(a.dataInicio).toLocaleDateString('pt-PT')} → {new Date(a.dataFim).toLocaleDateString('pt-PT')} · {dias} dias úteis
                     </p>
-                    {a.observacoes && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{a.observacoes}</p>}
+                    {a.observacoes && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{a.observacoes}</p>}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <button onClick={() => mutAprovar.mutate(a.id)}
@@ -195,7 +195,7 @@ export default function FeriasPage() {
       <h2 className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Os Meus Pedidos</h2>
       {minhasFerias.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '48px' }}>
-          <p className="text-sm text-slate-400">Sem pedidos de férias registados</p>
+          <p className="text-sm text-slate-500">Sem pedidos de férias registados</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -208,17 +208,17 @@ export default function FeriasPage() {
                     <p className="text-sm font-semibold text-slate-800">
                       {new Date(a.dataInicio).toLocaleDateString('pt-PT')} → {new Date(a.dataFim).toLocaleDateString('pt-PT')}
                     </p>
-                    <span className="text-xs text-slate-400">{dias} dias úteis</span>
+                    <span className="text-xs text-slate-500">{dias} dias úteis</span>
                     <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
                       {ESTADO_LABEL[a.estado]}
                     </span>
                   </div>
                   {a.aprovadoPor && (
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       {a.estado === 'aprovada' ? 'Aprovado' : 'Processado'} por {a.aprovadoPor.nome}
                     </p>
                   )}
-                  {a.observacoes && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{a.observacoes}</p>}
+                  {a.observacoes && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{a.observacoes}</p>}
                 </div>
                 {a.estado === 'pendente' && (
                   <button onClick={() => mutCancelar.mutate(a.id)}

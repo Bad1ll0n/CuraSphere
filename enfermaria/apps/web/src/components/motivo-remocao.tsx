@@ -38,7 +38,7 @@ function DialogoMotivo({ titulo, descricao, rotulo, botao, minimo = 10, placehol
         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
         style={{ padding: '10px 12px' }}
       />
-      <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Mínimo {MIN} caracteres.</p>
+      <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Mínimo {MIN} caracteres.</p>
       <div className="flex gap-3" style={{ marginTop: '16px' }}>
         <button onClick={() => onFim(null)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '10px' }}>
           Cancelar

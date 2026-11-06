@@ -70,7 +70,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -207,7 +207,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
           {podeCriarNota && <BtnAdd label="Adicionar nota de turno" onClick={() => { setNotaTexto(''); setErroModal(''); setModalNota(true); }} />}
         </div>
         {notasFiltradas.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
             {podeCriarNota ? 'Sem notas — clica em + para adicionar' : 'Sem notas registadas'}
           </p>
         ) : (
@@ -242,9 +242,9 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
                     <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
                       <span className="text-xs font-medium text-slate-500">{n.autor.nome}</span>
                       <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-xs text-slate-400">{roleLabel[n.autor.role] ?? n.autor.role}</span>
+                      <span className="text-xs text-slate-500">{roleLabel[n.autor.role] ?? n.autor.role}</span>
                       <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         {new Date(n.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {isNotaEditavel(n) && (

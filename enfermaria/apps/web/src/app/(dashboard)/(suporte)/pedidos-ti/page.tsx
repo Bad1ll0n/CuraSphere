@@ -175,7 +175,7 @@ export default function PedidosTIPage() {
 
       {/* Lista */}
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -188,7 +188,7 @@ export default function PedidosTIPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           <p className="text-slate-500 font-medium">Sem pedidos</p>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Clica em "Novo Pedido" para submeter um pedido ao departamento TI</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Clica em "Novo Pedido" para submeter um pedido ao departamento TI</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -214,17 +214,17 @@ export default function PedidosTIPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-xs text-slate-400">{tipoLabel[p.tipo] ?? p.tipo}</span>
+                      <span className="text-xs text-slate-500">{tipoLabel[p.tipo] ?? p.tipo}</span>
                       <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-xs text-slate-400">{p.criadoPor.nome}</span>
+                      <span className="text-xs text-slate-500">{p.criadoPor.nome}</span>
                       <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-xs text-slate-400">{formatarData(p.criadoEm)}</span>
+                      <span className="text-xs text-slate-500">{formatarData(p.criadoEm)}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
                     <span className={`text-xs font-medium badge-pad py-1 rounded-lg ${cfg.pill}`}>{cfg.label}</span>
-                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 text-slate-500 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -237,16 +237,16 @@ export default function PedidosTIPage() {
 
                     <div className="grid grid-cols-3 gap-4" style={{ marginBottom: isTI ? '20px' : '0' }}>
                       <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400" style={{ marginBottom: '4px' }}>Criado por</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500" style={{ marginBottom: '4px' }}>Criado por</p>
                         <p className="text-sm text-slate-700">{p.criadoPor.nome}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400" style={{ marginBottom: '4px' }}>Responsável</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500" style={{ marginBottom: '4px' }}>Responsável</p>
                         <p className="text-sm text-slate-700">{p.responsavel?.nome ?? '—'}</p>
                       </div>
                       {p.resolvidoEm && (
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400" style={{ marginBottom: '4px' }}>Resolvido em</p>
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500" style={{ marginBottom: '4px' }}>Resolvido em</p>
                           <p className="text-sm text-slate-700">{formatarData(p.resolvidoEm)}</p>
                         </div>
                       )}
@@ -311,7 +311,7 @@ export default function PedidosTIPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Novo Pedido TI</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div style={{ marginBottom: '16px' }}>

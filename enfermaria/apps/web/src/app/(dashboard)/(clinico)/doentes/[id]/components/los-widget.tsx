@@ -47,7 +47,7 @@ export function LosWidget({ doenteId, utilizador }: Props) {
 
   if (loading) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 bg-slate-50 border border-slate-200 rounded-lg animate-pulse"
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-50 border border-slate-200 rounded-lg animate-pulse"
         style={{ padding: '4px 10px' }}>
         ⏱ A estimar alta...
       </span>
@@ -97,13 +97,13 @@ export function LosWidget({ doenteId, utilizador }: Props) {
               <ul className="flex flex-col gap-1">
                 {los.factores.map((f, i) => (
                   <li key={i} className="flex items-start gap-1.5 text-xs text-slate-600">
-                    <span className="text-slate-400 shrink-0">•</span>{f}
+                    <span className="text-slate-500 shrink-0">•</span>{f}
                   </li>
                 ))}
               </ul>
             </div>
           )}
-          <p className="text-xs text-slate-400 italic">{los.disclaimer}</p>
+          <p className="text-xs text-slate-500 italic">{los.disclaimer}</p>
           <button
             onClick={() => { setLos(null); setAberto(false); carregar(); }}
             className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"

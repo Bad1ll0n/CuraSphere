@@ -305,7 +305,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {escalasClinicas.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
             {podeRegistarEscala ? 'Sem escalas registadas — clica em + para adicionar' : 'Sem escalas registadas'}
           </p>
         ) : (
@@ -325,7 +325,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
                       {e.classificacao && (
                         <p className="text-xs text-slate-500">{e.classificacao}</p>
                       )}
-                      <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                      <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                         {e.registadoPor?.nome} · {new Date(e.registadaEm).toLocaleDateString('pt-PT')} {new Date(e.registadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -361,7 +361,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                 <h2 className="text-xl font-bold text-slate-900">Registar Escala Clínica</h2>
                 <button onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
 

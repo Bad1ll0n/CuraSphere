@@ -184,14 +184,14 @@ export default function EventosAdversosPage() {
       {/* Lista */}
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         </div>
       ) : eventos.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '60px 24px' }}>
-          <p className="text-sm text-slate-400">Sem eventos adversos registados</p>
+          <p className="text-sm text-slate-500">Sem eventos adversos registados</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -208,7 +208,7 @@ export default function EventosAdversosPage() {
                       {ESTADO_LABEL[ev.estado] ?? ev.estado}
                     </span>
                     {ev.servicoId && (
-                      <span className="text-xs text-slate-400 capitalize">{ev.servicoId}</span>
+                      <span className="text-xs text-slate-500 capitalize">{ev.servicoId}</span>
                     )}
                   </div>
 
@@ -220,11 +220,11 @@ export default function EventosAdversosPage() {
                         Doente: <span className="font-medium">{ev.doente.nome}</span>
                       </span>
                     )}
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       {new Date(ev.ocorridoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </span>
                     {ev.registadoPor && (
-                      <span className="text-xs text-slate-400">· Por {ev.registadoPor.nome}</span>
+                      <span className="text-xs text-slate-500">· Por {ev.registadoPor.nome}</span>
                     )}
                   </div>
 
@@ -256,7 +256,7 @@ export default function EventosAdversosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', maxHeight: '90vh', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Evento Adverso</h2>
-              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
@@ -343,7 +343,7 @@ export default function EventosAdversosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Gerir Evento Adverso</h2>
-              <button aria-label="Fechar" onClick={() => setModalAcao(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAcao(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>

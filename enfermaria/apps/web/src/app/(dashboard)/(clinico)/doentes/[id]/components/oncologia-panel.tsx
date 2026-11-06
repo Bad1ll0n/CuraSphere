@@ -126,7 +126,7 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
         <h3 className="text-base font-semibold text-slate-900">Oncologia / Quimioterapia</h3>
-        <div className="text-sm text-slate-400" style={{ marginTop: '8px' }}>A carregar…</div>
+        <div className="text-sm text-slate-500" style={{ marginTop: '8px' }}>A carregar…</div>
       </div>
     );
   }
@@ -138,7 +138,7 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-semibold text-slate-900">Oncologia / Quimioterapia</h3>
-            <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Sem plano de quimioterapia ativo.</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem plano de quimioterapia ativo.</p>
           </div>
           {podeCriar(utilizador?.role) && (
             <button onClick={() => setMostrarCriar((v) => !v)}
@@ -174,7 +174,7 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
         <div style={{ overflowX: 'auto' }}>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs text-slate-400">
+              <tr className="text-left text-xs text-slate-500">
                 <th className="font-medium" style={{ paddingBottom: '6px' }}>Fármaco</th>
                 <th className="font-medium">mg/m²</th>
                 <th className="font-medium">Dose</th>
@@ -205,7 +205,7 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {plano.ciclos.length === 0 ? (
-          <div className="text-sm text-slate-400">Sem ciclos agendados.</div>
+          <div className="text-sm text-slate-500">Sem ciclos agendados.</div>
         ) : (
           <div className="space-y-2">
             {plano.ciclos.map((c) => (
@@ -245,7 +245,7 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
         )}
       </div>
 
-      <p className="text-xs text-slate-400" style={{ marginTop: '12px' }}>
+      <p className="text-xs text-slate-500" style={{ marginTop: '12px' }}>
         Apoio à decisão — doses por BSA; toxicidade CTCAE ≥3 gera alerta clínico automático.
       </p>
     </div>

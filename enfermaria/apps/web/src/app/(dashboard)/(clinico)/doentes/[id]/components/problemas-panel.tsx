@@ -47,7 +47,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -158,7 +158,7 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
         </div>
 
         {problemas.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '12px 0' }}>Sem problemas registados</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '12px 0' }}>Sem problemas registados</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {[...ativos, ...cronicos].map((p: any) => (
@@ -168,23 +168,23 @@ export function ProblemasPanel({ doenteId, utilizador }: Props) {
                     {TIPO_LABEL[p.tipo] ?? p.tipo}
                   </span>
                   <span className="text-sm text-slate-700 truncate">{p.descricao}</span>
-                  {p.dataInicio && <span className="text-xs text-slate-400 shrink-0">{new Date(p.dataInicio).toLocaleDateString('pt-PT')}</span>}
+                  {p.dataInicio && <span className="text-xs text-slate-500 shrink-0">{new Date(p.dataInicio).toLocaleDateString('pt-PT')}</span>}
                 </div>
                 {podeCriar && (
                   <button onClick={() => resolverProblema(p.id)}
-                    className="text-xs text-slate-400 hover:text-emerald-600 shrink-0 ml-2 transition-colors">
+                    className="text-xs text-slate-500 hover:text-emerald-600 shrink-0 ml-2 transition-colors">
                     ✓ Resolver
                   </button>
                 )}
               </div>
             ))}
             {resolvidos.length > 0 && (
-              <details className="text-xs text-slate-400" style={{ marginTop: 4 }}>
+              <details className="text-xs text-slate-500" style={{ marginTop: 4 }}>
                 <summary className="cursor-pointer hover:text-slate-600">{resolvidos.length} problema(s) resolvido(s)</summary>
                 <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {resolvidos.map((p: any) => (
                     <div key={p.id} className="flex items-center gap-2 rounded-lg" style={{ padding: '6px 10px', background: '#f1f5f9', opacity: 0.6 }}>
-                      <span className="line-through text-xs text-slate-400">{p.descricao}</span>
+                      <span className="line-through text-xs text-slate-500">{p.descricao}</span>
                       {p.dataFim && <span className="text-xs text-slate-300">{new Date(p.dataFim).toLocaleDateString('pt-PT')}</span>}
                     </div>
                   ))}

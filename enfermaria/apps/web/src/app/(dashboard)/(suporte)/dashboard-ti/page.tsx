@@ -104,7 +104,7 @@ function IncidenteCard({ label, value, cor, bordaCor, ativo, onClick }: Incident
     >
       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>{label}</p>
       <p className={`text-4xl font-bold ${cor}`}>{value}</p>
-      <p className="text-xs text-slate-400 flex items-center gap-1" style={{ marginTop: '8px' }}>
+      <p className="text-xs text-slate-500 flex items-center gap-1" style={{ marginTop: '8px' }}>
         <span>Ver listagem</span>
         <span>›</span>
       </p>
@@ -117,7 +117,7 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
     return (
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '48px' }}>
         <div className="text-center">
-          <p className="text-slate-400 text-sm font-medium">Nenhum incidente</p>
+          <p className="text-slate-500 text-sm font-medium">Nenhum incidente</p>
           <p className="text-slate-300 text-xs" style={{ marginTop: '4px' }}>Não existem incidentes com este filtro</p>
         </div>
       </div>
@@ -126,7 +126,7 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <div className="border-b border-slate-100" style={{ padding: '16px 24px' }}>
-        <p className="text-sm font-semibold text-slate-700">{titulo} <span className="text-slate-400 font-normal">({incidentes.length})</span></p>
+        <p className="text-sm font-semibold text-slate-700">{titulo} <span className="text-slate-500 font-normal">({incidentes.length})</span></p>
       </div>
       <table className="w-full">
         <thead>
@@ -158,7 +158,7 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
                 <span className="text-xs text-slate-600">{inc.criadoPor?.nome ?? '—'}</span>
               </td>
               <td className="px-4 py-3">
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   {new Date(inc.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })}
                 </span>
               </td>
@@ -207,7 +207,7 @@ function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados:
                 <div key={a.id} className="flex items-center justify-between bg-white rounded-xl border border-red-100" style={{ padding: '8px 14px' }}>
                   <span className="text-xs font-semibold text-red-700">{a.acao}</span>
                   <span className="text-xs text-slate-500">{a.utilizador?.nome ?? 'Sistema'} · {a.ip}</span>
-                  <span className="text-xs text-slate-400">{new Date(a.createdAt).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
+                  <span className="text-xs text-slate-500">{new Date(a.createdAt).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
               ))}
             </div>
@@ -318,7 +318,7 @@ export default function DashboardTIPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -363,7 +363,7 @@ export default function DashboardTIPage() {
             {filtroAtivo && (
               loadingFiltro ? (
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '40px' }}>
-                  <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
@@ -380,7 +380,7 @@ export default function DashboardTIPage() {
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Por Tipo</h2>
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
                 {dados.incidentes.porTipo.length === 0 ? (
-                  <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
+                  <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
                 ) : (
                   <div className="flex flex-col gap-3">
                     {dados.incidentes.porTipo.map(t => {
@@ -406,7 +406,7 @@ export default function DashboardTIPage() {
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Por Equipa TI</h2>
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
                 {dados.incidentes.porSubRole.length === 0 ? (
-                  <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
+                  <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
                 ) : (
                   <div className="flex flex-col gap-2">
                     {dados.incidentes.porSubRole.map(r => (
@@ -463,7 +463,7 @@ export default function DashboardTIPage() {
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Top Operações — Última Semana</h2>
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
                 {dados.auditoria.topAcoes.length === 0 ? (
-                  <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
+                  <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>Sem dados</p>
                 ) : (
                   <div className="flex flex-col gap-2">
                     {dados.auditoria.topAcoes.map(a => {
@@ -489,7 +489,7 @@ export default function DashboardTIPage() {
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Atividade Recente</h2>
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden" style={{ maxHeight: '380px', overflowY: 'auto' }}>
                 {dados.auditoria.recentes.length === 0 ? (
-                  <p className="text-sm text-slate-400 text-center" style={{ padding: '40px' }}>Sem atividade hoje</p>
+                  <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>Sem atividade hoje</p>
                 ) : (
                   <div className="divide-y divide-slate-50">
                     {dados.auditoria.recentes.map(a => (
@@ -497,10 +497,10 @@ export default function DashboardTIPage() {
                         <span className={`text-xs font-semibold badge-pad py-0.5 rounded shrink-0 ${acaoCor(a.acao)}`}>{a.acao.substring(0, 12)}</span>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium text-slate-800 truncate">{a.utilizador?.nome ?? 'Sistema'}</p>
-                          {a.entidadeTipo && <p className="text-xs text-slate-400">{a.entidadeTipo}</p>}
+                          {a.entidadeTipo && <p className="text-xs text-slate-500">{a.entidadeTipo}</p>}
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-xs text-slate-400">{new Date(a.createdAt).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</p>
+                          <p className="text-xs text-slate-500">{new Date(a.createdAt).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</p>
                           {a.ip && <p className="text-xs text-slate-300">{a.ip}</p>}
                         </div>
                       </div>

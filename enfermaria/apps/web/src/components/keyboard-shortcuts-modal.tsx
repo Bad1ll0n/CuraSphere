@@ -45,7 +45,7 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
           <button
             onClick={onClose}
             aria-label={tCommon('close')}
-            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+            className="text-slate-500 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -62,7 +62,7 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
             </div>
           ))}
         </div>
-        <p className="mt-4 text-xs text-slate-400 text-center">{t('hint')}</p>
+        <p className="mt-4 text-xs text-slate-500 text-center">{t('hint')}</p>
       </div>
     </div>
   );

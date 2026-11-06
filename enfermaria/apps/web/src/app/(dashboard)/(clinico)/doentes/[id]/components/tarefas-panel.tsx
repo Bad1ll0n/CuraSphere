@@ -77,7 +77,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -218,7 +218,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
           </div>
         </div>
         {tarefas.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
             {podeCriarTarefa ? 'Sem tarefas — clica em + para criar' : 'Sem tarefas pendentes'}
           </p>
         ) : (
@@ -233,7 +233,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-slate-800">{t.descricao}</p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
-                      <span className="text-xs text-slate-400">{t.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
+                      <span className="text-xs text-slate-500">{t.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
                       {t.responsavel ? (
                         <>
                           <span className="text-slate-300 text-xs">·</span>
@@ -248,7 +248,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                       {t.criadoPor && (
                         <>
                           <span className="text-slate-300 text-xs">·</span>
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-slate-500">
                             Por {t.criadoPor.nome} às {new Date(t.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </>
@@ -273,7 +273,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                         title="Concluir tarefa"
                         className="w-6 h-6 rounded-full border-2 border-slate-300 hover:border-green-500 hover:bg-green-50 flex items-center justify-center transition-all"
                       >
-                        <svg className="w-3 h-3 text-slate-400 hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 text-slate-500 hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
                       </button>
@@ -348,20 +348,20 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
           <div {...dlgHistorico.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <h2 className="text-xl font-bold text-slate-900">Histórico de Tarefas</h2>
               </div>
               <button onClick={() => setModalHistorico(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             <div style={{ overflowY: 'auto', flex: 1 }}>
               {loadingHistorico ? (
-                <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '40px 0' }}>
+                <div className="flex items-center justify-center gap-2 text-slate-500" style={{ padding: '40px 0' }}>
                   <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -369,7 +369,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                   <span className="text-sm">A carregar...</span>
                 </div>
               ) : tarefasHistorico.length === 0 ? (
-                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px 0' }}>Sem tarefas concluídas</p>
+                <p className="text-sm text-slate-500 text-center" style={{ padding: '40px 0' }}>Sem tarefas concluídas</p>
               ) : (
                 <div className="flex flex-col gap-3">
                   {tarefasHistorico.map((t) => (
@@ -381,7 +381,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                         <p className="text-sm font-medium text-slate-700">{t.descricao}</p>
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
                           {t.concluidaEm && (
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-slate-500">
                               Concluída {new Date(t.concluidaEm).toLocaleDateString('pt-PT')} às {new Date(t.concluidaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           )}
@@ -394,7 +394,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                           {t.criadoPor && (
                             <>
                               <span className="text-slate-300 text-xs">·</span>
-                              <span className="text-xs text-slate-400">Por {t.criadoPor.nome}</span>
+                              <span className="text-xs text-slate-500">Por {t.criadoPor.nome}</span>
                             </>
                           )}
                         </div>

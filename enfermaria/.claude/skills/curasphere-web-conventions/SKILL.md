@@ -9,6 +9,10 @@ description: Use when writing or reviewing apps/web (Next.js) UI code for CuraSp
 
 Use inline `style={{ margin: ... }}` / `style={{ padding: ... }}` for precise spacing (margins, gaps between sections), not Tailwind spacing utility classes for these — this is a deliberate, explicitly-stated preference from the app owner: generous breathing room everywhere, nothing flush against corners/edges. Tailwind classes remain fine for color, typography, borders, radius, flex/grid layout — just not for the fine-grained margin/padding values themselves. Look at `apps/web/src/components/empty-state.tsx` for the pattern (`style={{ padding: '48px 24px' }}`, `style={{ marginBottom: '16px' }}`, etc.) already used consistently across the app.
 
+(Since 2026-11, UX-04: the global `* { margin:0; padding:0 }` reset that silently disabled Tailwind's spacing utilities was removed, so `p-*`/`m-*`/`space-*` classes now also work. The inline-spacing preference above still stands as the house style; just don't be surprised that existing utility classes now take effect.)
+
+**Colours (UX-05/UX-06):** prefer the semantic token classes `bg-page`, `bg-surface`, `bg-surface-2`, `bg-campo`, `text-main`, `text-muted`, `text-soft`, `text-dim`, `border-borda` (defined in `global.css` via `@theme inline`) — they follow dark mode and high contrast. Avoid hex colours in `style`/arbitrary classes (they never change in dark mode). For secondary text use at least `text-slate-500` on white (4.76:1); `text-slate-400` is for decorative icons only. Clinical data (dose, via, processo, cama) is never smaller than `text-sm` (14 px).
+
 ## i18n
 
 All user-facing strings go through `next-intl`'s `useTranslations(namespace)` — see the `curasphere-i18n-audit` skill for namespace structure and the parity-check script. Never inline a literal Portuguese or English string in JSX.
