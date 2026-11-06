@@ -1,0 +1,20 @@
+# OPS-13 — quem tem de rever alterações às zonas sensíveis.
+# Com a regra "Require review from Code Owners" no ruleset da `main`, um PR que toque
+# nestes caminhos só entra com a aprovação do responsável. Acrescentar pessoas aqui à
+# medida que a equipa crescer (infra, segurança, clínico).
+
+# Por omissão
+*                                        @Bad1ll0n
+
+# Infra e deploy
+/.github/                                @Bad1ll0n
+/enfermaria/docker-compose*.yml          @Bad1ll0n
+/enfermaria/nginx/                       @Bad1ll0n
+/enfermaria/scripts/                     @Bad1ll0n
+/enfermaria/apps/api/Dockerfile          @Bad1ll0n
+/enfermaria/apps/web/Dockerfile          @Bad1ll0n
+
+# Dados e segurança
+/enfermaria/apps/api/prisma/             @Bad1ll0n
+/enfermaria/apps/api/src/app/auth/       @Bad1ll0n
+/enfermaria/apps/api/src/app/prisma/     @Bad1ll0n

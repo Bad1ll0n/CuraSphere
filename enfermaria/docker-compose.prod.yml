@@ -34,7 +34,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backups:/backups
+      # OPS-01: o Postgres já não monta ./backups — não precisa, e montava-o em leitura-escrita.
     networks:
       - curasphere-internal
     healthcheck:
@@ -78,8 +78,18 @@ services:
       # que não é este volume. Sem isto, a cópia diária podia ficar dentro do contentor e
       # desaparecer com ele, com o log (esse sim em /backups) a dizer que tinha corrido bem.
       BACKUP_DIR:        /backups
+      # ─── OPS-01 — cifra e cópia fora do host ─────────────────────────────
+      # Sem BACKUP_AGE_RECIPIENT nem BACKUP_ENCRYPTION_KEY a rotina FALHA em vez de
+      # escrever dados de saúde em claro (ver scripts/backup-cifra.sh).
+      BACKUP_AGE_RECIPIENT:  ${BACKUP_AGE_RECIPIENT:-}
+      BACKUP_ENCRYPTION_KEY: ${BACKUP_ENCRYPTION_KEY:-}
+      BACKUP_REMOTE:         ${BACKUP_REMOTE:-}
+      RETENCAO_DIAS:         ${RETENCAO_DIAS:-30}
+      RCLONE_CONFIG:         /config/rclone/rclone.conf
     volumes:
       - ./backups:/backups
+      # Configuração do rclone para BACKUP_REMOTE (credenciais só de escrita).
+      - ./backup-remoto:/config/rclone:ro
       # A rotina de cópia passa a ser um script versionado, não uma linha de
       # crontab embutida no compose (era impossível de testar e divergia do
       # `scripts/backup-db.sh` que existia em paralelo).
@@ -94,7 +104,7 @@ services:
         condition: service_healthy
     entrypoint: >
       sh -c "
-        apk add --no-cache openssl tar >/dev/null 2>&1 || true;
+        apk add --no-cache openssl tar age rclone >/dev/null 2>&1 || true;
         echo '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1' | crontab -;
         crond -f
       "

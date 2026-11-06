@@ -1,7 +1,9 @@
 #!/bin/sh
 # Restauro da base de dados CuraSphere a partir de um backup gerado por backup-db.sh
-# Uso: ./scripts/restore-db.sh [caminho/para/backup.sql.gz]
-#   Sem argumento: usa o backup .sql.gz mais recente em ./backups
+# Uso: ./scripts/restore-db.sh [caminho/para/backup.sql.gz[.age|.enc]]
+#   Sem argumento: usa o backup mais recente em $BACKUP_DIR (./backups por omissão)
+# Backups cifrados (OPS-01): .age precisa de BACKUP_AGE_IDENTITY (chave privada);
+#   .enc precisa de BACKUP_ENCRYPTION_KEY. Ver scripts/backup-cifra.sh.
 # Requer: DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME (ou .env.prod)
 #
 # ATENÇÃO: operação destrutiva — sobrescreve a base de dados alvo (DB_NAME/DB_HOST).
@@ -13,13 +15,16 @@
 
 set -e
 
-BACKUP_DIR="./backups"
-FILENAME="$1"
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$SCRIPT_DIR/backup-cifra.sh"
+
+BACKUP_DIR="${BACKUP_DIR:-./backups}"
+FILENAME="${1:-}"
 
 if [ -z "$FILENAME" ]; then
-  FILENAME=$(ls -t "${BACKUP_DIR}"/*.sql.gz 2>/dev/null | head -n 1)
+  FILENAME=$(ls -t "${BACKUP_DIR}"/backup_*.sql.gz* 2>/dev/null | grep -v '\.parcial$' | head -n 1)
   if [ -z "$FILENAME" ]; then
-    echo "[$(date)] ERRO: nenhum backup .sql.gz encontrado em ${BACKUP_DIR} e nenhum ficheiro indicado como argumento." >&2
+    echo "[$(date)] ERRO: nenhum backup encontrado em ${BACKUP_DIR} e nenhum ficheiro indicado como argumento." >&2
     exit 1
   fi
   echo "[$(date)] Nenhum ficheiro indicado — a usar o backup mais recente: $FILENAME"
@@ -66,9 +71,15 @@ fi
 
 echo "[$(date)] A iniciar restauro de '$FILENAME' para '$TARGET_DB'..."
 
-PGPASSWORD="${DB_PASSWORD:-postgres}" \
-  gunzip -c "$FILENAME" \
-  | psql \
+# Decifrar ANTES de mexer na base: com a chave errada, falha aqui e não a meio do restauro.
+if ! backup_decifrar "$FILENAME" | gzip -t 2>/dev/null; then
+  echo "[$(date)] ERRO: não foi possível decifrar/descomprimir $FILENAME (chave em falta ou errada?)." >&2
+  exit 1
+fi
+
+backup_decifrar "$FILENAME" \
+  | gunzip -c \
+  | PGPASSWORD="${DB_PASSWORD:-postgres}" psql \
       -h "$TARGET_HOST" \
       -p "$TARGET_PORT" \
       -U "$TARGET_USER" \
