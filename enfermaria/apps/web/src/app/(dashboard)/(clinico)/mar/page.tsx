@@ -7,6 +7,7 @@ import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { pedirTexto } from '@/components/motivo-remocao';
 
 const MOTIVOS_NAO_ADMIN = [
   { value: 'recusou', label: 'Recusou tomar' },
@@ -150,7 +151,7 @@ export default function MarPage() {
     } finally { setRegistandoNaoAdmin(false); }
   };
 
-  const administrar = async () => {
+  const administrar = async (justificacaoSOS?: string) => {
     if (!modalId || !todasMarcadas) return;
     setAdministrando(modalId);
     try {
@@ -162,6 +163,7 @@ export default function MarPage() {
         // verificação inexistente. A verificação a sério é a da etiqueta lida por QR.
         atestadoPeloEnfermeiro: todasMarcadas,
         observacoes: obs || undefined,
+        ...(justificacaoSOS ? { justificacaoSOS } : {}),
       });
       toast.success('Medicação administrada');
       setModalId(null);
@@ -169,7 +171,19 @@ export default function MarPage() {
       setCertas([false, false, false, false, false]);
       carregar();
     } catch (e: any) {
-      toast.error(e?.response?.data?.message ?? 'Erro ao administrar medicação');
+        // QA-08: SOS antes do intervalo mínimo / acima do máximo diário — só com justificação.
+        const sos = e?.response?.status === 409 && /^SOS:/.test(e?.response?.data?.message ?? '');
+        if (sos) {
+          const justificacao = await pedirTexto({
+            titulo: 'SOS fora do intervalo',
+            descricao: e.response.data.message,
+            rotulo: 'Porque se administra agora',
+            botao: 'Administrar com justificação',
+            placeholder: 'Ex.: dor 8/10 persistente, médico contactado',
+          });
+          if (justificacao) { setTimeout(() => void administrar(justificacao), 0); return; }
+        }
+        toast.error(e?.response?.data?.message ?? 'Erro ao administrar medicação');
     } finally { setAdministrando(null); }
   };
 
@@ -267,6 +281,17 @@ export default function MarPage() {
                         </div>
                         <div className="flex items-center gap-3" style={{ marginTop: '4px' }}>
                           <span className="text-xs text-slate-400">{m.frequencia}</span>
+                          {/* QA-08: num SOS, quando foi a última toma (o intervalo mínimo é verificado na API). */}
+                          {/^sos/i.test(m.frequencia) && (() => {
+                            const ultima = m.registos.find((r) => !r.naoAdministrada);
+                            if (!ultima) return <span className="text-xs text-slate-500">· sem tomas</span>;
+                            const min = Math.round((Date.now() - new Date(ultima.administradoEm).getTime()) / 60000);
+                            return (
+                              <span className={`text-xs font-semibold ${min < 60 ? 'text-red-600' : 'text-slate-600'}`}>
+                                · última toma há {min < 60 ? `${min} min` : `${Math.floor(min / 60)} h ${min % 60} min`}
+                              </span>
+                            );
+                          })()}
                           {ultimaAdmin && (
                             <span className={`text-xs ${ultimaAdmin.naoAdministrada ? 'text-red-400' : 'text-slate-400'}`}>
                               {ultimaAdmin.naoAdministrada
@@ -425,7 +450,7 @@ export default function MarPage() {
                 className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>Cancelar</button>
               <button
-                onClick={administrar}
+                onClick={() => administrar()}
                 disabled={!todasMarcadas || !!administrando}
                 className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 style={{ padding: '11px' }}>

@@ -6,6 +6,7 @@ import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import { AdministrarMedicacaoDialog, type ConfirmacaoAdministracao } from '@/components/administrar-medicacao';
+import { pedirTexto } from '@/components/motivo-remocao';
 
 type Turno = 'manha' | 'tarde' | 'noite';
 
@@ -96,13 +97,15 @@ export default function TimelineMedicacoesPage() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [servico, turno, data]);
 
-  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao) => {
+  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao, justificacaoSOS?: string) => {
     // Segunda barreira: mesmo que dois eventos passem o `disabled`, só o primeiro entra.
     if (administrando) return;
     setAdministrando(med.medicacaoId);
     try {
       // UX-01: os 5 certos foram percorridos no diálogo — vai como atestação, como no MAR.
-      await api.post(`/medicacao/${med.medicacaoId}/administrar`, { doenteId: med.doenteId, ...confirmacao });
+      await api.post(`/medicacao/${med.medicacaoId}/administrar`, {
+        doenteId: med.doenteId, ...confirmacao, ...(justificacaoSOS ? { justificacaoSOS } : {}),
+      });
       setConfirmar(null);
       // Marca localmente antes do recarregamento para o botão não voltar a ficar activo
       // na janela entre a resposta e a chegada da timeline nova.
@@ -122,6 +125,19 @@ export default function TimelineMedicacoesPage() {
       toast.success('Medicação registada como administrada');
       await carregar();
     } catch (e: any) {
+        // QA-08: SOS antes do intervalo mínimo / acima do máximo diário — só com justificação.
+        const sos = e?.response?.status === 409 && /^SOS:/.test(e?.response?.data?.message ?? '');
+        if (sos) {
+          const justificacao = await pedirTexto({
+            titulo: 'SOS fora do intervalo',
+            descricao: e.response.data.message,
+            rotulo: 'Porque se administra agora',
+            botao: 'Administrar com justificação',
+            placeholder: 'Ex.: dor 8/10 persistente, médico contactado',
+          });
+          // Repete depois de o `finally` libertar a guarda de duplo-submit.
+          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, justificacao), 0); return; }
+        }
       toast.error(e?.response?.data?.message ?? 'Erro');
     } finally {
       setAdministrando(null);

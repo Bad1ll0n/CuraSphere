@@ -132,6 +132,12 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const [salvando, setSalvando] = useState(false);
   const [interacoes, setInteracoes] = useState<{ med1: string; med2: string; severidade: string; descricao: string }[]>([]);
   const [justificativaInteracao, setJustificativaInteracao] = useState('');
+  // QA-08: SOS com intervalo mínimo (obrigatório) e máximo de tomas em 24 h.
+  const [sosIntervalo, setSosIntervalo] = useState('4');
+  const [sosMaxDia, setSosMaxDia] = useState('');
+  // QA-07 / alergias: a API recusa (409) e pede justificação para prescrever mesmo assim.
+  const [overridePedido, setOverridePedido] = useState<null | 'dose' | 'alergia'>(null);
+  const [justificacaoOverride, setJustificacaoOverride] = useState('');
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [ajusteRenal, setAjusteRenal] = useState<any | null>(null);
   const [loadingAjusteRenal, setLoadingAjusteRenal] = useState(false);
@@ -215,17 +221,24 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     try {
       const { data: criada } = await api.post('/medicacao/prescrever', {
         doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
+        ...(medFreq === 'SOS' ? { intervaloMinimoH: Number(sosIntervalo), ...(sosMaxDia ? { maxDosesDia: Number(sosMaxDia) } : {}) } : {}),
         ...(temInteracaoGrave && justificativaInteracao ? { justificativaOverride: justificativaInteracao } : {}),
+        ...(overridePedido === 'dose' ? { forcarDoseAcimaMaximo: true, justificativaDose: justificacaoOverride } : {}),
+        ...(overridePedido === 'alergia' ? { forcarApesarDeAlergia: true, justificativaOverride: justificacaoOverride } : {}),
       });
       toast.success('Prescrição guardada');
       // QA-06 / PROD-04: nome não reconhecido pelo verificador de alergias, ou frequência sem horário.
       if (criada?.avisoNomeNaoReconhecido) toast.warning(criada.avisoNomeNaoReconhecido);
       if (criada?.avisoFrequencia) toast.warning(criada.avisoFrequencia);
       setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq('');
-      setInteracoes([]); setJustificativaInteracao('');
+      setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride('');
       onRefresh();
     } catch (e: any) {
-      setErroModal(e?.response?.data?.message ?? 'Erro ao prescrever medicação');
+      const msg: string = e?.response?.data?.message ?? 'Erro ao prescrever medicação';
+      // 409 com motivo clínico: mostra o motivo e pede a justificação para o override.
+      if (e?.response?.status === 409 && /^DOSE:/.test(msg)) setOverridePedido('dose');
+      else if (e?.response?.status === 409 && /^ALERGIA:/.test(msg)) setOverridePedido('alergia');
+      setErroModal(msg);
     } finally { setSalvando(false); }
   };
 
@@ -251,7 +264,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     if (!propostaMedNome.trim() || !propostaMedDose.trim() || !propostaMedVia.trim() || !propostaMedFreq.trim()) return;
     setSalvandoProposta('propor');
     try {
-      await api.post('/medicacao/propor', { doenteId, nome: propostaMedNome, dose: propostaMedDose, via: propostaMedVia, frequencia: propostaMedFreq, observacoes: propostaObs || undefined });
+      await api.post('/medicacao/propor', {
+        doenteId, nome: propostaMedNome, dose: propostaMedDose, via: propostaMedVia, frequencia: propostaMedFreq, observacoes: propostaObs || undefined,
+        // QA-08: em SOS a API exige intervalo mínimo; o médico pode ajustá-lo ao aprovar.
+        ...(propostaMedFreq === 'SOS' ? { intervaloMinimoH: 4 } : {}),
+      });
       toast.success('Proposta de prescrição enviada ao médico');
       setModalPropor(false);
       setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs('');
@@ -338,7 +355,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>
-            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setInteracoes([]); setJustificativaInteracao(''); setModalMed(true); }} />}
+            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride(''); setSosIntervalo('4'); setSosMaxDia(''); setModalMed(true); }} />}
             {podeProporMed && (
               <button onClick={() => { setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs(''); setModalPropor(true); }}
                 aria-label="Propor prescrição"
@@ -537,6 +554,20 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
           </div>
+          {medFreq === 'SOS' && (
+            <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '16px' }}>
+              <div>
+                <label htmlFor="sos-intervalo" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Intervalo mínimo (h) *</label>
+                <input id="sos-intervalo" type="number" min={1} max={72} value={sosIntervalo} onChange={(e) => setSosIntervalo(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl text-sm" style={{ padding: '10px 14px' }} />
+              </div>
+              <div>
+                <label htmlFor="sos-max" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Máx. tomas em 24 h</label>
+                <input id="sos-max" type="number" min={1} max={24} value={sosMaxDia} onChange={(e) => setSosMaxDia(e.target.value)}
+                  placeholder="opcional" className="w-full border border-slate-200 rounded-xl text-sm" style={{ padding: '10px 14px' }} />
+              </div>
+            </div>
+          )}
           {interacoes.length > 0 && (
             <div style={{ marginBottom: '16px' }}>
               {interacoes.map((int, i) => {
@@ -571,8 +602,21 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             </div>
           )}
           {erroModal && <ErroBox texto={erroModal} />}
+          {overridePedido && (
+            <div style={{ marginBottom: '16px' }}>
+              <label htmlFor="just-override" className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+                Justificação clínica para prescrever mesmo assim * (mín. 20 caracteres — fica registada)
+              </label>
+              <textarea id="just-override" rows={2} value={justificacaoOverride} onChange={(e) => setJustificacaoOverride(e.target.value)}
+                className="w-full border border-red-300 rounded-xl text-sm text-slate-800 resize-none" style={{ padding: '8px 12px' }} />
+            </div>
+          )}
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
-            loading={salvando} disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())} labelConfirm="Prescrever" />
+            loading={salvando}
+            disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
+              || (medFreq === 'SOS' && !(Number(sosIntervalo) >= 1))
+              || (!!overridePedido && justificacaoOverride.trim().length < 20)}
+            labelConfirm={overridePedido ? 'Prescrever com justificação' : 'Prescrever'} />
         </Modal>
       )}
 

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsInt, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ProporMedicacaoDto {
@@ -31,4 +31,17 @@ export class ProporMedicacaoDto {
   @IsString()
   @IsOptional()
   observacoes?: string;
+
+  // QA-08: SOS.
+  @IsInt()
+  @Min(1)
+  @Max(72)
+  @IsOptional()
+  intervaloMinimoH?: number;
+
+  @IsInt()
+  @Min(1)
+  @Max(24)
+  @IsOptional()
+  maxDosesDia?: number;
 }
