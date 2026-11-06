@@ -4,6 +4,7 @@ import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import QRCode from 'react-qr-code';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { ConfirmModal } from '@/components/confirm-modal';
 
 interface Medicacao {
@@ -212,11 +213,14 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     }
     setSalvando(true); setErroModal('');
     try {
-      await api.post('/medicacao/prescrever', {
+      const { data: criada } = await api.post('/medicacao/prescrever', {
         doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
         ...(temInteracaoGrave && justificativaInteracao ? { justificativaOverride: justificativaInteracao } : {}),
       });
       toast.success('Prescrição guardada');
+      // QA-06 / PROD-04: nome não reconhecido pelo verificador de alergias, ou frequência sem horário.
+      if (criada?.avisoNomeNaoReconhecido) toast.warning(criada.avisoNomeNaoReconhecido);
+      if (criada?.avisoFrequencia) toast.warning(criada.avisoFrequencia);
       setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq('');
       setInteracoes([]); setJustificativaInteracao('');
       onRefresh();
@@ -459,6 +463,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       {modalMed && (
         <Modal titulo="Prescrever Medicação" onClose={() => setModalMed(false)}>
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
+            {/* UX-02: alergias à vista no momento de prescrever */}
+            <FaixaAlergiasDoente doenteId={doenteId} compacta />
             <div>
               <label htmlFor="fmedicaca-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
               <input id="fmedicaca-0" autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}

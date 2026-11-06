@@ -10,6 +10,8 @@
 // Passa a haver três níveis: correspondência directa da substância, pertença à mesma classe
 // farmacológica, e reactividade cruzada documentada entre classes.
 
+import { DCI_CONHECIDAS, expandirMarcas, marcasNoTexto } from './marcas-dci';
+
 /** Palavras que aparecem em nomes de fármacos mas não os identificam. */
 const STOPWORDS = new Set([
   'acido', 'sal', 'sais', 'sodio', 'sodica', 'sodico', 'potassio', 'calcio', 'magnesio',
@@ -230,13 +232,18 @@ export function compararComAlergenio(
   nomeMedicamento: string,
   alergenio: string,
 ): CorrespondenciaAlergia | null {
-  const tokensMed = tokenizar(nomeMedicamento);
-  const tokensAlg = tokenizar(alergenio);
+  // QA-06: marcas comerciais passam a contar como a sua substância activa, dos dois lados
+  // (prescrição "Ben-u-ron" contra alergia a paracetamol, ou alergia escrita como "Brufen").
+  const tokensMed = tokenizar(expandirMarcas(nomeMedicamento));
+  const tokensAlg = tokenizar(expandirMarcas(alergenio));
   if (tokensMed.length === 0 || tokensAlg.length === 0) return null;
+
+  const marcas = marcasNoTexto(nomeMedicamento);
+  const nota = marcas.length ? ` — ${nomeMedicamento} contém ${marcas.map((m) => m.dci).join(' + ')}` : '';
 
   const direta = mesmaSubstancia(tokensMed, tokensAlg);
   if (direta) {
-    return { tipo: 'substancia', motivo: `substância documentada como alergénio ("${alergenio}")` };
+    return { tipo: 'substancia', motivo: `substância documentada como alergénio ("${alergenio}")${nota}` };
   }
 
   const classesMed = classesDoTermo(tokensMed);
@@ -251,7 +258,7 @@ export function compararComAlergenio(
     return {
       tipo: 'classe',
       classe: mesma.id,
-      motivo: `mesma classe farmacológica do alergénio "${alergenio}" (${mesma.nome})`,
+      motivo: `mesma classe farmacológica do alergénio "${alergenio}" (${mesma.nome})${nota}`,
     };
   }
 
@@ -300,4 +307,16 @@ export function detetarConflitoAlergia<T extends AlergiaDocumentada>(
   const ordem: Record<TipoCorrespondencia, number> = { substancia: 0, classe: 1, cruzada: 2 };
   encontrados.sort((a, b) => ordem[a.correspondencia.tipo] - ordem[b.correspondencia.tipo]);
   return encontrados[0];
+}
+
+/**
+ * QA-06: o nome prescrito é reconhecível (marca da tabela, substância conhecida ou membro
+ * de uma classe)? Se não for, a verificação de alergias pode estar a falhar em silêncio —
+ * quem prescreve deve ser avisado para confirmar à mão.
+ */
+export function nomeReconhecido(nomeMedicamento: string): boolean {
+  if (marcasNoTexto(nomeMedicamento).length > 0) return true;
+  const tokens = tokenizar(nomeMedicamento);
+  if (tokens.some((t) => DCI_CONHECIDAS.has(t))) return true;
+  return classesDoTermo(tokens).length > 0;
 }

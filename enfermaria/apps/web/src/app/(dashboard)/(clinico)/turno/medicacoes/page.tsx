@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
-import { Modal } from '@/components/ui/modal';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { AdministrarMedicacaoDialog, type ConfirmacaoAdministracao } from '@/components/administrar-medicacao';
 
 type Turno = 'manha' | 'tarde' | 'noite';
 
@@ -17,9 +16,29 @@ interface SlotMed {
   medicacaoId: string;
   nome: string;
   dose: string;
+  via?: string;
+  frequencia?: string;
   administrada: boolean;
-  emAtraso?: boolean;
+  estado?: 'administrada' | 'em_atraso' | 'devida';
+  hora?: string;
+  altoRisco?: boolean;
 }
+
+interface DoenteTimeline {
+  id: string;
+  nome: string;
+  cama: string;
+  numeroProcesso?: string;
+  dataNascimento?: string | null;
+  alergias?: { alergenio: string; severidade?: string | null }[];
+  medicacoesPendentes: number;
+}
+
+const ESTADO_TOMA = {
+  administrada: { icone: '✓', texto: 'Administrada', cor: 'bg-green-100 border-green-300 text-green-800' },
+  em_atraso: { icone: '!', texto: 'Em atraso', cor: 'bg-red-100 border-red-400 text-red-800' },
+  devida: { icone: '○', texto: 'Por administrar', cor: 'bg-violet-100 border-violet-300 text-violet-800' },
+} as const;
 
 interface Slot {
   hora: string;
@@ -30,7 +49,7 @@ interface Slot {
 interface TimelineData {
   turno: { inicio: string; fim: string };
   slots: Slot[];
-  doentes: { id: string; nome: string; cama: string; medicacoesPendentes: number }[];
+  doentes: DoenteTimeline[];
 }
 
 const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = [
@@ -39,12 +58,11 @@ const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = [
   { value: 'noite', label: 'Noite', inicio: 0, fim: 8 },
 ];
 
-const SERVICOS = ['Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
+// '' = todos os serviços. A API filtra pelo serviço da cama.
+const SERVICOS = ['', 'Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
 
 export default function TimelineMedicacoesPage() {
   const toast = useToast();
-  const t = useTranslations('medication');
-  const tc = useTranslations('common');
   const [turno, setTurno] = useState<Turno>('manha');
   const [servico, setServico] = useState(SERVICOS[0]);
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
@@ -78,13 +96,14 @@ export default function TimelineMedicacoesPage() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [servico, turno, data]);
 
-  const administrar = async (med: SlotMed) => {
+  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao) => {
     // Segunda barreira: mesmo que dois eventos passem o `disabled`, só o primeiro entra.
     if (administrando) return;
     setAdministrando(med.medicacaoId);
-    setConfirmar(null);
     try {
-      await api.post(`/medicacao/${med.medicacaoId}/administrar`, { doenteId: med.doenteId });
+      // UX-01: os 5 certos foram percorridos no diálogo — vai como atestação, como no MAR.
+      await api.post(`/medicacao/${med.medicacaoId}/administrar`, { doenteId: med.doenteId, ...confirmacao });
+      setConfirmar(null);
       // Marca localmente antes do recarregamento para o botão não voltar a ficar activo
       // na janela entre a resposta e a chegada da timeline nova.
       setTimeline((prev) =>
@@ -94,7 +113,7 @@ export default function TimelineMedicacoesPage() {
               slots: prev.slots.map((s) => ({
                 ...s,
                 medicacoes: s.medicacoes.map((m) =>
-                  m.medicacaoId === med.medicacaoId ? { ...m, administrada: true } : m,
+                  m.medicacaoId === med.medicacaoId && m.hora === med.hora ? { ...m, administrada: true, estado: 'administrada' } : m,
                 ),
               })),
             }
@@ -139,7 +158,7 @@ export default function TimelineMedicacoesPage() {
           <select value={servico} onChange={e => setServico(e.target.value)}
             className="border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
             style={{ padding: '8px 12px' }}>
-            {SERVICOS.map(s => <option key={s}>{s}</option>)}
+            {SERVICOS.map(s => <option key={s} value={s}>{s || 'Todos os serviços'}</option>)}
           </select>
         </div>
       </div>
@@ -205,26 +224,34 @@ export default function TimelineMedicacoesPage() {
           {timeline.doentes.map(d => (
             <div key={d.id} className="grid border-b border-slate-50 hover:bg-slate-50/50 transition-colors" style={{ gridTemplateColumns: `160px repeat(${horas.length}, 1fr)` }}>
               <div className="border-r border-slate-100" style={{ padding: '10px 16px' }}>
-                <div className="text-xs font-semibold text-slate-800 truncate">{d.nome.split(' ')[0]}</div>
-                <div className="text-xs text-slate-400">Cama {d.cama}</div>
+                <div className="text-xs font-semibold text-slate-800 truncate" title={d.nome}>{d.nome}</div>
+                <div className="text-xs text-slate-400">
+                  Cama {d.cama ?? '—'}{d.numeroProcesso ? ` · ${d.numeroProcesso}` : ''}
+                </div>
+                {(d.alergias?.length ?? 0) > 0 && (
+                  <div className="text-xs font-semibold text-red-700 truncate" title={d.alergias!.map(a => a.alergenio).join(', ')}>
+                    ⛔ {d.alergias!.map(a => a.alergenio).join(', ')}
+                  </div>
+                )}
               </div>
               {horas.map(h => {
                 const meds = (slotMap.get(h) ?? []).filter(m => m.doenteId === d.id);
                 return (
                   <div key={h} className="border-r border-slate-100 flex items-center justify-center flex-wrap gap-1" style={{ padding: '6px 4px', minHeight: '48px' }}>
                     {meds.map(m => {
-                      const cor = m.administrada ? 'bg-green-100 border-green-300 text-green-800' :
-                        m.emAtraso ? 'bg-red-100 border-red-300 text-red-800 animate-pulse' :
-                          'bg-violet-100 border-violet-300 text-violet-800';
+                      const est = ESTADO_TOMA[m.estado ?? (m.administrada ? 'administrada' : 'devida')];
                       return (
                         <button
-                          key={m.medicacaoId}
+                          key={`${m.medicacaoId}-${m.hora ?? h}`}
                           onClick={() => setConfirmar(m)}
                           disabled={m.administrada || !!administrando}
-                          title={`${m.nome} ${m.dose}`}
-                          aria-label={`${m.administrada ? t('administered') : t('administer')}: ${m.nome} ${m.dose} — ${m.doenteName}, cama ${m.cama}, ${h}`}
-                          className={`text-xs font-medium rounded border px-1.5 py-0.5 truncate transition-all max-w-full ${cor} ${!m.administrada && !administrando ? 'cursor-pointer hover:opacity-80' : 'cursor-default'} disabled:opacity-60`}>
-                          <span aria-hidden="true">{m.nome.slice(0, 8)}</span>
+                          title={`${m.nome} ${m.dose}${m.via ? ` ${m.via}` : ''} — ${est.texto}`}
+                          aria-label={`${est.texto}: ${m.nome} ${m.dose} — ${m.doenteName}, cama ${m.cama}, ${h}`}
+                          className={`text-xs font-medium rounded border px-1.5 py-0.5 text-left transition-all max-w-full ${est.cor} ${m.altoRisco ? 'ring-2 ring-red-500' : ''} ${!m.administrada && !administrando ? 'cursor-pointer hover:opacity-80' : 'cursor-default'} disabled:opacity-60`}>
+                          <span aria-hidden="true" className="block truncate">
+                            {est.icone} {m.altoRisco ? '⚠️ ' : ''}{m.nome}
+                          </span>
+                          <span aria-hidden="true" className="block truncate font-normal">{m.dose}</span>
                         </button>
                       );
                     })}
@@ -244,49 +271,38 @@ export default function TimelineMedicacoesPage() {
 
       {/* Legenda */}
       <div className="flex items-center gap-4" style={{ marginTop: '16px' }}>
-        {[
-          { cor: 'bg-violet-100 border-violet-300', label: 'Pendente' },
-          { cor: 'bg-red-100 border-red-300', label: 'Em atraso' },
-          { cor: 'bg-green-100 border-green-300', label: 'Administrada' },
-        ].map(({ cor, label }) => (
-          <div key={label} className="flex items-center gap-1.5">
-            <div className={`w-3 h-3 rounded border ${cor}`} />
-            <span className="text-xs text-slate-500">{label}</span>
+        {Object.values(ESTADO_TOMA).map(({ cor, icone, texto }) => (
+          <div key={texto} className="flex items-center gap-1.5">
+            <div className={`text-[10px] font-bold rounded border px-1 ${cor}`}>{icone}</div>
+            <span className="text-xs text-slate-500">{texto}</span>
           </div>
         ))}
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded ring-2 ring-red-500" />
+          <span className="text-xs text-slate-500">⚠️ Alto risco</span>
+        </div>
         <span className="text-xs text-slate-400 ml-auto">Click no bloco → confirmar administração</span>
       </div>
 
-      {/* Confirmação explícita antes de gravar um registo de administração. */}
-      <Modal
-        isOpen={!!confirmar}
-        onClose={() => setConfirmar(null)}
-        titulo={t('confirmTitle')}
-        maxWidth="420px"
-      >
-        <p className="text-sm text-slate-600" style={{ marginBottom: '20px' }}>
-          {t('confirmBody', {
-            farmaco: `${confirmar?.nome ?? ''} ${confirmar?.dose ?? ''}`.trim(),
-            doente: confirmar?.doenteName ?? '',
-            cama: confirmar?.cama ?? '',
-          })}
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={() => setConfirmar(null)}
-            className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-            style={{ padding: '11px', minHeight: '44px' }}>
-            {tc('cancel')}
-          </button>
-          <button
-            onClick={() => confirmar && administrar(confirmar)}
-            disabled={!!administrando}
-            className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            style={{ padding: '11px', minHeight: '44px' }}>
-            {administrando ? t('administering') : t('administer')}
-          </button>
-        </div>
-      </Modal>
+      {/* UX-01: o mesmo diálogo de administração do MAR e da ficha. */}
+      <AdministrarMedicacaoDialog
+        aberto={!!confirmar}
+        aGravar={!!administrando}
+        medicacao={confirmar ? {
+          medicacaoId: confirmar.medicacaoId, nome: confirmar.nome, dose: confirmar.dose,
+          via: confirmar.via, frequencia: confirmar.frequencia, hora: confirmar.hora, altoRisco: confirmar.altoRisco,
+        } : null}
+        doente={(() => {
+          if (!confirmar) return null;
+          const d = timeline?.doentes.find(x => x.id === confirmar.doenteId);
+          return {
+            id: confirmar.doenteId, nome: d?.nome ?? confirmar.doenteName, cama: d?.cama ?? confirmar.cama,
+            numeroProcesso: d?.numeroProcesso, dataNascimento: d?.dataNascimento ?? null, alergias: d?.alergias ?? null,
+          };
+        })()}
+        onCancelar={() => setConfirmar(null)}
+        onConfirmar={(c) => confirmar && administrar(confirmar, c)}
+      />
     </div>
   );
 }
