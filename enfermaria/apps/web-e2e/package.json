@@ -21,7 +21,11 @@
           "cwd": "apps/web-e2e"
         }
       }
-    }
+    },
+    "tags": [
+      "scope:web",
+      "type:e2e"
+    ]
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",

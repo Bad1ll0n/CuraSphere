@@ -12,7 +12,7 @@ import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
 import { gerarTokenFamilia, hashTokenFamilia } from '../app/familia/token-familia';
 
-try { process.loadEnvFile(); } catch {}
+try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
 const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 

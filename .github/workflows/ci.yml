@@ -16,28 +16,21 @@ name: CI — CuraSphere
 #               comprovadamente VERDES no baseline actual. É o único job que a
 #               protecção de ramo deve exigir como required check.
 #   `quality` — corre as mesmas ferramentas sobre o que ainda está VERMELHO no
-#               baseline (lint, formatação, typecheck de ui/mobile). Job inteiro
+#               baseline (hoje: só a formatação). Job inteiro
 #               em continue-on-error: aparece na lista de checks e torna a
 #               dívida visível, mas não reprova PRs enquanto o baseline não
 #               estiver limpo. Ver NOTA DE DÍVIDA abaixo.
 #   `e2e`     — lento e informativo: schedule nocturno, a pedido, ou PR com a
 #               etiqueta `run-e2e`. Carga (k6) vive em `load.yml`.
 #
-# ── NOTA DE DÍVIDA (medida em 2026-09-03, não estimada) ─────────────────────
-#   lint      : @org/api 10 628 erros + 2 902 avisos; @org/web-e2e e @org/mobile
-#               também falham. ~5 176 são auto-corrigíveis com `--fix`.
-#   typecheck : @org/api VERDE, @org/shared VERDE.
-#               @org/ui 8 erros (moduleResolution node16 exige extensões
-#               explícitas em src/index.ts + React importado sem uso).
-#               @org/mobile falha por dependências Expo em falta
-#               (@expo/vector-icons, expo-secure-store, expo-device).
-#   test      : @org/api VERDE (é o gate). @org/web com 3 suites e 1 teste a
-#               falhar — fica em `quality` até fechar.
-#   build     : @org/api e @org/web VERDES (o web só falha se houver outro
-#               `next build` a correr em paralelo — contenção do lock do .next,
-#               não um erro de código).
-#   Passar cada um destes de `quality` para `verify` à medida que ficam a zero.
-#   Enquanto estiverem aqui, NÃO são gate — é dívida assumida, não segurança.
+# ── NOTA DE DÍVIDA (actualizada em 2026-11-06, ARQ-09/ARQ-10) ───────────────
+#   lint      : 0 erros em todos os projectos (o cliente Prisma gerado deixou de ser
+#               lintado — era 93 % dos erros). BLOQUEANTE em `verify`. Os avisos
+#               (sobretudo `no-explicit-any` na web) continuam por reduzir.
+#   typecheck : todos os projectos VERDES (api, shared, web, ui, mobile). BLOQUEANTE.
+#   test      : @org/api e @org/web VERDES. BLOQUEANTES.
+#   build     : @org/api e @org/web VERDES. BLOQUEANTE.
+#   formatação: continua em `quality` (informativo) até o `nx format` ser aplicado.
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
@@ -105,13 +98,20 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # ── Tipos (BLOQUEANTE) ─────────────────────────────────────────────────
-      # Baseline a ZERO em @org/api (produção + specs) e @org/shared, verificado.
-      # ui/mobile ficam no job `quality` até o baseline deles fechar.
-      - name: TypeScript — verificar tipos (api + shared)
-        run: pnpm exec nx run-many -t typecheck -p @org/api @org/shared
+      # ARQ-09: baseline a ZERO em todos os projectos (api, shared, web, ui, mobile) —
+      # o web e o mobile deixaram o job `quality`. O cliente Prisma é gerado pelo target
+      # `prisma-generate` (ARQ-10: deixou de estar no git), de que o typecheck depende.
+      - name: TypeScript — verificar tipos (todos os projectos)
+        run: pnpm exec nx run-many -t typecheck
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+
+      # ── Lint (BLOQUEANTE) ──────────────────────────────────────────────────
+      # ARQ-09: 93 % do "lint vermelho" era o cliente Prisma gerado (agora ignorado);
+      # os erros reais foram corrigidos. Avisos não reprovam; erros sim.
+      - name: Lint (todos os projectos)
+        run: pnpm exec nx run-many -t lint
 
       # ── Testes unitários + cobertura (BLOQUEANTE) ──────────────────────────
       # Thresholds de cobertura impostos em apps/api/jest.config.js.
@@ -125,16 +125,15 @@ jobs:
           REDIS_URL: redis://localhost:6379/1
           NODE_ENV: test
 
+      # ── Testes unitários da web (BLOQUEANTE) ───────────────────────────────
+      # Verde desde 2026-11 (10 suites, 69 testes); saiu do job `quality`.
+      - name: Unit tests (web)
+        run: pnpm exec nx run @org/web:test --passWithNoTests
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+
       # ── Build (BLOQUEANTE) ─────────────────────────────────────────────────
-      # Inclui `@org/web`. Como o web NÃO tem target `typecheck` (ver NOTA DE
-      # DEPENDÊNCIA abaixo), este build é hoje a única verificação de compilação
-      # do frontend em CI — antes desta alteração o CI não tocava no frontend.
-      #
-      # NOTA DE DEPENDÊNCIA (fora do domínio deste workflow):
-      #   `apps/web/project.json` não define target `typecheck`, por isso o
-      #   `run-many` salta o web em silêncio. Fechar isto exige acrescentar lá
-      #   um target `typecheck` (`tsc --noEmit -p tsconfig.json`). Esse ficheiro
-      #   pertence a outro agente; fica registado, não alterado aqui.
+      # Inclui `@org/web` (que também tem typecheck próprio, no passo de tipos).
       # `@org/mobile` fica de fora: o target `build` inferido pelo @nx/expo é um
       # build EAS (cloud da Expo, exige `eas-cli` e conta), não uma compilação local.
       - name: Build (api + web + libs)
@@ -215,21 +214,8 @@ jobs:
         continue-on-error: true
         run: pnpm exec nx format:check --base=origin/${{ github.event.pull_request.base.ref || 'main' }} --head=HEAD
 
-      # `--nx-bail=false`: queremos o retrato completo da dívida, não o primeiro
-      # projecto a falhar.
-      - name: Lint (todos os projectos)
-        continue-on-error: true
-        run: pnpm exec nx run-many -t lint --nx-bail=false
+      # Lint e typecheck de todos os projectos passaram para o job `verify` (ARQ-09).
 
-      - name: TypeScript — ui + mobile
-        continue-on-error: true
-        run: pnpm exec nx run-many -t typecheck -p @org/ui @org/mobile --nx-bail=false
-
-      - name: Unit tests — web
-        continue-on-error: true
-        run: pnpm exec nx run @org/web:test --passWithNoTests
-        env:
-          NEXT_PUBLIC_API_URL: http://localhost:3333
 
   # ═══════════════════════════════════════════════════════════════════════════
   # NÍVEL 2 — E2E: lento e informativo. NÃO deve ser required check de PR.

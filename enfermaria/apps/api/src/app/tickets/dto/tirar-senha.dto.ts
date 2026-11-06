@@ -25,6 +25,6 @@ export class TirarSenhaDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  @Matches(/^\+?[0-9\s\-]{9,15}$/, { message: 'Telefone inválido' })
+  @Matches(/^\+?[0-9\s-]{9,15}$/, { message: 'Telefone inválido' })
   telefone?: string;
 }

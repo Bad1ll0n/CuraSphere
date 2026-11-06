@@ -470,7 +470,7 @@ export class DoenteService {
         fu.responsavelId,
         `⏰ Follow-up: ${fu.doente.nome}`,
         `${fu.tipo === '7_dias' ? '7 dias' : '30 dias'} após alta — contactar doente`,
-      ).catch(() => {});
+      ).catch(() => undefined);
     }
     this.logger.log(`Follow-up: ${pendentes.length} lembretes enviados`);
   }
@@ -594,7 +594,7 @@ export class DoenteService {
     const min = agora.getHours() * 60 + agora.getMinutes();
 
     let tipo: string;
-    let dataRef = new Date(agora);
+    const dataRef = new Date(agora);
 
     if (min >= 8 * 60 && min < 16 * 60) {
       tipo = 'manha';
