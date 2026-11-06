@@ -19,7 +19,7 @@ const mockPrisma = {
     create: jest.fn(),
     update: jest.fn(),
   },
-  registoMedicacao: { create: jest.fn(), findMany: jest.fn() },
+  registoMedicacao: { create: jest.fn(), findMany: jest.fn(), count: jest.fn() },
   atribuicaoHorarioTurno: { findMany: jest.fn() },
 };
 
@@ -100,6 +100,39 @@ describe('MedicacaoService', () => {
       mockPrisma.doente.findUnique.mockResolvedValue(null);
 
       await expect(service.prescrever(dadosBase)).rejects.toThrow(NotFoundException);
+    });
+
+    describe('QA-07/QA-08 — plausibilidade', () => {
+      it('recusa dose ilegível', async () => {
+        await expect(service.prescrever({ ...dadosBase, dose: 'abc' })).rejects.toThrow(/não é legível/);
+      });
+      it('recusa frequência não reconhecida', async () => {
+        await expect(service.prescrever({ ...dadosBase, frequencia: 'quando apetecer' })).rejects.toThrow(/não reconhecida/);
+      });
+      it('em SOS exige intervalo mínimo', async () => {
+        await expect(service.prescrever({ ...dadosBase, frequencia: 'SOS' })).rejects.toThrow(/intervalo mínimo/);
+      });
+      it('Morfina 1000 mg → 409 a pedir justificação', async () => {
+        await expect(service.prescrever({ ...dadosBase, nome: 'Morfina', dose: '1000 mg', via: 'iv', frequencia: '4/4h' }))
+          .rejects.toThrow(ConflictException);
+      });
+      it('override de dose sem justificação suficiente → 400', async () => {
+        await expect(service.prescrever({ ...dadosBase, nome: 'Morfina', dose: '1000 mg', frequencia: '4/4h', forcarDoseAcimaMaximo: true, justificativaDose: 'curta' }))
+          .rejects.toThrow(/justificação clínica/);
+      });
+      it('override justificado grava overrideDose e o motivo', async () => {
+        mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João' });
+        mockPrisma.alergia.findMany.mockResolvedValue([]);
+        mockPrisma.medicacao.findMany.mockResolvedValue([]);
+        mockPrisma.medicacao.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'm1', ...data }));
+        await service.prescrever({
+          ...dadosBase, nome: 'Paracetamol', dose: '1 g', frequencia: '6x/dia',
+          forcarDoseAcimaMaximo: true, justificativaDose: 'doente de 120 kg, protocolo da dor aguda aprovado',
+        });
+        expect(mockPrisma.medicacao.create).toHaveBeenCalledWith(expect.objectContaining({
+          data: expect.objectContaining({ overrideDose: true, overrideDoseMotivo: expect.stringContaining('máximo diário de paracetamol') }),
+        }));
+      });
     });
 
     it('lança ConflictException quando medicamento coincide com alergia registada', async () => {
@@ -255,6 +288,35 @@ describe('MedicacaoService', () => {
       mockPrisma.registoMedicacao.create.mockImplementation(({ data }: any) =>
         Promise.resolve({ id: 'reg-1', ...data, administradoPor: {}, medicacao: {} }),
       );
+    });
+
+    describe('QA-08 — SOS', () => {
+      const agoraMenos = (min: number) => new Date(Date.now() - min * 60_000);
+      it('recusa um SOS dentro do intervalo mínimo sem justificação (3 tomas em 9 s)', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, intervaloMinimoH: 4, registos: [{ administradoEm: agoraMenos(1) }] });
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true })).rejects.toThrow(/SOS: última toma há 1 min/);
+        expect(mockPrisma.registoMedicacao.create).not.toHaveBeenCalled();
+      });
+      it('SOS antigo sem intervalo definido usa 1 h', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, registos: [{ administradoEm: agoraMenos(5) }] });
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true })).rejects.toThrow(/intervalo mínimo 1 h/);
+      });
+      it('com justificação, regista e guarda o porquê', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, intervaloMinimoH: 4, registos: [{ administradoEm: agoraMenos(30) }] });
+        await service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, justificacaoSOS: 'dor 9/10, médico contactado' });
+        expect(mockPrisma.registoMedicacao.create).toHaveBeenCalledWith(expect.objectContaining({
+          data: expect.objectContaining({ justificacaoSOS: 'dor 9/10, médico contactado' }),
+        }));
+      });
+      it('recusa acima do máximo de tomas em 24 h', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, intervaloMinimoH: 1, maxDosesDia: 3, registos: [{ administradoEm: agoraMenos(300) }] });
+        mockPrisma.registoMedicacao.count.mockResolvedValue(3);
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true })).rejects.toThrow(/3 tomas nas últimas 24 h \(máximo 3\)/);
+      });
+      it('fora do intervalo, administra normalmente', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, intervaloMinimoH: 4, registos: [{ administradoEm: agoraMenos(300) }] });
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true })).resolves.toBeDefined();
+      });
     });
 
     // BA-06: doenteId deixa de ser opcional.

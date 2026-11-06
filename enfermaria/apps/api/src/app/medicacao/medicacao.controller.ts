@@ -88,6 +88,7 @@ export class MedicacaoController {
       atestadoPeloEnfermeiro: dto.atestadoPeloEnfermeiro,
       via: dto.via,
       observacoes: dto.observacoes,
+      justificacaoSOS: dto.justificacaoSOS,
     });
   }
 
