@@ -1,10 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
+import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { RedisService } from '../redis/redis.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
+
+/** PERF-06: indicadores agregados — 30 s de frescura chega para painéis de gestão. */
+const TTL_DASHBOARD_S = Number(process.env['DASHBOARD_CACHE_S'] ?? 30);
 
 @Injectable()
 export class DashboardService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+    private readonly tenant: TenantContextService,
+  ) {}
+
+  /**
+   * PERF-06 — os dashboards agregados (15–36 queries cada) eram recalculados por cada
+   * espectador a cada 60 s de polling, e tiravam ligações às leituras clínicas. Ficam em cache
+   * `TTL_DASHBOARD_S` por tenant: memória do processo primeiro, Redis para as outras réplicas.
+   */
+  private readonly cacheLocal = new Map<string, { expira: number; valor: unknown }>();
+
+  private async emCache<T>(nome: string, calcular: () => Promise<T>): Promise<T> {
+    const chave = `dashboard:${nome}:${this.tenant.tenantId}`;
+    const agora = Date.now();
+    const local = this.cacheLocal.get(chave);
+    if (local && local.expira > agora) return local.valor as T;
+    const remoto = await this.redis.get<T>(chave).catch(() => null);
+    if (remoto !== null && remoto !== undefined) {
+      this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor: remoto });
+      return remoto;
+    }
+    const valor = await calcular();
+    this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor });
+    await this.redis.set(chave, valor, TTL_DASHBOARD_S).catch(() => undefined);
+    return valor;
+  }
 
   private turnoAtual() {
     const agora = new Date();
@@ -26,6 +59,10 @@ export class DashboardService {
   }
 
   async analytics() {
+    return this.emCache('analytics', () => this.analyticsCalcular());
+  }
+
+  private async analyticsCalcular() {
     const agora = new Date();
 
     // Ocupação diária nos últimos 14 dias — 1 query por dia (14 queries total, paralelas)
@@ -91,6 +128,10 @@ export class DashboardService {
   }
 
   async dashboardTI() {
+    return this.emCache('dashboardTI', () => this.dashboardTICalcular());
+  }
+
+  private async dashboardTICalcular() {
     const agora = new Date();
     const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
     const semanaAtras = new Date(agora); semanaAtras.setDate(semanaAtras.getDate() - 7);
@@ -138,6 +179,10 @@ export class DashboardService {
   }
 
   async dashboardExecutivo() {
+    return this.emCache('dashboardExecutivo', () => this.dashboardExecutivoCalcular());
+  }
+
+  private async dashboardExecutivoCalcular() {
     const agora = new Date();
     const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
     const amanha = new Date(hoje); amanha.setDate(amanha.getDate() + 1);
@@ -315,6 +360,10 @@ export class DashboardService {
   }
 
   async dashboardQualidade() {
+    return this.emCache('dashboardQualidade', () => this.dashboardQualidadeCalcular());
+  }
+
+  private async dashboardQualidadeCalcular() {
     const agora = new Date();
     const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
     const seteDiasAtras = new Date(agora); seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
@@ -386,19 +435,17 @@ export class DashboardService {
   }
 
   async news2Distribuicao() {
+    return this.emCache('news2Distribuicao', () => this.news2DistribuicaoCalcular());
+  }
+
+  private async news2DistribuicaoCalcular() {
+    // PERF-03: só internados (antes incluía todo o ambulatório) e o último NEWS2 de cada um
+    // por LATERAL … LIMIT 1 — antes lia o histórico inteiro de sinais vitais para usar uma linha.
     const doentesAtivos = await this.prisma.doente.findMany({
-      where: { ativo: true, deletedAt: null },
-      select: {
-        id: true,
-        estado: true,
-        sinaisVitais: {
-          where: { news2: { not: null } },
-          orderBy: { data: 'desc' },
-          take: 1,
-          select: { news2: true, data: true },
-        },
-      },
+      where: { ativo: true, deletedAt: null, estadoRegisto: 'internado' },
+      select: { id: true, estado: true },
     });
+    const ultimos = await ultimosSinaisVitais(this.prisma, doentesAtivos.map((d) => d.id), { comNews2: true });
 
     const distribuicao = { baixo: 0, medio: 0, alto: 0, semRegisto: 0 };
     const porAcuidade = { estavel: 0, grave: 0, critico: 0 };
@@ -410,7 +457,7 @@ export class DashboardService {
       else porAcuidade.estavel++;
 
       // NEWS2
-      const news2 = d.sinaisVitais[0]?.news2 ?? null;
+      const news2 = ultimos.get(d.id)?.news2 ?? null;
       if (news2 == null) distribuicao.semRegisto++;
       else if (news2 <= 4) distribuicao.baixo++;
       else if (news2 <= 6) distribuicao.medio++;

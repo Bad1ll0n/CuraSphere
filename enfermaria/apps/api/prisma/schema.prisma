@@ -348,6 +348,8 @@ model Doente {
   sessoesDialise          SessaoDialise[]
 
   @@index([tenantId, estado])
+  // PERF-08: listas de doentes (tenant, activos, estado do registo, por data de admissão).
+  @@index([tenantId, ativo, estadoRegisto, dataAdmissao])
   @@index([ativo])
   @@index([estado])
   @@index([dataAdmissao])
@@ -726,6 +728,8 @@ model RegistoMedicacao {
   administradoPor Utilizador @relation(fields: [administradoPorId], references: [id], onDelete: Restrict)
 
   @@index([medicacaoId])
+  // PERF-08: última administração por medicação (MAR, timeline, farmácia) — sem isto, seq scan.
+  @@index([medicacaoId, administradoEm(sort: Desc)])
   @@index([doenteId, administradoEm])
   @@index([deletedAt])
   @@index([doenteId, deletedAt])
@@ -1291,6 +1295,8 @@ model AlertaClinico {
   @@index([doenteId, lido])
   @@index([doenteId, lido, criadoEm])
   @@index([criadoEm])
+  // PERF-08: contadores de alertas por ler e o cron de escalonamento (lido, urgência, idade).
+  @@index([lido, urgencia, criadoEm])
   @@map("alertas_clinicos")
 }
 

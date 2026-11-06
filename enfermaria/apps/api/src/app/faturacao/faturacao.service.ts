@@ -14,7 +14,7 @@ export class FaturacaoService {
   async listar(estado?: string, page = 1, limit = 25) {
     const skip = (page - 1) * limit;
     const where = estado ? { estado: estado as any } : {};
-    const [data, total] = await this.prisma.$transaction([
+    const [data, total] = await Promise.all([ // PERF-19
       this.prisma.episodioFaturacao.findMany({
         where,
         include: {

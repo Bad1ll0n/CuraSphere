@@ -19,6 +19,7 @@ import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { ultimasAdministracoes } from '../common/ultimos-registos';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -836,27 +837,43 @@ export class MedicacaoService {
 
   // ── Vista farmacêutico: prescrições activas ──────────────────────────────────
 
+  /**
+   * Vista do farmacêutico (PERF-04). Antes: ignorava o `servico`, incluía o ambulatório, lia o
+   * histórico de administrações inteiro para mostrar uma (PERF-03) e ordenava pelo nome CIFRADO
+   * (ordem aleatória) — 1 MB por abertura. Agora: só internados, filtrados pelo serviço da cama,
+   * última administração por `LATERAL … LIMIT 1`, e ordenação por cama e nome (decifrado).
+   */
   async listarPrescricoesAtivas(servico?: string) {
-    return this.prisma.doente.findMany({
-      where: { tenantId: this.tenantContext.tenantId, ativo: true, dataAlta: null },
+    const doentes = await this.prisma.doente.findMany({
+      where: {
+        tenantId: this.tenantContext.tenantId,
+        ativo: true,
+        dataAlta: null,
+        estadoRegisto: 'internado',
+        ...(servico ? { cama: { servico } } : {}),
+      },
       select: {
         id: true, nome: true,
         cama: { select: { numero: true, quarto: true } },
         medicacoes: {
           where: { ativo: true, deletedAt: null },
-          select: {
-            id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true,
-            registos: {
-              orderBy: { administradoEm: 'desc' },
-              take: 1,
-              select: { administradoEm: true },
-            },
-          },
+          select: { id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true },
           orderBy: { iniciadoEm: 'asc' },
         },
       },
-      orderBy: [{ nome: 'asc' }],
     });
+    const ultimas = await ultimasAdministracoes(this.prisma, doentes.flatMap((d) => d.medicacoes.map((m) => m.id)));
+    return doentes
+      .map((d) => ({
+        ...d,
+        medicacoes: d.medicacoes.map((m) => {
+          const ult = ultimas.get(m.id);
+          return { ...m, registos: ult ? [{ administradoEm: ult }] : [] };
+        }),
+      }))
+      .sort((a, b) =>
+        (a.cama?.numero ?? '\uffff').localeCompare(b.cama?.numero ?? '\uffff', 'pt', { numeric: true }) ||
+        a.nome.localeCompare(b.nome, 'pt'));
   }
 
   async listarInteracoesPorDoente(doenteId: string) {
