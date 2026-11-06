@@ -88,7 +88,7 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
   );
 }
 
-export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Props) {
+export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
   const toast = useToast();
 
   // Alergias state
@@ -140,22 +140,28 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
     } finally { setSalvandoAlergia(false); }
   };
 
+  // Remover uma alergia é uma decisão médica e fica registada com o motivo (QA-02).
+  const podeRemoverAlergia = utilizador?.role === 'medico';
+  const [remocaoAlergia, setRemocaoAlergia] = useState<{ id: string; nome: string } | null>(null);
+  const [motivoRemocao, setMotivoRemocao] = useState('');
+  const [removendoAlergia, setRemovendoAlergia] = useState(false);
+
   const removerAlergia = (alergiaId: string, nomeAlergenio: string) => {
-    setConfirmarAcao({
-      titulo: 'Remover Alergia',
-      mensagem: `Remover alergia a "${nomeAlergenio}"? Esta acção não pode ser revertida.`,
-      variant: 'danger',
-      onConfirmar: async () => {
-        setConfirmarAcao(null);
-        try {
-          await api.delete(`/alergias/${alergiaId}`);
-          toast.success('Removido');
-          carregarAlergias();
-        } catch (e: any) {
-          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
-        }
-      },
-    });
+    setMotivoRemocao('');
+    setRemocaoAlergia({ id: alergiaId, nome: nomeAlergenio });
+  };
+
+  const confirmarRemocaoAlergia = async () => {
+    if (!remocaoAlergia || motivoRemocao.trim().length < 10) return;
+    setRemovendoAlergia(true);
+    try {
+      await api.delete(`/alergias/${remocaoAlergia.id}`, { data: { motivo: motivoRemocao.trim() } });
+      toast.success('Alergia removida');
+      setRemocaoAlergia(null);
+      carregarAlergias();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Não foi possível remover a alergia');
+    } finally { setRemovendoAlergia(false); }
   };
 
   const submeterContacto = async () => {
@@ -216,7 +222,9 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
                     <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
                     <span className="text-xs text-slate-400 ml-2">{a.tipo}</span>
                   </div>
-                  <button onClick={() => removerAlergia(a.id, a.alergenio)} aria-label={`Remover alergia ${a.alergenio}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                  {podeRemoverAlergia && (
+                    <button onClick={() => removerAlergia(a.id, a.alergenio)} aria-label={`Remover alergia ${a.alergenio}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                  )}
                 </div>
               ))}
             </div>
@@ -310,6 +318,24 @@ export function AlergiasContactosPanel({ doenteId, utilizador: _utilizador }: Pr
             Contacto principal
           </label>
           <ModalFooter onCancel={() => setModalContacto(false)} onConfirm={submeterContacto} loading={salvandoContacto} disabled={!ctNome.trim() || !ctTel.trim() || salvandoContacto} labelConfirm="Guardar" />
+        </Modal>
+      )}
+
+      {remocaoAlergia && (
+        <Modal titulo="Remover alergia" onClose={() => setRemocaoAlergia(null)}>
+          <p className="text-sm text-slate-600" style={{ marginBottom: '14px' }}>
+            A alergia a <strong>{remocaoAlergia.nome}</strong> deixa de ser verificada nas prescrições deste doente.
+            Fica registada no histórico com o seu nome e o motivo.
+          </p>
+          <div style={{ marginBottom: '16px' }}>
+            <label htmlFor="alergia-motivo-remocao" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+            <textarea id="alergia-motivo-remocao" value={motivoRemocao} onChange={(e) => setMotivoRemocao(e.target.value)} rows={3}
+              placeholder="Ex.: teste de provocação negativo em 03/11"
+              className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+            <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Mínimo de 10 caracteres.</p>
+          </div>
+          <ModalFooter onCancel={() => setRemocaoAlergia(null)} onConfirm={confirmarRemocaoAlergia} loading={removendoAlergia}
+            disabled={motivoRemocao.trim().length < 10 || removendoAlergia} labelConfirm="Remover alergia" />
         </Modal>
       )}
 

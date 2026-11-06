@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenEx
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
+import { filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
@@ -53,10 +54,12 @@ export class DoenteService {
     const skip = (page - 1) * limitSeguro;
     const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 
+    // O nome está cifrado: pesquisa-se no índice cego (QA-05), não com `contains` sobre `nome`.
+    const porNome = search?.trim() ? filtroPesquisaNome(search) : null;
     const searchFilter = search?.trim()
       ? {
           OR: [
-            { nome: { contains: search.trim(), mode: 'insensitive' as const } },
+            ...(porNome ? [porNome] : []),
             { numeroProcesso: { contains: search.trim(), mode: 'insensitive' as const } },
             { diagnosticoPrincipal: { contains: search.trim(), mode: 'insensitive' as const } },
           ],
@@ -811,7 +814,15 @@ export class DoenteService {
     const skip = (page - 1) * limit;
     const where = {
       estadoRegisto: { in: ['pendente_cama', 'ambulatorio'] },
-      ...(search ? { nome: { contains: search, mode: 'insensitive' as any } } : {}),
+      // QA-05: a receção não encontrava doentes pelo nome (o `contains` corria sobre o cifrado).
+      ...(search?.trim()
+        ? {
+            OR: [
+              ...(filtroPesquisaNome(search) ? [filtroPesquisaNome(search)!] : []),
+              { numeroProcesso: { contains: search.trim(), mode: 'insensitive' as const } },
+            ],
+          }
+        : {}),
     };
     const [total, doentes] = await Promise.all([
       this.prisma.doente.count({ where }),

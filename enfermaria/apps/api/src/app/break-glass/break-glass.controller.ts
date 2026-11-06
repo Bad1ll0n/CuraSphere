@@ -5,8 +5,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoenteIsento('break-glass: é o pedido de acesso de emergência ao próprio doente')
 @Controller('break-glass')
 export class BreakGlassController {
   constructor(private readonly service: BreakGlassService) {}

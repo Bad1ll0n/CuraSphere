@@ -24578,6 +24578,7 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     nome: string | null
+    nomeBusca: string | null
     dataNascimento: Date | null
     numeroProcesso: string | null
     estado: $Enums.EstadoDoente | null
@@ -24602,6 +24603,7 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     nome: string | null
+    nomeBusca: string | null
     dataNascimento: Date | null
     numeroProcesso: string | null
     estado: $Enums.EstadoDoente | null
@@ -24626,6 +24628,7 @@ export namespace Prisma {
     id: number
     tenantId: number
     nome: number
+    nomeBusca: number
     dataNascimento: number
     numeroProcesso: number
     estado: number
@@ -24652,6 +24655,7 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     nome?: true
+    nomeBusca?: true
     dataNascimento?: true
     numeroProcesso?: true
     estado?: true
@@ -24676,6 +24680,7 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     nome?: true
+    nomeBusca?: true
     dataNascimento?: true
     numeroProcesso?: true
     estado?: true
@@ -24700,6 +24705,7 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     nome?: true
+    nomeBusca?: true
     dataNascimento?: true
     numeroProcesso?: true
     estado?: true
@@ -24797,6 +24803,7 @@ export namespace Prisma {
     id: string
     tenantId: string
     nome: string
+    nomeBusca: string | null
     dataNascimento: Date | null
     numeroProcesso: string
     estado: $Enums.EstadoDoente
@@ -24838,6 +24845,7 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     nome?: boolean
+    nomeBusca?: boolean
     dataNascimento?: boolean
     numeroProcesso?: boolean
     estado?: boolean
@@ -24922,6 +24930,7 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     nome?: boolean
+    nomeBusca?: boolean
     dataNascimento?: boolean
     numeroProcesso?: boolean
     estado?: boolean
@@ -24948,6 +24957,7 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     nome?: boolean
+    nomeBusca?: boolean
     dataNascimento?: boolean
     numeroProcesso?: boolean
     estado?: boolean
@@ -24974,6 +24984,7 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     nome?: boolean
+    nomeBusca?: boolean
     dataNascimento?: boolean
     numeroProcesso?: boolean
     estado?: boolean
@@ -24994,7 +25005,7 @@ export namespace Prisma {
     administrativoAdmissaoId?: boolean
   }
 
-  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "nome" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "icd10Code" | "grupoSanguineo" | "estadoRegisto" | "tipoVisita" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "deletedAt" | "fotoUrl" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
+  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "nome" | "nomeBusca" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "icd10Code" | "grupoSanguineo" | "estadoRegisto" | "tipoVisita" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "deletedAt" | "fotoUrl" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
   export type DoenteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cama?: boolean | Doente$camaArgs<ExtArgs>
     administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
@@ -25133,6 +25144,7 @@ export namespace Prisma {
       id: string
       tenantId: string
       nome: string
+      nomeBusca: string | null
       dataNascimento: Date | null
       numeroProcesso: string
       estado: $Enums.EstadoDoente
@@ -25636,6 +25648,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Doente", 'String'>
     readonly tenantId: FieldRef<"Doente", 'String'>
     readonly nome: FieldRef<"Doente", 'String'>
+    readonly nomeBusca: FieldRef<"Doente", 'String'>
     readonly dataNascimento: FieldRef<"Doente", 'DateTime'>
     readonly numeroProcesso: FieldRef<"Doente", 'String'>
     readonly estado: FieldRef<"Doente", 'EstadoDoente'>
@@ -67726,6 +67739,9 @@ export namespace Prisma {
     severidade: string | null
     notas: string | null
     criadaEm: Date | null
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
   }
 
   export type AlergiaMaxAggregateOutputType = {
@@ -67736,6 +67752,9 @@ export namespace Prisma {
     severidade: string | null
     notas: string | null
     criadaEm: Date | null
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
   }
 
   export type AlergiaCountAggregateOutputType = {
@@ -67746,6 +67765,9 @@ export namespace Prisma {
     severidade: number
     notas: number
     criadaEm: number
+    deletedAt: number
+    removidaPorId: number
+    motivoRemocao: number
     _all: number
   }
 
@@ -67758,6 +67780,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
   }
 
   export type AlergiaMaxAggregateInputType = {
@@ -67768,6 +67793,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
   }
 
   export type AlergiaCountAggregateInputType = {
@@ -67778,6 +67806,9 @@ export namespace Prisma {
     severidade?: true
     notas?: true
     criadaEm?: true
+    deletedAt?: true
+    removidaPorId?: true
+    motivoRemocao?: true
     _all?: true
   }
 
@@ -67861,6 +67892,9 @@ export namespace Prisma {
     severidade: string
     notas: string | null
     criadaEm: Date
+    deletedAt: Date | null
+    removidaPorId: string | null
+    motivoRemocao: string | null
     _count: AlergiaCountAggregateOutputType | null
     _min: AlergiaMinAggregateOutputType | null
     _max: AlergiaMaxAggregateOutputType | null
@@ -67888,6 +67922,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
     _count?: boolean | AlergiaCountOutputTypeDefaultArgs<ExtArgs>
@@ -67901,6 +67938,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alergia"]>
 
@@ -67912,6 +67952,9 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alergia"]>
 
@@ -67923,9 +67966,12 @@ export namespace Prisma {
     severidade?: boolean
     notas?: boolean
     criadaEm?: boolean
+    deletedAt?: boolean
+    removidaPorId?: boolean
+    motivoRemocao?: boolean
   }
 
-  export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm", ExtArgs["result"]["alergia"]>
+  export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm" | "deletedAt" | "removidaPorId" | "motivoRemocao", ExtArgs["result"]["alergia"]>
   export type AlergiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     medicacoesOverride?: boolean | Alergia$medicacoesOverrideArgs<ExtArgs>
@@ -67952,6 +67998,9 @@ export namespace Prisma {
       severidade: string
       notas: string | null
       criadaEm: Date
+      deletedAt: Date | null
+      removidaPorId: string | null
+      motivoRemocao: string | null
     }, ExtArgs["result"]["alergia"]>
     composites: {}
   }
@@ -68384,6 +68433,9 @@ export namespace Prisma {
     readonly severidade: FieldRef<"Alergia", 'String'>
     readonly notas: FieldRef<"Alergia", 'String'>
     readonly criadaEm: FieldRef<"Alergia", 'DateTime'>
+    readonly deletedAt: FieldRef<"Alergia", 'DateTime'>
+    readonly removidaPorId: FieldRef<"Alergia", 'String'>
+    readonly motivoRemocao: FieldRef<"Alergia", 'String'>
   }
     
 
@@ -181918,6 +181970,7 @@ export namespace Prisma {
     id: 'id',
     tenantId: 'tenantId',
     nome: 'nome',
+    nomeBusca: 'nomeBusca',
     dataNascimento: 'dataNascimento',
     numeroProcesso: 'numeroProcesso',
     estado: 'estado',
@@ -182491,7 +182544,10 @@ export namespace Prisma {
     tipo: 'tipo',
     severidade: 'severidade',
     notas: 'notas',
-    criadaEm: 'criadaEm'
+    criadaEm: 'criadaEm',
+    deletedAt: 'deletedAt',
+    removidaPorId: 'removidaPorId',
+    motivoRemocao: 'motivoRemocao'
   };
 
   export type AlergiaScalarFieldEnum = (typeof AlergiaScalarFieldEnum)[keyof typeof AlergiaScalarFieldEnum]
@@ -185321,6 +185377,7 @@ export namespace Prisma {
     id?: StringFilter<"Doente"> | string
     tenantId?: StringFilter<"Doente"> | string
     nome?: StringFilter<"Doente"> | string
+    nomeBusca?: StringNullableFilter<"Doente"> | string | null
     dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringFilter<"Doente"> | string
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
@@ -185404,6 +185461,7 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     nome?: SortOrder
+    nomeBusca?: SortOrderInput | SortOrder
     dataNascimento?: SortOrderInput | SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
@@ -185492,6 +185550,7 @@ export namespace Prisma {
     NOT?: DoenteWhereInput | DoenteWhereInput[]
     tenantId?: StringFilter<"Doente"> | string
     nome?: StringFilter<"Doente"> | string
+    nomeBusca?: StringNullableFilter<"Doente"> | string | null
     dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
     diagnosticoPrincipal?: StringNullableFilter<"Doente"> | string | null
@@ -185573,6 +185632,7 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     nome?: SortOrder
+    nomeBusca?: SortOrderInput | SortOrder
     dataNascimento?: SortOrderInput | SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
@@ -185603,6 +185663,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Doente"> | string
     tenantId?: StringWithAggregatesFilter<"Doente"> | string
     nome?: StringWithAggregatesFilter<"Doente"> | string
+    nomeBusca?: StringNullableWithAggregatesFilter<"Doente"> | string | null
     dataNascimento?: DateTimeNullableWithAggregatesFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringWithAggregatesFilter<"Doente"> | string
     estado?: EnumEstadoDoenteWithAggregatesFilter<"Doente"> | $Enums.EstadoDoente
@@ -188525,6 +188586,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     medicacoesOverride?: MedicacaoListRelationFilter
   }
@@ -188537,6 +188601,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrderInput | SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    removidaPorId?: SortOrderInput | SortOrder
+    motivoRemocao?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     medicacoesOverride?: MedicacaoOrderByRelationAggregateInput
   }
@@ -188552,6 +188619,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     medicacoesOverride?: MedicacaoListRelationFilter
   }, "id">
@@ -188564,6 +188634,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrderInput | SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    removidaPorId?: SortOrderInput | SortOrder
+    motivoRemocao?: SortOrderInput | SortOrder
     _count?: AlergiaCountOrderByAggregateInput
     _max?: AlergiaMaxOrderByAggregateInput
     _min?: AlergiaMinOrderByAggregateInput
@@ -188580,6 +188653,9 @@ export namespace Prisma {
     severidade?: StringWithAggregatesFilter<"Alergia"> | string
     notas?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
     criadaEm?: DateTimeWithAggregatesFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
   }
 
   export type ContactoEmergenciaWhereInput = {
@@ -197429,6 +197505,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -197510,6 +197587,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -197591,6 +197669,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -197672,6 +197751,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -197753,6 +197833,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -197777,6 +197858,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -197799,6 +197881,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -200897,6 +200980,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     doente: DoenteCreateNestedOneWithoutAlergiasInput
     medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
@@ -200909,6 +200995,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -200919,6 +201008,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
     medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
@@ -200931,6 +201023,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -200942,6 +201037,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type AlergiaUpdateManyMutationInput = {
@@ -200951,6 +201049,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AlergiaUncheckedUpdateManyInput = {
@@ -200961,6 +201062,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ContactoEmergenciaCreateInput = {
@@ -211023,6 +211127,7 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     nome?: SortOrder
+    nomeBusca?: SortOrder
     dataNascimento?: SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
@@ -211047,6 +211152,7 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     nome?: SortOrder
+    nomeBusca?: SortOrder
     dataNascimento?: SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
@@ -211071,6 +211177,7 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     nome?: SortOrder
+    nomeBusca?: SortOrder
     dataNascimento?: SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
@@ -212923,6 +213030,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type AlergiaMaxOrderByAggregateInput = {
@@ -212933,6 +213043,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type AlergiaMinOrderByAggregateInput = {
@@ -212943,6 +213056,9 @@ export namespace Prisma {
     severidade?: SortOrder
     notas?: SortOrder
     criadaEm?: SortOrder
+    deletedAt?: SortOrder
+    removidaPorId?: SortOrder
+    motivoRemocao?: SortOrder
   }
 
   export type ContactoEmergenciaCountOrderByAggregateInput = {
@@ -231843,6 +231959,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -231923,6 +232040,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -236942,6 +237060,7 @@ export namespace Prisma {
     id?: StringFilter<"Doente"> | string
     tenantId?: StringFilter<"Doente"> | string
     nome?: StringFilter<"Doente"> | string
+    nomeBusca?: StringNullableFilter<"Doente"> | string | null
     dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringFilter<"Doente"> | string
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
@@ -240440,6 +240559,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -240520,6 +240640,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -240616,6 +240737,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -240696,6 +240818,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -241399,6 +241522,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -241409,6 +241535,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     medicacoesOverride?: MedicacaoUncheckedCreateNestedManyWithoutOverrideAlergenioInput
   }
 
@@ -243714,6 +243843,9 @@ export namespace Prisma {
     severidade?: StringFilter<"Alergia"> | string
     notas?: StringNullableFilter<"Alergia"> | string | null
     criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Alergia"> | Date | string | null
+    removidaPorId?: StringNullableFilter<"Alergia"> | string | null
+    motivoRemocao?: StringNullableFilter<"Alergia"> | string | null
   }
 
   export type ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -245605,6 +245737,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -245685,6 +245818,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -246107,6 +246241,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -246187,6 +246322,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -247331,6 +247467,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -247411,6 +247548,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -247581,6 +247719,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -247661,6 +247800,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -248933,6 +249073,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -249013,6 +249154,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -249725,6 +249867,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -249805,6 +249948,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -251175,6 +251319,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -251255,6 +251400,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -251646,6 +251792,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -251726,6 +251873,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -252138,6 +252286,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -252218,6 +252367,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -252646,6 +252796,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -252726,6 +252877,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -253107,6 +253259,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -253187,6 +253340,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -253904,6 +254058,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -253984,6 +254139,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -254703,6 +254859,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -254783,6 +254940,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -255756,6 +255914,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
     doente: DoenteCreateNestedOneWithoutAlergiasInput
   }
 
@@ -255767,6 +255928,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type AlergiaCreateOrConnectWithoutMedicacoesOverrideInput = {
@@ -255854,6 +256018,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -255934,6 +256099,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -256931,6 +257097,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
   }
 
@@ -256942,6 +257111,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -256999,6 +257171,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -257079,6 +257252,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -257230,6 +257404,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -257310,6 +257485,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -257506,6 +257682,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -257586,6 +257763,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -258038,6 +258216,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -258118,6 +258297,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -261828,6 +262008,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -261908,6 +262089,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -262623,6 +262805,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -262703,6 +262886,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -263385,6 +263569,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -263465,6 +263650,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -263856,6 +264042,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -263936,6 +264123,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -264317,6 +264505,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -264397,6 +264586,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -264788,6 +264978,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -264868,6 +265059,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -265249,6 +265441,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -265329,6 +265522,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -265750,6 +265944,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -265830,6 +266025,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -266399,6 +266595,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -266479,6 +266676,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -266956,6 +267154,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -267036,6 +267235,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -267546,6 +267746,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -267626,6 +267827,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -268464,6 +268666,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -268544,6 +268747,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -269339,6 +269543,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -269419,6 +269624,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -269855,6 +270061,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -269935,6 +270142,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -270912,6 +271120,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -270992,6 +271201,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -271148,6 +271358,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -271228,6 +271439,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -271324,6 +271536,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -271404,6 +271617,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -271500,6 +271714,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -271580,6 +271795,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -271660,6 +271876,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -271740,6 +271957,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -272131,6 +272349,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -272211,6 +272430,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -272592,6 +272812,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -272672,6 +272893,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -273063,6 +273285,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -273143,6 +273366,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -273524,6 +273748,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -273604,6 +273829,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -273995,6 +274221,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -274075,6 +274302,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -275648,6 +275876,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -275728,6 +275957,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -276170,6 +276400,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -276250,6 +276481,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -276843,6 +277075,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -276923,6 +277156,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -277930,6 +278164,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -278010,6 +278245,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -279765,6 +280001,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -279845,6 +280082,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -280562,6 +280800,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -280642,6 +280881,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -283233,6 +283473,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -283313,6 +283554,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -283765,6 +284007,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -283845,6 +284088,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -291054,6 +291298,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -291134,6 +291379,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -291557,6 +291803,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -291637,6 +291884,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -292061,6 +292309,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -292141,6 +292390,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -292565,6 +292815,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -292645,6 +292896,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -293026,6 +293278,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -293106,6 +293359,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -293792,6 +294046,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -293872,6 +294127,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -296455,6 +296711,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -296535,6 +296792,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -297221,6 +297479,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -297301,6 +297560,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -297983,6 +298243,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -298063,6 +298324,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -298454,6 +298716,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -298534,6 +298797,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -302007,6 +302271,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -302087,6 +302352,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -302478,6 +302744,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -302558,6 +302825,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -302939,6 +303207,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -303019,6 +303288,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -303519,6 +303789,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -303599,6 +303870,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -305637,6 +305909,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -305717,6 +305990,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -306108,6 +306382,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -306188,6 +306463,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -311453,6 +311729,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -311533,6 +311810,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -311924,6 +312202,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -312004,6 +312283,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -312385,6 +312665,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -312465,6 +312746,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -312856,6 +313138,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -312936,6 +313219,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -315105,6 +315389,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -315185,6 +315470,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -315915,6 +316201,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -315995,6 +316282,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -316988,6 +317276,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -317068,6 +317357,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -317465,6 +317755,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -317545,6 +317836,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -317625,6 +317917,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -317705,6 +317998,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -318124,6 +318418,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -318204,6 +318499,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -319249,6 +319545,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -319329,6 +319626,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -319720,6 +320018,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -319800,6 +320099,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -320181,6 +320481,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -320261,6 +320562,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -320652,6 +320954,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -320732,6 +321035,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -322305,6 +322609,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -322385,6 +322690,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -323071,6 +323377,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -323151,6 +323458,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -323833,6 +324141,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -323913,6 +324222,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324009,6 +324319,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324089,6 +324400,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324169,6 +324481,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324249,6 +324562,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324345,6 +324659,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324425,6 +324740,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324505,6 +324821,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324585,6 +324902,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324681,6 +324999,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324761,6 +325080,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -324841,6 +325161,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -324921,6 +325242,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -325607,6 +325929,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -325687,6 +326010,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -327561,6 +327885,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -327641,6 +327966,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -328032,6 +328358,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -328112,6 +328439,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -328565,6 +328893,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -328645,6 +328974,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -328741,6 +329071,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -328821,6 +329152,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -328901,6 +329233,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -328981,6 +329314,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -329696,6 +330030,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -329776,6 +330111,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -331089,6 +331425,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -331169,6 +331506,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -331560,6 +331898,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -331640,6 +331979,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -332021,6 +332361,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -332101,6 +332442,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -332492,6 +332834,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -332572,6 +332915,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -334297,6 +334641,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -334377,6 +334722,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -334494,6 +334840,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -334574,6 +334921,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -334681,6 +335029,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -334761,6 +335110,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -335152,6 +335502,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -335232,6 +335583,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -336209,6 +336561,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -336289,6 +336642,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -336680,6 +337034,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -336760,6 +337115,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -338333,6 +338689,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -338413,6 +338770,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -339099,6 +339457,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -339179,6 +339538,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -340457,6 +340817,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -340537,6 +340898,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -340694,6 +341056,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -340774,6 +341137,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -341072,6 +341436,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -341152,6 +341517,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -341280,6 +341646,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -341360,6 +341727,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -341547,6 +341915,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -341627,6 +341996,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -341723,6 +342093,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -341803,6 +342174,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -342005,6 +342377,7 @@ export namespace Prisma {
     id?: string
     tenantId?: string
     nome: string
+    nomeBusca?: string | null
     dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
@@ -343771,6 +344144,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -343851,6 +344225,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -343931,6 +344306,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
+    nomeBusca?: NullableStringFieldUpdateOperationsInput | string | null
     dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
@@ -348743,6 +349119,9 @@ export namespace Prisma {
     severidade: string
     notas?: string | null
     criadaEm?: Date | string
+    deletedAt?: Date | string | null
+    removidaPorId?: string | null
+    motivoRemocao?: string | null
   }
 
   export type ContactoEmergenciaCreateManyDoenteInput = {
@@ -349655,6 +350034,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -349665,6 +350047,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
     medicacoesOverride?: MedicacaoUncheckedUpdateManyWithoutOverrideAlergenioNestedInput
   }
 
@@ -349675,6 +350060,9 @@ export namespace Prisma {
     severidade?: StringFieldUpdateOperationsInput | string
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    removidaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    motivoRemocao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ContactoEmergenciaUpdateWithoutDoenteInput = {

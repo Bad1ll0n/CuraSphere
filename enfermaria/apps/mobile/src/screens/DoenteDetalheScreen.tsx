@@ -220,9 +220,9 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     catch { setMedHistorico([]); } finally { setLoadingHistoricoMed(false); }
   };
 
-  const removerAlergia = async (id: string) => {
-    try { await api.delete(`/alergias/${id}`); await carregarAlergias(); }
-    catch { Alert.alert('Erro', 'Não foi possível remover a alergia'); }
+  // Remover uma alergia exige o motivo e é uma decisão médica (QA-02); faz-se na aplicação web.
+  const removerAlergia = (_id: string) => {
+    Alert.alert('Remover alergia', 'Por segurança, uma alergia só pode ser removida por um médico na aplicação web, indicando o motivo.');
   };
 
   const removerContacto = async (id: string) => {

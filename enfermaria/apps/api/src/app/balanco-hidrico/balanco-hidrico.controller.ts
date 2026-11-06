@@ -5,8 +5,10 @@ import { Roles } from '../auth/roles.decorator';
 import { DoenteService } from '../doentes/doentes.service';
 import { BalancoHidricoService } from './balanco-hidrico.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('balancoHidrico')
 @Controller('balanco-hidrico')
 export class BalancoHidricoController {
   constructor(

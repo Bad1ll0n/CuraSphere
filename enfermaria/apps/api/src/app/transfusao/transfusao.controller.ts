@@ -8,6 +8,7 @@ import { CriarPedidoTransfusaoDto } from './dto/criar-pedido-transfusao.dto';
 import { AdicionarBolsaDto } from './dto/adicionar-bolsa.dto';
 import { RegistarTransfusaoDto } from './dto/registar-transfusao.dto';
 import { RegistarReacaoDto } from './dto/registar-reacao.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('transfusao')
@@ -32,6 +33,7 @@ export class TransfusaoController {
     return this.service.criarPedido(doenteId, dto, req.user.sub);
   }
 
+  @AcessoDoentePor('pedidoTransfusao')
   @Patch('pedido/:id/cancelar')
   @Roles('medico', 'chefe_enfermeiros')
   async cancelar(@Param('id') id: string, @Body('motivo') motivo: string, @Request() req: any) {
@@ -40,6 +42,7 @@ export class TransfusaoController {
     return this.service.cancelarPedido(id, motivo ?? 'Sem motivo indicado');
   }
 
+  @AcessoDoentePor('pedidoTransfusao')
   @Get('pedido/:id/compativeis')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   async compativeis(@Param('id') id: string, @Request() req: any) {
@@ -48,6 +51,7 @@ export class TransfusaoController {
     return this.service.bolsasCompativeis(id);
   }
 
+  @AcessoDoentePor('pedidoTransfusao')
   @Patch('pedido/:id/reservar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
   async reservar(@Param('id') id: string, @Body('bolsaId') bolsaId: string, @Request() req: any) {
@@ -56,6 +60,7 @@ export class TransfusaoController {
     return this.service.reservarBolsa(id, bolsaId);
   }
 
+  @AcessoDoentePor('pedidoTransfusao')
   @Post('pedido/:id/administrar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   async administrar(@Param('id') id: string, @Body() dto: RegistarTransfusaoDto, @Request() req: any) {
@@ -64,6 +69,7 @@ export class TransfusaoController {
     return this.service.administrar(id, dto, req.user.sub);
   }
 
+  @AcessoDoentePor('registoTransfusao')
   @Post('registo/:id/reacao')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   async registarReacao(@Param('id') id: string, @Body() dto: RegistarReacaoDto, @Request() req: any) {

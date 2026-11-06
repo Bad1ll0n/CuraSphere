@@ -10,6 +10,7 @@ import { CheckInDto } from './dto/check-in.dto';
 import { NotaTurnoDto } from './dto/nota-turno.dto';
 import { CriarTurnoDto } from './dto/criar-turno.dto';
 import { AtribuirDoentesTurnoDto } from './dto/atribuir-doentes-turno.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -59,6 +60,7 @@ export class TurnosController {
   }
 
   @Roles('enfermeiro')
+  @AcessoDoenteIsento('atribuição: é o ato que cria a relação do profissional com o doente')
   @Post(':id/atribuir-doentes')
   atribuirDoentes(
     @Param('id') turnoId: string,

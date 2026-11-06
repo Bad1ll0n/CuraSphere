@@ -3,12 +3,14 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { EventosAdversosService } from './eventos-adversos.service';
 import { CriarEventoAdversoDto } from './dto/criar-evento-adverso.dto';
 import { AtualizarEventoAdversoDto } from './dto/atualizar-evento-adverso.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('eventos-adversos')
 export class EventosAdversosController {
   constructor(private readonly service: EventosAdversosService) {}
 
+  @AcessoDoenteIsento('notificação de incidente: qualquer profissional tem de poder notificar, mesmo sem atribuição')
   @Post()
   criar(@Body() dto: CriarEventoAdversoDto, @Request() req: any) {
     return this.service.criar(dto, req.user.sub);
