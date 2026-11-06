@@ -10,7 +10,10 @@ import interacoesJson from './interacoes.json';
 import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
-import { detetarConflitoAlergia } from './alergias.helper';
+import { detetarConflitoAlergia, nomeReconhecido } from './alergias.helper';
+import { parsearFrequenciaHoras, tomasPlaneadas, classificarTomas, horaLocal, JANELA_ANTES_MS, JANELA_DEPOIS_MS } from './posologia';
+import { eAltoRisco } from './alto-risco';
+import { inicioDoDiaClinico } from '../common/dia-clinico.helper';
 import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
 
@@ -44,13 +47,6 @@ const INTERACOES: Interacao[] = interacoesJson as Interacao[];
 /** Justificação mínima para prescrever apesar de uma alergia documentada. */
 const MIN_JUSTIFICACAO_OVERRIDE = 20;
 
-function parsearFrequenciaHoras(frequencia: string): number | null {
-  const m = frequencia.match(/(\d+)\s*\/\s*(\d+)\s*h/i);
-  if (m) return parseInt(m[2], 10);
-  if (/^(sos|em\s+sos|se\s+necessário|s\.o\.s\.?)/i.test(frequencia)) return null;
-  if (/^(contínuo|perfus)/i.test(frequencia)) return null;
-  return null;
-}
 
 /**
  * Compara um campo declarado à cabeceira (dose, via) com o prescrito.
@@ -244,6 +240,14 @@ export class MedicacaoService {
       avisoInteracoes: resultado.interacoesDetectadas,
       avisoIA: iaCheck.aviso,
       overrideAlergia: resultado.override,
+      // QA-06: nome que o verificador de alergias não reconhece (nem marca nem substância).
+      avisoNomeNaoReconhecido: nomeReconhecido(data.nome)
+        ? null
+        : `"${data.nome}" não foi reconhecido como substância ou marca conhecida — a verificação automática de alergias pode não o ter apanhado. Confirme as alergias do doente.`,
+      // PROD-04: frequência sem horário fixo nem SOS/contínua não entra na grelha do turno.
+      avisoFrequencia: parsearFrequenciaHoras(data.frequencia) === null && !/^(sos|cont)/i.test(data.frequencia.trim())
+        ? `Frequência "${data.frequencia}" não tem horário reconhecido — não vai aparecer na grelha de medicação do turno.`
+        : null,
     };
   }
 
@@ -643,89 +647,103 @@ export class MedicacaoService {
 
   // ── Timeline de Medicação por Turno ─────────────────────────────────────────
 
+  /**
+   * Grelha de medicação do turno (PROD-04).
+   *
+   * Cada prescrição activa gera as tomas planeadas nos horários-padrão (ver `posologia.ts`)
+   * dentro do turno, na hora local do hospital, e cada toma é confrontada com as
+   * administrações registadas: administrada, em atraso ou devida. Filtra pelo serviço da
+   * cama — antes devolvia os fármacos do hospital inteiro.
+   */
   async timeline(servico: string, turno: 'manha' | 'tarde' | 'noite', dataStr?: string) {
     const TURNOS = { manha: { inicio: 8, fim: 16 }, tarde: { inicio: 16, fim: 24 }, noite: { inicio: 0, fim: 8 } };
     const { inicio, fim } = TURNOS[turno];
 
-    const dataRef = dataStr ? new Date(dataStr) : new Date();
-    const dia = chaveDiaClinico(dataRef);
-
-    const horaInicioDate = new Date(`${dia}T${String(inicio).padStart(2, '0')}:00:00.000Z`);
-    const horaFimDate   = new Date(`${dia}T${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00:00.000Z`);
-    if (fim === 24) horaFimDate.setDate(horaFimDate.getDate() + 1);
+    // `data` vem como YYYY-MM-DD: meio-dia UTC desse dia cai sempre no mesmo dia clínico.
+    const dataRef = dataStr && /^\d{4}-\d{2}-\d{2}$/.test(dataStr) ? new Date(`${dataStr}T12:00:00Z`) : new Date();
+    const inicioDia = inicioDoDiaClinico(dataRef);
+    const horaInicioDate = new Date(inicioDia.getTime() + inicio * 3_600_000);
+    const horaFimDate = new Date(inicioDia.getTime() + fim * 3_600_000);
 
     const doentes = await this.prisma.doente.findMany({
-      where: { ativo: true, dataAlta: null },
+      where: {
+        tenantId: this.tenantContext.tenantId,
+        ativo: true,
+        dataAlta: null,
+        ...(servico ? { cama: { servico } } : {}),
+      },
       select: {
-        id: true, nome: true,
+        id: true, nome: true, numeroProcesso: true, dataNascimento: true,
         cama: { select: { numero: true } },
+        alergias: { where: { deletedAt: null }, select: { alergenio: true, severidade: true } },
         medicacoes: {
           where: { ativo: true, deletedAt: null },
           select: {
-            id: true, nome: true, dose: true, frequencia: true, iniciadoEm: true,
+            id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true,
             registos: {
-              orderBy: { administradoEm: 'desc' },
-              take: 1,
+              where: {
+                naoAdministrada: false,
+                administradoEm: {
+                  gte: new Date(horaInicioDate.getTime() - JANELA_DEPOIS_MS),
+                  lt: new Date(horaFimDate.getTime() + JANELA_ANTES_MS),
+                },
+              },
               select: { administradoEm: true },
             },
           },
         },
       },
+      orderBy: { nome: 'asc' },
     });
 
-    type SlotEntry = { doenteId: string; doenteName: string; cama: string | null; medicacaoId: string; nome: string; dose: string; administrada: boolean; hora: string };
+    type SlotEntry = {
+      doenteId: string; doenteName: string; cama: string | null; medicacaoId: string;
+      nome: string; dose: string; via: string; frequencia: string;
+      administrada: boolean; estado: string; hora: string; altoRisco: boolean;
+    };
     const slotsMap = new Map<string, SlotEntry[]>();
+    for (let h = inicio; h < fim; h++) slotsMap.set(`${String(h).padStart(2, '0')}:00`, []);
 
-    for (let h = inicio; h < (fim === 24 ? 24 : fim); h++) {
-      const key = `${String(h).padStart(2, '0')}:00`;
-      slotsMap.set(key, []);
-    }
+    const agora = new Date();
+    const doentesMap = new Map<string, {
+      id: string; nome: string; numeroProcesso: string; dataNascimento: Date | null;
+      cama: string | null; alergias: Array<{ alergenio: string; severidade: string | null }>; medicacoesPendentes: number;
+    }>();
 
     for (const doente of doentes as any[]) {
       for (const med of doente.medicacoes) {
-        const intervaloH = parsearFrequenciaHoras(med.frequencia);
-        if (!intervaloH) continue;
-
-        const ultimaAdm = med.registos[0]?.administradoEm ?? med.iniciadoEm;
-        let proxAdm = new Date(ultimaAdm.getTime() + intervaloH * 3_600_000);
-
-        // Avançar até ao slot dentro do turno
-        while (proxAdm < horaInicioDate) proxAdm = new Date(proxAdm.getTime() + intervaloH * 3_600_000);
-
-        if (proxAdm >= horaFimDate) continue;
-
-        const horaKey = `${String(proxAdm.getUTCHours()).padStart(2, '0')}:00`;
-        const slotKey = slotsMap.has(horaKey) ? horaKey : [...slotsMap.keys()].find((k) => +k.split(':')[0] === proxAdm.getUTCHours());
-        if (!slotKey) continue;
-
-        const administrada = med.registos.length > 0 && med.registos[0].administradoEm >= proxAdm;
-        slotsMap.get(slotKey)!.push({
-          doenteId: doente.id,
-          doenteName: doente.nome,
-          cama: doente.cama?.numero ?? null,
-          medicacaoId: med.id,
-          nome: med.nome,
-          dose: med.dose,
-          administrada,
-          hora: proxAdm.toISOString(),
-        });
+        const tomas = tomasPlaneadas(med.frequencia, horaInicioDate, horaFimDate, med.iniciadoEm);
+        if (tomas.length === 0) continue;
+        const classificadas = classificarTomas(tomas, med.registos.map((r: { administradoEm: Date }) => r.administradoEm), agora);
+        for (const toma of classificadas) {
+          const slot = slotsMap.get(horaLocal(toma.hora));
+          if (!slot) continue;
+          slot.push({
+            doenteId: doente.id,
+            doenteName: doente.nome,
+            cama: doente.cama?.numero ?? null,
+            medicacaoId: med.id,
+            nome: med.nome,
+            dose: med.dose,
+            via: med.via,
+            frequencia: med.frequencia,
+            administrada: toma.estado === 'administrada',
+            estado: toma.estado,
+            hora: toma.hora.toISOString(),
+            altoRisco: eAltoRisco(med.nome),
+          });
+          const atual = doentesMap.get(doente.id) ?? {
+            id: doente.id, nome: doente.nome, numeroProcesso: doente.numeroProcesso,
+            dataNascimento: doente.dataNascimento, cama: doente.cama?.numero ?? null,
+            alergias: doente.alergias, medicacoesPendentes: 0,
+          };
+          if (toma.estado !== 'administrada') atual.medicacoesPendentes++;
+          doentesMap.set(doente.id, atual);
+        }
       }
     }
 
-    const slots = [...slotsMap.entries()].map(([hora, medicacoes]) => ({
-      hora,
-      total: medicacoes.length,
-      medicacoes,
-    }));
-
-    const doentesMap = new Map<string, { id: string; nome: string; cama: string | null; medicacoesPendentes: number }>();
-    for (const entries of slotsMap.values()) {
-      for (const e of entries) {
-        const atual = doentesMap.get(e.doenteId) ?? { id: e.doenteId, nome: e.doenteName, cama: e.cama, medicacoesPendentes: 0 };
-        if (!e.administrada) atual.medicacoesPendentes++;
-        doentesMap.set(e.doenteId, atual);
-      }
-    }
+    const slots = [...slotsMap.entries()].map(([hora, medicacoes]) => ({ hora, total: medicacoes.length, medicacoes }));
 
     return {
       turno: { inicio: `${String(inicio).padStart(2, '0')}:00`, fim: `${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00` },

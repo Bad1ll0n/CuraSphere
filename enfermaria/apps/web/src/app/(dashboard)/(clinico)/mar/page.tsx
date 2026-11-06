@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
+import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
@@ -367,6 +368,13 @@ export default function MarPage() {
             <div className="rounded-xl text-xs font-medium text-amber-700 bg-amber-50 border border-amber-100" style={{ padding: '10px 14px', marginBottom: '20px', marginTop: '12px' }}>
               Confirme cada item antes de administrar. Todos os 5 devem estar verificados.
             </div>
+
+            {/* UX-02: alergias visíveis no acto de administrar */}
+            {modalMed && (
+              <div style={{ marginBottom: '16px' }}>
+                <FaixaAlergiasDoente doenteId={modalMed.doente.id} compacta />
+              </div>
+            )}
 
             {/* Checklist */}
             <div className="flex flex-col gap-3" style={{ marginBottom: '20px' }}>

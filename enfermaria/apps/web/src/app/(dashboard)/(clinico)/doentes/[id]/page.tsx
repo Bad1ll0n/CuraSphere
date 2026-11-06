@@ -37,6 +37,7 @@ import { ResultadosLabPanel } from './components/resultados-lab-panel';
 import { ProtocoloPanel } from './components/protocolo-panel';
 import { DocumentosSaudePanel } from './components/documentos-saude-panel';
 import { LosWidget } from './components/los-widget';
+import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 
 interface Doente {
   id: string;
@@ -492,6 +493,10 @@ export default function DoenteDetalhe() {
             </div>
           </div>
           <p className="text-slate-400 text-sm font-mono">{doente.numeroProcesso}</p>
+          {/* UX-02: alergias no cabeçalho — antes só no 10.º painel, dois ecrãs abaixo. */}
+          <div style={{ marginTop: '8px' }}>
+            <FaixaAlergiasDoente doenteId={id!} />
+          </div>
           <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
             <LosWidget doenteId={id!} utilizador={utilizador} />
             {doente.emIsolamento && (
