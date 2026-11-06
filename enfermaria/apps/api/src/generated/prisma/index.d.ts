@@ -73489,6 +73489,11 @@ export namespace Prisma {
     fatoresReadmissao: string | null
     recomendacoesAlta: string | null
     cartaAlta: string | null
+    cartaAltaEstado: string | null
+    cartaAltaRevistaPorId: string | null
+    cartaAltaRevistaEm: Date | null
+    cartaAltaAssinadaPorId: string | null
+    cartaAltaAssinadaEm: Date | null
     icd10Code: string | null
   }
 
@@ -73506,6 +73511,11 @@ export namespace Prisma {
     fatoresReadmissao: string | null
     recomendacoesAlta: string | null
     cartaAlta: string | null
+    cartaAltaEstado: string | null
+    cartaAltaRevistaPorId: string | null
+    cartaAltaRevistaEm: Date | null
+    cartaAltaAssinadaPorId: string | null
+    cartaAltaAssinadaEm: Date | null
     icd10Code: string | null
   }
 
@@ -73523,6 +73533,11 @@ export namespace Prisma {
     fatoresReadmissao: number
     recomendacoesAlta: number
     cartaAlta: number
+    cartaAltaEstado: number
+    cartaAltaRevistaPorId: number
+    cartaAltaRevistaEm: number
+    cartaAltaAssinadaPorId: number
+    cartaAltaAssinadaEm: number
     icd10Code: number
     _all: number
   }
@@ -73542,6 +73557,11 @@ export namespace Prisma {
     fatoresReadmissao?: true
     recomendacoesAlta?: true
     cartaAlta?: true
+    cartaAltaEstado?: true
+    cartaAltaRevistaPorId?: true
+    cartaAltaRevistaEm?: true
+    cartaAltaAssinadaPorId?: true
+    cartaAltaAssinadaEm?: true
     icd10Code?: true
   }
 
@@ -73559,6 +73579,11 @@ export namespace Prisma {
     fatoresReadmissao?: true
     recomendacoesAlta?: true
     cartaAlta?: true
+    cartaAltaEstado?: true
+    cartaAltaRevistaPorId?: true
+    cartaAltaRevistaEm?: true
+    cartaAltaAssinadaPorId?: true
+    cartaAltaAssinadaEm?: true
     icd10Code?: true
   }
 
@@ -73576,6 +73601,11 @@ export namespace Prisma {
     fatoresReadmissao?: true
     recomendacoesAlta?: true
     cartaAlta?: true
+    cartaAltaEstado?: true
+    cartaAltaRevistaPorId?: true
+    cartaAltaRevistaEm?: true
+    cartaAltaAssinadaPorId?: true
+    cartaAltaAssinadaEm?: true
     icd10Code?: true
     _all?: true
   }
@@ -73666,6 +73696,11 @@ export namespace Prisma {
     fatoresReadmissao: string | null
     recomendacoesAlta: string | null
     cartaAlta: string | null
+    cartaAltaEstado: string | null
+    cartaAltaRevistaPorId: string | null
+    cartaAltaRevistaEm: Date | null
+    cartaAltaAssinadaPorId: string | null
+    cartaAltaAssinadaEm: Date | null
     icd10Code: string | null
     _count: SumarioAltaCountAggregateOutputType | null
     _min: SumarioAltaMinAggregateOutputType | null
@@ -73700,6 +73735,11 @@ export namespace Prisma {
     fatoresReadmissao?: boolean
     recomendacoesAlta?: boolean
     cartaAlta?: boolean
+    cartaAltaEstado?: boolean
+    cartaAltaRevistaPorId?: boolean
+    cartaAltaRevistaEm?: boolean
+    cartaAltaAssinadaPorId?: boolean
+    cartaAltaAssinadaEm?: boolean
     icd10Code?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -73719,6 +73759,11 @@ export namespace Prisma {
     fatoresReadmissao?: boolean
     recomendacoesAlta?: boolean
     cartaAlta?: boolean
+    cartaAltaEstado?: boolean
+    cartaAltaRevistaPorId?: boolean
+    cartaAltaRevistaEm?: boolean
+    cartaAltaAssinadaPorId?: boolean
+    cartaAltaAssinadaEm?: boolean
     icd10Code?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -73738,6 +73783,11 @@ export namespace Prisma {
     fatoresReadmissao?: boolean
     recomendacoesAlta?: boolean
     cartaAlta?: boolean
+    cartaAltaEstado?: boolean
+    cartaAltaRevistaPorId?: boolean
+    cartaAltaRevistaEm?: boolean
+    cartaAltaAssinadaPorId?: boolean
+    cartaAltaAssinadaEm?: boolean
     icd10Code?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -73757,10 +73807,15 @@ export namespace Prisma {
     fatoresReadmissao?: boolean
     recomendacoesAlta?: boolean
     cartaAlta?: boolean
+    cartaAltaEstado?: boolean
+    cartaAltaRevistaPorId?: boolean
+    cartaAltaRevistaEm?: boolean
+    cartaAltaAssinadaPorId?: boolean
+    cartaAltaAssinadaEm?: boolean
     icd10Code?: boolean
   }
 
-  export type SumarioAltaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "motivoAlta" | "destino" | "resumoClinical" | "prescricaoSaida" | "medicoFamilia" | "criadoPorId" | "criadoEm" | "riscReadmissao" | "fatoresReadmissao" | "recomendacoesAlta" | "cartaAlta" | "icd10Code", ExtArgs["result"]["sumarioAlta"]>
+  export type SumarioAltaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "motivoAlta" | "destino" | "resumoClinical" | "prescricaoSaida" | "medicoFamilia" | "criadoPorId" | "criadoEm" | "riscReadmissao" | "fatoresReadmissao" | "recomendacoesAlta" | "cartaAlta" | "cartaAltaEstado" | "cartaAltaRevistaPorId" | "cartaAltaRevistaEm" | "cartaAltaAssinadaPorId" | "cartaAltaAssinadaEm" | "icd10Code", ExtArgs["result"]["sumarioAlta"]>
   export type SumarioAltaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -73794,6 +73849,11 @@ export namespace Prisma {
       fatoresReadmissao: string | null
       recomendacoesAlta: string | null
       cartaAlta: string | null
+      cartaAltaEstado: string | null
+      cartaAltaRevistaPorId: string | null
+      cartaAltaRevistaEm: Date | null
+      cartaAltaAssinadaPorId: string | null
+      cartaAltaAssinadaEm: Date | null
       icd10Code: string | null
     }, ExtArgs["result"]["sumarioAlta"]>
     composites: {}
@@ -74233,6 +74293,11 @@ export namespace Prisma {
     readonly fatoresReadmissao: FieldRef<"SumarioAlta", 'String'>
     readonly recomendacoesAlta: FieldRef<"SumarioAlta", 'String'>
     readonly cartaAlta: FieldRef<"SumarioAlta", 'String'>
+    readonly cartaAltaEstado: FieldRef<"SumarioAlta", 'String'>
+    readonly cartaAltaRevistaPorId: FieldRef<"SumarioAlta", 'String'>
+    readonly cartaAltaRevistaEm: FieldRef<"SumarioAlta", 'DateTime'>
+    readonly cartaAltaAssinadaPorId: FieldRef<"SumarioAlta", 'String'>
+    readonly cartaAltaAssinadaEm: FieldRef<"SumarioAlta", 'DateTime'>
     readonly icd10Code: FieldRef<"SumarioAlta", 'String'>
   }
     
@@ -183792,6 +183857,11 @@ export namespace Prisma {
     fatoresReadmissao: 'fatoresReadmissao',
     recomendacoesAlta: 'recomendacoesAlta',
     cartaAlta: 'cartaAlta',
+    cartaAltaEstado: 'cartaAltaEstado',
+    cartaAltaRevistaPorId: 'cartaAltaRevistaPorId',
+    cartaAltaRevistaEm: 'cartaAltaRevistaEm',
+    cartaAltaAssinadaPorId: 'cartaAltaAssinadaPorId',
+    cartaAltaAssinadaEm: 'cartaAltaAssinadaEm',
     icd10Code: 'icd10Code'
   };
 
@@ -190151,6 +190221,11 @@ export namespace Prisma {
     fatoresReadmissao?: StringNullableFilter<"SumarioAlta"> | string | null
     recomendacoesAlta?: StringNullableFilter<"SumarioAlta"> | string | null
     cartaAlta?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaEstado?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
+    cartaAltaAssinadaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaAssinadaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
     icd10Code?: StringNullableFilter<"SumarioAlta"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
@@ -190170,6 +190245,11 @@ export namespace Prisma {
     fatoresReadmissao?: SortOrderInput | SortOrder
     recomendacoesAlta?: SortOrderInput | SortOrder
     cartaAlta?: SortOrderInput | SortOrder
+    cartaAltaEstado?: SortOrderInput | SortOrder
+    cartaAltaRevistaPorId?: SortOrderInput | SortOrder
+    cartaAltaRevistaEm?: SortOrderInput | SortOrder
+    cartaAltaAssinadaPorId?: SortOrderInput | SortOrder
+    cartaAltaAssinadaEm?: SortOrderInput | SortOrder
     icd10Code?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     criadoPor?: UtilizadorOrderByWithRelationInput
@@ -190192,6 +190272,11 @@ export namespace Prisma {
     fatoresReadmissao?: StringNullableFilter<"SumarioAlta"> | string | null
     recomendacoesAlta?: StringNullableFilter<"SumarioAlta"> | string | null
     cartaAlta?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaEstado?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
+    cartaAltaAssinadaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaAssinadaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
     icd10Code?: StringNullableFilter<"SumarioAlta"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
@@ -190211,6 +190296,11 @@ export namespace Prisma {
     fatoresReadmissao?: SortOrderInput | SortOrder
     recomendacoesAlta?: SortOrderInput | SortOrder
     cartaAlta?: SortOrderInput | SortOrder
+    cartaAltaEstado?: SortOrderInput | SortOrder
+    cartaAltaRevistaPorId?: SortOrderInput | SortOrder
+    cartaAltaRevistaEm?: SortOrderInput | SortOrder
+    cartaAltaAssinadaPorId?: SortOrderInput | SortOrder
+    cartaAltaAssinadaEm?: SortOrderInput | SortOrder
     icd10Code?: SortOrderInput | SortOrder
     _count?: SumarioAltaCountOrderByAggregateInput
     _max?: SumarioAltaMaxOrderByAggregateInput
@@ -190234,6 +190324,11 @@ export namespace Prisma {
     fatoresReadmissao?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
     recomendacoesAlta?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
     cartaAlta?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    cartaAltaEstado?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaPorId?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaEm?: DateTimeNullableWithAggregatesFilter<"SumarioAlta"> | Date | string | null
+    cartaAltaAssinadaPorId?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    cartaAltaAssinadaEm?: DateTimeNullableWithAggregatesFilter<"SumarioAlta"> | Date | string | null
     icd10Code?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
   }
 
@@ -202640,6 +202735,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
     doente: DoenteCreateNestedOneWithoutSumarioAltaInput
     criadoPor: UtilizadorCreateNestedOneWithoutSumariosAltaInput
@@ -202659,6 +202759,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
   }
 
@@ -202674,6 +202779,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutSumarioAltaNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutSumariosAltaNestedInput
@@ -202693,6 +202803,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -202710,6 +202825,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
   }
 
@@ -202725,6 +202845,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -202742,6 +202867,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -214562,6 +214692,11 @@ export namespace Prisma {
     fatoresReadmissao?: SortOrder
     recomendacoesAlta?: SortOrder
     cartaAlta?: SortOrder
+    cartaAltaEstado?: SortOrder
+    cartaAltaRevistaPorId?: SortOrder
+    cartaAltaRevistaEm?: SortOrder
+    cartaAltaAssinadaPorId?: SortOrder
+    cartaAltaAssinadaEm?: SortOrder
     icd10Code?: SortOrder
   }
 
@@ -214579,6 +214714,11 @@ export namespace Prisma {
     fatoresReadmissao?: SortOrder
     recomendacoesAlta?: SortOrder
     cartaAlta?: SortOrder
+    cartaAltaEstado?: SortOrder
+    cartaAltaRevistaPorId?: SortOrder
+    cartaAltaRevistaEm?: SortOrder
+    cartaAltaAssinadaPorId?: SortOrder
+    cartaAltaAssinadaEm?: SortOrder
     icd10Code?: SortOrder
   }
 
@@ -214596,6 +214736,11 @@ export namespace Prisma {
     fatoresReadmissao?: SortOrder
     recomendacoesAlta?: SortOrder
     cartaAlta?: SortOrder
+    cartaAltaEstado?: SortOrder
+    cartaAltaRevistaPorId?: SortOrder
+    cartaAltaRevistaEm?: SortOrder
+    cartaAltaAssinadaPorId?: SortOrder
+    cartaAltaAssinadaEm?: SortOrder
     icd10Code?: SortOrder
   }
 
@@ -233906,6 +234051,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
     doente: DoenteCreateNestedOneWithoutSumarioAltaInput
   }
@@ -233923,6 +234073,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
   }
 
@@ -238846,6 +239001,11 @@ export namespace Prisma {
     fatoresReadmissao?: StringNullableFilter<"SumarioAlta"> | string | null
     recomendacoesAlta?: StringNullableFilter<"SumarioAlta"> | string | null
     cartaAlta?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaEstado?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaRevistaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
+    cartaAltaAssinadaPorId?: StringNullableFilter<"SumarioAlta"> | string | null
+    cartaAltaAssinadaEm?: DateTimeNullableFilter<"SumarioAlta"> | Date | string | null
     icd10Code?: StringNullableFilter<"SumarioAlta"> | string | null
   }
 
@@ -243044,6 +243204,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
     criadoPor: UtilizadorCreateNestedOneWithoutSumariosAltaInput
   }
@@ -243061,6 +243226,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
   }
 
@@ -245324,6 +245494,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPor?: UtilizadorUpdateOneRequiredWithoutSumariosAltaNestedInput
   }
@@ -245341,6 +245516,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -344903,6 +345083,11 @@ export namespace Prisma {
     fatoresReadmissao?: string | null
     recomendacoesAlta?: string | null
     cartaAlta?: string | null
+    cartaAltaEstado?: string | null
+    cartaAltaRevistaPorId?: string | null
+    cartaAltaRevistaEm?: Date | string | null
+    cartaAltaAssinadaPorId?: string | null
+    cartaAltaAssinadaEm?: Date | string | null
     icd10Code?: string | null
   }
 
@@ -347098,6 +347283,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutSumarioAltaNestedInput
   }
@@ -347115,6 +347305,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -347131,6 +347326,11 @@ export namespace Prisma {
     fatoresReadmissao?: NullableStringFieldUpdateOperationsInput | string | null
     recomendacoesAlta?: NullableStringFieldUpdateOperationsInput | string | null
     cartaAlta?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaRevistaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartaAltaAssinadaPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    cartaAltaAssinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     icd10Code?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

@@ -1,19 +1,17 @@
-import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException, ForbiddenException } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
-const { authenticator } = require('otplib') as any;
+import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
 import { AI_MODELS } from '../common/ai-models';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { RedisService } from '../redis/redis.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
 import interacoesJson from './interacoes.json';
 import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { detetarConflitoAlergia } from './alergias.helper';
+import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
@@ -96,7 +94,6 @@ export class MedicacaoService {
     private readonly prisma: PrismaService,
     private readonly tenantContext: TenantContextService,
     private readonly notificacoes: NotificacoesService,
-    private readonly redis: RedisService,
     private readonly stewardship: StewardshipService,
     private readonly webhooks: WebhooksService,
     private readonly alertas: AlertasService,
@@ -631,26 +628,7 @@ export class MedicacaoService {
   }
 
   async assinar(medicacaoId: string, utilizadorId: string, totpCode: string) {
-    const utilizador = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId } });
-    if (!utilizador) throw new NotFoundException('Utilizador não encontrado');
-    if (!utilizador.mfaAtivo || !utilizador.mfaSecret) {
-      throw new ForbiddenException('MFA não configurado. Configure o autenticador antes de assinar.');
-    }
-
-    const valido = authenticator.verify({ token: totpCode, secret: utilizador.mfaSecret });
-    if (!valido) throw new ForbiddenException('Código TOTP inválido');
-
-    // Anti-replay: cada código TOTP só pode ser usado uma vez por utilizador
-    const hash = crypto.createHash('sha256').update(`${utilizador.mfaSecret}:${totpCode}`).digest('hex');
-    const setOk = await this.redis.setIfNotExists(`totp:used:sign:${utilizadorId}:${hash}`, '1', 90);
-    if (setOk === null) {
-      this.logger.warn(`Redis indisponível — assinatura clínica fail-closed (utilizador ${utilizadorId})`);
-      throw new ForbiddenException('Serviço de validação temporariamente indisponível. Tente novamente.');
-    }
-    if (!setOk) {
-      this.logger.warn(`Replay de TOTP na assinatura — utilizador ${utilizadorId}, medicacao ${medicacaoId}`);
-      throw new ForbiddenException('Código TOTP já utilizado. Aguarde o próximo código.');
-    }
+    await verificarTotpAssinatura(this.prisma, utilizadorId, totpCode, 'medicacao');
 
     const med = await this.prisma.medicacao.findUnique({ where: { id: medicacaoId } });
     if (!med) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);

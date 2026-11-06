@@ -71,6 +71,12 @@ module.exports = {
           if (request && /^@node-rs\/bcrypt/.test(request)) {
             return callback(null, 'commonjs ' + request);
           }
+          // pdfmake → pdfkit lê as métricas das fontes-padrão (`data/*.afm`) com
+          // `fs.readFileSync(__dirname + '/data/…')`. Empacotado, o `__dirname` passa a ser
+          // `dist/` e todos os PDFs falham com ENOENT. Externalizar → require do node_modules.
+          if (request && /^(pdfmake|pdfkit)($|\/)/.test(request)) {
+            return callback(null, 'commonjs ' + request);
+          }
           return callback();
         };
         compiler.options.externals = [externaisExtra].concat(anterior ?? []);

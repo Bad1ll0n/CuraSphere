@@ -1319,6 +1319,13 @@ model SumarioAlta {
   fatoresReadmissao String?    @db.Text
   recomendacoesAlta String?    @db.Text
   cartaAlta         String?    @db.Text
+  // PROD-11: a IA só escreve um RASCUNHO. rascunho → revista (médico edita/aceita o texto)
+  // → assinada (médico, com TOTP). Só a assinada sai em PDF; depois de assinada é imutável.
+  cartaAltaEstado        String?
+  cartaAltaRevistaPorId  String?
+  cartaAltaRevistaEm     DateTime?
+  cartaAltaAssinadaPorId String?
+  cartaAltaAssinadaEm    DateTime?
   icd10Code         String?
 
   @@map("sumarios_alta")

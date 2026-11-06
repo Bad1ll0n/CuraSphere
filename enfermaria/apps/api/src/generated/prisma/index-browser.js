@@ -706,6 +706,11 @@ exports.Prisma.SumarioAltaScalarFieldEnum = {
   fatoresReadmissao: 'fatoresReadmissao',
   recomendacoesAlta: 'recomendacoesAlta',
   cartaAlta: 'cartaAlta',
+  cartaAltaEstado: 'cartaAltaEstado',
+  cartaAltaRevistaPorId: 'cartaAltaRevistaPorId',
+  cartaAltaRevistaEm: 'cartaAltaRevistaEm',
+  cartaAltaAssinadaPorId: 'cartaAltaAssinadaPorId',
+  cartaAltaAssinadaEm: 'cartaAltaAssinadaEm',
   icd10Code: 'icd10Code'
 };
 
