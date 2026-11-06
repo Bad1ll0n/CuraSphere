@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { gerarTokenFamilia, hashTokenFamilia } from './token-familia';
 import { IsEmail, IsString, MaxLength } from 'class-validator';
+import { exigirTratamentoPermitido, tratamentoPermitido } from '../common/consentimento-tratamento';
 
 export class CriarAcessoFamiliarDto {
   @IsString()
@@ -22,6 +23,8 @@ export class FamiliaService {
   async criarAcesso(doenteId: string, dto: CriarAcessoFamiliarDto, criadoPorId: string) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true, nome: true } });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+    // SEC-19: partilhar o estado do doente com um familiar exige o consentimento do doente.
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'partilha_familiares');
 
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + 7); // válido 7 dias
@@ -74,6 +77,11 @@ export class FamiliaService {
     if (!acesso) throw new NotFoundException('Acesso não encontrado ou token inválido');
     if (!acesso.ativo) throw new ForbiddenException('Acesso familiar revogado');
     if (new Date() > acesso.accessTokenExpiry) throw new ForbiddenException('Acesso familiar expirado');
+    // SEC-19: a revogação do consentimento já desactiva os acessos; isto cobre qualquer
+    // acesso criado antes de haver registo de consentimento.
+    if (!(await tratamentoPermitido(this.prisma, acesso.doenteId, 'partilha_familiares'))) {
+      throw new ForbiddenException('Acesso familiar revogado');
+    }
 
     const doente = (acesso as any).doente;
     const sv = doente?.sinaisVitais?.[0];

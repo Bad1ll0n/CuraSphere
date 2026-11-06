@@ -137,7 +137,7 @@ export default function ConsultasScreen({ utilizador, onVoltar }: Props) {
                     <Text style={s.btnRealizarTexto}>Marcar como Realizada</Text>
                   </TouchableOpacity>
                 )}
-                {c.tipo === 'teleconsulta' && c.videoRoomId && (
+                {c.tipo === 'teleconsulta' && c.videoRoomId && utilizador.role === 'medico' && (
                   <TouchableOpacity
                     style={s.btnVideo}
                     onPress={async () => {

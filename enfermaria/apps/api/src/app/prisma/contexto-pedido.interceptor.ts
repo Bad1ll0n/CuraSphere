@@ -25,8 +25,13 @@ export class ContextoPedidoInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     if (context.getType() === 'http') {
       const req = context.switchToHttp().getRequest();
-      const u = req?.user as { sub?: string; nome?: string; role?: string; tenantId?: string } | undefined;
-      if (u?.sub) {
+      const u = req?.user as { sub?: string; nome?: string; role?: string; tenantId?: string; tipo?: string } | undefined;
+      if (u?.tipo === 'portal' && u.sub) {
+        // SEC-19: no portal o `sub` é a conta do doente, não um utilizador. Gravá-lo como
+        // utilizadorId violava a FK de audit_logs e TODAS as escritas do portal davam 500.
+        // Fica a autoria explícita no nome/papel, sem utilizador.
+        this.reqCtx.definirUtilizador({ userId: null, nome: `Portal do doente (conta ${u.sub})`, role: 'portal_doente' });
+      } else if (u?.sub) {
         this.reqCtx.definirUtilizador({ userId: u.sub, nome: u.nome ?? null, role: u.role ?? null });
         if (u.tenantId) this.tenant.definir(u.tenantId);
       }

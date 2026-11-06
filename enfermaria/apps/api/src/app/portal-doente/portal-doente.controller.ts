@@ -7,6 +7,8 @@ import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
+import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
 import {
   PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
   SubmeterProDto, CriarTemplateProDto,
@@ -24,6 +26,7 @@ export class PortalDoenteController {
   constructor(
     private readonly service: PortalDoenteService,
     private readonly leituras: AcessoLeituraService,
+    private readonly consentimentos: ConsentimentosTratamentoService,
   ) {}
 
   // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
@@ -134,6 +137,26 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   entrarVideoPortal(@Param('id') id: string, @Request() req: any) {
     return this.service.entrarVideoPortal(id, req.user.sub);
+  }
+
+  // ── SEC-19: o doente vê e gere as suas decisões de tratamento de dados ─────
+
+  @Get('consentimentos')
+  @UseGuards(PortalJwtGuard)
+  consentimentosDoente(@Request() req: any) {
+    return this.consentimentos.estado(req.user.doenteId);
+  }
+
+  @Post('consentimentos')
+  @UseGuards(PortalJwtGuard)
+  registarConsentimento(@Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: any) {
+    return this.consentimentos.registar(req.user.doenteId, dto, 'portal', null);
+  }
+
+  @Post('consentimentos/:finalidade/revogar')
+  @UseGuards(PortalJwtGuard)
+  revogarConsentimento(@Param('finalidade') finalidade: string, @Request() req: any) {
+    return this.consentimentos.revogar(req.user.doenteId, finalidade, 'portal', null);
   }
 
   // ── PRO endpoints (portal) ────────────────────────────────────────────────

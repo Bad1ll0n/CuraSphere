@@ -18,7 +18,14 @@ Um serviço só fica activo quando a respectiva variável de ambiente está defi
 | **Expo Push** | (tokens dos dispositivos) | EUA | Título e corpo das notificações | Conteúdo **genérico por omissão** ("Tem uma nova notificação — abra a aplicação para a ver."); o detalhe só se vê na app. `PUSH_CONTEUDO_COMPLETO=true` repõe o texto completo e exige avaliação própria |
 | **Sentry** | `SENTRY_DSN` | UE ou EUA, conforme a região da conta | Erros e stack traces | `dataCollection` restritivo (sem utilizador, cookies, corpos, query params, inputs/outputs de IA nem queries à BD); `beforeSend` remove corpo e cookies. Preferir região UE ou self-hosted |
 | **Armazenamento S3** | `STORAGE_PROVIDER=s3`, `S3_*` | Conforme a região | Documentos e fotografias clínicas; cópias de backup | Backups cifrados (age ou AES-256) antes de sair; usar região UE ou MinIO on-premises |
-| **Jitsi** (teleconsulta) | `JITSI_SERVER` | Servidor do hospital | Áudio/vídeo da consulta | Nunca `meet.jit.si` em produção (ver SEC-16) |
+| **Jitsi** (teleconsulta) | `JITSI_SERVER` | Servidor do hospital | Áudio/vídeo da consulta | Servidor próprio obrigatório em produção (a API não arranca com `meet.jit.si`); salas aleatórias de 128 bits; entrada só com JWT da sala (`JITSI_APP_ID`/`JITSI_APP_SECRET`), médico moderador |
+
+## Vontade do doente (SEC-19)
+
+A partilha com familiares e a conta no portal exigem consentimento registado. O doente pode opor-se à IA clínica.
+As decisões ficam em `consentimentos_tratamento`, só por acréscimo e com histórico. A equipa regista-as
+na ficha do doente ("Consentimentos (RGPD)") e o doente gere-as no portal ("Os Meus Consentimentos").
+Revogar fecha logo o que depende da decisão: os links de familiares, a conta do portal, ou a IA para esse doente.
 
 ## Rever esta lista
 

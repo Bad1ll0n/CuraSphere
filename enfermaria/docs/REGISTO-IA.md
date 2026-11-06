@@ -59,6 +59,10 @@ Quando uma função está desligada:
 - **Feridas**: a fotografia segue para o modelo. Não deve mostrar o rosto nem tatuagens.
 - **Triagem do portal**: segue o texto livre escrito pelo doente, que pode conter dados identificativos.
 
+**Oposição do doente (SEC-19)**: o doente pode opor-se à IA clínica, no portal ou presencialmente.
+Com oposição registada, as funções por doente respondem `403`. Esse doente também fica de fora da
+passagem de turno por IA (a narrativa indica quantos ficaram de fora) e do watchdog.
+
 Os subcontratantes (Anthropic, OpenAI) e a base contratual estão em [SUBPROCESSADORES.md](SUBPROCESSADORES.md).
 
 ## Monitorização

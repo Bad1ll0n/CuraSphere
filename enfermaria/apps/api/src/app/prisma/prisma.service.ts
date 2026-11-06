@@ -19,6 +19,11 @@ const SQL_CONTEXTO =
   "SELECT set_config('curasphere.user_id',$1,true), set_config('curasphere.user_nome',$2,true), " +
   "set_config('curasphere.user_role',$3,true), set_config('curasphere.ip',$4,true), set_config('curasphere.correlation',$5,true)";
 
+/** Há autoria a registar: um utilizador, ou (portal do doente) só nome e papel — SEC-19. */
+function comAutoria(ctx: { userId: string | null; nome: string | null } | undefined | null): boolean {
+  return !!(ctx?.userId || ctx?.nome);
+}
+
 function valoresContexto(ctx: { userId: string | null; nome: string | null; role: string | null; ip: string | null; correlationId: string | null }) {
   return [ctx.userId ?? '', ctx.nome ?? '', ctx.role ?? '', ctx.ip ?? '', ctx.correlationId ?? ''];
 }
@@ -76,7 +81,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       if (typeof arg === 'function') {
         const executar = () => encTx(async (tx: any) => {
           const ctx = reqCtxRef.get();
-          if (ctx?.userId) {
+          if (ctx && comAutoria(ctx)) {
             await tx.$queryRawUnsafe(SQL_CONTEXTO, ...valoresContexto(ctx));
           }
           return arg(tx);
@@ -93,7 +98,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       // define os GUCs (`set_config(..., true)` vale até ao fim da transacção), e as escritas
       // do lote ficam atribuídas. O resultado dessa instrução é retirado da resposta.
       const ctx = reqCtxRef.get();
-      if (Array.isArray(arg) && ctx?.userId) {
+      if (Array.isArray(arg) && ctx && comAutoria(ctx)) {
         const definir = encClient.$queryRawUnsafe(SQL_CONTEXTO, ...valoresContexto(ctx));
         return encTx([definir, ...arg], opts).then((r: unknown[]) => r.slice(1));
       }
@@ -117,7 +122,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           if (typeof prop !== 'string' || !OPERACOES_ESCRITA.has(prop) || typeof original !== 'function') return original;
           return (args: unknown) => {
             const promessa = original.call(alvo, args);
-            if (!reqCtxRef.get()?.userId) return promessa; // sem pedido autenticado: igual
+            if (!comAutoria(reqCtxRef.get())) return promessa; // sem pedido autenticado: igual
             const correr = () => self.$transaction((tx: any) => tx[nome][prop](args));
             return {
               then: (ok: any, falha: any) => correr().then(ok, falha),

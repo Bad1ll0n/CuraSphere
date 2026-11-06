@@ -131,7 +131,7 @@ export class ConsultasController {
   }
 
   @Get(':id/video/entrar')
-  @Roles('medico', 'enfermeiro', 'administrativo', 'direcao')
+  @Roles('medico')
   dadosVideo(@Param('id') id: string, @Request() req: any) {
     return this.service.dadosVideo(id, req.user.sub);
   }
