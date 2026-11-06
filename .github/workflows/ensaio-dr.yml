@@ -1,0 +1,89 @@
+name: Ensaio de recuperação e monitorização
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-02 — "um backup nunca testado é uma esperança": o restauro para um instante (PITR) corre
+# de ponta a ponta todos os meses e em cada PR que mexa nos scripts de backup/restauro. A
+# duração medida (RTO) fica no resumo da execução.
+# OPS-05 — as configurações de Prometheus, Alertmanager, Blackbox e Loki são validadas pelas
+# próprias ferramentas antes de chegarem a um servidor.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: '0 4 1 * *'   # dia 1 de cada mês, 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      linhas:
+        description: 'Linhas sintéticas no ensaio PITR'
+        default: '2000000'
+  pull_request:
+    paths:
+      - 'enfermaria/scripts/**'
+      - 'enfermaria/postgres/**'
+      - 'enfermaria/monitoring/**'
+      - 'enfermaria/docker-compose.prod.yml'
+      - '.github/workflows/ensaio-dr.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pitr:
+    name: Ensaio PITR (base backup + WAL → instante T)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: enfermaria
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Ensaio
+        env:
+          ENSAIO_LINHAS: ${{ github.event.inputs.linhas || '500000' }}
+        run: |
+          set -o pipefail
+          sh scripts/ensaio-pitr.sh | tee ensaio.log
+      - name: Resumo (RPO/RTO)
+        if: always()
+        run: |
+          {
+            echo "### Ensaio PITR"
+            echo '```'
+            grep -E "^(OK|FALHOU|RTO|      T =|      Restaurado)" ensaio.log || tail -20 ensaio.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  configuracao:
+    name: Configuração de monitorização
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: enfermaria/monitoring
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Prometheus (config + regras)
+        run: |
+          docker run --rm -v "$PWD/prometheus:/etc/prometheus:ro" --entrypoint sh \
+            prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06 \
+            -c 'printf x > /tmp/metrics_token && promtool check config /etc/prometheus/prometheus.yml'
+      - name: Alertmanager
+        run: |
+          docker run --rm -v "$PWD/alertmanager:/c:ro" --entrypoint amtool \
+            prom/alertmanager:v0.34.2@sha256:39d8bb3966c694a124428a3a88fbcffd40bd069129ecd47c059f8a3f17c55f3b \
+            check-config /c/alertmanager.yml
+      - name: Blackbox
+        run: |
+          docker run --rm -v "$PWD/blackbox:/c:ro" \
+            prom/blackbox-exporter:v0.29.1@sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13 \
+            --config.file=/c/blackbox.yml --config.check
+      - name: Loki
+        run: |
+          docker run --rm -v "$PWD/loki:/c:ro" \
+            grafana/loki:3.6.20@sha256:be040ec94865dabe4821ce1c0f109452bd4b5acb566ae376672696eb43caedb7 \
+            -config.file=/c/loki.yml -verify-config
+      - name: Alloy
+        run: |
+          docker run --rm -v "$PWD/alloy:/c:ro" \
+            grafana/alloy:v1.21.3@sha256:8ab871206bd2d8f89277f53abffee5f452a293980788d52f85fa183a87a505a4 \
+            fmt /c/config.alloy >/dev/null

@@ -10,7 +10,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
-import { randomUUID } from 'crypto';
 import { sanitizarUrlParaLog } from './common/sanitizar-url-log';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
@@ -47,6 +46,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
 import { PopulationHealthModule } from './population-health/population-health.module';
 import { TransferenciasModule } from './transferencias/transferencias.module';
 import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module';
+import { gerarIdCorrelacao } from './common/correlacao';
 
 @Module({
   imports: [
@@ -71,7 +71,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
     }),
     LoggerModule.forRoot({
       pinoHttp: {
-        genReqId: (req) => (req.headers['x-correlation-id'] as string) ?? randomUUID(),
+        genReqId: gerarIdCorrelacao, // OPS-07: validado e devolvido em X-Correlation-Id
         level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
         // pino's pretty-print transport spawns a worker thread that does its own
         // require.resolve('pino-pretty') — this doesn't work once the app is
@@ -104,7 +104,7 @@ import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module'
           ],
           censor: '[REDACTED]',
         },
-        autoLogging: { ignore: (req) => req.url === '/v1/health' },
+        autoLogging: { ignore: (req) => req.url === '/v1/health' || (req.url ?? '').startsWith('/v1/health/') },
       },
     }),
     // Por utilizador autenticado (ThrottlerPorUtilizadorGuard), não por IP — ver PERF-02.

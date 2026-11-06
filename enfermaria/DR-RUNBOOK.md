@@ -12,13 +12,17 @@ numa sequência de recuperação testável.
 
 ## 1. Objetivos (RPO / RTO)
 
-| Componente | Estado atual | Objetivo | Como fechar a lacuna |
+| Componente | Estado atual | Objetivo | Como |
 |---|---|---|---|
-| **RPO** (perda máxima) | **24 h** (pg_dump noturno às 02:00) | ≤ 15 min | Ativar WAL archiving + PITR (base backup + WAL contínuo) |
-| **RTO** (tempo até repor) | ~30–60 min (provisionar + restaurar dump) | ≤ 60 min | Manter infra-as-code + este runbook ensaiado |
+| **RPO** (perda máxima) | **≤ 5 min** com PITR (WAL arquivado a cada segmento, no máximo a cada 5 min; cópia cifrada fora do host a cada 5 min). Sem PITR: 24 h (dump diário) | ≤ 15 min | §4.6, alertas `WalNaoArquivado` / `WalSemCopiaExterna` |
+| **RTO** (tempo até repor) | **53 s** de restauro + recuperação medidos com 5 M linhas (base backup cifrado de 154 MB e 60 segmentos de WAL; §6.1). Com a base real, medir no próximo ensaio | ≤ 60 min | §4.6, ensaio automático mensal (§6) |
 
-O backup noturno está em [`docker-compose.prod.yml`](docker-compose.prod.yml) (serviço `backup`,
-cron `0 2 * * *`, retenção 30 dias). Para RPO apertado, ver §7.
+Três camadas, independentes umas das outras:
+
+- **PITR**: base backup físico semanal (domingo 03:00, `scripts/basebackup.sh`) mais WAL contínuo (`scripts/arquivar-wal.sh` + `scripts/enviar-wal.sh`). Repõe qualquer instante.
+- **Dump lógico diário** às 02:00 (`scripts/backup-all.sh`). É o recurso se o arquivo físico tiver um problema, e serve também para restaurar só uma parte.
+- **Cópias fora do host, cifradas**, em `BACKUP_REMOTE` (base, WAL e dumps).
+
 
 ---
 
@@ -124,6 +128,33 @@ node apps/api/scripts/apply-audit-triggers.mjs   # idempotente; reaplica se falt
 Isto reinstala os triggers append-only em todas as tabelas clínicas e mantém a lista DENY
 (`audit_logs`, `audit_checkpoints`, `acessos_leitura`, `totp_consumidos`, `cron_locks`).
 
+### 4.6 Restaurar para um instante (PITR) — o caminho normal
+
+Usar sempre que se sabe **quando** o problema começou: uma corrupção, um `DELETE` errado, um
+ransomware detectado às 14:32. Repõe a base no estado de um segundo antes, num volume NOVO, sem
+tocar no que está a correr.
+
+```sh
+# 1. O base backup mais recente ANTERIOR ao instante, e o WAL desde então (local ou do remoto):
+ls backups/base_*                                   # ou: rclone copy $BACKUP_REMOTE/base/... .
+docker run --rm -v curasphere_wal_arquivo:/w alpine tar -cf - -C /w . | tar -xf - -C /tmp/wal
+#    (do remoto: rclone copy $BACKUP_REMOTE/wal/ /tmp/wal — os .age/.enc são decifrados pelo script)
+
+# 2. Restaurar até ao instante (UTC). Sem instante: até ao último WAL disponível.
+BACKUP_AGE_IDENTITY=/cofre/curasphere-backup.key \
+  ./scripts/restaurar-pitr.sh backups/base_20261101_030000.tar.gz.age /tmp/wal "2026-11-06 14:31:00+00"
+#    → volume curasphere_pgdata_restaurado_<data>, e a duração (RTO) no fim.
+```
+
+3. Verificar o volume restaurado (§5) com um contentor PostgreSQL temporário.
+4. Pôr em serviço: parar `api`/`web`, apontar o serviço `postgres` para o volume restaurado
+   (`docker-compose.prod.yml`, `volumes:` do `postgres`), arrancar, §4.4 e §5.
+
+Se o PostgreSQL de restauro disser *recovery ended before configured recovery target was
+reached*, falta WAL entre o base backup e o instante pedido: trazer os segmentos em falta do
+remoto. Esta recusa é intencional: o PostgreSQL nunca entrega um estado anterior ao pedido
+como se fosse o pedido.
+
 ### 4.5 Apontar a app e arrancar
 Reiniciar a API/web contra a BD e object storage restaurados. A eleição de líder dos crons
 (advisory-lock + `cron_locks`) recupera automaticamente; o adaptador Redis do socket.io religa
@@ -149,7 +180,13 @@ Não declarar recuperado sem passar TODOS:
 
 ## 6. Drills de DR (trimestral — obrigatório)
 
-Um restauro nunca ensaiado não conta. A cada trimestre:
+**Automático, todos os meses** (`.github/workflows/ensaio-dr.yml`, e em cada PR que mexa nos
+scripts): `scripts/ensaio-pitr.sh` monta um PostgreSQL descartável com o arquivo de WAL de
+produção, faz um base backup cifrado, escreve antes e depois de um instante T, destrói a base,
+restaura até T e **prova** que o anterior a T está lá e o posterior não. A duração fica no
+resumo da execução. Localmente: `ENSAIO_LINHAS=5000000 ./scripts/ensaio-pitr.sh`.
+
+Este ensaio prova o mecanismo, mas não a base real. Por isso, uma vez por trimestre:
 1. Provisionar uma BD **staging/scratch** (nunca prod).
 2. `DB_HOST=staging ./scripts/restore-db.sh` com o backup de produção mais recente.
 3. Correr o checklist do §5 contra staging.
@@ -161,6 +198,8 @@ Um restauro nunca ensaiado não conta. A cada trimestre:
 | Data | Âmbito | Resultado | Tempos | Executado por |
 |---|---|---|---|---|
 | 2026-09-03 | Base de dados (dev → scratch descartável) | **Passou** | backup 1 s (2,0 MB) · restauro 2 s · restauro sobre base já povoada 3 s · total 8 s | Correcção pós-auditoria |
+| 2026-11-06 | PITR ponta a ponta (`ensaio-pitr.sh`, 200 000 linhas) | **Passou** | estado exacto em T (500 linhas antes de T presentes, 300 depois ausentes) · restauro + recuperação 6 s | Plano de melhoria, Fase 1 (OPS-02) |
+| 2026-11-06 | PITR ponta a ponta (`ensaio-pitr.sh`, 5 000 000 linhas) | **Passou** | base backup cifrado 154 MB · 60 segmentos de WAL · estado exacto em T · restauro + recuperação **53 s** | Plano de melhoria, Fase 1 (OPS-02) |
 
 **O que este drill provou.** As 140 tabelas foram repostas na íntegra e os **135 triggers de
 auditoria vieram com o restauro** — a cadeia à prova de adulteração sobrevive a uma
@@ -196,12 +235,12 @@ RESTAURO_NAO_INTERATIVO=sim DB_NAME=<scratch> ./scripts/restore-db.sh <ficheiro.
 
 | Cenário | Ação |
 |---|---|
-| **Perda/corrupção da BD** | §4.2 (restaurar dump) → §4.4 (triggers) → §5. RPO até 24 h. |
+| **Perda/corrupção da BD** | §4.6 (PITR até ao instante antes do problema) → §4.4 (triggers) → §5. RPO de minutos. Se o arquivo físico falhar: §4.2 (dump diário, RPO até 24 h). |
 | **Perda do object storage** | §4.3 (repor bucket). BD intacta; ficheiros indisponíveis degradam graciosamente. |
 | **Perda total do host/região** | Provisionar nova região → §4 completo a partir dos backups off-site + segredos. |
 | **Ransomware / adulteração** | Restaurar do backup off-site imutável **anterior** ao incidente; `GET /audit/integridade` localiza a primeira entrada adulterada (auditoria append-only + checkpoints assinados). |
 | **`ENCRYPTION_KEY` perdida** | PII irrecuperável. Prevenção > cura: **backup dedicado da chave** no gestor de segredos, com o seu próprio DR. |
-| **Melhorar o RPO** | Ativar WAL archiving contínuo + PITR (`archive_command` → object storage; base backup periódico). Reduz RPO de 24 h para minutos. |
+| **Erro humano (ex.: `DELETE` em massa)** | §4.6 para um volume novo, até um segundo antes; extrair dali os registos apagados e reinseri-los, sem repor a base inteira. |
 
 ---
 

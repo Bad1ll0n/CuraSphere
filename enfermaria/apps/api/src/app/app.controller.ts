@@ -33,6 +33,25 @@ export class AppController {
     res.json({ token });
   }
 
+  /**
+   * OPS-06 — liveness: o processo responde (event loop livre). Sem I/O, para que uma BD em
+   * baixo não leve o orquestrador/autoheal a reiniciar uma API que está bem. É o healthcheck
+   * do contentor.
+   */
+  @Get('health/live')
+  live() {
+    return { status: 'ok', uptimeSegundos: Math.round(process.uptime()) };
+  }
+
+  /**
+   * OPS-06 — readiness: pode receber tráfego? BD, migrações sem falhas e trilho de auditoria.
+   * É o que o deploy espera antes de dar a versão nova como boa. `/health` fica como alias.
+   */
+  @Get('health/ready')
+  ready() {
+    return this.check();
+  }
+
   // Hand-rolled — not @nestjs/terminus. Its published dist ships .js.map files
   // that a bug in this workspace's Nx/webpack production build tries to parse
   // as real modules and fails on; terminus was only used here for two simple
@@ -56,12 +75,27 @@ export class AppController {
     // mas NUNCA devolve 503: senão um Redis transitoriamente em baixo faria o orquestrador matar/
     // despejar todos os pods ainda funcionais (falha em cascata). Ver DR-RUNBOOK.md §2.
     try {
-      await this.redis.set('__health__', '1', 5);
-      const val = await this.redis.get<string>('__health__');
-      if (val === '1') info['redis'] = { status: 'up' };
+      if (await this.redis.ping()) info['redis'] = { status: 'up' };
       else degraded['redis'] = { status: 'down' };
     } catch {
       degraded['redis'] = { status: 'down' };
+    }
+
+    // OPS-06: uma migração que falhou a meio (ou ficou por terminar) deixa o schema num estado
+    // que o código não espera. `prisma migrate deploy` recusa continuar; aqui torna-se visível.
+    let ultimaMigracao: string | null = null;
+    if (info['database']) {
+      try {
+        const [m] = await this.prisma.$queryRaw<Array<{ pendentes: number | bigint; ultima: string | null }>>`
+          SELECT count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL) AS pendentes,
+                 max(migration_name) FILTER (WHERE finished_at IS NOT NULL) AS ultima
+          FROM _prisma_migrations`;
+        ultimaMigracao = m?.ultima ?? null;
+        if (Number(m?.pendentes ?? 0) === 0) info['migrations'] = { status: 'up' };
+        else error['migrations'] = { status: 'down' };
+      } catch {
+        error['migrations'] = { status: 'down' };
+      }
     }
 
     // QA-13: trilho de auditoria. Sem ele as escritas continuam a funcionar, mas sem prova de
@@ -81,6 +115,7 @@ export class AppController {
     const status = critico ? ('error' as const) : Object.keys(degraded).length > 0 ? ('degraded' as const) : ('ok' as const);
     const body = {
       status,
+      ultimaMigracao,
       info,
       degraded,
       error,

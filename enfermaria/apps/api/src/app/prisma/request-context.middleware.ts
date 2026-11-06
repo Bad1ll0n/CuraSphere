@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { RequestContextService } from './request-context.service';
+import { idCorrelacaoDoPedido } from '../common/correlacao';
 
 /**
  * Abre o RequestContext do pedido (de-onde: IP, user-agent, correlation-id) e envolve todo o
@@ -23,7 +24,7 @@ export class RequestContextMiddleware implements NestMiddleware {
       role: null,
       ip: req.ip || null,
       userAgent: (req.headers['user-agent'] as string) ?? null,
-      correlationId: (req.headers['x-correlation-id'] as string) ?? null,
+      correlationId: idCorrelacaoDoPedido(req), // OPS-07: nunca o cabeçalho cru
     }, () => next());
   }
 }

@@ -1,0 +1,21 @@
+# OPS-05 — alertas a partir dos logs. O directório `fake` é o tenant por omissão do Loki sem
+# autenticação (auth_enabled: false).
+groups:
+  - name: logs-api
+    rules:
+      # Os @Cron do NestJS (alertas SLA, watchdog, relatórios, retenção…) registam a falha com o
+      # contexto "Scheduler" e não têm outra consequência: um cron partido fica partido em silêncio.
+      - alert: CronFalhou
+        expr: |
+          sum by (servico) (count_over_time({servico="api"} | json | context="Scheduler" | level="50" [15m])) > 0
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "Um trabalho agendado (@Cron) da API falhou nos últimos 15 min."
+          accao: "Grafana → Explore → Loki: {servico=\"api\"} | json | context=\"Scheduler\""
+
+      - alert: ErrosApiEmRajada
+        expr: |
+          sum(count_over_time({servico="api"} | json | level="50" [5m])) > 50
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "Mais de 50 erros registados pela API em 5 min."
