@@ -77,12 +77,135 @@ describe('estrutura — acesso a dados de um doente', () => {
     expect(modulo).toMatch(/provide:\s*APP_INTERCEPTOR,\s*useClass:\s*AcessoDoenteInterceptor/);
   });
 
-  it('o interceptor lê o doente do caminho E da query', () => {
+  it('o interceptor lê o doente do caminho, da query, do corpo e de entidades clínicas', () => {
     const codigo = lerCodigo(join(RAIZ_APP, 'doentes', 'acesso-doente.interceptor.ts'));
 
     expect(codigo).toContain('params?.doenteId');
     expect(codigo).toContain('query?.doenteId');
+    expect(codigo).toContain('doentesNoCorpo(req)');
+    expect(codigo).toContain('ACESSO_DOENTE_POR');
     expect(codigo).toContain('assertAcessoDoente');
+  });
+
+  /**
+   * QA-01/02/12 (revisão de 2026-11): `/medicacao/:id/administrar`, `/alergias/:id` e
+   * `/contactos/:id` identificavam a entidade e não o doente, e passavam sem verificação.
+   * Nestes controladores clínicos, cada parâmetro de rota que identifica uma entidade tem de
+   * estar coberto por `@AcessoDoentePor` com esse parâmetro (na classe ou no método).
+   */
+  const CLINICOS_POR_ENTIDADE = [
+    'alergias/alergias.controller.ts',
+    'balanco-hidrico/balanco-hidrico.controller.ts',
+    'bloco/bloco.controller.ts',
+    'consentimentos/consentimentos.controller.ts',
+    'contactos/contactos.controller.ts',
+    'dispositivos-invasivos/dispositivos-invasivos.controller.ts',
+    'documentos-saude/documentos-saude.controller.ts',
+    'especialidades/especialidades.controller.ts',
+    'exames/exames.controller.ts',
+    'feridas/feridas.controller.ts',
+    'fisioterapia/fisioterapia.controller.ts',
+    'maternidade/maternidade.controller.ts',
+    'medicacao/medicacao.controller.ts',
+    'notas-clinicas/notas-clinicas.controller.ts',
+    'oncologia/oncologia.controller.ts',
+    'protocolos/protocolos.controller.ts',
+    'reconciliacao-medicacao/reconciliacao-medicacao.controller.ts',
+    'sepsis/sepsis.controller.ts',
+    'sinalizacoes/sinalizacoes.controller.ts',
+    'tarefas/tarefas.controller.ts',
+    'transfusao/transfusao.controller.ts',
+  ];
+
+  /**
+   * Entidades clínicas cujo acesso NÃO se faz por atribuição de internamento — dívida
+   * declarada até haver um modelo de acesso próprio (episódio, ver PROD-02):
+   *  - consultas: o médico de ambulatório não tem atribuição ao doente;
+   *  - interconsultas e radiologia: quem responde/relata é de outro serviço;
+   *  - alertas: o SOS é difundido ao serviço; acusar a receção não é acesso ao processo;
+   *  - urgência e IACS: atuam antes de qualquer atribuição ou sobre o hospital inteiro.
+   */
+  const POR_ENTIDADE_SEM_REGIME = [
+    'alertas/alertas.controller.ts',
+    'consultas/consultas.controller.ts',
+    'iacs/iacs.controller.ts',
+    'interconsultas/interconsultas.controller.ts',
+    'radiologia/radiologia.controller.ts',
+    'urgencia/urgencia.controller.ts',
+  ];
+
+  /**
+   * Parâmetros subordinados a outro já verificado na mesma rota: o serviço recusa (404) se
+   * a entidade não pertencer à do parâmetro verificado.
+   */
+  const PARAMETROS_SUBORDINADOS: Record<string, string[]> = {
+    // analisarFoto: `foto.avaliacaoId !== avaliacaoId` → 404; a avaliação é verificada.
+    'feridas/feridas.controller.ts': ['fotoId'],
+  };
+
+  const parametroDe = (args: string) => {
+    const partes = args.split(',').map((p) => p.trim().replace(/^'|'$/g, ''));
+    return partes[1] || 'id';
+  };
+
+  it('nos controladores clínicos, toda a rota por id de entidade declara @AcessoDoentePor', () => {
+    const infratores: string[] = [];
+    for (const rel of CLINICOS_POR_ENTIDADE) {
+      const linhas = lerCodigo(join(RAIZ_APP, rel)).split('\n');
+      const iControlador = linhas.findIndex((l) => l.trim().startsWith('@Controller('));
+      const daClasse = linhas
+        .slice(0, iControlador)
+        .map((l) => l.match(/@AcessoDoentePor\(([^)]*)\)/))
+        .filter(Boolean)
+        .map((m) => parametroDe(m![1]));
+
+      linhas.forEach((linha, i) => {
+        const rota = linha.match(/@(Get|Post|Patch|Put|Delete)\(\s*'([^']*)'/);
+        if (!rota || i < iControlador) return;
+        const parametros = [...rota[2].matchAll(/:(\w+)/g)].map((m) => m[1]).filter((p) => p !== 'doenteId');
+        // Os decorators de um método ficam nas linhas imediatamente acima (bloco contíguo).
+        const doMetodo: string[] = [];
+        for (let k = i - 1; k >= 0 && linhas[k].trim().startsWith('@'); k--) {
+          const m = linhas[k].match(/@AcessoDoentePor\(([^)]*)\)/);
+          if (m) doMetodo.push(parametroDe(m[1]));
+        }
+        for (const p of parametros) {
+          const subordinado = (PARAMETROS_SUBORDINADOS[rel] ?? []).includes(p) && doMetodo.length > 0;
+          if (!daClasse.includes(p) && !doMetodo.includes(p) && !subordinado) {
+            infratores.push(`${rel}:${i + 1} ${rota[1]} '${rota[2]}' (:${p})`);
+          }
+        }
+      });
+    }
+
+    expect(infratores).toEqual([]);
+  });
+
+  it('a lista de controladores sem regime por entidade só encolhe', () => {
+    const jaComRegime = POR_ENTIDADE_SEM_REGIME.filter((rel) =>
+      lerCodigo(join(RAIZ_APP, rel)).includes('@AcessoDoentePor('),
+    );
+
+    expect(jaComRegime).toEqual([]);
+  });
+
+  it('as isenções da verificação do doente no corpo são as declaradas', () => {
+    // Cada isenção é uma decisão de segurança: uma nova tem de aparecer aqui em revisão.
+    const isencoes = controladores
+      .flatMap((f) => (lerCodigo(f).match(/@AcessoDoenteIsento\(/g) ?? []).map(() => caminhoRelativo(f)))
+      .sort();
+
+    expect(isencoes).toEqual([
+      'atribuicoes/atribuicoes.controller.ts',
+      'bloco/bloco.controller.ts',
+      'break-glass/break-glass.controller.ts',
+      'eventos-adversos/eventos-adversos.controller.ts',
+      'fisioterapia/fisioterapia.controller.ts',
+      'turnos/turnos.controller.ts',
+      'urgencia/urgencia.controller.ts',
+      'urgencia/urgencia.controller.ts',
+      'urgencia/urgencia.controller.ts',
+    ]);
   });
 
   it('nenhuma rota usa outro nome de parâmetro para o doente, fugindo ao interceptor', () => {
@@ -372,6 +495,23 @@ describe('estrutura — soft-delete', () => {
     const jaResolvidos = DUAS_CONVENCOES_DE_REMOCAO.filter((m) => !comAmbas.includes(m));
 
     expect(jaResolvidos).toEqual([]);
+  });
+
+  it('nenhuma leitura de alergias inclui as removidas (QA-02)', () => {
+    // Uma alergia removida que ainda conte (ou uma ativa que deixe de contar) muda o que o
+    // médico vê ao prescrever. Toda a leitura filtra `deletedAt: null`.
+    const infratores: string[] = [];
+    for (const f of ficheiros(RAIZ_APP, '.service.ts').filter((x) => !x.endsWith('.spec.ts'))) {
+      const linhas = lerCodigo(f).split('\n');
+      linhas.forEach((linha, i) => {
+        const leitura = /\.alergia\.(findMany|findFirst|count)\(/.test(linha) || /\balergias:\s*(true|\{)/.test(linha);
+        if (!leitura) return;
+        const janela = linhas.slice(i, i + 3).join(' ');
+        if (!janela.includes('deletedAt: null')) infratores.push(caminhoRelativo(f) + ':' + (i + 1));
+      });
+    }
+
+    expect(infratores).toEqual([]);
   });
 
   it('nas consultas de Medicacao as duas colunas andam sempre juntas', () => {

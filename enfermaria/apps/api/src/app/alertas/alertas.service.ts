@@ -124,7 +124,7 @@ export class AlertasService {
         orderBy: { iniciadoEm: 'desc' },
       }),
       this.prisma.alergia.findMany({
-        where: { doenteId },
+        where: { doenteId, deletedAt: null },
         select: { alergenio: true, severidade: true },
       }),
     ]);

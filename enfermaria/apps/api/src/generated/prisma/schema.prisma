@@ -1181,14 +1181,19 @@ model FeatureFlag {
 // ─── Alergias ─────────────────────────────────────────────────────────────────
 
 model Alergia {
-  id         String   @id @default(uuid())
-  doenteId   String
-  doente     Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  alergenio  String
-  tipo       String
-  severidade String
-  notas      String?
-  criadaEm   DateTime @default(now())
+  id            String    @id @default(uuid())
+  doenteId      String
+  doente        Doente    @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  alergenio     String
+  tipo          String
+  severidade    String
+  notas         String?
+  criadaEm      DateTime  @default(now())
+  // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
+  // mas fica o registo de quem a removeu e porquê.
+  deletedAt     DateTime?
+  removidaPorId String?
+  motivoRemocao String?
 
   medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 

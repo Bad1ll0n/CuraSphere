@@ -7,8 +7,10 @@ import { Roles } from '../auth/roles.decorator';
 import { CriarConsentimentoDto } from './dto/criar-consentimento.dto';
 import { AssinarConsentimentoDto } from './dto/assinar-consentimento.dto';
 import { RecusarConsentimentoDto } from './dto/recusar-consentimento.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('consentimentoInformado')
 @Controller('consentimentos')
 export class ConsentimentosController {
   constructor(

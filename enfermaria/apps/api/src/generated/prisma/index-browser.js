@@ -638,7 +638,10 @@ exports.Prisma.AlergiaScalarFieldEnum = {
   tipo: 'tipo',
   severidade: 'severidade',
   notas: 'notas',
-  criadaEm: 'criadaEm'
+  criadaEm: 'criadaEm',
+  deletedAt: 'deletedAt',
+  removidaPorId: 'removidaPorId',
+  motivoRemocao: 'motivoRemocao'
 };
 
 exports.Prisma.ContactoEmergenciaScalarFieldEnum = {
