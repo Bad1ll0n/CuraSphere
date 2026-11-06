@@ -15,16 +15,13 @@ test.describe('Teleconsulta (Jitsi)', () => {
     expect(body).not.toContain('404 | This page could not be found');
   });
 
-  test('página de teleconsulta tem barra superior com botão Terminar', async ({ page }) => {
+  // QA-22: esperava a barra "Terminar" para uma consulta INEXISTENTE. Sem consulta não há sala,
+  // e o comportamento certo (SEC-16: só o médico da consulta recebe a sala) é o ecrã de erro
+  // com caminho de volta — é isso que se verifica.
+  test('consulta inexistente: erro gracioso com regresso às consultas', async ({ page }) => {
     await page.goto('/teleconsulta/00000000-0000-0000-0000-000000000000');
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForTimeout(1000);
-
-    // O botão Terminar deve estar presente na barra superior
-    const btnTerminar = page.getByRole('button', { name: /terminar|sair/i }).or(
-      page.getByText(/✕ Terminar|terminar/i)
-    ).first();
-    await expect(btnTerminar).toBeVisible({ timeout: 8000 });
+    await expect(page.getByText(/não foi possível obter os dados da videochamada/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: /voltar às consultas/i })).toBeVisible();
   });
 
   test('página de teleconsulta carrega script Jitsi', async ({ page }) => {

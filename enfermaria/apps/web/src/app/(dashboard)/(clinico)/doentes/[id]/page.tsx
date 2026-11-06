@@ -53,7 +53,9 @@ interface Doente {
   ativo: boolean;
   emIsolamento: boolean;
   motivoIsolamento?: string;
-  cama: { numero: string; quarto: string };
+  // Sem cama: em espera de cama, em ambulatório ou já com alta. A ficha rebentava
+  // (`null.quarto`) e mostrava "Erro ao carregar doente" (encontrado pelo E2E, QA-22).
+  cama: { numero: string; quarto: string } | null;
   atribuicoes: { enfermeiro: { id: string; nome: string; role: string } }[];
   atribuicoesHorario: { utilizador: { id: string; nome: string; role: string }; horarioTurno: { tipo: string; data: string } }[];
   tarefas: Tarefa[];
@@ -692,7 +694,7 @@ export default function DoenteDetalhe() {
             <span className="text-sm font-semibold text-slate-700">Internamento</span>
           </div>
           <div className="flex flex-col gap-4">
-            <InfoRow label="Cama" value={`Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}`} />
+            <InfoRow label="Cama" value={doente.cama ? `Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}` : 'Sem cama atribuída'} />
             <div className="flex flex-col gap-1">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Enfermeiros Atribuídos</span>
               {(() => {
@@ -1024,7 +1026,7 @@ export default function DoenteDetalhe() {
               <div className="text-center">
                 <p className="font-bold text-slate-900" style={{ fontSize: '15px' }}>{doente.nome}</p>
                 <p className="text-slate-600 font-mono text-sm" style={{ marginTop: '4px' }}>{doente.numeroProcesso}</p>
-                <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>Cama {doente.cama.quarto}/{doente.cama.numero}</p>
+                <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{doente.cama ? `Cama ${doente.cama.quarto}/${doente.cama.numero}` : 'Sem cama atribuída'}</p>
               </div>
             </div>
 
@@ -1044,7 +1046,7 @@ export default function DoenteDetalhe() {
 </head><body>
 <div id="qr"></div>
 <p class="nome">${esc(doente.nome)}</p>
-<p class="sub">${esc(doente.numeroProcesso)} · Cama ${esc(String(doente.cama.quarto))}/${esc(String(doente.cama.numero))}</p>
+<p class="sub">${esc(doente.numeroProcesso)} · ${doente.cama ? `Cama ${esc(String(doente.cama.quarto))}/${esc(String(doente.cama.numero))}` : 'Sem cama atribuída'}</p>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})</script>
 </body></html>`;

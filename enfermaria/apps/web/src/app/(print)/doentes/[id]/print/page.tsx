@@ -161,7 +161,7 @@ export default function PrintPage() {
             </div>
             <div style={{ fontSize: '22px', fontWeight: 700, margin: 0 }}>{doente.nome}</div>
             <div style={{ marginTop: '4px', color: 'var(--text-soft)', fontSize: '13px' }}>
-              Processo Nº {doente.numeroProcesso} · Cama {doente.cama.quarto}/{doente.cama.numero}
+              Processo Nº {doente.numeroProcesso} · Cama {(doente.cama?.quarto ?? '—')}/{(doente.cama?.numero ?? '—')}
             </div>
           </div>
           <div style={{ textAlign: 'right', fontSize: '12px', color: 'var(--text-dim)' }}>

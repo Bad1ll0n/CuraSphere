@@ -75,7 +75,7 @@ function getCertasValues(med: Medicacao | undefined): string[] {
     ? `${horaAtual} · Última: há ${tempoDesdeUltima} min`
     : horaAtual;
   return [
-    `${med.doente.nome} · Cama ${med.doente.cama.numero} (Quarto ${med.doente.cama.quarto})`,
+    `${med.doente.nome} · Cama ${(med.doente.cama?.numero ?? '—')} (Quarto ${(med.doente.cama?.quarto ?? '—')})`,
     `${med.nome}`,
     `${med.dose}`,
     horaObs,
@@ -249,13 +249,13 @@ export default function MarPage() {
             <div key={doente.id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '16px 24px' }}>
                 <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
-                  <span className="text-white text-xs font-bold">{doente.cama.numero}</span>
+                  <span className="text-white text-xs font-bold">{(doente.cama?.numero ?? '—')}</span>
                 </div>
                 <div>
                   <Link href={`/doentes/${doente.id}`} className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
                     {doente.nome}
                   </Link>
-                  <p className="text-xs text-slate-500">Quarto {doente.cama.quarto} · Cama {doente.cama.numero}</p>
+                  <p className="text-xs text-slate-500">Quarto {(doente.cama?.quarto ?? '—')} · Cama {(doente.cama?.numero ?? '—')}</p>
                 </div>
                 <span className="ml-auto text-xs text-slate-500">{meds.length} medicação{meds.length !== 1 ? 'ões' : ''}</span>
               </div>

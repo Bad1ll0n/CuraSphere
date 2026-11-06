@@ -8,6 +8,7 @@
  */
 import { test, expect, request as pwRequest, APIRequestContext } from '@playwright/test';
 import { createHmac } from 'crypto';
+import { reservarJanelaTotp } from './helpers';
 
 const API = process.env['API_URL'] ?? 'http://localhost:3333';
 const PASS = process.env['TEST_PASSWORD'] ?? 'Teste1234!';
@@ -35,13 +36,19 @@ async function login(num: string, clinico: boolean): Promise<{ ctx: APIRequestCo
   expect(r.ok(), `login ${num}: ${r.status()}`).toBeTruthy();
   let body = await r.json();
   if (clinico) {
-    const v = await ctx.post('/v1/auth/mfa/verificar', {
+    const csrfAtual = await csrf(ctx);
+    const verificar = () => ctx.post('/v1/auth/mfa/verificar', {
       data: { mfaChallengeToken: body.mfaChallengeToken, code: totp(TOTP_SECRET) },
-      headers: { 'x-csrf-token': (await csrf(ctx)) ?? '' },
+      headers: { 'x-csrf-token': csrfAtual ?? '' },
     });
+    await reservarJanelaTotp(num, (ms) => new Promise((ok) => setTimeout(ok, ms)));
+    const v = await verificar();
     expect(v.ok(), `mfa ${num}: ${v.status()}`).toBeTruthy();
     body = await v.json();
   }
+  // QA-22: as escritas exigem o token CSRF (cookie + cabeçalho), que só o GET /csrf-token
+  // emite. Sem isto o break-glass recebia 403 "CSRF token em falta".
+  await ctx.get('/v1/csrf-token');
   return { ctx, user: body.utilizador };
 }
 async function post(ctx: APIRequestContext, url: string, data: any) {
@@ -70,7 +77,7 @@ test.describe('Módulos clínicos novos — wiring E2E', () => {
   test('transfusão: pedido + banco + O- (dador universal) aparece nos compatíveis', async () => {
     // O acesso ao doente é por atribuição (o role do chefe é 'enfermeiro'); usa break-glass.
     const bg = await post(chefe.ctx, '/v1/break-glass', { doenteId, motivo: 'Pedido de transfusão — verificação E2E automatizada' });
-    expect([200, 201]).toContain(bg.status());
+    expect([200, 201], `break-glass: ${bg.status()} ${await bg.text()}`).toContain(bg.status());
 
     const pedidoRes = await post(chefe.ctx, `/v1/transfusao/doente/${doenteId}/pedido`, {
       componente: 'concentrado_eritrocitos', numeroUnidades: 1, urgencia: 'rotina',
@@ -97,7 +104,7 @@ test.describe('Módulos clínicos novos — wiring E2E', () => {
   // ── SNS / PEM (e-receita) ──────────────────────────────────────────────────
   test('SNS/PEM: médico emite e-receita (via break-glass) → número PEM sandbox', async () => {
     const bg = await post(medico.ctx, '/v1/break-glass', { doenteId, motivo: 'Emissão de e-receita — verificação E2E automatizada' });
-    expect([200, 201]).toContain(bg.status());
+    expect([200, 201], `break-glass: ${bg.status()} ${await bg.text()}`).toContain(bg.status());
     const emit = await post(medico.ctx, `/v1/sns-pem/receita/doente/${doenteId}`, {
       medicamentos: [{ nome: 'Amoxicilina', dose: '500 mg', via: 'oral', frequencia: '8/8h', quantidade: 21 }],
     });
