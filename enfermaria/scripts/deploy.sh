@@ -90,6 +90,13 @@ esperar_api() {
     sleep 3
   done
   echo ""
+  # OPS-06: o healthcheck do contentor é só liveness. Antes de dar a versão como boa, a API tem
+  # de estar PRONTA: BD acessível, nenhuma migração falhada e trilho de auditoria completo.
+  if ! docker exec curasphere-api wget -qO- http://localhost:3333/v1/health/ready >/dev/null 2>&1; then
+    echo "ERRO: a API está viva mas não pronta (/v1/health/ready):"
+    docker exec curasphere-api wget -qO- http://localhost:3333/v1/health/ready 2>&1 | head -c 600; echo
+    return 1
+  fi
 }
 
 reverter() {

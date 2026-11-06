@@ -4,6 +4,8 @@
 *.sh          text eol=lf
 Dockerfile    text eol=lf
 nginx/*.conf  text eol=lf
+postgres/*.conf text eol=lf
+monitoring/**   text eol=lf
 
 # ARQ-11: o Prisma faz checksum de cada migration.sql — CRLF num checkout em Windows
 # mudava o checksum e o `migrate deploy` recusava migrações já aplicadas.

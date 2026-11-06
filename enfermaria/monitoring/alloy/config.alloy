@@ -1,0 +1,58 @@
+// OPS-07 — recolha dos logs dos contentores do CuraSphere para o Loki.
+// (O Promtail chegou ao fim de vida; o Grafana Alloy é o sucessor.)
+
+discovery.docker "contentores" {
+  host = "unix:///var/run/docker.sock"
+  filter {
+    name   = "name"
+    values = ["curasphere-"]
+  }
+}
+
+// Etiquetas pequenas e estáveis: o serviço (api, web, nginx, db…) e o contentor.
+discovery.relabel "contentores" {
+  targets = discovery.docker.contentores.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/?curasphere-(.*)"
+    target_label  = "servico"
+  }
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/?(.*)"
+    target_label  = "contentor"
+  }
+}
+
+loki.source.docker "contentores" {
+  host          = "unix:///var/run/docker.sock"
+  targets       = discovery.relabel.contentores.output
+  relabel_rules = discovery.relabel.contentores.rules
+  forward_to    = [loki.process.redigir.receiver]
+}
+
+// SEC-21 / OPS-07: última linha de defesa antes de os logs saírem do contentor. A API já
+// redige (pino `redact`) e o nginx já não regista query strings, mas uma mensagem de erro de
+// uma biblioteca pode trazer um token, uma password ou um cabeçalho de autorização.
+loki.process "redigir" {
+  stage.replace {
+    expression = "(?i)(?:authorization|cookie|set-cookie)\"?\\s*[:=]\\s*\"?([^\",}]+)"
+    replace    = "***"
+  }
+  stage.replace {
+    expression = "(?i)\"(?:password|senha|token|accesstoken|refreshtoken|mfachallengetoken|secret|segredo)\"\\s*:\\s*\"([^\"]*)\""
+    replace    = "***"
+  }
+  stage.replace {
+    expression = "(?i)bearer\\s+([A-Za-z0-9._~+/=-]+)"
+    replace    = "***"
+  }
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
