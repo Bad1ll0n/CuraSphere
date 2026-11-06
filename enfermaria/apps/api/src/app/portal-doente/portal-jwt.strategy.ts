@@ -4,10 +4,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { AUD_PORTAL, JWT_ISSUER } from '../auth/token-audiences';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class PortalJwtStrategy extends PassportStrategy(Strategy, 'portal-jwt') {
-  constructor(config: ConfigService) {
+  constructor(config: ConfigService, private readonly prisma: PrismaService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => req?.cookies?.portal_token ?? null,
@@ -26,6 +27,10 @@ export class PortalJwtStrategy extends PassportStrategy(Strategy, 'portal-jwt') 
 
   async validate(payload: { sub: string; doenteId: string; tipo: string }) {
     if (payload.tipo !== 'portal') throw new UnauthorizedException('Token inválido para o portal');
+    // SEC-19: uma conta desactivada (p. ex. revogação do consentimento do portal) deixa de
+    // entrar logo, não só quando o token de 8 h expirar.
+    const conta = await this.prisma.portalDoente.findUnique({ where: { id: payload.sub }, select: { ativo: true, doenteId: true } });
+    if (!conta?.ativo || conta.doenteId !== payload.doenteId) throw new UnauthorizedException('Sessão do portal terminada');
     return { sub: payload.sub, doenteId: payload.doenteId, tipo: 'portal' };
   }
 }

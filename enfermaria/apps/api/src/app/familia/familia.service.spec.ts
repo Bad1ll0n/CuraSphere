@@ -5,6 +5,8 @@ import { hashTokenFamilia } from './token-familia';
 import { PrismaService } from '../prisma/prisma.service';
 
 const mockPrisma = {
+  // SEC-19: consentimento de partilha registado
+  consentimentoTratamento: { findFirst: jest.fn().mockResolvedValue({ decisao: 'consentimento' }), findMany: jest.fn().mockResolvedValue([]) },
   doente: { findUnique: jest.fn() },
   acessoFamiliar: {
     create: jest.fn(),
@@ -53,6 +55,12 @@ describe('FamiliaService', () => {
       expect(data).not.toHaveProperty('accessToken');
       // Nem o hash sai na resposta.
       expect(select).not.toHaveProperty('accessTokenHash');
+    });
+
+    it('SEC-19: sem consentimento de partilha registado, não cria acesso', async () => {
+      mockPrisma.consentimentoTratamento.findFirst.mockResolvedValueOnce(null);
+      await expect(service.criarAcesso('d1', dto, 'med-1')).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.acessoFamiliar.create).not.toHaveBeenCalled();
     });
 
     it('dois acessos nunca recebem o mesmo token', async () => {

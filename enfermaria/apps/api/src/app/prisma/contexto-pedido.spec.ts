@@ -37,6 +37,11 @@ describe('contexto do pedido (SEC-07)', () => {
     expect(r).toEqual({ userId: 'A', tenantId: 'default' });
   });
 
+  it('sessão do portal: sem utilizadorId (a conta do doente não é um utilizador), autoria no nome', async () => {
+    const r = await correr({ ip: '10.0.0.1', headers: {}, user: { sub: 'conta-portal-1', doenteId: 'd1', tipo: 'portal' } });
+    expect(r.userId).toBeNull();
+  });
+
   it('sem sessão, o Bearer forjado não define utilizador nem tenant', async () => {
     const r = await correr({ ip: '10.0.0.1', headers: { authorization: `Bearer ${forjado}` } });
     expect(r).toEqual({ userId: null, tenantId: 'default' });

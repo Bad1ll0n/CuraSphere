@@ -23,6 +23,8 @@ jest.mock('../common/password', () => ({
 import { hashPassword, verifyPassword } from '../common/password';
 
 const mockPrisma = {
+  // SEC-19: consentimento do portal registado
+  consentimentoTratamento: { findFirst: jest.fn().mockResolvedValue({ decisao: 'consentimento' }), findMany: jest.fn().mockResolvedValue([]) },
   doente: { findUnique: jest.fn() },
   portalDoente: {
     findUnique: jest.fn(),
@@ -75,6 +77,12 @@ describe('PortalDoenteService', () => {
       mockPrisma.doente.findUnique.mockResolvedValue(null);
 
       await expect(service.criarAcesso('d1', 'test@test.com', 'senha', 'admin-1')).rejects.toThrow(NotFoundException);
+    });
+
+    it('SEC-19: sem consentimento para o portal, não cria a conta', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true });
+      mockPrisma.consentimentoTratamento.findFirst.mockResolvedValueOnce({ decisao: 'oposicao' });
+      await expect(service.criarAcesso('d1', 'test@test.com', 'senha', 'admin-1')).rejects.toThrow(/consentimento/);
     });
 
     it('lança NotFoundException quando doente está inativo', async () => {

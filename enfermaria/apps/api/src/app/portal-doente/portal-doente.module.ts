@@ -6,9 +6,10 @@ import { AuthModule } from '../auth/auth.module';
 import { StorageModule } from '../common/storage.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { PdfService } from '../common/pdf.service';
+import { ConsentimentosTratamentoModule } from '../consentimentos-tratamento/consentimentos-tratamento.module';
 
 @Module({
-  imports: [AuthModule, StorageModule, PrismaModule],
+  imports: [AuthModule, StorageModule, PrismaModule, ConsentimentosTratamentoModule],
   controllers: [PortalDoenteController],
   providers: [PortalDoenteService, PortalJwtStrategy, PdfService],
 })

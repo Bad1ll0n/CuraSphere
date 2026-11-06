@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { gerarCodigoMarcacao } from './codigo-marcacao';
+import { configJitsi, dadosSala, novaSalaJitsi, tokenJitsi } from '../common/jitsi';
 
 @Injectable()
 export class ConsultasService {
@@ -320,10 +321,15 @@ export class ConsultasService {
     const c = await this.buscar(consultaId);
     if (c.medicoId !== userId) throw new ForbiddenException('Apenas o médico pode iniciar');
     if ((c as any).tipo !== 'teleconsulta') throw new BadRequestException('Consulta não é teleconsulta');
-    const videoRoomId = 'curasphere-' + consultaId.slice(0, 8).toLowerCase();
+    // SEC-16: falha antes de escrever se o servidor de vídeo não estiver configurado.
+    const cfg = configJitsi();
+    // Sala aleatória de 128 bits. Uma chamada já a decorrer mantém a sala; depois de
+    // terminada, um novo início gera outra (o link antigo deixa de servir).
+    const emCurso = (c as any).videoRoomId && !(c as any).videoTerminouEm;
+    const videoRoomId: string = emCurso ? (c as any).videoRoomId : novaSalaJitsi();
     await this.prisma.consulta.update({
       where: { id: consultaId },
-      data: { videoRoomId, videoIniciadaEm: new Date() } as any,
+      data: { videoRoomId, videoIniciadaEm: emCurso ? (c as any).videoIniciadaEm : new Date(), videoTerminouEm: null } as any,
     });
     const portal = await (this.prisma as any).portalDoente.findUnique({ where: { doenteId: c.doenteId ?? '' } });
     if (portal?.ativo) {
@@ -331,8 +337,8 @@ export class ConsultasService {
         .enviarParaUtilizador(portal.id, 'Teleconsulta iniciada', 'O seu médico está à sua espera na videochamada.')
         .catch(() => undefined);
     }
-    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
-    return { videoRoomId, roomUrl: `${server}/${videoRoomId}`, consultaId };
+    const medico = (c as any).medico;
+    return { ...dadosSala(cfg, videoRoomId, tokenJitsi(cfg, videoRoomId, { nome: medico?.nome ?? 'Médico', moderador: true, id: userId })), consultaId };
   }
 
   async terminarVideo(consultaId: string, userId: string) {
@@ -347,12 +353,16 @@ export class ConsultasService {
     return { duracaoMin };
   }
 
-  async dadosVideo(consultaId: string, _userId: string) {
+  async dadosVideo(consultaId: string, userId: string) {
     const c = await this.buscar(consultaId);
+    // SEC-16: só o médico da consulta entra pelo lado do hospital (o doente entra pelo portal).
+    if (c.medicoId !== userId) throw new ForbiddenException('Apenas o médico da consulta pode entrar na videochamada');
     const roomId: string | null = (c as any).videoRoomId ?? null;
     if (!roomId) throw new NotFoundException('Chamada ainda não iniciada');
-    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
-    return { videoRoomId: roomId, roomUrl: `${server}/${roomId}` };
+    if ((c as any).videoTerminouEm) throw new BadRequestException('A videochamada já terminou');
+    const cfg = configJitsi();
+    const medico = (c as any).medico;
+    return dadosSala(cfg, roomId, tokenJitsi(cfg, roomId, { nome: medico?.nome ?? 'Médico', moderador: true, id: userId }));
   }
 
   private async buscar(id: string) {
