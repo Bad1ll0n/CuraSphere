@@ -14,6 +14,7 @@ import { BreakGlassService } from '../break-glass/break-glass.service';
 import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { ultimosSinaisVitais } from '../common/ultimos-registos';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -69,7 +70,9 @@ export class DoenteService {
     if (!restritos.includes(role)) {
       // Admin e outros roles não clínicos: ver internados + ambulatorio (não pendente_cama)
       const whereBase = { tenantId: this.tenantContext.tenantId, ativo: true, estadoRegisto: { not: 'pendente_cama' }, ...searchFilter };
-      const [data, total] = await this.prisma.$transaction([
+      // PERF-19: sem transacção — numa lista não é preciso consistência estrita entre página e total,
+      // e a forma de array retinha ligações `idle in transaction` entre round-trips.
+      const [data, total] = await Promise.all([
         this.prisma.doente.findMany({
           where: whereBase,
           include: { cama: true },
@@ -117,7 +120,9 @@ export class DoenteService {
       };
     }
 
-    const [data, total] = await this.prisma.$transaction([
+    // PERF-19: sem transacção — numa lista não é preciso consistência estrita entre página e total,
+      // e a forma de array retinha ligações `idle in transaction` entre round-trips.
+      const [data, total] = await Promise.all([
       this.prisma.doente.findMany({
         where: whereClinico,
         include: { cama: true },
@@ -891,14 +896,11 @@ export class DoenteService {
         id: true, nome: true, estado: true, diagnosticoPrincipal: true,
         dataAdmissao: true, dataAltaPrevista: true,
         cama: { select: { numero: true, quarto: true, servico: true } },
-        sinaisVitais: {
-          orderBy: { data: 'desc' },
-          take: 1,
-          select: { news2: true, data: true },
-        },
       },
       orderBy: { dataAdmissao: 'desc' },
     });
+    // PERF-03: último sinal vital de cada doente por LATERAL … LIMIT 1 (não o histórico inteiro).
+    const ultimos = await ultimosSinaisVitais(this.prisma, doentes.map((d) => d.id));
 
     const hoje = chaveDiaClinico(new Date());
     return doentes.map(d => ({
@@ -909,8 +911,8 @@ export class DoenteService {
       dataAdmissao: d.dataAdmissao,
       dataAltaPrevista: d.dataAltaPrevista,
       cama: d.cama,
-      news2: d.sinaisVitais[0]?.news2 ?? null,
-      ultimoSinalEm: d.sinaisVitais[0]?.data ?? null,
+      news2: ultimos.get(d.id)?.news2 ?? null,
+      ultimoSinalEm: ultimos.get(d.id)?.data ?? null,
       altaPrevistHoje: d.dataAltaPrevista ? chaveDiaClinico(d.dataAltaPrevista) === hoje : false,
     }));
   }
@@ -923,8 +925,7 @@ export class DoenteService {
         cama: { select: { numero: true, quarto: true } },
         diagnosticoPrincipal: true, estado: true,
       },
-      orderBy: { nome: 'asc' },
-    });
+    }).then((l) => l.sort((a, b) => a.nome.localeCompare(b.nome, 'pt'))); // PERF-04: `nome` está cifrado na BD — ordena-se decifrado
   }
 
   async historico(id: string) {

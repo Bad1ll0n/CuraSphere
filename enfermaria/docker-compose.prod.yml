@@ -187,6 +187,10 @@ services:
     # ─────────────────────────────────────────────────────────────────────────
     environment:
       DATABASE_URL:            "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
+      # PERF-01: pool do `pg` (ver .env.example).
+      DB_POOL_MAX:             ${DB_POOL_MAX:-20}
+      DB_POOL_TIMEOUT_MS:      ${DB_POOL_TIMEOUT_MS:-10000}
+      DB_STATEMENT_TIMEOUT_MS: ${DB_STATEMENT_TIMEOUT_MS:-15000}
       JWT_SECRET:              ${JWT_SECRET:?JWT_SECRET em falta (min. 32 chars) — validado por Joi no arranque}
       JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}

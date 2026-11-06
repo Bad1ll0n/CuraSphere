@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardService } from './dashboard.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
+import { TenantContextService } from '../prisma/tenant-context.service';
 
 const mockPrisma = {
   doente: { count: jest.fn(), findMany: jest.fn(), groupBy: jest.fn() },
@@ -36,6 +38,9 @@ describe('DashboardService', () => {
       providers: [
         DashboardService,
         { provide: PrismaService, useValue: mockPrisma },
+        // PERF-06: cache — o Redis devolve sempre miss nos testes.
+        { provide: RedisService, useValue: { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined) } },
+        { provide: TenantContextService, useValue: { tenantId: 'default' } },
       ],
     }).compile();
 

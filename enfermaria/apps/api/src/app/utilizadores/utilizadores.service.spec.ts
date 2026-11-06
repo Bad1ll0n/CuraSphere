@@ -140,7 +140,9 @@ describe('UtilizadoresService', () => {
         { id: 'u1', nome: 'Ana', role: 'medico', ativo: true },
         { id: 'u2', nome: 'Pedro', role: 'enfermeiro', ativo: true },
       ];
-      mockPrisma.$transaction.mockResolvedValue([utilizadores, 2]);
+      // PERF-19: Promise.all de findMany + count, sem transacção.
+      mockPrisma.utilizador.findMany.mockResolvedValue(utilizadores);
+      mockPrisma.utilizador.count.mockResolvedValue(2);
 
       const resultado = await service.listar(undefined, undefined, 1, 50);
 
@@ -154,17 +156,20 @@ describe('UtilizadoresService', () => {
     });
 
     it('filtra por role quando fornecido', async () => {
-      mockPrisma.$transaction.mockResolvedValue([[{ id: 'u1', role: 'medico' }], 1]);
+      mockPrisma.utilizador.findMany.mockResolvedValue([{ id: 'u1', role: 'medico' }]);
+      mockPrisma.utilizador.count.mockResolvedValue(1);
 
       await service.listar('medico');
 
-      const chamada = mockPrisma.$transaction.mock.calls[0][0];
-      // A primeira query no array deve conter where com role
-      expect(chamada).toBeDefined();
+      expect(mockPrisma.utilizador.findMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: expect.objectContaining({ role: 'medico' }),
+      }));
+      expect(mockPrisma.$transaction).not.toHaveBeenCalled();
     });
 
     it('calcula totalPaginas correctamente', async () => {
-      mockPrisma.$transaction.mockResolvedValue([[], 105]);
+      mockPrisma.utilizador.findMany.mockResolvedValue([]);
+      mockPrisma.utilizador.count.mockResolvedValue(105);
 
       const resultado = await service.listar(undefined, undefined, 1, 50);
 
