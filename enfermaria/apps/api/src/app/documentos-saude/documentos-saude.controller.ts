@@ -9,6 +9,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { DocumentosSaudeService } from './documentos-saude.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
 const TIPOS_PERMITIDOS = [
@@ -30,6 +31,7 @@ async function validarMagicBytes(buffer: Buffer, mimetype: string): Promise<bool
 }
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('documentoSaude')
 @Controller('documentos-saude')
 export class DocumentosSaudeController {
   constructor(private readonly service: DocumentosSaudeService) {}

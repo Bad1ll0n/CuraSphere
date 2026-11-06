@@ -4,8 +4,10 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SepsisService } from './sepsis.service';
 import { AtualizarBundleDto } from './dto/atualizar-bundle.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('alertaSepsis')
 @Controller('sepsis')
 export class SepsisController {
   constructor(private readonly service: SepsisService) {}

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AlergiasService } from './alergias.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },
-  alergia: { findMany: jest.fn(), create: jest.fn(), findUnique: jest.fn(), delete: jest.fn() },
+  alergia: { findMany: jest.fn(), create: jest.fn(), findUnique: jest.fn(), delete: jest.fn(), update: jest.fn() },
 };
 
 describe('AlergiasService', () => {
@@ -46,16 +46,42 @@ describe('AlergiasService', () => {
   });
 
   describe('remover()', () => {
-    it('remove alergia', async () => {
-      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1' });
-      mockPrisma.alergia.delete.mockResolvedValue({ id: 'al-1' });
-      const r = await service.remover('al-1', 'enfermeiro');
-      expect(r.id).toBe('al-1');
+    const MOTIVO = 'Teste de provocação negativo';
+
+    it('marca a alergia como removida, com quem e porquê — nunca a apaga (QA-02)', async () => {
+      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', deletedAt: null });
+      mockPrisma.alergia.update.mockResolvedValue({ id: 'al-1' });
+
+      await service.remover('al-1', 'med-1', 'medico', `  ${MOTIVO}  `);
+
+      expect(mockPrisma.alergia.delete).not.toHaveBeenCalled();
+      expect(mockPrisma.alergia.update).toHaveBeenCalledWith({
+        where: { id: 'al-1' },
+        data: { deletedAt: expect.any(Date), removidaPorId: 'med-1', motivoRemocao: MOTIVO },
+      });
     });
 
-    it('lança NotFoundException quando alergia não existe', async () => {
+    it('só um médico remove uma alergia', async () => {
+      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', deletedAt: null });
+
+      await expect(service.remover('al-1', 'enf-1', 'enfermeiro', MOTIVO)).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.alergia.update).not.toHaveBeenCalled();
+    });
+
+    it('lança NotFoundException quando a alergia não existe ou já foi removida', async () => {
       mockPrisma.alergia.findUnique.mockResolvedValue(null);
-      await expect(service.remover('x', 'enfermeiro')).rejects.toThrow(NotFoundException);
+      await expect(service.remover('x', 'med-1', 'medico', MOTIVO)).rejects.toThrow(NotFoundException);
+
+      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', deletedAt: new Date() });
+      await expect(service.remover('al-1', 'med-1', 'medico', MOTIVO)).rejects.toThrow(NotFoundException);
+    });
+
+    it('a lista não inclui alergias removidas', async () => {
+      mockPrisma.alergia.findMany.mockResolvedValue([]);
+      await service.listar('d1');
+      expect(mockPrisma.alergia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { doenteId: 'd1', deletedAt: null } }),
+      );
     });
   });
 });

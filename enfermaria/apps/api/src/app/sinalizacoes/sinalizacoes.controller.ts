@@ -4,8 +4,10 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SinalizacoesService } from './sinalizacoes.service';
 import { CriarSinalizacaoDto } from './dto/criar-sinalizacao.dto';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
+@AcessoDoentePor('sinalizacaoPreocupante')
 @Controller('sinalizacoes')
 export class SinalizacoesController {
   constructor(private readonly service: SinalizacoesService) {}

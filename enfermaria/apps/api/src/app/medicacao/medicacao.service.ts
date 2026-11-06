@@ -14,8 +14,8 @@ import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { detetarConflitoAlergia } from './alergias.helper';
-
-
+
+
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
@@ -172,7 +172,7 @@ export class MedicacaoService {
 
       // As alergias são SEMPRE consultadas, mesmo com override: sem saber o que se está a
       // ultrapassar não há registo possível do override (era este o defeito BA-03).
-      const alergias = await tx.alergia.findMany({ where: { doenteId: data.doenteId } });
+      const alergias = await tx.alergia.findMany({ where: { doenteId: data.doenteId, deletedAt: null } });
       const conflito = detetarConflitoAlergia(data.nome, alergias);
 
       if (conflito && !data.forcarApesarDeAlergia) {
@@ -309,7 +309,7 @@ export class MedicacaoService {
 
       // 2. Medicamento certo — a medicação existe, está activa e é deste doente.
       //    Alergia reavaliada no acto: a alergia pode ter sido documentada DEPOIS da prescrição.
-      const alergias = await tx.alergia.findMany({ where: { doenteId: medicacao.doenteId } });
+      const alergias = await tx.alergia.findMany({ where: { doenteId: medicacao.doenteId, deletedAt: null } });
       const conflito = detetarConflitoAlergia(medicacao.nome, alergias);
       if (conflito && !medicacao.overrideAlergia) {
         throw new BadRequestException(
@@ -898,7 +898,7 @@ export class MedicacaoService {
     );
 
     // Certo 2 — Medicamento certo: activo e sem alergia por resolver.
-    const alergias = await this.prisma.alergia.findMany({ where: { doenteId: medicacao.doenteId } });
+    const alergias = await this.prisma.alergia.findMany({ where: { doenteId: medicacao.doenteId, deletedAt: null } });
     const conflito = detetarConflitoAlergia(medicacao.nome, alergias);
     if (!medicacao.ativo) {
       certos.push({ certo: CERTO_MEDICAMENTO, estado: 'falha', motivo: 'Medicação foi descontinuada' });

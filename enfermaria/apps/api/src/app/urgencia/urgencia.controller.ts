@@ -11,24 +11,28 @@ import { CompletarPreNotificacaoDto } from './dto/completar-pre-notificacao.dto'
 import { ReTriagemDto } from './dto/re-triagem.dto';
 import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
 import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('urgencia')
 export class UrgenciaController {
   constructor(private readonly service: UrgenciaService) {}
 
+  @AcessoDoenteIsento('entrada na urgência: o doente chega sem atribuição a nenhum profissional')
   @Post('episodio')
   @Roles('enfermeiro')
   registarEntrada(@Body() dto: RegistarEntradaUrgenciaDto, @Request() req: any) {
     return this.service.registarEntrada(dto, req.user.sub);
   }
 
+  @AcessoDoenteIsento('entrada na urgência: o doente chega sem atribuição a nenhum profissional')
   @Post('pre-notificacao')
   @Roles('enfermeiro', 'administrativo', 'medico')
   preNotificar(@Body() dto: PreNotificacaoDto, @Request() req: any) {
     return this.service.preNotificar(dto, req.user.sub);
   }
 
+  @AcessoDoenteIsento('entrada na urgência: o doente chega sem atribuição a nenhum profissional')
   @Patch(':id/completar-pre-notificacao')
   @Roles('enfermeiro', 'administrativo', 'medico')
   completarPreNotificacao(@Param('id') id: string, @Body() dto: CompletarPreNotificacaoDto) {

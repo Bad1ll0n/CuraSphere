@@ -77,7 +77,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
                 <Text style={s.alergiaTipo}>{a.tipo}</Text>
               </View>
               {podeRegistarVitais && (
-                <TouchableOpacity onPress={() => Alert.alert('Remover', `Remover alergia "${a.alergenio}"?`, [{ text: 'Cancelar', style: 'cancel' }, { text: 'Remover', style: 'destructive', onPress: () => onRemoverAlergia(a.id) }])}>
+                <TouchableOpacity onPress={() => onRemoverAlergia(a.id)} accessibilityLabel={`Remover alergia ${a.alergenio}`}>
                   <Text style={{ color: '#ef4444', fontSize: 16, paddingHorizontal: 4 }}>✕</Text>
                 </TouchableOpacity>
               )}

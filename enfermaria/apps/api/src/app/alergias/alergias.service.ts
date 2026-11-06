@@ -11,7 +11,7 @@ export class AlergiasService {
 
   async listar(doenteId: string) {
     return this.prisma.alergia.findMany({
-      where: { doenteId },
+      where: { doenteId, deletedAt: null },
       orderBy: { criadaEm: 'desc' },
     });
   }
@@ -31,10 +31,17 @@ export class AlergiasService {
     });
   }
 
-  async remover(id: string, role: string) {
-    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão para remover alergias');
+  /**
+   * Remoção lógica (QA-02). A alergia deixa de contar nas verificações de prescrição, mas
+   * fica na BD com quem a removeu, quando e porquê — antes era um `delete` sem rasto.
+   */
+  async remover(id: string, utilizadorId: string, role: string, motivo: string) {
+    if (role !== 'medico') throw new ForbiddenException('Só um médico pode remover uma alergia');
     const alergia = await this.prisma.alergia.findUnique({ where: { id } });
-    if (!alergia) throw new NotFoundException('Alergia não encontrada');
-    return this.prisma.alergia.delete({ where: { id } });
+    if (!alergia || alergia.deletedAt) throw new NotFoundException('Alergia não encontrada');
+    return this.prisma.alergia.update({
+      where: { id },
+      data: { deletedAt: new Date(), removidaPorId: utilizadorId, motivoRemocao: motivo.trim() },
+    });
   }
 }
