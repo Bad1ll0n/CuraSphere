@@ -55,23 +55,39 @@ brute-force reiniciam (aceitável).
 ## 3. Backups — operação e verificação
 
 ### 3.1 Automático
-Serviço `backup` no compose de produção: `pg_dump | gzip` diário às 02:00, apaga backups > 30 dias.
+Serviço `backup` no compose de produção, diário às 02:00 (`scripts/backup-all.sh`):
+1. `pg_dump` da base → **cifrado em pipe** (nunca em claro no disco) → `backup_*.sql.gz.age` (ou `.enc`);
+2. `tar` dos uploads (anexos, DICOM, PDFs) → cifrado → `uploads_*.tar.gz.age` (ou `.enc`);
+3. cópia de ambos para `BACKUP_REMOTE` (rclone, `--immutable`), se definido;
+4. retenção local de `RETENCAO_DIAS` (30).
+
+**Cifra (OPS-01)** — obrigatória; sem ela a rotina falha (`scripts/backup-cifra.sh`):
+- **age (recomendado):** `BACKUP_AGE_RECIPIENT=age1…` (chave pública). A chave **privada**
+  (`age-keygen -o curasphere-backup.key`, gerada noutra máquina) vive no cofre, **nunca** no host.
+- **openssl:** `BACKUP_ENCRYPTION_KEY` (`openssl rand -hex 32`), também guardada fora do host.
+- Só em desenvolvimento: `BACKUP_PERMITIR_EM_CLARO=sim`.
 
 ### 3.2 Manual (antes de qualquer operação de risco)
 ```sh
 # a partir da raiz do monorepo, com DB_* no ambiente (ou .env.prod)
-./scripts/backup-db.sh          # → ./backups/backup_YYYYMMDD_HHMMSS.sql.gz
+./scripts/backup-db.sh          # → ./backups/backup_YYYYMMDD_HHMMSS.sql.gz.age (ou .enc)
 ```
 
 ### 3.3 Verificar que os backups são válidos (não assumir)
+Com age, o host de produção **não consegue** verificar o conteúdo (não tem a chave privada) —
+valida só o formato. A verificação a sério é o **ensaio de restauro**, mensal, numa base scratch:
 ```sh
-# integridade do gzip
-gzip -t ./backups/backup_*.sql.gz
-# o backup mais recente não está vazio nem truncado
-ls -lh ./backups/ | tail -3
+BACKUP_AGE_IDENTITY=/cofre/curasphere-backup.key DB_HOST=scratch DB_NAME=ensaio   RESTAURO_NAO_INTERATIVO=sim ./scripts/restore-db.sh
 ```
-**Off-site**: copiar `./backups/` (e os segredos) para uma região/conta diferente — um backup no
-mesmo host que a BD não sobrevive à perda desse host nem a ransomware.
+**Fora do host (OPS-01):** `BACKUP_REMOTE` (ex.: `b2:curasphere-backups`) com o rclone configurado em
+`./backup-remoto/rclone.conf`. Requisitos do destino:
+- outra região/conta/fornecedor;
+- **Object Lock** (modo compliance, retenção ≥ 30 dias) — o ransomware que cifre o host não
+  consegue apagar nem reescrever as cópias;
+- credenciais **só de escrita** (sem delete) no `rclone.conf` do host.
+
+Um backup no mesmo host que a BD não sobrevive à perda desse host nem a ransomware: sem
+`BACKUP_REMOTE` o log da rotina avisa todos os dias.
 
 ---
 
@@ -89,7 +105,8 @@ mesmo host que a BD não sobrevive à perda desse host nem a ransomware.
 ```sh
 # alvo confirmado via DB_HOST/DB_NAME no ambiente
 ./scripts/restore-db.sh                       # usa o backup mais recente em ./backups
-./scripts/restore-db.sh ./backups/backup_20260726_020000.sql.gz   # ou um específico
+./scripts/restore-db.sh ./backups/backup_20260726_020000.sql.gz.age   # ou um específico
+# backups cifrados: BACKUP_AGE_IDENTITY=<chave privada> (age) ou BACKUP_ENCRYPTION_KEY (openssl)
 ```
 
 ### 4.3 Restaurar o armazenamento de objetos
