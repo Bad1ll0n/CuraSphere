@@ -71,6 +71,8 @@ const motivoLabel: Record<string, string> = {
   melhoria: 'Melhoria Clínica',
   transferencia: 'Transferência',
   pedido_proprio: 'Pedido Próprio',
+  alta_voluntaria: 'Alta a pedido',
+  outra: 'Outra',
   obito: 'Óbito',
 };
 

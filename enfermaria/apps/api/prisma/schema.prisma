@@ -1396,6 +1396,9 @@ model SumarioAlta {
   cartaAltaAssinadaPorId String?
   cartaAltaAssinadaEm    DateTime?
   icd10Code              String?
+  // PROD-12: alta dada com requisitos em falta (gates) — só com justificação, que fica aqui.
+  requisitosEmFalta      String[]   @default([])
+  justificacaoRequisitos String?
 
   @@index([doenteId, criadoEm])
   @@map("sumarios_alta")
@@ -2871,12 +2874,94 @@ model EpisodioInternamento {
   movimentos  MovimentoInternamento[]
   sumarioAlta SumarioAlta?
   planoAlta   PlanoAlta?
+  reconciliacaoAlta  ReconciliacaoAltaLinha[]
+  notaAltaEnfermagem NotaAltaEnfermagem?
+  passagensIsbar     PassagemIsbar[]
 
   @@unique([doenteId, numero])
   @@index([doenteId, estado])
   @@index([estado, servico])
   @@index([dataAlta])
   @@map("episodios_internamento")
+}
+
+/**
+ * PROD-12 — reconciliação terapêutica na alta, por linha: cada prescrição activa recebe uma
+ * decisão (manter, alterar, suspender) e podem juntar-se medicamentos novos. A prescrição de
+ * saída é gerada a partir das linhas manter/alterar/nova.
+ */
+model ReconciliacaoAltaLinha {
+  id          String   @id @default(uuid())
+  episodioId  String
+  episodio    EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
+  doenteId    String
+  medicacaoId String?
+  nome        String
+  dose        String?
+  via         String?
+  frequencia  String?
+  decisao     String // 'manter' | 'alterar' | 'suspender' | 'nova'
+  notas       String?
+  criadoPorId String
+  criadoEm    DateTime @default(now())
+
+  @@index([episodioId])
+  @@map("reconciliacao_alta_linhas")
+}
+
+/** PROD-12 — nota de alta de enfermagem para os cuidados de saúde primários / continuidade. */
+model NotaAltaEnfermagem {
+  id            String   @id @default(uuid())
+  episodioId    String   @unique
+  episodio      EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
+  doenteId      String
+  autonomia     String?  @db.Text // autocuidado, mobilidade, dependência (Barthel)
+  necessidades  String?  @db.Text // cuidados que continuam no domicílio/instituição
+  ensinos       String?  @db.Text // ensinos feitos ao doente e ao cuidador
+  dispositivos  String?  @db.Text // cateteres, sondas, estomas… com data de inserção/troca
+  feridas       String?  @db.Text
+  cuidador      String?  // cuidador de referência
+  referenciacao String?  // 'nenhuma' | 'csp' | 'rncci' | 'outra'
+  observacoes   String?  @db.Text
+  autorId       String
+  criadaEm      DateTime @default(now())
+  atualizadaEm  DateTime @updatedAt
+
+  @@index([doenteId])
+  @@map("notas_alta_enfermagem")
+}
+
+/**
+ * UX-22 — passagem de turno por doente, estruturada em ISBAR (DGS): Identificação, Situação,
+ * Background (antecedentes), Avaliação, Recomendações. Pré-preenchida a partir do registo;
+ * quem entrega edita e entrega, quem entra confirma a receção.
+ */
+model PassagemIsbar {
+  id            String    @id @default(uuid())
+  tenantId      String    @default("default")
+  doenteId      String
+  episodioId    String?
+  episodio      EpisodioInternamento? @relation(fields: [episodioId], references: [id], onDelete: SetNull)
+  servico       String?
+  data          String // dia do turno (AAAA-MM-DD)
+  turno         String // 'manha' | 'tarde' | 'noite' — o turno que ENTREGA
+  identificacao String    @db.Text
+  situacao      String    @db.Text
+  antecedentes  String    @db.Text
+  avaliacao     String    @db.Text
+  recomendacoes String    @db.Text
+  estado        String    @default("rascunho") // 'rascunho' | 'entregue' | 'recebida'
+  autorId       String
+  entregueEm    DateTime?
+  recebidaPorId String?
+  recebidaEm    DateTime?
+  criadaEm      DateTime  @default(now())
+  atualizadaEm  DateTime  @updatedAt
+
+  @@unique([doenteId, data, turno])
+  @@index([servico, data, turno])
+  @@index([estado])
+  @@map("passagens_isbar")
 }
 
 /** Mudança de cama ou de serviço dentro do mesmo episódio (PROD-03). */

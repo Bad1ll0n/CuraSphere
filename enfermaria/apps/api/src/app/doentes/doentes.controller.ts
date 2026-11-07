@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res, Header, UseInterceptors, UploadedFile, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuards, Request, Res, Header, UseInterceptors, UploadedFile, ForbiddenException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
@@ -20,12 +20,13 @@ import { CartaAltaService } from './carta-alta.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
-import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
+import { AltaEstruturadaDto, NotaAltaEnfermagemDto } from './dto/alta-estruturada.dto';
 import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 import { idCorrelacaoDoPedido } from '../common/correlacao';
 import { EpisodiosService } from '../episodios/episodios.service';
 import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
+import { AltaService } from './alta.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -36,6 +37,7 @@ export class DoenteController {
     private readonly cartaAlta: CartaAltaService,
     private readonly leituras: AcessoLeituraService,
     private readonly episodios: EpisodiosService,
+    private readonly alta: AltaService,
   ) {}
 
   @Get()
@@ -215,13 +217,6 @@ export class DoenteController {
     return this.doenteService.atualizarEstado(id, dto.estado);
   }
 
-  @Roles('administrativo', 'enfermeiro')
-  @Patch(':id/alta')
-  async darAlta(@Param('id') id: string, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
-    return this.doenteService.darAlta(id, req.user.sub);
-  }
-
   @Roles('medico', 'enfermeiro')
   @Post(':id/nota')
   async adicionarNota(
@@ -263,7 +258,28 @@ export class DoenteController {
     @Request() req: any,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
-    return this.doenteService.altaEstruturada(doenteId, req.user.sub, req.user.role, dto);
+    // PROD-12: a única via de alta (a antiga PATCH /alta saiu: não pedia sumário nem nada).
+    return this.alta.darAlta(doenteId, req.user, dto);
+  }
+
+  /** PROD-12: o que falta para a alta (reconciliação, nota de enfermagem, plano). */
+  @Get(':id/alta/requisitos')
+  async requisitosAlta(@Param('id') id: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    return this.alta.requisitos(id);
+  }
+
+  @Get(':id/nota-alta-enfermagem')
+  async notaAltaEnfermagem(@Param('id') id: string, @Request() req: any) {
+    await this.verificarERegistarLeitura(req, id);
+    return this.alta.notaEnfermagem(id);
+  }
+
+  @Roles('enfermeiro')
+  @Put(':id/nota-alta-enfermagem')
+  async guardarNotaAltaEnfermagem(@Param('id') id: string, @Body() dto: NotaAltaEnfermagemDto, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    return this.alta.guardarNotaEnfermagem(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')

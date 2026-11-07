@@ -13,12 +13,14 @@ import { AiClinicoModule } from '../ai-clinico/ai-clinico.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
 import { BreakGlassModule } from '../break-glass/break-glass.module';
 import { EpisodiosModule } from '../episodios/episodios.module';
+import { AltaService } from './alta.service';
 
 @Module({
   imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule, EpisodiosModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [
     DoenteService,
+    AltaService,
     CartaAltaService,
     PdfService,
     // S-01: global, apesar de declarado aqui — um APP_INTERCEPTOR aplica-se a toda a
