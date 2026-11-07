@@ -31,17 +31,18 @@ test.describe('Mapa de Camas', () => {
     }
   });
 
-  test('clicar numa cama abre detalhes ou opções', async ({ page }) => {
+  // QA-23: procurava um seletor que não existe na página e fazia skip. Agora cria uma cama pela
+  // interface (enfermagem) e confirma que aparece no mapa.
+  test('adicionar uma cama pela interface: aparece no mapa', async ({ page }) => {
+    await loginAs(page, '00015'); // enfermagem: tem a página e pode criar (como na API)
     await page.goto('/camas');
-    await page.waitForLoadState('networkidle');
-    const cama = page.locator('[data-testid*="cama"], .cama-card, .bed-card').first();
-    if ((await cama.count()) === 0) { test.skip(); return; }
-    await cama.click();
-    await page.waitForTimeout(500);
-    const detalhes = page.getByRole('dialog').or(page.getByText(/mudar estado|limpar|transferir/i).first());
-    if ((await detalhes.count()) > 0) {
-      await expect(detalhes.first()).toBeVisible({ timeout: 5000 });
-    }
+    const numero = `E2E-${Date.now().toString().slice(-6)}`;
+    await page.getByRole('button', { name: '+ Adicionar Cama' }).click();
+    await expect(page.getByRole('heading', { name: 'Nova Cama' })).toBeVisible();
+    await page.getByLabel('Número').fill(numero);
+    await page.getByLabel('Quarto').fill('E2E');
+    await page.getByRole('button', { name: 'Criar Cama' }).click();
+    await expect(page.getByText(numero).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('painel de resumo de ocupação existe', async ({ page }) => {
