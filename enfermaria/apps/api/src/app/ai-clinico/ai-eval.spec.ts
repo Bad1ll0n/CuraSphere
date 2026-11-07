@@ -66,7 +66,8 @@ describe('AI eval — guardrails de validação de schema', () => {
 describe('AI eval — symptom checker do portal degrada em segurança', () => {
   it('sem IA disponível, devolve orientação conservadora com disclaimer e sinais de alarme', async () => {
     const svc = new TriagemPortalService();
-    // Sem ANTHROPIC_API_KEY (ou com chave inválida) a chamada falha → fallback seguro.
+    // QA-25: o modelo indisponível é simulado — antes a chamada saía mesmo para a Anthropic.
+    (svc as any).client = { messages: { create: jest.fn().mockRejectedValue(new Error('modelo indisponível')) } };
     const r: any = await svc.orientar({ sintomas: 'dor de cabeça há 2 dias' });
     expect(['marcar_consulta', 'urgencia', 'emergencia']).toContain(r.nivelUrgencia); // nunca "auto_cuidado" no fallback
     expect(r.disclaimer).toMatch(/não substitui/i);

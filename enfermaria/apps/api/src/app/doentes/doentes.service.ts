@@ -219,7 +219,7 @@ export class DoenteService {
     dataNascimento: Date;
     diagnosticoPrincipal: string;
     icd10Code?: string;
-    camaId: string;
+    camaId?: string;
     dataAltaPrevista?: Date;
     administrativoAdmissaoId: string;
     nif?: string;
@@ -230,10 +230,15 @@ export class DoenteService {
     telefone?: string;
   }) {
     const resultado = await this.prisma.$transaction(async (tx) => {
-      const cama = await tx.cama.findUnique({ where: { id: data.camaId } });
-      if (!cama) throw new NotFoundException(`Cama (ID ${data.camaId}) não encontrada`);
-      if (cama.estado !== 'livre' && cama.estado !== 'reservada') {
-        throw new BadRequestException('Cama não está disponível');
+      // QA-18: a cama é opcional (o DTO sempre o disse). Sem ela, a procura com `id: undefined`
+      // rebentava com 500. Um doente admitido sem cama fica `pendente_cama` até lhe ser atribuída
+      // (POST /doentes/:id/atribuir-cama) — visível ao administrativo, não ainda à lista clínica.
+      if (data.camaId) {
+        const cama = await tx.cama.findUnique({ where: { id: data.camaId } });
+        if (!cama) throw new NotFoundException(`Cama (ID ${data.camaId}) não encontrada`);
+        if (cama.estado !== 'livre' && cama.estado !== 'reservada') {
+          throw new BadRequestException('Cama não está disponível');
+        }
       }
 
       if (data.nif) {
@@ -263,20 +268,22 @@ export class DoenteService {
           numeroProcesso,
           diagnosticoPrincipal: data.diagnosticoPrincipal,
           ...(data.icd10Code && { icd10Code: data.icd10Code }),
-          camaId: data.camaId,
+          camaId: data.camaId ?? null,
           // PROD-01: admitido com cama = internado. O default do schema (`pendente_cama`)
           // deixava-o fora da lista clínica, da cozinha e do contador de internados.
-          estadoRegisto: 'internado',
+          estadoRegisto: data.camaId ? 'internado' : 'pendente_cama',
           dataAltaPrevista: data.dataAltaPrevista ? new Date(data.dataAltaPrevista) : undefined,
           administrativoAdmissaoId: data.administrativoAdmissaoId,
         },
         include: { cama: true },
       });
 
-      await tx.cama.update({
-        where: { id: data.camaId },
-        data: { estado: 'ocupada' },
-      });
+      if (data.camaId) {
+        await tx.cama.update({
+          where: { id: data.camaId },
+          data: { estado: 'ocupada' },
+        });
+      }
 
       const temFicha = data.nif || data.numeroSNS || data.morada || data.codigoPostal || data.localidade || data.telefone;
       if (temFicha) {

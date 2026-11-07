@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { loginAs } from './helpers';
+import { loginAs, prepararDoenteClinico } from './helpers';
 
 test.describe('IA — Dashboard Qualidade e Funcionalidades AI', () => {
   test.beforeEach(async ({ page }) => {
@@ -59,23 +59,18 @@ test.describe('IA — Dashboard Qualidade e Funcionalidades AI', () => {
     }
   });
 
-  test('API de AI clínica responde a requests autenticados', async ({ page }) => {
-    const loginResponse = await page.request.post('/v1/auth/login', {
-      data: {
-        numeroFuncionario: process.env['TEST_USER'] ?? '00001',
-        password: process.env['TEST_PASSWORD'] ?? 'Admin1234!',
-      },
-    });
-    if (!loginResponse.ok()) { test.skip(); return; }
-    const { accessToken } = await loginResponse.json();
-
-    // Endpoint de resumo AI — deve responder 200 ou 404 (se sem doentes), nunca 500
-    const aiResponse = await page.request.post('/v1/ai-clinico/resumo', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-      data: { doenteId: '00000000-0000-0000-0000-000000000000' },
-    });
-    expect(aiResponse.status()).not.toBe(500);
-    expect(aiResponse.status()).not.toBe(401);
+  // QA-23: fazia login no WEB (não na API), com a password errada, contra um endpoint que não
+  // existe — e saltava. PROD-19: decisão clínica por IA desligada; produtividade disponível.
+  test('PROD-19: diagnóstico diferencial por IA recusado (403); pesquisa NLQ não', async ({ page }) => {
+    await loginAs(page, '00002');
+    const doenteId = await prepararDoenteClinico(page);
+    const api = process.env['API_URL'] ?? 'http://localhost:3333';
+    const headers = { 'x-csrf-token': (await page.context().cookies()).find((c) => c.name === 'csrf-token')?.value ?? '' };
+    const dd = await page.request.post(`${api}/v1/ai-clinico/${doenteId}/diagnostico-diferencial`, { data: { sintomas: 'febre' }, headers });
+    expect(dd.status()).toBe(403);
+    expect((await dd.json()).message).toMatch(/REGISTO-IA/);
+    const nlq = await page.request.post(`${api}/v1/ai-clinico/nlq`, { data: { query: 'doentes com febre' }, headers });
+    expect(nlq.status()).not.toBe(403); // sem chave do LLM pode falhar, mas nunca pelo registo
   });
 
   test('dashboard qualidade ia-insights rota existe', async ({ page }) => {
