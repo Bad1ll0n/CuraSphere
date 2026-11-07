@@ -19,6 +19,7 @@ import { ProblemasPanel } from './components/problemas-panel';
 import { DispositivosPanel } from './components/dispositivos-panel';
 import { ConsentimentosTratamentoPanel } from './components/consentimentos-tratamento-panel';
 import { AlergiasContactosPanel } from './components/alergias-contactos-panel';
+import { InternamentosPanel } from './components/internamentos-panel';
 import { InterconsultasPanel } from './components/interconsultas-panel';
 import { NotasTurnoPanel } from './components/notas-turno-panel';
 import { TarefasPanel } from './components/tarefas-panel';
@@ -859,6 +860,11 @@ export default function DoenteDetalhe() {
       {/* Notas de turno */}
       <PanelErrorBoundary name="Notas de Turno">
         <NotasTurnoPanel doenteId={id!} utilizador={utilizador} notas={doente.notasTurno} emTurno={emTurno} onRefresh={carregar} />
+      </PanelErrorBoundary>
+
+      {/* PROD-02/PROD-03: internamentos, transferência, alergias de trás por rever */}
+      <PanelErrorBoundary name="Internamentos">
+        <InternamentosPanel doenteId={id!} utilizador={utilizador} onAlterado={carregar} />
       </PanelErrorBoundary>
 
       {/* Alergias + Contactos de Emergência */}

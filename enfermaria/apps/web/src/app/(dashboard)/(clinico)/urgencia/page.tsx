@@ -130,6 +130,10 @@ function UrgenciaPageInner() {
 
   const [etaMap, setEtaMap] = useState<Record<string, number>>({});
   const [modalAtribuir, setModalAtribuir] = useState<string | null>(null);
+  // PROD-03: internar = pedido de cama para um serviço (antes não havia como internar daqui).
+  const [modalInternar, setModalInternar] = useState<string | null>(null);
+  const [servicoDestino, setServicoDestino] = useState('');
+  const [internarIsolamento, setInternarIsolamento] = useState(false);
   const [medicoSelecionadoId, setMedicoSelecionadoId] = useState('');
   const [salaInput, setSalaInput] = useState('');
 
@@ -142,6 +146,16 @@ function UrgenciaPageInner() {
   const dlgNova = useDialogoAcessivel({ aberto: modal, onFechar: () => setModal(false), titulo: 'Nova entrada na urgência' });
   const dlgReTriagem = useDialogoAcessivel({ aberto: !!modalReTriagem, onFechar: () => setModalReTriagem(null), titulo: 'Re-triagem' });
   const dlgAtribuir = useDialogoAcessivel({ aberto: !!modalAtribuir, onFechar: () => setModalAtribuir(null), titulo: 'Atribuir médico e sala' });
+  const dlgInternar = useDialogoAcessivel({ aberto: !!modalInternar, onFechar: () => setModalInternar(null), titulo: 'Internar — pedido de cama' });
+  const { data: servicosCamas = [] } = useQuery({
+    queryKey: ['servicos-camas'],
+    queryFn: async () => {
+      const r = await api.get('/camas');
+      return [...new Set((r.data as any[]).map((c) => c.servico).filter(Boolean))].sort() as string[];
+    },
+    enabled: !!modalInternar,
+    staleTime: 300_000,
+  });
   const dlgAmb = useDialogoAcessivel({ aberto: modalAmb, onFechar: () => setModalAmb(false), titulo: 'Pré-notificação de ambulância' });
 
   const [sseConectado, setSseConectado] = useState(false);
@@ -252,6 +266,14 @@ function UrgenciaPageInner() {
     mutationFn: ({ id, estado }: { id: string; estado: string }) => api.patch(`/urgencia/${id}/estado`, { estado }),
     onSuccess: () => { toast.success('Estado actualizado'); invalidar(); },
     onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar estado'),
+  });
+
+  const mutInternar = useMutation({
+    mutationFn: ({ id }: { id: string }) => api.patch(`/urgencia/${id}/estado`, {
+      estado: 'internado', servicoDestino: servicoDestino.trim(), isolamento: internarIsolamento || undefined,
+    }),
+    onSuccess: () => { toast.success('Pedido de cama enviado'); setModalInternar(null); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao pedir cama'),
   });
 
   const mutCompletar = useMutation({
@@ -601,6 +623,13 @@ function UrgenciaPageInner() {
                               Dar alta
                             </button>
                           )}
+                          {ep.estadoEpisodio === 'em_atendimento' && (
+                            <button onClick={() => { setModalInternar(ep.id); setServicoDestino(''); setInternarIsolamento(false); }}
+                              className="text-xs font-semibold bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors"
+                              style={{ padding: '7px 14px' }}>
+                              Internar
+                            </button>
+                          )}
                           {podeAtribuirMedico && (
                             <button onClick={() => { setModalAtribuir(ep.id); setMedicoSelecionadoId(ep.medicoResponsavel?.id ?? ''); setSalaInput(ep.salaAtendimento ?? ''); }}
                               className="text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg transition-colors"
@@ -728,6 +757,41 @@ function UrgenciaPageInner() {
       )}
 
       {/* Modal: Atribuir Médico + Sala */}
+      {modalInternar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div {...dlgInternar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Internar — pedido de cama</h2>
+              <button aria-label="Fechar" onClick={() => setModalInternar(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <p className="text-sm text-slate-500" style={{ marginBottom: '16px' }}>
+              O doente sai da urgência e fica à espera de cama no serviço escolhido. A gestão de camas atribui-a em Camas → Pedidos.
+            </p>
+            <div style={{ marginBottom: '16px' }}>
+              <label htmlFor="urg-servico-destino" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço de destino *</label>
+              <input id="urg-servico-destino" list="urg-servicos" value={servicoDestino} onChange={e => setServicoDestino(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500" style={{ padding: '10px 14px' }} placeholder="Ex: Medicina Interna" maxLength={80} />
+              <datalist id="urg-servicos">{servicosCamas.map((s) => <option key={s} value={s} />)}</datalist>
+            </div>
+            <label className="flex items-center gap-2 cursor-pointer" style={{ marginBottom: '24px' }}>
+              <input type="checkbox" checked={internarIsolamento} onChange={e => setInternarIsolamento(e.target.checked)} className="w-4 h-4 rounded border-slate-300" />
+              <span className="text-sm text-slate-700">Precisa de quarto de isolamento</span>
+            </label>
+            <div className="flex gap-3">
+              <button onClick={() => setModalInternar(null)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={() => mutInternar.mutate({ id: modalInternar })}
+                disabled={mutInternar.isPending || !servicoDestino.trim()}
+                className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px' }}>
+                {mutInternar.isPending ? 'A enviar...' : 'Pedir cama'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {modalAtribuir && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div {...dlgAtribuir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>

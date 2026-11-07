@@ -15,6 +15,7 @@ import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { abrirEpisodio, fecharEpisodio, ocuparCama } from '../episodios/episodios.core';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -43,6 +44,23 @@ function dadosAntropometria(dto: { sexo?: string; pesoReferenciaKg?: number; pes
     ...(dto.pesoReferenciaKg !== undefined && { pesoReferenciaKg: dto.pesoReferenciaKg, pesoReferenciaEm: agora, pesoReferenciaFonte: dto.pesoReferenciaFonte ?? 'medido' }),
     ...(dto.alturaCm !== undefined && { alturaCm: dto.alturaCm, alturaEm: agora }),
   };
+}
+
+/** PROD-02: mensagem de conflito que diz ao utilizador o que fazer com a pessoa que já existe. */
+async function conflitoPessoaExistente(tx: any, doenteId: string, chave: string) {
+  const d = await tx.doente.findUnique({ where: { id: doenteId }, select: { id: true, ativo: true, numeroProcesso: true } });
+  if (d && !d.ativo) {
+    return new ConflictException({
+      message: `Já existe um doente com ${chave} (processo ${d.numeroProcesso}), com alta. Reinterne-o em vez de criar um registo novo — as alergias e antecedentes continuam no processo.`,
+      errorCode: 'DOENTE_EXISTENTE_REINTERNAR',
+      contexto: { doenteId: d.id },
+    });
+  }
+  return new ConflictException({
+    message: `Já existe um doente com ${chave}${d ? ` (processo ${d.numeroProcesso}), ainda internado ou em registo` : ''}.`,
+    errorCode: 'DOENTE_EXISTENTE',
+    ...(d && { contexto: { doenteId: d.id } }),
+  });
 }
 
 @Injectable()
@@ -255,13 +273,15 @@ export class DoenteService {
         }
       }
 
+      // PROD-02: a mesma pessoa não se cria duas vezes. Se já cá esteve, reinterna-se
+      // (POST /doentes/:id/reinternar) e as alergias e antecedentes continuam com ela.
       if (data.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: data.nif } });
-        if (existenteNif) throw new ConflictException(`Já existe um doente com o NIF ${data.nif}`);
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: data.nif }, select: { doenteId: true } });
+        if (existenteNif) throw await conflitoPessoaExistente(tx, existenteNif.doenteId, `o NIF ${data.nif}`);
       }
       if (data.numeroSNS) {
-        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: data.numeroSNS } });
-        if (existenteSns) throw new ConflictException(`Já existe um doente com o número SNS ${data.numeroSNS}`);
+        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: data.numeroSNS }, select: { doenteId: true } });
+        if (existenteSns) throw await conflitoPessoaExistente(tx, existenteSns.doenteId, `o número SNS ${data.numeroSNS}`);
       }
 
       const ano = new Date().getFullYear();
@@ -294,9 +314,11 @@ export class DoenteService {
       });
 
       if (data.camaId) {
-        await tx.cama.update({
-          where: { id: data.camaId },
-          data: { estado: 'ocupada' },
+        const cama = await ocuparCama(tx, data.camaId);
+        // PROD-02: admitido com cama = início do episódio de internamento.
+        await abrirEpisodio(tx, {
+          doenteId: doente.id, origem: 'admissao', camaId: cama.id, servico: cama.servico,
+          diagnosticoPrincipal: data.diagnosticoPrincipal, icd10Code: data.icd10Code, criadoPorId: data.administrativoAdmissaoId,
         });
       }
 
@@ -315,12 +337,6 @@ export class DoenteService {
           },
         });
       }
-
-      await tx.planoAlta.upsert({
-        where: { doenteId: doente.id },
-        create: { doenteId: doente.id },
-        update: {},
-      });
 
       return doente;
     }, { isolationLevel: 'Serializable' });
@@ -363,26 +379,23 @@ export class DoenteService {
    * `internado`. Até aqui não existia nenhuma operação que o fizesse: o registo rápido
    * dizia "aguarda cama pela equipa clínica", e o doente ficava à espera para sempre.
    */
-  async atribuirCama(doenteId: string, camaId: string) {
+  async atribuirCama(doenteId: string, camaId: string, utilizadorId?: string) {
     return this.prisma.$transaction(async (tx) => {
       const doente = await tx.doente.findUnique({
         where: { id: doenteId },
-        select: { id: true, ativo: true, estadoRegisto: true, camaId: true },
+        select: { id: true, ativo: true, estadoRegisto: true, camaId: true, diagnosticoPrincipal: true, icd10Code: true },
       });
       if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
       if (!doente.ativo || doente.estadoRegisto !== 'pendente_cama' || doente.camaId) {
         throw new BadRequestException('O doente não está a aguardar cama');
       }
-      // Reservar a cama de forma atómica: só passa se ainda estiver livre ou reservada.
-      const reservada = await tx.cama.updateMany({
-        where: { id: camaId, estado: { in: ['livre', 'reservada'] } },
-        data: { estado: 'ocupada' },
+      // Ocupar a cama de forma atómica: só passa se ainda estiver livre (ou reservada sem pedido).
+      const cama = await ocuparCama(tx, camaId);
+      // PROD-02: a cama atribuída abre o episódio de internamento.
+      await abrirEpisodio(tx, {
+        doenteId, origem: 'registo', camaId, servico: cama.servico,
+        diagnosticoPrincipal: doente.diagnosticoPrincipal, icd10Code: doente.icd10Code, criadoPorId: utilizadorId,
       });
-      if (reservada.count !== 1) {
-        const existe = await tx.cama.findUnique({ where: { id: camaId }, select: { id: true } });
-        if (!existe) throw new NotFoundException(`Cama (ID ${camaId}) não encontrada`);
-        throw new BadRequestException('Cama não está disponível');
-      }
       return tx.doente.update({
         where: { id: doenteId },
         data: { camaId, estadoRegisto: 'internado', dataAdmissao: new Date() },
@@ -393,25 +406,21 @@ export class DoenteService {
 
   async darAlta(id: string, administrativoId: string) {
     const doente = await this.buscarPorId(id);
+    if (!doente.ativo) throw new BadRequestException('O doente já teve alta.');
 
     // `Doente.camaId` é `@unique`: se a alta não o limpar, a cama fica presa a um doente
-    // com alta e a próxima `admitir()` naquela cama viola a constraint. Libertar o vínculo
-    // e mudar o estado da cama têm de acontecer na MESMA transacção.
-    const ops: any[] = [
-      this.prisma.doente.update({
+    // com alta e a próxima `admitir()` naquela cama viola a constraint. Libertar o vínculo,
+    // mudar o estado da cama e fechar o episódio (PROD-02) acontecem na MESMA transacção.
+    await this.prisma.$transaction(async (tx) => {
+      await tx.doente.update({
         where: { id },
         data: { ativo: false, dataAlta: new Date(), estado: 'alta_prevista', camaId: null },
-      }),
-    ];
-
-    if (doente.camaId) {
-      ops.push(this.prisma.cama.update({
-        where: { id: doente.camaId },
-        data: { estado: 'em_limpeza' },
-      }));
-    }
-
-    await this.prisma.$transaction(ops, { isolationLevel: 'Serializable' });
+      });
+      if (doente.camaId) {
+        await tx.cama.update({ where: { id: doente.camaId }, data: { estado: 'em_limpeza' } });
+      }
+      await fecharEpisodio(tx, id, { motivoAlta: 'alta', criadoPorId: administrativoId });
+    }, { isolationLevel: 'Serializable' });
 
     // Agendar follow-ups (fire-and-forget)
     this.agendarFollowUps(id, doente.nome).catch((err) =>
@@ -692,11 +701,17 @@ export class DoenteService {
     if (!ROLES_ALTA.includes(role)) throw new ForbiddenException('Sem permissão para dar alta');
 
     const doente = await this.buscarPorId(doenteId);
+    if (!doente.ativo) throw new BadRequestException('O doente já teve alta.');
 
     return this.prisma.$transaction(async (tx) => {
+      // PROD-02: a alta fecha o episódio, e o sumário é DESTE episódio.
+      const episodio = await fecharEpisodio(tx, doenteId, {
+        motivoAlta: body['motivoAlta'] as string, destinoAlta: body['destino'] as string | undefined, criadoPorId,
+      });
       const sumario = await tx.sumarioAlta.create({
         data: {
           doenteId,
+          episodioId: episodio.id,
           criadoPorId,
           motivoAlta:      body['motivoAlta'] as string,
           destino:         body['destino'] as string | undefined,
@@ -737,9 +752,11 @@ export class DoenteService {
     });
   }
 
+  /** O sumário do último internamento (PROD-02: há um por episódio). */
   async getSumarioAlta(doenteId: string) {
-    return this.prisma.sumarioAlta.findUnique({
+    return this.prisma.sumarioAlta.findFirst({
       where: { doenteId },
+      orderBy: { criadoEm: 'desc' },
       include: { criadoPor: { select: { nome: true, role: true } } },
     });
   }

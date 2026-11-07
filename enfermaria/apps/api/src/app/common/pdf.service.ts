@@ -399,7 +399,7 @@ export class PdfService {
       include: {
         medicacoes: { where: { ativo: true }, take: 20 },
         alergias: { where: { deletedAt: null }, take: 10 },
-        sumarioAlta: { include: { criadoPor: { select: { nome: true } } } },
+        sumariosAlta: { orderBy: { criadoEm: 'desc' }, take: 1, include: { criadoPor: { select: { nome: true } } } },
         ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
       },
     });
@@ -407,7 +407,7 @@ export class PdfService {
     if (!doente) throw new Error('Doente não encontrado');
 
     const now = new Date();
-    const sumario = (doente as any).sumarioAlta;
+    const sumario = (doente as any).sumariosAlta?.[0];
     // PROD-11: o PDF só é pedido para cartas assinadas (ver CartaAltaService.garantirAssinada);
     // o rodapé identifica o médico que assinou, não o produto.
     const assinante = sumario?.cartaAltaAssinadaPorId

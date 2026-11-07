@@ -76,7 +76,8 @@ export class PopulationHealthService {
           take: 1,
           select: { news2: true },
         },
-        sumarioAlta: {
+        sumariosAlta: {
+          orderBy: { criadoEm: 'desc' }, take: 1,
           select: { riscReadmissao: true },
         },
       },
@@ -135,7 +136,7 @@ export class PopulationHealthService {
 
     // taxaReadmissao30d — patients with sumarioAlta.riscReadmissao = 'alto'
     const comRiscoAlto = doentes.filter(
-      d => (d.sumarioAlta as any)?.riscReadmissao === 'alto',
+      d => (d.sumariosAlta[0] as any)?.riscReadmissao === 'alto',
     ).length;
     const taxaReadmissao30d = total > 0 ? (comRiscoAlto / total) * 100 : null;
 

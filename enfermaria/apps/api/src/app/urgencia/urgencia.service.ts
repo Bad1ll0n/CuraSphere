@@ -10,6 +10,7 @@ import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
 import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { PedidosCamaService } from '../camas/pedidos-cama.service';
 const ORDEM_TRIAGEM: Record<string, number> = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 };
 
 const SLA_MINUTOS: Record<string, number> = {
@@ -40,6 +41,7 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
     private readonly gateway: EventsGateway,
+    private readonly pedidosCama: PedidosCamaService,
   ) {}
 
   onModuleInit() {
@@ -158,8 +160,25 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  async atualizarEstado(id: string, estado: string) {
-    await this.buscar(id);
+  async atualizarEstado(id: string, estado: string, utilizadorId?: string, internamento?: { servicoDestino?: string; isolamento?: boolean; prioridade?: string }) {
+    const episodio = await this.buscar(id);
+    // PROD-03: "internado" na urgência é um pedido de cama — antes só mudava o estado e o
+    // doente ficava sem cama nem registo de internamento. O serviço de destino é obrigatório.
+    if (estado === 'internado' && episodio.estadoEpisodio !== 'internado') {
+      if (!internamento?.servicoDestino?.trim()) throw new BadRequestException('Indique o serviço de destino do internamento.');
+      if (!utilizadorId) throw new BadRequestException('Utilizador em falta.');
+      await this.pedidosCama.criar({
+        doenteId: episodio.doenteId ?? undefined,
+        episodioUrgenciaId: id,
+        nomeTemporario: episodio.doenteId ? undefined : (episodio.nomeTemporario ?? 'Doente da urgência'),
+        origem: 'urgencia',
+        servicoDestino: internamento.servicoDestino.trim(),
+        sexo: (episodio as any).sexo && (episodio as any).sexo !== 'desconhecido' ? (episodio as any).sexo : undefined,
+        isolamento: internamento.isolamento,
+        prioridade: internamento.prioridade ?? (['vermelho', 'laranja'].includes(String(episodio.triagem)) ? 'urgente' : 'normal'),
+        diagnostico: episodio.queixaPrincipal,
+      }, utilizadorId);
+    }
     const dataSaida = ['alta_urgencia', 'internado', 'transferido'].includes(estado) ? new Date() : undefined;
     const iniciadoAtendimentoEm = estado === 'em_atendimento' ? new Date() : undefined;
     const result = await this.prisma.episodioUrgencia.update({
