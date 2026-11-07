@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { avaliarEscala } from '../common/escalas-motor';
 
 @Injectable()
 export class EscalasClinicasService {
@@ -10,24 +11,20 @@ export class EscalasClinicasService {
   }, registadoPorId: string) {
     await this.buscarDoente(doenteId);
 
-    let pontuacao = dto.pontuacao;
-    let classificacao = dto.classificacao;
-
-    if (dto.tipo === 'Glasgow') {
-      const { ocular, verbal, motor } = dto.valores as { ocular: number; verbal: number; motor: number };
-      const total = Number(ocular) + Number(verbal) + Number(motor);
-      pontuacao = total;
-      classificacao = total <= 8 ? 'grave' : total <= 12 ? 'moderado' : 'ligeiro';
-    }
+    // PROD-08: itens validados e pontuação/classificação calculadas AQUI. O que o cliente
+    // envia em `pontuacao`/`classificacao` é ignorado (vinha do browser e podia não bater
+    // certo com os itens; a mobile podia calcular de outra forma).
+    const r = avaliarEscala(dto.tipo, dto.valores);
 
     return this.prisma.escalaClinica.create({
       data: {
         doenteId,
         registadoPorId,
         tipo: dto.tipo as any,
-        valores: dto.valores,
-        pontuacao,
-        classificacao,
+        valores: r.valores,
+        pontuacao: r.pontuacao,
+        classificacao: r.classificacao,
+        versao: r.versao,
         observacoes: dto.observacoes,
       },
       include: { registadoPor: { select: { id: true, nome: true, role: true, subRole: true } } },

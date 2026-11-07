@@ -23,6 +23,16 @@ export class PediatriaService {
       if (ultimo?.peso != null) {
         pesoKg = ultimo.peso;
         fontePeso = `último registo (${ultimo.data.toISOString().slice(0, 10)})`;
+      } else {
+        // PROD-22: sem peso nos sinais vitais, o peso de referência do doente.
+        const d = await this.prisma.doente.findUnique({
+          where: { id: dto.doenteId },
+          select: { pesoReferenciaKg: true, pesoReferenciaEm: true, pesoReferenciaFonte: true },
+        });
+        if (d?.pesoReferenciaKg != null) {
+          pesoKg = d.pesoReferenciaKg;
+          fontePeso = `peso de referência (${d.pesoReferenciaFonte ?? 'medido'}${d.pesoReferenciaEm ? ', ' + d.pesoReferenciaEm.toISOString().slice(0, 10) : ''})`;
+        }
       }
     }
     if (pesoKg == null) {

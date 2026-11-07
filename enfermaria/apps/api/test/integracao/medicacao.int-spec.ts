@@ -72,4 +72,21 @@ describe('integração: medicação segura', () => {
     expect((await adm()).status).toBe(409);
     expect((await adm({ justificacaoSOS: 'Vómitos incoercíveis, médico informado' })).status).toBe(201);
   });
+
+  it('sem avaliação de alergias não se prescreve; "sem alergias conhecidas" desbloqueia (PROD-06)', async () => {
+    const novo = await criarDoenteInternado(ctx, ['00003', '00013']);
+    const med = await entrar(ctx, '00013');
+    const prescrever = () => med.pedido('POST', '/medicacao/prescrever', { doenteId: novo.doenteId, nome: 'Omeprazol 20mg', dose: '20 mg', via: 'oral', frequencia: '1x/dia' });
+    expect((await med.pedido('GET', `/alergias/${novo.doenteId}/avaliacao`)).json.estado).toBe('nao_avaliado');
+    const bloqueada = await prescrever();
+    expect(bloqueada.status).toBe(409);
+    expect(bloqueada.json.message).toMatch(/ALERGIAS_NAO_AVALIADAS/);
+    const enf = await entrar(ctx, '00003');
+    const av = await enf.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' });
+    expect([av.status, av.json.estado]).toEqual([201, 'sem_alergias_conhecidas']);
+    expect((await prescrever()).status).toBe(201);
+    // Com uma alergia registada já não se pode dizer "sem alergias".
+    expect((await med.pedido('POST', `/alergias/${novo.doenteId}`, { alergenio: 'Látex', tipo: 'latex', severidade: 'leve' })).status).toBe(201);
+    expect((await enf.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(409);
+  });
 });

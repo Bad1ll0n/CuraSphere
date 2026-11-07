@@ -40,6 +40,7 @@ describe('integração: cifragem e auditoria', () => {
 
   it('nenhuma resposta clínica devolve PII por decifrar (relações aninhadas, QA-04)', async () => {
     const med = await entrar(ctx, '00011');
+    expect((await med.pedido('POST', `/alergias/${d.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(201);
     await med.pedido('POST', '/medicacao/prescrever', { doenteId: d.doenteId, nome: 'Amoxicilina 500mg', dose: '500 mg', via: 'oral', frequencia: '3x/dia' });
     const far = await entrar(ctx, '00006');
     for (const [s, rota] of [[med, `/medicacao/doente/${d.doenteId}`], [far, '/medicacao/pendentes-validacao'], [med, `/doentes/${d.doenteId}`]] as const) {

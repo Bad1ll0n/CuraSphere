@@ -280,6 +280,20 @@ model Doente {
   deletedAt            DateTime?
   fotoUrl              String?
 
+  // PROD-22: sexo (valores do RNU) e antropometria de referência — sem eles não há TFG
+  // correcta, dose por kg/superfície corporal, cama por sexo nem Patient.gender no FHIR.
+  sexo                 String? // 'masculino' | 'feminino' | 'indeterminado'
+  pesoReferenciaKg     Float?
+  pesoReferenciaEm     DateTime?
+  pesoReferenciaFonte  String? // 'medido' | 'referido' | 'estimado'
+  alturaCm             Float?
+  alturaEm             DateTime?
+
+  // PROD-06: "lista vazia" não é "sem alergias". O estado diz se alguém perguntou.
+  avaliacaoAlergias      String    @default("nao_avaliado") // 'nao_avaliado' | 'sem_alergias_conhecidas' | 'com_alergias'
+  avaliacaoAlergiasEm    DateTime?
+  avaliacaoAlergiasPorId String?
+
   camaId String? @unique
   cama   Cama?   @relation(fields: [camaId], references: [id], onDelete: SetNull)
 
@@ -553,6 +567,7 @@ model EscalaClinica {
   classificacao  String?
   observacoes    String?
   registadaEm    DateTime          @default(now())
+  versao         String? // PROD-08: pontuação e classificação calculadas no servidor
 
   @@index([doenteId, tipo])
   @@map("escalas_clinicas")
@@ -720,6 +735,8 @@ model RegistoMedicacao {
   motivoNaoAdmin     String?
   // QA-08: SOS administrado antes do intervalo mínimo (ou acima do máximo diário) — porquê.
   justificacaoSOS    String? @db.VarChar(500)
+  // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada até este momento.
+  reavaliarDorAte    DateTime?
   deletedAt          DateTime?
 
   medicacaoId       String
@@ -866,6 +883,11 @@ model SinalVital {
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)
   origem                 String?  @default("manual") // 'manual' | 'monitor' (proveniência do registo)
+  // PROD-09: dor como 5.º sinal vital (Circular Normativa DGS 09/DGCG/2003).
+  dor                    Int?
+  escalaDor              String? // 'numerica' | 'eva' | 'faces' | 'painad' | 'cpot' | 'flacc'
+  // PROD-10: quando reavaliar, segundo o NEWS2 deste registo (fixado no momento do registo).
+  proximaAvaliacaoEm     DateTime?
 
   @@index([doenteId, data])
   @@map("sinais_vitais")
@@ -1241,6 +1263,15 @@ model Alergia {
   severidade    String
   notas         String?
   criadaEm      DateTime  @default(now())
+  // PROD-06: codificação (substância activa/DCI ou classe farmacológica do catálogo interno;
+  // 'livre' quando não é reconhecida), reacção, certeza, fonte e verificação.
+  codigo        String?
+  sistemaCodigo String? // 'dci' | 'classe' | 'livre'
+  reacao        String?
+  certeza       String? // 'suspeita' | 'confirmada'
+  fonte         String? // 'doente' | 'familia' | 'processo' | 'observada'
+  verificadaEm  DateTime?
+  verificadaPorId String?
   // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
   // mas fica o registo de quem a removeu e porquê.
   deletedAt     DateTime?
@@ -1316,6 +1347,10 @@ model AvaliacaoRisco {
   registadoPorId String
   registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadaEm       DateTime   @default(now())
+  // PROD-08: versão da escala e dos pontos de corte usados nesta avaliação.
+  versao             String?
+  // PROD-10: reavaliação programada.
+  proximaAvaliacaoEm DateTime?
 
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é

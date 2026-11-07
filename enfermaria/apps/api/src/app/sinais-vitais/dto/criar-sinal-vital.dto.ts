@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsEnum, IsBoolean, IsInt, Min, Max, IsISO8601 } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsEnum, IsBoolean, IsInt, Min, Max, IsISO8601, IsIn } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -110,4 +110,18 @@ export class CriarSinalVitalDto {
   @IsISO8601()
   @IsOptional()
   medidoEm?: string;
+
+  // PROD-09: dor como 5.º sinal vital. O limite depende da escala (CPOT vai até 8).
+  @ApiPropertyOptional({ description: 'Intensidade da dor (0–10; CPOT 0–8)' })
+  @IsInt()
+  @Min(0)
+  @Max(10)
+  @IsOptional()
+  @Type(() => Number)
+  dor?: number;
+
+  @ApiPropertyOptional({ enum: ['numerica', 'eva', 'faces', 'painad', 'cpot', 'flacc'] })
+  @IsIn(['numerica', 'eva', 'faces', 'painad', 'cpot', 'flacc'])
+  @IsOptional()
+  escalaDor?: string;
 }

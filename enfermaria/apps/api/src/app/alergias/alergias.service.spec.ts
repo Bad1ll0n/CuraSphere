@@ -3,10 +3,12 @@ import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AlergiasService } from './alergias.service';
 import { PrismaService } from '../prisma/prisma.service';
 
-const mockPrisma = {
-  doente: { findUnique: jest.fn() },
-  alergia: { findMany: jest.fn(), create: jest.fn(), findUnique: jest.fn(), delete: jest.fn(), update: jest.fn() },
+const mockPrisma: any = {
+  doente: { findUnique: jest.fn(), update: jest.fn() },
+  alergia: { findMany: jest.fn(), create: jest.fn(), findUnique: jest.fn(), delete: jest.fn(), update: jest.fn(), count: jest.fn() },
 };
+// $transaction: aceita a forma em array e a forma com função.
+mockPrisma.$transaction = jest.fn((x: any) => (Array.isArray(x) ? Promise.all(x) : x(mockPrisma)));
 
 describe('AlergiasService', () => {
   let service: AlergiasService;
@@ -37,6 +39,13 @@ describe('AlergiasService', () => {
       mockPrisma.alergia.create.mockResolvedValue({ id: 'al-1', alergenio: 'Penicilina' });
       const r = await service.criar('d1', 'enfermeiro', { alergenio: 'Penicilina', tipo: 'medicamento', severidade: 'grave' });
       expect(r.alergenio).toBe('Penicilina');
+      // PROD-06: o alergénio fica codificado e o doente passa a "com alergias".
+      expect(mockPrisma.alergia.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ sistemaCodigo: expect.any(String) }),
+      }));
+      expect(mockPrisma.doente.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: 'd1' }, data: expect.objectContaining({ avaliacaoAlergias: 'com_alergias' }),
+      }));
     });
 
     it('lança NotFoundException quando doente não existe', async () => {
@@ -49,8 +58,9 @@ describe('AlergiasService', () => {
     const MOTIVO = 'Teste de provocação negativo';
 
     it('marca a alergia como removida, com quem e porquê — nunca a apaga (QA-02)', async () => {
-      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', deletedAt: null });
+      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', doenteId: 'd1', deletedAt: null });
       mockPrisma.alergia.update.mockResolvedValue({ id: 'al-1' });
+      mockPrisma.alergia.count.mockResolvedValue(0);
 
       await service.remover('al-1', 'med-1', 'medico', `  ${MOTIVO}  `);
 
