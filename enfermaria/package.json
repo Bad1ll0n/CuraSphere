@@ -90,7 +90,7 @@
     "@nestjs/common": "^12.3.3",
     "@nestjs/core": "^12.3.3",
     "@nestjs/platform-express": "^12.3.3",
-    "axios": "^1.20.0",
+    "axios": "^1.21.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "expo": "~54.0.0",
