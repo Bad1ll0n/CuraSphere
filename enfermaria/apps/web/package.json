@@ -34,7 +34,7 @@
     "@storybook/nextjs-vite": "^10.6.5",
     "@storybook/react": "^10.6.5",
     "@tailwindcss/forms": "^0.5.11",
-    "eslint-plugin-jsx-a11y": "6.10.1",
+    "eslint-plugin-jsx-a11y": "6.10.2",
     "storybook": "^10.6.5",
     "tailwindcss": "^4.2.2",
     "vite": "^6.4.5"
