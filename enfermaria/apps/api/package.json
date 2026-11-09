@@ -111,7 +111,7 @@
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.10.1",
     "@prisma/client-runtime-utils": "^7.10.1",
-    "@sentry/node": "^11.10.0",
+    "@sentry/node": "^11.11.0",
     "@simplewebauthn/server": "^13.3.1",
     "@socket.io/redis-adapter": "^8.3.0",
     "@types/compression": "^1.8.1",
