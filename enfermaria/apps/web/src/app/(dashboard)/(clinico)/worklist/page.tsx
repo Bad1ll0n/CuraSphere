@@ -140,7 +140,7 @@ export default function WorklistPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '28px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '28px' }}>
         {[
           { label: 'Solicitados', value: counts.solicitado, cor: 'blue' },
           { label: 'Em progresso', value: counts.em_progresso, cor: 'amber' },

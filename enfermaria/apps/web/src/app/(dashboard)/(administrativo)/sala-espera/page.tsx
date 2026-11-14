@@ -175,7 +175,7 @@ export default function SalaEsperaPage() {
 
       {/* Stats */}
       {stats && (
-        <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '28px' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '28px' }}>
           {[
             { label: 'A aguardar', value: stats.aguardando, cor: 'text-amber-600', bg: 'bg-amber-50' },
             { label: 'Em atendimento', value: stats.em_atendimento, cor: 'text-green-600', bg: 'bg-green-50' },

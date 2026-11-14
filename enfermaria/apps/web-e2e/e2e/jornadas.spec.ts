@@ -16,7 +16,7 @@ test.describe('Jornadas clínicas', () => {
   test('sinais vitais críticos → NEWS2 calculado e assinalado na ficha', async ({ page }) => {
     await loginAs(page, '00015'); // enfermeira chefe
     const doenteId = await prepararDoenteClinico(page);
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#vitais`);
     await page.getByRole('button', { name: 'Registar sinais vitais' }).click();
     await expect(page.getByRole('heading', { name: 'Registar Sinais Vitais' })).toBeVisible();
     // Doente a deteriorar: hipotenso, taquicárdico, febril, dessaturado e taquipneico.
@@ -36,7 +36,7 @@ test.describe('Jornadas clínicas', () => {
     });
     expect([201, 409]).toContain(r.status()); // 409 se já registada numa corrida anterior
 
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#medicacao`);
     await page.getByRole('button', { name: 'Prescrever medicação' }).click();
     await expect(page.getByRole('heading', { name: 'Prescrever Medicação' })).toBeVisible();
     await page.getByPlaceholder('Ex: Paracetamol').fill('Ben-u-ron');
@@ -135,7 +135,9 @@ test.describe('Jornadas clínicas', () => {
     });
     expect(bg.ok()).toBeTruthy();
     await page.goto(`/doentes/${doenteId}`);
-    await page.getByRole('button', { name: 'Dar Alta' }).click();
+    // UX-13: as acções secundárias estão em "Mais ações".
+    await page.getByRole('button', { name: /Mais ações/ }).click();
+    await page.getByRole('menuitem', { name: 'Dar Alta' }).click();
     await expect(page.getByRole('list', { name: 'Requisitos da alta' })).toContainText('Nota de alta de enfermagem', { timeout: 10000 });
     const resumo = page.getByPlaceholder(/Descreva o internamento|A gerar resumo/);
     await expect(resumo).toBeEnabled({ timeout: 20000 });
@@ -168,7 +170,7 @@ test.describe('Jornadas clínicas', () => {
     const av = await page.request.post(`${API}/v1/alergias/${doenteId}/avaliacao`, { data: { estado: 'sem_alergias_conhecidas' }, headers: { 'x-csrf-token': await csrf(page) } });
     expect([av.status(), await av.text()]).toEqual([201, expect.any(String)]);
 
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#medicacao`);
     const prescrever = async () => {
       await page.getByRole('button', { name: 'Prescrever medicação' }).click();
       const nome = page.getByPlaceholder('Ex: Paracetamol');

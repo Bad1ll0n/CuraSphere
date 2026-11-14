@@ -300,6 +300,12 @@ model Doente {
   avaliacaoAlergiasEm    DateTime?
   avaliacaoAlergiasPorId String?
 
+  // UX-29: decisão de não reanimar — visível na faixa de identificação. Só o médico a regista.
+  decisaoNaoReanimar      Boolean   @default(false)
+  decisaoNaoReanimarEm    DateTime?
+  decisaoNaoReanimarPorId String?
+  decisaoNaoReanimarNotas String?   @db.VarChar(1000)
+
   camaId String? @unique
   cama   Cama?   @relation(fields: [camaId], references: [id], onDelete: SetNull)
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { Utilizador } from '@org/shared';
 import api from './api';
+import { destinoInicial } from '@/app/(dashboard)/nav-data';
 import {
   startAuthentication,
   startRegistration,
@@ -68,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (data.passwordExpiradoAviso) {
       setPasswordAviso({ ativo: true, diasRestantes: data.diasRestantesSenha });
     }
-    router.push('/');
+    router.push(destinoInicial(data.utilizador));
     return { mfaPendente: false };
   };
 
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     setUtilizador(data.utilizador);
-    router.push('/');
+    router.push(destinoInicial(data.utilizador));
   };
 
   const loginPasskey = async (numeroFuncionario?: string) => {
@@ -89,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const response = await startAuthentication({ optionsJSON: options });
     const { data } = await api.post('/auth/webauthn/auth/verify', { numeroFuncionario, response });
     setUtilizador(data.utilizador);
-    router.push('/');
+    router.push(destinoInicial(data.utilizador));
   };
 
   const registerPasskey = async (nome?: string) => {

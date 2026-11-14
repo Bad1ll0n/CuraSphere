@@ -31,6 +31,8 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
+let ultimoMotivoBreakGlass: { motivo: string; em: number } | null = null;
+
 api.interceptors.response.use(
   (res) => res,
   async (err) => {
@@ -39,9 +41,14 @@ api.interceptors.response.use(
       err.response?.status === 403 &&
       (data?.errorCode === 'BREAK_GLASS_REQUIRED' || data?.message?.includes('break_glass'));
     if (isBreakGlass && !err.config?._breakGlass) {
-      const motivo = window.prompt(
+      // Uma ficha faz vários pedidos ao mesmo tempo (dados, faixa de identificação, painéis): a
+      // justificação dada no primeiro serve para os outros durante uns segundos, em vez de abrir
+      // um pedido de justificação por cada um (os que ficavam sem resposta deixavam a ficha a falhar).
+      const recente = ultimoMotivoBreakGlass && Date.now() - ultimoMotivoBreakGlass.em < 10_000 ? ultimoMotivoBreakGlass.motivo : null;
+      const motivo = recente ?? window.prompt(
         `Acesso break-glass requerido.\nEste doente pertence a outro serviço.\n\nJustifique o acesso (mín. 20 caracteres):`,
       );
+      if (!recente && motivo && motivo.trim().length >= 20) ultimoMotivoBreakGlass = { motivo, em: Date.now() };
       if (motivo && motivo.trim().length >= 20) {
         err.config._breakGlass = true;
         // Headers HTTP só aceitam ISO-8859-1 — texto livre (acentos, travessões, aspas curvas) tem de ser codificado

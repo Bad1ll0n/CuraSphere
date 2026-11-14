@@ -11,7 +11,7 @@ test.describe('Notas Clínicas', () => {
   test.beforeEach(async ({ page }) => {
     await loginAs(page, '00012'); // médico (cardiologista) — distinto dos outros specs
     doenteId ??= await prepararDoenteClinico(page);
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#notas`); // UX-29: separador 'Notas'
     await page.waitForLoadState('networkidle');
   });
 

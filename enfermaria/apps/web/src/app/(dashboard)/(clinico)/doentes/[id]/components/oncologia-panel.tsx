@@ -292,7 +292,7 @@ function CriarPlanoForm(p: FormProps) {
       </div>
       <div className="text-xs font-medium text-slate-500" style={{ marginBottom: '6px' }}>Fármacos</div>
       {p.farmacos.map((f, i) => (
-        <div key={i} className="grid grid-cols-3 gap-2" style={{ marginBottom: '6px' }}>
+        <div key={i} className="grid grid-cols-1 sm:grid-cols-3 gap-2" style={{ marginBottom: '6px' }}>
           <input value={f.nome} onChange={(e) => atualizar(i, 'nome', e.target.value)} placeholder="Nome"
             aria-label={`Fármaco ${i + 1} nome`} className="border border-slate-200 rounded-lg px-3 py-2 text-sm" />
           <input value={f.mgPorM2} onChange={(e) => atualizar(i, 'mgPorM2', e.target.value)} type="number" placeholder="mg/m²"

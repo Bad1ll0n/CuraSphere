@@ -136,7 +136,7 @@ export default function PedidosTIPage() {
 
       {/* Estatísticas (só TI) */}
       {isTI && (
-        <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
           {[
             { key: 'pendente',  label: 'Pendentes',  cor: 'text-amber-600', bg: 'bg-amber-50',  border: 'border-amber-100' },
             { key: 'em_curso',  label: 'Em Curso',   cor: 'text-blue-600',  bg: 'bg-blue-50',   border: 'border-blue-100' },
@@ -235,7 +235,7 @@ export default function PedidosTIPage() {
                   <div className="border-t border-slate-100" style={{ padding: '20px 24px' }}>
                     <p className="text-sm text-slate-600" style={{ marginBottom: '16px' }}>{p.descricao}</p>
 
-                    <div className="grid grid-cols-3 gap-4" style={{ marginBottom: isTI ? '20px' : '0' }}>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: isTI ? '20px' : '0' }}>
                       <div>
                         <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500" style={{ marginBottom: '4px' }}>Criado por</p>
                         <p className="text-sm text-slate-700">{p.criadoPor.nome}</p>

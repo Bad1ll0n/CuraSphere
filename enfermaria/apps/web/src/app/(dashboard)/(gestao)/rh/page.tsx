@@ -56,7 +56,7 @@ export default function RhDashboard() {
       ) : dados ? (
         <>
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '32px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '32px' }}>
             <StatCard label="Total de Staff Ativo" value={dados.totalStaff} cor="slate" href="/rh/pessoal" />
             <StatCard label="Ausências a Aprovar" value={dados.ausenciasPendentes} cor="amber" href="/rh/ausencias?estado=pendente" />
             <StatCard label="Em Ausência Hoje" value={dados.ausenciasAtivas} cor="blue" href="/rh/ausencias?estado=aprovada" />
