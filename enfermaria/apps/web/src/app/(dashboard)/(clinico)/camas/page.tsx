@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
@@ -52,7 +53,9 @@ export default function CamasPagina() {
   const dlgQr = useDialogoAcessivel({ aberto: !!qrCama?.doente, onFechar: () => setQrCama(null), titulo: 'Código QR do doente' });
 
   const podeGerir = ['administrativo', 'enfermeiro'].includes(utilizador?.role ?? '');
-  const podeCriar = utilizador?.role === 'administrativo';
+  // O botão só aparecia ao administrativo, que não tem esta página (nav-data: médico e enfermagem)
+  // — ninguém o via. Mesmos papéis que a API (POST /camas: enfermeiro, administrativo).
+  const podeCriar = ['enfermeiro', 'administrativo'].includes(utilizador?.role ?? '');
 
   const [sseConectado, setSseConectado] = useState(false);
 
@@ -303,15 +306,11 @@ export default function CamasPagina() {
             </div>
             <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{qrCama.doente.nome}</p>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>
-            {/* QR gerado com API pública */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?data=${qrCama.doente.id}&size=200x200&margin=10`}
-              alt="QR Code do doente"
-              width={200}
-              height={200}
-              style={{ margin: '0 auto 16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
-            />
+            {/* Gerado no browser. Antes era uma <img> de api.qrserver.com com o id do doente no URL:
+                cada abertura enviava a um terceiro (fora do RGPD do hospital) o id e o IP do posto. */}
+            <div style={{ margin: '0 auto 16px', width: 'fit-content', padding: '10px', background: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <QRCode value={qrCama.doente.id} size={180} aria-label="QR Code do doente" />
+            </div>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Aponta a câmara da app mobile para aceder à ficha do doente</p>
             <button
               onClick={() => window.print()}

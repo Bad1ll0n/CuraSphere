@@ -119,6 +119,20 @@
         "dependsOn": [
           "prisma-generate"
         ]
+      },
+      "test-integracao": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "jest -c jest.integracao.config.js",
+          "cwd": "apps/api",
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules"
+          }
+        },
+        "dependsOn": [
+          "prisma-generate"
+        ],
+        "cache": false
       }
     },
     "tags": [

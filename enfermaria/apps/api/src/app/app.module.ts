@@ -72,7 +72,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
     LoggerModule.forRoot({
       pinoHttp: {
         genReqId: gerarIdCorrelacao, // OPS-07: validado e devolvido em X-Correlation-Id
-        level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
+        // LOG_LEVEL ajusta sem rebuild (ex.: `silent` nos testes de integração, `debug` num incidente).
+        level: process.env['LOG_LEVEL'] ?? (process.env['NODE_ENV'] === 'production' ? 'info' : 'debug'),
         // pino's pretty-print transport spawns a worker thread that does its own
         // require.resolve('pino-pretty') — this doesn't work once the app is
         // bundled into a single file (webpack build, Docker image), where it

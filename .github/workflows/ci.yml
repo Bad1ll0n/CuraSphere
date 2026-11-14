@@ -154,6 +154,16 @@ jobs:
           REDIS_URL: redis://localhost:6379/1
           NODE_ENV: test
 
+      # ── Testes de integração (BLOQUEANTE) ──────────────────────────────────
+      # QA-20: a app REAL (AppModule, guards e interceptors globais, cifragem, triggers de
+      # auditoria) contra uma BD real, por HTTP: matriz de acesso, cifra na BD, autoria e
+      # imutabilidade da auditoria, 5 certos, portal. A BD é criada de raiz no serviço
+      # postgres deste job (migrate deploy + triggers + seed das personas).
+      - name: Testes de integração (api, BD real)
+        run: pnpm exec nx run @org/api:test-integracao
+        env:
+          DATABASE_URL_INTEGRACAO: postgresql://postgres:postgres@localhost:5432/enfermaria_integracao
+
       # ── Testes unitários da web (BLOQUEANTE) ───────────────────────────────
       # Verde desde 2026-11 (10 suites, 69 testes); saiu do job `quality`.
       - name: Unit tests (web)

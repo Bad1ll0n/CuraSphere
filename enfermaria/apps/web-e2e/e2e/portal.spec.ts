@@ -18,15 +18,10 @@ test.describe('Portal do Doente', () => {
   });
 
   test('portal login redireciona para dashboard do portal após autenticação', async ({ page }) => {
-    // This test requires a test portal patient account
-    const email = process.env['PORTAL_TEST_EMAIL'];
-    const password = process.env['PORTAL_TEST_PASSWORD'];
-
-    if (!email || !password) {
-      // Skip when env vars not set in CI — documented requirement
-      test.skip();
-      return;
-    }
+    // QA-23: fazia skip sem as variáveis de ambiente — a seed de teste já cria esta conta
+    // (seed-test-users.ts: doente de teste, com consentimento do portal registado).
+    const email = process.env['PORTAL_TEST_EMAIL'] ?? 'doente.teste@curasphere.local';
+    const password = process.env['PORTAL_TEST_PASSWORD'] ?? 'Teste1234!';
 
     await page.goto('/portal/login');
     await page.getByPlaceholder(/email/i).fill(email);
@@ -35,6 +30,10 @@ test.describe('Portal do Doente', () => {
 
     await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 10000 });
     await expect(page).not.toHaveURL(/\/login/);
+    // SEC-19: o doente vê e gere os seus consentimentos.
+    await page.goto('/portal/consentimentos');
+    await expect(page.getByRole('heading', { name: 'Os Meus Consentimentos' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('Conta no portal')).toBeVisible();
   });
 
   test('rota /portal/exportar existe e requer autenticação', async ({ page }) => {
