@@ -117,6 +117,9 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   const [svNotas, setSvNotas] = useState('');
   const [svAvpu, setSvAvpu] = useState('A');
   const [svO2Suplementar, setSvO2Suplementar] = useState(false);
+  // PROD-09: dor como 5.º sinal vital.
+  const [svDor, setSvDor] = useState('');
+  const [svEscalaDor, setSvEscalaDor] = useState('numerica');
   const [svErrors, setSvErrors] = useState<Record<string, string>>({});
   const [salvando, setSalvando] = useState(false);
   const [baseline, setBaseline] = useState<any>(null);
@@ -154,8 +157,13 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
     { key: 'freqResp', label: 'Freq. Resp. (rpm)', val: svFreqResp, set: setSvFreqResp, ph: '16', min: 5, max: 60 },
   ] as const;
 
+  const maxDor = svEscalaDor === 'cpot' ? 8 : 10;
   const validarSV = (): boolean => {
     const erros: Record<string, string> = {};
+    if (svDor !== '') {
+      const n = Number(svDor);
+      if (!Number.isInteger(n) || n < 0 || n > maxDor) erros['dor'] = `Deve estar entre 0 e ${maxDor}`;
+    }
     svItens.forEach(({ key, val, min, max }) => {
       if (!val) return;
       const n = Number(val);
@@ -181,7 +189,10 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
         notas: svNotas || undefined,
         avpu: svAvpu || undefined,
         o2Suplementar: svO2Suplementar || undefined,
+        dor:       svDor !== '' ? parseInt(svDor) : undefined,
+        escalaDor: svDor !== '' ? svEscalaDor : undefined,
       });
+      setSvDor('');
       toast.success('Sinais vitais registados');
       setModalSinalVital(false);
       carregarSinaisVitais();
@@ -338,6 +349,18 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
               </div>
             )}
 
+            {/* PROD-10: quando volta a ser devida a próxima observação (segundo o NEWS2). */}
+            {sinaisVitais[0]?.proximaAvaliacaoEm && (() => {
+              const devida = new Date(sinaisVitais[0].proximaAvaliacaoEm);
+              const atrasada = devida.getTime() < Date.now();
+              return (
+                <p className={`text-xs font-semibold rounded-lg ${atrasada ? 'bg-red-50 text-red-700' : 'bg-slate-50 text-slate-600'}`} style={{ padding: '8px 12px', marginBottom: '12px' }} role={atrasada ? 'alert' : undefined}>
+                  {atrasada ? 'Observação em atraso — devida às ' : 'Próxima observação devida às '}
+                  {devida.toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                </p>
+              );
+            })()}
+
             {/* Tabela */}
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -349,6 +372,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                     <th scope="col" className="text-center pb-2">Temp ºC</th>
                     <th scope="col" className="text-center pb-2">SpO₂ %</th>
                     <th scope="col" className="text-center pb-2">FR</th>
+                    <th scope="col" className="text-center pb-2">Dor</th>
                     <th scope="col" className="text-center pb-2">NEWS2</th>
                     <th scope="col" className="text-left pb-2">Registado por</th>
                   </tr>
@@ -367,6 +391,10 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                         <td className={`py-2.5 text-center font-semibold ${tempCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
                         <td className={`py-2.5 text-center font-semibold ${spO2Crit ? 'text-red-600' : 'text-slate-700'}`}>{sv.saturacaoO2 != null ? `${sv.saturacaoO2}%` : '—'}</td>
                         <td className="py-2.5 text-center text-slate-600">{sv.frequenciaRespiratoria ?? '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${sv.dor != null && (sv.escalaDor === 'cpot' ? sv.dor > 2 : sv.dor >= 7) ? 'text-red-600' : 'text-slate-700'}`}
+                            title={sv.escalaDor ?? undefined}>
+                          {sv.dor != null ? `${sv.dor}/${sv.escalaDor === 'cpot' ? 8 : 10}` : '—'}
+                        </td>
                         <td className="py-2.5 text-center">
                           {sv.news2 != null ? (
                             <span className={`text-xs font-bold rounded-md badge-pad py-0.5 ${sv.news2 >= 7 ? 'bg-red-100 text-red-700' : sv.news2 >= 5 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
@@ -498,6 +526,26 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 <option value="V">V — Voice (Responde à voz)</option>
                 <option value="P">P — Pain (Responde à dor)</option>
                 <option value="U">U — Unresponsive (Sem resposta)</option>
+              </select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
+            <FormField label={`Dor (0–${maxDor})`} error={svErrors['dor']}>
+              <input id="fsinaisvi-dor" type="number" min={0} max={maxDor} aria-label="Intensidade da dor" value={svDor}
+                onChange={(e) => { setSvDor(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n['dor']; return n; }); }}
+                placeholder="0"
+                className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${svErrors['dor'] ? 'border-red-400' : 'border-slate-200'}`}
+                style={{ padding: '8px 12px' }} />
+            </FormField>
+            <div>
+              <label htmlFor="fsinaisvi-escala-dor" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Escala de dor</label>
+              <select id="fsinaisvi-escala-dor" value={svEscalaDor} onChange={(e) => setSvEscalaDor(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
+                <option value="numerica">Numérica (0–10)</option>
+                <option value="eva">EVA (0–10)</option>
+                <option value="faces">Faces Wong-Baker (0–10)</option>
+                <option value="painad">PAINAD — demência (0–10)</option>
+                <option value="cpot">CPOT — não comunicante (0–8)</option>
+                <option value="flacc">FLACC — criança/não verbal (0–10)</option>
               </select>
             </div>
           </div>

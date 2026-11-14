@@ -13,6 +13,7 @@ import {
   type News2Parametro,
 } from '../common/news2.helper';
 import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
+import { ESCALAS_DOR, proximaAvaliacaoSinaisVitais } from '../common/vigilancia';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -35,6 +36,9 @@ export interface CriarSinalVitalDto {
   vasopressores?: boolean;
   /** Instante da medição (ISO 8601). Ver o tratamento em `_processarVital`. */
   medidoEm?: string;
+  /** PROD-09: intensidade da dor e escala usada. */
+  dor?: number;
+  escalaDor?: string;
 }
 
 interface CriticoIndividual {
@@ -121,8 +125,18 @@ export class SinaisVitaisService {
   }
 
   private async _processarVital(doenteId: string, registadoPorId: string, dto: CriarSinalVitalDto, origem: 'manual' | 'monitor') {
-    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
+    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, include: { cama: { select: { servico: true } } } });
     if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+
+    // PROD-09: a escala decide o limite (CPOT 0–8); dor sem escala é a escala numérica.
+    if (dto.escalaDor && dto.dor == null) throw new BadRequestException('Indique a intensidade da dor para a escala escolhida.');
+    if (dto.dor != null) {
+      const escala = ESCALAS_DOR[dto.escalaDor ?? 'numerica'];
+      if (dto.dor < escala.min || dto.dor > escala.max) {
+        throw new BadRequestException(`Dor ${dto.dor} fora da ${escala.descricao}.`);
+      }
+      dto.escalaDor = dto.escalaDor ?? 'numerica';
+    }
 
     const detalheNews2 = calcularNEWS2Detalhado(dto);
     const news2 = detalheNews2.score;
@@ -167,10 +181,29 @@ export class SinaisVitaisService {
       }
     }
 
+    // PROD-10: a próxima observação devida, fixada agora segundo o NEWS2 deste registo.
+    data.proximaAvaliacaoEm = proximaAvaliacaoSinaisVitais(
+      { data: data.data ?? new Date(), news2, news2Completo: detalheNews2.completo, news2ParametroIsolado3: detalheNews2.parametroIsoladoTres },
+      (doente as any).cama?.servico,
+    );
+
     const registo = await this.prisma.sinalVital.create({
       data,
       include: { registadoPor: { select: { id: true, nome: true } } },
     });
+
+    // PROD-09: dor intensa (≥ 7) pede intervenção e reavaliação.
+    if (dto.dor != null && dto.dor >= 7 && dto.escalaDor !== 'cpot') {
+      await this._emitirAlerta(
+        doenteId, 'dor_intensa', `Dor intensa — ${doente.nome}`,
+        `Dor ${dto.dor}/10 (${ESCALAS_DOR[dto.escalaDor ?? 'numerica'].descricao}). Intervir e reavaliar.`, 3,
+      );
+    } else if (dto.dor != null && dto.escalaDor === 'cpot' && dto.dor > 2) {
+      await this._emitirAlerta(
+        doenteId, 'dor_intensa', `Dor provável (CPOT) — ${doente.nome}`,
+        `CPOT ${dto.dor}/8 (> 2 indica dor). Intervir e reavaliar.`, 3,
+      );
+    }
 
     // Alertas por valores individuais críticos
     const criticos = detetar(dto);

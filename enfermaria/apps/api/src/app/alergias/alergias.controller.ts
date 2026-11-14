@@ -3,7 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AlergiasService } from './alergias.service';
-import { CriarAlergiaDto } from './dto/criar-alergia.dto';
+import { CriarAlergiaDto, AvaliacaoAlergiasDto } from './dto/criar-alergia.dto';
 import { RemoverAlergiaDto } from './dto/remover-alergia.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 
@@ -18,10 +18,22 @@ export class AlergiasController {
     return this.service.listar(doenteId);
   }
 
+  @Get(':doenteId/avaliacao')
+  avaliacao(@Param('doenteId') doenteId: string) {
+    return this.service.avaliacao(doenteId);
+  }
+
+  // PROD-06: "perguntámos e o doente não tem alergias conhecidas".
+  @Roles('medico', 'enfermeiro')
+  @Post(':doenteId/avaliacao')
+  registarAvaliacao(@Param('doenteId') doenteId: string, @Body() _dto: AvaliacaoAlergiasDto, @Request() req: any) {
+    return this.service.registarSemAlergias(doenteId, req.user.sub, req.user.role);
+  }
+
   @Roles('medico', 'enfermeiro')
   @Post(':doenteId')
   criar(@Param('doenteId') doenteId: string, @Body() dto: CriarAlergiaDto, @Request() req: any) {
-    return this.service.criar(doenteId, req.user.role, dto);
+    return this.service.criar(doenteId, req.user.role, dto, req.user.sub);
   }
 
   // Retirar uma alergia é uma decisão médica (QA-02): faz desaparecer a barreira contra uma
