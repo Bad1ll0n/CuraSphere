@@ -146,4 +146,46 @@ test.describe('Jornadas clínicas', () => {
     await page.getByRole('button', { name: 'Confirmar Alta' }).click();
     await expect(page).toHaveURL(/\/doentes$/, { timeout: 15000 });
   });
+  test('prescrição a partir do catálogo; a mesma substância outra vez pede justificação (PROD-05)', async ({ page }) => {
+    const adm = await pwRequest.newContext({ baseURL: API });
+    await adm.get('/v1/csrf-token');
+    await adm.post('/v1/auth/login', { data: { numeroFuncionario: '00007', password: 'Teste1234!' } });
+    await adm.get('/v1/csrf-token');
+    const h = { 'x-csrf-token': (await adm.storageState()).cookies.find((c) => c.name === 'csrf-token')?.value ?? '' };
+    const marca = Date.now().toString().slice(-6);
+    const cama = await adm.post('/v1/camas', { data: { numero: `CT-${marca}`, quarto: `CT${marca}`, servico: `CAT-${marca}` }, headers: h });
+    const admitido = await adm.post('/v1/doentes/admitir', {
+      data: { nome: `Doente Catálogo ${marca}`, dataNascimento: '1960-06-06', diagnosticoPrincipal: 'Úlcera péptica', camaId: (await cama.json()).id },
+      headers: h,
+    });
+    const doenteId = (await admitido.json()).id;
+    await adm.dispose();
+
+    await loginAs(page, '00012');
+    await page.goto('/dashboard');
+    const hh = { 'x-csrf-token': await csrf(page) };
+    expect((await page.request.post(`${API}/v1/break-glass`, { data: { doenteId, motivo: 'Validação E2E da prescrição por catálogo' }, headers: hh })).ok()).toBeTruthy();
+    const av = await page.request.post(`${API}/v1/alergias/${doenteId}/avaliacao`, { data: { estado: 'sem_alergias_conhecidas' }, headers: { 'x-csrf-token': await csrf(page) } });
+    expect([av.status(), await av.text()]).toEqual([201, expect.any(String)]);
+
+    await page.goto(`/doentes/${doenteId}`);
+    const prescrever = async () => {
+      await page.getByRole('button', { name: 'Prescrever medicação' }).click();
+      const nome = page.getByPlaceholder('Ex: Paracetamol');
+      await nome.fill('Omeprazol');
+      await expect(page.locator('#catalogo-sugestoes option')).not.toHaveCount(0, { timeout: 10000 });
+      await nome.fill('Omeprazol 20 mg — Cápsula gastrorresistente, oral');
+      await expect(page.getByText('No catálogo: Omeprazol · ATC A02BC01')).toBeVisible();
+      await page.getByPlaceholder('Ex: 500mg').first().fill('20 mg');
+      await page.locator('#fmedicaca-2').selectOption('oral');
+      await page.locator('#fmedicaca-3').selectOption('1x/dia');
+      await page.getByRole('button', { name: 'Prescrever', exact: true }).click();
+    };
+    await prescrever();
+    await expect(page.getByText('Prescrição guardada')).toBeVisible({ timeout: 10000 });
+
+    await prescrever();
+    await expect(page.getByText(/DUPLICACAO: Omeprazol já está prescrito/)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: 'Prescrever com justificação' })).toBeVisible();
+  });
 });

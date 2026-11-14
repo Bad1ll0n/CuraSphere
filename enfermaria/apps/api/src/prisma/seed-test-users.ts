@@ -12,6 +12,8 @@ import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
 import { gerarTokenFamilia, hashTokenFamilia } from '../app/familia/token-familia';
 import { abrirEpisodiosEmFalta } from './episodios-seed';
+import { gravarItensCatalogo, ItemCatalogo } from '../app/catalogo/catalogo-nacional';
+import amostraCatalogo from '../app/catalogo/catalogo-amostra.json';
 
 try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
@@ -288,6 +290,8 @@ async function main() {
   console.log('  Gerar código válido: cd apps/api && node -e "require(\'otplib\').generate({secret:\'' + TOTP_SECRET_TESTE + '\'}).then(c=>console.log(c))"');
   // PROD-02: os doentes internados do seed ficam com o seu episódio de internamento.
   await abrirEpisodiosEmFalta(prisma);
+  // PROD-05: amostra do catálogo nacional (a prescrição liga-se a ele por DCI).
+  await gravarItensCatalogo(prisma, amostraCatalogo.itens as ItemCatalogo[], 'amostra', amostraCatalogo.versao);
   console.log('\n  PORTAL DO DOENTE:');
   console.log(`  Email: doente.teste@curasphere.local  /  Password: ${PASSWORD}`);
   console.log('\n  ACESSO FAMÍLIA (link directo, sem login):');

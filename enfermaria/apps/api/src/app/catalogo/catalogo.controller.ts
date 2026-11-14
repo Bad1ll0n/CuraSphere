@@ -16,6 +16,19 @@ export class CatalogoController {
     return this.catalogoService.listar(search);
   }
 
+  /** PROD-05: origem e versão do catálogo (INFARMED, amostra ou local). */
+  @Get('fonte')
+  fonte() {
+    return this.catalogoService.fonte();
+  }
+
+  /** PROD-05: carrega a amostra de arranque (idempotente). O ficheiro oficial usa scripts/importar-catalogo.ts. */
+  @Roles('farmaceutico')
+  @Post('importar-amostra')
+  importarAmostra() {
+    return this.catalogoService.importarAmostra();
+  }
+
   @Roles('farmaceutico', 'administrativo')
   @Post()
   criar(@Body() dto: CriarCatalogoItemDto) {
