@@ -23,6 +23,12 @@ export class CamasService {
     return this.eventos$.asObservable();
   }
 
+  /** Para quem muda camas fora deste serviço (pedidos de cama, transferências, admissão). */
+  async invalidarCache() {
+    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    this.emit('camas_alteradas', {});
+  }
+
   private emit(type: string, payload: unknown) {
     this.eventos$.next({ type, data: JSON.stringify(payload) });
   }
@@ -33,7 +39,8 @@ export class CamasService {
 
     const result = await this.prisma.cama.findMany({
       where: { tenantId: this.tenantContext.tenantId },
-      include: { doente: { select: { id: true, nome: true, estado: true, diagnosticoPrincipal: true } } },
+      // PROD-03: sexo, isolamento e alta prevista do doente para alocar a cama certa.
+      include: { doente: { select: { id: true, nome: true, estado: true, diagnosticoPrincipal: true, sexo: true, emIsolamento: true, dataAltaPrevista: true } } },
       orderBy: [{ quarto: 'asc' }, { numero: 'asc' }],
     });
 
@@ -41,7 +48,7 @@ export class CamasService {
     return result;
   }
 
-  async criar(data: { numero: string; quarto: string }) {
+  async criar(data: { numero: string; quarto: string; servico?: string; sexo?: string | null; isolamento?: boolean; especialidade?: string }) {
     const existe = await this.prisma.cama.findUnique({ where: { numero: data.numero } });
     if (existe) throw new ConflictException('Número de cama já existe');
 
@@ -61,6 +68,23 @@ export class CamasService {
     });
     await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
     this.emit('cama_atualizada', result);
+    return result;
+  }
+
+  /** PROD-03: atributos reais da cama (sexo da enfermaria, isolamento, especialidade, serviço). */
+  async atualizarAtributos(id: string, dto: { sexo?: string | null; isolamento?: boolean; especialidade?: string; servico?: string }) {
+    const cama = await this.prisma.cama.findUnique({ where: { id } });
+    if (!cama) throw new NotFoundException(`Cama (ID ${id}) não encontrada`);
+    const result = await this.prisma.cama.update({
+      where: { id },
+      data: {
+        ...(dto.sexo !== undefined && { sexo: dto.sexo }),
+        ...(dto.isolamento !== undefined && { isolamento: dto.isolamento }),
+        ...(dto.especialidade !== undefined && { especialidade: dto.especialidade || null }),
+        ...(dto.servico !== undefined && { servico: dto.servico || null }),
+      },
+    });
+    await this.invalidarCache();
     return result;
   }
 
@@ -95,7 +119,16 @@ export class CamasService {
       this.prisma.cama.count({ where: { estado: 'reservada' } }),
     ]);
 
-    const result = { total, ocupadas, livres, emLimpeza, reservadas };
+    // PROD-03: altas previstas para hoje e amanhã — as camas que vão ficar livres.
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    const amanha = new Date(hoje.getTime() + 86_400_000);
+    const depois = new Date(hoje.getTime() + 2 * 86_400_000);
+    const [altasPrevistasHoje, altasPrevistasAmanha, pedidosEmEspera] = await Promise.all([
+      this.prisma.doente.count({ where: { ativo: true, camaId: { not: null }, dataAltaPrevista: { lt: amanha } } }),
+      this.prisma.doente.count({ where: { ativo: true, camaId: { not: null }, dataAltaPrevista: { gte: amanha, lt: depois } } }),
+      this.prisma.pedidoCama.count({ where: { estado: { in: ['pedido', 'atribuida'] } } }),
+    ]);
+    const result = { total, ocupadas, livres, emLimpeza, reservadas, altasPrevistasHoje, altasPrevistasAmanha, pedidosEmEspera };
     await this.redis.set(KEY_OCUPACAO, result, CACHE_TTL);
     return result;
   }

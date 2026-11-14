@@ -69,6 +69,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       : undefined;
 
     const customErrorCode = typeof rawMessage === 'object' ? (rawMessage as any).errorCode : undefined;
+    // Dados que o cliente precisa para resolver o erro (ex.: o id do doente a reinternar).
+    const contexto = typeof rawMessage === 'object' && (rawMessage as any).contexto && typeof (rawMessage as any).contexto === 'object'
+      ? (rawMessage as any).contexto : undefined;
     const errorCode = HTTP_CODE_MAP[status] ?? 'UNKNOWN_ERROR';
 
     if (status >= 500) {
@@ -93,6 +96,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (errors) body.errors = errors;
     if (customErrorCode) body.errorCode = customErrorCode;
+    if (contexto && status < 500) body.contexto = contexto;
 
     response.status(status).json(body);
   }

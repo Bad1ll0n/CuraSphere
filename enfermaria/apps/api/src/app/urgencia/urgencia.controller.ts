@@ -83,8 +83,14 @@ export class UrgenciaController {
 
   @Patch(':id/estado')
   @Roles('enfermeiro', 'medico', 'administrativo')
-  atualizarEstado(@Param('id') id: string, @Body('estado') estado: string) {
-    return this.service.atualizarEstado(id, estado);
+  atualizarEstado(
+    @Param('id') id: string,
+    @Body('estado') estado: string,
+    @Body('servicoDestino') servicoDestino: string | undefined,
+    @Body('isolamento') isolamento: boolean | undefined,
+    @Request() req: any,
+  ) {
+    return this.service.atualizarEstado(id, estado, req.user?.sub, { servicoDestino, isolamento });
   }
 
   @Patch(':id/atribuir-medico')

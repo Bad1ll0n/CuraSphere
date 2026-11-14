@@ -16,9 +16,11 @@ export type EstadoCartaAlta = (typeof ESTADOS_CARTA_ALTA)[number];
 export class CartaAltaService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /** O sumário do último internamento (PROD-02: há um por episódio). */
   private async sumario(doenteId: string) {
-    const s = await this.prisma.sumarioAlta.findUnique({
+    const s = await this.prisma.sumarioAlta.findFirst({
       where: { doenteId },
+      orderBy: { criadoEm: 'desc' },
       select: { id: true, cartaAlta: true, cartaAltaEstado: true },
     });
     if (!s) throw new NotFoundException('Sumário de alta não encontrado');
@@ -32,7 +34,7 @@ export class CartaAltaService {
       throw new ConflictException('A carta já está assinada e não pode ser alterada.');
     }
     return this.prisma.sumarioAlta.update({
-      where: { doenteId },
+      where: { id: s.id },
       data: {
         cartaAlta: texto,
         cartaAltaEstado: 'revista',
@@ -55,12 +57,12 @@ export class CartaAltaService {
 
     // Condicional ao estado: dois pedidos concorrentes não assinam duas vezes.
     const r = await this.prisma.sumarioAlta.updateMany({
-      where: { doenteId, cartaAltaEstado: 'revista' },
+      where: { id: s.id, cartaAltaEstado: 'revista' },
       data: { cartaAltaEstado: 'assinada', cartaAltaAssinadaPorId: utilizadorId, cartaAltaAssinadaEm: new Date() },
     });
     if (r.count !== 1) throw new ConflictException('A carta mudou entretanto. Recarregue e tente de novo.');
     return this.prisma.sumarioAlta.findUnique({
-      where: { doenteId },
+      where: { id: s.id },
       select: { cartaAltaEstado: true, cartaAltaAssinadaEm: true, cartaAltaAssinadaPorId: true },
     });
   }
