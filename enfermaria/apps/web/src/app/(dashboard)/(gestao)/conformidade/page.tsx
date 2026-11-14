@@ -139,7 +139,7 @@ export default function ConformidadePage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
             <div className="bg-blue-50 border border-blue-100 rounded-2xl" style={{ padding: '18px 20px' }}>
               <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide">Acessos a Dados (30 dias)</p>
               <p className="text-2xl font-bold text-blue-700" style={{ marginTop: '4px' }}>{data?.totalAcessos30dias ?? 0}</p>

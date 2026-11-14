@@ -111,6 +111,18 @@ export function DraggableDashboard({ widgets, cols = 12, rowHeight = 120 }: Drag
   const visibleWidgets = widgets.filter(w => isVisible(w.id, saved));
   const visibleLayout: Layout = layout.filter(l => visibleWidgets.some(w => w.id === l.i));
 
+  // UX-14: no telemóvel a grelha de 12 colunas espremia os widgets em 2 colunas de ~150 px;
+  // abaixo de 640 px empilham-se pela ordem do layout (a personalização fica para ecrãs maiores).
+  if (width < 640) {
+    const pos = (id: string) => layout.find((l) => l.i === id);
+    const ordenados = [...visibleWidgets].sort((a, b) => ((pos(a.id)?.y ?? 0) - (pos(b.id)?.y ?? 0)) || ((pos(a.id)?.x ?? 0) - (pos(b.id)?.x ?? 0)));
+    return (
+      <div ref={containerRef} className="flex flex-col gap-4" style={{ width: '100%' }}>
+        {ordenados.map((w) => <div key={w.id}>{w.component}</div>)}
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} style={{ width: '100%' }}>
       {/* Toolbar */}

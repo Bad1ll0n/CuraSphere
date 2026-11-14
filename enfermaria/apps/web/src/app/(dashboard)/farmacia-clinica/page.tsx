@@ -311,7 +311,7 @@ export default function FarmaciaPage() {
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Medicação em Casa</label>
               {medsCasa.map((m, i) => (
-                <div key={i} className="grid grid-cols-3 gap-2" style={{ marginBottom: '6px' }}>
+                <div key={i} className="grid grid-cols-1 sm:grid-cols-3 gap-2" style={{ marginBottom: '6px' }}>
                   <input id="fpage-1" value={m.nome} onChange={e => { const n = [...medsCasa]; n[i].nome = e.target.value; setMedsCasa(n); }}
                     placeholder="Nome" className="border border-slate-200 rounded-xl text-sm focus:outline-none" style={{ padding: '7px 10px' }} />
                   <input value={m.dose} onChange={e => { const n = [...medsCasa]; n[i].dose = e.target.value; setMedsCasa(n); }}

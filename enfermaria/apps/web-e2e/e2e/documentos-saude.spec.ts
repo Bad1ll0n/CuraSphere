@@ -11,7 +11,7 @@ test.describe('Documentos de Saúde', () => {
   test.beforeEach(async ({ page }) => {
     await loginAs(page, '00002'); // médico: pode carregar documentos
     doenteId ??= await prepararDoenteClinico(page);
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#exames`); // UX-29: separador 'Exames e documentos'
     await page.waitForLoadState('networkidle');
   });
 

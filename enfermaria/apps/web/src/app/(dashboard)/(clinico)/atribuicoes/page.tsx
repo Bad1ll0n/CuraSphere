@@ -186,7 +186,7 @@ export default function AtribuicoesPage() {
           <p className="text-slate-500 text-sm">Não existem turnos agendados para hoje</p>
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
 
           {/* Coluna esquerda — seleção de turno */}
           <div>

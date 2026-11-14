@@ -6,7 +6,7 @@ test.describe('Medicação e Prescrições', () => {
     await loginAs(page, '00011'); // médico (distinto de outros specs → evita colisão de TOTP)
     const doenteId = await prepararDoenteClinico(page);
 
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#medicacao`); // UX-29: separador 'Medicação'
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1500);
 

@@ -308,3 +308,20 @@ html.dark .border-cyan-200 { border-color: rgba(6,182,212,0.33) !important; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ── UX-30: modo cabeceira (tablet à cabeceira) ─────────────────────────────── */
+html.cabeceira { font-size: 112.5%; } /* letra base 18 px */
+html.cabeceira main :is(button, select, input, textarea, a.botao) { min-height: 48px; }
+html.cabeceira #sidebar-nav:not([data-aberta="true"]) { display: none; }
+html.cabeceira #sidebar-nav[data-aberta="true"] { position: fixed; transform: none; }
+html.cabeceira .botao-menu { display: flex !important; }
+
+/* ── UX-30: modo noturno — baixa luminância, sem brancos puros nem pulsos ────── */
+html.noite body { background-color: #050a14 !important; color: #b8c2d0 !important; }
+html.noite :is(.bg-white, .bg-slate-50, .bg-gray-50, .bg-slate-50\/95) { background-color: #0b1324 !important; }
+html.noite :is(.bg-slate-100, .bg-gray-100) { background-color: #111b2e !important; }
+html.noite :is(.text-slate-900, .text-slate-800, .text-gray-900, .text-white) { color: #c8d1dc !important; }
+html.noite :is(.text-slate-700, .text-slate-600, .text-gray-700) { color: #a3aebd !important; }
+html.noite :is(.border-slate-100, .border-slate-200) { border-color: #1c2840 !important; }
+html.noite :is(.animate-pulse, .animate-ping, .animate-bounce) { animation: none !important; }
+html.noite img, html.noite video { filter: brightness(0.8); }

@@ -22,7 +22,11 @@ test.describe('Gestão de Doentes', () => {
     await page.goto(`/doentes/${doenteId}`);
     await page.waitForLoadState('networkidle');
     await expect(page.getByText(/erro ao carregar doente/i)).not.toBeVisible();
+    // UX-29: faixa de identificação sempre visível e painéis por separador.
+    await expect(page.getByRole('region', { name: 'Identificação do doente' })).toBeVisible({ timeout: 10000 });
+    await page.getByRole('tab', { name: 'Vitais e escalas' }).click();
     await expect(page.getByText(/sinais vitais/i).first()).toBeVisible({ timeout: 10000 });
+    await page.getByRole('tab', { name: 'Notas' }).click();
     await expect(page.getByText('Notas Clínicas SOAP')).toBeVisible();
   });
 

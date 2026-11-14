@@ -203,7 +203,7 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
 
       {/* Cards de resumo */}
       {resumo && (
-        <div className="grid grid-cols-3 gap-3" style={{ marginBottom: '20px' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" style={{ marginBottom: '20px' }}>
           <div className="rounded-xl p-3 text-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
             <p className="text-xs font-medium text-green-700" style={{ marginBottom: '4px' }}>Entradas</p>
             <p className="text-2xl font-bold text-green-800">{resumo.entradas}</p>

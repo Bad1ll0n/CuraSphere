@@ -205,7 +205,7 @@ export default function FaturacaoPage() {
 
       {/* Resumo financeiro */}
       {resumo && (
-        <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
           {[
             { label: 'Total Faturado', value: resumo.totalFaturado, cor: 'text-slate-800', bg: 'bg-slate-50', borda: 'border-slate-200' },
             { label: 'Pago',           value: resumo.totalPago,     cor: 'text-emerald-700', bg: 'bg-emerald-50', borda: 'border-emerald-200' },
@@ -313,7 +313,7 @@ export default function FaturacaoPage() {
               ) : (
                 <>
                   {/* Total */}
-                  <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '24px' }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '24px' }}>
                     {[
                       { label: 'Total Base', valor: `${detalhe.totalBase.toFixed(2)} €` },
                       { label: 'Total a Cobrar', valor: `${detalhe.totalCobrado.toFixed(2)} €` },

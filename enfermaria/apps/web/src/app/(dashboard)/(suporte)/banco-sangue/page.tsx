@@ -158,7 +158,7 @@ export default function BancoSanguePage() {
                   {Object.entries(COMPONENTES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{t('fieldAbo')}</span>
                   <select aria-label={t('fieldAbo')} value={form.grupoABO} onChange={e => setForm(f => ({ ...f, grupoABO: e.target.value }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }}>{GRUPOS.map(g => <option key={g} value={g}>{g}</option>)}</select>

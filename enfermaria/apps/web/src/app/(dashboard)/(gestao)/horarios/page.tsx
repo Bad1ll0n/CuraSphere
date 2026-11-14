@@ -932,7 +932,7 @@ export default function HorariosPagina() {
             {/* Tipo de turno */}
             <div style={{ marginBottom: '24px' }}>
               <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</span>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(['manha', 'tarde', 'noite'] as const).map((t) => {
                   const jaExiste = modalDia ? (turnosPorDia[modalDia] ?? []).some((x) => x.tipo === t) : false;
                   return (
@@ -1040,7 +1040,7 @@ export default function HorariosPagina() {
             {/* Tipo */}
             <div style={{ marginBottom: '24px' }}>
               <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '10px' }}>Tipo de Turno</span>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(['manha', 'tarde', 'noite'] as const).map((t) => (
                   <button key={t}
                     onClick={() => setEditTurno((p) => ({ ...p, tipo: t }))}

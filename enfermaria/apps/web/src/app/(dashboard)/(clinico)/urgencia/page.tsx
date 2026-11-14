@@ -671,7 +671,7 @@ function UrgenciaPageInner() {
             </div>
             <div style={{ marginBottom: '16px' }}>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Triagem de Manchester *</span>
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
                   return (
@@ -720,7 +720,7 @@ function UrgenciaPageInner() {
             </div>
             <div style={{ marginBottom: '16px' }}>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</span>
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 {ORDEM_CORES.map(cor => {
                   const cfg = CORES_TRIAGEM[cor];
                   return (
@@ -926,7 +926,7 @@ function UrgenciaPageInner() {
                   </div>
                   <div>
                     <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Triagem Estimada *</span>
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                       {ORDEM_CORES.map(cor => {
                         const cfg = CORES_TRIAGEM[cor];
                         return (
@@ -1041,7 +1041,7 @@ function UrgenciaPageInner() {
                 <div className="flex flex-col gap-4">
                   <div>
                     <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Sinais Vitais en route</span>
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                       {[
                         { key: 'vitalsPASistolica', label: 'PAS', placeholder: '120' },
                         { key: 'vitalsPADiastolica', label: 'PAD', placeholder: '80' },
