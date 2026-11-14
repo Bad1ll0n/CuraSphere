@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty, IsBoolean, IsInt, Min, Max, MaxLength } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty, IsBoolean, IsInt, Min, Max, MaxLength, IsUUID } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum ViaAdministracaoEnum {
@@ -94,4 +94,38 @@ export class PrescreverMedicacaoDto {
   @Max(24)
   @IsOptional()
   maxDosesDia?: number;
+
+  // PROD-05: catálogo, duplicação e interacção.
+  @ApiPropertyOptional({ description: 'Item do catálogo escolhido no autocomplete' })
+  @IsUUID()
+  @IsOptional()
+  catalogoId?: string;
+
+  @ApiPropertyOptional({ description: 'Prescrição fora do catálogo: justificação' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  justificacaoForaCatalogo?: string;
+
+  @ApiPropertyOptional({ description: 'Prescrever apesar de a mesma substância já estar prescrita' })
+  @IsBoolean()
+  @IsOptional()
+  forcarDuplicacao?: boolean;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  justificativaDuplicacao?: string;
+
+  @ApiPropertyOptional({ description: 'Prescrever apesar de interacção grave/contraindicada' })
+  @IsBoolean()
+  @IsOptional()
+  forcarInteracao?: boolean;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  justificativaInteracao?: string;
 }

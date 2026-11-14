@@ -696,6 +696,18 @@ model Medicacao {
   // QA-08: medicação SOS — intervalo mínimo entre tomas e número máximo de tomas em 24 h.
   intervaloMinimoH    Int?
   maxDosesDia         Int?
+  // PROD-05: prescrição a partir do catálogo (DCI e ATC codificados); texto livre só por
+  // excepção e sinalizado. Duplicação por DCI e interacção contraindicada só com justificação.
+  catalogoId               String?
+  catalogo                 CatalogoMedicamento? @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
+  dci                      String?
+  codigoATC                String?
+  foraCatalogo             Boolean @default(false)
+  justificacaoForaCatalogo String? @db.VarChar(1000)
+  overrideDuplicacao       Boolean @default(false)
+  overrideDuplicacaoMotivo String? @db.VarChar(1000)
+  overrideInteracao        Boolean @default(false)
+  overrideInteracaoMotivo  String? @db.VarChar(1000)
 
   doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Restrict)
@@ -1830,9 +1842,19 @@ model CatalogoMedicamento {
   codigoATC         String?
   ativo             Boolean  @default(true)
   criadoEm          DateTime @default(now())
+  // PROD-05: catálogo nacional (INFARMED/CHNM) — código, via, embalagem e de onde veio.
+  codigoCHNM        String?  @unique
+  via               String?
+  embalagem         String?
+  fonte             String   @default("local") // 'infarmed' | 'amostra' | 'local'
+  versaoFonte       String?
+  atualizadoEm      DateTime @default(now()) @updatedAt
 
-  stockItems StockItem[]
+  stockItems  StockItem[]
+  prescricoes Medicacao[]
 
+  @@index([dci])
+  @@index([codigoATC])
   @@map("catalogo_medicamentos")
 }
 

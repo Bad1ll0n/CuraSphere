@@ -135,9 +135,19 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   // QA-08: SOS com intervalo mínimo (obrigatório) e máximo de tomas em 24 h.
   const [sosIntervalo, setSosIntervalo] = useState('4');
   const [sosMaxDia, setSosMaxDia] = useState('');
-  // QA-07 / alergias: a API recusa (409) e pede justificação para prescrever mesmo assim.
-  const [overridePedido, setOverridePedido] = useState<null | 'dose' | 'alergia'>(null);
+  // QA-07 / alergias / PROD-05: a API recusa (409) e pede justificação para prescrever mesmo
+  // assim. Os overrides acumulam-se (dose, depois duplicação, depois interacção…) e vão todos
+  // com a mesma justificação — antes só se guardava o último e o primeiro perdia-se.
+  type Override = 'dose' | 'alergia' | 'duplicacao' | 'interacao' | 'fora_catalogo';
+  const [overrides, setOverrides] = useState<Override[]>([]);
+  const overridePedido = overrides.length > 0;
+  const setOverridePedido = (_: null) => setOverrides([]);
   const [justificacaoOverride, setJustificacaoOverride] = useState('');
+  // PROD-05: catálogo nacional — autocomplete e item escolhido.
+  const [catalogoOpcoes, setCatalogoOpcoes] = useState<{ id: string; dci: string; concentracao?: string | null; formaFarmaceutica: string; via?: string | null; codigoATC?: string | null }[]>([]);
+  const [catalogoItem, setCatalogoItem] = useState<{ id: string; dci: string; codigoATC?: string | null } | null>(null);
+  const rotuloCatalogo = (c: { dci: string; concentracao?: string | null; formaFarmaceutica: string; via?: string | null }) =>
+    `${c.dci}${c.concentracao ? ` ${c.concentracao}` : ''} — ${c.formaFarmaceutica}${c.via ? `, ${c.via}` : ''}`;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [ajusteRenal, setAjusteRenal] = useState<any | null>(null);
   const [loadingAjusteRenal, setLoadingAjusteRenal] = useState(false);
@@ -209,7 +219,26 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
   }, [medNome, modalMed, doenteId]);
 
-  const temInteracaoGrave = interacoes.some(i => i.severidade === 'grave');
+  const temInteracaoGrave = interacoes.some(i => i.severidade === 'grave' || i.severidade === 'contraindicada');
+
+  // PROD-05: sugestões do catálogo enquanto se escreve (DCI e marcas).
+  useEffect(() => {
+    if (!modalMed || medNome.trim().length < 3 || catalogoItem) { if (!catalogoItem) setCatalogoOpcoes([]); return; }
+    const t = setTimeout(() => {
+      api.get('/catalogo', { params: { search: medNome.trim().split(/\s+/)[0] } })
+        .then((r) => setCatalogoOpcoes((r.data ?? []).slice(0, 15)))
+        .catch(() => setCatalogoOpcoes([]));
+    }, 300);
+    return () => clearTimeout(t);
+  }, [medNome, modalMed, catalogoItem]);
+
+  const escolherDoNome = (texto: string) => {
+    const item = catalogoOpcoes.find((c) => rotuloCatalogo(c) === texto);
+    setMedNome(item ? `${item.dci}${item.concentracao ? ` ${item.concentracao}` : ''}` : texto);
+    setCatalogoItem(item ? { id: item.id, dci: item.dci, codigoATC: item.codigoATC } : null);
+    if (item?.via && !medVia) setMedVia(item.via);
+    setAjusteRenal(null);
+  };
 
   const submeterMed = async () => {
     if (!medNome.trim() || !medDose.trim() || !medVia.trim() || !medFreq.trim()) return;
@@ -222,22 +251,31 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       const { data: criada } = await api.post('/medicacao/prescrever', {
         doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
         ...(medFreq === 'SOS' ? { intervaloMinimoH: Number(sosIntervalo), ...(sosMaxDia ? { maxDosesDia: Number(sosMaxDia) } : {}) } : {}),
-        ...(temInteracaoGrave && justificativaInteracao ? { justificativaOverride: justificativaInteracao } : {}),
-        ...(overridePedido === 'dose' ? { forcarDoseAcimaMaximo: true, justificativaDose: justificacaoOverride } : {}),
-        ...(overridePedido === 'alergia' ? { forcarApesarDeAlergia: true, justificativaOverride: justificacaoOverride } : {}),
+        ...(catalogoItem ? { catalogoId: catalogoItem.id } : {}),
+        // A justificação da interacção grave, escrita ao ver o aviso, vai no campo certo (antes ia no da alergia).
+        ...(temInteracaoGrave && justificativaInteracao ? { forcarInteracao: true, justificativaInteracao } : {}),
+        ...(overrides.includes('dose') ? { forcarDoseAcimaMaximo: true, justificativaDose: justificacaoOverride } : {}),
+        ...(overrides.includes('alergia') ? { forcarApesarDeAlergia: true, justificativaOverride: justificacaoOverride } : {}),
+        ...(overrides.includes('duplicacao') ? { forcarDuplicacao: true, justificativaDuplicacao: justificacaoOverride } : {}),
+        ...(overrides.includes('interacao') ? { forcarInteracao: true, justificativaInteracao: justificacaoOverride } : {}),
+        ...(overrides.includes('fora_catalogo') ? { justificacaoForaCatalogo: justificacaoOverride } : {}),
       });
       toast.success('Prescrição guardada');
       // QA-06 / PROD-04: nome não reconhecido pelo verificador de alergias, ou frequência sem horário.
       if (criada?.avisoNomeNaoReconhecido) toast.warning(criada.avisoNomeNaoReconhecido);
       if (criada?.avisoFrequencia) toast.warning(criada.avisoFrequencia);
-      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq('');
+      if (criada?.avisoForaCatalogo) toast.warning(criada.avisoForaCatalogo);
+      if (criada?.avisoRenal) toast.warning(criada.avisoRenal);
+      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setCatalogoItem(null);
       setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride('');
       onRefresh();
     } catch (e: any) {
       const msg: string = e?.response?.data?.message ?? 'Erro ao prescrever medicação';
       // 409 com motivo clínico: mostra o motivo e pede a justificação para o override.
-      if (e?.response?.status === 409 && /^DOSE:/.test(msg)) setOverridePedido('dose');
-      else if (e?.response?.status === 409 && /^ALERGIA:/.test(msg)) setOverridePedido('alergia');
+      const tipo: Override | null = e?.response?.status !== 409 ? null
+        : /^DOSE:/.test(msg) ? 'dose' : /^ALERGIA:/.test(msg) ? 'alergia' : /^DUPLICACAO:/.test(msg) ? 'duplicacao'
+          : /^INTERACAO:/.test(msg) ? 'interacao' : /^FORA_CATALOGO:/.test(msg) ? 'fora_catalogo' : null;
+      if (tipo) setOverrides((xs) => (xs.includes(tipo) ? xs : [...xs, tipo]));
       setErroModal(msg);
     } finally { setSalvando(false); }
   };
@@ -355,7 +393,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>
-            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride(''); setSosIntervalo('4'); setSosMaxDia(''); setModalMed(true); }} />}
+            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setCatalogoItem(null); setJustificacaoOverride(''); setSosIntervalo('4'); setSosMaxDia(''); setModalMed(true); }} />}
             {podeProporMed && (
               <button onClick={() => { setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs(''); setModalPropor(true); }}
                 aria-label="Propor prescrição"
@@ -484,10 +522,21 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             <FaixaAlergiasDoente doenteId={doenteId} compacta />
             <div>
               <label htmlFor="fmedicaca-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
-              <input id="fmedicaca-0" autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
+              <input id="fmedicaca-0" autoFocus type="text" value={medNome} list="catalogo-sugestoes"
+                onChange={(e) => escolherDoNome(e.target.value)}
                 placeholder="Ex: Paracetamol"
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
+              <datalist id="catalogo-sugestoes">
+                {catalogoOpcoes.map((c) => <option key={c.id} value={rotuloCatalogo(c)} />)}
+              </datalist>
+              {medNome.trim().length >= 3 && (
+                <p className={`text-xs ${catalogoItem ? 'text-green-700' : 'text-amber-700'}`} style={{ marginTop: '4px' }}>
+                  {catalogoItem
+                    ? `No catálogo: ${catalogoItem.dci}${catalogoItem.codigoATC ? ` · ATC ${catalogoItem.codigoATC}` : ''}`
+                    : 'Escolha da lista do catálogo — texto livre fica sinalizado à farmácia.'}
+                </p>
+              )}
               {medNome.trim().length >= 3 && (
                 <button type="button" onClick={async () => {
                   setLoadingAjusteRenal(true);
@@ -606,6 +655,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="just-override" className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
                 Justificação clínica para prescrever mesmo assim * (mín. 20 caracteres — fica registada)
+                {overrides.length > 1 && <span className="block normal-case font-normal text-red-600">Aplica-se a: {overrides.join(', ').replace('fora_catalogo', 'fora do catálogo')}</span>}
               </label>
               <textarea id="just-override" rows={2} value={justificacaoOverride} onChange={(e) => setJustificacaoOverride(e.target.value)}
                 className="w-full border border-red-300 rounded-xl text-sm text-slate-800 resize-none" style={{ padding: '8px 12px' }} />
@@ -615,7 +665,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             loading={salvando}
             disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
               || (medFreq === 'SOS' && !(Number(sosIntervalo) >= 1))
-              || (!!overridePedido && justificacaoOverride.trim().length < 20)}
+              || (overridePedido && justificacaoOverride.trim().length < 20)}
             labelConfirm={overridePedido ? 'Prescrever com justificação' : 'Prescrever'} />
         </Modal>
       )}
