@@ -564,19 +564,6 @@ export const navItems = [
     ),
   },
   {
-    href: '/turno/passagem',
-    label: 'Passagem Turno Pro',
-    servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
-    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
-    grupo: 'C',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-      </svg>
-    ),
-  },
-  {
     href: '/turno/medicacoes',
     label: 'Timeline Medicação',
     servicos: null,

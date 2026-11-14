@@ -28,14 +28,3 @@ export function useAdmitirDoente() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['doentes'] }),
   });
 }
-
-export function useDarAlta(doenteId: string) {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (adminId: string) => api.post(`/doentes/${doenteId}/alta`, { administrativoId: adminId }).then(r => r.data),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['doentes'] });
-      qc.invalidateQueries({ queryKey: ['doente', doenteId] });
-    },
-  });
-}

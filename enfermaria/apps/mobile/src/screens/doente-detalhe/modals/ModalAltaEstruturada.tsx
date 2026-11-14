@@ -42,14 +42,14 @@ export default function ModalAltaEstruturada({ visible, doenteId, onClose, onDon
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={shared.formLabel}>Motivo de Alta *</Text>
             <SelectPicker
-              options={[{ value: 'melhoria', label: 'Melhoria Clínica' }, { value: 'transferencia', label: 'Transferência' }, { value: 'pedido_proprio', label: 'Pedido Próprio' }, { value: 'obito', label: 'Óbito' }]}
+              options={[{ value: 'melhoria', label: 'Melhoria Clínica' }, { value: 'transferencia', label: 'Transferência' }, { value: 'alta_voluntaria', label: 'Alta a pedido' }, { value: 'obito', label: 'Óbito' }]}
               value={motivo} onChange={setMotivo}
             />
             {motivo !== 'obito' && (
               <>
                 <Text style={shared.formLabel}>Destino</Text>
                 <SelectPicker
-                  options={[{ value: 'domicilio', label: 'Domicílio' }, { value: 'outro_hospital', label: 'Outro Hospital' }, { value: 'lar', label: 'Lar' }, { value: 'outro', label: 'Outro' }]}
+                  options={[{ value: 'domicilio', label: 'Domicílio' }, { value: 'hospital_referencia', label: 'Outro Hospital' }, { value: 'lar', label: 'Lar' }, { value: 'rncci', label: 'RNCCI' }, { value: 'outra_instituicao', label: 'Outra' }]}
                   value={destino} onChange={setDestino}
                 />
               </>
