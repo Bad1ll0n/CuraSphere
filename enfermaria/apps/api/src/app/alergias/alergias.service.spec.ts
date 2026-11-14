@@ -94,4 +94,54 @@ describe('AlergiasService', () => {
       );
     });
   });
+  describe('PROD-06 — avaliação de alergias', () => {
+    it('criar: medicamento fica codificado; não-medicamento é texto livre; reacção/certeza/fonte guardadas', async () => {
+      mockPrisma.alergia.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'a', ...data }));
+      const med = await service.criar('d1', 'medico', { alergenio: 'Amoxicilina', tipo: 'medicamento', severidade: 'grave', reacao: 'urticária', certeza: 'confirmada', fonte: 'doente' }, 'u1');
+      expect(med).toMatchObject({ codigo: 'amoxicilina', sistemaCodigo: 'dci', reacao: 'urticária', certeza: 'confirmada', fonte: 'doente', verificadaPorId: 'u1' });
+      const lat = await service.criar('d1', 'enfermeiro', { alergenio: 'Látex', tipo: 'latex', severidade: 'leve' });
+      expect(lat).toMatchObject({ codigo: null, sistemaCodigo: 'livre', reacao: null, verificadaPorId: null });
+    });
+
+    it('criar: papel sem permissão → 403; doente inactivo → 404', async () => {
+      await expect(service.criar('d1', 'farmaceutico', {})).rejects.toThrow(ForbiddenException);
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: false });
+      await expect(service.criar('d1', 'medico', {})).rejects.toThrow(NotFoundException);
+    });
+
+    it('avaliacao: devolve o estado; doente inexistente → 404', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ avaliacaoAlergias: 'nao_avaliado', avaliacaoAlergiasEm: null, avaliacaoAlergiasPorId: null });
+      expect(await service.avaliacao('d1')).toEqual({ estado: 'nao_avaliado', em: null, porId: null });
+      mockPrisma.doente.findUnique.mockResolvedValue(null);
+      await expect(service.avaliacao('x')).rejects.toThrow(NotFoundException);
+    });
+
+    it('sem alergias conhecidas: só sem alergias activas; regista quem e quando', async () => {
+      await expect(service.registarSemAlergias('d1', 'u1', 'farmaceutico')).rejects.toThrow(ForbiddenException);
+      mockPrisma.doente.findUnique.mockResolvedValueOnce(null);
+      await expect(service.registarSemAlergias('x', 'u1', 'enfermeiro')).rejects.toThrow(NotFoundException);
+      mockPrisma.alergia.count.mockResolvedValueOnce(2);
+      await expect(service.registarSemAlergias('d1', 'u1', 'enfermeiro')).rejects.toThrow(/2 alergia/);
+      mockPrisma.alergia.count.mockResolvedValueOnce(0);
+      mockPrisma.doente.findUnique
+        .mockResolvedValueOnce({ id: 'd1' })
+        .mockResolvedValueOnce({ avaliacaoAlergias: 'sem_alergias_conhecidas', avaliacaoAlergiasEm: new Date(), avaliacaoAlergiasPorId: 'u1' });
+      const r = await service.registarSemAlergias('d1', 'u1', 'enfermeiro');
+      expect(r.estado).toBe('sem_alergias_conhecidas');
+      expect(mockPrisma.doente.update).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ avaliacaoAlergias: 'sem_alergias_conhecidas', avaliacaoAlergiasPorId: 'u1' }),
+      }));
+    });
+
+    it('remover a última alergia volta a "não avaliado"; se restarem outras, não mexe', async () => {
+      mockPrisma.alergia.findUnique.mockResolvedValue({ id: 'al-1', doenteId: 'd1', deletedAt: null });
+      mockPrisma.alergia.count.mockResolvedValueOnce(0);
+      await service.remover('al-1', 'med-1', 'medico', 'registada por engano no doente errado');
+      expect(mockPrisma.doente.update).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ avaliacaoAlergias: 'nao_avaliado' }) }));
+      mockPrisma.doente.update.mockClear();
+      mockPrisma.alergia.count.mockResolvedValueOnce(1);
+      await service.remover('al-1', 'med-1', 'medico', 'registada por engano no doente errado');
+      expect(mockPrisma.doente.update).not.toHaveBeenCalled();
+    });
+  });
 });
