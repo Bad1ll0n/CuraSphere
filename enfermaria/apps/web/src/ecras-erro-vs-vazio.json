@@ -17,7 +17,6 @@
   "(dashboard)/(clinico)/fisioterapia/page.tsx",
   "(dashboard)/(clinico)/iacs/page.tsx",
   "(dashboard)/(clinico)/interconsultas/page.tsx",
-  "(dashboard)/(clinico)/passagem-turno/page.tsx",
   "(dashboard)/(gestao)/auditoria/page.tsx",
   "(dashboard)/(gestao)/comunicacao/page.tsx",
   "(dashboard)/(gestao)/conformidade/page.tsx",
