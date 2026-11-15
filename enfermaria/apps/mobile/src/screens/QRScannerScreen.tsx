@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   ActivityIndicator, TextInput, ScrollView,
 } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { CameraView, Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 
@@ -35,6 +35,14 @@ interface Props {
 }
 
 
+/** Descodifica base64url (UTF-8) — o corpo da etiqueta assinada. */
+function base64urlParaTexto(b64url: string): string {
+  const b64 = b64url.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((b64url.length + 3) % 4);
+  const bin = atob(b64);
+  const bytes = Uint8Array.from(bin, (ch) => ch.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
 export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, onAdministrar }: Props) {
   // MB-10: o botão de fechar estava em `top: 52` fixo. Num iPhone com notch o inset
   // superior chega a 59 — o botão ficava POR BAIXO da câmara, inalcançável, num ecrã de
@@ -54,7 +62,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
   const [qrLido, setQrLido] = useState<string | null>(null);
 
   useEffect(() => {
-    BarCodeScanner.requestPermissionsAsync().then(({ status }) => {
+    Camera.requestCameraPermissionsAsync().then(({ status }) => {
       setPermissao(status === 'granted');
     });
   }, []);
@@ -67,8 +75,13 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
     setResultado(null);
 
     try {
+      // UX-08: a etiqueta de unidose é `<base64url(json)>.<hmac>` (assinada pelo servidor);
+      // o JSON antigo, feito no cliente, já não é aceite pelo servidor.
       let parsed: any = null;
-      try { parsed = JSON.parse(data); } catch { /* não é JSON */ }
+      const [corpo, assinatura] = data.split('.');
+      if (corpo && assinatura && /^[A-Za-z0-9_-]+$/.test(corpo)) {
+        try { parsed = JSON.parse(base64urlParaTexto(corpo)); } catch { /* não é etiqueta */ }
+      }
 
       if (parsed?.medicacaoId && parsed?.doenteId) {
         // Modo 5 Certos
@@ -156,10 +169,10 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
           {permissao === true && (
             <>
               <View style={s.cameraBox}>
-                <BarCodeScanner
-                  onBarCodeScanned={scanned ? undefined : handleScan}
+                <CameraView
+                  onBarcodeScanned={scanned ? undefined : handleScan}
                   style={StyleSheet.absoluteFillObject}
-                  barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+                  barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
                 />
                 <View style={s.frame}>
                   <View style={[s.canto, s.cantoTL]} />

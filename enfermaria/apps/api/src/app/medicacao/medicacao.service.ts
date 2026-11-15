@@ -8,6 +8,7 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
 import { Interacao, SEVERIDADES_BLOQUEANTES, fonteInteracoes, verificarInteracao } from './interacoes';
 import { ajusteRenal, estadioKdigo } from './ajuste-renal';
+import { eNumerico, lerGs1, lerPulseira, variantesGtin } from './leitura-bcma';
 import { CatalogoService } from '../catalogo/catalogo.service';
 import { dciDoNome, normalizarDci } from '../catalogo/catalogo-nacional';
 import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
@@ -392,6 +393,9 @@ export class MedicacaoService {
     atestadoPeloEnfermeiro?: boolean;
     qrPayload?: string;
     justificacaoSOS?: string;
+    leituraPulseira?: string;
+    leituraMedicamento?: string;
+    leituraExcecao?: string;
   }) {
     let sosForaDoLimite = false;
     if (!data.doenteId) {
@@ -399,6 +403,23 @@ export class MedicacaoService {
         '5 certos: doenteId é obrigatório — confirme a identidade do doente antes de administrar',
       );
     }
+
+    // UX-08: o que o leitor leu (pulseira e embalagem) é verificado AQUI, de novo — o cliente
+    // só diz o que leu, não o que concluiu. Uma leitura que não confere bloqueia.
+    const leitura = (data.leituraPulseira || data.leituraMedicamento)
+      ? await this.verificarLeitura(data.medicacaoId, data.doenteId, { pulseira: data.leituraPulseira, medicamento: data.leituraMedicamento })
+      : null;
+    const falhas = [leitura?.pulseira, leitura?.medicamento].filter((x) => x && !x.ok).map((x) => x!.motivo);
+    if (falhas.length) throw new ConflictException(`LEITURA: ${falhas.join(' | ')}. Não administrar.`);
+    const leituraCompleta = !!leitura?.pulseira?.ok && !!leitura?.medicamento?.ok;
+    const excecao = (data.leituraExcecao ?? '').trim();
+    if (process.env['BCMA_OBRIGATORIO'] === 'true' && !leituraCompleta && excecao.length < 10) {
+      throw new ConflictException(
+        'LEITURA_OBRIGATORIA: leia a pulseira do doente e o código da embalagem/unidose, ou indique porque não é possível (leituraExcecao, mínimo 10 caracteres).',
+      );
+    }
+    // A etiqueta de unidose assinada lida pelo leitor vale como etiqueta (confere dose e via).
+    if (!data.qrPayload && leitura?.medicamento?.origem === 'etiqueta') data.qrPayload = data.leituraMedicamento;
 
     const registo = await this.prisma.$transaction(async (tx) => {
       const medicacao = await tx.medicacao.findUnique({
@@ -516,6 +537,10 @@ export class MedicacaoService {
       // pelo sistema. Uma atestação fica registada em `certosVerificados`, e é isso que
       // uma auditoria clínica precisa de conseguir distinguir.
       const todosConfirmados = Object.values(certos).every((e) => e === 'verificado');
+      // UX-08: o que foi confirmado por leitura física (pulseira/embalagem) fica ao lado dos 5 certos.
+      const certosComLeitura = leitura
+        ? { ...certos, leitura: { pulseira: !!leitura.pulseira?.ok, medicamento: !!leitura.medicamento?.ok } }
+        : certos;
 
       return tx.registoMedicacao.create({
         data: {
@@ -526,9 +551,14 @@ export class MedicacaoService {
           ...(sosForaDoLimite && { justificacaoSOS: data.justificacaoSOS!.trim().slice(0, 500) }),
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
-          certosVerificados: certos,
+          certosVerificados: certosComLeitura,
           // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada (30/60 min).
           reavaliarDorAte: reavaliacaoDorAte(medicacao.nome, medicacao.via, new Date()),
+          leituraPulseira: !!leitura?.pulseira?.ok,
+          leituraMedicamento: !!leitura?.medicamento?.ok,
+          leituraExcecao: !leituraCompleta && excecao ? excecao.slice(0, 500) : null,
+          loteLido: leitura?.medicamento?.lote ?? null,
+          validadeLida: leitura?.medicamento?.validade ?? null,
         },
         include: {
           administradoPor: { select: { id: true, nome: true } },
@@ -539,6 +569,69 @@ export class MedicacaoService {
 
     this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(() => null);
     return registo;
+  }
+
+  /**
+   * UX-08 — verifica o que o leitor leu à cabeceira contra o doente e a prescrição:
+   * pulseira (processo e data de nascimento) e embalagem/unidose (etiqueta assinada da
+   * farmácia, GS1 com GTIN/lote/validade, ou código CHNM) → mesma substância e dentro da validade.
+   */
+  async verificarLeitura(medicacaoId: string, doenteId: string | undefined, codigos: { pulseira?: string; medicamento?: string }) {
+    type Resultado = { ok: boolean; motivo: string; origem?: string; lote?: string | null; validade?: Date | null };
+    const med = await this.prisma.medicacao.findUnique({
+      where: { id: medicacaoId },
+      select: { id: true, doenteId: true, nome: true, dci: true, dose: true, via: true, catalogoId: true },
+    });
+    if (!med) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);
+    if (doenteId && doenteId !== med.doenteId) throw new BadRequestException('Esta medicação não pertence ao doente indicado.');
+    const doente = await this.prisma.doente.findUnique({ where: { id: med.doenteId }, select: { numeroProcesso: true, dataNascimento: true } });
+
+    let pulseira: Resultado | undefined;
+    if (codigos.pulseira) {
+      const p = lerPulseira(codigos.pulseira);
+      if (!p) pulseira = { ok: false, motivo: 'Código da pulseira não reconhecido' };
+      else if (p.processo !== doente?.numeroProcesso) {
+        const outro = await this.prisma.doente.findFirst({ where: { numeroProcesso: p.processo }, select: { id: true } });
+        pulseira = { ok: false, motivo: outro ? `PULSEIRA DE OUTRO DOENTE (processo ${p.processo})` : 'A pulseira não corresponde a este doente' };
+      } else if (p.nascimento && doente?.dataNascimento && doente.dataNascimento.toISOString().slice(0, 10) !== p.nascimento) {
+        pulseira = { ok: false, motivo: 'A data de nascimento da pulseira não confere' };
+      } else pulseira = { ok: true, motivo: 'Doente confirmado pela pulseira' };
+    }
+
+    let medicamento: Resultado | undefined;
+    const m = codigos.medicamento?.trim();
+    if (m) {
+      const etiqueta = m.includes('.') ? this.lerPayloadQR(m) : null;
+      const gs1 = etiqueta ? null : lerGs1(m);
+      if (etiqueta) {
+        if (etiqueta.medicacaoId !== med.id) medicamento = { ok: false, motivo: 'Etiqueta de OUTRA prescrição', origem: 'etiqueta' };
+        else if ((etiqueta.dose && compararCampoPrescrito(etiqueta.dose, med.dose) === false) || (etiqueta.via && compararCampoPrescrito(etiqueta.via, med.via) === false)) {
+          medicamento = { ok: false, motivo: 'Etiqueta desactualizada — a prescrição mudou (dose ou via)', origem: 'etiqueta' };
+        } else medicamento = { ok: true, motivo: 'Unidose confirmada pela etiqueta da farmácia', origem: 'etiqueta' };
+      } else {
+        const gtins = gs1?.gtin ? variantesGtin(gs1.gtin) : eNumerico(m) ? variantesGtin(m) : [];
+        const item = gtins.length || eNumerico(m)
+          ? await this.prisma.catalogoMedicamento.findFirst({
+            where: { OR: [...(gtins.length ? [{ gtin: { in: gtins } }] : []), ...(eNumerico(m) ? [{ codigoCHNM: m }] : [])] },
+            select: { id: true, dci: true, concentracao: true },
+          })
+          : null;
+        const lote = gs1?.lote ?? null;
+        const validade = gs1?.validade ?? null;
+        if (validade && validade.getTime() < Date.now()) {
+          medicamento = { ok: false, motivo: `Embalagem FORA DE VALIDADE (${validade.toISOString().slice(0, 10)})`, origem: 'gs1', lote, validade };
+        } else if (!item) {
+          medicamento = { ok: false, motivo: gs1 || eNumerico(m) ? 'Código não está no catálogo — leia a etiqueta da farmácia ou registe o GTIN no catálogo' : 'Código não reconhecido', origem: gs1 ? 'gs1' : 'codigo', lote, validade };
+        } else {
+          const dciPresc = med.dci ?? dciDoNome(med.nome, await this.catalogo.dcis());
+          const confere = med.catalogoId === item.id || (!!dciPresc && normalizarDci(dciPresc) === normalizarDci(item.dci));
+          medicamento = confere
+            ? { ok: true, motivo: `Confere: ${item.dci}${item.concentracao ? ` ${item.concentracao}` : ''}`, origem: gs1 ? 'gs1' : 'codigo', lote, validade }
+            : { ok: false, motivo: `MEDICAMENTO ERRADO — lido ${item.dci}, prescrito ${med.nome}`, origem: gs1 ? 'gs1' : 'codigo', lote, validade };
+        }
+      }
+    }
+    return { pulseira, medicamento };
   }
 
   async naoAdministrar(data: {
@@ -986,6 +1079,20 @@ export class MedicacaoService {
    * simples produzido pelo cliente — qualquer pessoa podia fabricar um.
    * Formato: `<base64url(json)>.<hmac>`.
    */
+  /** UX-08: dados para imprimir a etiqueta de unidose (QR assinado + texto legível). */
+  async dadosEtiqueta(medicacaoId: string) {
+    const m = await this.prisma.medicacao.findUnique({
+      where: { id: medicacaoId },
+      select: { id: true, doenteId: true, nome: true, dose: true, via: true, frequencia: true, doente: { select: { nome: true, numeroProcesso: true } } },
+    });
+    if (!m) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);
+    const { qrPayload } = await this.gerarPayloadQR(medicacaoId);
+    return {
+      qrPayload, medicacaoId: m.id, doenteId: m.doenteId, nome: m.nome, dose: m.dose, via: m.via, frequencia: m.frequencia,
+      doente: m.doente, emitidoEm: new Date().toISOString(),
+    };
+  }
+
   async gerarPayloadQR(medicacaoId: string): Promise<{ qrPayload: string }> {
     const medicacao = await this.prisma.medicacao.findUnique({
       where: { id: medicacaoId },

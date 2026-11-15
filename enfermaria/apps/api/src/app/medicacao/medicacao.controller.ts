@@ -14,6 +14,13 @@ import { NaoAdministrarDto } from './dto/nao-administrar.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
 import { Verificar5CertosDto } from './dto/verificar-5-certos.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+
+export class VerificarLeituraDto {
+  @IsUUID() @IsOptional() doenteId?: string;
+  @IsString() @IsOptional() @MaxLength(200) pulseira?: string;
+  @IsString() @IsOptional() @MaxLength(2000) medicamento?: string;
+}
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('medicacao')
@@ -89,7 +96,24 @@ export class MedicacaoController {
       via: dto.via,
       observacoes: dto.observacoes,
       justificacaoSOS: dto.justificacaoSOS,
+      leituraPulseira: dto.leituraPulseira,
+      leituraMedicamento: dto.leituraMedicamento,
+      leituraExcecao: dto.leituraExcecao,
     });
+  }
+
+  /** UX-08: verificar à cabeceira o que o leitor leu (pulseira, embalagem) antes de administrar. */
+  @Roles('enfermeiro', 'medico')
+  @Post(':id/verificar-leitura')
+  verificarLeitura(@Param('id') id: string, @Body() dto: VerificarLeituraDto) {
+    return this.medicacaoService.verificarLeitura(id, dto.doenteId, { pulseira: dto.pulseira, medicamento: dto.medicamento });
+  }
+
+  /** UX-08: etiqueta de unidose assinada pelo servidor (para imprimir e colar na unidose). */
+  @Roles('enfermeiro', 'farmaceutico', 'medico')
+  @Get(':id/etiqueta')
+  etiqueta(@Param('id') id: string) {
+    return this.medicacaoService.dadosEtiqueta(id);
   }
 
   @Roles('enfermeiro')

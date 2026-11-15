@@ -121,6 +121,18 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
 
   // QR 5 Certos
   const [qrMed, setQrMed] = useState<{ id: string; nome: string; dose: string; via: string } | null>(null);
+  // UX-08: o QR da etiqueta é assinado pelo servidor; JSON feito no cliente qualquer um forjava.
+  const [qrAssinado, setQrAssinado] = useState<string | null>(null);
+  const [qrErro, setQrErro] = useState<string | null>(null);
+  useEffect(() => {
+    setQrAssinado(null); setQrErro(null);
+    if (!qrMed) return;
+    let vivo = true;
+    api.get(`/medicacao/${qrMed.id}/etiqueta`)
+      .then((r) => { if (vivo) setQrAssinado(r.data.qrPayload); })
+      .catch((e) => { if (vivo) setQrErro(e?.response?.data?.message ?? 'Não foi possível gerar a etiqueta.'); });
+    return () => { vivo = false; };
+  }, [qrMed]);
 
   // Prescrever medicação state
   const [modalMed, setModalMed] = useState(false);
@@ -176,7 +188,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const dlgPropor = useDialogoAcessivel({ aberto: modalPropor, onFechar: () => setModalPropor(false), titulo: 'Propor medicação' });
   const dlgRejeitarProposta = useDialogoAcessivel({ aberto: !!modalRejeitarProposta, onFechar: () => setModalRejeitarProposta(null), titulo: 'Rejeitar proposta' });
   const dlgHistoricoMed = useDialogoAcessivel({ aberto: modalHistoricoMed, onFechar: () => setModalHistoricoMed(false), titulo: 'Histórico de medicação' });
-  const dlgQrMed = useDialogoAcessivel({ aberto: !!qrMed, onFechar: () => setQrMed(null), titulo: 'Código QR das 5 certas' });
+  const dlgQrMed = useDialogoAcessivel({ aberto: !!qrMed, onFechar: () => setQrMed(null), titulo: 'Etiqueta de unidose' });
 
   // Confirm modal
   const [confirmarAcao, setConfirmarAcao] = useState<{
@@ -434,7 +446,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     <div className="flex items-center gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
                       <button
                         onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
-                        title="Gerar QR para verificação 5 Certos"
+                        title="Etiqueta de unidose (QR assinado)"
                         className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
                         <svg className="w-3 h-3 text-slate-500 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
@@ -830,7 +842,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           onClick={(e) => { if (e.target === e.currentTarget) setQrMed(null); }}>
           <div {...dlgQrMed.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
-              <h3 className="text-base font-bold text-slate-900">QR — 5 Certos</h3>
+              <h3 className="text-base font-bold text-slate-900">Etiqueta de unidose</h3>
               <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -838,16 +850,19 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </button>
             </div>
             <div className="flex items-center justify-center bg-white rounded-xl border border-slate-100" style={{ padding: '20px', marginBottom: '16px' }}>
-              <QRCode
-                value={JSON.stringify({ medicacaoId: qrMed.id, doenteId, nome: qrMed.nome, dose: qrMed.dose, via: qrMed.via })}
-                size={200}
-              />
+              {qrAssinado ? <QRCode value={qrAssinado} size={200} />
+                : qrErro ? <p role="alert" className="text-xs text-red-700">{qrErro}</p>
+                : <p className="text-xs text-slate-500">A gerar…</p>}
             </div>
             <p className="text-sm font-semibold text-slate-800 text-center" style={{ marginBottom: '4px' }}>{qrMed.nome}</p>
             <p className="text-xs text-slate-500 text-center">{qrMed.dose} · {qrMed.via}</p>
             <p className="text-xs text-slate-500 text-center" style={{ marginTop: '12px' }}>
-              Scan com o telemóvel para verificar os 5 Certos antes de administrar
+              Imprima e cole na unidose. À cabeceira, a leitura da etiqueta confirma que é desta prescrição, com esta dose e via.
             </p>
+            <a href={`/medicacao/${qrMed.id}/etiqueta`} target="_blank" rel="noopener noreferrer"
+              className="block text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg" style={{ marginTop: '12px', padding: '8px 12px' }}>
+              Imprimir etiqueta
+            </a>
           </div>
         </div>
       )}

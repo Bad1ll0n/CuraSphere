@@ -8,6 +8,7 @@ import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import { pedirTexto } from '@/components/motivo-remocao';
+import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 
 const MOTIVOS_NAO_ADMIN = [
   { value: 'recusou', label: 'Recusou tomar' },
@@ -125,10 +126,18 @@ export default function MarPage() {
 
   useEffect(() => { carregar(); }, []);
 
+  // UX-08: leitura da pulseira e da embalagem à cabeceira.
+  const [leitura, setLeitura] = useState<EstadoLeitura>(LEITURA_VAZIA);
+  const mudarLeitura = (e: EstadoLeitura) => {
+    setLeitura(e);
+    setCertas((prev) => prev.map((v, i) => (i === 0 && e.pulseira ? e.pulseira.resultado.ok : i === 1 && e.medicamento ? e.medicamento.resultado.ok : v)));
+  };
+
   const abrirModal = (id: string) => {
     setModalId(id);
     setObs('');
     setCertas([false, false, false, false, false]);
+    setLeitura(LEITURA_VAZIA);
   };
 
   const toggleCerta = (i: number) => {
@@ -155,7 +164,7 @@ export default function MarPage() {
   };
 
   const administrar = async (justificacaoSOS?: string) => {
-    if (!modalId || !todasMarcadas) return;
+    if (!modalId || !todasMarcadas || leituraBloqueia(leitura)) return;
     setAdministrando(modalId);
     try {
       await api.post(`/medicacao/${modalId}/administrar`, {
@@ -166,6 +175,7 @@ export default function MarPage() {
         // verificação inexistente. A verificação a sério é a da etiqueta lida por QR.
         atestadoPeloEnfermeiro: todasMarcadas,
         observacoes: obs || undefined,
+        ...camposLeitura(leitura),
         ...(justificacaoSOS ? { justificacaoSOS } : {}),
       });
       toast.success('Medicação administrada');
@@ -410,6 +420,13 @@ export default function MarPage() {
               </div>
             )}
 
+            {/* UX-08: pulseira e embalagem lidas (verificadas no servidor) dão os certos 1 e 2. */}
+            {modalMed && (
+              <div style={{ marginBottom: '16px' }}>
+                <LeituraBcma medicacaoId={modalMed.id} doenteId={modalMed.doente.id} estado={leitura} onChange={mudarLeitura} />
+              </div>
+            )}
+
             {/* Checklist */}
             <div className="flex flex-col gap-3" style={{ marginBottom: '20px' }}>
               {CERTAS_LABELS.map((label, i) => (
@@ -460,7 +477,7 @@ export default function MarPage() {
                 style={{ padding: '11px' }}>Cancelar</button>
               <button
                 onClick={() => administrar()}
-                disabled={!todasMarcadas || !!administrando}
+                disabled={!todasMarcadas || !!administrando || leituraBloqueia(leitura)}
                 className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 style={{ padding: '11px' }}>
                 {administrando ? 'A registar...' : todasMarcadas ? 'Confirmar Administração' : `Faltam ${5 - certas.filter(Boolean).length} item${5 - certas.filter(Boolean).length !== 1 ? 's' : ''}`}
