@@ -56,4 +56,24 @@ export class AdministrarMedicacaoDto {
   @IsOptional()
   @MaxLength(500)
   justificacaoSOS?: string;
+
+  // UX-08: o que o leitor de códigos leu à cabeceira (verificado no servidor).
+  @ApiPropertyOptional({ description: 'Conteúdo lido da pulseira do doente' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(200)
+  leituraPulseira?: string;
+
+  @ApiPropertyOptional({ description: 'Conteúdo lido da embalagem/unidose (GS1, CHNM ou etiqueta da farmácia)' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(2000)
+  leituraMedicamento?: string;
+
+  @ApiPropertyOptional({ description: 'Porque não foi possível ler (pulseira danificada, embalagem sem código…)' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(500)
+  leituraExcecao?: string;
 }
+

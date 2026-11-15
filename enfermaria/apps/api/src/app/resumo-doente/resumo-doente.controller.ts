@@ -28,6 +28,13 @@ export class ResumoDoenteController {
     return this.service.faixa(doenteId);
   }
 
+  /** UX-08: dados da pulseira (QR com processo e data de nascimento) para imprimir. */
+  @Get('doente/:doenteId/pulseira')
+  @Roles('enfermeiro', 'administrativo', 'medico')
+  pulseira(@Param('doenteId') doenteId: string) {
+    return this.service.pulseira(doenteId);
+  }
+
   @Patch('doente/:doenteId/nao-reanimar')
   @Roles('medico')
   naoReanimar(@Param('doenteId') doenteId: string, @Body() dto: NaoReanimarDto, @Request() req: any) {

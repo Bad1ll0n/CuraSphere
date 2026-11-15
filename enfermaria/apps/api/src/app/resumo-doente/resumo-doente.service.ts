@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { VigilanciaService } from '../vigilancia/vigilancia.service';
 import { classificarTomas, tomasPlaneadas } from '../medicacao/posologia';
+import { conteudoPulseira } from '../medicacao/leitura-bcma';
 
 const idadeDe = (d: Date | null) => (d ? Math.floor((Date.now() - d.getTime()) / (365.25 * 86_400_000)) : null);
 const tendencia = (atual: number | null | undefined, anterior: number | null | undefined) =>
@@ -46,6 +47,20 @@ export class ResumoDoenteService {
       riscoUlcera: braden ? { risco: braden.risco, pontuacao: braden.pontuacao } : null,
       news2: sv ? { valor: sv.news2, em: sv.data, tendencia: tendencia(sv.news2, svAnt?.news2) } : null,
       sinalizacoes: d.sinalizacoes,
+    };
+  }
+
+  /** UX-08: conteúdo e dados a imprimir na pulseira do doente. */
+  async pulseira(doenteId: string) {
+    const d = await this.prisma.doente.findUnique({
+      where: { id: doenteId },
+      select: { nome: true, numeroProcesso: true, dataNascimento: true, sexo: true, avaliacaoAlergias: true, alergias: { where: { deletedAt: null }, select: { alergenio: true } } },
+    });
+    if (!d) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+    return {
+      conteudo: conteudoPulseira(d.numeroProcesso, d.dataNascimento),
+      nome: d.nome, numeroProcesso: d.numeroProcesso, dataNascimento: d.dataNascimento, sexo: d.sexo,
+      temAlergias: d.alergias.length > 0, alergiasAvaliadas: d.avaliacaoAlergias !== 'nao_avaliado',
     };
   }
 

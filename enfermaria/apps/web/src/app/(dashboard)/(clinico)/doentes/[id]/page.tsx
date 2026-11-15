@@ -263,6 +263,8 @@ export default function DoenteDetalhe() {
   const dlgPortal = useDialogoAcessivel({ aberto: modalPortal, onFechar: () => setModalPortal(false), titulo: 'Portal do doente' });
 
   const podeCriarPortal = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
+  // UX-08: a pulseira com QR (processo + data de nascimento) é o que o leitor confirma à cabeceira.
+  const podeImprimirPulseira = ['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '');
 
   // Score de risco
   const [riscoScore, setRiscoScore] = useState<{ score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] } | null>(null);
@@ -662,6 +664,12 @@ export default function DoenteDetalhe() {
                   className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
                   PDF da ficha
                 </button>
+                {podeImprimirPulseira && (
+                  <button role="menuitem" onClick={() => { setMaisAcoes(false); window.open(`/doentes/${id}/pulseira`, '_blank'); }}
+                    className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
+                    Imprimir pulseira
+                  </button>
+                )}
                 <button role="menuitem" onClick={() => { setMaisAcoes(false); setModalQR(true); }}
                   className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
                   QR Code

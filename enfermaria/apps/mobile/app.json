@@ -43,9 +43,10 @@
         }
       ],
       [
-        "expo-barcode-scanner",
+        "expo-camera",
         {
-          "cameraPermission": "Permitir acesso à câmara para ler QR codes dos doentes"
+          "cameraPermission": "Permitir acesso à câmara para ler a pulseira do doente e a etiqueta/embalagem do medicamento",
+          "recordAudioAndroid": false
         }
       ]
     ]
