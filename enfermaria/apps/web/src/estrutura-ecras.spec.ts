@@ -17,6 +17,8 @@ import { readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { join, relative } from 'path';
 
 const RAIZ = join(__dirname, 'app');
+const PAINEIS = join(__dirname, 'components', 'dashboard', 'paineis');
+const paineis = (dir: string) => readdirSync(dir).filter((n) => n.endsWith('.tsx')).map((n) => join(dir, n));
 const FICHEIRO_BASE = join(__dirname, 'ecras-erro-vs-vazio.json');
 
 function ecras(dir: string): string[] {
@@ -45,7 +47,9 @@ const CATCH_VAZIO =
 
 function porCorrigir(): string[] {
   const fora: string[] = [];
-  for (const f of ecras(RAIZ)) {
+  // ARQ-14: os painéis do dashboard saíram de page.tsx para components/dashboard/paineis —
+  // continuam a ser ecrãs que carregam dados, por isso continuam a ser verificados.
+  for (const f of [...ecras(RAIZ), ...paineis(PAINEIS)]) {
     const bruto = readFileSync(f, 'utf8');
     const src = semComentarios(bruto);
     if (!CARREGA.test(src)) continue;

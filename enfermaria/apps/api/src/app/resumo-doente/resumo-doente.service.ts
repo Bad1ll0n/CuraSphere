@@ -3,9 +3,11 @@ import { PrismaService } from '../prisma/prisma.service';
 import { VigilanciaService } from '../vigilancia/vigilancia.service';
 import { classificarTomas, tomasPlaneadas } from '../medicacao/posologia';
 import { conteudoPulseira } from '../medicacao/leitura-bcma';
+// ARQ-12: as respostas seguem o contrato partilhado com a web e a mobile.
+import type { FaixaDoente, LinhaMeuTurno, MeuTurno, PulseiraDoente } from '@org/shared';
 
 const idadeDe = (d: Date | null) => (d ? Math.floor((Date.now() - d.getTime()) / (365.25 * 86_400_000)) : null);
-const tendencia = (atual: number | null | undefined, anterior: number | null | undefined) =>
+const tendencia = (atual: number | null | undefined, anterior: number | null | undefined): 'sobe' | 'desce' | 'igual' | null =>
   atual == null || anterior == null ? null : atual > anterior ? 'sobe' : atual < anterior ? 'desce' : 'igual';
 
 /**
@@ -18,7 +20,7 @@ export class ResumoDoenteService {
   constructor(private readonly prisma: PrismaService, private readonly vigilancia: VigilanciaService) {}
 
   /** Faixa de identificação (sticky) da ficha e dos modais clínicos. */
-  async faixa(doenteId: string) {
+  async faixa(doenteId: string): Promise<FaixaDoente<Date>> {
     const d = await this.prisma.doente.findUnique({
       where: { id: doenteId },
       select: {
@@ -51,7 +53,7 @@ export class ResumoDoenteService {
   }
 
   /** UX-08: conteúdo e dados a imprimir na pulseira do doente. */
-  async pulseira(doenteId: string) {
+  async pulseira(doenteId: string): Promise<PulseiraDoente<Date>> {
     const d = await this.prisma.doente.findUnique({
       where: { id: doenteId },
       select: { nome: true, numeroProcesso: true, dataNascimento: true, sexo: true, avaliacaoAlergias: true, alergias: { where: { deletedAt: null }, select: { alergenio: true } } },
@@ -97,7 +99,7 @@ export class ResumoDoenteService {
    * UX-30 — "O meu turno": os meus doentes por cama, com o que pede acção agora: medicação
    * devida/em atraso, vitais/escalas em atraso, NEWS2 a subir, tarefas.
    */
-  async meuTurno(utilizadorId: string) {
+  async meuTurno(utilizadorId: string): Promise<MeuTurno<Date>> {
     const ids = await this.meusDoentes(utilizadorId);
     if (!ids.length) return { doentes: [] };
     const agora = new Date();
@@ -119,7 +121,7 @@ export class ResumoDoenteService {
       },
       orderBy: [{ cama: { quarto: 'asc' } }, { cama: { numero: 'asc' } }],
     });
-    const resultado = [];
+    const resultado: LinhaMeuTurno<Date>[] = [];
     for (const d of doentes) {
       let devidas = 0, emAtraso = 0;
       for (const m of d.medicacoes) {
