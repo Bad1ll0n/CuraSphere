@@ -1,11 +1,11 @@
 'use client';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import * as Sentry from '@sentry/nextjs';
+import { reportarErro } from '@/lib/monitorizacao';
 
 export default function DashboardError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    Sentry.captureException(error);
+    reportarErro(error);
     console.error('[Dashboard Error]', error);
   }, [error]);
 

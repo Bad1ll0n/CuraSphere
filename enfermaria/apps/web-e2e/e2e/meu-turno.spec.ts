@@ -7,7 +7,13 @@ test.describe('O meu turno', () => {
     await loginAs(page, '00003');
     await expect(page).toHaveURL(/\/meu-turno$/, { timeout: 15000 });
     await expect(page.getByRole('heading', { name: 'O meu turno', level: 1 })).toBeVisible();
-    await expect(page.getByText(/Não tem doentes atribuídos|toma\(s\) por fazer/).first()).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Não tem doentes atribuídos|tomas? por fazer/).first()).toBeVisible({ timeout: 10000 });
+
+    // PERF-12: o primeiro HTML já traz os dados do turno (pré-carregados no servidor com a
+    // sessão), em vez de chegarem só depois da hidratação.
+    const html = await (await page.request.get('/meu-turno')).text();
+    expect(html).toMatch(/resumo\\*",\\*"meu-turno/);
+    expect(html).toMatch(/doentes/);
 
     const menu = page.getByRole('complementary', { name: /navega/i });
     const trabalho = menu.getByRole('link');

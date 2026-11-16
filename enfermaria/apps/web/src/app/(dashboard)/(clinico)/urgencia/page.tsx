@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
-import { useSocket } from '@/lib/use-socket';
+import { useSocket, useIntervaloDeRecurso } from '@/lib/use-socket';
 import { useToast } from '@/components/toast';
 import { AiFeedback } from '@/components/ai-feedback';
 import { RoleGuard } from '@/components/role-guard';
@@ -171,18 +171,18 @@ function UrgenciaPageInner() {
     enabled: !!modalAtribuir,
   });
 
+  const intervaloUrgencia = useIntervaloDeRecurso(60_000); // PERF-13: com socket ligado, chegam os eventos urgencia:*
   const { data: episodios = [], isLoading, isError, refetch } = useQuery<EpisodioUrgencia[]>({
     queryKey: ['urgencia-lista'],
     queryFn: () => api.get('/urgencia/lista').then(r => r.data),
-    refetchInterval: 60_000,
+    refetchInterval: intervaloUrgencia,
   });
 
   const { data: dashboard } = useQuery({
     queryKey: ['urgencia-dashboard'],
     queryFn: () => api.get('/urgencia/dashboard').then(r => r.data),
-    refetchInterval: 60_000,
+    refetchInterval: intervaloUrgencia,
   });
-
   useEffect(() => {
     const map: Record<string, number> = {};
     episodios

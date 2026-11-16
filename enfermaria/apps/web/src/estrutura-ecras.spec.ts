@@ -25,7 +25,8 @@ function ecras(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = join(dir, e.name);
     if (e.isDirectory()) return e.name === 'node_modules' ? [] : ecras(p);
-    return e.name === 'page.tsx' ? [p] : [];
+    // PERF-12: páginas de servidor delegam o ecrã num `*-cliente.tsx`, que é o que carrega dados.
+    return e.name === 'page.tsx' || e.name.endsWith('-cliente.tsx') ? [p] : [];
   });
 }
 

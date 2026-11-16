@@ -66,6 +66,14 @@ const sentryOpcoes = {
   // Desactivar upload de source maps se não houver auth token configurado
   disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
   disableClientWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
+  // PERF-10: o SDK do cliente é carregado à parte (src/lib/monitorizacao.ts) e não usamos
+  // Session Replay — tira-se do pacote o que nunca corre.
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+    excludeReplayIframe: true,
+    excludeReplayShadowDom: true,
+    excludeReplayWorker: true,
+  },
 };
 
 // O `composePlugins(withNx)` devolve uma função `(phase, context) => Promise<config>`, não um
