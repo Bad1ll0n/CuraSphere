@@ -43,7 +43,8 @@ describe('arquitetura web (ARQ-13 / ARQ-14)', () => {
   const grandes: Record<string, number> = {};
   const cargaManual: Record<string, number> = {};
   for (const f of fontes(RAIZ)) {
-    const src = readFileSync(f, 'utf8');
+    // Finais de linha normalizados: no CI (LF) e no Windows (CRLF) as contagens têm de ser iguais.
+    const src = readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
     const linhas = src.split('\n').length;
     if (linhas > LIMITE_LINHAS) grandes[rel(f)] = linhas;
     const n = cargasManuais(src);
