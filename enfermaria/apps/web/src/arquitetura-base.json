@@ -103,7 +103,7 @@
     "components/dashboard/paineis/generico.tsx": 2,
     "components/dashboard/paineis/medico.tsx": 4,
     "components/dashboard/paineis/reabilitacao.tsx": 1,
-    "components/dashboard/paineis/rececao.tsx": 2,
+    "components/dashboard/paineis/rececao.tsx": 1,
     "components/draggable-dashboard.tsx": 1,
     "components/faixa-alergias.tsx": 2,
     "components/Icd10Autocomplete.tsx": 1,
