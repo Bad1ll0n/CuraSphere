@@ -29,7 +29,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleDestroy() {
-    await this.client.quit();
+    // OPS-09: no encerramento ordenado (SIGTERM), um Redis já em baixo não pode impedir a saída.
+    await this.client.quit().catch(() => this.client.disconnect());
   }
 
   /** OPS-06: verificação de saúde sem escrever nada (antes o health fazia SET a cada chamada). */

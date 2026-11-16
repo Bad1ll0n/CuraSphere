@@ -9,7 +9,7 @@ groups:
         labels: { severidade: critico }
         annotations:
           resumo: "A API não está pronta há 2 min (BD, migrações ou trilho de auditoria)."
-          accao: "docker compose ps; docker logs curasphere-api --tail 100; curl /v1/health/ready"
+          accao: "docker compose ps api; docker compose logs api --tail 100; curl /v1/health/ready"
 
       - alert: WebEmBaixo
         expr: probe_success{job="blackbox-interno", instance=~".*web.*"} == 0

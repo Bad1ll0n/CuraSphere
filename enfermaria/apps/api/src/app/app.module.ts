@@ -7,6 +7,7 @@ import { RequestContextMiddleware } from './prisma/request-context.middleware';
 import { ContextoPedidoInterceptor } from './prisma/contexto-pedido.interceptor';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerRedisStorage } from './common/throttler-redis.storage';
 import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
@@ -109,7 +110,11 @@ import { gerarIdCorrelacao } from './common/correlacao';
       },
     }),
     // Por utilizador autenticado (ThrottlerPorUtilizadorGuard), não por IP — ver PERF-02.
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 600) }]),
+    // ARQ-17/OPS-09: contagem no Redis, partilhada pelas réplicas (ver ThrottlerRedisStorage).
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60000, limit: Number(process.env['THROTTLE_LIMIT'] ?? 600) }],
+      storage: process.env['NODE_ENV'] === 'test' ? undefined : new ThrottlerRedisStorage(),
+    }),
     ScheduleModule.forRoot(),
     PrismaModule,
     AuditModule,

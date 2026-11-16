@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, Optional } from '@nestjs/common';
+import { BarramentoService } from '../redis/barramento.service';
 import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
@@ -17,7 +18,10 @@ export class CamasService {
     private readonly prisma: PrismaService,
     private readonly tenantContext: TenantContextService,
     private readonly redis: RedisService,
-  ) {}
+    @Optional() private readonly barramento?: BarramentoService,
+  ) {
+    this.barramento?.subscrever<{ data: string; type: string }>('sse:camas', (e) => this.eventos$.next(e));
+  }
 
   eventStream() {
     return this.eventos$.asObservable();
@@ -29,8 +33,12 @@ export class CamasService {
     this.emit('camas_alteradas', {});
   }
 
+  // ARQ-17/OPS-09: o evento SSE vai pelo barramento (Redis) para chegar aos browsers ligados a
+  // QUALQUER réplica; sem barramento (testes), fica local como antes.
   private emit(type: string, payload: unknown) {
-    this.eventos$.next({ type, data: JSON.stringify(payload) });
+    const e = { type, data: JSON.stringify(payload) };
+    if (this.barramento) this.barramento.publicar('sse:camas', e);
+    else this.eventos$.next(e);
   }
 
   async listar() {
