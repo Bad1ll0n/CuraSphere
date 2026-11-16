@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import QRCode from 'react-qr-code';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
@@ -44,16 +45,8 @@ import { LosWidget } from './components/los-widget';
 import { FaixaIdentificacao } from '@/components/faixa-identificacao';
 
 /** UX-29: secções da ficha (a ordem é a da enfermaria: primeiro o resumo, o administrativo no fim). */
-const SEPARADORES_FICHA = [
-  { id: 'resumo', label: 'Resumo' },
-  { id: 'medicacao', label: 'Medicação' },
-  { id: 'vitais', label: 'Vitais e escalas' },
-  { id: 'notas', label: 'Notas' },
-  { id: 'exames', label: 'Exames e documentos' },
-  { id: 'alta', label: 'Plano de alta' },
-  { id: 'especialidades', label: 'Especialidades' },
-  { id: 'administrativo', label: 'Administrativo' },
-];
+// UX-07: o rótulo vem de patientFile.tab.<id>.
+const SEPARADORES_FICHA = ['resumo', 'medicacao', 'vitais', 'notas', 'exames', 'alta', 'especialidades', 'administrativo'].map((id) => ({ id }));
 
 interface Doente {
   id: string;
@@ -193,6 +186,8 @@ export default function DoenteDetalhe() {
     window.history.replaceState(null, '', `#${sid}`);
   };
   const [maisAcoes, setMaisAcoes] = useState(false);
+  const tf = useTranslations('patientFile');
+  const tc = useTranslations('common');
   const [modalEditarDoente, setModalEditarDoente] = useState(false);
   const [editDiagnostico, setEditDiagnostico] = useState('');
   const [editAltaPrevista, setEditAltaPrevista] = useState('');
@@ -491,12 +486,12 @@ export default function DoenteDetalhe() {
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
       </svg>
-      <span className="text-sm">A carregar...</span>
+      <span className="text-sm">{tc('loading')}</span>
     </div>
   );
 
   if (!doente) return (
-    <div className="text-center text-slate-500 text-sm" style={{ paddingTop: '120px' }}>Doente não encontrado</div>
+    <div className="text-center text-slate-500 text-sm" style={{ paddingTop: '120px' }}>{tf('notFound')}</div>
   );
 
   return (
@@ -580,13 +575,13 @@ export default function DoenteDetalhe() {
                 <button onClick={() => toggleIsolamento(false)}
                   className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
                   style={{ padding: '4px 10px' }}>
-                  Remover Isolamento
+                  {tf('removeIsolation')}
                 </button>
               ) : (
                 <button onClick={() => { setMotivoIsolamentoInput(''); setModalIsolamento(true); }}
                   className="text-xs font-semibold border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
                   style={{ padding: '4px 10px' }}>
-                  🔶 Activar Isolamento
+                  {tf('startIsolation')}
                 </button>
               )
             )}
@@ -602,7 +597,7 @@ export default function DoenteDetalhe() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
-                SOS enviado
+                {tf('sosSent')}
               </div>
             ) : sosConfirmando ? (
               <div className="inline-flex items-center gap-2">
@@ -622,7 +617,7 @@ export default function DoenteDetalhe() {
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 5a1 1 0 011 1v5a1 1 0 01-2 0V8a1 1 0 011-1zm0 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
                 </svg>
-                SOS
+                {tf('sos')}
               </button>
             )
           )}
@@ -632,19 +627,19 @@ export default function DoenteDetalhe() {
             sinalizacaoAtiva ? (
               <div className="inline-flex items-center gap-2">
                 <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-800 text-sm font-semibold rounded-xl" style={{ padding: '10px 14px' }}>
-                  ⚠ Preocupante
+                  {tf('concerning')}
                 </div>
                 <button onClick={resolverSinalizar}
                   className="text-xs text-amber-700 border border-amber-200 hover:bg-amber-50 rounded-xl transition-colors"
                   style={{ padding: '10px 12px' }}>
-                  Resolver
+                  {tf('resolve')}
                 </button>
               </div>
             ) : (
               <button onClick={() => setModalSinalizar(true)}
                 className="inline-flex items-center gap-2 border border-amber-200 text-amber-700 hover:bg-amber-50 text-sm font-medium rounded-xl transition-all"
                 style={{ padding: '10px 16px' }}>
-                ⚠ Sinalizar
+                {tf('flag')}
               </button>
             )
           )}
@@ -654,7 +649,7 @@ export default function DoenteDetalhe() {
             <button onClick={() => setMaisAcoes((v) => !v)} aria-haspopup="menu" aria-expanded={maisAcoes}
               className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-medium rounded-xl"
               style={{ padding: '10px 16px' }}>
-              Mais ações <span aria-hidden="true">⋯</span>
+              {tf('moreActions')} <span aria-hidden="true">⋯</span>
             </button>
             {maisAcoes && (
               <div role="menu" tabIndex={-1} className="absolute right-0 top-full bg-white border border-slate-200 rounded-xl shadow-lg z-30 overflow-hidden"
@@ -662,28 +657,28 @@ export default function DoenteDetalhe() {
                 onKeyDown={(e) => { if (e.key === 'Escape') setMaisAcoes(false); }}>
                 <button role="menuitem" onClick={() => { setMaisAcoes(false); window.open(`/doentes/${id}/print`, '_blank'); }}
                   className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
-                  PDF da ficha
+                  {tf('pdf')}
                 </button>
                 {podeImprimirPulseira && (
                   <button role="menuitem" onClick={() => { setMaisAcoes(false); window.open(`/doentes/${id}/pulseira`, '_blank'); }}
                     className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
-                    Imprimir pulseira
+                    {tf('printWristband')}
                   </button>
                 )}
                 <button role="menuitem" onClick={() => { setMaisAcoes(false); setModalQR(true); }}
                   className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
-                  QR Code
+                  {tf('qr')}
                 </button>
                 {podeCriarPortal && (
                   <button role="menuitem" onClick={() => { setMaisAcoes(false); setPortalEmail(''); setPortalSenha(''); setPortalCriado(false); setModalPortal(true); }}
                     className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
-                    Portal do doente
+                    {tf('portal')}
                   </button>
                 )}
                 {podeDarAlta && doente.ativo && (
                   <button role="menuitem" onClick={() => { setMaisAcoes(false); abrirModalAlta(); }}
                     className="w-full text-left text-sm text-red-700 hover:bg-red-50 border-t border-slate-100" style={{ padding: '10px 14px' }}>
-                    Dar Alta
+                    {tf('discharge')}
                   </button>
                 )}
               </div>
@@ -698,13 +693,13 @@ export default function DoenteDetalhe() {
       </PanelErrorBoundary>
 
       {/* UX-29: separadores — antes eram 27 painéis numa coluna de 5 000 px, a começar pela IA. */}
-      <div role="tablist" aria-label="Secções da ficha" className="separadores-ficha flex gap-1 overflow-x-auto border-b border-slate-200" style={{ marginBottom: '20px' }}>
+      <div role="tablist" aria-label={tf('sections')} className="separadores-ficha flex gap-1 overflow-x-auto border-b border-slate-200" style={{ marginBottom: '20px' }}>
         {SEPARADORES_FICHA.map((sep) => (
           <button key={sep.id} role="tab" id={`tab-${sep.id}`} aria-selected={separador === sep.id} aria-controls={`painel-${sep.id}`}
             onClick={() => escolherSeparador(sep.id)}
             className={`whitespace-nowrap text-sm font-semibold border-b-2 transition-colors ${separador === sep.id ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
             style={{ padding: '10px 14px', marginBottom: '-1px' }}>
-            {sep.label}
+            {tf(`tab.${sep.id}`)}
           </button>
         ))}
       </div>
@@ -722,12 +717,12 @@ export default function DoenteDetalhe() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
-                <span className="text-sm font-semibold text-slate-700">Dados Pessoais</span>
+                <span className="text-sm font-semibold text-slate-700">{tf('personalData')}</span>
               </div>
               <div className="flex flex-col gap-4">
-                <InfoRow label="Data de Nascimento" value={`${new Date(doente.dataNascimento).toLocaleDateString('pt-PT')} (${calcIdade(doente.dataNascimento)} anos)`} />
-                <InfoRow label="Admissão" value={new Date(doente.dataAdmissao).toLocaleDateString('pt-PT')} />
-                <InfoRow label="Alta Prevista" value={doente.dataAltaPrevista ? new Date(doente.dataAltaPrevista).toLocaleDateString('pt-PT') : '—'} />
+                <InfoRow label={tf('birthDate')} value={tf('ageYears', { data: new Date(doente.dataNascimento).toLocaleDateString('pt-PT'), idade: calcIdade(doente.dataNascimento) })} />
+                <InfoRow label={tf('admission')} value={new Date(doente.dataAdmissao).toLocaleDateString('pt-PT')} />
+                <InfoRow label={tf('expectedDischarge')} value={doente.dataAltaPrevista ? new Date(doente.dataAltaPrevista).toLocaleDateString('pt-PT') : '—'} />
               </div>
             </div>
 
@@ -740,7 +735,7 @@ export default function DoenteDetalhe() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
+                  <span className="text-sm font-semibold text-slate-700">{tf('clinicalInfo')}</span>
                 </div>
                 {['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '') && (
                   <button onClick={abrirEditarDoente}
@@ -749,11 +744,11 @@ export default function DoenteDetalhe() {
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
-                    Editar
+                    {tc('edit')}
                   </button>
                 )}
               </div>
-              <InfoRow label="Diagnóstico Principal" value={doente.diagnosticoPrincipal} />
+              <InfoRow label={tf('mainDiagnosis')} value={doente.diagnosticoPrincipal} />
             </div>
 
             {/* Internamento */}
@@ -764,12 +759,12 @@ export default function DoenteDetalhe() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
                 </div>
-                <span className="text-sm font-semibold text-slate-700">Internamento</span>
+                <span className="text-sm font-semibold text-slate-700">{tf('stay')}</span>
               </div>
               <div className="flex flex-col gap-4">
-                <InfoRow label="Cama" value={doente.cama ? `Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}` : 'Sem cama atribuída'} />
+                <InfoRow label={tf('bed')} value={doente.cama ? tf('roomBed', { quarto: doente.cama.quarto, cama: doente.cama.numero }) : tf('noBed')} />
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Enfermeiros Atribuídos</span>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{tf('assignedNurses')}</span>
                   {(() => {
                     const ordemTurno: Record<string, number> = { manha: 0, tarde: 1, noite: 2 };
                     const mapa = new Map<string, typeof doente.atribuicoesHorario[0]>();
@@ -799,7 +794,7 @@ export default function DoenteDetalhe() {
                           </div>
                         ))}
                       </div>
-                    ) : <span className="text-sm text-slate-500">Nenhum atribuído</span>;
+                    ) : <span className="text-sm text-slate-500">{tf('noneAssigned')}</span>;
                   })()}
                 </div>
               </div>
@@ -941,7 +936,7 @@ export default function DoenteDetalhe() {
 
       {separador === 'especialidades' && (
         <div role="tabpanel" id="painel-especialidades" aria-labelledby="tab-especialidades">
-          <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>Só aparecem os registos de especialidade aplicáveis a este doente.</p>
+          <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>{tf('specialtiesHint')}</p>
           {/* Maternidade / Obstetrícia — auto-fino se não houver gravidez ativa */}
           <PanelErrorBoundary name="Maternidade">
             <MaternidadePanel doenteId={id!} utilizador={utilizador} />
@@ -971,15 +966,15 @@ export default function DoenteDetalhe() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <span className="text-sm font-semibold text-slate-700">Dados Administrativos</span>
-                  <span className="text-xs text-slate-300 bg-slate-100 badge-pad py-0.5 rounded-full font-medium">Confidencial</span>
+                  <span className="text-sm font-semibold text-slate-700">{tf('adminData')}</span>
+                  <span className="text-xs text-slate-300 bg-slate-100 badge-pad py-0.5 rounded-full font-medium">{tf('confidential')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <a href={`/faturacao`} className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
-                    Ver Faturação
+                    {tf('billing')}
                   </a>
                   {!editandoFicha ? (
                     <button onClick={() => setEditandoFicha(true)}
@@ -988,13 +983,13 @@ export default function DoenteDetalhe() {
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
-                      Editar
+                      {tc('edit')}
                     </button>
                   ) : (
                     <div className="flex gap-2">
                       <button onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
                         className="text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors" style={{ padding: '4px 10px' }}>
-                        Cancelar
+                        {tc('cancel')}
                       </button>
                       <button onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
                         className="text-xs text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors" style={{ padding: '4px 10px' }}>
@@ -1141,7 +1136,7 @@ export default function DoenteDetalhe() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
           <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
-              <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
+              <h2 className="text-lg font-bold text-slate-900">{tf('startIsolation')}</h2>
               <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>

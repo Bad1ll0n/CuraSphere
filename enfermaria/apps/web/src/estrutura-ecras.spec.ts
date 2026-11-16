@@ -30,7 +30,9 @@ function ecras(dir: string): string[] {
 const semComentarios = (s: string) => s.replace(/(^|[^:])\/\/.*$/gm, '$1');
 
 const CARREGA = /useQuery\s*[<(]|api\.get\(|quiosqueFetch\(|fetch\(/;
-const ESTADO_VAZIO = />\s*(?:Sem|Nenhum|Nenhuma|Nao ha|Nao existem|Lista vazia)/;
+// UX-07: o estado vazio traduzido (`{t('noneToday')}`, `msg={t('empty')}`) conta tanto como o literal;
+// sem isto, traduzir um ecra tirava-o da lista sem ninguem ter tratado o erro da carga.
+const ESTADO_VAZIO = />\s*(?:Sem|Nenhum|Nenhuma|Nao ha|Nao existem|Lista vazia)|\b\w*[tT]\w*\(\s*'(?:[\w]+\.)*(?:empty|none|no[A-Z])\w*'/;
 const TRATA_ERRO = [
   /isError/,
   /const\s*\{[^}]*\berror\b[^}]*\}\s*=\s*useQuery/,
@@ -68,6 +70,8 @@ describe('estrutura web - erro de carga vs lista vazia', () => {
     // Uma regra estrutural que nunca dispara e indistinguivel de uma regra partida.
     expect(CARREGA.test('const r = await api.get("/x");')).toBe(true);
     expect(ESTADO_VAZIO.test('<Text>Sem tarefas</Text>')).toBe(true);
+    expect(ESTADO_VAZIO.test("<p>{t('noneToday')}</p>")).toBe(true);
+    expect(ESTADO_VAZIO.test("<p>{tp('noneAssigned')}</p>")).toBe(true);
     expect(TRATA_ERRO.some((r) => r.test('const [erroCarga, setErroCarga] = useState(false);'))).toBe(true);
     expect(CATCH_VAZIO.test('await api.get("/x"); } catch { /* ignorar */ }')).toBe(true);
   });

@@ -1,0 +1,45 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "ok": "OK"
+  },
+  "tabs": {
+    "Dashboard": "Dashboard",
+    "Doentes": "Patients",
+    "Tarefas": "Tasks",
+    "Vitais": "Vitals",
+    "Incidentes": "Incidents",
+    "Pedidos": "Requests",
+    "Mais": "More",
+    "Utilizadores": "Users",
+    "Auditoria": "Audit"
+  },
+  "session": {
+    "expiringTitle": "Session about to expire",
+    "expiringBody": "No activity for 13 minutes. Tap OK to continue."
+  },
+  "administer": {
+    "recordedTitle": "Recorded",
+    "recordedBody": "Administration recorded and verified.",
+    "notRecordedTitle": "Administration NOT recorded",
+    "notRecordedFallback": "Could not record it.",
+    "checkRecord": "Check the patient record before trying again.",
+    "title": "Administer",
+    "confirmOf": "Confirm administration of {{nome}}?"
+  },
+  "mar": {
+    "title": "MAR — Medication",
+    "notLoaded": "MAR not loaded",
+    "pending_one": "{{count}} administration pending",
+    "pending_other": "{{count}} administrations pending",
+    "filterPending": "Pending",
+    "filterAll": "All",
+    "loadError": "This does not mean the medication has been given. Check the connection and try again before closing the round.",
+    "allGiven": "All medication given",
+    "bed": "Bed {{cama}}",
+    "times": "Times: {{lista}}",
+    "administer": "Administer",
+    "recordFallback": "Could not record the administration."
+  }
+}

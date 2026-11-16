@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useTranslations } from 'next-intl';
 
-function news2Intervalo(score: number): { texto: string; cor: string } {
-  if (score >= 7) return { texto: 'Monitorização contínua · resposta imediata', cor: 'text-red-600' };
-  if (score >= 5) return { texto: 'Monitorizar de 4h/4h · resposta urgente', cor: 'text-amber-600' };
-  return { texto: 'Monitorizar de 12h/12h', cor: 'text-green-600' };
+/** UX-07: devolve a chave (vitals.interval.*) em vez do texto. */
+function news2Intervalo(score: number): { chave: 'high' | 'medium' | 'low'; cor: string } {
+  if (score >= 7) return { chave: 'high', cor: 'text-red-600' };
+  if (score >= 5) return { chave: 'medium', cor: 'text-amber-600' };
+  return { chave: 'low', cor: 'text-green-600' };
 }
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -31,6 +33,7 @@ function BtnAdd({ onClick, label = 'Adicionar' }: { onClick: () => void; label?:
 
 function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => void; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const t = useTranslations('vitals');
 
   useEffect(() => {
     const previousFocus = document.activeElement as HTMLElement;
@@ -72,7 +75,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
            style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
-          <button onClick={onClose} aria-label="Fechar modal"
+          <button onClick={onClose} aria-label={t('closeModal')}
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
             <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -88,15 +91,17 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
 function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
   onCancel: () => void; onConfirm: () => void; loading: boolean; disabled: boolean; labelConfirm: string;
 }) {
+  const tc = useTranslations('common');
+  const t = useTranslations('vitals');
   return (
     <div className="flex gap-3">
       <button onClick={onCancel}
         className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
+        style={{ padding: '11px' }}>{tc('cancel')}</button>
       <button onClick={onConfirm} disabled={disabled || loading}
         className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
         style={{ padding: '11px' }}>
-        {loading ? 'A guardar...' : labelConfirm}
+        {loading ? t('saving') : labelConfirm}
       </button>
     </div>
   );
@@ -104,6 +109,8 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 
 export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   const toast = useToast();
+  const t = useTranslations('vitals');
+  const tc = useTranslations('common');
 
   const [sinaisVitais, setSinaisVitais] = useState<any[]>([]);
   const [modalSinalVital, setModalSinalVital] = useState(false);
@@ -149,12 +156,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   }, [doenteId]);
 
   const svItens = [
-    { key: 'pressaoS', label: 'TA Sistólica (mmHg)', val: svPressaoS, set: setSvPressaoS, ph: '120', min: 50, max: 250 },
-    { key: 'pressaoD', label: 'TA Diastólica (mmHg)', val: svPressaoD, set: setSvPressaoD, ph: '80', min: 30, max: 150 },
-    { key: 'pulso', label: 'Pulso (bpm)', val: svPulso, set: setSvPulso, ph: '72', min: 20, max: 300 },
-    { key: 'temp', label: 'Temperatura (ºC)', val: svTemp, set: setSvTemp, ph: '36.5', min: 30, max: 45 },
-    { key: 'spO2', label: 'SpO₂ (%)', val: svSpO2, set: setSvSpO2, ph: '98', min: 50, max: 100 },
-    { key: 'freqResp', label: 'Freq. Resp. (rpm)', val: svFreqResp, set: setSvFreqResp, ph: '16', min: 5, max: 60 },
+    { key: 'pressaoS', label: t('item.pressaoS'), val: svPressaoS, set: setSvPressaoS, ph: '120', min: 50, max: 250 },
+    { key: 'pressaoD', label: t('item.pressaoD'), val: svPressaoD, set: setSvPressaoD, ph: '80', min: 30, max: 150 },
+    { key: 'pulso', label: t('item.pulso'), val: svPulso, set: setSvPulso, ph: '72', min: 20, max: 300 },
+    { key: 'temp', label: t('item.temp'), val: svTemp, set: setSvTemp, ph: '36.5', min: 30, max: 45 },
+    { key: 'spO2', label: t('item.spO2'), val: svSpO2, set: setSvSpO2, ph: '98', min: 50, max: 100 },
+    { key: 'freqResp', label: t('item.freqResp'), val: svFreqResp, set: setSvFreqResp, ph: '16', min: 5, max: 60 },
   ] as const;
 
   const maxDor = svEscalaDor === 'cpot' ? 8 : 10;
@@ -162,13 +169,13 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
     const erros: Record<string, string> = {};
     if (svDor !== '') {
       const n = Number(svDor);
-      if (!Number.isInteger(n) || n < 0 || n > maxDor) erros['dor'] = `Deve estar entre 0 e ${maxDor}`;
+      if (!Number.isInteger(n) || n < 0 || n > maxDor) erros['dor'] = t('between', { min: 0, max: maxDor });
     }
     svItens.forEach(({ key, val, min, max }) => {
       if (!val) return;
       const n = Number(val);
-      if (isNaN(n)) erros[key] = 'Valor inválido';
-      else if (n < min || n > max) erros[key] = `Deve estar entre ${min} e ${max}`;
+      if (isNaN(n)) erros[key] = t('invalid');
+      else if (n < min || n > max) erros[key] = t('between', { min, max });
     });
     setSvErrors(erros);
     return Object.keys(erros).length === 0;
@@ -193,11 +200,11 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
         escalaDor: svDor !== '' ? svEscalaDor : undefined,
       });
       setSvDor('');
-      toast.success('Sinais vitais registados');
+      toast.success(t('recorded'));
       setModalSinalVital(false);
       carregarSinaisVitais();
     } catch (e: any) {
-      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+      toast.error(e?.response?.data?.message ?? t('saveError'));
     } finally { setSalvando(false); }
   };
 
@@ -210,14 +217,14 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
-          <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
+          <span className="text-sm font-semibold text-slate-700">{t('title')}</span>
           <HelpTooltip chave="news2" />
           {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
-            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setSvO2Suplementar(false); setModalSinalVital(true); }} />
+            <BtnAdd label={t('record')} onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setSvO2Suplementar(false); setModalSinalVital(true); }} />
           )}
         </div>
         {sinaisVitais.length === 0 ? (
-          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>Sem registos de sinais vitais</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>{t('empty')}</p>
         ) : (
           <>
             {/* Gráfico */}
@@ -255,7 +262,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="font-semibold" style={{ margin: 0 }}>
-                      NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : sinaisVitais[0].news2 >= 5 ? 'ALTO' : 'BAIXO'} — Score {sinaisVitais[0].news2}
+                      {t('news2Level', { nivel: news2Intervalo(sinaisVitais[0].news2).chave, score: sinaisVitais[0].news2 })}
                     </p>
                     {news2Slope !== null && (
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
@@ -264,12 +271,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                         news2Slope <= -0.1 ? 'bg-green-100 text-green-700' :
                         'bg-slate-100 text-slate-600'
                       }`}>
-                        {news2Slope >= 0.1 ? `↑ +${news2Slope.toFixed(1)}/h` : news2Slope <= -0.1 ? `↓ ${news2Slope.toFixed(1)}/h` : '→ estável'}
+                        {news2Slope >= 0.1 ? `↑ +${news2Slope.toFixed(1)}/h` : news2Slope <= -0.1 ? `↓ ${news2Slope.toFixed(1)}/h` : t('stable')}
                       </span>
                     )}
                   </div>
                   <p className={`text-xs font-medium ${news2Intervalo(sinaisVitais[0].news2).cor}`} style={{ margin: 0, marginTop: '2px' }}>
-                    {news2Intervalo(sinaisVitais[0].news2).texto}
+                    {t(`interval.${news2Intervalo(sinaisVitais[0].news2).chave}`)}
                   </p>
                 </div>
               </div>
@@ -278,7 +285,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             {/* Scores de Risco Clínico: qSOFA + CURB-65 */}
             {scores && (scores.qSOFA || scores.curb65) && (
               <div className="rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '12px 16px', marginBottom: '12px' }}>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Scores de Risco</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>{t('riskScores')}</p>
                 <div className="flex flex-wrap gap-3">
                   {scores.qSOFA && (
                     <div className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${scores.qSOFA.risco === 'alto' ? 'bg-red-50 border-red-200' : scores.qSOFA.risco === 'moderado' ? 'bg-amber-50 border-amber-200' : 'bg-green-50 border-green-200'}`}>
@@ -290,9 +297,9 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                       </div>
                       <div>
                         <p className={`text-xs font-semibold ${scores.qSOFA.risco === 'alto' ? 'text-red-700' : scores.qSOFA.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
-                          {scores.qSOFA.risco === 'alto' ? '⚠ Suspeita sépsis' : scores.qSOFA.risco === 'moderado' ? 'Monitorizar' : 'Baixo risco'}
+                          {t(`qsofa.${scores.qSOFA.risco === 'alto' ? 'alto' : scores.qSOFA.risco === 'moderado' ? 'moderado' : 'baixo'}`)}
                         </p>
-                        <p className="text-xs text-slate-500">FR · PAS · Consciência</p>
+                        <p className="text-xs text-slate-500">{t('qsofaParams')}</p>
                       </div>
                     </div>
                   )}
@@ -306,9 +313,9 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                       </div>
                       <div>
                         <p className={`text-xs font-semibold ${scores.curb65.risco === 'alto' ? 'text-red-700' : scores.curb65.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
-                          {scores.curb65.risco === 'alto' ? 'Considerar UCI' : scores.curb65.risco === 'moderado' ? 'Internamento' : 'Ambulatório'}
+                          {t(`curb.${scores.curb65.risco === 'alto' ? 'alto' : scores.curb65.risco === 'moderado' ? 'moderado' : 'baixo'}`)}
                         </p>
-                        <p className="text-xs text-slate-500">Pneumonia (sem Ureia)</p>
+                        <p className="text-xs text-slate-500">{t('curbNote')}</p>
                       </div>
                     </div>
                   )}
@@ -337,11 +344,9 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                           scores.sofa.gravidade === 'moderado' ? 'text-amber-700' :
                           'text-green-700'
                         }`}>
-                          {scores.sofa.gravidade === 'muito_grave' ? '⚠ Muito grave' :
-                           scores.sofa.gravidade === 'grave' ? '⚠ Grave — UCI' :
-                           scores.sofa.gravidade === 'moderado' ? 'Moderado' : 'Leve'}
+                          {t(`sofa.${['muito_grave', 'grave', 'moderado'].includes(scores.sofa.gravidade) ? scores.sofa.gravidade : 'leve'}`)}
                         </p>
-                        <p className="text-xs text-slate-500">{scores.sofa.componentesDisponiveis}/6 componentes</p>
+                        <p className="text-xs text-slate-500">{t('sofaComponents', { n: scores.sofa.componentesDisponiveis })}</p>
                       </div>
                     </div>
                   )}
@@ -355,7 +360,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
               const atrasada = devida.getTime() < Date.now();
               return (
                 <p className={`text-xs font-semibold rounded-lg ${atrasada ? 'bg-red-50 text-red-700' : 'bg-slate-50 text-slate-600'}`} style={{ padding: '8px 12px', marginBottom: '12px' }} role={atrasada ? 'alert' : undefined}>
-                  {atrasada ? 'Observação em atraso — devida às ' : 'Próxima observação devida às '}
+                  {atrasada ? t('obsOverdueAt') : t('nextObsAt')}
                   {devida.toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
                 </p>
               );
@@ -366,15 +371,15 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-slate-50 text-xs text-slate-600 font-semibold uppercase tracking-wide border-b border-slate-100">
-                    <th scope="col" className="text-left pb-2">Data/Hora</th>
-                    <th scope="col" className="text-center pb-2">TA (mmHg)</th>
-                    <th scope="col" className="text-center pb-2">Pulso</th>
-                    <th scope="col" className="text-center pb-2">Temp ºC</th>
-                    <th scope="col" className="text-center pb-2">SpO₂ %</th>
-                    <th scope="col" className="text-center pb-2">FR</th>
-                    <th scope="col" className="text-center pb-2">Dor</th>
+                    <th scope="col" className="text-left pb-2">{t('col.date')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.bp')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.pulse')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.temp')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.spo2')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.rr')}</th>
+                    <th scope="col" className="text-center pb-2">{t('col.pain')}</th>
                     <th scope="col" className="text-center pb-2">NEWS2</th>
-                    <th scope="col" className="text-left pb-2">Registado por</th>
+                    <th scope="col" className="text-left pb-2">{t('col.by')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -429,11 +434,11 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <span className="text-sm font-semibold text-slate-700">Baseline Individual</span>
+              <span className="text-sm font-semibold text-slate-700">{t('baseline')}</span>
               <HelpTooltip chave="baseline" />
               {baseline.nRegistos < 8 && (
                 <span className="text-xs text-violet-600 bg-violet-50 border border-violet-200 rounded-md font-medium" style={{ padding: '2px 8px' }}>
-                  A aprender — {baseline.nRegistos}/8 registos
+                  {t('learning', { n: baseline.nRegistos })}
                 </span>
               )}
             </div>
@@ -446,26 +451,26 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             <div style={{ padding: '0 24px 20px' }}>
               {baseline.nRegistos < 8 ? (
                 <div className="rounded-xl bg-violet-50 border border-violet-100 text-center text-sm text-violet-700" style={{ padding: '20px' }}>
-                  A aprender o baseline deste doente — {baseline.nRegistos}/8 registos necessários
+                  {t('learningLong', { n: baseline.nRegistos })}
                 </div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-slate-50 text-xs text-slate-600 font-semibold uppercase tracking-wide border-b border-slate-100">
-                      <th className="text-left py-2">Parâmetro</th>
-                      <th className="text-center py-2">Média ± SD</th>
-                      <th className="text-center py-2">Último valor</th>
-                      <th className="text-center py-2">Estado</th>
+                      <th className="text-left py-2">{t('col.param')}</th>
+                      <th className="text-center py-2">{t('col.mean')}</th>
+                      <th className="text-center py-2">{t('col.last')}</th>
+                      <th className="text-center py-2">{t('col.state')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {[
-                      { label: 'FC (bpm)', media: baseline.fcMedia, sd: baseline.fcSd, ultimo: sinaisVitais[0]?.pulso },
-                      { label: 'TA Sistólica (mmHg)', media: baseline.pasSistolicaMedia, sd: baseline.pasSistolicaSd, ultimo: sinaisVitais[0]?.pressaoSistolica },
-                      { label: 'TA Diastólica (mmHg)', media: baseline.pasDiastolicaMedia, sd: baseline.pasDiastolicaSd, ultimo: sinaisVitais[0]?.pressaoDiastolica },
-                      { label: 'Temperatura (ºC)', media: baseline.tempMedia, sd: baseline.tempSd, ultimo: sinaisVitais[0]?.temperatura },
-                      { label: 'SpO₂ (%)', media: baseline.spo2Media, sd: baseline.spo2Sd, ultimo: sinaisVitais[0]?.saturacaoO2 },
-                      { label: 'FR (rpm)', media: baseline.frMedia, sd: baseline.frSd, ultimo: sinaisVitais[0]?.frequenciaRespiratoria },
+                      { label: t('item.fc'), media: baseline.fcMedia, sd: baseline.fcSd, ultimo: sinaisVitais[0]?.pulso },
+                      { label: t('item.pressaoS'), media: baseline.pasSistolicaMedia, sd: baseline.pasSistolicaSd, ultimo: sinaisVitais[0]?.pressaoSistolica },
+                      { label: t('item.pressaoD'), media: baseline.pasDiastolicaMedia, sd: baseline.pasDiastolicaSd, ultimo: sinaisVitais[0]?.pressaoDiastolica },
+                      { label: t('item.temp'), media: baseline.tempMedia, sd: baseline.tempSd, ultimo: sinaisVitais[0]?.temperatura },
+                      { label: t('item.spO2'), media: baseline.spo2Media, sd: baseline.spo2Sd, ultimo: sinaisVitais[0]?.saturacaoO2 },
+                      { label: t('item.fr'), media: baseline.frMedia, sd: baseline.frSd, ultimo: sinaisVitais[0]?.frequenciaRespiratoria },
                     ].map(({ label, media, sd, ultimo }) => {
                       if (media == null) return null;
                       const desviado = ultimo != null && sd != null && Math.abs(ultimo - media) > 2 * sd;
@@ -483,11 +488,11 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                               <span className="text-slate-300 text-xs">—</span>
                             ) : desviado ? (
                               <span className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-md" style={{ padding: '2px 8px' }}>
-                                ⚠ Desvio
+                                {t('deviation')}
                               </span>
                             ) : (
                               <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-md" style={{ padding: '2px 8px' }}>
-                                ✓ Normal
+                                {t('normal')}
                               </span>
                             )}
                           </td>
@@ -504,7 +509,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
 
       {/* Modal Sinais Vitais */}
       {modalSinalVital && (
-        <Modal titulo="Registar Sinais Vitais" onClose={() => setModalSinalVital(false)}>
+        <Modal titulo={t('recordTitle')} onClose={() => setModalSinalVital(false)}>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
             {svItens.map(({ key, label, val, set, ph }) => (
               <FormField key={key} label={label} error={svErrors[key]}>
@@ -516,36 +521,28 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
             <div>
-              <label htmlFor="fsinaisvi-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
-              <input id="fsinaisvi-0" type="number" aria-label="Peso (kg)" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+              <label htmlFor="fsinaisvi-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('weightKg')}</label>
+              <input id="fsinaisvi-0" type="number" aria-label={t('weightKg')} value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
             </div>
             <div>
-              <label htmlFor="fsinaisvi-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Consciência (AVPU)</label>
-              <select id="fsinaisvi-1" value={svAvpu} aria-label="Consciência (AVPU)" onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
-                <option value="A">A — Alert (Alerta)</option>
-                <option value="V">V — Voice (Responde à voz)</option>
-                <option value="P">P — Pain (Responde à dor)</option>
-                <option value="U">U — Unresponsive (Sem resposta)</option>
+              <label htmlFor="fsinaisvi-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('avpuLabel')}</label>
+              <select id="fsinaisvi-1" value={svAvpu} aria-label={t('avpuLabel')} onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
+                {(['A', 'V', 'P', 'U'] as const).map((v) => <option key={v} value={v}>{t(`avpu.${v}`)}</option>)}
               </select>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
-            <FormField label={`Dor (0–${maxDor})`} error={svErrors['dor']}>
-              <input id="fsinaisvi-dor" type="number" min={0} max={maxDor} aria-label="Intensidade da dor" value={svDor}
+            <FormField label={t('pain', { max: maxDor })} error={svErrors['dor']}>
+              <input id="fsinaisvi-dor" type="number" min={0} max={maxDor} aria-label={t('painIntensity')} value={svDor}
                 onChange={(e) => { setSvDor(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n['dor']; return n; }); }}
                 placeholder="0"
                 className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${svErrors['dor'] ? 'border-red-400' : 'border-slate-200'}`}
                 style={{ padding: '8px 12px' }} />
             </FormField>
             <div>
-              <label htmlFor="fsinaisvi-escala-dor" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Escala de dor</label>
+              <label htmlFor="fsinaisvi-escala-dor" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('painScale')}</label>
               <select id="fsinaisvi-escala-dor" value={svEscalaDor} onChange={(e) => setSvEscalaDor(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
-                <option value="numerica">Numérica (0–10)</option>
-                <option value="eva">EVA (0–10)</option>
-                <option value="faces">Faces Wong-Baker (0–10)</option>
-                <option value="painad">PAINAD — demência (0–10)</option>
-                <option value="cpot">CPOT — não comunicante (0–8)</option>
-                <option value="flacc">FLACC — criança/não verbal (0–10)</option>
+                {(['numerica', 'eva', 'faces', 'painad', 'cpot', 'flacc'] as const).map((v) => <option key={v} value={v}>{t(`scale.${v}`)}</option>)}
               </select>
             </div>
           </div>
@@ -557,18 +554,18 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 onChange={(e) => setSvO2Suplementar(e.target.checked)}
                 className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-sm font-medium text-slate-700">O₂ Suplementar em uso</span>
-              <span className="text-xs text-slate-500">(+2 pts NEWS2)</span>
+              <span className="text-sm font-medium text-slate-700">{t('supplementalO2')}</span>
+              <span className="text-xs text-slate-500">{t('news2Points')}</span>
             </label>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label htmlFor="fsinaisvi-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
-            <textarea id="fsinaisvi-2" rows={2} aria-label="Notas" value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
+            <label htmlFor="fsinaisvi-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('notes')}</label>
+            <textarea id="fsinaisvi-2" rows={2} aria-label={t('notes')} value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder={t('notesPlaceholder')} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
           </div>
           <div className="rounded-xl text-xs text-slate-500 bg-slate-50 border border-slate-100" style={{ padding: '10px 14px', marginBottom: '16px' }}>
-            O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.
+            {t('news2Hint')}
           </div>
-          <ModalFooter onCancel={() => setModalSinalVital(false)} onConfirm={submeterSinalVital} loading={salvando} disabled={salvando} labelConfirm="Guardar" />
+          <ModalFooter onCancel={() => setModalSinalVital(false)} onConfirm={submeterSinalVital} loading={salvando} disabled={salvando} labelConfirm={tc('save')} />
         </Modal>
       )}
     </>

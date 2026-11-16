@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/ui/modal';
 import { FaixaAlergias, type AlergiaResumo } from '@/components/faixa-alergias';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
@@ -34,13 +35,8 @@ export interface ConfirmacaoAdministracao {
   leituraExcecao?: string;
 }
 
-const CERTOS = [
-  { id: 'doente', label: 'Doente certo — confirmei nome e data de nascimento/processo (pulseira)' },
-  { id: 'medicamento', label: 'Medicamento certo — o nome na embalagem confere com a prescrição' },
-  { id: 'dose', label: 'Dose certa' },
-  { id: 'via', label: 'Via certa' },
-  { id: 'hora', label: 'Hora certa' },
-] as const;
+// UX-07: o texto vem de administer.right.<id>.
+const CERTOS = [{ id: 'doente' }, { id: 'medicamento' }, { id: 'dose' }, { id: 'via' }, { id: 'hora' }] as const;
 
 /**
  * UX-01 — o único diálogo para administrar medicação.
@@ -66,6 +62,8 @@ export function AdministrarMedicacaoDialog({
   onCancelar: () => void;
   onConfirmar: (c: ConfirmacaoAdministracao) => void;
 }) {
+  const t = useTranslations('administer');
+  const tc = useTranslations('common');
   const [marcados, setMarcados] = useState<Record<string, boolean>>({});
   const [duplaVerificacao, setDuplaVerificacao] = useState(false);
   const [segundoVerificador, setSegundoVerificador] = useState('');
@@ -107,15 +105,15 @@ export function AdministrarMedicacaoDialog({
   };
 
   return (
-    <Modal isOpen={aberto} onClose={onCancelar} titulo="Administrar medicação" maxWidth="520px">
+    <Modal isOpen={aberto} onClose={onCancelar} titulo={t('title')} maxWidth="520px">
       <div className="flex flex-col gap-3">
         {/* Identificação dupla */}
         <div className="rounded-lg border border-slate-200 bg-slate-50" style={{ padding: '10px 12px' }}>
           <div className="text-sm font-bold text-slate-900">{doente.nome}</div>
           <div className="text-xs text-slate-600">
-            {nasc && <>Nasc. {nasc} · </>}
-            {doente.numeroProcesso && <>Proc. {doente.numeroProcesso} · </>}
-            {doente.cama ? `Cama ${doente.cama}` : 'Sem cama'}
+            {nasc && <>{t('born', { data: nasc })} · </>}
+            {doente.numeroProcesso && <>{t('record', { n: doente.numeroProcesso })} · </>}
+            {doente.cama ? t('bed', { cama: doente.cama }) : t('noBed')}
           </div>
         </div>
 
@@ -128,25 +126,25 @@ export function AdministrarMedicacaoDialog({
         <div className="rounded-lg border border-slate-200" style={{ padding: '10px 12px' }}>
           <div className="text-sm font-bold text-slate-900">{medicacao.nome}</div>
           <div className="text-xs text-slate-700">
-            Dose <strong>{medicacao.dose}</strong>
-            {medicacao.via && <> · Via <strong>{medicacao.via}</strong></>}
+            {t.rich('dose', { dose: medicacao.dose, b: (c) => <strong>{c}</strong> })}
+            {medicacao.via && t.rich('route', { via: medicacao.via, b: (c) => <strong>{c}</strong> })}
             {medicacao.frequencia && <> · {medicacao.frequencia}</>}
-            {hora && <> · Toma das <strong>{hora}</strong></>}
+            {hora && t.rich('dueAt', { hora, b: (c) => <strong>{c}</strong> })}
           </div>
         </div>
 
         {medicacao.altoRisco && (
           <div role="alert" className="rounded-lg border-2 border-red-400 bg-red-50 text-xs text-red-900" style={{ padding: '10px 12px' }}>
-            <div className="font-bold" style={{ marginBottom: '6px' }}>⚠️ Medicamento de ALTO RISCO — dupla verificação obrigatória</div>
+            <div className="font-bold" style={{ marginBottom: '6px' }}>{t('highRisk')}</div>
             <label className="flex items-start gap-2" style={{ marginBottom: '6px' }}>
               <input type="checkbox" checked={duplaVerificacao} onChange={(e) => setDuplaVerificacao(e.target.checked)} />
-              <span>Outro profissional confirmou de forma independente doente, fármaco, dose, via e hora.</span>
+              <span>{t('doubleCheck')}</span>
             </label>
             <input
               value={segundoVerificador}
               onChange={(e) => setSegundoVerificador(e.target.value)}
-              placeholder="Nome ou n.º de funcionário de quem verificou"
-              aria-label="Profissional que fez a dupla verificação"
+              placeholder={t('checkerPlaceholder')}
+              aria-label={t('checkerLabel')}
               className="w-full rounded border border-red-200 bg-white text-xs"
               style={{ padding: '6px 8px' }}
             />
@@ -155,7 +153,7 @@ export function AdministrarMedicacaoDialog({
 
         {/* 5 certos */}
         <fieldset className="flex flex-col gap-1.5">
-          <legend className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>5 certos</legend>
+          <legend className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('fiveRights')}</legend>
           {CERTOS.map((c) => (
             <label key={c.id} className="flex items-center gap-2 text-sm text-slate-700">
               <input
@@ -163,7 +161,7 @@ export function AdministrarMedicacaoDialog({
                 checked={!!marcados[c.id]}
                 onChange={(e) => setMarcados((m) => ({ ...m, [c.id]: e.target.checked }))}
               />
-              {c.label}
+              {t(`right.${c.id}`)}
             </label>
           ))}
         </fieldset>
@@ -173,14 +171,14 @@ export function AdministrarMedicacaoDialog({
             onClick={onCancelar}
             className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50"
             style={{ padding: '11px', minHeight: '44px' }}>
-            Cancelar
+            {tc('cancel')}
           </button>
           <button
             onClick={confirmar}
             disabled={!pode}
             className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{ padding: '11px', minHeight: '44px' }}>
-            {aGravar ? 'A registar…' : 'Registar administração'}
+            {aGravar ? t('recording') : t('record_')}
           </button>
         </div>
       </div>

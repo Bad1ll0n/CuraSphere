@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 
@@ -25,6 +26,7 @@ const hora = (d: string) => new Date(d).toLocaleTimeString('pt-PT', { hour: '2-d
 
 export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doenteId: string; podeRegistarDnr?: boolean }) {
   const toast = useToast();
+  const t = useTranslations('idBand');
   const [f, setF] = useState<Faixa | null>(null);
   const [erro, setErro] = useState(false);
 
@@ -40,19 +42,19 @@ export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doen
   const alternarDnr = async () => {
     if (!f) return;
     const ativo = !f.naoReanimar;
-    const notas = ativo ? window.prompt('Fundamentação da decisão de não reanimar (fica registada):') : 'Decisão revogada';
+    const notas = ativo ? window.prompt(t('dnrPrompt')) : t('dnrRevokedNote');
     if (ativo && !notas?.trim()) return;
     try {
       await api.patch(`/resumo/doente/${doenteId}/nao-reanimar`, { ativo, notas: notas?.trim() });
-      toast.success(ativo ? 'Decisão de não reanimar registada' : 'Decisão de não reanimar revogada');
+      toast.success(ativo ? t('dnrRecorded') : t('dnrRevoked'));
       carregar();
-    } catch (e: any) { toast.error(e?.response?.data?.message ?? 'Erro ao registar'); }
+    } catch (e: any) { toast.error(e?.response?.data?.message ?? t('recordError')); }
   };
 
   if (erro) {
     return (
       <div role="alert" className="rounded-xl bg-slate-100 text-slate-700 text-sm" style={{ padding: '8px 12px' }}>
-        Não foi possível carregar a identificação do doente — confirme as alergias antes de prescrever ou administrar.
+        {t('loadError')}
       </div>
     );
   }
@@ -60,33 +62,33 @@ export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doen
 
   const news = f.news2?.valor;
   const alergiasTexto = f.alergias.estado === 'nao_avaliado'
-    ? 'Alergias NÃO AVALIADAS'
-    : f.alergias.lista.length ? `Alergias: ${f.alergias.lista.map((a) => a.alergenio).join(', ')}` : 'Sem alergias conhecidas';
+    ? t('allergiesNotAssessed')
+    : f.alergias.lista.length ? t('allergiesList', { lista: f.alergias.lista.map((a) => a.alergenio).join(', ') }) : t('noKnownAllergies');
   const corAlergias = f.alergias.estado === 'nao_avaliado' ? 'bg-amber-100 text-amber-900 border-amber-300'
     : f.alergias.lista.length ? 'bg-red-100 text-red-800 border-red-300' : 'bg-green-50 text-green-800 border-green-200';
 
   return (
-    <section aria-label="Identificação do doente"
+    <section aria-label={t('label')}
       className="faixa-identificacao sticky z-20 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-wrap items-center gap-x-4 gap-y-2"
       style={{ top: '64px', padding: '10px 14px' }}>
       <div className="min-w-0">
         <p className="text-sm font-bold text-slate-900">{f.nome}</p>
         <p className="text-xs text-slate-600">
-          {f.idade != null ? `${f.idade} anos` : 'idade —'}{f.sexo ? ` · ${f.sexo === 'feminino' ? 'F' : f.sexo === 'masculino' ? 'M' : 'I'}` : ''} · Proc. {f.numeroProcesso}
-          {f.cama ? ` · Cama ${f.cama.quarto}/${f.cama.numero}` : ''}{f.pesoKg ? ` · ${f.pesoKg} kg` : ''}
+          {f.idade != null ? t('age', { idade: f.idade }) : t('ageUnknown')}{f.sexo ? ` · ${f.sexo === 'feminino' ? 'F' : f.sexo === 'masculino' ? 'M' : 'I'}` : ''} · {t('record', { n: f.numeroProcesso })}
+          {f.cama ? ` · ${t('bed', { cama: `${f.cama.quarto}/${f.cama.numero}` })}` : ''}{f.pesoKg ? ` · ${f.pesoKg} kg` : ''}
         </p>
       </div>
       <span className={`text-xs font-bold border rounded-full ${corAlergias}`} style={{ padding: '3px 10px' }}>{alergiasTexto}</span>
-      {f.naoReanimar && <span className="text-xs font-bold border rounded-full bg-red-600 text-white border-red-700" style={{ padding: '3px 10px' }}>DNR — não reanimar</span>}
-      {f.isolamento && <span className="text-xs font-semibold border rounded-full bg-amber-100 text-amber-900 border-amber-300" style={{ padding: '3px 10px' }}>Isolamento: {f.isolamento}</span>}
+      {f.naoReanimar && <span className="text-xs font-bold border rounded-full bg-red-600 text-white border-red-700" style={{ padding: '3px 10px' }}>{t('dnr')}</span>}
+      {f.isolamento && <span className="text-xs font-semibold border rounded-full bg-amber-100 text-amber-900 border-amber-300" style={{ padding: '3px 10px' }}>{t('isolation', { motivo: f.isolamento })}</span>}
       {f.riscoQueda && f.riscoQueda.risco !== 'baixo' && (
         <span className="text-xs font-semibold border rounded-full bg-orange-100 text-orange-900 border-orange-300" style={{ padding: '3px 10px' }}>
-          Risco de queda {f.riscoQueda.risco} (Morse {f.riscoQueda.pontuacao})
+          {t('fallRisk', { risco: f.riscoQueda.risco, pontuacao: f.riscoQueda.pontuacao })}
         </span>
       )}
       {f.news2 && news != null && (
         <span className={`text-xs font-bold border rounded-full ${news >= 7 ? 'bg-red-100 text-red-800 border-red-300' : news >= 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-700 border-slate-200'}`}
-          style={{ padding: '3px 10px' }} title={`Registado às ${hora(f.news2.em)}`}>
+          style={{ padding: '3px 10px' }} title={t('recordedAt', { hora: hora(f.news2.em) })}>
           NEWS2 {news}{f.news2.tendencia === 'sobe' ? ' ↑' : f.news2.tendencia === 'desce' ? ' ↓' : ''} · {hora(f.news2.em)}
         </span>
       )}
@@ -97,7 +99,7 @@ export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doen
       ))}
       {podeRegistarDnr && (
         <button onClick={alternarDnr} className="ml-auto text-xs font-semibold text-slate-600 hover:text-slate-900 underline">
-          {f.naoReanimar ? 'Revogar DNR' : 'Registar DNR'}
+          {f.naoReanimar ? t('revokeDnr') : t('recordDnr')}
         </button>
       )}
     </section>

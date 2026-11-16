@@ -1,0 +1,45 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "ok": "OK"
+  },
+  "tabs": {
+    "Dashboard": "Dashboard",
+    "Doentes": "Doentes",
+    "Tarefas": "Tarefas",
+    "Vitais": "Vitais",
+    "Incidentes": "Incidentes",
+    "Pedidos": "Pedidos",
+    "Mais": "Mais",
+    "Utilizadores": "Utilizadores",
+    "Auditoria": "Auditoria"
+  },
+  "session": {
+    "expiringTitle": "Sessão prestes a expirar",
+    "expiringBody": "Sem actividade há 13 minutos. Toque OK para continuar."
+  },
+  "administer": {
+    "recordedTitle": "Registado",
+    "recordedBody": "Administração registada e verificada.",
+    "notRecordedTitle": "Administração NÃO registada",
+    "notRecordedFallback": "Não foi possível registar.",
+    "checkRecord": "Confirma no processo do doente antes de repetir.",
+    "title": "Administrar",
+    "confirmOf": "Confirmar administração de {{nome}}?"
+  },
+  "mar": {
+    "title": "MAR — Medicação",
+    "notLoaded": "MAR por carregar",
+    "pending_one": "{{count}} administração pendente",
+    "pending_other": "{{count}} administrações pendentes",
+    "filterPending": "Pendentes",
+    "filterAll": "Todas",
+    "loadError": "Isto não quer dizer que as medicações estejam administradas. Verifique a ligação e tente de novo antes de dar a ronda por concluída.",
+    "allGiven": "Todas as medicações administradas",
+    "bed": "Cama {{cama}}",
+    "times": "Horários: {{lista}}",
+    "administer": "Administrar",
+    "recordFallback": "Não foi possível registar a administração."
+  }
+}
