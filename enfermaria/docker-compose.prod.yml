@@ -191,12 +191,19 @@ services:
     # confirmados contra a máquina real; um limite curto demais mata o processo sob
     # carga, que é pior do que não ter limite nenhum.
     deploy:
+      # OPS-09: várias réplicas atrás do nginx (upstream com `resolve`). Uma réplica que cai
+      # não leva o serviço, e o deploy substitui-as em rolamento sem paragem (scripts/deploy.sh).
+      # Pré-requisitos já tratados: Socket.IO com adaptador Redis, eventos SSE e invalidação
+      # de caches pelo barramento Redis, throttler no Redis, @Cron com eleição de líder.
+      replicas: ${API_REPLICAS:-2}
       resources:
         limits:
           memory: 1536M
           cpus: "2.0"
         reservations:
           memory: 512M
+    # SIGTERM → o Nest termina os pedidos em curso (enableShutdownHooks) antes de sair.
+    stop_grace_period: 30s
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -206,7 +213,7 @@ services:
     # CURASPHERE_IMAGE_PREFIX=ghcr.io/<dono>/curasphere e CURASPHERE_VERSION=vX.Y.Z; o
     # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-api:${CURASPHERE_VERSION:-local}
-    container_name: curasphere-api
+    # OPS-09: sem `container_name` — um nome fixo impede mais do que um contentor do serviço.
     restart: unless-stopped
     # ─────────────────────────────────────────────────────────────────────────
     # OPS-03 + OPS-13 — convenção deste bloco:
@@ -366,6 +373,7 @@ services:
         condition: service_healthy
     networks:
       - curasphere-internal
+      - curasphere-lb   # OPS-09: só entra no balanceamento quando estiver pronto (lib-rolamento.sh)
     # OPS-06: liveness (sem I/O). A prontidão (BD, migrações, auditoria) é verificada pelo
     # deploy.sh e pela sonda do Prometheus em /v1/health/ready — se fosse o healthcheck, uma BD
     # em baixo faria o autoheal reiniciar em ciclo uma API que está bem.
@@ -427,12 +435,14 @@ services:
     # confirmados contra a máquina real; um limite curto demais mata o processo sob
     # carga, que é pior do que não ter limite nenhum.
     deploy:
+      replicas: ${WEB_REPLICAS:-2}  # OPS-09: ver a nota da API
       resources:
         limits:
           memory: 768M
           cpus: "1.0"
         reservations:
           memory: 256M
+    stop_grace_period: 20s
     build:
       context: .
       dockerfile: apps/web/Dockerfile
@@ -452,7 +462,7 @@ services:
     # CURASPHERE_IMAGE_PREFIX=ghcr.io/<dono>/curasphere e CURASPHERE_VERSION=vX.Y.Z; o
     # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-web:${CURASPHERE_VERSION:-local}
-    container_name: curasphere-web
+    # OPS-09: sem `container_name` (réplicas).
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -476,6 +486,7 @@ services:
         condition: service_healthy
     networks:
       - curasphere-internal
+      - curasphere-lb
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 30s
@@ -522,8 +533,9 @@ services:
     depends_on:
       - api
       - web
+    # OPS-09: o nginx só vê a rede de balanceamento (api e web), não a interna (BD, Redis…).
     networks:
-      - curasphere-internal
+      - curasphere-lb
     # OPS-06: `nginx -t` só validava a sintaxe; isto confirma que o nginx responde.
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
@@ -700,6 +712,14 @@ services:
 
 networks:
   curasphere-internal:
+    driver: bridge
+  # OPS-09 — rede de balanceamento: nginx + réplicas de api/web PRONTAS. O DNS do Docker
+  # lista um contentor assim que arranca, antes de estar saudável; no deploy em rolamento os
+  # contentores novos saem desta rede ao arrancar e só voltam (com o nome do serviço) depois
+  # de passarem a prontidão — o nginx nunca encaminha para uma versão que ainda não provou
+  # estar boa. Nome fixo para o scripts/lib-rolamento.sh o encontrar.
+  curasphere-lb:
+    name: curasphere-lb
     driver: bridge
 
 volumes:

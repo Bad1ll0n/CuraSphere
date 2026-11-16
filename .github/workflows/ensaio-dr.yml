@@ -6,6 +6,9 @@ name: Ensaio de recuperação e monitorização
 # duração medida (RTO) fica no resumo da execução.
 # OPS-05 — as configurações de Prometheus, Alertmanager, Blackbox e Loki são validadas pelas
 # próprias ferramentas antes de chegarem a um servidor.
+# OPS-09 — o deploy sem paragem é ensaiado com o código do deploy (lib-rolamento.sh): pedidos
+# contínuos durante o rolamento, zero falhados, e uma versão doente nunca chega a servir. A
+# configuração real do nginx é validada pelo próprio nginx.
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
@@ -21,6 +24,7 @@ on:
       - 'enfermaria/scripts/**'
       - 'enfermaria/postgres/**'
       - 'enfermaria/monitoring/**'
+      - 'enfermaria/nginx/**'
       - 'enfermaria/docker-compose.prod.yml'
       - '.github/workflows/ensaio-dr.yml'
 
@@ -50,6 +54,36 @@ jobs:
             echo "### Ensaio PITR"
             echo '```'
             grep -E "^(OK|FALHOU|RTO|      T =|      Restaurado)" ensaio.log || tail -20 ensaio.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  rolamento:
+    name: Deploy sem paragem (rolamento + nginx)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: enfermaria
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: nginx.conf de produção (nginx -t)
+        run: |
+          mkdir -p /tmp/ssl
+          openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/ssl/privkey.pem -out /tmp/ssl/fullchain.pem -days 1 -subj /CN=ensaio
+          docker run --rm --add-host api:127.0.0.1 --add-host web:127.0.0.1 \
+            -v "$PWD/nginx/nginx.conf:/etc/nginx/nginx.conf:ro" -v /tmp/ssl:/etc/nginx/ssl:ro \
+            nginx:1.30-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311 nginx -t
+      - name: Ensaio de rolamento
+        run: |
+          set -o pipefail
+          sh scripts/ensaio-rolamento.sh 2>&1 | tee rolamento.log
+      - name: Resumo
+        if: always()
+        run: |
+          {
+            echo "### Ensaio de rolamento"
+            echo '```'
+            grep -E "^\[|pedidos|ERRO|OK" rolamento.log | grep -v ' Container ' || tail -20 rolamento.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 

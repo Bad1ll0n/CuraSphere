@@ -1,4 +1,5 @@
-import { Injectable, Logger, NotFoundException, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, OnApplicationBootstrap, OnApplicationShutdown, Optional } from '@nestjs/common';
+import { BarramentoService } from '../redis/barramento.service';
 import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
@@ -14,14 +15,21 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
-  ) {}
+    @Optional() private readonly barramento?: BarramentoService,
+  ) {
+    this.barramento?.subscrever<{ data: string; type: string }>('sse:tarefas', (e) => this.eventos$.next(e));
+  }
 
   eventStream() {
     return this.eventos$.asObservable();
   }
 
+  // ARQ-17/OPS-09: o evento SSE vai pelo barramento (Redis) para chegar aos browsers ligados a
+  // QUALQUER réplica; sem barramento (testes), fica local como antes.
   private emit(type: string, payload: unknown) {
-    this.eventos$.next({ type, data: JSON.stringify(payload) });
+    const e = { type, data: JSON.stringify(payload) };
+    if (this.barramento) this.barramento.publicar('sse:tarefas', e);
+    else this.eventos$.next(e);
   }
 
   onApplicationBootstrap() {
@@ -34,6 +42,8 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
   }
 
   async alertarTarefasUrgentesPendentes() {
+    // ARQ-17: com várias réplicas, só uma avisa (8 min < intervalo de 10 min).
+    if (typeof this.prisma.tryBecomeLeader === 'function' && !(await this.prisma.tryBecomeLeader('tarefas-urgentes-pendentes', 480_000))) return;
     try {
       const limiar = new Date(Date.now() - 30 * 60 * 1000); // 30 minutos atrás
       const tarefas = await this.prisma.tarefa.findMany({

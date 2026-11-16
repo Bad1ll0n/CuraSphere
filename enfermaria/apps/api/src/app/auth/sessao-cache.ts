@@ -31,8 +31,23 @@ export function gravarCacheSessao(utilizadorId: string, estado: EstadoSessao, ag
   cache.set(utilizadorId, { estado, expiraEm: agora + TTL_CACHE_SESSAO_MS });
 }
 
+/**
+ * ARQ-17/OPS-09: com várias réplicas, a revogação tem de chegar a TODAS já, e não ao fim do
+ * TTL. `SessaoCacheSincronizacao` liga aqui o barramento (Redis); sem ele, só a local.
+ */
+let difundir: ((utilizadorId: string) => void) | null = null;
+export function ligarDifusaoSessao(fn: ((utilizadorId: string) => void) | null): void {
+  difundir = fn;
+}
+
+/** Apaga só nesta réplica (usado ao receber a difusão das outras). */
+export function apagarCacheSessaoLocal(utilizadorId: string): void {
+  cache.delete(utilizadorId);
+}
+
 export function invalidarCacheSessao(utilizadorId: string): void {
   cache.delete(utilizadorId);
+  difundir?.(utilizadorId);
 }
 
 /** Só para testes. */

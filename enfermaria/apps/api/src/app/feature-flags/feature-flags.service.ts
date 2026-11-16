@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
+import { BarramentoService } from '../redis/barramento.service';
 import { createHash } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -15,7 +16,13 @@ export class FeatureFlagsService {
   private cache: Map<string, any> | null = null;
   private cacheAt = 0;
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly barramento?: BarramentoService,
+  ) {
+    // ARQ-17: uma escrita numa réplica invalida a cache de todas.
+    this.barramento?.subscrever('feature-flags:invalidar', () => { this.cache = null; this.cacheAt = 0; });
+  }
 
   private async carregar(): Promise<Map<string, any>> {
     const agora = Date.now();
@@ -30,6 +37,7 @@ export class FeatureFlagsService {
   invalidar(): void {
     this.cache = null;
     this.cacheAt = 0;
+    this.barramento?.publicar('feature-flags:invalidar', 1);
   }
 
   /**

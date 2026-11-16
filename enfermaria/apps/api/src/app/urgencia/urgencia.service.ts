@@ -1,4 +1,6 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, OnModuleInit, OnModuleDestroy, Optional } from '@nestjs/common';
+import { BarramentoService } from '../redis/barramento.service';
+import { RedisService } from '../redis/redis.service';
 import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -35,14 +37,24 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
   private slaInterval: NodeJS.Timeout | null = null;
 
   eventStream() { return this.urgenciaSubject.asObservable(); }
-  private emit(type: string, payload: unknown) { this.urgenciaSubject.next({ type, data: JSON.stringify(payload) }); }
+  // ARQ-17/OPS-09: o evento SSE vai pelo barramento (Redis) para chegar aos browsers ligados a
+  // QUALQUER réplica; sem barramento (testes), fica local como antes.
+  private emit(type: string, payload: unknown) {
+    const e = { type, data: JSON.stringify(payload) };
+    if (this.barramento) this.barramento.publicar('sse:urgencia', e);
+    else this.urgenciaSubject.next(e);
+  }
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
     private readonly gateway: EventsGateway,
     private readonly pedidosCama: PedidosCamaService,
-  ) {}
+    @Optional() private readonly barramento?: BarramentoService,
+    @Optional() private readonly redis?: RedisService,
+  ) {
+    this.barramento?.subscrever<{ data: string; type: string }>('sse:urgencia', (e) => this.urgenciaSubject.next(e));
+  }
 
   onModuleInit() {
     // Verificar SLAs a cada 2 minutos
@@ -320,6 +332,8 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
   }
 
   private async verificarSLAs() {
+    // ARQ-17: com várias réplicas, só uma verifica em cada ciclo de 2 min (lease de 100 s).
+    if (typeof this.prisma.tryBecomeLeader === 'function' && !(await this.prisma.tryBecomeLeader('urgencia-sla', 100_000))) return;
     try {
       const emEspera = await this.prisma.episodioUrgencia.findMany({
         where: { estadoEpisodio: 'sala_espera' },
@@ -335,9 +349,14 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
         const minutosEspera = (agora - ep.dataEntrada.getTime()) / 60000;
         if (minutosEspera <= slaMax) continue;
 
-        const ultimoAlerta = this.slaAlertados.get(ep.id) ?? 0;
-        if (agora - ultimoAlerta < cincoMinutos) continue;
-
+        // ARQ-17: o "já avisei há menos de 5 min" vive no Redis, partilhado pelas réplicas (a
+        // réplica líder pode mudar de um ciclo para o outro). Sem Redis, fica em memória.
+        const novo = await this.redis?.setIfNotExists(`urgencia:sla-alertado:${ep.id}`, '1', cincoMinutos / 1000);
+        if (novo === false) continue;
+        if (novo == null) {
+          const ultimoAlerta = this.slaAlertados.get(ep.id) ?? 0;
+          if (agora - ultimoAlerta < cincoMinutos) continue;
+        }
         this.slaAlertados.set(ep.id, agora);
         const nomeDoente = ep.doente?.nome ?? ep.nomeTemporario ?? 'Doente';
         const payload = {

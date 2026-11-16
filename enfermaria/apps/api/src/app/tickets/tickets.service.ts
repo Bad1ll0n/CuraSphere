@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
+import { BarramentoService } from '../redis/barramento.service';
 import { Subject, filter } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -18,7 +19,12 @@ const ORDEM_PRIORIDADE = ['prioritario', 'senior', 'normal'];
 export class TicketsService {
   private readonly eventos$ = new Subject<{ data: string; type?: string; tipo?: string }>();
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly barramento?: BarramentoService,
+  ) {
+    this.barramento?.subscrever<{ data: string; type?: string; tipo?: string }>('sse:tickets', (e) => this.eventos$.next(e));
+  }
 
   eventStream(tipo?: string) {
     const obs = this.eventos$.asObservable();
@@ -26,8 +32,12 @@ export class TicketsService {
     return obs.pipe(filter(e => !e.tipo || e.tipo === tipo));
   }
 
+  // ARQ-17/OPS-09: o evento SSE vai pelo barramento (Redis) para chegar aos browsers ligados a
+  // QUALQUER réplica; sem barramento (testes), fica local como antes.
   private emit(type: string, payload: unknown, tipo?: string) {
-    this.eventos$.next({ type, data: JSON.stringify(payload), tipo });
+    const e = { type, data: JSON.stringify(payload), tipo };
+    if (this.barramento) this.barramento.publicar('sse:tickets', e);
+    else this.eventos$.next(e);
   }
 
   async tirarSenha(body: {
