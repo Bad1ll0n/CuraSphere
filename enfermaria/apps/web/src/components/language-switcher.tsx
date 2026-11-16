@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 const LOCALES = [
   { code: 'pt', label: 'PT', flag: '🇵🇹' },
@@ -10,6 +10,7 @@ const LOCALES = [
 
 export function LanguageSwitcher() {
   const locale = useLocale();
+  const t = useTranslations('layout');
   const [isPending, startTransition] = useTransition();
 
   const switchLocale = (next: string) => {
@@ -23,7 +24,7 @@ export function LanguageSwitcher() {
     <div
       className="flex items-center rounded-xl border border-slate-200 overflow-hidden"
       style={{ background: 'var(--bg-card, white)' }}
-      aria-label="Selecionar idioma"
+      aria-label={t('languageGroup')}
       role="group"
     >
       {LOCALES.map(({ code, label, flag }) => {
@@ -34,7 +35,8 @@ export function LanguageSwitcher() {
             onClick={() => !isActive && switchLocale(code)}
             disabled={isPending}
             aria-pressed={isActive}
-            title={code === 'pt' ? 'Português' : 'English'}
+            // UX-07: o inglês cobre os fluxos clínicos principais, não a aplicação toda — diz-se.
+            title={code === 'pt' ? t('portuguese') : t('englishBeta')}
             style={{
               padding: '6px 10px',
               fontSize: '11px',
@@ -51,6 +53,9 @@ export function LanguageSwitcher() {
           >
             <span>{flag}</span>
             <span>{label}</span>
+            {code === 'en' && (
+              <span aria-hidden="true" style={{ fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', color: '#92400e', background: '#fef3c7', borderRadius: '4px', padding: '0 4px' }}>beta</span>
+            )}
           </button>
         );
       })}

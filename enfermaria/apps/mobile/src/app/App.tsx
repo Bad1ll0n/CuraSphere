@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as Sentry from '@sentry/react-native';
+import { useTranslation } from 'react-i18next';
+import i18n from '../lib/i18n';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -67,12 +69,13 @@ const TAB_ICONS: Record<string, { ativo: IoniconName; inativo: IoniconName }> = 
 };
 
 function TabIcon({ label, ativo }: { label: string; ativo: boolean }) {
+  const { t } = useTranslation();
   const icons = TAB_ICONS[label];
   const cor = ativo ? '#2563eb' : '#94a3b8';
   return (
     <View style={estilos.tabIcon}>
       <Ionicons name={ativo ? icons.ativo : icons.inativo} size={24} color={cor} />
-      <Text style={[estilos.tabLabel, { color: cor }]}>{label}</Text>
+      <Text style={[estilos.tabLabel, { color: cor }]}>{t(`tabs.${label}`)}</Text>
     </View>
   );
 }
@@ -113,8 +116,8 @@ function App() {
       if (restantes <= 2 * 60 * 1000 && restantes > 0 && !avisoMostradoRef.current) {
         avisoMostradoRef.current = true;
         Alert.alert(
-          'Sessão prestes a expirar',
-          'Sem actividade há 13 minutos. Toque OK para continuar.',
+          i18n.t('session.expiringTitle'),
+          i18n.t('session.expiringBody'),
           [{ text: 'OK', onPress: () => { lastActiveRef.current = Date.now(); avisoMostradoRef.current = false; } }],
         );
       }
@@ -195,11 +198,11 @@ function App() {
                 observacoes: justificacao || undefined,
               });
               setScannerAberto(false);
-              Alert.alert('Registado', 'Administração registada e verificada.');
+              Alert.alert(i18n.t('administer.recordedTitle'), i18n.t('administer.recordedBody'));
             } catch (e: any) {
               registarFalhaSilenciosa('App.onAdministrar', e);
-              const motivo = e?.response?.data?.message ?? 'Não foi possível registar.';
-              Alert.alert('Administração NÃO registada', motivo);
+              const motivo = e?.response?.data?.message ?? i18n.t('administer.notRecordedFallback');
+              Alert.alert(i18n.t('administer.notRecordedTitle'), motivo);
             }
           }}
         />

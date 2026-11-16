@@ -650,6 +650,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
 // ─── Vista 4: Enfermeiro ──────────────────────────────────────────────────────
 
 function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
+  const tEnf = useTranslations('dashboard');
   // auxiliar partilha este dashboard mas não tem acesso a /dashboard/news2 (clínico) — evitar o pedido
   const podeNews2 = utilizador.role === 'enfermeiro';
   const { data = {}, isLoading } = useQuery({
@@ -735,8 +736,8 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
 
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
         <CardContainer>
-          <CardHeader title="Meus Doentes" count={doentes.length} countColor="bg-teal-100 text-teal-700" />
-          {doentes.length === 0 ? <Vazio msg="Sem doentes atribuídos neste turno" /> : (
+          <CardHeader title={tEnf('myPatients')} count={doentes.length} countColor="bg-teal-100 text-teal-700" />
+          {doentes.length === 0 ? <Vazio msg={tEnf('noPatientsShift')} /> : (
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
               {doentes.map((d: any, i: number) => (
                 <Link key={d.id} href={`/doentes/${d.id}`}>
@@ -774,8 +775,8 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
             )}
           </CardContainer>
           <CardContainer>
-            <CardHeader title="Workload — Meu Turno" count={workload.length} countColor="bg-teal-100 text-teal-700" />
-            {workload.length === 0 ? <Vazio msg="Sem doentes atribuídos no turno atual" /> : (
+            <CardHeader title={tEnf('workloadMyShift')} count={workload.length} countColor="bg-teal-100 text-teal-700" />
+            {workload.length === 0 ? <Vazio msg={tEnf('noPatientsCurrentShift')} /> : (
               <div>
                 {workload.map((w: any, i: number) => {
                   const temAlerta = w.medicacoesPendentes > 0 || w.tarefasAtrasadas > 0 || w.alertasNaoLidos > 0;

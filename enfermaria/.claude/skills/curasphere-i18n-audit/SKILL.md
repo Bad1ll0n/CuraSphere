@@ -1,6 +1,6 @@
 ---
 name: curasphere-i18n-audit
-description: Use when adding UI text to apps/web, or when auditing the app for hardcoded/missing translations. CuraSphere is fully bilingual (pt/en) via next-intl; this skill covers key-parity checking and the namespace structure so new strings land consistently in both message files.
+description: Use when adding UI text to apps/web, or when auditing the app for hardcoded/missing translations. CuraSphere is bilingual (pt/en) via next-intl, with English still partial (UX-07, "EN beta"); this skill covers key-parity checking, the hardcoded-text ratchet and the namespace structure so new strings land consistently in both message files.
 ---
 
 # CuraSphere — i18n Audit & Convention
@@ -31,6 +31,17 @@ Run from `apps/web/` (or adjust the require paths). Zero missing keys in either 
 ## Finding hardcoded strings
 
 Grep `.tsx` files under `apps/web/src/app` and `apps/web/src/components` for quoted Portuguese literals inside JSX (accented characters are a strong signal: `ã õ ç á é í ó ú â ê`) that aren't already passed through `t(...)`. Known past offenders were static strings inside modals/badges that were added without translation (e.g. `keyboard-shortcuts-modal.tsx`'s "Prima ? para reabrir" hint, and dashboard "Em breve" stat-card labels) — both are now translated via `shortcuts.hint` and `common.comingSoon`. Treat any new literal Portuguese string in a `.tsx` return block as a bug unless it's genuinely locale-invariant (an ID, a unit like "mmHg", a proper noun).
+
+## Guardrails in the test suite (UX-07)
+
+`apps/web/src/i18n.spec.ts` runs with `nx run @org/web:test` and checks three things:
+- the key trees of `pt.json` and `en.json` are identical;
+- every `t('key')` used with `useTranslations('ns')` exists. next-intl is not typed here, so a typo would otherwise only show up as raw key text on screen;
+- the hardcoded JSX text count per file never goes up. The counts live in `apps/web/src/i18n-texto-fixo.json`. A new file must start at zero. When you translate a screen the count drops, and the test asks you to regenerate the baseline with `ATUALIZAR_BASELINE=1 pnpm nx run @org/web:test --skip-nx-cache`.
+
+Mobile (`apps/mobile`): `src/lib/i18n.ts` (i18next + expo-localization, follows the device language) with `src/locales/{pt,en}.json`. Use `useTranslation()` → `t('ns.key')`; plurals use i18next `_one`/`_other`. `src/lib/i18n.spec.ts` checks parity and that used keys exist.
+
+Order of work for what is still in Portuguese: clinical flows first, then kiosk/portal, then management screens.
 
 ## Adding a new string
 

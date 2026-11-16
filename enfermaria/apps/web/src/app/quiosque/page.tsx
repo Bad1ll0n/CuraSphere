@@ -1,33 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { quiosqueFetch } from '@/lib/quiosque-token';
 
 const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
 const SERVICOS = [
-  { tipo: 'admissao', letra: 'A', label: 'Admissão', cor: '#3b82f6' },
-  { tipo: 'consulta', letra: 'C', label: 'Consulta', cor: '#8b5cf6' },
-  { tipo: 'faturacao', letra: 'F', label: 'Faturação', cor: '#f59e0b' },
-  { tipo: 'farmacia', letra: 'R', label: 'Farmácia', cor: '#10b981' },
-  { tipo: 'exames', letra: 'E', label: 'Exames', cor: '#06b6d4' },
-  { tipo: 'geral', letra: 'G', label: 'Informações', cor: '#6b7280' },
+  // UX-07: o nome vem de kiosk.service.<tipo>.
+  { tipo: 'admissao', letra: 'A', cor: '#3b82f6' },
+  { tipo: 'consulta', letra: 'C', cor: '#8b5cf6' },
+  { tipo: 'faturacao', letra: 'F', cor: '#f59e0b' },
+  { tipo: 'farmacia', letra: 'R', cor: '#10b981' },
+  { tipo: 'exames', letra: 'E', cor: '#06b6d4' },
+  { tipo: 'geral', letra: 'G', cor: '#6b7280' },
 ];
 
 type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes' | 'nova_especialidade' | 'nova_medico' | 'nova_data' | 'nova_slot' | 'nova_confirmar' | 'nova_sucesso';
 
-const SUBROLE_LABEL: Record<string, string> = {
-  clinico_geral: 'Clínica Geral',
-  cardiologista: 'Cardiologia',
-  cirurgiao_geral: 'Cirurgia Geral',
-  ortopedista: 'Ortopedia',
-  pediatra: 'Pediatria',
-  neurologista: 'Neurologia',
-  pneumologista: 'Pneumologia',
-  dermatologista: 'Dermatologia',
-  triador: 'Triagem',
-  generalista: 'Geral',
-};
 
 const SUBROLE_ICONE: Record<string, string> = {
   clinico_geral: '🏥',
@@ -42,9 +33,12 @@ const SUBROLE_ICONE: Record<string, string> = {
   generalista: '👨‍⚕️',
 };
 
-const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 export default function QuiosquePage() {
+  const t = useTranslations('kiosk');
+  // Datas e horas no formato do idioma escolhido pelo utente.
+  const loc = useLocale() === 'en' ? 'en-GB' : 'pt-PT';
+  const especialidade = (s: string) => (s in SUBROLE_ICONE ? t(`specialty.${s}`) : s);
   const [estado, setEstado] = useState<Estado>('selecionar');
   const [tipoSelecionado, setTipoSelecionado] = useState<(typeof SERVICOS)[0] | null>(null);
   const [prioritario, setPrioritario] = useState(false);
@@ -103,7 +97,7 @@ export default function QuiosquePage() {
       setTicket(data);
       setEstado('sucesso');
     } catch {
-      alert('Erro ao emitir senha. Tente novamente.');
+      alert(t('ticketError'));
     } finally {
       setEmissao(false);
     }
@@ -202,7 +196,7 @@ export default function QuiosquePage() {
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        setErroMarcacao(err.message ?? 'Erro ao criar marcação');
+        setErroMarcacao(err.message ?? t('bookingError'));
         return;
       }
       const consulta = await res.json();
@@ -221,7 +215,7 @@ export default function QuiosquePage() {
       const res = await quiosqueFetch(`${API}/quiosque/paciente?nif=${nifInput.trim()}`);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        setNifErro(err.message ?? 'Nenhum utente encontrado com esse NIF');
+        setNifErro(err.message ?? t('nifNotFound'));
         return;
       }
       setPacienteNif(await res.json());
@@ -249,13 +243,13 @@ export default function QuiosquePage() {
       const res = await quiosqueFetch(`${API}/quiosque/marcacao/${consultaId}/checkin`, { method: 'POST' });
       const data = await res.json();
       if (data.jaFezCheckin) {
-        alert('Este utente já fez check-in nesta marcação.');
+        alert(t('alreadyCheckedIn'));
         return;
       }
       setTicket(data.ticket);
       setEstado('marcacao_sucesso');
     } catch {
-      alert('Erro ao fazer check-in. Tente novamente.');
+      alert(t('checkinError'));
     } finally {
       setEmissao(false);
     }
@@ -276,7 +270,7 @@ export default function QuiosquePage() {
       const res = await quiosqueFetch(`${API}/quiosque/marcacao?codigo=${encodeURIComponent(codigoInput.trim())}`);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        setMarcacaoErro(err.message ?? 'Marcação não encontrada');
+        setMarcacaoErro(err.message ?? t('bookingNotFound'));
         return;
       }
       setMarcacaoEncontrada(await res.json());
@@ -293,14 +287,14 @@ export default function QuiosquePage() {
       const res = await quiosqueFetch(`${API}/quiosque/marcacao/${marcacaoEncontrada.id}/checkin`, { method: 'POST' });
       const data = await res.json();
       if (data.jaFezCheckin) {
-        setMarcacaoErro('Este utente já fez check-in anteriormente.');
+        setMarcacaoErro(t('alreadyCheckedInBefore'));
         setEstado('marcacao');
         return;
       }
       setTicket(data.ticket);
       setEstado('marcacao_sucesso');
     } catch {
-      setMarcacaoErro('Erro ao fazer check-in. Tente novamente.');
+      setMarcacaoErro(t('checkinError'));
     } finally {
       setEmissao(false);
     }
@@ -322,14 +316,16 @@ export default function QuiosquePage() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 40 }}>
         <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: 0, letterSpacing: -1 }}>CuraSphere</h1>
-        <p style={{ color: 'var(--text-dim)', fontSize: 18, marginTop: 8 }}>Sistema de Gestão de Filas</p>
+        <p style={{ color: 'var(--text-dim)', fontSize: 18, marginTop: 8 }}>{t('subtitle')}</p>
+        {/* UX-07: o utente escolhe o idioma (só no ecrã inicial, para não perder o que já escolheu). */}
+        {estado === 'selecionar' && <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}><LanguageSwitcher /></div>}
       </div>
 
       {/* ESTADO: Selecionar serviço */}
       {estado === 'selecionar' && (
         <div style={{ width: '100%', maxWidth: 720 }}>
           <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 28 }}>
-            Seleccione o serviço pretendido
+            {t('chooseService')}
           </h2>
           <div
             style={{
@@ -367,7 +363,7 @@ export default function QuiosquePage() {
                 }}
               >
                 <span style={{ fontSize: 48, fontWeight: 900, color: s.cor, fontFamily: 'monospace' }}>{s.letra}</span>
-                <span style={{ fontSize: 18, fontWeight: 700 }}>{s.label}</span>
+                <span style={{ fontSize: 18, fontWeight: 700 }}>{t(`service.${s.tipo}`)}</span>
                 <span
                   style={{
                     background: s.cor,
@@ -378,7 +374,7 @@ export default function QuiosquePage() {
                     fontWeight: 600,
                   }}
                 >
-                  Senha {s.letra}
+                  {t('ticketSeries', { letra: s.letra })}
                 </span>
               </button>
             ))}
@@ -401,7 +397,7 @@ export default function QuiosquePage() {
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
             >
-              Identificar pelo NIF
+              {t('identifyNif')}
             </button>
             <button
               onClick={() => setEstado('marcacao')}
@@ -418,7 +414,7 @@ export default function QuiosquePage() {
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
             >
-              Já tenho marcação
+              {t('haveBooking')}
             </button>
           </div>
         </div>
@@ -427,9 +423,9 @@ export default function QuiosquePage() {
       {/* ESTADO: Inserir NIF */}
       {estado === 'nif' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Identificar pelo NIF</h2>
+          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>{t('identifyNif')}</h2>
           <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 32 }}>
-            Introduza o seu Número de Identificação Fiscal para ser identificado automaticamente.
+            {t('nifHint')}
           </p>
           <input
             type="tel"
@@ -449,11 +445,11 @@ export default function QuiosquePage() {
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={reiniciar}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
             <button onClick={buscarPacientePorNif} disabled={buscandoNif || nifInput.length < 9}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: buscandoNif || nifInput.length < 9 ? 0.6 : 1 }}>
-              {buscandoNif ? 'A procurar...' : 'Identificar'}
+              {buscandoNif ? t('searching') : t('identify')}
             </button>
           </div>
         </div>
@@ -462,24 +458,24 @@ export default function QuiosquePage() {
       {/* ESTADO: Paciente identificado por NIF */}
       {estado === 'nif_resultado' && pacienteNif && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 6 }}>Olá,</h2>
+          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 6 }}>{t('hello')}</h2>
           <h2 style={{ color: '#fff', fontSize: 28, fontWeight: 800, marginBottom: 32 }}>{pacienteNif.nome}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <button onClick={verMarcacoesHoje} disabled={buscandoMarcacoesHoje}
               style={{ width: '100%', padding: '18px', borderRadius: 12, border: 'none', background: '#8b5cf6', color: '#fff', fontSize: 17, fontWeight: 700, cursor: 'pointer', opacity: buscandoMarcacoesHoje ? 0.7 : 1 }}>
-              {buscandoMarcacoesHoje ? 'A verificar...' : 'Ver Marcações de Hoje'}
+              {buscandoMarcacoesHoje ? t('checking') : t('todayBookings')}
             </button>
             <button onClick={iniciarMarcacao} disabled={carregandoMedicos}
               style={{ width: '100%', padding: '18px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 17, fontWeight: 700, cursor: 'pointer', opacity: carregandoMedicos ? 0.7 : 1 }}>
-              {carregandoMedicos ? 'A carregar...' : 'Marcar Consulta'}
+              {carregandoMedicos ? t('loading') : t('book')}
             </button>
             <button onClick={tirarSenhaNif}
               style={{ width: '100%', padding: '18px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 17, fontWeight: 600, cursor: 'pointer' }}>
-              Tirar Senha
+              {t('takeTicket')}
             </button>
             <button onClick={reiniciar}
               style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'transparent', color: 'var(--text-dim)', fontSize: 15, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
           </div>
         </div>
@@ -489,11 +485,11 @@ export default function QuiosquePage() {
       {estado === 'nif_marcacoes' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 540, textAlign: 'center' }}>
           <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>
-            {marcacoesHoje.length > 0 ? 'As suas consultas de hoje' : 'Sem marcações para hoje'}
+            {marcacoesHoje.length > 0 ? t('yourToday') : t('noneToday')}
           </h2>
           {marcacoesHoje.length === 0 ? (
             <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32 }}>
-              Não tem consultas agendadas para hoje. Pode tirar uma senha normal abaixo.
+              {t('noneTodayHint')}
             </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
@@ -502,21 +498,21 @@ export default function QuiosquePage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <div>
                       <div style={{ color: '#60a5fa', fontWeight: 700, fontSize: 20 }}>
-                        {new Date(m.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(m.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' })}
                       </div>
-                      <div style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>Dr. {m.medico.nome}</div>
+                      <div style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>{t('doctor', { nome: m.medico.nome })}</div>
                       {m.medico.especialidade && (
                         <div style={{ color: 'var(--text-dim)', fontSize: 13 }}>{m.medico.especialidade}</div>
                       )}
                     </div>
                     {m.checkinEm ? (
                       <span style={{ background: '#10b981', color: '#fff', borderRadius: 8, padding: '4px 12px', fontSize: 13, fontWeight: 600 }}>
-                        Check-in feito
+                        {t('checkedIn')}
                       </span>
                     ) : (
                       <button onClick={() => checkinMarcacaoNif(m.id)} disabled={emissao}
                         style={{ padding: '10px 18px', borderRadius: 10, border: 'none', background: '#10b981', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: emissao ? 0.7 : 1 }}>
-                        Fazer Check-in
+                        {t('doCheckin')}
                       </button>
                     )}
                   </div>
@@ -527,11 +523,11 @@ export default function QuiosquePage() {
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('nif_resultado')}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
             <button onClick={tirarSenhaNif}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
-              Tirar Senha Normal
+              {t('regularTicket')}
             </button>
           </div>
         </div>
@@ -540,9 +536,9 @@ export default function QuiosquePage() {
       {/* ESTADO: Inserir código de marcação */}
       {estado === 'marcacao' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Confirmar Marcação</h2>
+          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>{t('confirmBooking')}</h2>
           <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 32 }}>
-            Introduza o código que recebeu quando fez a marcação.
+            {t('codeHint')}
           </p>
           <input
             type="text"
@@ -564,11 +560,11 @@ export default function QuiosquePage() {
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={reiniciar}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
             <button onClick={buscarMarcacao} disabled={buscandoMarcacao || codigoInput.length < 8}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#8b5cf6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: buscandoMarcacao || codigoInput.length < 8 ? 0.6 : 1 }}>
-              {buscandoMarcacao ? 'A procurar...' : 'Verificar Código'}
+              {buscandoMarcacao ? t('searching') : t('verifyCode')}
             </button>
           </div>
         </div>
@@ -577,35 +573,35 @@ export default function QuiosquePage() {
       {/* ESTADO: Confirmar check-in */}
       {estado === 'marcacao_confirm' && marcacaoEncontrada && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b98160', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>Marcação Encontrada</h2>
+          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>{t('bookingFound')}</h2>
           <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '20px', marginBottom: 28, textAlign: 'left' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Código</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{t('code')}</span>
               <span style={{ color: '#fff', fontWeight: 700, fontFamily: 'monospace', fontSize: 16 }}>{marcacaoEncontrada.codigo}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Médico</span>
-              <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>Dr. {marcacaoEncontrada.medico?.nome}</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{t('doctorLabel')}</span>
+              <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>{t('doctor', { nome: marcacaoEncontrada.medico?.nome ?? '' })}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Especialidade</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{t('specialtyLabel')}</span>
               <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>{marcacaoEncontrada.especialidade}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>Hora</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{t('time')}</span>
               <span style={{ color: '#60a5fa', fontWeight: 700, fontSize: 16 }}>
-                {new Date(marcacaoEncontrada.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                {new Date(marcacaoEncontrada.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('marcacao')}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
             <button onClick={confirmarCheckin} disabled={emissao}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#10b981', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: emissao ? 0.6 : 1 }}>
-              {emissao ? 'A fazer check-in...' : 'Confirmar Chegada'}
+              {emissao ? t('checkingIn') : t('confirmArrival')}
             </button>
           </div>
         </div>
@@ -614,16 +610,16 @@ export default function QuiosquePage() {
       {/* ESTADO: Sucesso check-in marcação */}
       {estado === 'marcacao_sucesso' && ticket && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b981', borderRadius: 20, padding: '48px 56px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>Check-in confirmado! A sua senha é</p>
+          <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>{t('checkinDone')}</p>
           <div style={{ fontSize: 96, fontWeight: 900, color: '#fff', letterSpacing: -2, lineHeight: 1, marginBottom: 20 }}>
             {ticket.numero}
           </div>
           <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32 }}>
-            Aguarde ser chamado. Siga o ecrã de chamadas.
+            {t('waitCall')}
           </p>
           <button onClick={reiniciar}
             style={{ width: '100%', padding: '16px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer' }}>
-            Nova Senha
+            {t('newTicket')}
           </button>
         </div>
       )}
@@ -642,15 +638,15 @@ export default function QuiosquePage() {
           }}
         >
           <div style={{ fontSize: 64, fontWeight: 900, color: tipoSelecionado.cor, fontFamily: 'monospace', marginBottom: 12 }}>{tipoSelecionado.letra}</div>
-          <h2 style={{ color: '#fff', fontSize: 26, marginBottom: 6 }}>{tipoSelecionado.label}</h2>
+          <h2 style={{ color: '#fff', fontSize: 26, marginBottom: 6 }}>{t(`service.${tipoSelecionado.tipo}`)}</h2>
           <p style={{ color: 'var(--text-dim)', marginBottom: 32, fontSize: 15 }}>
-            Senhas da série <strong style={{ color: tipoSelecionado.cor }}>{tipoSelecionado.letra}</strong>
+            {t.rich('seriesOf', { letra: tipoSelecionado.letra, b: (c) => <strong style={{ color: tipoSelecionado.cor }}>{c}</strong> })}
           </p>
 
           {/* Prioridade */}
           <div style={{ textAlign: 'left', marginBottom: 24 }}>
             <p style={{ color: 'var(--text-dim)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Tipo de atendimento
+              {t('serviceType')}
             </p>
             <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', marginBottom: 12 }}>
               <input
@@ -660,7 +656,7 @@ export default function QuiosquePage() {
                 style={{ width: 20, height: 20, accentColor: '#ef4444' }}
               />
               <span style={{ color: '#fff', fontSize: 16 }}>
-                Prioritário — Grávida / Emergência / Mobilidade Reduzida
+                {t('priority')}
               </span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}>
@@ -671,7 +667,7 @@ export default function QuiosquePage() {
                 style={{ width: 20, height: 20, accentColor: '#f59e0b' }}
               />
               <span style={{ color: '#fff', fontSize: 16 }}>
-                Sénior — Pessoa com mais de 65 anos
+                {t('senior')}
               </span>
             </label>
           </div>
@@ -679,13 +675,13 @@ export default function QuiosquePage() {
           {/* Nome opcional */}
           <div style={{ marginBottom: 32 }}>
             <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 13, marginBottom: 8, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
-              Nome (opcional)
+              {t('nameOptional')}
             </span>
             <input
               type="text"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              placeholder="O seu nome..."
+              placeholder={t('namePlaceholder')}
               style={{
                 width: '100%',
                 background: 'rgba(255,255,255,0.1)',
@@ -713,7 +709,7 @@ export default function QuiosquePage() {
                 cursor: 'pointer',
               }}
             >
-              ← Voltar
+              {t('back')}
             </button>
             <button
               onClick={tirarSenha}
@@ -731,7 +727,7 @@ export default function QuiosquePage() {
                 opacity: emissao ? 0.7 : 1,
               }}
             >
-              {emissao ? 'A emitir...' : 'Tirar Senha'}
+              {emissao ? t('issuing') : t('takeTicket')}
             </button>
           </div>
         </div>
@@ -750,7 +746,7 @@ export default function QuiosquePage() {
             textAlign: 'center',
           }}
         >
-          <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>A sua senha é</p>
+          <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>{t('yourTicket')}</p>
           <div
             style={{
               fontSize: 96,
@@ -776,11 +772,11 @@ export default function QuiosquePage() {
                 marginBottom: 24,
               }}
             >
-              {ticket.prioridade === 'prioritario' ? 'Prioritário' : 'Sénior'}
+              {ticket.prioridade === 'prioritario' ? t('priorityShort') : t('seniorShort')}
             </span>
           )}
           <p style={{ color: 'var(--text-dim)', fontSize: 16, marginBottom: 32, marginTop: ticket.prioridade === 'normal' ? 16 : 0 }}>
-            Aguarde ser chamado. Siga o ecrã de chamadas.
+            {t('waitCall')}
           </p>
           <button
             onClick={reiniciar}
@@ -796,7 +792,7 @@ export default function QuiosquePage() {
               cursor: 'pointer',
             }}
           >
-            Nova Senha
+            {t('newTicket')}
           </button>
         </div>
       )}
@@ -804,14 +800,14 @@ export default function QuiosquePage() {
       {/* ── NOVA MARCAÇÃO: Selecionar Especialidade ── */}
       {estado === 'nova_especialidade' && (
         <div style={{ width: '100%', maxWidth: 600 }}>
-          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 24, marginBottom: 8 }}>Escolha a especialidade</h2>
+          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 24, marginBottom: 8 }}>{t('chooseSpecialty')}</h2>
           <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
-            Selecione a área médica para a sua consulta
+            {t('chooseSpecialtyHint')}
           </p>
           {medicos.length === 0 ? (
             <div style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>
-              <p style={{ fontSize: 16 }}>Sem médicos com agenda disponível de momento.</p>
-              <p style={{ fontSize: 14, marginTop: 8 }}>Dirija-se à receção para marcação assistida.</p>
+              <p style={{ fontSize: 16 }}>{t('noDoctors')}</p>
+              <p style={{ fontSize: 14, marginTop: 8 }}>{t('goToReception')}</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -822,9 +818,9 @@ export default function QuiosquePage() {
                     onClick={() => { setEspecialidadeSelecionada(subRole); setEstado('nova_medico'); }}
                     style={{ width: '100%', padding: '22px 28px', borderRadius: 14, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                   >
-                    <span>{SUBROLE_ICONE[subRole] ?? '👨‍⚕️'} {SUBROLE_LABEL[subRole] ?? subRole}</span>
+                    <span>{SUBROLE_ICONE[subRole] ?? '👨‍⚕️'} {especialidade(subRole)}</span>
                     <span style={{ color: 'var(--text-dim)', fontSize: 14, fontWeight: 400 }}>
-                      {count} {count === 1 ? 'médico' : 'médicos'} →
+                      {t('doctorCount', { n: count })}
                     </span>
                   </button>
                 );
@@ -833,7 +829,7 @@ export default function QuiosquePage() {
           )}
           <button onClick={() => setEstado('nif_resultado')}
             style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-            ← Voltar
+            {t('back')}
           </button>
         </div>
       )}
@@ -842,23 +838,23 @@ export default function QuiosquePage() {
       {estado === 'nova_medico' && (
         <div style={{ width: '100%', maxWidth: 600 }}>
           <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 4 }}>
-            {SUBROLE_ICONE[especialidadeSelecionada] ?? '👨‍⚕️'} {SUBROLE_LABEL[especialidadeSelecionada] ?? especialidadeSelecionada}
+            {SUBROLE_ICONE[especialidadeSelecionada] ?? '👨‍⚕️'} {especialidade(especialidadeSelecionada)}
           </h2>
           <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
-            Escolha o profissional pretendido
+            {t('chooseDoctor')}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {medicos.filter(m => m.subRole === especialidadeSelecionada).map(m => (
               <button key={m.id} onClick={() => selecionarMedico(m)}
                 style={{ width: '100%', padding: '20px 24px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 17, fontWeight: 600, cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Dr. {m.nome.replace(/^Dr\.|^Dra\./, '').trim()}</span>
-                <span style={{ color: '#60a5fa', fontSize: 14, fontWeight: 400 }}>Ver disponibilidade →</span>
+                <span>{t('doctor', { nome: m.nome.replace(/^Dr\.|^Dra\./, '').trim() })}</span>
+                <span style={{ color: '#60a5fa', fontSize: 14, fontWeight: 400 }}>{t('seeAvailability')}</span>
               </button>
             ))}
           </div>
           <button onClick={() => setEstado('nova_especialidade')}
             style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-            ← Voltar
+            {t('back')}
           </button>
         </div>
       )}
@@ -875,18 +871,18 @@ export default function QuiosquePage() {
         return (
           <div style={{ width: '100%', maxWidth: 660 }}>
             <h2 style={{ color: '#fff', textAlign: 'center', fontSize: 20, marginBottom: 4 }}>
-              Dr. {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()}
+              {t('doctor', { nome: medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim() })}
             </h2>
             <p style={{ color: '#60a5fa', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
-              {SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}
+              {especialidade(medicoSelecionado.subRole)}
             </p>
 
             {/* Legenda */}
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
               {[
-                { cor: '#22c55e', label: 'Com disponibilidade' },
-                { cor: '#334155', label: 'Sem vagas' },
-                { cor: '#3b82f6', label: 'Selecionado' },
+                { cor: '#22c55e', label: t('legend.available') },
+                { cor: '#334155', label: t('legend.full') },
+                { cor: '#3b82f6', label: t('legend.selected') },
               ].map(l => (
                 <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{ width: 14, height: 14, borderRadius: 4, background: l.cor }} />
@@ -897,7 +893,7 @@ export default function QuiosquePage() {
 
             {/* Cabeçalho dias da semana */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 6 }}>
-              {DIAS_SEMANA.map(d => (
+              {[0, 1, 2, 3, 4, 5, 6].map(i => t(`weekday.${i}`)).map(d => (
                 <div key={d} style={{ textAlign: 'center', color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
               ))}
             </div>
@@ -937,7 +933,7 @@ export default function QuiosquePage() {
                           {d.getUTCDate()}
                         </div>
                         <div style={{ fontSize: 11, color: selecionado ? '#93c5fd' : temSlots ? '#4ade80' : '#334155', marginTop: 2 }}>
-                          {aCarregar ? '···' : temSlots ? `${cached.length} vaga${cached.length !== 1 ? 's' : ''}` : semSlots ? 'cheio' : ''}
+                          {aCarregar ? '···' : temSlots ? t('slots', { n: cached.length }) : semSlots ? t('full') : ''}
                         </div>
                       </button>
                     );
@@ -950,7 +946,7 @@ export default function QuiosquePage() {
             {dataSelecionada && slotsInline.length > 0 && (
               <div style={{ marginTop: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 14, padding: '20px 24px' }}>
                 <p style={{ color: 'var(--text-dim)', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14 }}>
-                  {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
                   {slotsInline.map(s => (
@@ -959,7 +955,7 @@ export default function QuiosquePage() {
                       onClick={() => { setSlotSelecionado(s); setEstado('nova_confirmar'); }}
                       style={{ padding: '14px 8px', borderRadius: 10, border: '2px solid #22c55e60', background: '#15803d20', color: '#86efac', fontSize: 17, fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}
                     >
-                      {new Date(s.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(s.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' })}
                     </button>
                   ))}
                 </div>
@@ -968,13 +964,13 @@ export default function QuiosquePage() {
 
             {dataSelecionada && slotsInline.length === 0 && slotCache[dataSelecionada] !== null && (
               <p style={{ color: 'var(--text-soft)', textAlign: 'center', marginTop: 20, fontSize: 14 }}>
-                Sem horários disponíveis neste dia. Selecione outro.
+                {t('noSlotsDay')}
               </p>
             )}
 
             <button onClick={() => setEstado('nova_medico')}
               style={{ marginTop: 24, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
           </div>
         );
@@ -984,27 +980,27 @@ export default function QuiosquePage() {
       {estado === 'nova_slot' && medicoSelecionado && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 540 }}>
           <h2 style={{ color: '#fff', fontSize: 20, textAlign: 'center', marginBottom: 6 }}>
-            {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+            {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long' })}
           </h2>
           <p style={{ color: 'var(--text-dim)', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
-            {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()} — {SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}
+            {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()} — {especialidade(medicoSelecionado.subRole)}
           </p>
           {slots.filter(s => s.disponivel).length === 0 ? (
-            <p style={{ color: 'var(--text-dim)', textAlign: 'center', padding: '20px 0' }}>Sem horários disponíveis neste dia.</p>
+            <p style={{ color: 'var(--text-dim)', textAlign: 'center', padding: '20px 0' }}>{t('noSlots')}</p>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
               {slots.filter(s => s.disponivel).map(s => (
                 <button key={s.dataHora}
                   onClick={() => { setSlotSelecionado(s); setEstado('nova_confirmar'); }}
                   style={{ padding: '16px 8px', borderRadius: 10, border: `2px solid ${slotSelecionado?.dataHora === s.dataHora ? '#3b82f6' : 'rgba(255,255,255,0.15)'}`, background: slotSelecionado?.dataHora === s.dataHora ? '#3b82f620' : 'rgba(255,255,255,0.05)', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}>
-                  {new Date(s.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(s.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' })}
                 </button>
               ))}
             </div>
           )}
           <button onClick={() => setEstado('nova_data')}
             style={{ width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-            ← Voltar
+            {t('back')}
           </button>
         </div>
       )}
@@ -1012,14 +1008,14 @@ export default function QuiosquePage() {
       {/* ── NOVA MARCAÇÃO: Confirmar ── */}
       {estado === 'nova_confirmar' && medicoSelecionado && slotSelecionado && pacienteNif && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b98160', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>Confirmar Marcação</h2>
+          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>{t('confirmBooking')}</h2>
           <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '20px', marginBottom: 24, textAlign: 'left' }}>
             {[
-              { label: 'Utente', valor: pacienteNif.nome },
-              { label: 'Especialidade', valor: SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole },
-              { label: 'Médico', valor: medicoSelecionado.nome },
-              { label: 'Data', valor: new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) },
-              { label: 'Hora', valor: new Date(slotSelecionado.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) },
+              { label: t('patient'), valor: pacienteNif.nome },
+              { label: t('specialtyLabel'), valor: especialidade(medicoSelecionado.subRole) },
+              { label: t('doctorLabel'), valor: medicoSelecionado.nome },
+              { label: t('date'), valor: new Date(dataSelecionada + 'T12:00:00').toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) },
+              { label: t('time'), valor: new Date(slotSelecionado.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' }) },
             ].map(({ label, valor }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>{label}</span>
@@ -1031,11 +1027,11 @@ export default function QuiosquePage() {
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={() => setEstado('nova_data')}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
+              {t('back')}
             </button>
             <button onClick={confirmarMarcacao} disabled={emissao}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#10b981', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: emissao ? 0.6 : 1 }}>
-              {emissao ? 'A agendar...' : 'Confirmar Marcação'}
+              {emissao ? t('booking') : t('confirmBooking')}
             </button>
           </div>
         </div>
@@ -1044,29 +1040,29 @@ export default function QuiosquePage() {
       {/* ── NOVA MARCAÇÃO: Sucesso ── */}
       {estado === 'nova_sucesso' && novaConsulta && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b981', borderRadius: 20, padding: '48px 56px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 8 }}>Marcação Confirmada</h2>
+          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 8 }}>{t('bookingConfirmed')}</h2>
           <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 24 }}>
-            {new Date(novaConsulta.dataHora).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
-            {' às '}
-            {new Date(novaConsulta.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
-            {' com '}
-            {novaConsulta.medico.nome}
+            {t('whenWith', {
+              data: new Date(novaConsulta.dataHora).toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long' }),
+              hora: new Date(novaConsulta.dataHora).toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' }),
+              medico: novaConsulta.medico.nome,
+            })}
           </p>
-          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: 8 }}>Guarde o seu código de marcação:</p>
+          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: 8 }}>{t('keepCode')}</p>
           <div style={{ fontSize: 36, fontWeight: 900, color: '#fff', letterSpacing: 4, fontFamily: 'monospace', background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: '20px', marginBottom: 24 }}>
             {novaConsulta.codigo}
           </div>
           <p style={{ color: 'var(--text-soft)', fontSize: 13, marginBottom: 32 }}>
-            No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.
+            {t('keepCodeHint')}
           </p>
           <button onClick={reiniciar}
             style={{ width: '100%', padding: '16px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer' }}>
-            Concluir
+            {t('done')}
           </button>
         </div>
       )}
 
-      <p style={{ color: 'var(--text-muted)', marginTop: 40, fontSize: 13 }}>CuraSphere — Sistema de Gestão Hospitalar</p>
+      <p style={{ color: 'var(--text-muted)', marginTop: 40, fontSize: 13 }}>{t('footer')}</p>
     </div>
   );
 }

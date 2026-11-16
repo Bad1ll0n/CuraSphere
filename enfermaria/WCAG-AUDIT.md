@@ -18,7 +18,12 @@ interação cuja correção altera comportamento ficaram como `warn` (dívida ra
   animações/transições a ~0. **(Já feito; corrige a impressão inicial desta auditoria.)**
 - **Skip-to-content** (WCAG 2.4.1) — `<a href="#main-content" class="skip-to-content">` no
   `client-layout.tsx` (i18n `skipToContent`), com alvo `<main id="main-content" tabIndex={-1}>`. **(Já feito.)**
-- **Internacionalização** — pt/en completos via `next-intl` (guardrail de paridade de chaves).
+- **Internacionalização** — **parcial** (UX-07). O português está completo. O inglês cobre os fluxos clínicos
+  principais (MAR, "O meu turno", administração e leitura à cabeceira, ficha, sinais vitais, lista de doentes)
+  e o quiosque. O resto continua em português, e por isso o seletor mostra "EN beta". O texto ainda por
+  traduzir está contado em `apps/web/src/i18n-texto-fixo.json`, e `src/i18n.spec.ts` impede que essa contagem
+  suba. Na mobile, o i18n (`i18next` + `expo-localization`) segue o idioma do telemóvel; a navegação e o MAR
+  já estão traduzidos.
 - **Imagens** — 3/3 `<img>` têm `alt`.
 - **Dark mode** por tokens CSS.
 - **Modais acessíveis** — o `confirm-modal.tsx` já tinha `role="dialog"`+`aria-modal`+Escape+focus-trap;
