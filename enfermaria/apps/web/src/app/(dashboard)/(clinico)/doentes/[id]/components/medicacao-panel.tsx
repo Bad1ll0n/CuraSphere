@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
-import QRCode from 'react-qr-code';
+import { QRCode } from '@/components/qr-diferido';
 import api from '@/lib/api';
 import { useEtiquetaUnidose } from '@/lib/hooks';
 import { useToast } from '@/components/toast';

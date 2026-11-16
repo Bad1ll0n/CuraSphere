@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import * as Sentry from '@sentry/nextjs';
+import { reportarErro } from '@/lib/monitorizacao';
 
 /**
  * Fronteira de erro das vistas clínicas.
@@ -14,7 +14,7 @@ import * as Sentry from '@sentry/nextjs';
  */
 export default function ClinicoError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    Sentry.captureException(error);
+    reportarErro(error);
   }, [error]);
 
   const semRede = typeof navigator !== 'undefined' && navigator.onLine === false;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState, useSyncExternalStore } from 'react';
 import { io, Socket } from 'socket.io-client';
-import * as Sentry from '@sentry/nextjs';
+import { reportarMensagem } from '@/lib/monitorizacao';
 import api from './api';
 
 const WS_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace('/api', '');
@@ -82,7 +82,7 @@ function reportarFalha(motivo: string) {
   ultimoReportado = motivo;
   // eslint-disable-next-line no-console
   console.error('[tempo-real] canal de alertas clínicos indisponível:', motivo);
-  Sentry.captureMessage(`WebSocket clínico indisponível: ${motivo}`, 'error');
+  reportarMensagem(`WebSocket clínico indisponível: ${motivo}`, 'error');
 }
 
 /**
@@ -251,4 +251,45 @@ export function useEstadoSocket(): EstadoSocket {
 
 export function emitSocket(event: string, data?: unknown) {
   sharedSocket?.emit(event, data);
+}
+
+// ─── PERF-13: polling só como recurso ────────────────────────────────────────
+// Com o canal em tempo real ligado (Socket.IO ou SSE), os ecrãs atualizam-se pelos eventos e o
+// polling fica numa rede de segurança lenta; quando o canal cai, volta o intervalo curto. Antes, a
+// receção fazia um pedido a cada 8 s e a urgência a cada 60 s mesmo com os eventos a chegar.
+
+export const SEGURANCA_MS = 5 * 60_000;
+
+export function intervaloDeRecurso(canalLigado: boolean, intervaloSemCanal: number): number {
+  return canalLigado ? Math.max(SEGURANCA_MS, intervaloSemCanal) : intervaloSemCanal;
+}
+
+/** Intervalo para `refetchInterval` conforme o estado do Socket.IO. */
+export function useIntervaloDeRecurso(intervaloSemCanal: number): number {
+  return intervaloDeRecurso(useEstadoSocket().estado === 'ligado', intervaloSemCanal);
+}
+
+/** Carrega já (quando `ativo`) e depois só como recurso do Socket.IO. */
+export function usePollingDeRecurso(carregar: () => void, intervaloSemCanal: number, ativo = true) {
+  const intervalo = useIntervaloDeRecurso(intervaloSemCanal);
+  const ref = useRef(carregar);
+  ref.current = carregar;
+  useEffect(() => {
+    if (!ativo) return undefined;
+    ref.current();
+    const t = setInterval(() => ref.current(), intervalo);
+    return () => clearInterval(t);
+  }, [ativo, intervalo]);
+}
+
+/** Para canais SSE: `canal(true|false)` quando abre/cai; carrega só se o canal estiver em baixo. */
+export function iniciarPollingDeRecurso(carregar: () => void, intervaloSemCanal: number) {
+  let ligado = false;
+  let ultima = Date.now();
+  const t = setInterval(() => {
+    if (Date.now() - ultima < intervaloDeRecurso(ligado, intervaloSemCanal)) return;
+    ultima = Date.now();
+    carregar();
+  }, intervaloSemCanal);
+  return { canal: (l: boolean) => { ligado = l; }, parar: () => clearInterval(t) };
 }

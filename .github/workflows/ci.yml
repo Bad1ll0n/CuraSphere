@@ -183,6 +183,12 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:3333
           NODE_ENV: production
 
+      # ── JavaScript inicial por rota (BLOQUEANTE, PERF-10) ──────────────────
+      # Mede o JS inicial (gzip) de cada rota a partir do build acabado de fazer e falha se
+      # alguma passar do limite. Depois do PERF-10 a base é ~245 KB e o máximo ~380 KB.
+      - name: Orçamento de JS inicial (web)
+        run: node apps/web/scripts/medir-bundle.mjs --limite-kb=400
+
       # ── Sanidade da infraestrutura (BLOQUEANTE, segundos) ──────────────────
       # Apanha erros de sintaxe/interpolação no compose antes de chegarem ao
       # servidor. Valores fictícios: valida-se a estrutura, não os segredos.

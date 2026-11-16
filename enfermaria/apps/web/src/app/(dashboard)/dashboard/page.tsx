@@ -2,19 +2,23 @@
 
 import { useAuth } from '@/lib/auth-context';
 import { Spinner } from '@/components/dashboard/partilhado';
-import { DashboardMedico } from '@/components/dashboard/paineis/medico';
-import { DashboardBloco } from '@/components/dashboard/paineis/bloco';
-import { DashboardImagiologia } from '@/components/dashboard/paineis/imagiologia';
-import { DashboardEnfermeiro } from '@/components/dashboard/paineis/enfermeiro';
-import { DashboardChefeEnfermagem } from '@/components/dashboard/paineis/chefeenfermagem';
-import { DashboardReabilitacao } from '@/components/dashboard/paineis/reabilitacao';
-import { DashboardFarmacia } from '@/components/dashboard/paineis/farmacia';
-import { DashboardRececao } from '@/components/dashboard/paineis/rececao';
-import { DashboardTransporte } from '@/components/dashboard/paineis/transporte';
-import { DashboardTI } from '@/components/dashboard/paineis/ti';
-import { DashboardQualidade } from '@/components/dashboard/paineis/qualidade';
-import { DashboardExecutivo } from '@/components/dashboard/paineis/executivo';
-import { DashboardGenerico } from '@/components/dashboard/paineis/generico';
+import dynamic from 'next/dynamic';
+
+// PERF-10: cada papel descarrega só o seu painel (os gráficos do executivo e do médico
+// deixam de pesar no dashboard da enfermagem e vice-versa).
+const DashboardMedico = dynamic(() => import('@/components/dashboard/paineis/medico').then((m) => m.DashboardMedico), { loading: () => <Spinner /> });
+const DashboardBloco = dynamic(() => import('@/components/dashboard/paineis/bloco').then((m) => m.DashboardBloco), { loading: () => <Spinner /> });
+const DashboardImagiologia = dynamic(() => import('@/components/dashboard/paineis/imagiologia').then((m) => m.DashboardImagiologia), { loading: () => <Spinner /> });
+const DashboardEnfermeiro = dynamic(() => import('@/components/dashboard/paineis/enfermeiro').then((m) => m.DashboardEnfermeiro), { loading: () => <Spinner /> });
+const DashboardChefeEnfermagem = dynamic(() => import('@/components/dashboard/paineis/chefeenfermagem').then((m) => m.DashboardChefeEnfermagem), { loading: () => <Spinner /> });
+const DashboardReabilitacao = dynamic(() => import('@/components/dashboard/paineis/reabilitacao').then((m) => m.DashboardReabilitacao), { loading: () => <Spinner /> });
+const DashboardFarmacia = dynamic(() => import('@/components/dashboard/paineis/farmacia').then((m) => m.DashboardFarmacia), { loading: () => <Spinner /> });
+const DashboardRececao = dynamic(() => import('@/components/dashboard/paineis/rececao').then((m) => m.DashboardRececao), { loading: () => <Spinner /> });
+const DashboardTransporte = dynamic(() => import('@/components/dashboard/paineis/transporte').then((m) => m.DashboardTransporte), { loading: () => <Spinner /> });
+const DashboardTI = dynamic(() => import('@/components/dashboard/paineis/ti').then((m) => m.DashboardTI), { loading: () => <Spinner /> });
+const DashboardQualidade = dynamic(() => import('@/components/dashboard/paineis/qualidade').then((m) => m.DashboardQualidade), { loading: () => <Spinner /> });
+const DashboardExecutivo = dynamic(() => import('@/components/dashboard/paineis/executivo').then((m) => m.DashboardExecutivo), { loading: () => <Spinner /> });
+const DashboardGenerico = dynamic(() => import('@/components/dashboard/paineis/generico').then((m) => m.DashboardGenerico), { loading: () => <Spinner /> });
 
 const SUBROLES_BLOCO = ['cirurgiao_geral', 'medico_anestesia'];
 

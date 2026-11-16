@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { iniciarPollingDeRecurso } from '@/lib/use-socket';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 
@@ -188,12 +189,11 @@ export default function RecepcaoPage() {
     if (!podeVer) return;
     carregarDadosRef.current();
 
-    // Polling de backup — garante sincronização mesmo que o SSE falhe
-    const pollInterval = setInterval(() => carregarDadosRef.current(), 8000);
+    const polling = iniciarPollingDeRecurso(() => carregarDadosRef.current(), 8000); // PERF-13: só se o SSE cair
 
     function conectar() {
       const es = new EventSource(`${SSE_BASE}/quiosque/eventos`);
-      esRef.current = es;
+      esRef.current = es; es.onopen = () => polling.canal(true);
 
       es.addEventListener('ticket_chamado', (e) => {
         const payload = JSON.parse(e.data);
@@ -217,7 +217,7 @@ export default function RecepcaoPage() {
       });
 
       es.addEventListener('error', () => {
-        es.close();
+        polling.canal(false); es.close();
         setTimeout(conectar, 3000);
       });
     }
@@ -225,7 +225,7 @@ export default function RecepcaoPage() {
     conectar();
     return () => {
       esRef.current?.close();
-      clearInterval(pollInterval);
+      polling.parar();
       if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     };
   }, [podeVer]);

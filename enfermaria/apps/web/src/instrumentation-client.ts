@@ -1,24 +1,16 @@
 /**
- * Arranque do Sentry no **cliente**.
+ * Arranque da monitorização no **cliente**.
  *
- * Substitui `sentry.client.config.ts`, que o Next.js 16 deixou de suportar com Turbopack
- * (o build emitia um aviso de descontinuação a cada compilação). A configuração é a mesma —
- * incluindo a limpeza RGPD do corpo e cookies do pedido, que não pode desaparecer daqui.
+ * PERF-10: o SDK do Sentry já não é importado aqui de forma estática (eram ~146 KB gzip em
+ * todas as rotas). As falhas globais são apanhadas desde já e o SDK é carregado quando o
+ * browser fica livre, e só se houver DSN — ver src/lib/monitorizacao.ts, que mantém a
+ * limpeza RGPD do corpo e dos cookies do pedido.
  */
-import * as Sentry from '@sentry/nextjs';
+import { carregarMonitorizacao, instalarCapturaGlobal } from './lib/monitorizacao';
 
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-  // RGPD: não enviar corpo do request nem cookies (dados clínicos Art. 9 RGPD)
-  beforeSend: (event) => {
-    if (event.request) {
-      delete event.request.data;
-      delete event.request.cookies;
-    }
-    return event;
-  },
-});
-
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+instalarCapturaGlobal();
+if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  const quandoLivre = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+  if (quandoLivre) quandoLivre(() => void carregarMonitorizacao(), { timeout: 5000 });
+  else setTimeout(() => void carregarMonitorizacao(), 2000);
+}

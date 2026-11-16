@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useSocket } from '@/lib/use-socket';
+import { useSocket, usePollingDeRecurso } from '@/lib/use-socket';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 
@@ -155,12 +155,8 @@ export default function BlocoPage() {
 
   useEffect(() => { carregar(); }, [dataFiltro]);
 
-  useEffect(() => {
-    if (vistaAtiva !== 'salas') return;
-    carregarSalas();
-    const t = setInterval(carregarSalas, 30_000);
-    return () => clearInterval(t);
-  }, [vistaAtiva]);
+  // PERF-13: o estado das salas chega por 'bloco:update'; o intervalo de 30 s é só recurso.
+  usePollingDeRecurso(carregarSalas, 30_000, vistaAtiva === 'salas');
 
   useEffect(() => {
     if (vistaAtiva !== 'calendario') return;

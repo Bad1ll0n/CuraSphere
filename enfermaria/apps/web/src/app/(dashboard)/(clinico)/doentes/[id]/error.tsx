@@ -1,13 +1,13 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import * as Sentry from '@sentry/nextjs';
+import { reportarErro } from '@/lib/monitorizacao';
 
 export default function DoenteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const router = useRouter();
 
   useEffect(() => {
-    Sentry.captureException(error);
+    reportarErro(error);
   }, [error]);
 
   return (
