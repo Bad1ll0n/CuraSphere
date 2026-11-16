@@ -38,7 +38,6 @@
     "loadError": "This does not mean the medication has been given. Check the connection and try again before closing the round.",
     "allGiven": "All medication given",
     "bed": "Bed {{cama}}",
-    "times": "Times: {{lista}}",
     "administer": "Administer",
     "recordFallback": "Could not record the administration."
   }

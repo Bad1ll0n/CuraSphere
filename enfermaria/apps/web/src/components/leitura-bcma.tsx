@@ -13,7 +13,9 @@ import api from '@/lib/api';
  *   tem; senão, fica o leitor por teclado.
  * O servidor confirma cada leitura contra o doente e a prescrição; o que não confere bloqueia.
  */
-export interface ResultadoLeitura { ok: boolean; motivo: string; lote?: string | null; validade?: string | null }
+// ARQ-12: o resultado vem tipado pelo contrato partilhado com a api.
+import type { ResultadoLeitura, VerificacaoLeitura } from '@org/shared';
+export type { ResultadoLeitura };
 export interface EstadoLeitura {
   pulseira: { codigo: string; resultado: ResultadoLeitura } | null;
   medicamento: { codigo: string; resultado: ResultadoLeitura } | null;
@@ -105,8 +107,9 @@ export function LeituraBcma({ medicacaoId, doenteId, estado, onChange }: {
   const verificar = async (tipo: 'pulseira' | 'medicamento', codigo: string) => {
     setAVerificar(tipo);
     try {
-      const r = await api.post(`/medicacao/${medicacaoId}/verificar-leitura`, { doenteId, [tipo]: codigo });
-      onChange({ ...estado, [tipo]: { codigo, resultado: r.data[tipo] } });
+      const r = await api.post<VerificacaoLeitura>(`/medicacao/${medicacaoId}/verificar-leitura`, { doenteId, [tipo]: codigo });
+      const resultado = r.data[tipo] ?? { ok: false, motivo: t('verifyError') };
+      onChange({ ...estado, [tipo]: { codigo, resultado } });
     } catch (e: any) {
       onChange({ ...estado, [tipo]: { codigo, resultado: { ok: false, motivo: e?.response?.data?.message ?? t('verifyError') } } });
     } finally { setAVerificar(null); }

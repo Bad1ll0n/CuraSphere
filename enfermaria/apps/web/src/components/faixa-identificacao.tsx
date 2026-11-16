@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import api from '@/lib/api';
+import { useDefinirNaoReanimar, useFaixaDoente } from '@/lib/hooks';
 import { useToast } from '@/components/toast';
 
 /**
@@ -10,34 +9,14 @@ import { useToast } from '@/components/toast';
  * pode falhar, num relance. Nome completo, idade e processo, cama, alergias, peso, isolamento,
  * decisão de não reanimar, risco de queda, NEWS2 com hora e tendência e sinalizações activas.
  */
-interface Faixa {
-  id: string; nome: string; numeroProcesso: string; idade: number | null; sexo: string | null;
-  cama: { numero: string; quarto: string; servico?: string | null } | null;
-  pesoKg: number | null;
-  alergias: { estado: string; lista: { alergenio: string; severidade: string }[] };
-  isolamento: string | null;
-  naoReanimar: { em: string | null } | null;
-  riscoQueda: { risco: string; pontuacao: number } | null;
-  news2: { valor: number | null; em: string; tendencia: 'sobe' | 'desce' | 'igual' | null } | null;
-  sinalizacoes: { motivo: string; nivelUrgencia: string }[];
-}
-
 const hora = (d: string) => new Date(d).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
 
 export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doenteId: string; podeRegistarDnr?: boolean }) {
   const toast = useToast();
   const t = useTranslations('idBand');
-  const [f, setF] = useState<Faixa | null>(null);
-  const [erro, setErro] = useState(false);
-
-  const carregar = useCallback(() => {
-    api.get(`/resumo/doente/${doenteId}/faixa`).then((r) => { setF(r.data); setErro(false); }).catch(() => setErro(true));
-  }, [doenteId]);
-  useEffect(() => {
-    carregar();
-    const t = setInterval(carregar, 60_000);
-    return () => clearInterval(t);
-  }, [carregar]);
+  // ARQ-12/13: contrato partilhado (FaixaDoente) e react-query.
+  const { data: f, isError: erro } = useFaixaDoente(doenteId);
+  const dnr = useDefinirNaoReanimar(doenteId);
 
   const alternarDnr = async () => {
     if (!f) return;
@@ -45,9 +24,8 @@ export function FaixaIdentificacao({ doenteId, podeRegistarDnr = false }: { doen
     const notas = ativo ? window.prompt(t('dnrPrompt')) : t('dnrRevokedNote');
     if (ativo && !notas?.trim()) return;
     try {
-      await api.patch(`/resumo/doente/${doenteId}/nao-reanimar`, { ativo, notas: notas?.trim() });
+      await dnr.mutateAsync({ ativo, notas: notas?.trim() });
       toast.success(ativo ? t('dnrRecorded') : t('dnrRevoked'));
-      carregar();
     } catch (e: any) { toast.error(e?.response?.data?.message ?? t('recordError')); }
   };
 

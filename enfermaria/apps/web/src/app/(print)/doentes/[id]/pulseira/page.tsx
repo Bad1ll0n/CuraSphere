@@ -1,19 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import QRCode from 'react-qr-code';
-import api from '@/lib/api';
-
-interface Pulseira {
-  conteudo: string;
-  nome: string;
-  numeroProcesso: string;
-  dataNascimento: string | null;
-  sexo: string | null;
-  temAlergias: boolean;
-  alergiasAvaliadas: boolean;
-}
+import { usePulseira } from '@/lib/hooks';
 
 /**
  * UX-08 — pulseira do doente para impressão. O QR leva o n.º de processo e a data de
@@ -22,14 +12,13 @@ interface Pulseira {
  */
 export default function PulseiraPage() {
   const { id } = useParams<{ id: string }>();
-  const [p, setP] = useState<Pulseira | null>(null);
-  const [erro, setErro] = useState<string | null>(null);
-
+  const { data: p, error } = usePulseira(id);
+  const erro = error ? ((error as any)?.response?.data?.message ?? 'Não foi possível obter os dados da pulseira.') : null;
   useEffect(() => {
-    api.get(`/resumo/doente/${id}/pulseira`)
-      .then((r) => { setP(r.data); setTimeout(() => window.print(), 600); })
-      .catch((e) => setErro(e?.response?.data?.message ?? 'Não foi possível obter os dados da pulseira.'));
-  }, [id]);
+    if (!p) return undefined;
+    const t = setTimeout(() => window.print(), 600);
+    return () => clearTimeout(t);
+  }, [p]);
 
   if (erro) return <p role="alert" style={{ padding: 24, color: '#b91c1c' }}>{erro}</p>;
   if (!p) return <p style={{ padding: 24 }}>A preparar a pulseira…</p>;

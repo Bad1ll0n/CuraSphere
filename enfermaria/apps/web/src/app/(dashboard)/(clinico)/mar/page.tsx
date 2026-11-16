@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import api from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
+import { chavesClinicas, useInvalidarTurno } from '@/lib/hooks';
+import type { LinhaMar } from '@org/shared';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
@@ -14,28 +17,8 @@ import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type Estado
 // UX-07: o texto vem de mar.reason.<valor>.
 const MOTIVOS_NAO_ADMIN = ['recusou', 'contraindicacao', 'em_exame', 'indisponivel', 'outro'] as const;
 
-interface Registo {
-  id: string;
-  administradoEm: string;
-  administradoPor: { nome: string };
-  observacoes?: string;
-  verificacao5Certas?: boolean;
-  naoAdministrada?: boolean;
-  motivoNaoAdmin?: string;
-}
-
-interface Medicacao {
-  id: string;
-  nome: string;
-  dose: string;
-  via: string;
-  frequencia: string;
-  iniciadoEm: string;
-  estadoValidacao?: string;
-  doente: { id: string; nome: string; cama: { numero: string; quarto: string } };
-  prescritoPor: { nome: string };
-  registos: Registo[];
-}
+// ARQ-12: a forma da resposta vem do contrato partilhado com a api.
+type Medicacao = LinhaMar;
 
 const viaCor: Record<string, string> = {
   oral: 'bg-blue-50 text-blue-700',
@@ -78,12 +61,16 @@ export default function MarPage() {
   const toast = useToast();
   const t = useTranslations('mar');
   const tc = useTranslations('common');
-  const [medicacoes, setMedicacoes] = useState<Medicacao[]>([]);
+  // ARQ-13: react-query. Administrar aqui invalida também "O meu turno" e a faixa do doente.
+  const marQ = useQuery<Medicacao[]>({ queryKey: chavesClinicas.mar, queryFn: () => api.get('/medicacao/mar').then((r) => r.data) });
+  const medicacoes = marQ.data ?? [];
+  const loading = marQ.isLoading;
+  const erroCarga = marQ.isError;
+  const invalidarTurno = useInvalidarTurno();
+  const carregar = () => { void marQ.refetch(); };
   // UX-30: "Administrar" a partir de "O meu turno" abre o MAR já filtrado no doente.
   const [doenteFiltro, setDoenteFiltro] = useState<string | null>(null);
   useEffect(() => { setDoenteFiltro(new URLSearchParams(window.location.search).get('doente')); }, []);
-  const [loading, setLoading] = useState(true);
-  const [erroCarga, setErroCarga] = useState(false);
   const [administrando, setAdministrando] = useState<string | null>(null);
   const [obs, setObs] = useState('');
   const [modalId, setModalId] = useState<string | null>(null);
@@ -105,18 +92,8 @@ export default function MarPage() {
     titulo: t('fiveRightsTitle'),
   });
 
-  // F-08: sem `catch`, uma falha de rede terminava no estado vazio — "Sem medicações para
-  // este turno" — e o enfermeiro concluía que não havia nada a administrar.
-  const carregar = () => {
-    setLoading(true);
-    setErroCarga(false);
-    api.get('/medicacao/mar')
-      .then((r) => setMedicacoes(r.data))
-      .catch(() => setErroCarga(true))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => { carregar(); }, []);
+  // F-08: uma falha de rede não pode terminar no estado vazio — "Sem medicações para este
+  // turno" — senão o enfermeiro concluía que não havia nada a administrar (isError abaixo).
 
   // UX-08: leitura da pulseira e da embalagem à cabeceira.
   const [leitura, setLeitura] = useState<EstadoLeitura>(LEITURA_VAZIA);
@@ -149,7 +126,7 @@ export default function MarPage() {
       setModalNaoAdmin(null);
       setMotivoSelecionado('recusou');
       setMotivoOutro('');
-      carregar();
+      invalidarTurno();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? t('recordError'));
     } finally { setRegistandoNaoAdmin(false); }
@@ -174,7 +151,7 @@ export default function MarPage() {
       setModalId(null);
       setObs('');
       setCertas([false, false, false, false, false]);
-      carregar();
+      invalidarTurno();
     } catch (e: any) {
         // QA-08: SOS antes do intervalo mínimo / acima do máximo diário — só com justificação.
         const sos = e?.response?.status === 409 && /^SOS:/.test(e?.response?.data?.message ?? '');

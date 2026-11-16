@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import QRCode from 'react-qr-code';
 import api from '@/lib/api';
+import { useEtiquetaUnidose } from '@/lib/hooks';
 import { useToast } from '@/components/toast';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { ConfirmModal } from '@/components/confirm-modal';
@@ -122,17 +123,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   // QR 5 Certos
   const [qrMed, setQrMed] = useState<{ id: string; nome: string; dose: string; via: string } | null>(null);
   // UX-08: o QR da etiqueta é assinado pelo servidor; JSON feito no cliente qualquer um forjava.
-  const [qrAssinado, setQrAssinado] = useState<string | null>(null);
-  const [qrErro, setQrErro] = useState<string | null>(null);
-  useEffect(() => {
-    setQrAssinado(null); setQrErro(null);
-    if (!qrMed) return;
-    let vivo = true;
-    api.get(`/medicacao/${qrMed.id}/etiqueta`)
-      .then((r) => { if (vivo) setQrAssinado(r.data.qrPayload); })
-      .catch((e) => { if (vivo) setQrErro(e?.response?.data?.message ?? 'Não foi possível gerar a etiqueta.'); });
-    return () => { vivo = false; };
-  }, [qrMed]);
+  const etiquetaQr = useEtiquetaUnidose(qrMed?.id ?? null);
+  const qrAssinado = etiquetaQr.data?.qrPayload ?? null;
+  const qrErro = etiquetaQr.error ? ((etiquetaQr.error as any)?.response?.data?.message ?? 'Não foi possível gerar a etiqueta.') : null;
 
   // Prescrever medicação state
   const [modalMed, setModalMed] = useState(false);

@@ -11,18 +11,15 @@ import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
-interface MedicacaoMAR {
-  id: string;
-  medicamentoNome: string;
-  dose: string;
-  via: string;
-  frequencia: string;
-  horarios: string[];
-  estado: string;
-  doente: { id: string; nome: string; cama?: { numero: string; quarto: string } };
-  proximaAdministracao?: string;
-  administradoHoje: boolean;
-}
+import type { LinhaMar } from '@org/shared';
+import { administradaHoje } from '../lib/mar';
+
+/**
+ * ARQ-12: a forma vem do contrato partilhado com a api. Antes este ecrã lia
+ * `medicamentoNome`, `horarios` e `administradoHoje`, que a api nunca devolveu: o nome do
+ * medicamento aparecia em branco e nada aparecia como administrado.
+ */
+type MedicacaoMAR = LinhaMar & { administradoHoje: boolean };
 
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
@@ -45,7 +42,8 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
     try {
       setErroCarga(false);
       const { data } = await api.get('/medicacao/mar');
-      setMedicacoes(data?.data ?? data ?? []);
+      const linhas: LinhaMar[] = data?.data ?? data ?? [];
+      setMedicacoes(linhas.map((m) => ({ ...m, administradoHoje: administradaHoje(m) })));
     } catch (e) {
       registarFalhaSilenciosa('MARScreen.carregar', e);
       setErroCarga(true);
@@ -136,7 +134,7 @@ ${t('administer.checkRecord')}`);
               <View key={m.id} style={[s.cartao, m.administradoHoje && s.cartaoAdministrado]}>
                 <View style={s.cartaoTopo}>
                   <View style={{ flex: 1 }}>
-                    <Text style={s.medicamentoNome}>{m.medicamentoNome}</Text>
+                    <Text style={s.medicamentoNome}>{m.nome}</Text>
                     <Text style={s.doenteNome}>{m.doente.nome}</Text>
                     {m.doente.cama && (
                       <Text style={s.cama}>{t('mar.bed', { cama: `${m.doente.cama.quarto}/${m.doente.cama.numero}` })}</Text>
@@ -160,14 +158,11 @@ ${t('administer.checkRecord')}`);
                   </View>
                 </View>
 
-                {m.horarios && m.horarios.length > 0 && (
-                  <Text style={s.horarios}>{t('mar.times', { lista: m.horarios.join(' · ') })}</Text>
-                )}
 
                 {!m.administradoHoje && (
                   <TouchableOpacity
                     style={s.btnAdministrar}
-                    onPress={() => administrar(m.id, m.medicamentoNome, m.doente.id)}
+                    onPress={() => administrar(m.id, m.nome, m.doente.id)}
                   >
                     <Ionicons name="medical-outline" size={15} color="#1d4ed8" />
                     <Text style={s.btnAdministrarTexto}>{t('mar.administer')}</Text>

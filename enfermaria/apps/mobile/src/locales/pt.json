@@ -38,7 +38,6 @@
     "loadError": "Isto não quer dizer que as medicações estejam administradas. Verifique a ligação e tente de novo antes de dar a ronda por concluída.",
     "allGiven": "Todas as medicações administradas",
     "bed": "Cama {{cama}}",
-    "times": "Horários: {{lista}}",
     "administer": "Administrar",
     "recordFallback": "Não foi possível registar a administração."
   }
