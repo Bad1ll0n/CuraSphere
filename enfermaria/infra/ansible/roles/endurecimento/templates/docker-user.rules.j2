@@ -1,0 +1,12 @@
+#!/bin/sh
+# Gerido pelo Ansible (OPS-21). Portas publicadas pelo Docker só para as redes do hospital.
+set -e
+iptables -F DOCKER-USER
+iptables -A DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+{% for rede in https_redes_permitidas %}
+iptables -A DOCKER-USER -s {{ rede }} -j RETURN
+{% endfor %}
+# Tráfego entre contentores (redes internas do Docker) continua permitido.
+iptables -A DOCKER-USER -s 172.16.0.0/12 -j RETURN
+iptables -A DOCKER-USER -i lo -j RETURN
+iptables -A DOCKER-USER -j DROP

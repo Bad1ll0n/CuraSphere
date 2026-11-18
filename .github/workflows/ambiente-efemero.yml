@@ -1,0 +1,79 @@
+name: Ambiente efémero (stack de produção)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-21 — em cada PR que mexa em Dockerfiles, compose, nginx, scripts de deploy ou na IaC, e
+# todas as noites, o stack de PRODUÇÃO arranca de ponta a ponta num runner: imagens dos
+# Dockerfiles, migrações + triggers de auditoria, 2 réplicas da API, web e nginx com TLS e
+# allowlist. O smoke test fala com o nginx como um posto do hospital (rede 10.x) e confirma
+# TLS, cabeçalhos de segurança, API pronta, páginas, 401 sem sessão, isolamento da BD,
+# recusa de IPs de fora e o trilho de auditoria append-only.
+# Também valida a IaC (Ansible: sintaxe + ansible-lint, perfil production).
+# Ver enfermaria/docs/AMBIENTES.md.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  pull_request:
+    paths:
+      - 'enfermaria/apps/*/Dockerfile'
+      - 'enfermaria/docker-compose.prod.yml'
+      - 'enfermaria/docker-compose.efemero.yml'
+      - 'enfermaria/nginx/**'
+      - 'enfermaria/scripts/deploy.sh'
+      - 'enfermaria/scripts/lib-rolamento.sh'
+      - 'enfermaria/scripts/ambiente-efemero.sh'
+      - 'enfermaria/infra/**'
+      - 'enfermaria/apps/api/prisma/**'
+      - '.github/workflows/ambiente-efemero.yml'
+  schedule:
+    - cron: '30 2 * * *'   # todas as noites, 02:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ambiente-efemero-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  stack:
+    name: Stack de produção arranca e serve
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: enfermaria
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Subir, verificar e descer
+        run: |
+          set -o pipefail
+          sh scripts/ambiente-efemero.sh 2>&1 | tee efemero.log
+      - name: Resumo
+        if: always()
+        run: |
+          {
+            echo "### Ambiente efémero"
+            echo '```'
+            grep -E "^\[|FALHOU|OK —" efemero.log || tail -30 efemero.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  iac:
+    name: IaC (Ansible — sintaxe e lint)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: enfermaria/infra/ansible
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: ansible-lint
+        run: |
+          pip install "ansible-lint==25.9.2"
+          ansible-galaxy collection install -r requirements.yml
+          ansible-playbook --syntax-check -i inventario.exemplo.yml site.yml
+          ansible-lint

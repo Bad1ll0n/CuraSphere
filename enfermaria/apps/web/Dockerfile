@@ -54,6 +54,10 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
+# OPS-21: o server.js standalone do Next escuta em $HOSTNAME, que o Docker define como o id do
+# contentor — só no IP da rede, não em localhost. O healthcheck (wget localhost:3000) falhava
+# sempre e o autoheal reiniciava a web em ciclo. O ambiente efémero apanhou-o.
+ENV HOSTNAME=0.0.0.0
 
 RUN addgroup --system --gid 1001 nodejs \
  && adduser  --system --uid 1001 nextjs
@@ -67,6 +71,6 @@ USER nextjs
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-  CMD wget -qO- http://localhost:3000/api/health || exit 1
+  CMD wget -qO- http://127.0.0.1:3000/api/health || exit 1
 
 CMD ["node", "apps/web/server.js"]

@@ -1,0 +1,5 @@
+---
+# Conteúdo do .env do ambiente: definir em group_vars/<ambiente>/segredos.yml cifrado com
+# ansible-vault (ver .env.example para as chaves). Sem ele, o .env não é escrito e o deploy
+# recusa arrancar — nunca se escreve um .env com valores de exemplo.
+curasphere_env: {}

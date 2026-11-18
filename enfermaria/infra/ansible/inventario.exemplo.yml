@@ -1,0 +1,19 @@
+# OPS-21 — inventário de exemplo. Copiar para inventario.yml (não versionado) e preencher.
+# Os segredos (conteúdo do .env de cada ambiente) vão num ficheiro cifrado com ansible-vault:
+#   ansible-vault create group_vars/producao/segredos.yml
+all:
+  children:
+    staging:
+      hosts:
+        curasphere-staging:
+          ansible_host: 10.20.0.11
+      vars:
+        curasphere_ambiente: staging
+        curasphere_env_ficheiro: .env.staging
+    producao:
+      hosts:
+        curasphere-prod-01:
+          ansible_host: 10.20.0.21
+      vars:
+        curasphere_ambiente: producao
+        curasphere_env_ficheiro: .env.prod

@@ -87,3 +87,10 @@ monitoring/alertmanager/segredos/
 # Anexos gravados pela API em desenvolvimento e nos testes E2E (dados de doentes fictícios).
 apps/api/uploads/*
 !apps/api/uploads/documentos_test.pdf
+
+# OPS-21: certificados TLS (reais ou do ambiente efémero) e .env de cada ambiente nunca entram no git
+nginx/ssl/*.pem
+nginx/ssl/*.key
+.env.prod
+.env.staging
+.env.efemero

@@ -1,0 +1,83 @@
+name: Staging — CuraSphere
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-21 — staging. Cada release candidate (tag `vX.Y.Z-rc.N`, construída, analisada e assinada
+# pelo workflow de release com as variáveis do environment `staging`) é instalada no servidor
+# de staging com o MESMO scripts/deploy.sh da produção (rolamento sem paragem, migrações,
+# triggers de auditoria, verificação de assinatura). A tag final só se cria depois de a rc
+# estar validada aqui. Ver enfermaria/docs/AMBIENTES.md.
+#
+# Segredos do environment `staging` (Settings → Environments → staging):
+#   STAGING_SSH_HOST, STAGING_SSH_USER, STAGING_SSH_KEY, STAGING_SSH_KNOWN_HOSTS
+# Sem eles o job avisa e não instala (o repositório pode ainda não ter servidor de staging).
+# Staging só tem dados sintéticos — nunca uma cópia da BD de produção (RGPD, art. 9.º).
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  workflow_run:
+    workflows: ['Release — CuraSphere']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      versao:
+        description: 'Tag a instalar em staging (ex.: v1.4.0-rc.2)'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging
+  cancel-in-progress: false
+
+jobs:
+  instalar:
+    name: Instalar em staging
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && contains(github.event.workflow_run.head_branch, '-rc.'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: staging
+    env:
+      VERSAO: ${{ github.event.inputs.versao || github.event.workflow_run.head_branch }}
+      SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+      SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+    steps:
+      - name: Servidor de staging configurado?
+        id: cfg
+        run: |
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
+            echo "::notice::Sem STAGING_SSH_* no environment 'staging' — nada instalado (ver docs/AMBIENTES.md)."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+          case "$VERSAO" in
+            v[0-9]*.[0-9]*.[0-9]*-rc.[0-9]*|v[0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error::Versão inválida: $VERSAO"; exit 1 ;;
+          esac
+
+      - name: Chave SSH
+        if: steps.cfg.outputs.ok == 'true'
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/staging && chmod 600 ~/.ssh/staging
+          # Sem `StrictHostKeyChecking=no`: o servidor tem de ser o que está nos known_hosts.
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy (scripts/deploy.sh com .env.staging)
+        if: steps.cfg.outputs.ok == 'true'
+        run: |
+          ssh -i ~/.ssh/staging "$SSH_USER@$SSH_HOST" \
+            "set -e; cd /opt/curasphere && git fetch --tags --quiet && git checkout --quiet '$VERSAO' && cd enfermaria && ENV_FILE=.env.staging ./scripts/deploy.sh '$VERSAO'"
+
+      - name: Resumo
+        if: always() && steps.cfg.outputs.ok == 'true'
+        env:
+          ESTADO: ${{ job.status }}
+        run: |
+          echo "### Staging — $VERSAO instalada ($ESTADO)" >> "$GITHUB_STEP_SUMMARY"
