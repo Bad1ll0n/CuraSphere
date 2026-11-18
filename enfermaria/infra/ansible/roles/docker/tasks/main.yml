@@ -1,0 +1,41 @@
+---
+# Docker Engine do repositório oficial, com o daemon configurado para um servidor clínico.
+- name: Directório das chaves apt
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Repositório Docker (com a chave do repositório)
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: "https://download.docker.com/linux/{{ ansible_distribution | lower }}"
+    suites: ["{{ ansible_distribution_release }}"]
+    components: [stable]
+    architectures: ["{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"]
+    signed_by: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    state: present
+
+- name: Docker Engine e plugin compose
+  ansible.builtin.apt:
+    name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+    state: present
+    update_cache: true
+
+- name: Configuração do daemon
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: "0644"
+    content: "{{ docker_daemon | to_nice_json }}\n"
+  notify: Reiniciar docker
+
+- name: Docker ativo no arranque
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true

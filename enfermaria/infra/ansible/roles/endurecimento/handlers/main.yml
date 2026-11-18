@@ -1,0 +1,21 @@
+---
+- name: Recarregar sshd
+  ansible.builtin.service:
+    name: ssh
+    state: reloaded
+
+- name: Reiniciar fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted
+
+- name: Aplicar regras DOCKER-USER
+  ansible.builtin.systemd:
+    name: curasphere-docker-user
+    daemon_reload: true
+    enabled: true
+    state: restarted
+
+- name: Carregar regras auditd
+  ansible.builtin.command: augenrules --load
+  changed_when: true

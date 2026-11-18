@@ -70,3 +70,7 @@ O histórico fica em `deploys.log`.
 - Imagens base (`node`, `postgres`, `redis`, `nginx`) fixadas por **digest**. O Dependabot actualiza-as todos os meses (ecossistemas `docker` e `docker-compose`).
 - Actions do GitHub fixadas por SHA.
 - `security.yml` analisa o repositório (Trivy fs, gitleaks, Semgrep, `pnpm audit`). O `release.yml` analisa a imagem final.
+
+## Release candidates e staging (OPS-21)
+
+Antes da tag final, cria-se `vX.Y.Z-rc.N` no mesmo commit: o workflow de release constrói-a com as variáveis do environment `staging` e o workflow **Staging** instala-a no servidor de staging. Só depois de validada se cria `vX.Y.Z`. O `deploy.sh` recusa uma rc com o `.env.prod`. Ver `docs/AMBIENTES.md`.

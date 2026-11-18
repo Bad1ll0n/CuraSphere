@@ -1,0 +1,15 @@
+# Gerido pelo Ansible (OPS-21) — alterações à mão são revertidas.
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey
+AllowUsers {{ admin_utilizador }}
+MaxAuthTries 3
+LoginGraceTime 30
+X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+PermitTunnel no
+ClientAliveInterval 300
+ClientAliveCountMax 2

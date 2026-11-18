@@ -1,0 +1,17 @@
+---
+# OPS-21 — daemon do Docker:
+#   live-restore     → reiniciar/actualizar o dockerd não pára os contentores (BD incluída);
+#   log-opts         → nenhum contentor enche o disco com logs (o compose também limita);
+#   no-new-privileges→ nenhum processo num contentor ganha privilégios via setuid;
+#   userland-proxy   → desligado: o nginx vê o IP real do posto (allowlist e limites por IP);
+#   icc              → sem comunicação livre na bridge por omissão (as redes do compose
+#                      continuam a funcionar, cada uma isolada).
+docker_daemon:
+  live-restore: true
+  log-driver: json-file
+  log-opts:
+    max-size: 20m
+    max-file: "3"
+  no-new-privileges: true
+  userland-proxy: false
+  icc: false

@@ -1,0 +1,26 @@
+# OPS-21 — ambiente efémero: o stack de PRODUÇÃO (docker-compose.prod.yml), sem alterações às
+# imagens nem à configuração, mais isto:
+#   - uma rede "cliente" num intervalo que a allowlist do nginx aceita (10.0.0.0/8), de onde
+#     o smoke test fala com o nginx como um posto de trabalho do hospital;
+#   - réplicas e limites mais pequenos, para caber num runner do CI.
+# Uso: scripts/ambiente-efemero.sh (nunca em produção).
+services:
+  api:
+    deploy:
+      replicas: 2
+      resources:
+        limits: { memory: 1024M, cpus: "1.0" }
+  web:
+    deploy:
+      replicas: 1
+  nginx:
+    networks:
+      - curasphere-lb
+      - cliente
+
+networks:
+  cliente:
+    name: curasphere-efemero-cliente
+    ipam:
+      config:
+        - subnet: 10.250.0.0/24

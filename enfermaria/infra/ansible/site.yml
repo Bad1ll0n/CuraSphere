@@ -1,0 +1,16 @@
+---
+# OPS-21 — provisionamento e endurecimento de um servidor CuraSphere (staging ou produção).
+#
+#   ansible-playbook site.yml --limit staging --ask-vault-pass
+#   ansible-playbook site.yml --limit producao --check --diff   # ver o que mudaria, sem mudar
+#
+# Idempotente: correr de novo só altera o que se desviou. Alvo: Debian 12 / Ubuntu 24.04.
+# Ver enfermaria/docs/AMBIENTES.md.
+- name: Servidor CuraSphere
+  hosts: all
+  become: true
+  roles:
+    - role: base
+    - role: endurecimento
+    - role: docker
+    - role: curasphere

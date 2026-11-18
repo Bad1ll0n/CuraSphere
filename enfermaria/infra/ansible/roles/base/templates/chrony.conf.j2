@@ -1,0 +1,7 @@
+# Gerido pelo Ansible (OPS-21) — alterações à mão são revertidas.
+{% for s in servidores_ntp %}
+server {{ s }} iburst
+{% endfor %}
+driftfile /var/lib/chrony/chrony.drift
+makestep 1.0 3
+rtcsync

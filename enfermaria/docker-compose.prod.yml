@@ -307,6 +307,11 @@ services:
       # consultas clínicas a passar por infraestrutura de terceiros sem contrato
       # nem RGPD. Definir para o Jitsi da instituição.
       JITSI_SERVER:            ${JITSI_SERVER:?JITSI_SERVER em falta — a omissão do código é o servidor público meet.jit.si}
+      # OPS-21: a API RECUSA arrancar em produção sem estes dois (salas autenticadas por token,
+      # common/jitsi.ts) — mas nunca chegavam ao contentor. O ambiente efémero apanhou-o: com o
+      # compose de produção tal como estava, a API não arrancava.
+      JITSI_APP_ID:            ${JITSI_APP_ID:?JITSI_APP_ID em falta — a API recusa arrancar em produção sem salas autenticadas}
+      JITSI_APP_SECRET:        ${JITSI_APP_SECRET:?JITSI_APP_SECRET em falta — a API recusa arrancar em produção sem salas autenticadas}
       # SPMS/SNS. A omissão do código é api-staging.spms.min-saude.pt: produção
       # a falar com staging é uma falha, não uma opção.
       SPMS_API_URL:            ${SPMS_API_URL:?SPMS_API_URL em falta — a omissão do código aponta para STAGING}
@@ -488,7 +493,7 @@ services:
       - curasphere-internal
       - curasphere-lb
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]  # IPv4: o busybox resolve localhost para ::1
       interval: 30s
       timeout: 10s
       retries: 3
