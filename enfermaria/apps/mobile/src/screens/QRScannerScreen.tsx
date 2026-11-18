@@ -31,7 +31,7 @@ interface Props {
   onFechar: () => void;
   doenteIdEsperado?: string;
   /** Recebe a etiqueta lida: é dela que o servidor extrai dose e via para verificar. */
-  onAdministrar?: (medicacaoId: string, qrPayload: string, justificacao?: string) => void;
+  onAdministrar?: (medicacaoId: string, qrPayload: string, justificacao: string | undefined, doenteId: string) => void;
 }
 
 
@@ -107,7 +107,9 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
 
   const handleAdministrar = () => {
     if (!resultado?.medicacao || !onAdministrar || !qrLido) return;
-    onAdministrar(resultado.medicacao.id, qrLido, resultado.valido ? undefined : justificacao.trim());
+    // O doente vem da etiqueta assinada (e foi conferido com o esperado em verificar-5-certos).
+    const doenteDaEtiqueta = (() => { try { return JSON.parse(base64urlParaTexto(qrLido.split('.')[0])).doenteId as string; } catch { return ''; } })();
+    onAdministrar(resultado.medicacao.id, qrLido, resultado.valido ? undefined : justificacao.trim(), doenteIdEsperado ?? doenteDaEtiqueta);
   };
 
   const porConfirmar = (resultado?.certos ?? []).filter((c) => c.estado === 'nao_verificado');

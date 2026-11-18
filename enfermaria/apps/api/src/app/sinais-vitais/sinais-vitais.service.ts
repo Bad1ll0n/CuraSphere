@@ -14,6 +14,7 @@ import {
 } from '../common/news2.helper';
 import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
 import { ESCALAS_DOR, proximaAvaliacaoSinaisVitais } from '../common/vigilancia';
+import { eRegistoDiferido, resolverHoraDoAto } from '../common/hora-do-ato';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -51,7 +52,7 @@ interface CriticoIndividual {
  * Cobre agora também frequência respiratória e AVPU (antes em falta: uma FR de 30 ou um
  * doente que só responde à voz passavam em silêncio se o NEWS2 total ficasse abaixo de 5).
  */
-function detetar(dto: CriarSinalVitalDto): CriticoIndividual[] {
+export function detetar(dto: CriarSinalVitalDto): CriticoIndividual[] {
   const alertas: CriticoIndividual[] = [];
   if (dto.saturacaoO2 != null && dto.saturacaoO2 < 90)
     alertas.push({ parametro: 'saturacaoO2', mensagem: `SpO₂ crítica: ${dto.saturacaoO2}%` });
@@ -95,8 +96,10 @@ export class SinaisVitaisService {
    * Passa pela MESMA pipeline (NEWS2 + alertas + watchdog de sépsis + baselines) do
    * registo manual — sem verificação de role (a autenticação é por chave de dispositivo).
    */
-  async ingerirDeMonitor(doenteId: string, responsavelId: string, dto: CriarSinalVitalDto) {
-    return this._processarVital(doenteId, responsavelId, dto, 'monitor');
+  async ingerirDeMonitor(doenteId: string, validadoPorId: string, dto: CriarSinalVitalDto, dispositivoId?: string) {
+    // PROD-15: só chega aqui uma leitura VALIDADA por enfermeiro — é ele o autor; o dispositivo
+    // fica como origem técnica.
+    return this._processarVital(doenteId, validadoPorId, dto, 'monitor', dispositivoId);
   }
 
   /**
@@ -124,7 +127,7 @@ export class SinaisVitaisService {
     }
   }
 
-  private async _processarVital(doenteId: string, registadoPorId: string, dto: CriarSinalVitalDto, origem: 'manual' | 'monitor') {
+  private async _processarVital(doenteId: string, registadoPorId: string, dto: CriarSinalVitalDto, origem: 'manual' | 'monitor', dispositivoId?: string) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, include: { cama: { select: { servico: true } } } });
     if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
@@ -143,23 +146,21 @@ export class SinaisVitaisService {
     // MB-05: a hora da MEDIÇÃO, não a da chegada ao servidor. Um registo feito offline
     // à cabeceira e sincronizado três horas depois ficava datado da sincronização, o que
     // desloca a tendência do NEWS2 e a detecção de deterioração para o momento errado.
+    // PROD-16: a hora declarada só é aceite dentro da janela de registo diferido (futuro = relógio
+    // errado; mais antiga do que a janela = registo retrospetivo, que se faz como nota).
     const { medidoEm, ...valores } = dto;
-    const data: any = { doenteId, registadoPorId, origem, ...valores };
+    const data: any = { doenteId, registadoPorId, origem, ...valores, ...(dispositivoId && { dispositivoId }) };
+    const instante = resolverHoraDoAto(medidoEm);
+    if (medidoEm) data.data = instante;
 
-    if (medidoEm) {
-      const instante = new Date(medidoEm);
-      const TOLERANCIA_RELOGIO_MS = 5 * 60 * 1000;
-      if (instante.getTime() > Date.now() + TOLERANCIA_RELOGIO_MS) {
-        // Um vital medido no futuro é sempre relógio mal configurado. Aceitá-lo
-        // corromperia a ordem da tendência clínica.
-        throw new BadRequestException(
-          'A hora de medição está no futuro — verifique o relógio do dispositivo.',
-        );
-      }
-      // Qualquer instante no passado é aceite tal como declarado: é o que o enfermeiro
-      // observou, e recusá-lo perderia registo clínico que já existe.
-      data.data = instante;
-    }
+    // PROD-16: um registo diferido não dispara alertas como se fosse de agora. Se já há um registo
+    // mais recente, o estado do doente foi reavaliado depois — os alertas deste ficariam desfasados.
+    // Se não há, alerta-se, mas a dizer a hora a que foi medido.
+    const diferido = eRegistoDiferido(instante, new Date());
+    const ultrapassado = diferido && !!(await this.prisma.sinalVital.findFirst({ where: { doenteId, data: { gt: instante } }, select: { id: true } }));
+    const prefixo = diferido ? `[Registo diferido — medido às ${instante.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon' })}] ` : '';
+    const alertar = (tipo: string, titulo: string, mensagem: string, severidade: number) =>
+      ultrapassado ? Promise.resolve() : this._emitirAlerta(doenteId, tipo, titulo, prefixo + mensagem, severidade);
     if (news2 != null) {
       data.news2 = news2;
       // "Não medido" ≠ "normal": guarda-se sempre o que faltou e se o score é de confiança.
@@ -194,13 +195,11 @@ export class SinaisVitaisService {
 
     // PROD-09: dor intensa (≥ 7) pede intervenção e reavaliação.
     if (dto.dor != null && dto.dor >= 7 && dto.escalaDor !== 'cpot') {
-      await this._emitirAlerta(
-        doenteId, 'dor_intensa', `Dor intensa — ${doente.nome}`,
+      await alertar('dor_intensa', `Dor intensa — ${doente.nome}`,
         `Dor ${dto.dor}/10 (${ESCALAS_DOR[dto.escalaDor ?? 'numerica'].descricao}). Intervir e reavaliar.`, 3,
       );
     } else if (dto.dor != null && dto.escalaDor === 'cpot' && dto.dor > 2) {
-      await this._emitirAlerta(
-        doenteId, 'dor_intensa', `Dor provável (CPOT) — ${doente.nome}`,
+      await alertar('dor_intensa', `Dor provável (CPOT) — ${doente.nome}`,
         `CPOT ${dto.dor}/8 (> 2 indica dor). Intervir e reavaliar.`, 3,
       );
     }
@@ -208,8 +207,7 @@ export class SinaisVitaisService {
     // Alertas por valores individuais críticos
     const criticos = detetar(dto);
     for (const critico of criticos) {
-      await this._emitirAlerta(
-        doenteId, 'sinal_vital_critico',
+      await alertar('sinal_vital_critico',
         `⚠ Sinal Vital Crítico — ${doente.nome}`, critico.mensagem, 3,
       );
     }
@@ -220,12 +218,11 @@ export class SinaisVitaisService {
       const nivel = critico ? 'CRÍTICO' : 'ALTO';
       const resposta = critico ? 'Resposta imediata (≥7)' : 'Resposta urgente (5–6)';
       const msg = `NEWS2 ${nivel} — Score ${news2}. ${resposta} necessária.`;
-      await this._emitirAlerta(
-        doenteId, critico ? 'news2_critico' : 'news2_alto',
+      await alertar(critico ? 'news2_critico' : 'news2_alto',
         `🔴 NEWS2 ${nivel} — ${doente.nome}`, msg, critico ? 4 : 3,
       );
 
-      if (critico) {
+      if (critico && !ultrapassado) {
         this.protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis').catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
     } else if (detalheNews2.parametroIsoladoTres) {
@@ -240,8 +237,7 @@ export class SinaisVitaisService {
           `Parâmetro isolado em vermelho (3 pontos NEWS2): ${lista}. ` +
           `NEWS2 total ${news2 ?? 'não calculável'} — o RCP exige revisão urgente por clínico ` +
           `mesmo quando o score total é baixo.`;
-        await this._emitirAlerta(
-          doenteId, 'news2_parametro_isolado',
+        await alertar('news2_parametro_isolado',
           `🔴 Parâmetro vital isolado em vermelho — ${doente.nome}`, msg, 3,
         );
       }
@@ -255,8 +251,7 @@ export class SinaisVitaisService {
         `NEWS2 ${news2} calculado com dados INCOMPLETOS — em falta: ${faltam}. ` +
         `Com os parâmetros em falta no pior valor o score seria ${detalheNews2.scoreMaximoPossivel}. ` +
         `Score não conclusivo — completar a avaliação.`;
-      await this._emitirAlerta(
-        doenteId, 'news2_incompleto',
+      await alertar('news2_incompleto',
         `⚠ NEWS2 incompleto — ${doente.nome}`, msg, 2,
       );
     }
@@ -265,13 +260,13 @@ export class SinaisVitaisService {
     if (pews != null && pews >= 4) {
       const nivel = pews >= 6 ? 'CRÍTICO' : 'ALTO';
       const msg = `PEWS ${nivel} — Score ${pews} (pediátrico). Reavaliação ${pews >= 6 ? 'imediata' : 'urgente'} necessária.`;
-      await this._emitirAlerta(
-        doenteId, pews >= 6 ? 'pews_critico' : 'pews_alto',
+      await alertar(pews >= 6 ? 'pews_critico' : 'pews_alto',
         `🔴 PEWS ${nivel} — ${doente.nome}`, msg, pews >= 6 ? 4 : 3,
       );
     }
 
     // Hooks assíncronos: Sépsis Sentinel + Baselines Individuais
+    if (ultrapassado) return registo;
     this.sepsisService.avaliar(doenteId, dto).catch((err) => this.logger.warn('SepsisService.avaliar falhou', err?.message ?? String(err)));
     this.baselinesService.avaliarEAlertar(doenteId, dto as any).catch((err) => this.logger.warn('BaselinesService.avaliarEAlertar falhou', err?.message ?? String(err)));
 

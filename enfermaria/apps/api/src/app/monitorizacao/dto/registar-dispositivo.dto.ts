@@ -10,11 +10,17 @@ export class RegistarDispositivoDto {
   @MaxLength(200)
   localizacao?: string;
 
-  // Utilizador (clínico/sistema) que fica como autor dos vitais ingeridos por este dispositivo.
+  // Responsável administrativo pelo dispositivo. PROD-15: já não é o autor dos vitais — o autor
+  // é o enfermeiro que valida a leitura.
   @IsString()
   responsavelId: string;
 
   @IsOptional()
   @IsString()
   doenteId?: string;
+
+  /** PROD-15: a cama a que o monitor está ligado — o doente é quem a ocupa no momento da leitura. */
+  @IsOptional()
+  @IsString()
+  camaId?: string;
 }

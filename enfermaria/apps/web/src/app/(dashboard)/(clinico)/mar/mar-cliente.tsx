@@ -13,6 +13,7 @@ import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
+import { RegistoDiferido } from '@/components/registo-diferido';
 
 // UX-07: o texto vem de mar.reason.<valor>.
 const MOTIVOS_NAO_ADMIN = ['recusou', 'contraindicacao', 'em_exame', 'indisponivel', 'outro'] as const;
@@ -284,6 +285,7 @@ export function MarCliente() {
                               {ultimaAdmin.naoAdministrada
                                 ? t('notGivenBy', { motivo: ultimaAdmin.motivoNaoAdmin ?? '', nome: ultimaAdmin.administradoPor.nome })
                                 : t('lastBy', { hora: new Date(ultimaAdmin.administradoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }), nome: ultimaAdmin.administradoPor.nome })}
+                              <RegistoDiferido ocorridoEm={ultimaAdmin.administradoEm} registadoEm={ultimaAdmin.registadoEm} />
                             </span>
                           )}
                         </div>

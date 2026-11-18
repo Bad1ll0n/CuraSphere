@@ -111,7 +111,10 @@ export interface EtiquetaUnidose {
 /** Um registo de administração (ou de não-administração) como o MAR o mostra. */
 export interface RegistoMar<D = string> {
   id: string;
+  /** PROD-16: hora do ato (declarada à cabeceira). */
   administradoEm: D;
+  /** PROD-16: hora a que o registo chegou ao servidor — se for bem depois do ato, é "registo diferido". */
+  registadoEm: D;
   administradoPor: { nome: string };
   observacoes: string | null;
   verificacao5Certas: boolean;
@@ -191,4 +194,22 @@ export interface ConjuntoCuidadosResumo {
   id: string;
   nome: string;
   descricao: string | null;
+}
+
+/** PROD-15 — GET /monitorizacao/doente/:doenteId/leituras-pendentes: leitura de monitor à espera de validação. */
+export interface LeituraMonitorPendente<D = string> {
+  id: string;
+  dispositivoId: string;
+  canal: 'monitor' | 'fhir' | string;
+  medidoEm: D;
+  recebidaEm: D;
+  valores: Partial<Record<'pressaoSistolica' | 'pressaoDiastolica' | 'pulso' | 'temperatura' | 'saturacaoO2' | 'frequenciaRespiratoria', number>> & { avpu?: string };
+  /** Algum valor na banda crítica — já gerou alerta a pedir confirmação à cabeceira. */
+  critica: boolean;
+}
+
+/** PROD-15 — resposta da validação em lote. */
+export interface ResultadoValidacaoLeituras {
+  validadas: number;
+  falhas: { id: string; motivo: string }[];
 }

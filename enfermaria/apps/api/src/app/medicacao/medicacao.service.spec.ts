@@ -378,6 +378,39 @@ describe('MedicacaoService', () => {
       });
     });
 
+    describe('PROD-16 — hora do ato (registo offline)', () => {
+      const horasAtras = (h: number) => new Date(Date.now() - h * 3_600_000);
+      it('guarda a hora do ATO declarada, não a da sincronização', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, registos: [] });
+        const ato = horasAtras(4.5);
+        await service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: ato.toISOString() });
+        const { data } = mockPrisma.registoMedicacao.create.mock.calls[0][0];
+        expect(data.administradoEm).toEqual(ato);
+        expect(data.reavaliarDorAte === null || data.reavaliarDorAte === undefined || data.reavaliarDorAte <= new Date(ato.getTime() + 3_600_000)).toBe(true);
+      });
+      it('um registo diferido sem os 5 certos confirmados é recusado', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, registos: [] });
+        await expect(service.registarAdministracao({ ...base, ocorridoEm: horasAtras(2).toISOString() })).rejects.toThrow(/REGISTO_DIFERIDO/);
+        expect(mockPrisma.registoMedicacao.create).not.toHaveBeenCalled();
+      });
+      it('recusa uma hora fora da janela (mais de 12 h)', async () => {
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: horasAtras(13).toISOString() })).rejects.toThrow(/nota retrospetiva/);
+      });
+      it('a hora certa conta-se a partir do ATO — também contra uma toma registada depois dele', async () => {
+        // Toma das 8/8h registada às 06:00 (online); a das 03:10 chega às 07:45 (offline): 2,8 h entre elas.
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, frequencia: '8/8h', registos: [{ administradoEm: horasAtras(1.75) }] });
+        await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: horasAtras(4.6).toISOString() }))
+          .rejects.toThrow(/administração prematura.*outra administração a 2\.9h/);
+      });
+      it('SOS: o máximo em 24 h conta-se até à hora do ato', async () => {
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, maxDosesDia: 4, registos: [] });
+        mockPrisma.registoMedicacao.count.mockResolvedValue(0);
+        const ato = horasAtras(3);
+        await service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: ato.toISOString() });
+        expect(mockPrisma.registoMedicacao.count.mock.calls[0][0].where.administradoEm).toEqual({ gte: new Date(ato.getTime() - 86_400_000), lte: ato });
+      });
+    });
+
     // BA-06: doenteId deixa de ser opcional.
     it('rejeita quando doenteId não é indicado', async () => {
       await expect(

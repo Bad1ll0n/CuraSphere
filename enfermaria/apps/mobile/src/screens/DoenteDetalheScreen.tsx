@@ -35,6 +35,8 @@ import ModalAvaliacaoEscala from './doente-detalhe/modals/ModalAvaliacaoEscala';
 import ModalEditarDoente from './doente-detalhe/modals/ModalEditarDoente';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
+import { corpoAdministracao } from '../lib/administracao';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -71,6 +73,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const [modalAlergia, setModalAlergia] = useState(false);
   const [modalContacto, setModalContacto] = useState(false);
   const [modalVitais, setModalVitais] = useState(false);
+  // PROD-16: a administração (online ou offline) passa pela lista dos 5 certos.
+  const [medAConfirmar, setMedAConfirmar] = useState<MedicacaoAConfirmar | null>(null);
   const [modalAltaEstruturada, setModalAltaEstruturada] = useState(false);
   const [modalEscala, setModalEscala] = useState<'braden' | 'morse' | null>(null);
   const [modalEditarDoente, setModalEditarDoente] = useState(false);
@@ -183,11 +187,17 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     catch { Alert.alert('Erro', 'Não foi possível concluir a medicação'); }
   };
 
-  const registarMedicacao = async (id: string) => {
-    // `doenteId` é obrigatório no servidor. Sem ele o pedido dá 400 — e, na via offline,
-    // um 400 é tratado como definitivo e a operação sai da fila: a app dizia 'será enviado
-    // quando houver ligação' e depois descartava-a em silêncio.
-    const corpo = { doenteId };
+  const registarMedicacao = (id: string) => {
+    const med = (doente?.medicacoes ?? []).find((m: any) => m.id === id);
+    if (med) setMedAConfirmar({ id: med.id, nome: med.nome, dose: med.dose, via: med.via, frequencia: med.frequencia });
+  };
+
+  const administrarConfirmada = async ({ id }: MedicacaoAConfirmar) => {
+    setMedAConfirmar(null);
+    // `doenteId` é obrigatório no servidor (um 400 tiraria a operação da fila em silêncio).
+    // PROD-16: a hora do ATO é capturada agora, na confirmação — não quando a fila for enviada —
+    // e segue a atestação dos 5 certos, sem a qual o servidor recusa um registo diferido.
+    const corpo = corpoAdministracao(doenteId, { atestado: true });
     try {
       if (!isOnline) {
         await enqueue({ method: 'POST', url: `/medicacao/${id}/administrar`, body: corpo });
@@ -389,6 +399,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       <ModalHistoricoMedicacao visible={modalHistoricoMed} medicacao={medHistorico} loading={loadingHistoricoMed} onClose={() => setModalHistoricoMed(false)} />
       <ModalRegistarAlergia visible={modalAlergia} doenteId={doenteId} onClose={() => setModalAlergia(false)} onSaved={carregarAlergias} />
       <ModalContactoEmergencia visible={modalContacto} doenteId={doenteId} onClose={() => setModalContacto(false)} onSaved={carregarContactos} />
+      <ModalCincoCertos medicacao={medAConfirmar} doente={{ nome: doente.nome, numeroProcesso: doente.numeroProcesso }} offline={!isOnline}
+        onConfirmar={administrarConfirmada} onCancelar={() => setMedAConfirmar(null)} />
       <ModalRegistarVitais visible={modalVitais} doenteId={doenteId} onClose={() => setModalVitais(false)} onSaved={carregarVitais} />
       <ModalAltaEstruturada visible={modalAltaEstruturada} doenteId={doenteId} onClose={() => setModalAltaEstruturada(false)} onDone={onVoltar} />
       <ModalAvaliacaoEscala visible={modalEscala !== null} tipo={modalEscala} doenteId={doenteId} onClose={() => setModalEscala(null)} onSaved={carregarEscalas} />

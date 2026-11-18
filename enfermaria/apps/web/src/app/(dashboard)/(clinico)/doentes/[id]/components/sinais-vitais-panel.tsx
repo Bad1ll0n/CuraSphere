@@ -13,6 +13,8 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { HelpTooltip } from '@/components/help-tooltip';
 import { FormField } from '@/components/form-field';
+import { RegistoDiferido } from '@/components/registo-diferido';
+import { LeiturasMonitorPanel } from './leituras-monitor-panel';
 
 interface Props {
   doenteId: string;
@@ -223,6 +225,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             <BtnAdd label={t('record')} onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setSvO2Suplementar(false); setModalSinalVital(true); }} />
           )}
         </div>
+        <LeiturasMonitorPanel doenteId={doenteId} role={utilizador?.role} onValidadas={carregarSinaisVitais} />
         {sinaisVitais.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>{t('empty')}</p>
         ) : (
@@ -390,7 +393,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                     const spO2Crit = sv.saturacaoO2 != null && sv.saturacaoO2 < 90;
                     return (
                       <tr key={sv.id} className="border-b border-slate-50 hover:bg-slate-50">
-                        <td className="py-2.5 text-slate-500 text-xs">{new Date(sv.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                        <td className="py-2.5 text-slate-500 text-xs">{new Date(sv.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}<RegistoDiferido ocorridoEm={sv.data} registadoEm={sv.registadoEm} /></td>
                         <td className={`py-2.5 text-center font-semibold ${taCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pressaoSistolica != null ? `${sv.pressaoSistolica}/${sv.pressaoDiastolica}` : '—'}</td>
                         <td className={`py-2.5 text-center font-semibold ${pulsoCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pulso ?? '—'}</td>
                         <td className={`py-2.5 text-center font-semibold ${tempCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
@@ -407,7 +410,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                             </span>
                           ) : '—'}
                         </td>
-                        <td className="py-2.5 text-slate-500 text-xs">{sv.registadoPor?.nome}</td>
+                        <td className="py-2.5 text-slate-500 text-xs">{sv.registadoPor?.nome}{sv.origem === 'monitor' && <span className="text-slate-400"> · {t('fromMonitor')}</span>}</td>
                       </tr>
                     );
                   })}

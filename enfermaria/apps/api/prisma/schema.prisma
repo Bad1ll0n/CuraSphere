@@ -96,6 +96,7 @@ model Utilizador {
   trocasAprovadas                PedidoTrocaTurno[]          @relation("TrocaAprovadoPor")
   auditLogs                      AuditLog[]
   sinaisVitaisRegistados         SinalVital[]                @relation("SinaisVitaisRegistados")
+  leiturasMonitorValidadas       LeituraMonitor[]            @relation("LeiturasMonitorValidadas")
   dispositivosTokens             DispositivoToken[]
   notificacoesInApp              NotificacaoInApp[]
   avaliacoesRisco                AvaliacaoRisco[]
@@ -327,6 +328,7 @@ model Doente {
   notasTurno              NotaTurno[]
   passagensTurno          PassagemTurno[]
   sinaisVitais            SinalVital[]
+  leiturasMonitor         LeituraMonitor[]
   alergias                Alergia[]
   contactosEmergencia     ContactoEmergencia[]
   alertasClinicos         AlertaClinico[]
@@ -762,7 +764,10 @@ model StewardshipAntibiotico {
 
 model RegistoMedicacao {
   id                 String    @id @default(uuid())
+  // PROD-16: a hora do ATO (declarada à cabeceira, dentro de uma janela); `registadoEm` é a da
+  // chegada ao servidor. Uma administração offline sincronizada horas depois guarda as duas.
   administradoEm     DateTime  @default(now())
+  registadoEm        DateTime  @default(now())
   observacoes        String?
   verificacao5Certas Boolean   @default(false) // resultado REAL da verificação, não um literal
   certosVerificados  Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
@@ -930,6 +935,11 @@ model SinalVital {
   escalaDor              String? // 'numerica' | 'eva' | 'faces' | 'painad' | 'cpot' | 'flacc'
   // PROD-10: quando reavaliar, segundo o NEWS2 deste registo (fixado no momento do registo).
   proximaAvaliacaoEm     DateTime?
+  // PROD-16: `data` é a hora da medição; `registadoEm` a da chegada ao servidor. Separadas, um
+  // registo feito offline à cabeceira e sincronizado depois mostra-se como "registo diferido".
+  registadoEm            DateTime @default(now())
+  // PROD-15: leitura de monitor validada por enfermeiro — o dispositivo de onde veio (autor técnico).
+  dispositivoId          String?
 
   @@index([doenteId, data])
   @@map("sinais_vitais")
@@ -943,8 +953,9 @@ model DispositivoMonitor {
   nome          String
   localizacao   String?
   apiKeyHash    String // hash (bcrypt) da chave do dispositivo
-  responsavelId String // utilizador que fica como registadoPor dos vitais ingeridos
-  doenteId      String? // opcional: dispositivo ligado a um doente/cama
+  responsavelId String // responsável administrativo do dispositivo (PROD-15: já não é o autor dos vitais)
+  doenteId      String? // ligação direta a um doente (legado; preferir a cama)
+  camaId        String? // PROD-15: o doente é o que ocupa esta cama no momento da leitura
   ativo         Boolean   @default(true)
   ultimaLeitura DateTime?
   criadaEm      DateTime  @default(now())
@@ -3158,6 +3169,30 @@ model ConsentimentoTratamento {
 
 // ─── Session 49: Dispositivos FHIR ───────────────────────────────────────────
 
+/// PROD-15 — leitura de um monitor (via /monitorizacao/ingerir ou /fhir/Observation) à espera de
+/// validação de enfermagem. Só depois de validada entra nos sinais vitais (NEWS2, tendências,
+/// alertas), com o enfermeiro como autor e o dispositivo como origem técnica.
+model LeituraMonitor {
+  id              String    @id @default(uuid())
+  doenteId        String
+  doente          Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  dispositivoId   String
+  canal           String // 'monitor' | 'fhir'
+  medidoEm        DateTime
+  recebidaEm      DateTime  @default(now())
+  valores         Json // pressaoSistolica, pulso, saturacaoO2... (mesmos nomes do SinalVital)
+  critica         Boolean   @default(false) // algum valor na banda crítica — já alertado
+  estado          String    @default("pendente") // 'pendente' | 'validada' | 'rejeitada'
+  validadaPorId   String?
+  validadaPor     Utilizador? @relation("LeiturasMonitorValidadas", fields: [validadaPorId], references: [id], onDelete: Restrict)
+  validadaEm      DateTime?
+  motivoRejeicao  String?   @db.VarChar(500)
+  sinalVitalId    String?
+
+  @@index([doenteId, estado, medidoEm])
+  @@map("leituras_monitor")
+}
+
 model DispositivoFhir {
   id         String    @id @default(uuid())
   nome       String
@@ -3168,6 +3203,7 @@ model DispositivoFhir {
   // 256 bits, portanto o hash simples chega: não há dicionário que a ataque.
   apiKeyHash String    @unique
   doenteId   String?
+  camaId     String? // PROD-15: o doente é o que ocupa esta cama no momento da leitura
   ativo      Boolean   @default(true)
   ultimoPing DateTime?
   criadoEm   DateTime  @default(now())

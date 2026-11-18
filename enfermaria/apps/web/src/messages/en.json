@@ -332,7 +332,8 @@
     "news2Points": "(+2 NEWS2 points)",
     "notes": "Notes",
     "notesPlaceholder": "Observations...",
-    "news2Hint": "The NEWS2 score is calculated automatically from the recorded values. A score ≥5 raises a clinical alert."
+    "news2Hint": "The NEWS2 score is calculated automatically from the recorded values. A score ≥5 raises a clinical alert.",
+    "fromMonitor": "monitor"
   },
   "ai": {
     "suggestions": "AI Suggestions",
@@ -981,5 +982,29 @@
     },
     "error": "Could not save",
     "readOnly": "Read only — the care plan is recorded by nursing staff."
+  },
+  "monitorReadings": {
+    "title": "Monitor readings awaiting validation",
+    "heading": "{n, plural, one {# monitor reading awaiting validation} other {# monitor readings awaiting validation}}",
+    "hint": "Check at the bedside. Only validated readings go into vital signs, NEWS2 and alerts — in your name. Reject artefacts (loose sensor, patient moving).",
+    "selectAll": "Select all",
+    "select": "Select the {hora} reading",
+    "critical": "critical",
+    "validate": "Validate ({n})",
+    "reject": "Reject as artefact",
+    "reasonLabel": "Reason for rejection",
+    "reasonPlaceholder": "E.g. loose SpO₂ sensor",
+    "confirmReject": "Confirm rejection",
+    "validated": "{n, plural, one {# reading validated} other {# readings validated}}",
+    "rejected": "{n, plural, one {# reading rejected} other {# readings rejected}}",
+    "partial": "{ok} validated, {falhas} not validated: {motivo}",
+    "error": "Could not save",
+    "loadError": "Could not load the monitor readings awaiting validation.",
+    "retry": "Try again",
+    "readOnly": "Only nursing staff validate monitor readings."
+  },
+  "deferredRecord": {
+    "badge": "late entry · {quando}",
+    "hint": "Entered in the system at {quando}, after the act (at the bedside without network). The time shown is the time of the act."
   }
 }
