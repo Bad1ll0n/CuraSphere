@@ -675,7 +675,9 @@
     "obsOverdue": "Vitals/scores overdue ({n})",
     "tasks": "Tasks ({n})",
     "chart": "Chart",
-    "administer": "Administer"
+    "administer": "Administer",
+    "care": "Nursing care ({n})",
+    "careLate": "Nursing care overdue ({n})"
   },
   "idBand": {
     "dnrPrompt": "Rationale for the do-not-resuscitate decision (it will be recorded):",
@@ -747,7 +749,8 @@
       "exames": "Tests and documents",
       "alta": "Discharge plan",
       "especialidades": "Specialties",
-      "administrativo": "Administrative"
+      "administrativo": "Administrative",
+      "cuidados": "Care plan"
     },
     "sections": "Chart sections",
     "notFound": "Patient not found",
@@ -889,5 +892,94 @@
     "keepCodeHint": "On the day, enter this code at the kiosk to check in and get your ticket.",
     "done": "Done",
     "footer": "CuraSphere — Hospital management"
+  },
+  "carePlan": {
+    "title": "Nursing care plan",
+    "summary": "{devidas, plural, one {# entry due} other {# entries due}} · {atraso, plural, one {# overdue} other {# overdue}}",
+    "loading": "Loading the care plan...",
+    "loadErrorTitle": "Could not load the care plan",
+    "loadErrorBody": "This does not mean the patient has no planned care. Check the connection and try again.",
+    "initial": {
+      "title": "Initial nursing assessment",
+      "none": "No initial assessment in this admission.",
+      "incomplete": "Initial assessment incomplete — {por}, {quando}",
+      "complete": "Initial assessment complete — {por}, {quando}",
+      "do": "Do initial assessment",
+      "edit": "Review initial assessment",
+      "section": {
+        "antecedentes": "History and reason for admission",
+        "autocuidado": "Self-care (hygiene, dressing, eating, toileting)",
+        "comunicacao": "Communication, sight and hearing",
+        "eliminacao": "Elimination",
+        "sono": "Sleep and rest",
+        "nutricao": "Nutrition and swallowing",
+        "pele": "Skin and wounds",
+        "dor": "Pain",
+        "mobilidade": "Mobility and fall risk",
+        "apoio": "Support network",
+        "preferencias": "Preferences, beliefs and what matters to the patient"
+      },
+      "caregiverName": "Main caregiver — name",
+      "caregiverContact": "Main caregiver — contact",
+      "markComplete": "Assessment complete",
+      "saved": "Initial assessment saved"
+    },
+    "suggestions": {
+      "title": "Suggestions from assessment scales",
+      "hint": "You decide the diagnosis; nothing is created automatically.",
+      "applySet": "Apply “{conjunto}”",
+      "add": "Add diagnosis"
+    },
+    "diagnoses": {
+      "title": "Active diagnoses",
+      "none": "No active nursing diagnoses.",
+      "by": "{por} · {quando}",
+      "lastReview": "Last review: {evolucao} ({quando})",
+      "review": "Review",
+      "cancel": "Cancel diagnosis"
+    },
+    "evolution": {
+      "melhorou": "Improved",
+      "igual": "Unchanged",
+      "piorou": "Worsened",
+      "resolvido": "Resolved"
+    },
+    "interventions": {
+      "prn": "PRN",
+      "due": "Due at {hora}",
+      "late": "Overdue since {hora}",
+      "last": "Last entry: {quando} — {por}",
+      "lastNotDone": "Last entry: not done ({quando}) — {por}",
+      "record": "Record",
+      "notDone": "Not done",
+      "recorded": "Entry saved",
+      "suspend": "Suspend"
+    },
+    "prompts": {
+      "notDoneTitle": "Intervention not done",
+      "notDoneLabel": "Reason",
+      "notDonePlaceholder": "E.g. patient in theatre",
+      "reviewTitle": "Review diagnosis",
+      "reviewLabel": "Review note",
+      "cancelTitle": "Cancel diagnosis",
+      "cancelLabel": "Why it is cancelled (recorded)",
+      "confirm": "Confirm"
+    },
+    "add": {
+      "title": "Add to the plan",
+      "set": "Care set",
+      "setPlaceholder": "Choose a set…",
+      "applySet": "Apply set",
+      "diagnosis": "Diagnosis",
+      "judgement": "Judgement (e.g. risk, present, dependent)",
+      "intervention": "Intervention",
+      "frequency": "Frequency (8/8h, 3x/day, PRN)",
+      "submit": "Add diagnosis",
+      "applied": "Set applied: {criados}",
+      "alreadyActive": "Already active: {ignorados}",
+      "created": "Diagnosis added"
+    },
+    "error": "Could not save",
+    "readOnly": "Read only — the care plan is recorded by nursing staff."
   }
 }

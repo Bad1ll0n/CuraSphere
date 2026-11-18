@@ -11,7 +11,8 @@ describe('ResumoDoenteService', () => {
       atribuicaoHorarioTurno: { findMany: jest.fn().mockResolvedValue([]) },
     };
     vig = { doDoente: jest.fn().mockResolvedValue([{ tipo: 'braden', motivo: 'Avaliação inicial em falta', atrasoMinutos: 30 }, { tipo: 'morse', motivo: 'x', atrasoMinutos: 0 }]) };
-    svc = new ResumoDoenteService(prisma, vig);
+    const processo: any = { resumoTurno: jest.fn().mockResolvedValue(new Map([['d1', { devidas: 2, emAtraso: 1 }]])) };
+    svc = new ResumoDoenteService(prisma, vig, processo);
   });
 
   it('faixa: alergias, DNR, risco de queda e NEWS2 com tendência', async () => {
