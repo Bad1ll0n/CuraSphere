@@ -1,0 +1,88 @@
+{
+  "_nota": "PROD-07 — catálogo BASE de enfermagem, termos internos (sem codigoCipe). Para codificação CIPE, importar o catálogo licenciado pelo ICN / Ordem dos Enfermeiros. Frequências na sintaxe de medicacao/posologia.ts.",
+  "diagnosticos": [
+    { "termo": "Úlcera por pressão", "foco": "Pele" },
+    { "termo": "Queda", "foco": "Segurança" },
+    { "termo": "Autocuidado: higiene comprometido", "foco": "Autocuidado" },
+    { "termo": "Autocuidado: alimentar-se comprometido", "foco": "Autocuidado" },
+    { "termo": "Ingestão nutricional comprometida", "foco": "Nutrição" },
+    { "termo": "Dor", "foco": "Conforto" },
+    { "termo": "Ferida cirúrgica", "foco": "Pele" },
+    { "termo": "Infeção", "foco": "Segurança" },
+    { "termo": "Confusão", "foco": "Cognição" },
+    { "termo": "Ansiedade", "foco": "Emoção" },
+    { "termo": "Conhecimento do prestador de cuidados sobre o regime terapêutico", "foco": "Educação" }
+  ],
+  "intervencoes": [
+    { "termo": "Posicionar o doente", "frequenciaSugerida": "3/3h" },
+    { "termo": "Vigiar a pele em zonas de pressão", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Aplicar superfície de apoio de redistribuição de pressão", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Vigiar o risco de queda e o ambiente", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Assistir no levante e na marcha", "frequenciaSugerida": "SOS" },
+    { "termo": "Manter grades e campainha ao alcance", "frequenciaSugerida": "8/8h" },
+    { "termo": "Assistir no autocuidado higiene", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Assistir a alimentar-se", "frequenciaSugerida": "3x/dia" },
+    { "termo": "Vigiar a ingestão alimentar", "frequenciaSugerida": "3x/dia" },
+    { "termo": "Avaliar a dor", "frequenciaSugerida": "4/4h" },
+    { "termo": "Aplicar medidas não farmacológicas de alívio da dor", "frequenciaSugerida": "SOS" },
+    { "termo": "Vigiar a ferida cirúrgica", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Executar tratamento à ferida", "frequenciaSugerida": "1x/dia" },
+    { "termo": "Vigiar sinais de infeção", "frequenciaSugerida": "8/8h" },
+    { "termo": "Orientar no tempo e no espaço", "frequenciaSugerida": "8/8h" },
+    { "termo": "Escutar e apoiar emocionalmente", "frequenciaSugerida": "SOS" },
+    { "termo": "Ensinar o prestador de cuidados sobre o regime terapêutico", "frequenciaSugerida": "1x/dia" }
+  ],
+  "conjuntos": [
+    {
+      "nome": "Risco de úlcera por pressão",
+      "descricao": "Braden ≤ 16",
+      "itens": [
+        { "diagnostico": "Úlcera por pressão", "juizo": "risco", "intervencoes": [
+          { "termo": "Posicionar o doente", "frequencia": "3/3h" },
+          { "termo": "Vigiar a pele em zonas de pressão", "frequencia": "1x/dia" },
+          { "termo": "Aplicar superfície de apoio de redistribuição de pressão", "frequencia": "1x/dia" }
+        ] }
+      ]
+    },
+    {
+      "nome": "Risco de queda",
+      "descricao": "Morse ≥ 25",
+      "itens": [
+        { "diagnostico": "Queda", "juizo": "risco", "intervencoes": [
+          { "termo": "Vigiar o risco de queda e o ambiente", "frequencia": "1x/dia" },
+          { "termo": "Manter grades e campainha ao alcance", "frequencia": "8/8h" },
+          { "termo": "Assistir no levante e na marcha", "frequencia": "SOS" }
+        ] }
+      ]
+    },
+    {
+      "nome": "Pós-operatório imediato",
+      "descricao": "Primeiras 48 h após cirurgia",
+      "itens": [
+        { "diagnostico": "Dor", "juizo": "presente", "intervencoes": [
+          { "termo": "Avaliar a dor", "frequencia": "4/4h" },
+          { "termo": "Aplicar medidas não farmacológicas de alívio da dor", "frequencia": "SOS" }
+        ] },
+        { "diagnostico": "Ferida cirúrgica", "juizo": "presente", "intervencoes": [
+          { "termo": "Vigiar a ferida cirúrgica", "frequencia": "1x/dia" },
+          { "termo": "Vigiar sinais de infeção", "frequencia": "8/8h" }
+        ] },
+        { "diagnostico": "Queda", "juizo": "risco", "intervencoes": [
+          { "termo": "Assistir no levante e na marcha", "frequencia": "SOS" }
+        ] }
+      ]
+    },
+    {
+      "nome": "Doente dependente no autocuidado",
+      "descricao": "Barthel ≤ 60",
+      "itens": [
+        { "diagnostico": "Autocuidado: higiene comprometido", "juizo": "dependente", "intervencoes": [
+          { "termo": "Assistir no autocuidado higiene", "frequencia": "1x/dia" }
+        ] },
+        { "diagnostico": "Autocuidado: alimentar-se comprometido", "juizo": "dependente", "intervencoes": [
+          { "termo": "Assistir a alimentar-se", "frequencia": "3x/dia" }
+        ] }
+      ]
+    }
+  ]
+}

@@ -218,6 +218,12 @@ model Utilizador {
   transfusoesAdministradas       RegistoTransfusao[]         @relation("TransfusoesAdministradas")
   reacoesTransfusionaisRegisto   ReacaoTransfusional[]       @relation("ReacoesTransfusRegisto")
 
+  // PROD-07 — processo de enfermagem
+  avaliacoesIniciaisEnfermagem AvaliacaoInicialEnfermagem[] @relation("AvaliacaoInicialAutor")
+  diagnosticosEnfermagem       DiagnosticoEnfermagem[]      @relation("DiagnosticoIdentificadoPor")
+  intervencoesEnfermagem       IntervencaoEnfermagem[]      @relation("IntervencaoCriadaPor")
+  execucoesIntervencao         ExecucaoIntervencao[]        @relation("ExecucaoIntervencaoAutor")
+  avaliacoesDiagnostico        AvaliacaoDiagnostico[]       @relation("AvaliacaoDiagnosticoAutor")
   @@index([tenantId, role, ativo])
   @@index([role, ativo])
   @@index([servico])
@@ -378,6 +384,9 @@ model Doente {
   planosQuimioterapia     PlanoQuimioterapia[]
   sessoesDialise          SessaoDialise[]
 
+  // PROD-07 — processo de enfermagem
+  avaliacoesIniciaisEnfermagem AvaliacaoInicialEnfermagem[]
+  diagnosticosEnfermagem       DiagnosticoEnfermagem[]
   @@index([tenantId, estado])
   // PERF-08: listas de doentes (tenant, activos, estado do registo, por data de admissão).
   @@index([tenantId, ativo, estadoRegisto, dataAdmissao])
@@ -3721,4 +3730,155 @@ model SessaoDialise {
 
   @@index([doenteId, data])
   @@map("sessoes_dialise")
+}
+
+// ─── PROD-07 — Processo de enfermagem ───────────────────────────────────────────
+// Avaliação inicial → diagnósticos (com juízo) → intervenções com frequência → execuções →
+// reavaliação. O catálogo é parametrizável por serviço. `codigoCipe` só é preenchido com a
+// CIPE licenciada (ICN / Ordem dos Enfermeiros); os termos internos não fingem ser CIPE.
+
+model AvaliacaoInicialEnfermagem {
+  id            String     @id @default(uuid())
+  doenteId      String
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId    String?
+  /// Secções estruturadas (antecedentes, autocuidado, comunicação, eliminação, sono, nutrição,
+  /// pele, dor, mobilidade, rede de apoio/cuidador, preferências).
+  dados         Json
+  completa      Boolean    @default(false)
+  avaliadoPorId String
+  avaliadoPor   Utilizador @relation("AvaliacaoInicialAutor", fields: [avaliadoPorId], references: [id], onDelete: Restrict)
+  criadaEm      DateTime   @default(now())
+  atualizadaEm  DateTime   @updatedAt
+
+  @@index([doenteId])
+  @@index([avaliadoPorId])
+  @@map("avaliacoes_iniciais_enfermagem")
+}
+
+model CatalogoCuidados {
+  id                 String   @id @default(uuid())
+  /// diagnostico | intervencao
+  tipo               String
+  termo              String
+  foco               String?
+  /// Só com a CIPE licenciada.
+  codigoCipe         String?
+  /// Serviços onde aparece (vazio = todos).
+  servicos           String[] @default([])
+  frequenciaSugerida String?
+  ativo              Boolean  @default(true)
+  criadoEm           DateTime @default(now())
+
+  diagnosticos DiagnosticoEnfermagem[]
+  intervencoes IntervencaoEnfermagem[]
+
+  @@unique([tipo, termo])
+  @@map("catalogo_cuidados")
+}
+
+model ConjuntoCuidados {
+  id        String   @id @default(uuid())
+  nome      String   @unique
+  descricao String?
+  servicos  String[] @default([])
+  /// [{ diagnostico: termo, juizo?, intervencoes: [{ termo, frequencia }] }]
+  itens     Json
+  ativo     Boolean  @default(true)
+  criadoEm  DateTime @default(now())
+
+  @@map("conjuntos_cuidados")
+}
+
+model DiagnosticoEnfermagem {
+  id                 String            @id @default(uuid())
+  doenteId           String
+  doente             Doente            @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId         String?
+  catalogoId         String?
+  catalogo           CatalogoCuidados? @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
+  termo              String
+  juizo              String?
+  /// manual | escala | conjunto
+  origem             String            @default("manual")
+  origemRef          String?
+  resultadoEsperado  String?
+  /// ativo | resolvido | cancelado
+  estado             String            @default("ativo")
+  identificadoPorId  String
+  identificadoPor    Utilizador        @relation("DiagnosticoIdentificadoPor", fields: [identificadoPorId], references: [id], onDelete: Restrict)
+  identificadoEm     DateTime          @default(now())
+  encerradoEm        DateTime?
+  encerradoPorId     String?
+  motivoEncerramento String?
+
+  intervencoes IntervencaoEnfermagem[]
+  avaliacoes   AvaliacaoDiagnostico[]
+
+  @@index([doenteId, estado])
+  @@index([identificadoPorId])
+  @@index([catalogoId])
+  @@map("diagnosticos_enfermagem")
+}
+
+model IntervencaoEnfermagem {
+  id            String                @id @default(uuid())
+  diagnosticoId String
+  diagnostico   DiagnosticoEnfermagem @relation(fields: [diagnosticoId], references: [id], onDelete: Restrict)
+  /// Denormalizado do diagnóstico: acesso ao doente e worklist do turno sem junções.
+  doenteId      String
+  catalogoId    String?
+  catalogo      CatalogoCuidados?     @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
+  termo         String
+  /// Mesma sintaxe da prescrição (8/8h, 1x/dia, SOS, 2x/turno…) — ver medicacao/posologia.ts.
+  frequencia    String
+  /// ativa | suspensa | concluida
+  estado        String                @default("ativa")
+  iniciadaEm    DateTime              @default(now())
+  criadaPorId   String
+  criadaPor     Utilizador            @relation("IntervencaoCriadaPor", fields: [criadaPorId], references: [id], onDelete: Restrict)
+
+  execucoes ExecucaoIntervencao[]
+
+  @@index([diagnosticoId])
+  @@index([doenteId, estado])
+  @@index([catalogoId])
+  @@index([criadaPorId])
+  @@map("intervencoes_enfermagem")
+}
+
+model ExecucaoIntervencao {
+  id                 String                @id @default(uuid())
+  intervencaoId      String
+  intervencao        IntervencaoEnfermagem @relation(fields: [intervencaoId], references: [id], onDelete: Restrict)
+  doenteId           String
+  /// Hora do ato (PROD-16: pode ser anterior ao registo).
+  executadaEm        DateTime              @default(now())
+  registadaEm        DateTime              @default(now())
+  executadaPorId     String
+  executadaPor       Utilizador            @relation("ExecucaoIntervencaoAutor", fields: [executadaPorId], references: [id], onDelete: Restrict)
+  realizada          Boolean               @default(true)
+  nota               String?
+  motivoNaoRealizada String?
+
+  @@index([intervencaoId, executadaEm])
+  @@index([doenteId])
+  @@index([executadaPorId])
+  @@map("execucoes_intervencao")
+}
+
+model AvaliacaoDiagnostico {
+  id            String                @id @default(uuid())
+  diagnosticoId String
+  diagnostico   DiagnosticoEnfermagem @relation(fields: [diagnosticoId], references: [id], onDelete: Restrict)
+  /// melhorou | igual | piorou | resolvido
+  evolucao      String
+  nota          String?
+  avaliadoEm    DateTime              @default(now())
+  avaliadoPorId String
+  avaliadoPor   Utilizador            @relation("AvaliacaoDiagnosticoAutor", fields: [avaliadoPorId], references: [id], onDelete: Restrict)
+
+  @@index([diagnosticoId])
+  @@index([avaliadoPorId])
+  @@map("avaliacoes_diagnostico")
 }

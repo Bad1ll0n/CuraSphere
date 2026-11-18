@@ -10,3 +10,4 @@ export const PediatriaPanel = dynamic(() => import('./pediatria-panel').then((m)
 export const BalancoHidricoPanel = dynamic(() => import('./balanco-hidrico-panel').then((m) => m.BalancoHidricoPanel));
 export const MaternidadePanel = dynamic(() => import('./maternidade-panel').then((m) => m.MaternidadePanel));
 export const DialisePanel = dynamic(() => import('./dialise-panel').then((m) => m.DialisePanel));
+export const PlanoCuidadosPanel = dynamic(() => import('./plano-cuidados-panel').then((m) => m.PlanoCuidadosPanel));

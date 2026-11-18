@@ -30,7 +30,8 @@ import { FaturacaoPanel } from './components/faturacao-panel';
 import { FeridasPanel } from './components/feridas-panel';
 import { TransfusaoPanel } from './components/transfusao-panel';
 import { OncologiaPanel } from './components/oncologia-panel';
-import { SinaisVitaisPanel, PediatriaPanel, BalancoHidricoPanel, MaternidadePanel, DialisePanel } from './components/paineis-diferidos';
+import { SinaisVitaisPanel, PediatriaPanel, BalancoHidricoPanel, MaternidadePanel, DialisePanel, PlanoCuidadosPanel } from './components/paineis-diferidos';
+import { calcIdade, InfoRow } from './components/ficha-util';
 import { SepsisPanel } from './components/sepsis-panel';
 import { PlanoAltaPanel } from './components/plano-alta-panel';
 import { AiClinicoPanel } from './components/ai-clinico-panel';
@@ -42,7 +43,7 @@ import { FaixaIdentificacao } from '@/components/faixa-identificacao';
 
 /** UX-29: secções da ficha (a ordem é a da enfermaria: primeiro o resumo, o administrativo no fim). */
 // UX-07: o rótulo vem de patientFile.tab.<id>.
-const SEPARADORES_FICHA = ['resumo', 'medicacao', 'vitais', 'notas', 'exames', 'alta', 'especialidades', 'administrativo'].map((id) => ({ id }));
+const SEPARADORES_FICHA = ['resumo', 'medicacao', 'vitais', 'cuidados', 'notas', 'exames', 'alta', 'especialidades', 'administrativo'].map((id) => ({ id }));
 
 interface Doente {
   id: string;
@@ -138,24 +139,6 @@ const estadoCor: Record<string, { badge: string; dot: string }> = {
 const estadoLabel: Record<string, string> = {
   estavel: 'Estável', grave: 'Grave', critico: 'Crítico', alta_prevista: 'Alta Prevista',
 };
-
-function calcIdade(dataNascimento: string) {
-  const hoje = new Date();
-  const nasc = new Date(dataNascimento);
-  let idade = hoje.getFullYear() - nasc.getFullYear();
-  const m = hoje.getMonth() - nasc.getMonth();
-  if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
-  return idade;
-}
-
-function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm font-medium text-slate-800">{value}</span>
-    </div>
-  );
-}
 
 export default function DoenteDetalhe() {
   const { id } = useParams<{ id: string }>();
@@ -879,6 +862,13 @@ export default function DoenteDetalhe() {
               <PediatriaPanel doenteId={id!} utilizador={utilizador} />
             </PanelErrorBoundary>
           )}
+        </div>
+      )}
+
+      {/* PROD-07: processo de enfermagem (avaliação inicial, diagnósticos, intervenções). */}
+      {separador === 'cuidados' && (
+        <div role="tabpanel" id="painel-cuidados" aria-labelledby="tab-cuidados">
+          <PanelErrorBoundary name="Plano de cuidados"><PlanoCuidadosPanel doenteId={id!} podeEditar={['enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '')} /></PanelErrorBoundary>
         </div>
       )}
 
