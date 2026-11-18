@@ -8,4 +8,5 @@ export const chavesClinicas = {
   pulseira: (doenteId: string) => ['resumo', 'pulseira', doenteId] as const,
   etiqueta: (medicacaoId: string) => ['medicacao', 'etiqueta', medicacaoId] as const,
   mar: ['medicacao', 'mar'] as const,
+  leiturasMonitor: (doenteId: string) => ['monitorizacao', 'leituras-pendentes', doenteId] as const,
 };

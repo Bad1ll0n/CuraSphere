@@ -5,7 +5,7 @@ import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
 import { assertUrlDestinoPublico } from '../common/ssrf-guard';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
+import { LeiturasMonitorService } from '../monitorizacao/leituras-monitor.service';
 import { createHash, randomBytes } from 'crypto';
 // LOINC code → SinalVital field mapping
 const LOINC_MAP: Record<string, string> = {
@@ -22,6 +22,8 @@ export class CriarDispositivoDto {
   @IsString() @MaxLength(100) nome: string;
   @IsEnum(['monitor_vitais', 'ventilador', 'bomba_infusao']) tipo: string;
   @IsOptional() @IsString() doenteId?: string;
+  /** PROD-15: a cama a que o dispositivo está ligado — o doente é quem a ocupa. */
+  @IsOptional() @IsString() camaId?: string;
 }
 
 /** SHA-256 da chave. Determinista, para servir de chave de procura, e irreversível. */
@@ -38,7 +40,7 @@ export class FhirService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
-    private readonly sinaisVitais: SinaisVitaisService,
+    private readonly leituras: LeiturasMonitorService,
   ) {}
 
   async receberObservation(body: any, apiKey: string) {
@@ -57,33 +59,11 @@ export class FhirService {
       throw new BadRequestException('Recurso FHIR inválido — esperado resourceType: Observation');
     }
 
-    // S-04: o doente vem SEMPRE do dispositivo, nunca do corpo do pedido.
-    //
-    // Antes era `dispositivo.doenteId ?? body.subject`, o que deixava um dispositivo sem
-    // doente associado escrever sinais vitais em QUALQUER doente — bastava nomeá-lo no
-    // payload. E esses vitais alimentam o NEWS2 e os alertas de deterioração.
-    const doenteId = dispositivo.doenteId;
-    if (!doenteId) {
-      throw new BadRequestException(
-        'Dispositivo sem doente associado — associe-o antes de enviar observações',
-      );
-    }
-
-    // Se o payload nomear um doente diferente, é erro de configuração à cabeceira: o
-    // monitor está ligado a uma pessoa e a dizer o nome de outra. Recusar é o único
-    // comportamento seguro.
+    // S-04/PROD-15: o doente vem SEMPRE do dispositivo (cama a que está ligado, ou doente
+    // associado), nunca do corpo do pedido. Se o payload nomear outro doente, é erro de
+    // configuração à cabeceira — o monitor ligado a uma pessoa a dizer o nome de outra — e recusa-se.
     const doenteNoPayload = body.subject?.reference?.split('/').pop();
-    if (doenteNoPayload && doenteNoPayload !== doenteId) {
-      throw new BadRequestException(
-        'A observação refere um doente diferente daquele a que o dispositivo está associado',
-      );
-    }
-
-    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
-    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
-
-    // Usar utilizador do sistema (sistema de dispositivos)
-    const sistemUserId = await this.obterUtilizadorSistema();
+    const doenteId = await this.leituras.doenteDoDispositivo(dispositivo, doenteNoPayload);
 
     const sinalData: Record<string, number> = {};
 
@@ -111,48 +91,20 @@ export class FhirService {
       return { status: 'ignorado', motivo: 'Código LOINC não mapeado: ' + (code ?? 'N/A') };
     }
 
-    // BA-08: os vitais de dispositivos passam pelo MESMO caminho dos manuais.
-    //
-    // Antes iam directos ao `prisma.sinalVital.create`, saltando o NEWS2, o PEWS, os
-    // alertas de valor crítico isolado e a avaliação de sépsis. A monitorização contínua
-    // — a única fonte que observa o doente 24 horas por dia — era exactamente a que
-    // escapava por completo à detecção de deterioração.
-    const sinal = await this.sinaisVitais.ingerirDeMonitor(doenteId, sistemUserId, {
-      ...sinalData,
-      medidoEm: body.effectiveDateTime ?? undefined,
+    // PROD-15: a mesma via da ingestão de monitores — a leitura fica pendente de validação de
+    // enfermagem (um valor crítico alerta logo). Só depois de validada entra no NEWS2 (BA-08).
+    const leitura = await this.leituras.receber({
+      dispositivoId: dispositivo.id, canal: 'fhir', doenteId, valores: sinalData, medidoEm: body.effectiveDateTime ?? undefined,
     });
 
-    return { status: 'criado', sinalVitalId: sinal.id, campos: Object.keys(sinalData) };
-  }
-
-  private async obterUtilizadorSistema(): Promise<string> {
-    // `it_admin` é um SUB-papel; o papel chama-se `ti`. E `admin` não existe de todo no
-    // catálogo. Com os nomes errados esta procura devolvia sempre nada e a ingestão de
-    // dispositivos rebentava aqui — antes sequer de chegar ao registo do vital.
-    const ti = await this.prisma.utilizador.findFirst({
-      where: { role: 'ti', ativo: true },
-      orderBy: { criadoEm: 'asc' },
-      select: { id: true },
-    });
-    if (ti) return ti.id;
-
-    const direcao = await this.prisma.utilizador.findFirst({
-      where: { role: 'direcao', ativo: true },
-      orderBy: { criadoEm: 'asc' },
-      select: { id: true },
-    });
-    if (direcao) return direcao.id;
-
-    throw new Error(
-      'Nenhum utilizador com papel `ti` ou `direcao` activo para associar registos de dispositivos',
-    );
+    return { status: 'pendente_validacao', leituraId: leitura.id, campos: Object.keys(sinalData) };
   }
 
   listarDispositivos() {
     // Nunca devolver o hash: não serve para nada a quem lista e é material sensível.
     return this.prisma.dispositivoFhir.findMany({
       orderBy: { criadoEm: 'desc' },
-      select: { id: true, nome: true, tipo: true, doenteId: true, ativo: true, ultimoPing: true, criadoEm: true },
+      select: { id: true, nome: true, tipo: true, doenteId: true, camaId: true, ativo: true, ultimoPing: true, criadoEm: true },
     });
   }
 
@@ -170,6 +122,7 @@ export class FhirService {
         nome: dto.nome,
         tipo: dto.tipo,
         doenteId: dto.doenteId ?? null,
+        camaId: dto.camaId ?? null,
         apiKeyHash: hashDeChave(chave),
       },
       select: { id: true, nome: true, tipo: true, doenteId: true, ativo: true, criadoEm: true },

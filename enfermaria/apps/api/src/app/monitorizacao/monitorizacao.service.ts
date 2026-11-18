@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException, BadRequestExcepti
 import { hashPassword, verifyPassword } from '../common/password';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
-import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
+import { LeiturasMonitorService } from './leituras-monitor.service';
 import { RegistarDispositivoDto } from './dto/registar-dispositivo.dto';
 import { IngerirVitalDto } from './dto/ingerir-vital.dto';
 
@@ -10,7 +10,7 @@ import { IngerirVitalDto } from './dto/ingerir-vital.dto';
 export class MonitorizacaoService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly sinaisVitais: SinaisVitaisService,
+    private readonly leituras: LeiturasMonitorService,
   ) {}
 
   async registarDispositivo(dto: RegistarDispositivoDto) {
@@ -20,11 +20,15 @@ export class MonitorizacaoService {
       const d = await this.prisma.doente.findUnique({ where: { id: dto.doenteId }, select: { id: true } });
       if (!d) throw new BadRequestException('Doente não encontrado');
     }
+    if (dto.camaId) {
+      const c = await this.prisma.cama.findUnique({ where: { id: dto.camaId }, select: { id: true } });
+      if (!c) throw new BadRequestException('Cama não encontrada');
+    }
     // Gera a chave uma única vez (o segredo só é devolvido agora; guardamos o hash).
     const secret = crypto.randomBytes(24).toString('hex');
     const apiKeyHash = await hashPassword(secret, 10);
     const disp = await this.prisma.dispositivoMonitor.create({
-      data: { nome: dto.nome, localizacao: dto.localizacao, responsavelId: dto.responsavelId, doenteId: dto.doenteId, apiKeyHash },
+      data: { nome: dto.nome, localizacao: dto.localizacao, responsavelId: dto.responsavelId, doenteId: dto.doenteId, camaId: dto.camaId, apiKeyHash },
     });
     // A chave a enviar ao dispositivo é `<id>.<secret>` (o id serve de lookup; o secret é conferido por bcrypt).
     return { id: disp.id, nome: disp.nome, apiKey: `${disp.id}.${secret}`, aviso: 'Guarde a chave — não voltará a ser mostrada.' };
@@ -33,7 +37,7 @@ export class MonitorizacaoService {
   listarDispositivos() {
     return this.prisma.dispositivoMonitor.findMany({
       orderBy: { criadaEm: 'desc' },
-      select: { id: true, nome: true, localizacao: true, responsavelId: true, doenteId: true, ativo: true, ultimaLeitura: true, criadaEm: true },
+      select: { id: true, nome: true, localizacao: true, responsavelId: true, doenteId: true, camaId: true, ativo: true, ultimaLeitura: true, criadaEm: true },
     });
   }
 
@@ -54,15 +58,16 @@ export class MonitorizacaoService {
     return disp;
   }
 
-  /** Ingestão de um vital de um dispositivo — passa pela pipeline NEWS2/sépsis/alertas. */
+  /**
+   * PROD-15: a leitura fica PENDENTE de validação de enfermagem (não entra logo no NEWS2) e o
+   * doente vem do dispositivo — da cama a que está ligado —, nunca do payload.
+   */
   async ingerir(apiKey: string | undefined, dto: IngerirVitalDto) {
     const disp = await this.autenticarDispositivo(apiKey);
-    const doenteId = dto.doenteId ?? disp.doenteId;
-    if (!doenteId) throw new BadRequestException('doenteId não indicado e o dispositivo não está ligado a um doente');
-
-    const { doenteId: _omit, ...vitais } = dto;
-    const registo = await this.sinaisVitais.ingerirDeMonitor(doenteId, disp.responsavelId, vitais as any);
+    const doenteId = await this.leituras.doenteDoDispositivo(disp, dto.doenteId);
+    const { doenteId: _omit, medidoEm, ...valores } = dto;
+    const leitura = await this.leituras.receber({ dispositivoId: disp.id, canal: 'monitor', doenteId, valores, medidoEm });
     await this.prisma.dispositivoMonitor.update({ where: { id: disp.id }, data: { ultimaLeitura: new Date() } });
-    return { ok: true, sinalVitalId: registo.id, news2: (registo as any).news2 ?? null };
+    return { ok: true, leituraId: leitura.id, estado: 'pendente_validacao', critica: leitura.critica };
   }
 }

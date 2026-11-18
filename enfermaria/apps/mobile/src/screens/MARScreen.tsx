@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform,
+  StyleSheet, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,6 +13,8 @@ import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
 import type { LinhaMar } from '@org/shared';
 import { administradaHoje } from '../lib/mar';
+import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
+import { corpoAdministracao } from '../lib/administracao';
 
 /**
  * ARQ-12: a forma vem do contrato partilhado com a api. Antes este ecrã lia
@@ -32,6 +34,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
   const { t } = useTranslation();
   const [medicacoes, setMedicacoes] = useState<MedicacaoMAR[]>([]);
   const [loading, setLoading] = useState(true);
+  const [aConfirmar, setAConfirmar] = useState<MedicacaoMAR | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [filtro, setFiltro] = useState<'pendentes' | 'todas'>('pendentes');
   const [erroCarga, setErroCarga] = useState(false);
@@ -52,33 +55,18 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
 
-  const administrar = (id: string, nome: string, doenteId: string) => {
-    const acao = async () => {
-      try {
-        // `doenteId` é obrigatório no servidor desde que os 5 certos passaram a ser
-        // verificados a sério. Sem ele, todas as administrações a partir daqui devolviam
-        // 400 — e o `catch` vazio abaixo tornava a falha invisível: o enfermeiro dava o
-        // medicamento, o registo não existia, e ninguém ficava a saber.
-        //
-        // NÃO se envia `atestadoPeloEnfermeiro`: este diálogo confirma a administração,
-        // não é a lista dos 5 certos. Quem a percorre é o leitor de QR.
-        await api.post(`/medicacao/${id}/administrar`, { doenteId });
-        await carregar();
-      } catch (e: any) {
-        registarFalhaSilenciosa('MARScreen.administrar', e);
-        const motivo = e?.response?.data?.message ?? t('mar.recordFallback');
-        Alert.alert(t('administer.notRecordedTitle'), `${motivo}
-
-${t('administer.checkRecord')}`);
-      }
-    };
-    if (Platform.OS === 'web') {
-      if ((window as any).confirm(t('administer.confirmOf', { nome }))) acao();
-    } else {
-      Alert.alert(t('administer.title'), t('administer.confirmOf', { nome }), [
-        { text: t('common.cancel'), style: 'cancel' },
-        { text: t('common.confirm'), onPress: acao },
-      ]);
+  // PROD-16: administrar passa pela lista dos 5 certos (atestação), com a hora do ato.
+  const administrar = async ({ id }: MedicacaoAConfirmar) => {
+    const linha = aConfirmar;
+    setAConfirmar(null);
+    if (!linha) return;
+    try {
+      await api.post(`/medicacao/${id}/administrar`, corpoAdministracao(linha.doente.id, { atestado: true }));
+      await carregar();
+    } catch (e: any) {
+      registarFalhaSilenciosa('MARScreen.administrar', e);
+      const motivo = e?.response?.data?.message ?? t('mar.recordFallback');
+      Alert.alert(t('administer.notRecordedTitle'), `${motivo}\n\n${t('administer.checkRecord')}`);
     }
   };
 
@@ -92,6 +80,8 @@ ${t('administer.checkRecord')}`);
 
   return (
     <View style={s.container}>
+      <ModalCincoCertos medicacao={aConfirmar} doente={{ nome: aConfirmar?.doente.nome ?? '' }}
+        onConfirmar={administrar} onCancelar={() => setAConfirmar(null)} />
       <View style={s.header}>
         <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
@@ -162,7 +152,7 @@ ${t('administer.checkRecord')}`);
                 {!m.administradoHoje && (
                   <TouchableOpacity
                     style={s.btnAdministrar}
-                    onPress={() => administrar(m.id, m.nome, m.doente.id)}
+                    onPress={() => setAConfirmar(m)}
                   >
                     <Ionicons name="medical-outline" size={15} color="#1d4ed8" />
                     <Text style={s.btnAdministrarTexto}>{t('mar.administer')}</Text>

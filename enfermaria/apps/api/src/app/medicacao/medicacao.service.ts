@@ -28,6 +28,7 @@ import { ultimasAdministracoes } from '../common/ultimos-registos';
 import { iaPermitida } from '../common/funcoes-ia';
 import { tfgCkdEpi2021 } from '../common/antropometria';
 import { reavaliacaoDorAte } from '../common/vigilancia';
+import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/hora-do-ato';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -397,8 +398,10 @@ export class MedicacaoService {
     leituraPulseira?: string;
     leituraMedicamento?: string;
     leituraExcecao?: string;
+    ocorridoEm?: string; // PROD-16: hora do ato à cabeceira (offline), dentro da janela
   }) {
     let sosForaDoLimite = false;
+    const momento = resolverHoraDoAto(data.ocorridoEm);
     if (!data.doenteId) {
       throw new BadRequestException(
         '5 certos: doenteId é obrigatório — confirme a identidade do doente antes de administrar',
@@ -421,20 +424,18 @@ export class MedicacaoService {
     }
     // A etiqueta de unidose assinada lida pelo leitor vale como etiqueta (confere dose e via).
     if (!data.qrPayload && leitura?.medicamento?.origem === 'etiqueta') data.qrPayload = data.leituraMedicamento;
+    exigirCertosSeDiferido(momento, leituraCompleta || !!data.qrPayload || data.atestadoPeloEnfermeiro === true);
 
     const registo = await this.prisma.$transaction(async (tx) => {
       const medicacao = await tx.medicacao.findUnique({
         where: { id: data.medicacaoId },
         include: {
-          registos: {
-            where: { naoAdministrada: false },
-            orderBy: { administradoEm: 'desc' },
-            take: 1,
-            select: { administradoEm: true },
-          },
+          // PROD-16: as tomas à volta da hora do ato (um registo diferido pode ficar entre duas).
+          registos: { where: { naoAdministrada: false }, orderBy: { administradoEm: 'desc' }, take: 20, select: { administradoEm: true } },
         },
       });
       if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
+      const minutosProxima = minutosAoRegistoMaisProximo(medicacao.registos.map((r) => r.administradoEm), momento);
       if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
 
       // 1. Doente certo — agora incondicional.
@@ -480,14 +481,13 @@ export class MedicacaoService {
       // 5. Hora certa — janela de frequência. Em SOS/perfusão contínua não há janela a
       //    conferir, e a hora dá-se por certa por definição.
       const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
-      if (intervaloHoras !== null && medicacao.registos.length > 0) {
-        const ultimaAdm = medicacao.registos[0].administradoEm;
-        const horasDesdeUltima = (Date.now() - ultimaAdm.getTime()) / 3_600_000;
+      if (intervaloHoras !== null && minutosProxima !== null) {
+        const horasDesdeUltima = minutosProxima / 60;
         const TOLERANCIA_H = 1;
         if (horasDesdeUltima < intervaloHoras - TOLERANCIA_H) {
           throw new BadRequestException(
             `5 certas: administração prematura — frequência ${medicacao.frequencia}, ` +
-            `última administração há ${horasDesdeUltima.toFixed(1)}h (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)`,
+            `outra administração a ${horasDesdeUltima.toFixed(1)}h desta (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)`,
           );
         }
       }
@@ -497,15 +497,14 @@ export class MedicacaoService {
       // apanhar o registo em duplicado ou dois enfermeiros no mesmo doente.
       if (eSOS(medicacao.frequencia)) {
         const intervaloMin = medicacao.intervaloMinimoH ?? 1;
-        const ultima = medicacao.registos[0]?.administradoEm;
-        const minutosDesde = ultima ? (Date.now() - ultima.getTime()) / 60_000 : null;
+        const minutosDesde = minutosProxima;
         const problemas: string[] = [];
         if (minutosDesde !== null && minutosDesde < intervaloMin * 60) {
           problemas.push(`última toma há ${Math.round(minutosDesde)} min (intervalo mínimo ${intervaloMin} h)`);
         }
         if (medicacao.maxDosesDia) {
           const em24h = await tx.registoMedicacao.count({
-            where: { medicacaoId: medicacao.id, naoAdministrada: false, administradoEm: { gte: new Date(Date.now() - 86_400_000) } },
+            where: { medicacaoId: medicacao.id, naoAdministrada: false, administradoEm: { gte: new Date(momento.getTime() - 86_400_000), lte: momento } },
           });
           if (em24h >= medicacao.maxDosesDia) problemas.push(`${em24h} tomas nas últimas 24 h (máximo ${medicacao.maxDosesDia})`);
         }
@@ -548,13 +547,14 @@ export class MedicacaoService {
           medicacaoId: data.medicacaoId,
           doenteId: medicacao.doenteId,
           administradoPorId: data.administradoPorId,
+          administradoEm: momento,
           observacoes: data.observacoes,
           ...(sosForaDoLimite && { justificacaoSOS: data.justificacaoSOS!.trim().slice(0, 500) }),
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
           certosVerificados: certosComLeitura,
           // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada (30/60 min).
-          reavaliarDorAte: reavaliacaoDorAte(medicacao.nome, medicacao.via, new Date()),
+          reavaliarDorAte: reavaliacaoDorAte(medicacao.nome, medicacao.via, momento),
           leituraPulseira: !!leitura?.pulseira?.ok,
           leituraMedicamento: !!leitura?.medicamento?.ok,
           leituraExcecao: !leituraCompleta && excecao ? excecao.slice(0, 500) : null,

@@ -26,7 +26,18 @@
     "notRecordedFallback": "Could not record it.",
     "checkRecord": "Check the patient record before trying again.",
     "title": "Administer",
-    "confirmOf": "Confirm administration of {{nome}}?"
+    "confirmOf": "Confirm administration of {{nome}}?",
+    "fiveRights": {
+      "title": "The 5 rights",
+      "hint": "Confirm each one at the bedside. It is recorded as your confirmation (no barcode scan).",
+      "doente": "Right patient",
+      "medicamento": "Right drug",
+      "dose": "Right dose",
+      "via": "Right route",
+      "hora": "Right time",
+      "confirm": "Given — record",
+      "offline": "Offline: saved with the current time and sent when the connection returns."
+    }
   },
   "mar": {
     "title": "MAR — Medication",

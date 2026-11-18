@@ -1,14 +1,17 @@
-import { IsString, IsOptional, IsInt, IsNumber, IsIn, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsNumber, IsIn, IsISO8601, Min, Max } from 'class-validator';
 
 /**
- * Payload de ingestão de um dispositivo de monitorização. O doenteId pode vir no corpo
- * (ou usa-se o doente ligado ao dispositivo, se registado). Os parâmetros mapeiam para
- * CriarSinalVitalDto e passam pela pipeline NEWS2/sépsis.
+ * Payload de ingestão de um dispositivo de monitorização. PROD-15: o doente vem SEMPRE do
+ * dispositivo (cama ou doente associado); `doenteId` no corpo só serve de verificação — se
+ * nomear outro doente, a leitura é recusada. A leitura fica pendente de validação de enfermagem.
  */
 export class IngerirVitalDto {
   @IsOptional()
   @IsString()
   doenteId?: string;
+
+  /** Hora da medição no monitor (ISO 8601). Sem ela, a hora de chegada. */
+  @IsOptional() @IsISO8601() medidoEm?: string;
 
   @IsOptional() @IsInt() @Min(0) @Max(300) pressaoSistolica?: number;
   @IsOptional() @IsInt() @Min(0) @Max(200) pressaoDiastolica?: number;

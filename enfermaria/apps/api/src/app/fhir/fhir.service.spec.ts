@@ -4,20 +4,24 @@ import { FhirService } from './fhir.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { SinaisVitaisService } from '../sinais-vitais/sinais-vitais.service';
+import { AlertasService } from '../alertas/alertas.service';
+import { LeiturasMonitorService } from '../monitorizacao/leituras-monitor.service';
 
 const mockPrisma = {
   dispositivoFhir: { findUnique: jest.fn(), update: jest.fn(), create: jest.fn(), findMany: jest.fn() },
-  doente: { findUnique: jest.fn() },
+  doente: { findUnique: jest.fn(), findFirst: jest.fn() },
   sinalVital: { create: jest.fn() },
-  utilizador: { findFirst: jest.fn() },
+  leituraMonitor: { create: jest.fn() },
 };
 
 // A chave deixou de existir em claro na base: guarda-se o hash. O dispositivo continua
 // associado a um doente, e é ESSE que manda — o payload não escolhe (S-04).
 const dispositivoBase = { id: 'dev-1', ativo: true, doenteId: 'd1', nome: 'Monitor' };
 
-// A ingestão passa agora pelo serviço clínico, que é quem calcula NEWS2 e dispara alertas.
+// PROD-15: a ingestão passa pelas leituras pendentes (o mesmo serviço de /monitorizacao/ingerir);
+// só depois de validada por um enfermeiro chega ao serviço clínico.
 const mockSinaisVitais = { ingerirDeMonitor: jest.fn().mockResolvedValue({ id: 'sv-1' }) };
+const mockAlertas = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
 
 describe('FhirService', () => {
   let service: FhirService;
@@ -26,7 +30,7 @@ describe('FhirService', () => {
     jest.clearAllMocks();
     mockPrisma.dispositivoFhir.findUnique.mockResolvedValue(dispositivoBase);
     mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1' });
-    mockPrisma.utilizador.findFirst.mockResolvedValue({ id: 'sistema' });
+    mockPrisma.leituraMonitor.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'lm-1', ...data }));
     mockPrisma.dispositivoFhir.update.mockResolvedValue(dispositivoBase);
 
     const module: TestingModule = await Test.createTestingModule({
@@ -35,6 +39,8 @@ describe('FhirService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: RedisService, useValue: { get: jest.fn(), set: jest.fn() } },
         { provide: SinaisVitaisService, useValue: mockSinaisVitais },
+        { provide: AlertasService, useValue: mockAlertas },
+        LeiturasMonitorService,
       ],
     }).compile();
     service = module.get<FhirService>(FhirService);
@@ -84,7 +90,7 @@ describe('FhirService', () => {
       mockPrisma.dispositivoFhir.findUnique.mockResolvedValue({ ...dispositivoBase, doenteId: null });
 
       await expect(service.receberObservation(observacao, 'k')).rejects.toThrow(
-        /sem doente associado/i,
+        /sem cama nem doente associado/i,
       );
     });
 
@@ -99,29 +105,26 @@ describe('FhirService', () => {
       expect(mockSinaisVitais.ingerirDeMonitor).not.toHaveBeenCalled();
     });
 
-    it('grava pelo serviço clínico, para o NEWS2 e os alertas correrem', async () => {
-      // O defeito era escrever directamente na tabela, saltando o cálculo do NEWS2, os
-      // alertas de valor crítico isolado e a avaliação de sépsis: a monitorização
-      // contínua era a única fonte que escapava à detecção de deterioração.
-      await service.receberObservation(observacao, 'k');
+    it('PROD-15: a leitura fica pendente de validação — não entra direto nos sinais vitais', async () => {
+      const r = await service.receberObservation({ ...observacao, effectiveDateTime: new Date().toISOString() }, 'k');
 
-      expect(mockSinaisVitais.ingerirDeMonitor).toHaveBeenCalledWith(
-        'd1',
-        'sistema',
-        expect.objectContaining({ pulso: 88 }),
-      );
+      expect(r).toEqual(expect.objectContaining({ status: 'pendente_validacao', leituraId: 'lm-1' }));
+      const { data } = mockPrisma.leituraMonitor.create.mock.calls[0][0];
+      expect(data).toEqual(expect.objectContaining({ doenteId: 'd1', dispositivoId: 'dev-1', canal: 'fhir', valores: { pulso: 88 } }));
+      expect(mockSinaisVitais.ingerirDeMonitor).not.toHaveBeenCalled();
       expect(mockPrisma.sinalVital.create).not.toHaveBeenCalled();
     });
 
-    it('procura o utilizador de sistema por um papel que existe mesmo', async () => {
-      // `it_admin` é um SUB-papel e `admin` não existe: a procura antiga devolvia sempre
-      // nada e a ingestão rebentava antes de chegar ao registo.
+    it('PROD-15: com cama associada, o doente é quem a ocupa', async () => {
+      mockPrisma.dispositivoFhir.findUnique.mockResolvedValue({ ...dispositivoBase, doenteId: null, camaId: 'c1' });
+      mockPrisma.doente.findFirst.mockResolvedValue({ id: 'ocupante' });
       await service.receberObservation(observacao, 'k');
+      expect(mockPrisma.leituraMonitor.create.mock.calls[0][0].data.doenteId).toBe('ocupante');
+    });
 
-      const papeis = mockPrisma.utilizador.findFirst.mock.calls.map((c) => c[0].where.role);
-      expect(papeis).not.toContain('it_admin');
-      expect(papeis).not.toContain('admin');
-      expect(papeis[0]).toBe('ti');
+    it('PROD-15: valor crítico alerta logo, a pedir confirmação à cabeceira', async () => {
+      await service.receberObservation({ ...observacao, code: { coding: [{ code: '59408-5' }] }, valueQuantity: { value: 82 } }, 'k');
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'leitura_monitor_critica', expect.stringMatching(/por validar.*SpO/), 3);
     });
   });
 });

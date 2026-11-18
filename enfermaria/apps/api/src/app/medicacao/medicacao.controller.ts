@@ -99,6 +99,7 @@ export class MedicacaoController {
       leituraPulseira: dto.leituraPulseira,
       leituraMedicamento: dto.leituraMedicamento,
       leituraExcecao: dto.leituraExcecao,
+      ocorridoEm: dto.ocorridoEm,
     });
   }
 

@@ -26,7 +26,18 @@
     "notRecordedFallback": "Não foi possível registar.",
     "checkRecord": "Confirma no processo do doente antes de repetir.",
     "title": "Administrar",
-    "confirmOf": "Confirmar administração de {{nome}}?"
+    "confirmOf": "Confirmar administração de {{nome}}?",
+    "fiveRights": {
+      "title": "Os 5 certos",
+      "hint": "Confirme à cabeceira, um a um. Fica registado como confirmação sua (sem leitura de código).",
+      "doente": "Doente certo",
+      "medicamento": "Medicamento certo",
+      "dose": "Dose certa",
+      "via": "Via certa",
+      "hora": "Hora certa",
+      "confirm": "Administrado — registar",
+      "offline": "Sem rede: fica guardado com a hora de agora e é enviado quando houver ligação."
+    }
   },
   "mar": {
     "title": "MAR — Medicação",

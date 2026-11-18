@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsUUID, IsBoolean, MaxLength } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsBoolean, IsISO8601, MaxLength } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class AdministrarMedicacaoDto {
@@ -75,5 +75,15 @@ export class AdministrarMedicacaoDto {
   @IsOptional()
   @MaxLength(500)
   leituraExcecao?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'PROD-16: hora do ATO (ISO 8601), capturada à cabeceira. Num registo offline sincronizado ' +
+      'depois, é esta a hora da administração — aceite até 5 min no futuro e dentro da janela de ' +
+      'registo diferido (JANELA_REGISTO_DIFERIDO_H, 12 h). Um registo diferido exige os 5 certos confirmados.',
+  })
+  @IsISO8601()
+  @IsOptional()
+  ocorridoEm?: string;
 }
 
