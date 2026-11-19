@@ -97,6 +97,15 @@ describe('integração: dotações e escalas por serviço', () => {
     expect(r.json.horasDisponiveis).toBe(7);
   });
 
+  it('a TI coloca um profissional num serviço e define as competências (PATCH /utilizadores)', async () => {
+    const ti = await entrar(ctx, '00009');
+    const id = await idDe(ctx, '00004');
+    const r = await ti.pedido('PATCH', `/utilizadores/${id}`, { unidade: B, competencias: ['SAV'] });
+    expect(r.status).toBe(200);
+    expect(r.json).toMatchObject({ unidade: B, competencias: ['SAV'] });
+    expect((await ti.pedido('PATCH', `/utilizadores/${id}`, { unidade: null, competencias: [] })).json).toMatchObject({ unidade: null, competencias: [] });
+  });
+
   it('histórico: a fotografia do turno fica registada e substitui-se no mesmo turno', async () => {
     const chefe = await entrar(ctx, '00015');
     expect((await chefe.pedido('POST', `/dotacoes/servicos/${A}/registar`, {})).status).toBe(201);
