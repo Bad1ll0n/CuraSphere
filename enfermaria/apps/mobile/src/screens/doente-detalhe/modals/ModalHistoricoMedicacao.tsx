@@ -11,7 +11,7 @@ export default function ModalHistoricoMedicacao({ visible, medicacao, loading, o
         <View style={[shared.modalSheet, shared.modalSheetTall]}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Medicação Terminada</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           {loading ? (
             <ActivityIndicator color="#2563eb" style={{ padding: 20 }} />

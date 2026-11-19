@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface PlanoReabilitacao {
   id: string;
@@ -76,7 +77,7 @@ export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
     return (
       <View style={s.container}>
         <View style={s.header}>
-          <TouchableOpacity onPress={() => setPlanoAberto(null)} style={s.voltarBtn}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={() => setPlanoAberto(null)} style={s.voltarBtn}>
             <Ionicons name="arrow-back" size={22} color="#fff" />
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
@@ -111,7 +112,7 @@ export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Fisioterapia</Text>
@@ -119,7 +120,7 @@ export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
 
       <View style={s.tabs}>
         {(['planos', 'sessoes'] as const).map(t => (
-          <TouchableOpacity key={t} style={[s.tab, tab === t && s.tabAtivo]} onPress={() => setTab(t)}>
+          <TouchableOpacity accessibilityRole="button" key={t} style={[s.tab, tab === t && s.tabAtivo]} onPress={() => setTab(t)}>
             <Text style={[s.tabTexto, tab === t && s.tabTextoAtivo]}>
               {t === 'planos' ? 'Planos' : 'Sessões'}
             </Text>
@@ -132,7 +133,7 @@ export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
           planos.length === 0
             ? <View style={s.vazio}><Text style={s.vazioTexto}>Sem planos ativos</Text></View>
             : planos.map(p => (
-              <TouchableOpacity key={p.id} style={s.cartao} onPress={() => abrirPlano(p.id)} activeOpacity={0.8}>
+              <TouchableOpacity accessibilityRole="button" key={p.id} style={s.cartao} onPress={() => abrirPlano(p.id)} activeOpacity={0.8}>
                 <View style={s.cartaoTopo}>
                   <Text style={s.cartaoTitulo}>{p.doente.nome}</Text>
                   <View style={[s.badge, { backgroundColor: estadoCor[p.estado] + '22' }]}>
@@ -186,7 +187,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#bfdbfe', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
   tabs: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
   tabAtivo: { backgroundColor: '#2563eb' },
@@ -199,10 +200,10 @@ const s = StyleSheet.create({
   cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
   cartaoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 12, fontWeight: '600', textTransform: 'capitalize' },
+  badgeTexto: { fontSize: 13, fontWeight: '600', textTransform: 'capitalize' },
   progressoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
   progressoBarra: { flex: 1, height: 6, backgroundColor: '#e2e8f0', borderRadius: 3, overflow: 'hidden' },
   progressoFill: { height: 6, backgroundColor: '#2563eb', borderRadius: 3 },
-  progressoTexto: { fontSize: 12, color: '#64748b', width: 40, textAlign: 'right' },
+  progressoTexto: { fontSize: 13, color: '#64748b', width: 40, textAlign: 'right' },
   verSessoes: { fontSize: 13, color: '#2563eb', marginTop: 8, fontWeight: '600' },
 });

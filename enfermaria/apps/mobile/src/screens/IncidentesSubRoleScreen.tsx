@@ -93,7 +93,7 @@ export default function IncidentesSubRoleScreen({ utilizador }: Props) {
   const renderIncidente = (inc: Incidente) => {
     const aberto = expandido === inc.id;
     return (
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         key={inc.id}
         style={s.cartao}
         onPress={() => setExpandido(aberto ? null : inc.id)}
@@ -129,7 +129,7 @@ export default function IncidentesSubRoleScreen({ utilizador }: Props) {
               <Text style={s.acoesTotulo}>Alterar estado</Text>
               <View style={s.acoesRow}>
                 {ESTADOS_ACAO.map(e => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={e}
                     style={[
                       s.acaoBotao,
@@ -207,30 +207,30 @@ const s = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' },
   header: { backgroundColor: '#0f172a', padding: 24, paddingTop: 20 },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#64748b', marginTop: 4 },
+  headerSub: { fontSize: 13, color: '#64748b', marginTop: 4 },
   headerStats: { flexDirection: 'row', alignItems: 'center', marginTop: 16, gap: 16 },
   stat: { alignItems: 'center' },
   statNum: { fontSize: 28, fontWeight: '800' },
-  statLabel: { fontSize: 11, color: '#64748b', marginTop: 2 },
+  statLabel: { fontSize: 13, color: '#64748b', marginTop: 2 },
   statDiv: { width: 1, height: 32, backgroundColor: '#1e293b' },
   secao: { paddingHorizontal: 16, paddingTop: 16 },
-  secaoTitulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 },
   cartao: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, marginBottom: 10, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   prioridadeBarra: { width: 4 },
   cartaoCorpo: { flex: 1, padding: 14 },
   cabecalho: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   titulo: { flex: 1, fontSize: 14, fontWeight: '600', color: '#1e293b' },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '600' },
+  estadoTexto: { fontSize: 13, fontWeight: '600' },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6 },
-  metaTexto: { fontSize: 12, color: '#94a3b8' },
-  metaSep: { fontSize: 12, color: '#cbd5e1' },
+  metaTexto: { fontSize: 13, color: '#94a3b8' },
+  metaSep: { fontSize: 13, color: '#cbd5e1' },
   detalhe: { marginTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 12 },
   descricao: { fontSize: 13, color: '#475569', lineHeight: 20, marginBottom: 12 },
-  acoesTotulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  acoesTotulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
   acoesRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   acaoBotao: { borderWidth: 1, borderColor: '#e2e8f0', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  acaoTexto: { fontSize: 12, color: '#64748b' },
+  acaoTexto: { fontSize: 13, color: '#64748b' },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 48 },
   vazioTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b', textAlign: 'center' },
   vazioSub: { fontSize: 14, color: '#94a3b8', textAlign: 'center', marginTop: 6 },

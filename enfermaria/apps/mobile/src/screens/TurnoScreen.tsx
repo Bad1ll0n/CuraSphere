@@ -149,7 +149,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   if (loading) return (
     <View style={{ flex: 1, backgroundColor: '#f1f5f9' }}>
       <View style={s.header}>
-        {onVoltar && <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}><Text style={s.voltarTexto}>‹  Voltar</Text></TouchableOpacity>}
+        {onVoltar && <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}><Text style={s.voltarTexto}>‹  Voltar</Text></TouchableOpacity>}
         <Text style={s.headerTitulo}>O Meu Turno</Text>
       </View>
       <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
@@ -163,7 +163,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
     >
       <View style={s.header}>
         {onVoltar && (
-          <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
             <Text style={s.voltarTexto}>‹  Voltar</Text>
           </TouchableOpacity>
         )}
@@ -175,7 +175,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
 
       {/* Acções de turno */}
       <View style={s.accoesRow}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
           onPress={fazerCheckIn}
           disabled={checkInFeito || checkInLoading}
@@ -186,7 +186,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
           }
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
           onPress={iniciarPassagem}
           disabled={passagemLoading}
@@ -214,7 +214,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
         const tarefas = tarefasPorDoente[d.id] ?? [];
         const aberto = doenteAberto === d.id;
         return (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={d.id}
             style={s.cartao}
             onPress={() => setDoenteAberto(aberto ? null : d.id)}
@@ -264,7 +264,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
                         ) : null}
                       </View>
                       {podeConcluir && (
-                        <TouchableOpacity style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
+                        <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
                           <Text style={s.concluirTexto}>✓</Text>
                         </TouchableOpacity>
                       )}
@@ -287,7 +287,7 @@ const s = StyleSheet.create({
   semTurnoSub: { fontSize: 15, color: '#64748b', textAlign: 'center', lineHeight: 22 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
   headerSubtitulo: { fontSize: 14, color: '#94a3b8', marginTop: 2 },
   accoesRow: { flexDirection: 'row', gap: 10, margin: 16 },
@@ -303,17 +303,17 @@ const s = StyleSheet.create({
   doenteNome: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
   doenteInfo: { fontSize: 13, color: '#64748b', marginTop: 2 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 12, fontWeight: '600' },
+  estadoTexto: { fontSize: 13, fontWeight: '600' },
   resumo: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
   badge: { backgroundColor: '#fee2e2', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 12, color: '#dc2626', fontWeight: '500' },
+  badgeTexto: { fontSize: 13, color: '#dc2626', fontWeight: '500' },
   detalhes: { marginTop: 14, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 14 },
   secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
   tarefa: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f8fafc', gap: 10 },
   prioridadeDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   tarefaConteudo: { flex: 1 },
   tarefaTexto: { fontSize: 14, color: '#334155' },
-  tarefaMeta: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  tarefaMeta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   concluirBotao: { backgroundColor: '#dcfce7', width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 16 },
 });

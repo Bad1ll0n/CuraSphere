@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface AuditEntry {
   id: string;
@@ -130,7 +131,7 @@ export default function ConformidadeScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Conformidade</Text>
@@ -140,7 +141,7 @@ export default function ConformidadeScreen({ utilizador, onVoltar }: Props) {
       {/* Tabs */}
       <View style={s.tabRow}>
         {TABS.map(t => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t.key}
             style={[s.tab, abaAtual === t.key && s.tabAtiva]}
             onPress={() => setAbaAtual(t.key)}
@@ -184,7 +185,7 @@ export default function ConformidadeScreen({ utilizador, onVoltar }: Props) {
                     return (
                       <View key={def.id} style={s.checkItem}>
                         <Text style={s.checkLabel} numberOfLines={2}>{def.label}</Text>
-                        <TouchableOpacity
+                        <TouchableOpacity accessibilityRole="button"
                           style={[s.estadoBadge, { backgroundColor: cfg.bg }]}
                           onPress={() => ciclarEstado(def.id, estado)}
                           disabled={carregando}
@@ -317,14 +318,14 @@ const s = StyleSheet.create({
     borderRadius: 12, borderWidth: 1,
   },
   kpiChipNum: { fontSize: 24, fontWeight: '800' },
-  kpiChipLabel: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  kpiChipLabel: { fontSize: 13, fontWeight: '600', marginTop: 2 },
 
   categoriaSecao: {
     backgroundColor: '#fff', borderRadius: 12, padding: 14,
     borderWidth: 1, borderColor: '#e2e8f0',
   },
   categoriaTitulo: {
-    fontSize: 11, fontWeight: '800', color: '#94a3b8',
+    fontSize: 13, fontWeight: '800', color: '#94a3b8',
     textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10,
   },
   checkItem: {
@@ -333,7 +334,7 @@ const s = StyleSheet.create({
   },
   checkLabel: { flex: 1, fontSize: 13, color: '#334155', lineHeight: 18 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20, minWidth: 90, alignItems: 'center' },
-  estadoBadgeTexto: { fontSize: 11, fontWeight: '700' },
+  estadoBadgeTexto: { fontSize: 13, fontWeight: '700' },
 
   kpiRow: { flexDirection: 'row', gap: 10 },
   kpiCard: {
@@ -341,7 +342,7 @@ const s = StyleSheet.create({
     borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center',
   },
   kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 12, color: '#64748b', marginTop: 4, textAlign: 'center' },
+  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4, textAlign: 'center' },
 
   entradaCard: {
     backgroundColor: '#fff', borderRadius: 12, padding: 14,
@@ -354,13 +355,13 @@ const s = StyleSheet.create({
   },
   entradaLinha: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
   entradaAcao: { flex: 1, fontSize: 13, fontWeight: '600', color: '#1e293b' },
-  entradaData: { fontSize: 11, color: '#94a3b8' },
+  entradaData: { fontSize: 13, color: '#94a3b8' },
   entradaMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-  entradaMetaTexto: { fontSize: 12, color: '#64748b' },
-  entradaIp: { fontSize: 11, color: '#94a3b8' },
+  entradaMetaTexto: { fontSize: 13, color: '#64748b' },
+  entradaIp: { fontSize: 13, color: '#94a3b8' },
 
   entidadeBadge: { backgroundColor: '#f1f5f9', borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2 },
-  entidadeBadgeTexto: { fontSize: 11, color: '#475569' },
+  entidadeBadgeTexto: { fontSize: 13, color: '#475569' },
 
   vazioCentro: { padding: 60, alignItems: 'center', gap: 12 },
   vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center' },

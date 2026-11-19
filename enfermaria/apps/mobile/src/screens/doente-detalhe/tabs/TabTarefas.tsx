@@ -23,11 +23,11 @@ export default function TabTarefas({ tarefas, emTurno, utilizadorId, meuGrupoCha
       <View style={shared.secaoHeader}>
         <Text style={shared.secaoTitulo}>Tarefas Pendentes</Text>
         <View style={shared.secaoAcoes}>
-          <TouchableOpacity onPress={onHistorico} style={shared.iconBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={onHistorico} style={shared.iconBotao}>
             <Text style={shared.iconBotaoTexto}>⏱</Text>
           </TouchableOpacity>
           {podeCriarTarefa && (
-            <TouchableOpacity onPress={onCriarTarefa} style={[shared.iconBotao, shared.iconBotaoAzul]}>
+            <TouchableOpacity accessibilityRole="button" onPress={onCriarTarefa} style={[shared.iconBotao, shared.iconBotaoAzul]}>
               <Text style={shared.iconBotaoTextoAzul}>+</Text>
             </TouchableOpacity>
           )}
@@ -46,7 +46,7 @@ export default function TabTarefas({ tarefas, emTurno, utilizadorId, meuGrupoCha
               </Text>
             </View>
             {podeConcluir && (
-              <TouchableOpacity style={s.concluirBotao} onPress={() => onConcluirTarefa(t.id)}>
+              <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => onConcluirTarefa(t.id)}>
                 <Text style={s.concluirTexto}>✓</Text>
               </TouchableOpacity>
             )}
@@ -63,7 +63,7 @@ const s = StyleSheet.create({
   dot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   conteudo: { flex: 1 },
   descricao: { fontSize: 14, color: '#334155', fontWeight: '500' },
-  meta: { fontSize: 12, color: '#94a3b8', marginTop: 3 },
+  meta: { fontSize: 13, color: '#94a3b8', marginTop: 3 },
   concluirBotao: { backgroundColor: '#dcfce7', width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 16 },
 });

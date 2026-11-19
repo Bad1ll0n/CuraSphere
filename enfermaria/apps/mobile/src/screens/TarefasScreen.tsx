@@ -78,7 +78,7 @@ export default function TarefasScreen() {
       {/* Filtros */}
       <View style={s.filtros}>
         {(['todas', 'clinica', 'logistica'] as const).map((f) => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={f}
             style={[s.filtro, filtro === f && s.filtroAtivo]}
             onPress={() => setFiltro(f)}
@@ -145,7 +145,7 @@ export default function TarefasScreen() {
                         <Text style={s.prazo}>até {new Date(t.prazo).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</Text>
                       )}
                     </View>
-                    <TouchableOpacity style={s.concluirBotao} onPress={() => concluir(t.id)}>
+                    <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluir(t.id)}>
                       <Text style={s.concluirTexto}>Concluir</Text>
                     </TouchableOpacity>
                   </View>
@@ -173,16 +173,16 @@ const s = StyleSheet.create({
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 },
   cartaoEsq: { flex: 1, marginRight: 8 },
   doenteNome: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  doenteInfo: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  doenteInfo: { fontSize: 13, color: '#64748b', marginTop: 2 },
   prioridadeBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  prioridadeTexto: { fontSize: 12, fontWeight: '600' },
+  prioridadeTexto: { fontSize: 13, fontWeight: '600' },
   tarefaDescricao: { fontSize: 14, color: '#334155', lineHeight: 20, marginBottom: 4 },
-  atribuidoTexto: { fontSize: 12, color: '#64748b', marginBottom: 8, fontStyle: 'italic' },
+  atribuidoTexto: { fontSize: 13, color: '#64748b', marginBottom: 8, fontStyle: 'italic' },
   cartaoRodape: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   tags: { flexDirection: 'row', gap: 6, flex: 1, flexWrap: 'wrap' },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  tagTexto: { fontSize: 11, fontWeight: '500' },
-  prazo: { fontSize: 12, color: '#ef4444', fontWeight: '500' },
+  tagTexto: { fontSize: 13, fontWeight: '500' },
+  prazo: { fontSize: 13, color: '#ef4444', fontWeight: '500' },
   concluirBotao: { backgroundColor: '#dcfce7', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20 },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 13 },
 });

@@ -11,7 +11,6 @@ import { Utilizador } from '../lib/auth';
 import { useNetworkStatus } from '../lib/network';
 import { enqueue } from '../lib/mutation-queue';
 import { OfflineBanner } from '../components/OfflineBanner';
-import { SyncStatusBanner } from '../components/SyncStatusBanner';
 import * as Haptics from 'expo-haptics';
 import TabInfo from './doente-detalhe/tabs/TabInfo';
 import TabTarefas from './doente-detalhe/tabs/TabTarefas';
@@ -274,12 +273,11 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   return (
     <View style={s.container}>
       <OfflineBanner />
-      <SyncStatusBanner />
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(role) ? uploadFoto : undefined} activeOpacity={0.8} style={s.avatarContainer}>
+        <TouchableOpacity accessibilityRole="button" onPress={['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(role) ? uploadFoto : undefined} activeOpacity={0.8} style={s.avatarContainer}>
           {doente.fotoUrl
             ? <Image source={{ uri: doente.fotoUrl }} style={s.avatar} />
             : <View style={[s.avatar, s.avatarPlaceholder]}><Text style={s.avatarInicial}>{doente.nome?.[0] ?? '?'}</Text></View>
@@ -288,7 +286,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         </TouchableOpacity>
         <View style={s.headerInfo}>
           <Text style={s.headerNome}>{doente.nome}</Text>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.estadoBadge, { backgroundColor: estadoCor[doente.estado] + '30' }]}
             onPress={() => podeAlterarEstado && setAlterandoEstado(true)}
             disabled={!podeAlterarEstado}
@@ -308,14 +306,14 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       )}
 
       {alertas.length > 0 && (
-        <TouchableOpacity style={s.bannerAlerta} onPress={async () => { await api.patch(`/alertas/${doenteId}/ler-todos`); setAlertas([]); }}>
+        <TouchableOpacity accessibilityRole="button" style={s.bannerAlerta} onPress={async () => { await api.patch(`/alertas/${doenteId}/ler-todos`); setAlertas([]); }}>
           <Text style={s.bannerAlertaTexto}>🚨 {alertas[0].mensagem}{alertas.length > 1 ? ` (+${alertas.length - 1})` : ''} — Toque para dispensar</Text>
         </TouchableOpacity>
       )}
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.abas} contentContainerStyle={{ flexDirection: 'row' }}>
         {abas.map((a) => (
-          <TouchableOpacity key={a.key} style={[s.aba, abaAtiva === a.key && s.abaAtiva]} onPress={() => setAbaAtiva(a.key)}>
+          <TouchableOpacity accessibilityRole="button" key={a.key} style={[s.aba, abaAtiva === a.key && s.abaAtiva]} onPress={() => setAbaAtiva(a.key)}>
             <Text style={[s.abaTexto, abaAtiva === a.key && s.abaTextoAtivo]}>{a.label}</Text>
           </TouchableOpacity>
         ))}
@@ -423,21 +421,21 @@ const s = StyleSheet.create({
   avatar: { width: 48, height: 48, borderRadius: 24, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)' },
   avatarPlaceholder: { backgroundColor: '#3b82f6', alignItems: 'center', justifyContent: 'center' },
   avatarInicial: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  avatarCamIcon: { fontSize: 10, marginTop: 2 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  avatarCamIcon: { fontSize: 13, marginTop: 2 },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerInfo: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   headerNome: { fontSize: 20, fontWeight: '700', color: '#fff', flex: 1, marginRight: 12 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 12, fontWeight: '600' },
+  estadoTexto: { fontSize: 13, fontWeight: '600' },
   headerSub: { fontSize: 13, color: '#64748b' },
   abas: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0', maxHeight: 44 },
   aba: { paddingVertical: 12, paddingHorizontal: 14, alignItems: 'center' },
   abaAtiva: { borderBottomWidth: 2, borderBottomColor: '#2563eb' },
-  abaTexto: { fontSize: 11, color: '#94a3b8', fontWeight: '500' },
+  abaTexto: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
   abaTextoAtivo: { color: '#2563eb', fontWeight: '700' },
   conteudo: { flex: 1 },
   bannerAlergia: { backgroundColor: '#fef2f2', borderBottomWidth: 1, borderBottomColor: '#fecaca', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlergiaTexto: { fontSize: 12, fontWeight: '700', color: '#dc2626' },
+  bannerAlergiaTexto: { fontSize: 13, fontWeight: '700', color: '#dc2626' },
   bannerAlerta: { backgroundColor: '#fef9c3', borderBottomWidth: 1, borderBottomColor: '#fde047', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlertaTexto: { fontSize: 12, fontWeight: '700', color: '#92400e' },
+  bannerAlertaTexto: { fontSize: 13, fontWeight: '700', color: '#92400e' },
 });

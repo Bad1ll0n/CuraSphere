@@ -101,12 +101,12 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <Text style={s.titulo}>As Minhas Férias</Text>
-          <TouchableOpacity style={s.novoBotao} onPress={() => setModal(true)}>
+          <TouchableOpacity accessibilityRole="button" style={s.novoBotao} onPress={() => setModal(true)}>
             <Text style={s.novoTexto}>+ Pedir</Text>
           </TouchableOpacity>
         </View>
@@ -158,10 +158,10 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
                   </View>
                   {a.estado === 'pendente' && (
                     <View style={s.acoes}>
-                      <TouchableOpacity style={s.rejeitarBtn} onPress={() => rejeitar(a.id)}>
+                      <TouchableOpacity accessibilityRole="button" style={s.rejeitarBtn} onPress={() => rejeitar(a.id)}>
                         <Text style={s.rejeitarTexto}>Rejeitar</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={s.aprovarBtn} onPress={() => aprovar(a.id)}>
+                      <TouchableOpacity accessibilityRole="button" style={s.aprovarBtn} onPress={() => aprovar(a.id)}>
                         <Text style={s.aprovarTexto}>Aprovar</Text>
                       </TouchableOpacity>
                     </View>
@@ -189,7 +189,7 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
                   </View>
                 </View>
                 {a.estado === 'pendente' && (
-                  <TouchableOpacity onPress={() => eliminar(a.id)} style={s.eliminarLink}>
+                  <TouchableOpacity accessibilityRole="button" onPress={() => eliminar(a.id)} style={s.eliminarLink}>
                     <Text style={s.eliminarTexto}>Eliminar pedido</Text>
                   </TouchableOpacity>
                 )}
@@ -206,14 +206,14 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
           <ScrollView style={[s.sheet, { maxHeight: '85%' }]}>
             <View style={s.sheetCab}>
               <Text style={s.sheetTitulo}>Novo Pedido</Text>
-              <TouchableOpacity onPress={() => setModal(false)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModal(false)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>Tipo</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 4 }}>
               <View style={{ flexDirection: 'row', gap: 8 }}>
                 {TIPOS.map(t => (
-                  <TouchableOpacity key={t.value} style={[s.chip, form.tipo === t.value && s.chipAtivo]} onPress={() => setForm(f => ({ ...f, tipo: t.value }))}>
+                  <TouchableOpacity accessibilityRole="button" key={t.value} style={[s.chip, form.tipo === t.value && s.chipAtivo]} onPress={() => setForm(f => ({ ...f, tipo: t.value }))}>
                     <Text style={[s.chipTexto, form.tipo === t.value && s.chipTextoAtivo]}>{t.label}</Text>
                   </TouchableOpacity>
                 ))}
@@ -232,10 +232,10 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModal(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModal(false)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
                 <Text style={s.submeterTexto}>{salvando ? 'A enviar...' : 'Submeter'}</Text>
               </TouchableOpacity>
             </View>
@@ -252,7 +252,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   novoBotao: { backgroundColor: '#0ea5e9', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10 },
@@ -262,25 +262,25 @@ const s = StyleSheet.create({
   saldoRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 12 },
   saldoItem: { alignItems: 'center' },
   saldoNum: { fontSize: 28, fontWeight: '800', color: '#1e293b' },
-  saldoLabel: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  saldoLabel: { fontSize: 13, color: '#64748b', marginTop: 2 },
   barraFundo: { height: 8, backgroundColor: '#e2e8f0', borderRadius: 4 },
   barraPreench: { height: 8, backgroundColor: '#dc2626', borderRadius: 4 },
   secao: { paddingHorizontal: 16, marginBottom: 8 },
-  secaoTitulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 8 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 8 },
   card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 1 }, shadowRadius: 6, elevation: 1 },
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cardNome: { fontSize: 14, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
   cardDatas: { fontSize: 13, color: '#64748b' },
-  cardObs: { fontSize: 12, color: '#94a3b8', marginTop: 4 },
+  cardObs: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '700' },
+  estadoTexto: { fontSize: 13, fontWeight: '700' },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 10 },
   rejeitarBtn: { flex: 1, paddingVertical: 8, borderRadius: 8, backgroundColor: '#fef2f2', alignItems: 'center' },
   rejeitarTexto: { color: '#dc2626', fontWeight: '700', fontSize: 13 },
   aprovarBtn: { flex: 1, paddingVertical: 8, borderRadius: 8, backgroundColor: '#dcfce7', alignItems: 'center' },
   aprovarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 13 },
   eliminarLink: { marginTop: 8 },
-  eliminarTexto: { fontSize: 12, color: '#dc2626', textDecorationLine: 'underline' },
+  eliminarTexto: { fontSize: 13, color: '#dc2626', textDecorationLine: 'underline' },
   vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 24, alignItems: 'center' },
   vazioTexto: { color: '#94a3b8', fontSize: 14 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },

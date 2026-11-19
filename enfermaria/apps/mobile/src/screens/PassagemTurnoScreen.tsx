@@ -65,7 +65,7 @@ export default function PassagemTurnoScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <Text style={s.titulo}>Passagem de Turno</Text>
@@ -117,7 +117,7 @@ export default function PassagemTurnoScreen({ utilizador, onVoltar }: Props) {
             const meds = item.medicacoesAtivas ?? [];
 
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={d.id}
                 style={s.card}
                 onPress={() => setExpandido(aberto ? null : d.id)}
@@ -223,7 +223,7 @@ export default function PassagemTurnoScreen({ utilizador, onVoltar }: Props) {
 
           {/* Botão confirmar */}
           <View style={{ padding: 16, paddingTop: 8 }}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[s.confirmarBotao, confirmado && s.confirmarBotaoOk]}
               onPress={confirmar}
               disabled={confirmando || confirmado}
@@ -251,7 +251,7 @@ const s = StyleSheet.create({
 
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
 
@@ -265,7 +265,7 @@ const s = StyleSheet.create({
   },
   resumoItem: { alignItems: 'center' },
   resumoNum: { fontSize: 24, fontWeight: '800', color: '#0f172a' },
-  resumoLabel: { fontSize: 11, color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase', marginTop: 2 },
+  resumoLabel: { fontSize: 13, color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase', marginTop: 2 },
   resumoDivider: { width: 1, height: 32, backgroundColor: '#e2e8f0' },
 
   card: {
@@ -277,31 +277,31 @@ const s = StyleSheet.create({
   estadoBar: { width: 4, height: '100%', borderRadius: 2, position: 'absolute', left: 0, top: 0, bottom: 0 },
   cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 },
   doenteNome: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
-  doenteSub: { fontSize: 12, color: '#64748b' },
+  doenteSub: { fontSize: 13, color: '#64748b' },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
-  estadoBadgeTexto: { fontSize: 11, fontWeight: '700' },
+  estadoBadgeTexto: { fontSize: 13, fontWeight: '700' },
 
   contadores: { flexDirection: 'row', gap: 10, marginTop: 6, flexWrap: 'wrap' },
   contador: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  contadorTexto: { fontSize: 11, fontWeight: '600' },
+  contadorTexto: { fontSize: 13, fontWeight: '600' },
 
   detalhe: { borderTopWidth: 1, borderTopColor: '#f1f5f9', padding: 14, paddingLeft: 18 },
   secao: { marginBottom: 14 },
-  secaoTitulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
 
   tarefaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 6 },
   priorBadge: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8 },
-  priorTexto: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase' },
+  priorTexto: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase' },
   tarefaDesc: { fontSize: 13, color: '#334155', flex: 1 },
 
   medRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
   medNome: { fontSize: 13, fontWeight: '600', color: '#1e293b' },
-  medDetalhe: { fontSize: 11, color: '#64748b', marginTop: 1 },
+  medDetalhe: { fontSize: 13, color: '#64748b', marginTop: 1 },
 
   notaBox: { backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, marginBottom: 6 },
   notaHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  notaAutor: { fontSize: 12, fontWeight: '700', color: '#475569' },
-  notaData: { fontSize: 11, color: '#94a3b8' },
+  notaAutor: { fontSize: 13, fontWeight: '700', color: '#475569' },
+  notaData: { fontSize: 13, color: '#94a3b8' },
   notaTexto: { fontSize: 13, color: '#334155', lineHeight: 18 },
 
   semInfo: { fontSize: 13, color: '#94a3b8', textAlign: 'center', paddingVertical: 8 },

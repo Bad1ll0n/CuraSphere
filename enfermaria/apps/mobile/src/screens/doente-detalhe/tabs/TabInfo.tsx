@@ -24,7 +24,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
       {podeEditarDoente && (
         <View style={shared.secaoHeader}>
           <Text style={shared.secaoTitulo}>Dados Clínicos</Text>
-          <TouchableOpacity style={[shared.iconBotao, shared.iconBotaoAzul]} onPress={onEditarDoente}>
+          <TouchableOpacity accessibilityRole="button" style={[shared.iconBotao, shared.iconBotaoAzul]} onPress={onEditarDoente}>
             <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700' }}>✎</Text>
           </TouchableOpacity>
         </View>
@@ -60,7 +60,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
         <View style={shared.secaoHeader}>
           <Text style={shared.infoLabel}>ALERGIAS</Text>
           {podeRegistarVitais && (
-            <TouchableOpacity onPress={onAdicionarAlergia} style={[shared.iconBotao, shared.iconBotaoAzul]}>
+            <TouchableOpacity accessibilityRole="button" onPress={onAdicionarAlergia} style={[shared.iconBotao, shared.iconBotaoAzul]}>
               <Text style={shared.iconBotaoTextoAzul}>+</Text>
             </TouchableOpacity>
           )}
@@ -77,7 +77,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
                 <Text style={s.alergiaTipo}>{a.tipo}</Text>
               </View>
               {podeRegistarVitais && (
-                <TouchableOpacity onPress={() => onRemoverAlergia(a.id)} accessibilityLabel={`Remover alergia ${a.alergenio}`}>
+                <TouchableOpacity accessibilityRole="button" onPress={() => onRemoverAlergia(a.id)} accessibilityLabel={`Remover alergia ${a.alergenio}`}>
                   <Text style={{ color: '#ef4444', fontSize: 16, paddingHorizontal: 4 }}>✕</Text>
                 </TouchableOpacity>
               )}
@@ -90,7 +90,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
       <View style={shared.infoCard}>
         <View style={shared.secaoHeader}>
           <Text style={shared.infoLabel}>CONTACTOS DE EMERGÊNCIA</Text>
-          <TouchableOpacity onPress={onAdicionarContacto} style={[shared.iconBotao, shared.iconBotaoAzul]}>
+          <TouchableOpacity accessibilityRole="button" onPress={onAdicionarContacto} style={[shared.iconBotao, shared.iconBotaoAzul]}>
             <Text style={shared.iconBotaoTextoAzul}>+</Text>
           </TouchableOpacity>
         </View>
@@ -103,7 +103,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
               </View>
               <Text style={s.contactoMeta}>{c.relacao} · {c.telefone}</Text>
             </View>
-            <TouchableOpacity onPress={() => Alert.alert('Remover', `Remover contacto "${c.nome}"?`, [{ text: 'Cancelar', style: 'cancel' }, { text: 'Remover', style: 'destructive', onPress: () => onRemoverContacto(c.id) }])}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => Alert.alert('Remover', `Remover contacto "${c.nome}"?`, [{ text: 'Cancelar', style: 'cancel' }, { text: 'Remover', style: 'destructive', onPress: () => onRemoverContacto(c.id) }])}>
               <Text style={{ color: '#ef4444', fontSize: 16, paddingHorizontal: 4 }}>✕</Text>
             </TouchableOpacity>
           </View>
@@ -111,7 +111,7 @@ export default function TabInfo({ doente, alergias, contactos, podeEditarDoente,
       </View>
 
       {podeDarAlta && !doente.dataAlta && (
-        <TouchableOpacity style={s.altaBotao} onPress={onDarAlta}>
+        <TouchableOpacity accessibilityRole="button" style={s.altaBotao} onPress={onDarAlta}>
           <Text style={s.altaBotaoTexto}>Dar Alta ao Doente</Text>
         </TouchableOpacity>
       )}
@@ -164,20 +164,20 @@ const s = StyleSheet.create({
   secao: { padding: 16 },
   alergiaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
   alergiaBadge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 8 },
-  alergiaBadgeTexto: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase' },
+  alergiaBadgeTexto: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase' },
   alergiaNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  alergiaTipo: { fontSize: 11, color: '#64748b' },
+  alergiaTipo: { fontSize: 13, color: '#64748b' },
   contactoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
   contactoNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  contactoMeta: { fontSize: 12, color: '#64748b', marginTop: 1 },
+  contactoMeta: { fontSize: 13, color: '#64748b', marginTop: 1 },
   contactoPrincipalBadge: { backgroundColor: '#eff6ff', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
-  contactoPrincipalTexto: { fontSize: 10, fontWeight: '700', color: '#2563eb' },
+  contactoPrincipalTexto: { fontSize: 13, fontWeight: '700', color: '#2563eb' },
   grupoAtrib: { gap: 2 },
   grupoTag: { alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, marginBottom: 4 },
-  grupoTagTexto: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.4 },
+  grupoTagTexto: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.4 },
   atribLinha: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 3 },
   atribNome: { fontSize: 14, fontWeight: '600', color: '#1e293b', flex: 1 },
-  atribMeta: { fontSize: 12, color: '#64748b', fontWeight: '500' },
+  atribMeta: { fontSize: 13, color: '#64748b', fontWeight: '500' },
   altaBotao: { backgroundColor: '#dc2626', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginTop: 8, marginHorizontal: 16, marginBottom: 16 },
   altaBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
 });

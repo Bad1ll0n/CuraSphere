@@ -47,7 +47,7 @@ export default function BlocoScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <Text style={s.titulo}>Bloco Operatório</Text>
@@ -56,7 +56,7 @@ export default function BlocoScreen({ utilizador, onVoltar }: Props) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtrosScroll}>
         <View style={s.filtrosRow}>
           {filtros.map(f => (
-            <TouchableOpacity key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
+            <TouchableOpacity accessibilityRole="button" key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
               <Text style={[s.filtroTexto, filtro === f && s.filtroTextoAtivo]}>
                 {f === 'todos' ? 'Todos' : ESTADO_LABEL[f]}
               </Text>
@@ -73,7 +73,7 @@ export default function BlocoScreen({ utilizador, onVoltar }: Props) {
             {lista.length === 0 ? (
               <View style={s.vazio}><Text style={s.vazioTexto}>Sem cirurgias agendadas</Text></View>
             ) : lista.map(c => (
-              <TouchableOpacity key={c.id} style={s.card} activeOpacity={0.8} onPress={() => setExpanded(expanded === c.id ? null : c.id)}>
+              <TouchableOpacity accessibilityRole="button" key={c.id} style={s.card} activeOpacity={0.8} onPress={() => setExpanded(expanded === c.id ? null : c.id)}>
                 <View style={s.cardTopo}>
                   <View style={[s.estadoDot, { backgroundColor: ESTADO_COR[c.estado] ?? '#94a3b8' }]} />
                   <View style={{ flex: 1 }}>
@@ -118,7 +118,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   filtrosScroll: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   filtrosRow: { flexDirection: 'row', gap: 8, padding: 12 },
@@ -133,12 +133,12 @@ const s = StyleSheet.create({
   cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
   cardDoente: { fontSize: 13, color: '#475569', marginTop: 2 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20, marginBottom: 4 },
-  estadoTexto: { fontSize: 11, fontWeight: '700' },
-  cardHora: { fontSize: 11, color: '#94a3b8' },
+  estadoTexto: { fontSize: 13, fontWeight: '700' },
+  cardHora: { fontSize: 13, color: '#94a3b8' },
   expandido: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9', gap: 4 },
   detalhe: { fontSize: 13, color: '#475569' },
   equipaBox: { marginTop: 4 },
-  equipaTitulo: { fontSize: 12, fontWeight: '700', color: '#64748b', marginBottom: 2 },
+  equipaTitulo: { fontSize: 13, fontWeight: '700', color: '#64748b', marginBottom: 2 },
   equipaMembro: { fontSize: 13, color: '#475569' },
   vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 32, alignItems: 'center' },
   vazioTexto: { color: '#94a3b8', fontSize: 14 },

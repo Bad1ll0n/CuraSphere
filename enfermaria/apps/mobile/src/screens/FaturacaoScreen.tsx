@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -88,7 +89,7 @@ export default function FaturacaoScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Faturação</Text>
@@ -129,7 +130,7 @@ export default function FaturacaoScreen({ utilizador, onVoltar }: Props) {
               const est = ESTADO[e];
               const ativo = filtroEstado === e;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={e || 'todos'}
                   style={[s.filtroPill, ativo && { backgroundColor: (est?.fundo ?? '#0f172a18'), borderColor: est?.cor ?? '#0f172a' }]}
                   onPress={() => setFiltroEstado(e)}
@@ -210,22 +211,22 @@ const s = StyleSheet.create({
   kpiGrid:         { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 4 },
   kpiCard:         { flex: 1, minWidth: '45%', borderRadius: 12, padding: 14 },
   kpiVal:          { fontSize: 18, fontWeight: '800', marginBottom: 2 },
-  kpiLabel:        { fontSize: 11, color: '#64748b', fontWeight: '500' },
+  kpiLabel:        { fontSize: 13, color: '#64748b', fontWeight: '500' },
 
   filtroScroll:    { flexGrow: 0, marginBottom: 4 },
   filtroPill:      { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  filtroPillLabel: { fontSize: 12, color: '#64748b', fontWeight: '500' },
+  filtroPillLabel: { fontSize: 13, color: '#64748b', fontWeight: '500' },
 
   card:            { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#e2e8f0' },
   cardTopo:        { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   cardNome:        { fontSize: 14, fontWeight: '700', color: '#0f172a' },
-  cardSub:         { fontSize: 11, color: '#64748b', marginTop: 2 },
+  cardSub:         { fontSize: 13, color: '#64748b', marginTop: 2 },
   estadoBadge:     { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoLabel:     { fontSize: 11, fontWeight: '700' },
+  estadoLabel:     { fontSize: 13, fontWeight: '700' },
   cardValorRow:    { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
   cardValor:       { fontSize: 18, fontWeight: '800', color: '#0f172a' },
   coberturaBadge:  { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, backgroundColor: '#f1f5f9' },
-  coberturaLabel:  { fontSize: 11, color: '#475569', fontWeight: '600' },
+  coberturaLabel:  { fontSize: 13, color: '#475569', fontWeight: '600' },
   cardRodape:      { marginTop: 6, gap: 2 },
-  cardMeta:        { fontSize: 11, color: '#94a3b8' },
+  cardMeta:        { fontSize: 13, color: '#94a3b8' },
 });

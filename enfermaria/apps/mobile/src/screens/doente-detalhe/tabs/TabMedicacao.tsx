@@ -60,15 +60,15 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
         <Text style={shared.secaoTitulo}>Medicação Ativa</Text>
         <View style={shared.secaoAcoes}>
           {podeRegistarMed && (
-            <TouchableOpacity onPress={abrirScanner} style={[shared.iconBotao, s.scanBotao]}>
+            <TouchableOpacity accessibilityRole="button" onPress={abrirScanner} style={[shared.iconBotao, s.scanBotao]}>
               <Text style={s.scanTexto}>📷</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity onPress={onHistorico} style={shared.iconBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={onHistorico} style={shared.iconBotao}>
             <Text style={shared.iconBotaoTexto}>⏱</Text>
           </TouchableOpacity>
           {podePrescreveMed && (
-            <TouchableOpacity onPress={onPrescrever} style={[shared.iconBotao, shared.iconBotaoAzul]}>
+            <TouchableOpacity accessibilityRole="button" onPress={onPrescrever} style={[shared.iconBotao, shared.iconBotaoAzul]}>
               <Text style={shared.iconBotaoTextoAzul}>+</Text>
             </TouchableOpacity>
           )}
@@ -84,12 +84,12 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
           </View>
           <View style={s.botoes}>
             {podeRegistarMed && (
-              <TouchableOpacity style={s.administrarBotao} onPress={() => onRegistar(m.id)}>
+              <TouchableOpacity accessibilityRole="button" style={s.administrarBotao} onPress={() => onRegistar(m.id)}>
                 <Text style={s.administrarTexto}>Registar</Text>
               </TouchableOpacity>
             )}
             {podePrescreveMed && (
-              <TouchableOpacity style={s.descontinuarBotao} onPress={() => Alert.alert('Confirmar', 'Concluir esta medicação?', [{ text: 'Cancelar', style: 'cancel' }, { text: 'Concluir', style: 'destructive', onPress: () => onConcluir(m.id) }])}>
+              <TouchableOpacity accessibilityRole="button" style={s.descontinuarBotao} onPress={() => Alert.alert('Confirmar', 'Concluir esta medicação?', [{ text: 'Cancelar', style: 'cancel' }, { text: 'Concluir', style: 'destructive', onPress: () => onConcluir(m.id) }])}>
                 <Text style={s.descontinuarTexto}>✕</Text>
               </TouchableOpacity>
             )}
@@ -110,7 +110,7 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
             <View style={s.scanFrame} />
             <Text style={s.scanDica}>Aponte para o QR / código de barras do medicamento</Text>
           </View>
-          <TouchableOpacity style={s.fecharScan} onPress={() => setScanAtivo(false)}>
+          <TouchableOpacity accessibilityRole="button" style={s.fecharScan} onPress={() => setScanAtivo(false)}>
             <Text style={s.fecharScanTexto}>Cancelar</Text>
           </TouchableOpacity>
         </View>

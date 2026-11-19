@@ -221,7 +221,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
         <Text style={s.secaoTitulo}>Funcionalidades</Text>
         <View style={s.menuCard}>
           {itensVisiveis.map((item, i) => (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={item.key}
               style={[s.menuItem, i < itensVisiveis.length - 1 && s.menuItemBorder]}
               onPress={() => setSubTela(item.key)}
@@ -248,7 +248,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
 
       {/* Logout */}
       <View style={s.secao}>
-        <TouchableOpacity style={s.sairBotao} onPress={confirmarLogout}>
+        <TouchableOpacity accessibilityRole="button" style={s.sairBotao} onPress={confirmarLogout}>
           <Text style={s.sairTexto}>Terminar Sessão</Text>
         </TouchableOpacity>
       </View>
@@ -266,23 +266,23 @@ const s = StyleSheet.create({
   perfilInfo: { flex: 1 },
   perfilNome: { fontSize: 18, fontWeight: '700', color: '#fff' },
   perfilRole: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
-  perfilSubRole: { fontSize: 12, color: '#64748b', marginTop: 1, textTransform: 'capitalize' },
-  perfilNum: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  perfilSubRole: { fontSize: 13, color: '#64748b', marginTop: 1, textTransform: 'capitalize' },
+  perfilNum: { fontSize: 13, color: '#64748b', marginTop: 2 },
   secao: { padding: 16, paddingBottom: 0 },
-  secaoTitulo: { fontSize: 12, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
   menuCard: { backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   menuItem: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
   menuItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   menuIconBox: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   menuTextos: { flex: 1 },
   menuTitulo: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
-  menuSub: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  menuSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   menuArrow: { fontSize: 20, color: '#cbd5e1', fontWeight: '300' },
   badge: {
     backgroundColor: '#ef4444', borderRadius: 12,
     minWidth: 22, height: 22, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
   },
-  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  badgeText: { color: '#fff', fontSize: 13, fontWeight: '700' },
   sairBotao: { backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca', paddingVertical: 14, borderRadius: 14, alignItems: 'center', marginTop: 6 },
   sairTexto: { color: '#dc2626', fontWeight: '700', fontSize: 16 },
 });

@@ -180,7 +180,7 @@ export default function LoginScreen({ onLogin }: Props) {
           </View>
         ) : null}
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.botao, (!numeroFuncionario || !password || loading) && s.botaoDesativado]}
           onPress={handleLogin}
           disabled={!numeroFuncionario || !password || loading}
@@ -193,7 +193,7 @@ export default function LoginScreen({ onLogin }: Props) {
         </TouchableOpacity>
 
         {temBiometria && !oferecerBiometria && (
-          <TouchableOpacity style={s.botaoBio} onPress={async () => {
+          <TouchableOpacity accessibilityRole="button" style={s.botaoBio} onPress={async () => {
             const credenciais = await obterCredenciaisBiometricas();
             if (!credenciais) return;
             const ok = await autenticarComBiometria();
@@ -215,10 +215,10 @@ export default function LoginScreen({ onLogin }: Props) {
             <Text style={s.bioOfertaTitulo}>Activar autenticação biométrica?</Text>
             <Text style={s.bioOfertaDesc}>Utilize Face ID / Touch ID nos próximos acessos</Text>
             <View style={s.bioOfertaBotoes}>
-              <TouchableOpacity style={s.bioNao} onPress={() => { setOferecerBiometria(false); onLogin(); }}>
+              <TouchableOpacity accessibilityRole="button" style={s.bioNao} onPress={() => { setOferecerBiometria(false); onLogin(); }}>
                 <Text style={s.bioNaoTexto}>Agora não</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={s.bioSim} onPress={activarBiometria}>
+              <TouchableOpacity accessibilityRole="button" style={s.bioSim} onPress={activarBiometria}>
                 <Text style={s.bioSimTexto}>Activar</Text>
               </TouchableOpacity>
             </View>
@@ -245,7 +245,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 14, paddingVertical: 6, marginTop: 12,
   },
   badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#60a5fa' },
-  badgeTexto: { fontSize: 11, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
+  badgeTexto: { fontSize: 13, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
 
   // Formulário
   sheet: {
@@ -279,7 +279,7 @@ const s = StyleSheet.create({
   botaoDesativado: { backgroundColor: '#93c5fd', shadowOpacity: 0 },
   botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
 
-  rodape: { textAlign: 'center', fontSize: 11, color: '#94a3b8', marginTop: 24 },
+  rodape: { textAlign: 'center', fontSize: 13, color: '#94a3b8', marginTop: 24 },
 
   botaoBio: {
     marginTop: 12, borderWidth: 1.5, borderColor: '#2563eb',

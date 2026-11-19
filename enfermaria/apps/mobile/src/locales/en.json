@@ -51,5 +51,30 @@
     "bed": "Bed {{cama}}",
     "administer": "Administer",
     "recordFallback": "Could not record the administration."
+  },
+  "a11y": {
+    "back": "Back",
+    "close": "Close",
+    "add": "Add",
+    "scanQr": "Scan QR code",
+    "new": "New"
+  },
+  "sync": {
+    "offline": "Offline",
+    "pending_one": "{{count}} record to send",
+    "pending_other": "{{count}} records to send",
+    "discarded_one": "{{count}} NOT sent",
+    "discarded_other": "{{count}} NOT sent",
+    "last": "last sync {{hora}}",
+    "hint": "Shows the list of records",
+    "itemPending": "To send: {{tipo}} ({{hora}})",
+    "itemDiscarded": "NOT sent: {{tipo}} ({{hora}}) — {{motivo}}. Record it again.",
+    "clearDiscarded": "Already recorded again — clear",
+    "type": {
+      "administer": "medication administration",
+      "vitals": "vital signs",
+      "task": "task",
+      "other": "record"
+    }
   }
 }

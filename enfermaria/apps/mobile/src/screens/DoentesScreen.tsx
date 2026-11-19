@@ -131,18 +131,18 @@ export default function DoentesScreen({ utilizador }: Props) {
             onChangeText={setPesquisa}
           />
           {podeAdmitir && (
-            <TouchableOpacity style={s.admitirBotao} onPress={abrirAdmitir}>
+            <TouchableOpacity accessibilityRole="button" style={s.admitirBotao} onPress={abrirAdmitir}>
               <Text style={s.admitirTexto}>+ Admitir</Text>
             </TouchableOpacity>
           )}
         </View>
         <View style={s.filtros}>
-          <TouchableOpacity style={[s.filtro, !verTodos && s.filtroAtivo]} onPress={() => setVerTodos(false)}>
+          <TouchableOpacity accessibilityRole="button" style={[s.filtro, !verTodos && s.filtroAtivo]} onPress={() => setVerTodos(false)}>
             <Text style={[s.filtroTexto, !verTodos && s.filtroTextoAtivo]}>
               {isAdmin ? 'Todos' : 'O meu turno'} ({doentes.length})
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[s.filtro, verTodos && s.filtroAtivo]} onPress={() => setVerTodos(true)}>
+          <TouchableOpacity accessibilityRole="button" style={[s.filtro, verTodos && s.filtroAtivo]} onPress={() => setVerTodos(true)}>
             <Text style={[s.filtroTexto, verTodos && s.filtroTextoAtivo]}>
               Todos ({todos.length})
             </Text>
@@ -159,7 +159,7 @@ export default function DoentesScreen({ utilizador }: Props) {
           {filtrados.length === 0 ? (
             <View style={s.vazio}><Text style={s.vazioTexto}>Sem doentes encontrados</Text></View>
           ) : filtrados.map((d) => (
-            <TouchableOpacity key={d.id} style={s.cartao} onPress={() => setDoenteAberto(d.id)} activeOpacity={0.8}>
+            <TouchableOpacity accessibilityRole="button" key={d.id} style={s.cartao} onPress={() => setDoenteAberto(d.id)} activeOpacity={0.8}>
               <View style={[s.estadoBar, { backgroundColor: estadoCor[d.estado] }]} />
               <View style={s.cartaoConteudo}>
                 <View style={s.cartaoCabecalho}>
@@ -183,7 +183,7 @@ export default function DoentesScreen({ utilizador }: Props) {
           <ScrollView style={s.sheet} keyboardShouldPersistTaps="handled">
             <View style={s.sheetCabecalho}>
               <Text style={s.sheetTitulo}>Admissão de Doente</Text>
-              <TouchableOpacity onPress={() => setModalAdmitir(false)}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModalAdmitir(false)}>
                 <Text style={s.fechar}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -215,7 +215,7 @@ export default function DoentesScreen({ utilizador }: Props) {
             />
 
             <Text style={s.formLabel}>Cama * ({camasLivres.length} disponíveis)</Text>
-            <TouchableOpacity style={s.camaSelector} onPress={() => setCamaAberta(true)}>
+            <TouchableOpacity accessibilityRole="button" style={s.camaSelector} onPress={() => setCamaAberta(true)}>
               <Text style={[s.camaSelectorTexto, !form.camaId && { color: '#94a3b8' }]}>
                 {camaSelec ? `Quarto ${camaSelec.quarto} · Cama ${camaSelec.numero}` : 'Selecionar cama...'}
               </Text>
@@ -234,10 +234,10 @@ export default function DoentesScreen({ utilizador }: Props) {
             {erroAdmitir ? <Text style={s.erroTexto}>{erroAdmitir}</Text> : null}
 
             <View style={[s.botoes, { marginBottom: 40 }]}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModalAdmitir(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModalAdmitir(false)}>
                 <Text style={s.cancelarBtnTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.submeterBtn, (!form.nome.trim() || !form.dataNascimento.trim() || !form.diagnosticoPrincipal.trim() || !form.camaId || salvando) && s.submeterBtnDes]}
                 onPress={admitir}
                 disabled={!form.nome.trim() || !form.dataNascimento.trim() || !form.diagnosticoPrincipal.trim() || !form.camaId || salvando}
@@ -251,14 +251,14 @@ export default function DoentesScreen({ utilizador }: Props) {
 
       {/* Modal: Selector de Cama */}
       <Modal visible={camaAberta} transparent animationType="fade" onRequestClose={() => setCamaAberta(false)}>
-        <TouchableOpacity style={s.overlay} activeOpacity={1} onPress={() => setCamaAberta(false)}>
+        <TouchableOpacity accessibilityRole="button" style={s.overlay} activeOpacity={1} onPress={() => setCamaAberta(false)}>
           <View onStartShouldSetResponder={() => true} style={s.camaSheet}>
             <Text style={s.sheetTitulo}>Selecionar Cama</Text>
             <ScrollView style={{ maxHeight: 300 }}>
               {camasLivres.length === 0
                 ? <Text style={s.semCamas}>Sem camas disponíveis</Text>
                 : camasLivres.map((c) => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={c.id}
                     style={[s.camaOpcao, form.camaId === c.id && s.camaOpcaoAtiva]}
                     onPress={() => { setForm((f) => ({ ...f, camaId: c.id })); setCamaAberta(false); }}
@@ -298,9 +298,9 @@ const s = StyleSheet.create({
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
   doenteNome: { fontSize: 16, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '600' },
+  estadoTexto: { fontSize: 13, fontWeight: '600' },
   diagnostico: { fontSize: 13, color: '#64748b', marginBottom: 4 },
-  cama: { fontSize: 12, color: '#94a3b8' },
+  cama: { fontSize: 13, color: '#94a3b8' },
   // Modal
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
@@ -316,7 +316,7 @@ const s = StyleSheet.create({
   camaOpcao: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: '#f1f5f9', gap: 8 },
   camaOpcaoAtiva: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
   camaOpcaoTexto: { flex: 1, fontSize: 14, color: '#1e293b', fontWeight: '500' },
-  camaReservada: { fontSize: 12, color: '#94a3b8', fontStyle: 'italic' },
+  camaReservada: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic' },
   camaCheck: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
   semCamas: { color: '#94a3b8', fontSize: 14, textAlign: 'center', padding: 20 },
   erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },

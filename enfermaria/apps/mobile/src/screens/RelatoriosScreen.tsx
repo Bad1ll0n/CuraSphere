@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 type TabKey = 'internamento' | 'ocupacao' | 'diagnosticos' | 'medicamentos' | 'urgencia' | 'produtividade';
 
@@ -112,7 +113,7 @@ export default function RelatoriosScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Relatórios</Text>
@@ -122,11 +123,11 @@ export default function RelatoriosScreen({ utilizador, onVoltar }: Props) {
       {/* Seletor de período */}
       <View style={s.periodoRow}>
         <Ionicons name="calendar-outline" size={15} color="#64748b" />
-        <TouchableOpacity style={s.periodoBtn}>
+        <TouchableOpacity accessibilityRole="button" style={s.periodoBtn}>
           <Text style={s.periodoBtnTexto}>Início: {fmtData(inicio)}</Text>
         </TouchableOpacity>
         <Text style={s.periodoDash}>—</Text>
-        <TouchableOpacity style={s.periodoBtn}>
+        <TouchableOpacity accessibilityRole="button" style={s.periodoBtn}>
           <Text style={s.periodoBtnTexto}>Fim: {fmtData(fim)}</Text>
         </TouchableOpacity>
       </View>
@@ -134,7 +135,7 @@ export default function RelatoriosScreen({ utilizador, onVoltar }: Props) {
       {/* Tab pills */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.tabScroll} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
         {TABS.map(t => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t.key}
             style={[s.tabPill, abaAtual === t.key && s.tabPillAtivo]}
             onPress={() => mudarAba(t.key)}
@@ -359,7 +360,7 @@ const s = StyleSheet.create({
   },
   kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
   kpiNumGrande: { fontSize: 36, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 12, color: '#64748b', marginTop: 4, textAlign: 'center' },
+  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4, textAlign: 'center' },
 
   listaCard: {
     backgroundColor: '#fff', borderRadius: 12, padding: 14,
@@ -367,9 +368,9 @@ const s = StyleSheet.create({
   },
   listaCardTopo: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   listaCardNome: { fontSize: 14, fontWeight: '700', color: '#0f172a', marginBottom: 6 },
-  listaCardRole: { fontSize: 11, color: '#64748b', marginTop: 1 },
+  listaCardRole: { fontSize: 13, color: '#64748b', marginTop: 1 },
   listaCardMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  listaCardMetaTexto: { fontSize: 12, color: '#64748b' },
+  listaCardMetaTexto: { fontSize: 13, color: '#64748b' },
   listaCardMetaVal: { fontWeight: '700', color: '#0f172a' },
 
   rankCard: {
@@ -379,11 +380,11 @@ const s = StyleSheet.create({
   },
   rankNum: { fontSize: 13, fontWeight: '700', color: '#94a3b8', width: 28 },
   rankBadge: { backgroundColor: '#eff6ff', borderRadius: 6, paddingHorizontal: 7, paddingVertical: 3 },
-  rankBadgeTexto: { fontSize: 11, fontWeight: '700', color: '#2563eb' },
+  rankBadgeTexto: { fontSize: 13, fontWeight: '700', color: '#2563eb' },
   rankDescricao: { flex: 1, fontSize: 13, color: '#334155' },
   rankCount: { fontSize: 15, fontWeight: '800', color: '#0f172a', minWidth: 36, textAlign: 'right' },
 
   triagemBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, alignSelf: 'flex-start' },
-  triagemBadgeTexto: { fontSize: 12, fontWeight: '700', textTransform: 'capitalize' },
+  triagemBadgeTexto: { fontSize: 13, fontWeight: '700', textTransform: 'capitalize' },
   triagemPct: { fontSize: 13, color: '#64748b', fontWeight: '600', minWidth: 44, textAlign: 'right' },
 });

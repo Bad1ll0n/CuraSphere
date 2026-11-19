@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface CheckinSalaEspera {
   id: string;
@@ -84,7 +85,7 @@ export default function SalaEsperaScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -112,7 +113,7 @@ export default function SalaEsperaScreen({ utilizador, onVoltar }: Props) {
                     </View>
                   </View>
                   {c.motivoEspera && <Text style={s.motivo}>{c.motivoEspera}</Text>}
-                  <TouchableOpacity style={s.btnChamar} onPress={() => chamar(c.id, c.doente.nome)}>
+                  <TouchableOpacity accessibilityRole="button" style={s.btnChamar} onPress={() => chamar(c.id, c.doente.nome)}>
                     <Ionicons name="megaphone-outline" size={15} color="#1d4ed8" />
                     <Text style={s.btnChamarTexto}>Chamar</Text>
                   </TouchableOpacity>
@@ -133,7 +134,7 @@ export default function SalaEsperaScreen({ utilizador, onVoltar }: Props) {
                     <Text style={[s.badgeTexto, { color: '#1d4ed8' }]}>Chamado</Text>
                   </View>
                 </View>
-                <TouchableOpacity style={s.btnAtendido} onPress={() => marcarAtendido(c.id)}>
+                <TouchableOpacity accessibilityRole="button" style={s.btnAtendido} onPress={() => marcarAtendido(c.id)}>
                   <Ionicons name="checkmark-circle-outline" size={15} color="#16a34a" />
                   <Text style={s.btnAtendidoTexto}>Marcar Atendido</Text>
                 </TouchableOpacity>
@@ -160,18 +161,18 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#bfdbfe', marginTop: 2 },
-  secaoTitulo: { fontSize: 12, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginHorizontal: 16, marginTop: 20, marginBottom: 6 },
+  headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginHorizontal: 16, marginTop: 20, marginBottom: 6 },
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
   vazioTexto: { color: '#94a3b8', fontSize: 15 },
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
   cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1 },
   tempoBox: { flexDirection: 'row', alignItems: 'center', gap: 3 },
-  tempoTexto: { fontSize: 12, color: '#64748b' },
+  tempoTexto: { fontSize: 13, color: '#64748b' },
   motivo: { fontSize: 13, color: '#64748b', marginBottom: 8 },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 12, fontWeight: '600' },
+  badgeTexto: { fontSize: 13, fontWeight: '600' },
   btnChamar: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#dbeafe', paddingVertical: 8, borderRadius: 10, justifyContent: 'center' },
   btnChamarTexto: { color: '#1d4ed8', fontWeight: '700', fontSize: 14 },
   btnAtendido: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#dcfce7', paddingVertical: 8, borderRadius: 10, justifyContent: 'center' },

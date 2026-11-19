@@ -60,7 +60,7 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <Text style={s.titulo}>Worklist</Text>
@@ -69,7 +69,7 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtrosScroll}>
         <View style={s.filtrosRow}>
           {filtros.map(f => (
-            <TouchableOpacity key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
+            <TouchableOpacity accessibilityRole="button" key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
               <Text style={[s.filtroTexto, filtro === f && s.filtroTextoAtivo]}>
                 {f === 'todos' ? 'Todos' : ESTADO_LABEL[f]}
               </Text>
@@ -105,12 +105,12 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
                 <Text style={s.cardInfo}>{fmt(item.dataHora)} · por {item.solicitadoPor.nome.split(' ')[0]}</Text>
                 <View style={s.acoes}>
                   {item.estado === 'pendente' && (
-                    <TouchableOpacity style={s.acaoBtn} onPress={() => atualizarEstado(item.id, 'em_curso')}>
+                    <TouchableOpacity accessibilityRole="button" style={s.acaoBtn} onPress={() => atualizarEstado(item.id, 'em_curso')}>
                       <Text style={s.acaoTexto}>Iniciar</Text>
                     </TouchableOpacity>
                   )}
                   {item.estado === 'em_curso' && (
-                    <TouchableOpacity style={[s.acaoBtn, { backgroundColor: '#dcfce7' }]} onPress={() => atualizarEstado(item.id, 'concluido')}>
+                    <TouchableOpacity accessibilityRole="button" style={[s.acaoBtn, { backgroundColor: '#dcfce7' }]} onPress={() => atualizarEstado(item.id, 'concluido')}>
                       <Text style={[s.acaoTexto, { color: '#16a34a' }]}>Concluir</Text>
                     </TouchableOpacity>
                   )}
@@ -130,7 +130,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   filtrosScroll: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   filtrosRow: { flexDirection: 'row', gap: 8, padding: 12 },
@@ -144,9 +144,9 @@ const s = StyleSheet.create({
   cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
   cardDoente: { fontSize: 13, color: '#475569', marginTop: 2 },
   cardObs: { fontSize: 13, color: '#64748b', marginBottom: 4 },
-  cardInfo: { fontSize: 12, color: '#94a3b8', marginTop: 4 },
+  cardInfo: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '700' },
+  estadoTexto: { fontSize: 13, fontWeight: '700' },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 8 },
   acaoBtn: { paddingHorizontal: 16, paddingVertical: 7, borderRadius: 8, backgroundColor: '#eff6ff' },
   acaoTexto: { color: '#2563eb', fontWeight: '700', fontSize: 13 },

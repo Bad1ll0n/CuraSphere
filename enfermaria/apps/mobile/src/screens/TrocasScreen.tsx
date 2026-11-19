@@ -144,25 +144,25 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
         {/* Ações */}
         {!isChefe && p.destinatario.id === utilizador.id && p.estado === 'pendente_destinatario' && (
           <View style={s.acoes}>
-            <TouchableOpacity style={s.recusarBotao} onPress={() => responder(p.id, false)}>
+            <TouchableOpacity accessibilityRole="button" style={s.recusarBotao} onPress={() => responder(p.id, false)}>
               <Text style={s.recusarTexto}>Recusar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={s.aceitarBotao} onPress={() => responder(p.id, true)}>
+            <TouchableOpacity accessibilityRole="button" style={s.aceitarBotao} onPress={() => responder(p.id, true)}>
               <Text style={s.aceitarTexto}>Aceitar</Text>
             </TouchableOpacity>
           </View>
         )}
         {!isChefe && euSolicitei && p.estado === 'pendente_destinatario' && (
-          <TouchableOpacity style={s.cancelarBotao} onPress={() => cancelar(p.id)}>
+          <TouchableOpacity accessibilityRole="button" style={s.cancelarBotao} onPress={() => cancelar(p.id)}>
             <Text style={s.cancelarTexto}>Cancelar pedido</Text>
           </TouchableOpacity>
         )}
         {isChefe && p.estado === 'pendente_chefe' && (
           <View style={s.acoes}>
-            <TouchableOpacity style={s.recusarBotao} onPress={() => aprovar(p.id, false)}>
+            <TouchableOpacity accessibilityRole="button" style={s.recusarBotao} onPress={() => aprovar(p.id, false)}>
               <Text style={s.recusarTexto}>Rejeitar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={s.aceitarBotao} onPress={() => aprovar(p.id, true)}>
+            <TouchableOpacity accessibilityRole="button" style={s.aceitarBotao} onPress={() => aprovar(p.id, true)}>
               <Text style={s.aceitarTexto}>Aprovar</Text>
             </TouchableOpacity>
           </View>
@@ -175,7 +175,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
@@ -184,7 +184,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.subtituloH}>{isChefe ? 'Pedidos de aprovação' : 'Pede cobertura a um colega'}</Text>
           </View>
           {!isChefe && (
-            <TouchableOpacity style={s.addBotao} onPress={abrirModal}>
+            <TouchableOpacity accessibilityRole="button" style={s.addBotao} onPress={abrirModal}>
               <Text style={s.addTexto}>+ Pedido</Text>
             </TouchableOpacity>
           )}
@@ -252,7 +252,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
           <View style={s.sheet}>
             <View style={s.sheetCabecalho}>
               <Text style={s.sheetTitulo}>Pedir Cobertura</Text>
-              <TouchableOpacity onPress={() => setModalAberto(false)}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModalAberto(false)}>
                 <Text style={s.fechar}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -264,7 +264,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
                   <View style={{ flexDirection: 'row', gap: 8 }}>
                     {meusTurnos.map((t) => (
-                      <TouchableOpacity
+                      <TouchableOpacity accessibilityRole="button"
                         key={t.id}
                         style={[s.turnoPill, turnoSelecionado?.id === t.id && s.turnoPillAtivo]}
                         onPress={() => selecionarTurno(t)}
@@ -286,7 +286,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
                   : (
                     <ScrollView style={{ maxHeight: 200 }}>
                       {colegas.map((c) => (
-                        <TouchableOpacity
+                        <TouchableOpacity accessibilityRole="button"
                           key={c.id}
                           style={[s.colegaRow, colegaSelecionado?.id === c.id && s.colegaRowAtivo]}
                           onPress={() => setColegaSelecionado(c)}
@@ -303,10 +303,10 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModalAberto(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModalAberto(false)}>
                 <Text style={s.cancelarBtnTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.submeterBtn, (!turnoSelecionado || !colegaSelecionado || salvando) && s.submeterBtnDes]}
                 onPress={submeter}
                 disabled={!turnoSelecionado || !colegaSelecionado || salvando}
@@ -326,7 +326,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   subtituloH: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
@@ -338,11 +338,11 @@ const s = StyleSheet.create({
   pedidoCard: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
   pedidoTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   turnoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  turnoBadgeTexto: { fontSize: 12, fontWeight: '600' },
+  turnoBadgeTexto: { fontSize: 13, fontWeight: '600' },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoBadgeTexto: { fontSize: 11, fontWeight: '600' },
+  estadoBadgeTexto: { fontSize: 13, fontWeight: '600' },
   pedidoDesc: { fontSize: 14, fontWeight: '600', color: '#1e293b', marginBottom: 4 },
-  pedidoData: { fontSize: 12, color: '#94a3b8' },
+  pedidoData: { fontSize: 13, color: '#94a3b8' },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 12 },
   recusarBotao: { flex: 1, paddingVertical: 9, borderRadius: 10, borderWidth: 1, borderColor: '#fecaca', alignItems: 'center' },
   recusarTexto: { color: '#dc2626', fontWeight: '600', fontSize: 13 },
@@ -356,7 +356,7 @@ const s = StyleSheet.create({
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   sheetTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b' },
   fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  stepLabel: { fontSize: 12, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  stepLabel: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
   turnoPill: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5, borderColor: '#e2e8f0' },
   turnoPillAtivo: { borderColor: '#2563eb', backgroundColor: '#eff6ff' },
   turnoPillTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },

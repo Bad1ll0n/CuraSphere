@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface DashExec {
   doentes: { internados: number; ambulatorio: number; pendenteCama: number; mediaInternamento: number };
@@ -44,7 +45,7 @@ export default function DashboardExecutivoScreen({ utilizador, onVoltar }: Props
   if (loading) return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Dashboard Executivo</Text>
@@ -57,7 +58,7 @@ export default function DashboardExecutivoScreen({ utilizador, onVoltar }: Props
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Dashboard Executivo</Text>
@@ -265,7 +266,7 @@ const s = StyleSheet.create({
   },
   kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
   kpiNumPeq: { fontSize: 18, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 12, color: '#64748b', marginTop: 4 },
+  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4 },
 
   barraFundo: {
     height: 16, flexDirection: 'row', borderRadius: 8, overflow: 'hidden',
@@ -276,13 +277,13 @@ const s = StyleSheet.create({
   legendaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 },
   legendaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   legendaPonto: { width: 10, height: 10, borderRadius: 5 },
-  legendaTexto: { fontSize: 12, color: '#64748b' },
+  legendaTexto: { fontSize: 13, color: '#64748b' },
 
   taxaOcupacao: { fontSize: 22, fontWeight: '800', color: '#0f172a', textAlign: 'center', marginTop: 4 },
 
   coberturaRow: { flexDirection: 'row', gap: 8 },
   coberturaItem: { flex: 1, backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, alignItems: 'center', borderWidth: 1, borderColor: '#e2e8f0' },
-  coberturaNome: { fontSize: 11, color: '#64748b', fontWeight: '600' },
+  coberturaNome: { fontSize: 13, color: '#64748b', fontWeight: '600' },
   coberturaPct: { fontSize: 16, fontWeight: '800', color: '#0f172a', marginTop: 2 },
 
   pessoalRow: {

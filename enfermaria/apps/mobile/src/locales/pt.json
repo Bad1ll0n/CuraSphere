@@ -51,5 +51,30 @@
     "bed": "Cama {{cama}}",
     "administer": "Administrar",
     "recordFallback": "Não foi possível registar a administração."
+  },
+  "a11y": {
+    "back": "Voltar",
+    "close": "Fechar",
+    "add": "Adicionar",
+    "scanQr": "Ler código QR",
+    "new": "Novo"
+  },
+  "sync": {
+    "offline": "Sem ligação",
+    "pending_one": "{{count}} registo por enviar",
+    "pending_other": "{{count}} registos por enviar",
+    "discarded_one": "{{count}} NÃO enviado",
+    "discarded_other": "{{count}} NÃO enviados",
+    "last": "última sincronização {{hora}}",
+    "hint": "Mostra a lista dos registos",
+    "itemPending": "Por enviar: {{tipo}} ({{hora}})",
+    "itemDiscarded": "NÃO enviado: {{tipo}} ({{hora}}) — {{motivo}}. Registe de novo.",
+    "clearDiscarded": "Já registei de novo — limpar",
+    "type": {
+      "administer": "administração de medicação",
+      "vitals": "sinais vitais",
+      "task": "tarefa",
+      "other": "registo"
+    }
   }
 }

@@ -89,13 +89,13 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <Text style={s.titulo}>Catálogo</Text>
           {canEdit && (
-            <TouchableOpacity style={s.novoBotao} onPress={() => { resetForm(); setErro(''); setModal('criar'); }}>
+            <TouchableOpacity accessibilityRole="button" style={s.novoBotao} onPress={() => { resetForm(); setErro(''); setModal('criar'); }}>
               <Text style={s.novoTexto}>+ Novo</Text>
             </TouchableOpacity>
           )}
@@ -121,7 +121,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
             {lista.length === 0 ? (
               <View style={s.vazio}><Text style={s.vazioTexto}>Sem resultados</Text></View>
             ) : lista.map(item => (
-              <TouchableOpacity key={item.id} style={[s.card, !item.ativo && s.cardInativo]} activeOpacity={canEdit ? 0.7 : 1} onPress={() => canEdit && abrirEditar(item)}>
+              <TouchableOpacity accessibilityRole="button" key={item.id} style={[s.card, !item.ativo && s.cardInativo]} activeOpacity={canEdit ? 0.7 : 1} onPress={() => canEdit && abrirEditar(item)}>
                 <View style={s.cardTopo}>
                   <View style={{ flex: 1 }}>
                     <Text style={s.cardDCI}>{item.dci}</Text>
@@ -137,7 +137,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
                 </View>
                 <Text style={s.cardClasse}>{item.classeTerap}{item.codigoATC ? ` · ${item.codigoATC}` : ''}</Text>
                 {canEdit && item.ativo && (
-                  <TouchableOpacity onPress={() => desativar(item)} style={s.eliminarLink}>
+                  <TouchableOpacity accessibilityRole="button" onPress={() => desativar(item)} style={s.eliminarLink}>
                     <Text style={s.eliminarTexto}>Remover do catálogo</Text>
                   </TouchableOpacity>
                 )}
@@ -153,7 +153,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
           <ScrollView style={[s.sheet, { maxHeight: '90%' }]}>
             <View style={s.sheetCab}>
               <Text style={s.sheetTitulo}>{modal === 'criar' ? 'Novo Medicamento' : 'Editar Medicamento'}</Text>
-              <TouchableOpacity onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>DCI *</Text>
@@ -166,7 +166,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 4 }}>
               <View style={{ flexDirection: 'row', gap: 8 }}>
                 {FORMAS.map(f => (
-                  <TouchableOpacity key={f} style={[s.chip, form.formaFarmaceutica === f && s.chipAtivo]} onPress={() => setForm(ff => ({ ...ff, formaFarmaceutica: f }))}>
+                  <TouchableOpacity accessibilityRole="button" key={f} style={[s.chip, form.formaFarmaceutica === f && s.chipAtivo]} onPress={() => setForm(ff => ({ ...ff, formaFarmaceutica: f }))}>
                     <Text style={[s.chipTexto, form.formaFarmaceutica === f && s.chipTextoAtivo]}>{FORMA_LABEL[f] ?? f}</Text>
                   </TouchableOpacity>
                 ))}
@@ -177,7 +177,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 4 }}>
               <View style={{ flexDirection: 'row', gap: 8 }}>
                 {CLASSES.map(c => (
-                  <TouchableOpacity key={c} style={[s.chip, form.classeTerap === c && s.chipAtivo]} onPress={() => setForm(ff => ({ ...ff, classeTerap: c }))}>
+                  <TouchableOpacity accessibilityRole="button" key={c} style={[s.chip, form.classeTerap === c && s.chipAtivo]} onPress={() => setForm(ff => ({ ...ff, classeTerap: c }))}>
                     <Text style={[s.chipTexto, form.classeTerap === c && s.chipTextoAtivo]}>{c}</Text>
                   </TouchableOpacity>
                 ))}
@@ -196,10 +196,10 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModal(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModal(null)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
                 <Text style={s.submeterTexto}>{salvando ? 'A guardar...' : modal === 'criar' ? 'Adicionar' : 'Guardar'}</Text>
               </TouchableOpacity>
             </View>
@@ -216,7 +216,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   novoBotao: { backgroundColor: '#ec4899', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10 },
@@ -229,13 +229,13 @@ const s = StyleSheet.create({
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 },
   cardDCI: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
   cardMarca: { fontSize: 13, color: '#64748b', marginTop: 1 },
-  cardSub: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
-  cardClasse: { fontSize: 12, color: '#94a3b8', marginTop: 4 },
+  cardSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  cardClasse: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   formaBadge: { backgroundColor: '#f1f5f9', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  formaTexto: { fontSize: 11, fontWeight: '600', color: '#64748b' },
-  inativoTexto: { fontSize: 10, color: '#dc2626', fontWeight: '700' },
+  formaTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  inativoTexto: { fontSize: 13, color: '#dc2626', fontWeight: '700' },
   eliminarLink: { marginTop: 8 },
-  eliminarTexto: { fontSize: 12, color: '#dc2626', textDecorationLine: 'underline' },
+  eliminarTexto: { fontSize: 13, color: '#dc2626', textDecorationLine: 'underline' },
   vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 32, alignItems: 'center' },
   vazioTexto: { color: '#94a3b8', fontSize: 14 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
