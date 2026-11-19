@@ -1,5 +1,5 @@
 import {
-  enqueue, flushMutationQueue, getQueue, getQueueLength, clearQueue, definirDonoDaFila,
+  enqueue, flushMutationQueue, getQueue, getQueueLength, clearQueue, definirDonoDaFila, MAX_OPERACOES, MAX_BYTES_OPERACAO,
 } from './mutation-queue';
 import { chamadas, falharCom, limpar } from '../test-doubles/api';
 import AsyncStorage from '../test-doubles/async-storage';
@@ -232,5 +232,69 @@ describe('fila offline num dispositivo partilhado (A9)', () => {
     for (let i = 0; i < 5; i++) await flushMutationQueue();
 
     expect(await getQueue()).toHaveLength(1);
+  });
+});
+
+describe('armazenamento da fila (PERF-18)', () => {
+  it('cada operação tem a sua chave: enfileirar não reescreve as outras', async () => {
+    for (let i = 0; i < 10; i++) await enqueue({ ...administracao, body: { i } });
+    const escritas: string[] = [];
+    const original = AsyncStorage.setItem;
+    (AsyncStorage as any).setItem = async (k: string, v: string) => { escritas.push(k); return original(k, v); };
+    try {
+      await enqueue({ ...administracao, body: { i: 10 } });
+    } finally {
+      (AsyncStorage as any).setItem = original;
+    }
+    // Uma operação nova e o índice — não as 10 que já lá estavam.
+    expect(escritas).toHaveLength(2);
+    expect(escritas).toContain('curasphere:mq:indice');
+    expect(await getQueueLength()).toBe(11);
+  });
+
+  it('o flush apaga só as operações enviadas e mantém a ordem das restantes', async () => {
+    await enqueue({ ...administracao, body: { ordem: 1 } });
+    await enqueue({ ...administracao, body: { ordem: 2 } });
+    let n = 0;
+    falharCom(() => (n++ === 1 ? erroDeRede() : null)); // a 2.ª falha (sem rede)
+    await flushMutationQueue();
+    const fila = await getQueue();
+    expect(fila.map((o) => (o.body as any).ordem)).toEqual([2]);
+    expect(await AsyncStorage.getItem(`curasphere:mq:op:${fila[0].id}`)).not.toBeNull();
+  });
+
+  it(`recusa mais de ${MAX_OPERACOES} operações por enviar — o ecrã diz que NÃO ficou guardado`, async () => {
+    for (let i = 0; i < MAX_OPERACOES; i++) await enqueue({ ...administracao, body: { i } });
+    await expect(enqueue(administracao)).rejects.toThrow(/Fila offline cheia/);
+    expect(await getQueueLength()).toBe(MAX_OPERACOES);
+  });
+
+  it('recusa um registo maior do que o limite por operação', async () => {
+    await expect(enqueue({ ...administracao, body: { notas: 'x'.repeat(MAX_BYTES_OPERACAO) } })).rejects.toThrow(/demasiado grande/);
+    expect(await getQueueLength()).toBe(0);
+  });
+
+  it('migra a fila do formato antigo (uma só chave) sem perder nem duplicar', async () => {
+    await AsyncStorage.setItem('curasphere:mutation_queue', JSON.stringify([
+      { id: 'a1', method: 'POST', url: '/x', timestamp: 1, tentativas: 0, dono: 'enf-a' },
+      { id: 'a2', method: 'POST', url: '/y', timestamp: 2, tentativas: 1, dono: 'enf-a' },
+    ]));
+    expect((await getQueue()).map((o) => o.id)).toEqual(['a1', 'a2']);
+    expect(await AsyncStorage.getItem('curasphere:mutation_queue')).toBeNull();
+    expect((await getQueue()).map((o) => o.id)).toEqual(['a1', 'a2']);
+  });
+
+  it('fila antiga corrompida: guardada à parte para análise, e a app segue', async () => {
+    await AsyncStorage.setItem('curasphere:mutation_queue', '{nao e json');
+    expect(await getQueue()).toEqual([]);
+    expect(await AsyncStorage.getItem('curasphere:mq:corrompida')).toBe('{nao e json');
+  });
+
+  it('uma operação ilegível sai do índice sem bloquear as outras', async () => {
+    await enqueue({ ...administracao, body: { ordem: 1 } });
+    await enqueue({ ...administracao, body: { ordem: 2 } });
+    const [primeira] = await getQueue();
+    await AsyncStorage.setItem(`curasphere:mq:op:${primeira.id}`, '{lixo');
+    expect((await getQueue()).map((o) => (o.body as any).ordem)).toEqual([2]);
   });
 });
