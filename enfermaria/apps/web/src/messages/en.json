@@ -1006,5 +1006,119 @@
   "deferredRecord": {
     "badge": "late entry · {quando}",
     "hint": "Entered in the system at {quando}, after the act (at the bedside without network). The time shown is the time of the act."
+  },
+  "continuity": {
+    "title": "Continuity of care",
+    "loading": "Loading continuity of care...",
+    "loadError": "Could not load continuity of care.",
+    "retry": "Try again",
+    "error": "Could not save",
+    "clinicalDischarge": {
+      "none": "No clinical discharge",
+      "since": "Clinical discharge {quando} · {dias, plural, =0 {today} one {# day in hospital since} other {# days in hospital since}}",
+      "mark": "Mark clinical discharge",
+      "undo": "Undo clinical discharge",
+      "saved": "Clinical discharge updated"
+    },
+    "flags": {
+      "title": "Early flags",
+      "dependencia": "Dependency",
+      "sem_cuidador": "No caregiver identified",
+      "ensino_nao_compreendido": "Teaching",
+      "sem_avaliacao_inicial": "Initial assessment missing"
+    },
+    "referral": {
+      "title": "Referral (long-term care, primary care, social support)",
+      "none": "No referrals in this admission.",
+      "by": "{por} · {quando}",
+      "destination": "Destination",
+      "choose": "Choose…",
+      "reason": "Reason / need",
+      "submit": "Refer",
+      "created": "Referral recorded",
+      "updated": "Referral updated"
+    },
+    "prompts": {
+      "reason": "Reason",
+      "vacancy": "Place (unit, admission date)",
+      "confirm": "Confirm"
+    },
+    "teaching": {
+      "title": "Teaching for patient and caregiver",
+      "none": "No teaching recorded in this admission.",
+      "topic": "Topic",
+      "choose": "Choose a topic…",
+      "other": "Other topic",
+      "customTopic": "Which?",
+      "recipient": "To whom",
+      "to": {
+        "doente": "Patient",
+        "cuidador": "Caregiver",
+        "ambos": "Patient and caregiver"
+      },
+      "caregiver": "Caregiver name",
+      "teachBack": "Understanding (teach-back)",
+      "understood": {
+        "compreendeu": "Understood",
+        "parcial": "Partly understood",
+        "nao_compreendeu": "Did not understand"
+      },
+      "note": "Note (required if not fully understood)",
+      "submit": "Record teaching",
+      "saved": "Teaching recorded"
+    },
+    "state": {
+      "proposta": "Proposed",
+      "enviada": "Sent",
+      "aceite": "Accepted",
+      "vaga_atribuida": "Place assigned",
+      "recusada": "Declined",
+      "cancelada": "Cancelled"
+    },
+    "action": {
+      "enviada": "Mark as sent",
+      "aceite": "Accepted",
+      "vaga_atribuida": "Place assigned",
+      "recusada": "Declined",
+      "cancelada": "Cancel",
+      "proposta": "Proposed"
+    }
+  },
+  "delayedDischarges": {
+    "title": "Delayed discharges",
+    "summary": "{doentes} · {dias} d",
+    "loading": "Loading...",
+    "loadError": "Could not load delayed discharges.",
+    "retry": "Try again",
+    "empty": "No patient in hospital after clinical discharge",
+    "noReferral": "No pending referral",
+    "days": "{n, plural, one {# day} other {# days}}",
+    "waiting": {
+      "proposta": "{destino}: not sent",
+      "enviada": "{destino}: awaiting reply",
+      "aceite": "{destino}: awaiting place"
+    },
+    "destination": {
+      "rncci_convalescenca": "LTC convalescence",
+      "rncci_media_duracao": "LTC medium stay",
+      "rncci_longa_duracao": "LTC long stay",
+      "rncci_paliativos": "LTC palliative",
+      "rncci_ecci": "Home LTC team",
+      "csp_usf": "Primary care",
+      "csp_ucc": "Community care",
+      "apoio_social": "Social support",
+      "outro": "Other"
+    }
+  },
+  "portalDischarge": {
+    "back": "← Back",
+    "title": "Discharge plan",
+    "loading": "Loading...",
+    "loadError": "Could not load the discharge plan. Please try later.",
+    "empty": "Discharge plan not yet defined",
+    "expectedDate": "Expected discharge date",
+    "notes": "Notes from the team",
+    "teachings": "What we taught you",
+    "noTeachings": "No teaching recorded yet."
   }
 }

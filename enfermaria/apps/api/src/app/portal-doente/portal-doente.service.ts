@@ -9,6 +9,7 @@ import { hashPassword, verifyPassword } from '../common/password';
 import { AUD_PORTAL } from '../auth/token-audiences';
 import { configJitsi, dadosSala, tokenJitsi } from '../common/jitsi';
 import { exigirTratamentoPermitido } from '../common/consentimento-tratamento';
+import { TEMAS_ENSINO } from '../planeamento-alta/planeamento-alta.regras';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta quando a conta
 // não existe. Mesma constante e mesma técnica do login de pessoal (`auth.service.ts`).
@@ -143,15 +144,27 @@ export class PortalDoenteService {
   }
 
   async meuPlanoAlta(doenteId: string) {
-    return this.prisma.planoAlta.findFirst({
+    const plano = await this.prisma.planoAlta.findFirst({
       where: { doenteId },
       orderBy: { criadoEm: 'desc' },
       select: {
-        id: true, dataAlvoDia: true, notas: true, criadoEm: true,
+        id: true, episodioId: true, dataAlvoDia: true, notas: true, criadoEm: true,
         afebrилApenas24h: true, mobilidadeAdequada: true, alimentacaoOral: true,
         doresControladas: true, familiaInformada: true,
       },
     });
+    if (!plano) return null;
+    // PROD-13: o que foi ensinado ao doente e ao cuidador neste internamento, com os pontos-chave
+    // do conteúdo — para rever em casa.
+    const ensinos = await this.prisma.ensinoDoente.findMany({
+      where: { doenteId, episodioId: plano.episodioId },
+      orderBy: { realizadoEm: 'desc' },
+      select: { tema: true, titulo: true, destinatario: true, realizadoEm: true },
+    });
+    const vistos = new Set<string>();
+    const unicos = ensinos.filter((e) => !vistos.has(e.titulo) && vistos.add(e.titulo));
+    const { episodioId: _e, ...resto } = plano;
+    return { ...resto, ensinos: unicos.map((e) => ({ ...e, pontos: TEMAS_ENSINO[e.tema]?.pontos ?? [] })) };
   }
 
   async exportarDados(doenteId: string): Promise<Buffer> {

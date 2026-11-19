@@ -111,7 +111,6 @@
   "app/(portal)/portal/medicacao/page.tsx": 5,
   "app/(portal)/portal/mensagem/page.tsx": 7,
   "app/(portal)/portal/page.tsx": 1,
-  "app/(portal)/portal/plano-alta/page.tsx": 8,
   "app/(portal)/portal/pro/page.tsx": 6,
   "app/(print)/doentes/[id]/print/page.tsx": 39,
   "app/(print)/doentes/[id]/pulseira/page.tsx": 7,

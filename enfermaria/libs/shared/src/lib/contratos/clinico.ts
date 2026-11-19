@@ -213,3 +213,58 @@ export interface ResultadoValidacaoLeituras {
   validadas: number;
   falhas: { id: string; motivo: string }[];
 }
+
+/** PROD-13 — referenciação para a continuidade de cuidados (RNCCI, CSP, apoio social). */
+export interface ReferenciacaoContinuidade<D = string> {
+  id: string;
+  destino: string;
+  estado: 'proposta' | 'enviada' | 'aceite' | 'vaga_atribuida' | 'recusada' | 'cancelada';
+  motivo: string;
+  nota: string | null;
+  criadaEm: D;
+  enviadaEm: D | null;
+  aceiteEm: D | null;
+  vagaEm: D | null;
+  fechadaEm: D | null;
+  criadaPor: { id: string; nome: string };
+}
+
+/** PROD-13 — ensino ao doente/cuidador, com a verificação da compreensão (teach-back). */
+export interface EnsinoDoente<D = string> {
+  id: string;
+  tema: string;
+  titulo: string;
+  destinatario: 'doente' | 'cuidador' | 'ambos';
+  cuidadorNome: string | null;
+  compreensao: 'compreendeu' | 'parcial' | 'nao_compreendeu';
+  nota: string | null;
+  realizadoEm: D;
+  realizadoPor: { id: string; nome: string };
+}
+
+/** PROD-13 — GET /planeamento-alta/doente/:doenteId */
+export interface ResumoPlaneamentoAlta<D = string> {
+  internado: boolean;
+  altaClinicaEm: D | null;
+  diasAposAltaClinica: number | null;
+  barthel: { pontuacao: number | null; registadaEm: D } | null;
+  sinalizacao: { motivo: 'dependencia' | 'sem_cuidador' | 'ensino_nao_compreendido' | 'sem_avaliacao_inicial'; detalhe: string }[];
+  referenciacoes: ReferenciacaoContinuidade<D>[];
+  ensinos: EnsinoDoente<D>[];
+}
+
+/** PROD-13 — GET /planeamento-alta/catalogo */
+export interface CatalogoPlaneamentoAlta {
+  destinos: { codigo: string; nome: string }[];
+  temasEnsino: { codigo: string; titulo: string; pontos: string[] }[];
+}
+
+/** PROD-13 — GET /planeamento-alta/altas-proteladas */
+export interface AltasProteladas<D = string> {
+  doentes: number;
+  diasTotal: number;
+  linhas: {
+    doenteId: string; nome: string; numeroProcesso: string; cama: string | null; servico: string | null;
+    altaClinicaEm: D; dias: number; aguarda: { destino: string; estado: string }[];
+  }[];
+}

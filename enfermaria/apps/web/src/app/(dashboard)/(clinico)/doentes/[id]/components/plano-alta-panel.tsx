@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { ContinuidadeCuidadosPanel } from './continuidade-cuidados-panel';
 
 interface PlanoAlta {
   id: string;
@@ -462,6 +463,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
         </div>
       )}
+      <ContinuidadeCuidadosPanel doenteId={doenteId} role={utilizador?.role} />
     </div>
   );
 }
