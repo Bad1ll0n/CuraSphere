@@ -4,8 +4,8 @@ import { RedisService } from '../redis/redis.service';
 import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
 import { assertUrlDestinoPublico } from '../common/ssrf-guard';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { LeiturasMonitorService } from '../monitorizacao/leituras-monitor.service';
+import { construirBundleR4 } from './fhir-bundle';
 import { createHash, randomBytes } from 'crypto';
 // LOINC code → SinalVital field mapping
 const LOINC_MAP: Record<string, string> = {
@@ -142,88 +142,19 @@ export class FhirService {
   async exportarBundleDoente(doenteId: string) {
     const doente = await this.prisma.doente.findUnique({
       where: { id: doenteId },
-      include: {
-        medicacoes: { where: { ativo: true }, select: { id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true } },
+      select: {
+        id: true, nome: true, numeroProcesso: true, identificadorHis: true, dataNascimento: true, sexo: true,
+        ficheiroPessoal: { select: { numeroSNS: true } },
+        medicacoes: { where: { ativo: true, deletedAt: null }, select: { id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true } },
         sinaisVitais: { orderBy: { data: 'desc' }, take: 10, select: { id: true, data: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true } },
-        alergias: { where: { deletedAt: null }, select: { id: true, alergenio: true, notas: true, severidade: true } },
+        alergias: { where: { deletedAt: null }, select: { id: true, alergenio: true, tipo: true, severidade: true, reacao: true, certeza: true, notas: true } },
         problemas: { where: { estado: 'ativo' }, select: { id: true, descricao: true, tipo: true } },
       },
     });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
-    const doenteAny = doente as any;
-
-    const base = `urn:curasp:${doenteId}`;
-    const agora = new Date().toISOString();
-
-    const patient = {
-      resourceType: 'Patient',
-      id: doente.id,
-      identifier: [{ system: 'urn:curasp:process', value: doente.numeroProcesso }],
-      name: [{ text: doente.nome }],
-      birthDate: doente.dataNascimento ? chaveDiaClinico(new Date(doente.dataNascimento)) : undefined,
-    };
-
-    const conditions = ((doenteAny.problemas ?? []) as any[]).map((p: any) => ({
-      resourceType: 'Condition',
-      id: p.id,
-      subject: { reference: `Patient/${doente.id}` },
-      code: { text: p.descricao },
-      category: [{ text: p.tipo }],
-    }));
-
-    const medications = ((doenteAny.medicacoes ?? []) as any[]).map((m: any) => ({
-      resourceType: 'MedicationStatement',
-      id: m.id,
-      subject: { reference: `Patient/${doente.id}` },
-      medication: { concept: { text: `${m.nome} ${m.dose}` } },
-      dosage: [{ route: { text: m.via }, timing: { code: { text: m.frequencia } } }],
-      effectivePeriod: { start: new Date(m.iniciadoEm).toISOString() },
-      status: 'active',
-    }));
-
-    const observations = ((doenteAny.sinaisVitais ?? []) as any[]).flatMap((sv: any) => {
-      const obs: any[] = [];
-      const addObs = (code: string, display: string, value: number | null, unit: string) => {
-        if (value == null) return;
-        obs.push({
-          resourceType: 'Observation',
-          id: `${sv.id}-${code}`,
-          subject: { reference: `Patient/${doente.id}` },
-          effectiveDateTime: new Date(sv.data).toISOString(),
-          code: { coding: [{ system: 'http://loinc.org', code, display }] },
-          valueQuantity: { value, unit, system: 'http://unitsofmeasure.org' },
-        });
-      };
-      addObs('8867-4', 'Heart rate', sv.pulso, '/min');
-      addObs('8310-5', 'Body temperature', sv.temperatura, 'Cel');
-      addObs('59408-5', 'Oxygen saturation', sv.saturacaoO2, '%');
-      addObs('9279-1', 'Respiratory rate', sv.frequenciaRespiratoria, '/min');
-      addObs('8480-6', 'Systolic blood pressure', sv.pressaoSistolica, 'mm[Hg]');
-      addObs('8462-4', 'Diastolic blood pressure', sv.pressaoDiastolica, 'mm[Hg]');
-      return obs;
-    });
-
-    const allergies = ((doenteAny.alergias ?? []) as any[]).map((a: any) => ({
-      resourceType: 'AllergyIntolerance',
-      id: a.id,
-      patient: { reference: `Patient/${doente.id}` },
-      code: { text: a.alergenio },
-      reaction: [{ description: a.notas, severity: a.severidade }],
-    }));
-
-    const entries = [patient, ...conditions, ...medications, ...observations, ...allergies];
-
-    return {
-      resourceType: 'Bundle',
-      id: `${base}-export`,
-      type: 'document',
-      timestamp: agora,
-      total: entries.length,
-      entry: entries.map(r => ({
-        fullUrl: `${base}-${(r as any).id}`,
-        resource: r,
-      })),
-    };
+    const { ficheiroPessoal, medicacoes, sinaisVitais, alergias, problemas, ...d } = doente;
+    // PROD-14: Bundle `document` R4 com Composition — ver fhir-bundle.ts.
+    return construirBundleR4({ doente: { ...d, numeroSNS: ficheiroPessoal?.numeroSNS ?? null }, medicacoes, sinaisVitais, alergias, problemas });
   }
 
   // ── FHIR DocumentReference pull (usado por DocumentosSaudeService) ──────────
@@ -358,20 +289,26 @@ export class FhirService {
     }
   }
 
-  // Mock lookup SNS — estrutura real, dados fictícios demonstrativos
+  /**
+   * PROD-14 — consulta ao RNU (Registo Nacional de Utentes).
+   *
+   * Devolvia SEMPRE `encontrado: true` com dados fictícios, em qualquer ambiente: um utente
+   * inexistente aparecia como validado. A integração real exige o contrato e os certificados da
+   * SPMS; até lá, responde-se a verdade — `nao_configurado` — e o simulador só existe fora de
+   * produção, com `RNU_MODO=simulado`, e diz que é simulado.
+   */
   async lookupSns(numeroSNS: string) {
+    if (!/^\d{9}$/.test(numeroSNS ?? '')) throw new BadRequestException('Número de utente SNS inválido (9 dígitos).');
+    const modo = process.env['RNU_MODO'] ?? 'desligado';
+    if (modo === 'simulado' && process.env['NODE_ENV'] !== 'production') {
+      return { encontrado: false, simulado: true, fonte: 'RNU simulado (ambiente de desenvolvimento) — nenhum dado real foi consultado', dadosPreenchidos: null };
+    }
     return {
-      encontrado: true,
-      fonte: 'RNU (demonstração — integração real requer contrato SPMS)',
-      dadosPreenchidos: {
-        nome: 'Dados pré-preenchidos via RNU',
-        numeroSNS,
-        dataNascimento: null,
-        morada: null,
-        codigoPostal: null,
-        localidade: null,
-        telefone: null,
-      },
+      encontrado: false,
+      simulado: false,
+      fonte: 'nao_configurado',
+      mensagem: 'A consulta ao RNU não está configurada neste hospital (requer contrato e certificados SPMS). Confirme a identificação com o documento do utente.',
+      dadosPreenchidos: null,
     };
   }
 }

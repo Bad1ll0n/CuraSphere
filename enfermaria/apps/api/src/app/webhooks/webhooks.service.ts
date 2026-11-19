@@ -1,13 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Optional } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { assertUrlDestinoPublico } from '../common/ssrf-guard';
+import { Hl7SaidaService } from '../hl7/hl7-saida.service';
 
 @Injectable()
 export class WebhooksService {
   private readonly logger = new Logger(WebhooksService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly hl7Saida?: Hl7SaidaService,
+  ) {}
 
   async criar(dto: { url: string; eventos: string[]; criadoPorId: string }) {
     // Defesa em profundidade: rejeita destinos óbviamente internos já na
@@ -27,6 +31,11 @@ export class WebhooksService {
   }
 
   async dispatcharEvento(evento: string, payload: Record<string, unknown>) {
+    // PROD-14: a admissão e a alta seguem também para o HIS, em ADT (A01/A03).
+    const adt = ({ 'doente.admitido': 'A01', 'doente.alta': 'A03' } as const)[evento as 'doente.admitido' | 'doente.alta'];
+    if (adt && this.hl7Saida && typeof payload['doenteId'] === 'string') {
+      await this.hl7Saida.enfileirar(adt, payload['doenteId']).catch((e) => this.logger.warn(`ADT de saída falhou: ${e?.message}`));
+    }
     const hooks = await this.prisma.webhook.findMany({
       where: { ativo: true, eventos: { has: evento } },
     });

@@ -15,6 +15,7 @@ process.env['REDIS_URL'] = 'redis://127.0.0.1:6399';
 process.env['ALLOWED_ORIGINS'] = 'http://localhost:3000';
 process.env['LOGIN_THROTTLE_LIMIT'] = '1000';
 process.env['MFA_THROTTLE_LIMIT'] = '1000';
+process.env['HL7_API_TOKEN'] = 'token-hl7-de-integracao';
 process.env['LOG_LEVEL'] ??= 'silent'; // LOG_LEVEL=error para diagnosticar um 500
 delete process.env['ANTHROPIC_API_KEY'];
 delete process.env['IA_DECISAO_CLINICA'];

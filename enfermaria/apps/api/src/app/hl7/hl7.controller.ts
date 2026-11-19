@@ -1,9 +1,18 @@
-import { Controller, Post, Get, Body, Headers, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Headers, Param, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { timingSafeEqual } from 'crypto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { PrismaService } from '../prisma/prisma.service';
 import { Hl7Service } from './hl7.service';
+import { confirmarEntrega, filaSaida } from './hl7-saida.service';
+
+export class EntregaHl7Dto {
+  /** Se a entrega ao HIS falhou, o motivo (a mensagem continua na fila). */
+  @IsOptional() @IsString() @MaxLength(500) erro?: string;
+}
 
 @Controller('hl7')
 export class Hl7Controller {
@@ -11,22 +20,41 @@ export class Hl7Controller {
 
   constructor(
     private readonly service: Hl7Service,
+    private readonly prisma: PrismaService,
     private readonly config: ConfigService,
   ) {
     this.hl7Token = this.config.get<string>('HL7_API_TOKEN', '');
   }
 
+  /** O motor de integração do hospital autentica-se com o token HL7 (comparação em tempo constante). */
+  private exigirToken(token: string | undefined) {
+    const a = Buffer.from(token ?? '');
+    const b = Buffer.from(this.hl7Token);
+    if (!this.hl7Token || a.length !== b.length || !timingSafeEqual(a, b)) throw new UnauthorizedException('Token HL7 inválido');
+  }
+
+  /** Entrada (HIS → CuraSphere): ADT A01/A02/A03/A04/A08 e ORU R01. A resposta traz o ACK HL7. */
   @Post('receive')
   async receberMensagem(
     @Body() body: string | Buffer,
     @Headers('x-hl7-token') token: string,
-    @Headers('content-type') contentType: string,
   ) {
-    if (!this.hl7Token || token !== this.hl7Token) {
-      throw new UnauthorizedException('Token HL7 inválido');
-    }
+    this.exigirToken(token);
     const raw = Buffer.isBuffer(body) ? body.toString('utf-8') : String(body);
     return this.service.receberMensagem(raw);
+  }
+
+  /** PROD-14 — saída (CuraSphere → HIS), por pull: ADT por entregar, mais antigas primeiro. */
+  @Get('saida')
+  saida(@Headers('x-hl7-token') token: string, @Query('limite') limite?: string) {
+    this.exigirToken(token);
+    return filaSaida(this.prisma, limite ? parseInt(limite, 10) || 50 : 50);
+  }
+
+  @Post('saida/:id/entregue')
+  entregue(@Headers('x-hl7-token') token: string, @Param('id') id: string, @Body() dto: EntregaHl7Dto) {
+    this.exigirToken(token);
+    return confirmarEntrega(this.prisma, id, dto.erro);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

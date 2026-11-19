@@ -831,7 +831,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Migração de dados: todos os utilizadores convertidos para nova taxonomia de roles
 - [x] **qSOFA + CURB-65 (sessão 57)** — `GET /sinais-vitais/:id/scores`; qSOFA (FR≥22, PAS≤100, AVPU≠A); CURB-65 sem Ureia (4/5 critérios de cama + nota sobre lab); interpretação + risco textual; calculado com último registo de sinais vitais + idade do doente
 - [x] **AI Vision para Feridas (sessão 57)** — `POST /feridas/:avaliacaoId/fotos/:fotoId/analisar`; download imagem de S3/local via `StorageService.getBuffer()`; Claude Vision API (`claude-opus-4-7`, base64); parse de JSON `{estadio, sinaisInfecao, tecidoLeito, recomendacao, confianca}`; guardado em `FotoFerida.analiseIA Json?`
-- [x] **HL7 v2 / MLLP sobre HTTP (sessão 57)** — módulo `hl7/`; parser HL7 v2 nativo (sem dependências externas); suporta ORU^R01 (lab results → `ResultadoAnalise`), ADT^A01 (admissão), ADT^A03 (alta); autenticação por `x-hl7-token`; modelo `Hl7Mensagem` (auditoria); `GET /hl7/mensagens` (admin)
+- [x] **HL7 v2 / MLLP sobre HTTP (sessão 57)** — módulo `hl7/`; parser HL7 v2 nativo (sem dependências externas); suporta ORU^R01 (lab results → `ResultadoAnalise`), ADT^A01 (admissão), ADT^A03 (alta); autenticação por `x-hl7-token`; modelo `Hl7Mensagem` (auditoria); `GET /hl7/mensagens` (admin). **Correção (PROD-14):** até à revisão de 2026-11, A01/A03 só escreviam no log e o emparelhamento era pelo `numeroProcesso` do CuraSphere; o estado real e atual está em [`enfermaria/docs/INTEROPERABILIDADE.md`](enfermaria/docs/INTEROPERABILIDADE.md)
 
 ### Web Frontend
 - [x] **Sistema de Toast Universal** — `components/toast.tsx` com `ToastProvider` + hook `useToast`; integrado em `client-layout.tsx`; `onSuccess`/`onError` em todas as páginas com mutações (mar, tarefas, passagem-turno, doentes/[id], farmácia, férias, urgência, equipamentos, fornecedores, catálogo, dashboard, operacional, especialidades, eventos-adversos, rh/formações, rh/ausências, interconsultas)
@@ -1030,7 +1030,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
 | Módulo de RH / gestão de férias | ~~Baixa~~ | ✅ Implementado: `/rh/pessoal`, `/rh/avaliacoes`, `/ferias` com workflow de aprovação por chefe |
 | Telemedicina / Videochamada | Baixa | Fora de âmbito actual |
-| ~~Integrações externas (HL7, FHIR)~~ | ~~Baixa~~ | ✅ Implementado (sessão 57): **HL7 v2** — módulo `hl7/` com parser ORU^R01 (lab results), ADT^A01/A03 (admissão/alta), endpoint `POST /v1/hl7/receive` com autenticação por `x-hl7-token`, modelo `Hl7Mensagem` (auditoria), `GET /v1/hl7/mensagens` (admin). FHIR R4 já existia desde sessão anterior. |
+| Integrações externas (HL7, FHIR, RNU, PEM, RSE, SINAVE) | Alta | ⚠️ **Parcial — ver [`docs/INTEROPERABILIDADE.md`](enfermaria/docs/INTEROPERABILIDADE.md)** (PROD-14). ADT de entrada/saída e exportação FHIR R4 funcionam; RNU, PEM, RSE e SINAVE/NOTIFICA **não estão integrados**. Histórico (sessão 57): **HL7 v2** — módulo `hl7/` com parser ORU^R01 (lab results), ADT^A01/A03 (então sem efeito), endpoint `POST /v1/hl7/receive` com autenticação por `x-hl7-token`, modelo `Hl7Mensagem` (auditoria), `GET /v1/hl7/mensagens` (admin). FHIR R4 já existia desde sessão anterior. |
 
 ### 10.2 Features Parciais ou Incompletas
 
@@ -2486,7 +2486,7 @@ Exportação de dados clínicos em formato FHIR R4 Bundle sem infraestrutura ext
   - `MedicationStatement` (por cada medicação activa, com dose/via/frequência)
   - `Observation` (últimos 10 sinais vitais; cada parâmetro vira recurso separado com código LOINC correcto)
   - `AllergyIntolerance` (por cada alergia)
-- `lookupSns(numeroSNS)` — mock que simula resposta RNU; integração real requer contrato SPMS
+- `lookupSns(numeroSNS)` — **não integrado**: responde `nao_configurado` (PROD-14; antes devolvia sempre dados fictícios); integração real requer contrato SPMS
 
 **Endpoints em `fhir.controller.ts`:**
 - `GET /fhir/doentes/lookup-sns?numeroSNS=X` — simulação RNU
