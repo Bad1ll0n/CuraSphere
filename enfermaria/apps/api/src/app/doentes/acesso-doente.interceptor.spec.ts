@@ -79,7 +79,7 @@ describe('AcessoDoenteInterceptor', () => {
   it('verifica o acesso quando o doente vem no caminho', async () => {
     await correr({ params: { doenteId: 'd1' }, query: {}, user: enfermeira });
 
-    expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd1');
+    expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd1', undefined, false);
     expect(handler.handle).toHaveBeenCalled();
   });
 
@@ -87,7 +87,7 @@ describe('AcessoDoenteInterceptor', () => {
     // `GET /iacs/culturas?doenteId=` era uma leitura sem verificação nenhuma.
     await correr({ params: {}, query: { doenteId: 'd2' }, user: enfermeira });
 
-    expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd2');
+    expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd2', undefined, false);
   });
 
   it('com a query repetida, verifica todos os doentes e não só o primeiro', async () => {
@@ -136,7 +136,7 @@ describe('AcessoDoenteInterceptor', () => {
       await expect(
         correr({ params: {}, query: {}, body: { doenteId: 'd7', email: 'x@y.pt' }, user: enfermeira }),
       ).rejects.toBeInstanceOf(ForbiddenException);
-      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd7');
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd7', undefined, false);
       expect(handler.handle).not.toHaveBeenCalled();
     });
 
@@ -159,7 +159,7 @@ describe('AcessoDoenteInterceptor', () => {
       expect(doentes.assertAcessoDoente).not.toHaveBeenCalled();
 
       await correr({ params: { doenteId: 'd8' }, query: {}, body: { doenteId: 'd7' }, user: enfermeira }, isenta);
-      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd8');
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd8', undefined, false);
       expect(doentes.assertAcessoDoente).toHaveBeenCalledTimes(1);
     });
   });
@@ -175,7 +175,7 @@ describe('AcessoDoenteInterceptor', () => {
         correr({ params: { id: 'm1' }, query: {}, body: {}, user: enfermeira }, porMedicacao),
       ).rejects.toBeInstanceOf(ForbiddenException);
       expect(prisma.medicacao.findUnique).toHaveBeenCalledWith({ where: { id: 'm1' }, select: { doenteId: true } });
-      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd5');
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd5', undefined, false);
       expect(handler.handle).not.toHaveBeenCalled();
     });
 
@@ -189,7 +189,7 @@ describe('AcessoDoenteInterceptor', () => {
         where: { id: 'f1' },
         select: { avaliacao: { select: { doenteId: true } } },
       });
-      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd6');
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('enf-1', 'enfermeiro', 'd6', undefined, false);
     });
 
     it('entidade inexistente → 404 antes do handler', async () => {
@@ -228,5 +228,21 @@ describe('AcessoDoenteInterceptor', () => {
       correr({ params: { doenteId: 'd1' }, query: {}, quiosque: { servicoId: 's1' } }),
     ).resolves.toBe('resposta');
     expect(doentes.assertAcessoDoente).not.toHaveBeenCalled();
+  });
+
+  describe('QA-11 — dados administrativos', () => {
+    const adm = { sub: 'adm-1', role: 'administrativo', tipoToken: 'pessoal' };
+    it('rota que nomeia `administrativo` em @Roles → verificação como dados administrativos', async () => {
+      await correr({ user: adm, params: { doenteId: 'd9' }, query: {}, body: {} }, { roles: ['medico', 'administrativo'] });
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('adm-1', 'administrativo', 'd9', undefined, true);
+    });
+    it('rota marcada com @DadosAdministrativos → idem', async () => {
+      await correr({ user: adm, params: { doenteId: 'd9' }, query: {}, body: {} }, { acessoAdministrativo: true });
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('adm-1', 'administrativo', 'd9', undefined, true);
+    });
+    it('rota clínica aberta a todos (sem @Roles) → não é administrativa', async () => {
+      await correr({ user: adm, params: { doenteId: 'd9' }, query: {}, body: {} });
+      expect(doentes.assertAcessoDoente).toHaveBeenCalledWith('adm-1', 'administrativo', 'd9', undefined, false);
+    });
   });
 });

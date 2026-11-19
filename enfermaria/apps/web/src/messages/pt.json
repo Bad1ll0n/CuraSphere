@@ -65,7 +65,9 @@
       "usePassword": "Usar password"
     },
     "passwordExpired": "A sua password expirou. Por favor altere-a.",
-    "welcome": "Bem-vindo de volta"
+    "welcome": "Bem-vindo de volta",
+    "ssoMfa": "O fornecedor de identidade não confirmou o 2.º fator e a sua conta não tem MFA ativo. Ative o MFA no fornecedor ou fale com a TI.",
+    "ssoFailed": "Não foi possível entrar com o fornecedor de identidade."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1209,5 +1211,9 @@
     "indicatorsTitle": "Indicadores de enfermagem",
     "indicatorsBody": "Quedas e úlceras por 1000 dias, avaliação do risco em 24 h, dor por turno, infeção associada a dispositivo, reinternamentos e tempo urgência → cama.",
     "open": "Abrir"
+  },
+  "adverseEvents": {
+    "reportOnlyTitle": "Notificação de incidentes",
+    "reportOnlyBody": "Use «Registar evento» para notificar (pode ser anónimo). A lista e o seguimento dos incidentes são da gestão de risco."
   }
 }
