@@ -1,144 +1,176 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { AlertasService } from '../alertas/alertas.service';
+import { campo, componente, construirAck, lerMensagem, lerPid, lerPv1, type IdentificacaoPid, type Segmento } from './hl7-mensagem';
 
-interface Hl7Segment {
-  id: string;
-  fields: string[];
-}
+export interface ResultadoHl7 { processado: boolean; tipo: string; efeito?: string; erro?: string; doenteId?: string; ack: string }
 
-function parseHl7(raw: string): Hl7Segment[] {
-  // Normalise line endings; MLLP uses \r, HTTP bodies may use \n or \r\n
-  const lines = raw.replace(/\r\n/g, '\r').replace(/\n/g, '\r').split('\r').filter(Boolean);
-  return lines.map((line) => {
-    const parts = line.split('|');
-    return { id: parts[0], fields: parts };
-  });
-}
+/** Os eventos ADT que têm efeito no CuraSphere. Os restantes são recusados (AR), não ignorados em silêncio. */
+const ADT_SUPORTADOS = ['A01', 'A02', 'A03', 'A04', 'A08'];
 
-function field(seg: Hl7Segment, index: number): string {
-  return seg.fields[index] ?? '';
-}
-
-function component(value: string, index: number): string {
-  return value.split('^')[index] ?? '';
-}
-
+/**
+ * PROD-14 — receção de mensagens HL7 v2 do HIS (ADT) e dos laboratórios (ORU).
+ *
+ * Antes, A01 e A03 só escreviam no log, e o emparelhamento era pelo numeroProcesso — que o
+ * CuraSphere gera no seu formato e nunca coincide com o do HIS. Agora:
+ *  - o doente é emparelhado pelo identificador do HIS (PID-3 tipo PI/MR), depois pelo número de
+ *    utente SNS, e só por último pelo numeroProcesso do CuraSphere;
+ *  - A01/A04 cria o doente (pendente de cama) ou atualiza a identificação; A08 atualiza;
+ *  - A02 atualiza o serviço do episódio e avisa a equipa para confirmar a cama;
+ *  - A03 concilia: se o CuraSphere ainda tem o doente internado, avisa a equipa — a alta
+ *    clínica estruturada (reconciliação, sumário, nota de enfermagem) não se faz por mensagem;
+ *  - todas as mensagens ficam registadas com o efeito, e cada uma tem ACK (AA/AE/AR).
+ */
 @Injectable()
 export class Hl7Service {
   private readonly logger = new Logger(Hl7Service.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly alertas: AlertasService,
+  ) {}
 
-  async receberMensagem(raw: string): Promise<{ processado: boolean; tipo: string; erro?: string }> {
-    const segments = parseHl7(raw);
-    const msh = segments.find((s) => s.id === 'MSH');
+  async receberMensagem(raw: string): Promise<ResultadoHl7> {
+    const segmentos = lerMensagem(raw);
+    const msh = segmentos.find((s) => s.id === 'MSH');
+    if (!msh) throw new BadRequestException('Mensagem HL7 inválida: MSH ausente');
 
-    if (!msh) {
-      throw new BadRequestException('Mensagem HL7 inválida: MSH ausente');
-    }
-
-    // MSH.9 = message type (e.g. "ORU^R01")
-    const tipo = field(msh, 9);
-    const remetente = field(msh, 3);
-    let processado = false;
-    let erroMsg: string | undefined;
+    const tipo = campo(msh, 9).split('^').slice(0, 2).join('^');
+    const [msgType, evento] = tipo.split('^');
+    const remetente = componente(campo(msh, 3), 0);
+    let r: { efeito: string; doenteId?: string } | null = null;
+    let erro: string | undefined;
+    let codigo: 'AA' | 'AE' | 'AR' = 'AA';
 
     try {
-      const msgType = component(tipo, 0);
-      const triggerEvent = component(tipo, 1);
-
-      if (msgType === 'ORU' && triggerEvent === 'R01') {
-        await this.processarORU(segments);
-      } else if (msgType === 'ADT' && triggerEvent === 'A01') {
-        await this.processarADT_A01(segments);
-      } else if (msgType === 'ADT' && triggerEvent === 'A03') {
-        await this.processarADT_A03(segments);
-      } else {
-        this.logger.warn(`Tipo HL7 não suportado: ${tipo}`);
-      }
-      processado = true;
+      if (msgType === 'ORU' && evento === 'R01') r = await this.processarOru(segmentos);
+      else if (msgType === 'ADT' && ADT_SUPORTADOS.includes(evento)) r = await this.processarAdt(evento, segmentos);
+      else { codigo = 'AR'; erro = `Tipo HL7 não suportado: ${tipo || '(vazio)'}`; }
     } catch (e: any) {
-      erroMsg = e?.message ?? 'Erro desconhecido';
-      this.logger.error(`Erro a processar HL7 ${tipo}: ${erroMsg}`);
+      codigo = 'AE';
+      erro = e?.message ?? 'Erro desconhecido';
+      this.logger.error(`Erro a processar HL7 ${tipo}: ${erro}`);
     }
 
     await this.prisma.hl7Mensagem.create({
-      data: { tipo, remetente: remetente || null, conteudoRaw: raw, processado, erroMsg },
+      data: { tipo, remetente: remetente || null, conteudoRaw: raw, processado: codigo === 'AA', erroMsg: erro, efeito: r?.efeito ?? null, doenteId: r?.doenteId ?? null, direcao: 'entrada' },
     });
-
-    return { processado, tipo, erro: erroMsg };
+    return { processado: codigo === 'AA', tipo, efeito: r?.efeito, erro, doenteId: r?.doenteId, ack: construirAck(segmentos, codigo, erro ?? r?.efeito ?? '') };
   }
 
-  private async processarORU(segments: Hl7Segment[]) {
-    const pid = segments.find((s) => s.id === 'PID');
-    const obxList = segments.filter((s) => s.id === 'OBX');
+  /** Emparelhamento: identificador do HIS → número de utente SNS → numeroProcesso do CuraSphere. */
+  private async encontrarDoente(id: IdentificacaoPid) {
+    const sel = { id: true, nome: true, identificadorHis: true, estadoRegisto: true, ativo: true } as const;
+    if (id.identificadorHis) {
+      const d = await this.prisma.doente.findUnique({ where: { identificadorHis: id.identificadorHis }, select: sel });
+      if (d) return d;
+    }
+    if (id.numeroSNS) {
+      const f = await this.prisma.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: id.numeroSNS }, select: { doente: { select: sel } } });
+      if (f?.doente) return f.doente;
+    }
+    if (id.identificadorHis) {
+      // Doentes migrados antes de haver identificador do HIS, com o número do HIS como processo.
+      return this.prisma.doente.findFirst({ where: { numeroProcesso: id.identificadorHis, identificadorHis: null }, select: sel });
+    }
+    return null;
+  }
 
-    if (!pid) return;
+  private dadosIdentificacao(id: IdentificacaoPid) {
+    return {
+      ...(id.nome ? { nome: id.nome } : {}),
+      ...(id.dataNascimento ? { dataNascimento: id.dataNascimento } : {}),
+      ...(id.sexo ? { sexo: id.sexo } : {}),
+      ...(id.identificadorHis ? { identificadorHis: id.identificadorHis } : {}),
+    };
+  }
 
-    // PID.3 = patient identifier list (first component = ID)
-    const pidId = component(field(pid, 3), 0);
-    const doente = await this.prisma.doente.findFirst({ where: { numeroProcesso: pidId, ativo: true } });
-    if (!doente) {
-      this.logger.warn(`ORU^R01: doente não encontrado para PID ${pidId}`);
-      return;
+  private async processarAdt(evento: string, segmentos: Segmento[]) {
+    const id = lerPid(segmentos.find((s) => s.id === 'PID'));
+    if (!id.identificadorHis && !id.numeroSNS) throw new Error('PID-3 sem identificador do HIS nem número de utente');
+    const pv1 = lerPv1(segmentos.find((s) => s.id === 'PV1'));
+    const doente = await this.encontrarDoente(id);
+
+    if (evento === 'A01' || evento === 'A04') {
+      if (doente) {
+        await this.prisma.doente.update({ where: { id: doente.id }, data: this.dadosIdentificacao(id) });
+        await this.guardarSns(doente.id, id.numeroSNS);
+        return { efeito: 'identificação atualizada a partir do HIS', doenteId: doente.id };
+      }
+      if (!id.nome) throw new Error('A01 sem nome (PID-5) — não é possível registar o doente');
+      const novo = await this.prisma.$transaction(async (tx) => {
+        const ano = new Date().getFullYear();
+        const ultimo = await tx.doente.findFirst({ where: { numeroProcesso: { startsWith: `${ano}-` } }, orderBy: { numeroProcesso: 'desc' }, select: { numeroProcesso: true } });
+        const n = ultimo ? parseInt(ultimo.numeroProcesso.split('-')[1], 10) + 1 : 1;
+        return tx.doente.create({
+          data: { ...this.dadosIdentificacao(id), nome: id.nome!, numeroProcesso: `${ano}-${String(n).padStart(8, '0')}`, estadoRegisto: 'pendente_cama' },
+          select: { id: true },
+        });
+      }, { isolationLevel: 'Serializable' });
+      await this.guardarSns(novo.id, id.numeroSNS);
+      return { efeito: `doente registado a partir do HIS — pendente de cama${pv1.servico ? ` (${pv1.servico})` : ''}`, doenteId: novo.id };
     }
 
-    // Create lab exam records from OBX segments
-    for (const obx of obxList) {
-      const parametro = field(obx, 3);        // OBX.3 = observation identifier
-      const valor = field(obx, 5);            // OBX.5 = observation value
-      const unidade = field(obx, 6);          // OBX.6 = units
-      const referencia = field(obx, 7);       // OBX.7 = reference range
-      const estado = field(obx, 8);           // OBX.8 = abnormal flags (H/L/N)
-      const nome = component(parametro, 1) || component(parametro, 0);
+    if (!doente) throw new Error(`Doente não encontrado (HIS ${id.identificadorHis ?? '—'}, SNS ${id.numeroSNS ? 'indicado' : '—'})`);
 
-      const valorNum = parseFloat(valor.replace(',', '.'));
+    if (evento === 'A08') {
+      await this.prisma.doente.update({ where: { id: doente.id }, data: this.dadosIdentificacao(id) });
+      await this.guardarSns(doente.id, id.numeroSNS);
+      return { efeito: 'identificação atualizada a partir do HIS', doenteId: doente.id };
+    }
+
+    const episodio = await this.prisma.episodioInternamento.findFirst({ where: { doenteId: doente.id, estado: 'ativo' }, orderBy: { numero: 'desc' }, select: { id: true, servico: true } });
+
+    if (evento === 'A02') {
+      if (!episodio) throw new Error('A02: o doente não tem internamento em curso no CuraSphere');
+      if (pv1.servico && pv1.servico !== episodio.servico) {
+        await this.prisma.episodioInternamento.update({ where: { id: episodio.id }, data: { servico: pv1.servico } });
+      }
+      const destino = [pv1.servico, pv1.quarto, pv1.cama].filter(Boolean).join(' / ') || 'localização não indicada';
+      await this.alertas.criarAlerta(doente.id, 'adt_transferencia', `Transferência registada no HIS para ${destino}. Confirmar a cama no CuraSphere (gestão de camas).`, 2);
+      return { efeito: `transferência no HIS para ${destino} — serviço do episódio atualizado, cama a confirmar`, doenteId: doente.id };
+    }
+
+    // A03 — alta administrativa no HIS.
+    if (!episodio || doente.estadoRegisto !== 'internado') {
+      return { efeito: 'alta já registada no CuraSphere — conciliada', doenteId: doente.id };
+    }
+    await this.alertas.criarAlerta(doente.id, 'adt_alta_sem_alta_clinica',
+      'O HIS registou a alta administrativa, mas no CuraSphere o doente continua internado. Fazer a alta estruturada (reconciliação, sumário e nota de enfermagem) ou corrigir no HIS.', 3);
+    return { efeito: 'alta no HIS sem alta no CuraSphere — equipa avisada', doenteId: doente.id };
+  }
+
+  private async guardarSns(doenteId: string, numeroSNS: string | null) {
+    if (!numeroSNS) return;
+    await this.prisma.ficheiroPessoalDoente.upsert({ where: { doenteId }, create: { doenteId, numeroSNS }, update: { numeroSNS } });
+  }
+
+  private async processarOru(segmentos: Segmento[]) {
+    const id = lerPid(segmentos.find((s) => s.id === 'PID'));
+    const doente = await this.encontrarDoente(id);
+    if (!doente || !doente.ativo) throw new Error(`ORU^R01: doente não encontrado (HIS ${id.identificadorHis ?? '—'})`);
+
+    let criados = 0;
+    for (const obx of segmentos.filter((s) => s.id === 'OBX')) {
+      const parametro = campo(obx, 3);
+      const valorNum = parseFloat(campo(obx, 5).replace(',', '.'));
       if (isNaN(valorNum)) continue;
-
-      const alterado = estado === 'H' || estado === 'L' || estado === 'A';
-      const critico = estado === 'HH' || estado === 'LL' || estado === 'AA';
-
+      const estado = campo(obx, 8);
+      const referencia = campo(obx, 7);
       await this.prisma.resultadoAnalise.create({
         data: {
           doenteId: doente.id,
-          parametro: nome || parametro,
+          parametro: componente(parametro, 1) || componente(parametro, 0) || parametro,
           valor: valorNum,
-          unidade: unidade || '—',
-          alterado,
-          critico,
+          unidade: campo(obx, 6) || '—',
+          alterado: ['H', 'L', 'A'].includes(estado),
+          critico: ['HH', 'LL', 'AA'].includes(estado),
           observacoes: referencia ? `Ref: ${referencia}` : null,
         },
-      }).catch((e) => this.logger.warn(`Falha ao criar ResultadoAnalise: ${e.message}`));
+      });
+      criados++;
     }
-  }
-
-  private async processarADT_A01(segments: Hl7Segment[]) {
-    const pid = segments.find((s) => s.id === 'PID');
-    if (!pid) return;
-
-    const pidId = component(field(pid, 3), 0);
-    const doente = await this.prisma.doente.findFirst({ where: { numeroProcesso: pidId } });
-
-    if (doente) {
-      this.logger.log(`ADT^A01: doente ${pidId} já existe (${doente.id})`);
-    } else {
-      this.logger.log(`ADT^A01: doente ${pidId} não encontrado no sistema — admissão via HIS registada`);
-    }
-  }
-
-  private async processarADT_A03(segments: Hl7Segment[]) {
-    const pid = segments.find((s) => s.id === 'PID');
-    if (!pid) return;
-
-    const pidId = component(field(pid, 3), 0);
-    const doente = await this.prisma.doente.findFirst({ where: { numeroProcesso: pidId, ativo: true } });
-
-    if (!doente) {
-      this.logger.warn(`ADT^A03: doente ${pidId} não encontrado`);
-      return;
-    }
-
-    this.logger.log(`ADT^A03: alta registada via HL7 para doente ${doente.id}`);
+    return { efeito: `${criados} resultado(s) de análise registado(s)`, doenteId: doente.id };
   }
 
   async listarMensagens(skip = 0, take = 50) {
@@ -146,7 +178,7 @@ export class Hl7Service {
       orderBy: { criadoEm: 'desc' },
       skip,
       take,
-      select: { id: true, tipo: true, remetente: true, processado: true, erroMsg: true, criadoEm: true },
+      select: { id: true, tipo: true, remetente: true, direcao: true, processado: true, efeito: true, erroMsg: true, doenteId: true, criadoEm: true },
     });
   }
 }

@@ -31,5 +31,16 @@ describe('PemClient', () => {
       expect(criarPemClient().ambiente).toBe('sandbox');
       if (anterior !== undefined) process.env['SNS_PEM_MODE'] = anterior;
     });
+
+    it('PROD-14: em produção, sem modo explícito, nunca usa o simulador', () => {
+      const [modo, env] = [process.env['SNS_PEM_MODE'], process.env['NODE_ENV']];
+      delete process.env['SNS_PEM_MODE'];
+      process.env['NODE_ENV'] = 'production';
+      expect(criarPemClient().ambiente).toBe('producao');
+      process.env['SNS_PEM_MODE'] = 'sandbox';
+      expect(criarPemClient().ambiente).toBe('sandbox');
+      process.env['NODE_ENV'] = env;
+      if (modo === undefined) delete process.env['SNS_PEM_MODE']; else process.env['SNS_PEM_MODE'] = modo;
+    });
   });
 });

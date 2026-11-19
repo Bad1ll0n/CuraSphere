@@ -63,8 +63,15 @@ export class SpmsPemClient implements PemClient {
   }
 }
 
+/**
+ * PROD-14: em produção, o simulador nunca é usado por omissão — gerava um número de receita e
+ * um código de dispensa plausíveis que nenhuma farmácia conseguiria dispensar. Sem a integração
+ * SPMS configurada, a emissão falha com uma mensagem clara (e fica registada como erro).
+ * O sandbox em produção só com `SNS_PEM_MODE=sandbox` explícito (ex.: ambiente de formação).
+ */
 export function criarPemClient(): PemClient {
-  const modo = process.env['SNS_PEM_MODE'] ?? 'sandbox';
+  const producao = process.env['NODE_ENV'] === 'production';
+  const modo = process.env['SNS_PEM_MODE'] ?? (producao ? 'producao' : 'sandbox');
   if (modo === 'producao') return new SpmsPemClient(process.env['SNS_PEM_ENDPOINT']);
   return new MockPemClient();
 }

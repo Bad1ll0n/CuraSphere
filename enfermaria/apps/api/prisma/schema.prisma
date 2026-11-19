@@ -280,6 +280,9 @@ model Doente {
   nomeBusca            String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
   dataNascimento       DateTime?
   numeroProcesso       String       @unique
+  // PROD-14: o número de processo no HIS (SONHO/SClínico/outro) — a chave das mensagens ADT.
+  // O numeroProcesso é gerado pelo CuraSphere e nunca coincide com o do HIS.
+  identificadorHis     String?      @unique
   estado               EstadoDoente @default(estavel)
   diagnosticoPrincipal String?
   icd10Code            String?
@@ -3526,6 +3529,10 @@ model Hl7Mensagem {
   conteudoRaw String   @db.Text
   processado  Boolean  @default(false)
   erroMsg     String?
+  // PROD-14: 'entrada' (do HIS) ou 'saida' (para o HIS); o que a mensagem fez, e a que doente.
+  direcao     String   @default("entrada")
+  efeito      String?
+  doenteId    String?
   criadoEm    DateTime @default(now())
 
   @@index([tipo, processado])
