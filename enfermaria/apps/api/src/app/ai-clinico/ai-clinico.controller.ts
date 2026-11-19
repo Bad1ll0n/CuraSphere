@@ -78,18 +78,6 @@ export class AiClinicoController {
     return this.service.sugerirIcd10(nota ?? '');
   }
 
-  @Get('staffing/previsoes')
-  @Roles('direcao', 'chefe_enfermeiros', 'ti')
-  listarStaffingPrevisoes(@Query('dias') dias?: string) {
-    return this.service.listarStaffingPrevisoes(dias ? parseInt(dias, 10) : 7);
-  }
-
-  @Post('staffing/gerar')
-  @Roles('direcao', 'chefe_enfermeiros', 'ti')
-  gerarStaffingPrevisoes() {
-    return this.service.preverNecessidadesPessoal();
-  }
-
   @Post(':doenteId/readmissao')
   @Roles('medico', 'chefe_enfermeiros', 'administrativo')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {

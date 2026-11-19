@@ -268,3 +268,44 @@ export interface AltasProteladas<D = string> {
     altaClinicaEm: D; dias: number; aguarda: { destino: string; estado: string }[];
   }[];
 }
+
+/** PROD-17 — GET /dotacoes: dotação do turno em curso num serviço. */
+export interface DotacaoTurno {
+  servico: string;
+  data: string;
+  turno: 'manha' | 'tarde' | 'noite';
+  doentes: number;
+  porCategoria: { I: number; II: number; III: number; IV: number };
+  horasNecessarias: number;
+  horasDisponiveis: number;
+  enfermeiros: number;
+  enfermeirosNecessarios: number;
+  racio: number | null;
+  semaforo: 'verde' | 'amarelo' | 'vermelho' | 'sem_doentes';
+  parametrosPersonalizados: boolean;
+}
+
+/** PROD-17 — GET /dotacoes/servicos/:servico/historico */
+export interface RegistoDotacaoHistorico {
+  data: string;
+  turno: 'manha' | 'tarde' | 'noite';
+  doentes: number;
+  porCategoria: { I: number; II: number; III: number; IV: number };
+  horasNecessarias: number;
+  horasDisponiveis: number;
+  enfermeiros: number;
+  racio: number | null;
+  semaforo: DotacaoTurno['semaforo'];
+}
+
+/** PROD-17 — parâmetros da dotação de um serviço. */
+export interface ParametrosDotacao {
+  servico: string;
+  personalizados: boolean;
+  horasPorCategoria: { I: number; II: number; III: number; IV: number };
+  distribuicaoTurno: { manha: number; tarde: number; noite: number };
+  horasEfetivasTurno: number;
+  minimos: Record<'manha' | 'tarde' | 'noite', { enfermeiro: number; auxiliar: number; medico: number }>;
+  horasSemanaisMax: number;
+  competenciaObrigatoria: string | null;
+}

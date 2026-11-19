@@ -640,7 +640,7 @@ describe('estrutura — cascatas no schema (ARQ-03)', () => {
 describe('estrutura — tamanho dos ficheiros', () => {
   const LIMITE_LINHAS = 800;
   const GRANDES: Record<string, number> = {
-    'ai-clinico/ai-clinico.service.ts': 1358,
+    'ai-clinico/ai-clinico.service.ts': 1248,
     'medicacao/medicacao.service.ts': 1331,
     'doentes/doentes.service.ts': 1243,
   };

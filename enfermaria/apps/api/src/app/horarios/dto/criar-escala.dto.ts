@@ -1,5 +1,5 @@
-import { IsNumber, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CriarEscalaDto {
   @ApiProperty()
@@ -11,4 +11,11 @@ export class CriarEscalaDto {
   @IsNumber()
   @IsNotEmpty()
   ano: number;
+
+  /** PROD-17: o serviço (nome do serviço das camas). Vazio = escala geral. */
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  @MaxLength(60)
+  servico?: string;
 }
