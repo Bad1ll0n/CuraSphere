@@ -150,20 +150,7 @@ export class AuthService {
     this.anomaly.verificarIpLogin(utilizador.id, ip);
 
     if (utilizador.mfaAtivo) {
-      // SEC-03: audiência e `tipo` próprios — este token NÃO é uma sessão. A
-      // `JwtStrategy` do pessoal nem sequer o descodifica (audiência fora da
-      // allowlist), pelo que já não dá para saltar o 2.º factor apresentando-o
-      // como access token.
-      // QA-19: o desafio tem `jti` gravado em BD — uso único e tentativas contadas.
-      const jti = crypto.randomUUID();
-      await this.prisma.desafioMfa.create({
-        data: { jti, utilizadorId: utilizador.id, expiraEm: new Date(Date.now() + VALIDADE_DESAFIO_MFA_MS) },
-      });
-      const mfaChallengeToken = this.jwtService.sign(
-        { sub: utilizador.id, tipo: 'mfa_challenge', mfaChallenge: true },
-        { expiresIn: '5m', audience: AUD_MFA_CHALLENGE, jwtid: jti },
-      );
-      return { mfaPendente: true as const, mfaChallengeToken };
+      return { mfaPendente: true as const, mfaChallengeToken: await this.criarDesafioMfa(utilizador.id) };
     }
 
     if (ROLES_CLINICOS_MFA.includes(utilizador.role) && !utilizador.mfaAtivo) {
@@ -500,14 +487,32 @@ export class AuthService {
    * autenticação alternativa (WebAuthn, SSO, etc.) para não contornar a
    * infraestrutura de revogação/expiração de sessões.
    */
-  async emitirSessaoExterna(utilizador: {
-    id: string; nome: string; numeroFuncionario: string; role: string;
-    subRole?: string | null; servico: string; tenantId?: string | null; versaoSessao: number; ativo?: boolean;
-  }) {
-    if (utilizador.ativo === false) throw new UnauthorizedException('Utilizador inativo');
+  async emitirSessaoExterna(dado: { id: string }) {
+    // SEC-05: o estado da conta lê-se da BD, não do objeto que a via de autenticação passou
+    // (que podia vir sem `ativo`, ou estar desatualizado). Conta desativada ou bloqueada não
+    // recebe sessão — por password, SSO, passkey ou qualquer outra via.
+    const utilizador = await this.prisma.utilizador.findUnique({ where: { id: dado.id } });
+    if (!utilizador || !utilizador.ativo) throw new UnauthorizedException('Utilizador inativo');
+    if (utilizador.bloqueadoAte && utilizador.bloqueadoAte > new Date()) throw new UnauthorizedException('Conta temporariamente bloqueada');
     const accessToken = this.jwtService.sign(this.buildPayload(utilizador));
     const refreshToken = await this.criarRefreshToken(utilizador.id);
     return { accessToken, refreshToken, utilizador: this.buildUtilizadorDto(utilizador) };
+  }
+
+  /**
+   * SEC-03 / QA-19: desafio do 2.º factor — token com audiência e `tipo` próprios (NÃO é uma
+   * sessão: a `JwtStrategy` do pessoal nem o descodifica) e `jti` gravado em BD (uso único,
+   * tentativas contadas). Usado pelo login por password e pelo SSO sem MFA no fornecedor.
+   */
+  async criarDesafioMfa(utilizadorId: string): Promise<string> {
+    const jti = crypto.randomUUID();
+    await this.prisma.desafioMfa.create({
+      data: { jti, utilizadorId, expiraEm: new Date(Date.now() + VALIDADE_DESAFIO_MFA_MS) },
+    });
+    return this.jwtService.sign(
+      { sub: utilizadorId, tipo: 'mfa_challenge', mfaChallenge: true },
+      { expiresIn: '5m', audience: AUD_MFA_CHALLENGE, jwtid: jti },
+    );
   }
 
   private buildUtilizadorDto(u: { id: string; nome: string; numeroFuncionario: string; role: string; subRole?: string | null; servico: string; tenantId?: string | null }) {

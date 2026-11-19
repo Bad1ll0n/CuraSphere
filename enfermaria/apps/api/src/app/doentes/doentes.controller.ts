@@ -28,6 +28,14 @@ import { EpisodiosService } from '../episodios/episodios.service';
 import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
 import { AltaService } from './alta.service';
 
+/** QA-11: o que o papel administrativo vê do doente — identificação e internamento, sem dados clínicos. */
+export function visaoAdministrativa(d: any) {
+  if (!d) return d;
+  const { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, cama, identificadorHis } = d;
+  return { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, identificadorHis,
+    cama: cama ? { id: cama.id, numero: cama.numero, quarto: cama.quarto, servico: cama.servico } : null };
+}
+
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
 export class DoenteController {
@@ -110,8 +118,11 @@ export class DoenteController {
     // uma vez concedido, assertAcessoDoente reconhece o acesso em todos os restantes endpoints deste doente.
     const motivoHeader = req.headers['x-break-glass-reason'];
     const motivoBreakGlass = motivoHeader ? decodeURIComponent(motivoHeader) : undefined;
-    await this.verificarERegistarLeitura(req, id, motivoBreakGlass);
-    return this.doenteService.buscarPorId(id);
+    // QA-11: o administrativo vê a identificação e o internamento, não o processo clínico.
+    const administrativo = req.user.role === 'administrativo' && !motivoBreakGlass;
+    await this.verificarERegistarLeitura(req, id, motivoBreakGlass, administrativo);
+    const doente = await this.doenteService.buscarPorId(id);
+    return administrativo ? visaoAdministrativa(doente) : doente;
   }
 
   /**
@@ -119,7 +130,7 @@ export class DoenteController {
    * leitura mais importante de todas a não deixar rasto (encontrado pelo teste de integração,
    * QA-20). Regista-se aqui, concedida ou negada.
    */
-  private async verificarERegistarLeitura(req: any, doenteId: string, motivoBreakGlass?: string) {
+  private async verificarERegistarLeitura(req: any, doenteId: string, motivoBreakGlass?: string, administrativo = false) {
     const entrada = (resultado: 'concedido' | 'negado') => this.leituras.registar({
       utilizadorId: req.user.sub ?? null,
       utilizadorNome: req.user.nome ?? null,
@@ -132,7 +143,7 @@ export class DoenteController {
       resultado,
     });
     try {
-      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, motivoBreakGlass);
+      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, motivoBreakGlass, administrativo);
     } catch (e) {
       if (e instanceof ForbiddenException) entrada('negado');
       throw e;
@@ -175,7 +186,7 @@ export class DoenteController {
   /** Internamentos do doente (episódios, movimentos de cama/serviço, alta). */
   @Get(':id/episodios')
   async episodiosDoDoente(@Param('id') id: string, @Request() req: any) {
-    await this.verificarERegistarLeitura(req, id);
+    await this.verificarERegistarLeitura(req, id, undefined, true); // QA-11: dados administrativos
     return this.episodios.listar(id);
   }
 
@@ -199,14 +210,14 @@ export class DoenteController {
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Post(':id/transferir')
   async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.episodios.transferir(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
   async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.doenteService.editar(id, { ...dto, dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined } as any);
   }
 
@@ -257,7 +268,8 @@ export class DoenteController {
     @Body() dto: AltaEstruturadaDto,
     @Request() req: any,
   ) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    // QA-11: o processamento da alta é também administrativo (os requisitos clínicos são verificados no serviço).
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, undefined, true);
     // PROD-12: a única via de alta (a antiga PATCH /alta saiu: não pedia sumário nem nada).
     return this.alta.darAlta(doenteId, req.user, dto);
   }
@@ -265,7 +277,7 @@ export class DoenteController {
   /** PROD-12: o que falta para a alta (reconciliação, nota de enfermagem, plano). */
   @Get(':id/alta/requisitos')
   async requisitosAlta(@Param('id') id: string, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.alta.requisitos(id);
   }
 

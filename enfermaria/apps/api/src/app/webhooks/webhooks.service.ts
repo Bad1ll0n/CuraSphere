@@ -1,8 +1,18 @@
 import { Injectable, Logger, Optional } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
-import { assertUrlDestinoPublico } from '../common/ssrf-guard';
+import { assertUrlDestinoPublico, exigirSemRedireccionamento, SEM_REDIRECCIONAMENTOS } from '../common/ssrf-guard';
 import { Hl7SaidaService } from '../hl7/hl7-saida.service';
+
+/**
+ * SEC-10: um webhook é um sistema de terceiros — recebe identificadores, não dados pessoais.
+ * O nome do doente (e o resto da identificação) seguia em `doente.admitido`/`doente.alta`;
+ * quem precisar dele consulta-o pela API, autenticado e auditado.
+ */
+const CAMPOS_PESSOAIS = new Set(['nome', 'nif', 'numeroSNS', 'dataNascimento', 'telefone', 'email', 'morada', 'numeroProcesso']);
+export function semDadosPessoais(payload: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(payload).filter(([k]) => !CAMPOS_PESSOAIS.has(k)));
+}
 
 @Injectable()
 export class WebhooksService {
@@ -54,14 +64,17 @@ export class WebhooksService {
           throw erro;
         }
 
-        const body = JSON.stringify({ evento, payload, timestamp: new Date().toISOString() });
+        const body = JSON.stringify({ evento, payload: semDadosPessoais(payload), timestamp: new Date().toISOString() });
         const sig = crypto.createHmac('sha256', hook.secret).update(body).digest('hex');
-        await fetch(hook.url, {
+        const res = await fetch(hook.url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-CuraSphere-Signature': sig },
           body,
           signal: AbortSignal.timeout(5000),
+          // SEC-10: um 302 para um endereço interno levaria o pedido para dentro depois da validação.
+          ...SEM_REDIRECCIONAMENTOS,
         });
+        exigirSemRedireccionamento(res);
       }),
     );
   }

@@ -9,13 +9,13 @@ import type { Request, Response } from 'express';
 import { SAML, ValidateInResponseTo } from '@node-saml/node-saml';
 import * as jwksRsa from 'jwks-rsa';
 import * as jwt from 'jsonwebtoken';
-import { SsoService } from './sso.service';
+import { SsoService, mfaNoOidc, mfaNoSaml } from './sso.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
 import { RedisService } from '../../redis/redis.service';
 import * as crypto from 'crypto';
-
+
 import { assertUrlDestinoPublico } from '../../common/ssrf-guard';
 class CriarProviderDto {
   @IsString() @IsIn(['saml', 'oidc']) tipo: string;
@@ -152,19 +152,17 @@ export class SsoController {
       const { profile } = await saml.validatePostResponseAsync(body);
       if (!profile) throw new Error('Assertion SAML inválida ou sessão de logout');
 
-      const utilizador = await this.sso.provisionarUtilizador({
+      const utilizador = await this.sso.provisionarUtilizador(providerId, {
         id: profile.nameID,
         email: (profile['email'] ?? profile['mail']) as string | undefined,
         nome: (profile['displayName'] ?? profile['name']) as string | undefined,
         role: (profile['role'] ?? profile['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) as string | undefined,
       });
 
-      const { accessToken, refreshToken } = await this.sso.emitirTokens(utilizador);
-      this.setCookies(res, accessToken, refreshToken);
-      res.redirect(webUrl);
+      this.concluir(res, webUrl, await this.sso.concluirLogin(utilizador, mfaNoSaml(profile as any, config), config));
     } catch (err) {
       this.logger.error('SAML callback error', err);
-      res.redirect(`${webUrl}/login?erro=sso_failed`);
+      res.redirect(`${webUrl}/login?erro=${/SSO_SEM_MFA/.test(String((err as any)?.message)) ? 'sso_mfa' : 'sso_failed'}`);
     }
   }
 
@@ -273,7 +271,7 @@ export class SsoController {
         throw new Error('nonce do id_token não corresponde ao esperado — possível replay');
       }
 
-      const utilizador = await this.sso.provisionarUtilizador({
+      const utilizador = await this.sso.provisionarUtilizador(providerId, {
         id: payload.sub ?? payload.oid,
         email: payload.email ?? payload.preferred_username,
         nome: payload.name ?? payload.display_name,
@@ -281,16 +279,24 @@ export class SsoController {
       });
 
       await this.redis.del(`sso:oidc:state:${state}`);
-      const { accessToken, refreshToken } = await this.sso.emitirTokens(utilizador);
-      this.setCookies(res, accessToken, refreshToken);
-
       const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';
-      res.redirect(webUrl);
+      this.concluir(res, webUrl, await this.sso.concluirLogin(utilizador, mfaNoOidc(payload, config), config));
     } catch (err) {
       this.logger.error('OIDC callback error', err);
       const webUrl = process.env['NEXT_PUBLIC_WEB_URL'] ?? 'http://localhost:4200';
-      res.redirect(`${webUrl}/login?erro=sso_failed`);
+      res.redirect(`${webUrl}/login?erro=${/SSO_SEM_MFA/.test(String((err as any)?.message)) ? 'sso_mfa' : 'sso_failed'}`);
     }
+  }
+
+  /**
+   * SEC-05: com MFA no fornecedor, sessão; sem ele (e com MFA na conta), o desafio TOTP segue no
+   * FRAGMENTO do URL (`#mfa=…`) — o browser não o envia a servidores nem o regista em logs — e a
+   * página de login pede o código. O desafio é de uso único e dura 5 minutos.
+   */
+  private concluir(res: Response, webUrl: string, r: { tipo: 'sessao'; accessToken: string; refreshToken: string } | { tipo: 'mfa'; mfaChallengeToken: string }) {
+    if (r.tipo === 'mfa') return res.redirect(`${webUrl}/login#mfa=${encodeURIComponent(r.mfaChallengeToken)}`);
+    this.setCookies(res, r.accessToken, r.refreshToken);
+    return res.redirect(webUrl);
   }
 
   private setCookies(res: Response, accessToken: string, refreshToken: string) {

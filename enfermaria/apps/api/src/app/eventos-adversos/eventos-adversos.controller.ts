@@ -18,6 +18,10 @@ export class EventosAdversosController {
     return this.service.criar(dto, req.user.sub);
   }
 
+  // A lista tem os incidentes de todos os doentes (com o nome): é para quem gere o risco, não
+  // para qualquer profissional autenticado. Notificar (POST) continua aberto a todos.
+  @UseGuards(RolesGuard)
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros', 'chefe_medicos', 'chefe_turno')
   @Get()
   listar(
     @Query('tipo') tipo?: string,
@@ -44,11 +48,15 @@ export class EventosAdversosController {
     return this.service.exportarNotifica({ inicio, fim, soNovos: soNovos === 'true', marcar: true });
   }
 
+  @UseGuards(RolesGuard)
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros', 'chefe_medicos', 'chefe_turno')
   @Get('indicadores')
   indicadores() {
     return this.service.indicadores();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros', 'chefe_medicos', 'chefe_turno')
   @Patch(':id')
   atualizar(@Param('id') id: string, @Body() dto: AtualizarEventoAdversoDto) {
     return this.service.atualizar(id, dto);

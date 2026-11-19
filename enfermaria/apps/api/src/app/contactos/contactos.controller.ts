@@ -4,12 +4,13 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ContactosService } from './contactos.service';
 import { CriarContactoDto } from './dto/criar-contacto.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor, DadosAdministrativos } from '../doentes/acesso-doente.decorator';
 
 // QA-12: sem RolesGuard, qualquer papel (incluindo operacional/facilities) criava e apagava
 // contactos de emergência. Ler continua aberto a quem tem acesso ao doente.
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('contactoEmergencia')
+@DadosAdministrativos() // QA-11: contactos de emergência são dados administrativos
 @Controller('contactos')
 export class ContactosController {
   constructor(private readonly service: ContactosService) {}

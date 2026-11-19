@@ -784,4 +784,21 @@ describe('AuthService', () => {
       expect(resultado.diasRestantes).toBeLessThanOrEqual(10);
     });
   });
+
+  describe('emitirSessaoExterna() — SEC-05', () => {
+    const base = { id: 'u1', nome: 'Ana', numeroFuncionario: 'sso:x', role: 'enfermeiro', subRole: null, servico: 'internamento', tenantId: 'default', versaoSessao: 0, passwordHash: 'x', mfaAtivo: false };
+    it('lê o estado da conta da BD — inativa é recusada mesmo que o chamador não o diga', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValueOnce({ ...base, ativo: false });
+      await expect(service.emitirSessaoExterna({ id: 'u1' })).rejects.toBeInstanceOf(UnauthorizedException);
+    });
+    it('conta bloqueada temporariamente é recusada', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValueOnce({ ...base, ativo: true, bloqueadoAte: new Date(Date.now() + 60_000) });
+      await expect(service.emitirSessaoExterna({ id: 'u1' })).rejects.toThrow(/bloqueada/);
+    });
+    it('conta ativa → sessão', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValueOnce({ ...base, ativo: true, bloqueadoAte: null });
+      const r = await service.emitirSessaoExterna({ id: 'u1' });
+      expect(r.accessToken).toBeTruthy();
+    });
+  });
 });
