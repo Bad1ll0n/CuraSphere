@@ -28,8 +28,8 @@ export class HorariosController {
   }
 
   @Get('mes')
-  buscarPorMes(@Query('mes') mes: string, @Query('ano') ano: string) {
-    return this.horariosService.buscarPorMes(Number(mes), Number(ano));
+  buscarPorMes(@Query('mes') mes: string, @Query('ano') ano: string, @Query('servico') servico?: string) {
+    return this.horariosService.buscarPorMes(Number(mes), Number(ano), (servico ?? '').trim());
   }
 
   @Get('meu')

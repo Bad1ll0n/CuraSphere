@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsInt, IsIn, ValidateIf, IsUUID, Min, MaxLength } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsIn, ValidateIf, IsUUID, Min, MaxLength, IsArray, ArrayMaxSize } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ROLES, Servico } from '../../common/enums';
 
@@ -46,6 +46,23 @@ export class EditarUtilizadorDto {
   @IsString()
   @MaxLength(64)
   equipa?: string;
+
+  /** PROD-17: o serviço de internamento onde está colocado (nome do serviço das camas) — entra na escala desse serviço. */
+  @ApiPropertyOptional()
+  @IsOptional()
+  @ValidateIf((_o, v) => v !== null)
+  @IsString()
+  @MaxLength(60)
+  unidade?: string | null;
+
+  /** PROD-17: competências que contam na escala (ex.: 'SAV', 'UCI'). */
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(20)
+  @IsString({ each: true })
+  @MaxLength(40, { each: true })
+  competencias?: string[];
 
   @ApiPropertyOptional()
   @IsOptional()

@@ -73,7 +73,7 @@
   "app/(dashboard)/(gestao)/dashboard-qualidade/page.tsx": 30,
   "app/(dashboard)/(gestao)/eventos-adversos/page.tsx": 30,
   "app/(dashboard)/(gestao)/ferias/page.tsx": 15,
-  "app/(dashboard)/(gestao)/horarios/page.tsx": 53,
+  "app/(dashboard)/(gestao)/horarios/page.tsx": 47,
   "app/(dashboard)/(gestao)/operacional/page.tsx": 9,
   "app/(dashboard)/(gestao)/relatorios/page.tsx": 26,
   "app/(dashboard)/(gestao)/rh/ausencias/page.tsx": 17,

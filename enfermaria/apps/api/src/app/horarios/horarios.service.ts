@@ -3,9 +3,15 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TipoTurno } from '../common/enums';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { DotacoesService } from '../dotacoes/dotacoes.service';
+import { gerarEscala } from '../dotacoes/dotacoes.regras';
+
 @Injectable()
 export class HorariosService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly dotacoes: DotacoesService,
+  ) {}
 
   async listar(page = 1, limit = 12) {
     return this.prisma.escala.findMany({
@@ -26,9 +32,9 @@ export class HorariosService {
     });
   }
 
-  async buscarPorMes(mes: number, ano: number) {
+  async buscarPorMes(mes: number, ano: number, servico = '') {
     const escala = await this.prisma.escala.findUnique({
-      where: { mes_ano: { mes, ano } },
+      where: { mes_ano_servico: { mes, ano, servico } },
       include: {
         turnos: {
           include: {
@@ -45,14 +51,15 @@ export class HorariosService {
     return escala;
   }
 
-  async criar(data: { mes: number; ano: number; criadaPorId: string }) {
+  async criar(data: { mes: number; ano: number; servico?: string; criadaPorId: string }) {
+    const servico = (data.servico ?? '').trim();
     return this.prisma.$transaction(async (tx) => {
       const existe = await tx.escala.findUnique({
-        where: { mes_ano: { mes: data.mes, ano: data.ano } },
+        where: { mes_ano_servico: { mes: data.mes, ano: data.ano, servico } },
       });
-      if (existe) throw new ConflictException(`Já existe escala para ${data.mes}/${data.ano}`);
+      if (existe) throw new ConflictException(`Já existe escala para ${data.mes}/${data.ano}${servico ? ` (${servico})` : ''}`);
       return tx.escala.create({
-        data,
+        data: { ...data, servico },
         include: { criadaPor: { select: { id: true, nome: true } } },
       });
     }, { isolationLevel: 'Serializable' });
@@ -209,111 +216,50 @@ export class HorariosService {
     ]);
   }
 
+  /**
+   * PROD-17 — escala automática POR SERVIÇO, com os mínimos e as regras laborais do serviço
+   * (dotacoes.regras.ts › gerarEscala). Antes havia uma só escala por mês para o hospital, com
+   * 2 enfermeiros por turno fixos e deduplicação por tipo+data: gerar o serviço A e depois o B
+   * não criava nenhum turno de B. O que não se consegue cumprir vem em `faltas`.
+   */
   async gerarEscalaAutomatica(mes: number, ano: number, criadaPorId: string, servico?: string) {
-    // Criar escala se não existir
-    let escala = await this.prisma.escala.findUnique({ where: { mes_ano: { mes, ano } } });
-    if (!escala) {
-      escala = await this.prisma.escala.create({ data: { mes, ano, criadaPorId } });
-    }
+    const s = (servico ?? '').trim();
+    let escala = await this.prisma.escala.findUnique({ where: { mes_ano_servico: { mes, ano, servico: s } } });
+    if (!escala) escala = await this.prisma.escala.create({ data: { mes, ano, servico: s, criadaPorId } });
 
-    // Buscar profissionais ativos do serviço (enfermeiros + médicos + auxiliares)
-    const rolesClinicas = ['medico', 'enfermeiro', 'auxiliar'];
+    // O pessoal do serviço é o colocado nele (`unidade`); a escala geral usa todos os clínicos.
     const profissionais = await this.prisma.utilizador.findMany({
-      where: {
-        ativo: true,
-        role: { in: rolesClinicas },
-        ...(servico ? { servico: servico as any } : {}),
-      },
-      select: { id: true, role: true, ordemExperiencia: true },
+      where: { ativo: true, role: { in: ['medico', 'enfermeiro', 'auxiliar'] }, ...(s ? { unidade: s } : {}) },
+      select: { id: true, role: true, competencias: true },
       orderBy: [{ role: 'asc' }, { ordemExperiencia: 'asc' }],
     });
-
-    if (profissionais.length === 0) throw new BadRequestException('Sem profissionais disponíveis para gerar escala');
-
-    const medicos = profissionais.filter(p => p.role === 'medico');
-    const enfermeiros = profissionais.filter(p => p.role === 'enfermeiro');
-    const auxiliares = profissionais.filter(p => p.role === 'auxiliar');
-
-    // Pré-carregar ausências aprovadas do mês para evitar N queries no loop
-    const mesInicio = new Date(Date.UTC(ano, mes - 1, 1));
-    const mesFim = new Date(Date.UTC(ano, mes, 0, 23, 59, 59, 999));
-    const ausenciasMes = await this.prisma.ausencia.findMany({
-      where: {
-        estado: 'aprovada',
-        dataInicio: { lte: mesFim },
-        dataFim:    { gte: mesInicio },
-      },
-      select: { utilizadorId: true, dataInicio: true, dataFim: true },
-    });
-
-    const diasNoMes = new Date(ano, mes, 0).getDate();
-    const tipos: TipoTurno[] = [TipoTurno.manha, TipoTurno.tarde, TipoTurno.noite];
-    let turnosCriados = 0;
-
-    // Pre-load all existing turns for this scale in one query — avoids 90 findFirst calls in the loop
-    const turnosExistentes = await this.prisma.horarioTurno.findMany({
-      where: { escalId: escala.id },
-      select: { tipo: true, data: true },
-    });
-    const turnosExistentesSet = new Set(
-      turnosExistentes.map(t => `${t.tipo}_${t.data.toISOString()}`)
-    );
-
-    for (let dia = 1; dia <= diasNoMes; dia++) {
-      const dataDia = new Date(`${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}T00:00:00.000Z`);
-
-      for (const tipo of tipos) {
-        if (turnosExistentesSet.has(`${tipo}_${dataDia.toISOString()}`)) continue;
-
-        // Filtrar ausentes neste dia
-        const ausentesNoDia = new Set(
-          ausenciasMes
-            .filter(a => a.dataInicio <= dataDia && a.dataFim >= dataDia)
-            .map(a => a.utilizadorId)
-        );
-        const medicosDisp = medicos.filter(p => !ausentesNoDia.has(p.id));
-        const enfermeirosDisp = enfermeiros.filter(p => !ausentesNoDia.has(p.id));
-        const auxiliaresDisp = auxiliares.filter(p => !ausentesNoDia.has(p.id));
-
-        // Distribuir profissionais em round-robin por tipo de turno
-        const turnoIndex = (dia - 1) * 3 + tipos.indexOf(tipo);
-        const getProfRoundRobin = (lista: typeof profissionais, n: number) => {
-          if (lista.length === 0) return [];
-          const min = Math.max(1, Math.ceil(lista.length / 3));
-          const inicio = (turnoIndex * min) % lista.length;
-          const selecionados: string[] = [];
-          for (let i = 0; i < min; i++) {
-            selecionados.push(lista[(inicio + i) % lista.length].id);
-          }
-          return [...new Set(selecionados)];
-        };
-
-        const profIds = [
-          ...getProfRoundRobin(medicosDisp, 1),
-          ...getProfRoundRobin(enfermeirosDisp, 2),
-          ...getProfRoundRobin(auxiliaresDisp, 1),
-        ];
-
-        if (profIds.length === 0) continue;
-
-        await this.prisma.horarioTurno.create({
-          data: {
-            escalId: escala.id,
-            tipo,
-            data: dataDia,
-            profissionais: { create: profIds.map(id => ({ utilizadorId: id })) },
-          },
-        });
-        turnosCriados++;
-      }
+    if (profissionais.length === 0) {
+      throw new BadRequestException(s ? `Sem profissionais colocados no serviço "${s}" — defina a unidade dos profissionais.` : 'Sem profissionais disponíveis para gerar escala');
     }
 
-    return {
-      escala: { id: escala.id, mes, ano },
-      turnosCriados,
-      profissionaisUsados: profissionais.length,
-      diasGerados: diasNoMes,
-    };
+    const mesInicio = new Date(Date.UTC(ano, mes - 1, 1));
+    const mesFim = new Date(Date.UTC(ano, mes, 0, 23, 59, 59, 999));
+    const [ausencias, existentes, p] = await Promise.all([
+      this.prisma.ausencia.findMany({ where: { estado: 'aprovada', dataInicio: { lte: mesFim }, dataFim: { gte: mesInicio } }, select: { utilizadorId: true, dataInicio: true, dataFim: true } }),
+      this.prisma.horarioTurno.findMany({ where: { escalId: escala.id }, select: { tipo: true, data: true } }),
+      this.dotacoes.parametros(s || 'geral'),
+    ]);
+    const diasNoMes = new Date(ano, mes, 0).getDate();
+    const dias = Array.from({ length: diasNoMes }, (_, i) => `${ano}-${String(mes).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`);
+    const { turnos, faltas } = gerarEscala({
+      dias,
+      profissionais: profissionais as any,
+      ausente: (id, dia) => { const d = new Date(`${dia}T00:00:00.000Z`); return ausencias.some((a) => a.utilizadorId === id && a.dataInicio <= d && a.dataFim >= d); },
+      existentes: new Set(existentes.map((t) => `${t.data.toISOString().slice(0, 10)}_${t.tipo}`)),
+      p,
+    });
+
+    for (const t of turnos) {
+      await this.prisma.horarioTurno.create({
+        data: { escalId: escala.id, tipo: t.tipo as TipoTurno, data: new Date(`${t.data}T00:00:00.000Z`), profissionais: { create: t.ids.map((id) => ({ utilizadorId: id })) } },
+      });
+    }
+    return { escala: { id: escala.id, mes, ano, servico: s }, turnosCriados: turnos.length, profissionaisUsados: profissionais.length, diasGerados: diasNoMes, faltas };
   }
 
   async horarioUtilizador(utilizadorId: string, mes: number, ano: number) {

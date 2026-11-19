@@ -71,6 +71,10 @@ model Utilizador {
   role                    String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
   subRole                 String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
   servico                 Servico   @default(internamento)
+  // PROD-17: o serviço de internamento onde está colocado (o mesmo nome do serviço das camas) —
+  // é daqui que sai o pessoal da escala do serviço — e as competências que contam na escala.
+  unidade                 String?
+  competencias            String[]  @default([]) // ex.: 'SAV', 'UCI', 'triagem'
   ordemExperiencia        Int? // definida pela chefe de enfermeiros
   equipa                  String? // ex: "A", "B", "C"
   ativo                   Boolean   @default(true)
@@ -812,17 +816,56 @@ model RegistoMedicacao {
 
 // ─── Escalas ─────────────────────────────────────────────────────────────────
 
+/// PROD-17 — parâmetros da dotação segura de um serviço (a validar pela direção de enfermagem;
+/// a referência é a Norma para o cálculo de dotações seguras, Regulamento OE n.º 743/2019).
+model ParametroDotacao {
+  id                     String   @id @default(uuid())
+  servico                String   @unique
+  horasPorCategoria      Json // { I, II, III, IV } — horas de cuidados de enfermagem por doente em 24 h
+  distribuicaoTurno      Json // { manha, tarde, noite } — fração das 24 h em cada turno (soma 1)
+  horasEfetivasTurno     Float    @default(7) // horas de cuidados diretos por enfermeiro num turno de 8 h
+  minimos                Json // { manha: { enfermeiro, auxiliar, medico }, tarde: {…}, noite: {…} }
+  horasSemanaisMax       Int      @default(40)
+  competenciaObrigatoria String? // ex. 'SAV': cada turno tem pelo menos um enfermeiro com ela
+  atualizadoEm           DateTime @updatedAt
+  atualizadoPorId        String?
+
+  @@map("parametros_dotacao")
+}
+
+/// PROD-17 — fotografia da dotação de um serviço num turno (histórico para a direção).
+model RegistoDotacao {
+  id           String   @id @default(uuid())
+  servico      String
+  data         String // dia clínico AAAA-MM-DD
+  turno        String // manha | tarde | noite
+  doentes      Int
+  porCategoria Json // { I, II, III, IV }
+  horasNecessarias  Float
+  horasDisponiveis  Float
+  enfermeiros  Int
+  racio        Float? // disponíveis / necessárias
+  semaforo     String // verde | amarelo | vermelho | sem_doentes
+  calculadoEm  DateTime @default(now())
+
+  @@unique([servico, data, turno])
+  @@index([servico, data])
+  @@map("registos_dotacao")
+}
+
 model Escala {
   id          String   @id @default(uuid())
   mes         Int
   ano         Int
+  // PROD-17: uma escala por serviço e mês. '' = escala geral (o que existia antes).
+  servico     String   @default("")
   criadaEm    DateTime @default(now())
   criadaPorId String
 
   criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id], onDelete: Restrict)
   turnos    HorarioTurno[]
 
-  @@unique([mes, ano])
+  @@unique([mes, ano, servico])
   @@map("escalas")
 }
 
