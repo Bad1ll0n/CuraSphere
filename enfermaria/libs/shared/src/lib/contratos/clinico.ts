@@ -309,3 +309,28 @@ export interface ParametrosDotacao {
   horasSemanaisMax: number;
   competenciaObrigatoria: string | null;
 }
+
+/** PROD-18 — um indicador sensível aos cuidados de enfermagem (definição versionada + valor). */
+export interface IndicadorEnfermagem<D = string> {
+  codigo: string;
+  versao: string;
+  nome: string;
+  numerador: string;
+  denominador: string;
+  exclusoes: string;
+  unidade: 'por_1000_dias' | 'percentagem' | 'minutos';
+  melhor: 'baixo' | 'alto';
+  valor: number | null;
+  numeradorValor: number;
+  denominadorValor: number;
+  casos?: { doenteId: string; nome: string; numeroProcesso: string; quando: D | null; detalhe: string }[];
+}
+
+/** PROD-18 — GET /indicadores */
+export interface ResultadoIndicadores<D = string> {
+  inicio: string;
+  fim: string;
+  servico: string | null;
+  diasInternamento: number;
+  indicadores: IndicadorEnfermagem<D>[];
+}
