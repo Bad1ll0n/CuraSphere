@@ -1169,5 +1169,45 @@
     "save": "Guardar parâmetros",
     "saved": "Parâmetros guardados",
     "categoriesValue": "I {I} · II {II} · III {III} · IV {IV}"
+  },
+  "indicators": {
+    "title": "Indicadores de enfermagem",
+    "back": "← Qualidade",
+    "intro": "Indicadores sensíveis aos cuidados de enfermagem, com a definição (numerador, denominador, exclusões e versão) à vista. Clique para ver os doentes que contam.",
+    "from": "De",
+    "to": "Até (exclusive)",
+    "service": "Serviço",
+    "allServices": "Todos",
+    "apply": "Calcular",
+    "exportCsv": "Exportar CSV",
+    "exportNotifica": "Exportar incidentes para o NOTIFICA",
+    "notificaExported": "{n, plural, one {# incidente exportado} other {# incidentes exportados}} (anónimos, ICPS)",
+    "exportError": "Não foi possível exportar",
+    "loading": "A calcular os indicadores...",
+    "loadError": "Não foi possível calcular os indicadores.",
+    "retry": "Tentar de novo",
+    "empty": "Sem indicadores para o período.",
+    "patientDays": "{n} dias de internamento no período",
+    "col": {
+      "indicator": "Indicador",
+      "value": "Valor",
+      "fraction": "Numerador / denominador",
+      "actions": "Ações"
+    },
+    "definition": "Definição (versão {versao})",
+    "numerator": "Numerador:",
+    "denominator": "Denominador:",
+    "exclusions": "Exclusões:",
+    "minutes": "{n} min",
+    "showCases": "Ver casos",
+    "showGaps": "Ver falhas",
+    "hideCases": "Fechar",
+    "casesTitle": "Casos",
+    "noCases": "Nenhum caso no período."
+  },
+  "qualityDashboard": {
+    "indicatorsTitle": "Indicadores de enfermagem",
+    "indicatorsBody": "Quedas e úlceras por 1000 dias, avaliação do risco em 24 h, dor por turno, infeção associada a dispositivo, reinternamentos e tempo urgência → cama.",
+    "open": "Abrir"
   }
 }

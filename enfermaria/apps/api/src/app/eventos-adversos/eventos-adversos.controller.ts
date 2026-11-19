@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { EventosAdversosService } from './eventos-adversos.service';
 import { CriarEventoAdversoDto } from './dto/criar-evento-adverso.dto';
 import { AtualizarEventoAdversoDto } from './dto/atualizar-evento-adverso.dto';
@@ -24,6 +26,22 @@ export class EventosAdversosController {
     @Query('servicoId') servicoId?: string,
   ) {
     return this.service.listar({ tipo, gravidade, estado, servicoId });
+  }
+
+  /** PROD-18 — exportação anónima para o NOTIFICA (classe ICPS e grau de dano). */
+  @UseGuards(RolesGuard)
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
+  @Get('exportar-notifica')
+  preverNotifica(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Query('soNovos') soNovos?: string) {
+    return this.service.exportarNotifica({ inicio, fim, soNovos: soNovos === 'true' });
+  }
+
+  /** Exporta e marca os incidentes como exportados (o pedido seguinte com soNovos não os repete). */
+  @UseGuards(RolesGuard)
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
+  @Post('exportar-notifica')
+  exportarNotifica(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Query('soNovos') soNovos?: string) {
+    return this.service.exportarNotifica({ inicio, fim, soNovos: soNovos === 'true', marcar: true });
   }
 
   @Get('indicadores')

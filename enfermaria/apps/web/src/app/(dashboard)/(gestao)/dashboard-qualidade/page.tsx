@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { LinkIndicadores } from './link-indicadores';
 
 interface DadosQualidade {
   iacs: {
@@ -142,6 +143,8 @@ export default function DashboardQualidade() {
         </div>
         <p className="text-slate-500 text-sm" style={{ marginLeft: '52px' }}>Indicadores de segurança do doente e qualidade assistencial</p>
       </div>
+
+      <LinkIndicadores />
 
       {/* KPIs principais */}
       <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '28px', gridTemplateColumns: 'repeat(4, 1fr)' }}>

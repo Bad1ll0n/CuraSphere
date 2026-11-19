@@ -1,10 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { StatCard, EmBreve, DashboardHeader } from '../partilhado';
 
 export function DashboardQualidade({ utilizador }: { utilizador: any }) {
   const tCommon = useTranslations('common');
+  const t = useTranslations('qualityDashboard');
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
@@ -19,7 +21,12 @@ export function DashboardQualidade({ utilizador }: { utilizador: any }) {
         <EmBreve titulo="Controlo de Infeção (IACS)" descricao="Doentes em isolamento, alertas de surto, relatórios epidemiológicos" />
       </div>
       <div className="grid grid-cols-2 gap-5">
-        <EmBreve titulo="Indicadores de Qualidade" descricao="KPIs: taxa de infeção, quedas, úlceras por pressão, reinternamentos" />
+        {/* PROD-18: os indicadores de enfermagem já existem. */}
+        <Link href="/dashboard-qualidade/indicadores" className="bg-white rounded-2xl border border-blue-200 shadow-sm hover:bg-blue-50/40 block" style={{ padding: '24px' }}>
+          <p className="text-sm font-semibold text-slate-800">{t('indicatorsTitle')}</p>
+          <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>{t('indicatorsBody')}</p>
+          <span className="inline-block text-xs font-semibold text-blue-700" style={{ marginTop: '12px' }}>{t('open')} →</span>
+        </Link>
         <EmBreve titulo="Auditorias Internas" descricao="Planeamento e seguimento de auditorias por área" />
       </div>
 

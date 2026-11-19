@@ -18,6 +18,7 @@ import { AtosClinicosModule } from './atos-clinicos/atos-clinicos.module';
 import { BreakGlassModule } from './break-glass/break-glass.module';
 import { ConsentimentosModule } from './consentimentos/consentimentos.module';
 import { EventosAdversosModule } from './eventos-adversos/eventos-adversos.module';
+import { IndicadoresModule } from './indicadores/indicadores.module';
 import { MedicacaoModule } from './medicacao/medicacao.module';
 import { FarmaciaModule } from './farmacia/farmacia.module';
 import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
@@ -63,7 +64,7 @@ const clinicalModules = [
   DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule, PediatriaModule,
   AlergiasModule, ContactosModule, AlertasModule, NotasClinicasModule,
   EscalasClinicasModule, DispositivosInvasivosModule, AtosClinicosModule,
-  BreakGlassModule, ConsentimentosModule, ConsentimentosTratamentoModule, VigilanciaModule, ProcessoEnfermagemModule, EventosAdversosModule,
+  BreakGlassModule, ConsentimentosModule, ConsentimentosTratamentoModule, VigilanciaModule, ProcessoEnfermagemModule, EventosAdversosModule, IndicadoresModule,
   // Terapêutica & Diagnóstico
   MedicacaoModule, FarmaciaModule, ReconciliacaoModule, ExamesModule,
   ProtocolosModule, DietasModule,
