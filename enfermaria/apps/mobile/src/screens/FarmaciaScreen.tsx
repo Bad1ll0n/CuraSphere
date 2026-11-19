@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface StockItem {
   id: string;
@@ -84,7 +85,7 @@ export default function FarmaciaScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -97,7 +98,7 @@ export default function FarmaciaScreen({ utilizador, onVoltar }: Props) {
 
       <View style={s.tabs}>
         {(['pedidos', 'stock'] as const).map(t => (
-          <TouchableOpacity key={t} style={[s.tab, tab === t && s.tabAtivo]} onPress={() => setTab(t)}>
+          <TouchableOpacity accessibilityRole="button" key={t} style={[s.tab, tab === t && s.tabAtivo]} onPress={() => setTab(t)}>
             <Text style={[s.tabTexto, tab === t && s.tabTextoAtivo]}>
               {t === 'pedidos' ? 'Pedidos' : 'Stock'}
             </Text>
@@ -125,7 +126,7 @@ export default function FarmaciaScreen({ utilizador, onVoltar }: Props) {
                   </View>
                 )}
                 {p.estado === 'aprovado' && (
-                  <TouchableOpacity style={s.btnDispensar} onPress={() => confirmarDispensa(p.id)}>
+                  <TouchableOpacity accessibilityRole="button" style={s.btnDispensar} onPress={() => confirmarDispensa(p.id)}>
                     <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
                     <Text style={s.btnDispensarTexto}>Dispensar</Text>
                   </TouchableOpacity>
@@ -167,7 +168,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#bfdbfe', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
   tabs: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
   tabAtivo: { backgroundColor: '#2563eb' },
@@ -181,12 +182,12 @@ const s = StyleSheet.create({
   cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
   cartaoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 12, fontWeight: '600' },
+  badgeTexto: { fontSize: 13, fontWeight: '600' },
   priorBadge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  priorTexto: { fontSize: 11, fontWeight: '600', textTransform: 'capitalize' },
+  priorTexto: { fontSize: 13, fontWeight: '600', textTransform: 'capitalize' },
   stockRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
   stockQtd: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  stockMin: { fontSize: 12, color: '#94a3b8' },
+  stockMin: { fontSize: 13, color: '#94a3b8' },
   btnDispensar: { marginTop: 10, backgroundColor: '#dcfce7', paddingVertical: 8, borderRadius: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 },
   btnDispensarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 14 },
 });

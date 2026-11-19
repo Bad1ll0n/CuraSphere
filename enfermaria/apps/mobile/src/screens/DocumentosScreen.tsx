@@ -116,7 +116,7 @@ export default function DocumentosScreen({ route, navigation }: Props) {
   };
 
   const renderDoc = ({ item }: { item: Documento }) => (
-    <TouchableOpacity style={styles.card} onPress={() => abrirDocumento(item)}>
+    <TouchableOpacity accessibilityRole="button" style={styles.card} onPress={() => abrirDocumento(item)}>
       <Text style={styles.emoji}>{TIPO_EMOJI[item.tipo] ?? '📄'}</Text>
       <View style={styles.cardBody}>
         <Text style={styles.titulo} numberOfLines={1}>{item.titulo}</Text>
@@ -140,7 +140,7 @@ export default function DocumentosScreen({ route, navigation }: Props) {
       {/* Toolbar */}
       <View style={styles.toolbar}>
         {podeSincronizar && (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnSecundario}
             onPress={sincronizar}
             disabled={sincronizando}
@@ -149,7 +149,7 @@ export default function DocumentosScreen({ route, navigation }: Props) {
           </TouchableOpacity>
         )}
         {podeUpload && (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={styles.btnPrimario}
             onPress={upload}
             disabled={enviando}
@@ -203,9 +203,9 @@ const styles = StyleSheet.create({
   emoji: { fontSize: 24 },
   cardBody: { flex: 1 },
   titulo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  meta: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  meta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   badge: { marginTop: 4, backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, alignSelf: 'flex-start' },
-  badgeText: { fontSize: 10, fontWeight: '600', color: '#2563eb' },
+  badgeText: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
   verBtn: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
   vazioIcon: { fontSize: 48 },

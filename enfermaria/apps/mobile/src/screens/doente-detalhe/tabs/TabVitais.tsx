@@ -16,7 +16,7 @@ export default function TabVitais({ sinaisVitais, loadingVitais, podeRegistarVit
       <View style={shared.secaoHeader}>
         <Text style={shared.secaoTitulo}>Sinais Vitais</Text>
         {podeRegistarVitais && (
-          <TouchableOpacity onPress={onRegistar} style={[shared.iconBotao, shared.iconBotaoAzul]}>
+          <TouchableOpacity accessibilityRole="button" onPress={onRegistar} style={[shared.iconBotao, shared.iconBotaoAzul]}>
             <Text style={shared.iconBotaoTextoAzul}>+</Text>
           </TouchableOpacity>
         )}
@@ -68,11 +68,11 @@ const s = StyleSheet.create({
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 10 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   data: { fontSize: 13, fontWeight: '700', color: '#1e293b' },
-  autor: { fontSize: 11, color: '#94a3b8' },
+  autor: { fontSize: 13, color: '#94a3b8' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   vitalItem: { backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, minWidth: 80, alignItems: 'center', borderLeftWidth: 3 },
-  vitalLabel: { fontSize: 10, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.4 },
+  vitalLabel: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.4 },
   vitalValor: { fontSize: 18, fontWeight: '800', marginTop: 2 },
-  vitalUnidade: { fontSize: 10, color: '#94a3b8', marginTop: 1 },
-  nota: { fontSize: 12, color: '#64748b', marginTop: 8, fontStyle: 'italic' },
+  vitalUnidade: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  nota: { fontSize: 13, color: '#64748b', marginTop: 8, fontStyle: 'italic' },
 });

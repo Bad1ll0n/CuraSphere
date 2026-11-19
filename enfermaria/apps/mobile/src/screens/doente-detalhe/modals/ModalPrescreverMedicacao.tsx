@@ -32,7 +32,7 @@ export default function ModalPrescreverMedicacao({ visible, doenteId, onClose, o
         <View style={shared.modalSheet}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Prescrever Medicação</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           <Text style={shared.formLabel}>Medicamento *</Text>
           <TextInput style={shared.formInput} value={nome} onChangeText={setNome} placeholder="Nome do medicamento" />
@@ -43,8 +43,8 @@ export default function ModalPrescreverMedicacao({ visible, doenteId, onClose, o
           <Text style={shared.formLabel}>Frequência *</Text>
           <TextInput style={shared.formInput} value={freq} onChangeText={setFreq} placeholder="Ex: 8 em 8 horas" />
           <View style={shared.modalBotoes}>
-            <TouchableOpacity style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
-            <TouchableOpacity style={[shared.submeterBotao, disabled && shared.submeterDesativado]} onPress={submeter} disabled={disabled}>
+            <TouchableOpacity accessibilityRole="button" style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" style={[shared.submeterBotao, disabled && shared.submeterDesativado]} onPress={submeter} disabled={disabled}>
               <Text style={shared.submeterTexto}>{salvando ? 'A guardar...' : 'Prescrever'}</Text>
             </TouchableOpacity>
           </View>

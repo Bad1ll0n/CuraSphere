@@ -37,7 +37,7 @@ export default function ModalAltaEstruturada({ visible, doenteId, onClose, onDon
         <View style={[shared.modalSheet, shared.modalSheetTall]}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Alta do Doente</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={shared.formLabel}>Motivo de Alta *</Text>
@@ -61,8 +61,8 @@ export default function ModalAltaEstruturada({ visible, doenteId, onClose, onDon
             <Text style={shared.formLabel}>Médico de Família / Referenciação</Text>
             <TextInput style={shared.formInput} value={medFamilia} onChangeText={setMedFamilia} placeholder="Nome ou contacto (opcional)" />
             <View style={shared.modalBotoes}>
-              <TouchableOpacity style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
-              <TouchableOpacity style={[shared.submeterBotao, { backgroundColor: '#dc2626' }, (salvando || !resumo.trim()) && shared.submeterDesativado]} onPress={submeter} disabled={salvando || !resumo.trim()}>
+              <TouchableOpacity accessibilityRole="button" style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" style={[shared.submeterBotao, { backgroundColor: '#dc2626' }, (salvando || !resumo.trim()) && shared.submeterDesativado]} onPress={submeter} disabled={salvando || !resumo.trim()}>
                 <Text style={shared.submeterTexto}>{salvando ? 'A processar...' : 'Confirmar Alta'}</Text>
               </TouchableOpacity>
             </View>

@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface DoenteIsolado {
   id: string; nome: string; numeroProcesso: string;
@@ -108,7 +109,7 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -120,7 +121,7 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
       {/* Tabs */}
       <View style={s.tabBar}>
         {ABAS.map(a => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={a.key}
             style={[s.tabItem, aba === a.key && s.tabItemAtivo]}
             onPress={() => setAba(a.key)}
@@ -172,7 +173,7 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
                     <Text style={s.infoTexto}>Desde {fmtData(d.dataIsolamento)} · {dias} dia(s)</Text>
                   </View>
                   {podeEditar && (
-                    <TouchableOpacity style={s.btnLevantar} onPress={() => levantarIsolamento(d.id, d.nome)}>
+                    <TouchableOpacity accessibilityRole="button" style={s.btnLevantar} onPress={() => levantarIsolamento(d.id, d.nome)}>
                       <Ionicons name="lock-open-outline" size={15} color="#7c3aed" />
                       <Text style={s.btnLevantarTexto}>Levantar Isolamento</Text>
                     </TouchableOpacity>
@@ -285,7 +286,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#7c3aed', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 11, color: '#ddd6fe', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#ddd6fe', marginTop: 2 },
   tabBar: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   tabItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 12, gap: 6, borderBottomWidth: 2, borderBottomColor: 'transparent' },
   tabItemAtivo: { borderBottomColor: '#7c3aed' },
@@ -293,21 +294,21 @@ const s = StyleSheet.create({
   tabTextoAtivo: { color: '#7c3aed' },
   tabBadge: { backgroundColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 6, paddingVertical: 1 },
   tabBadgeAtivo: { backgroundColor: '#ede9fe' },
-  tabBadgeTexto: { fontSize: 11, fontWeight: '700', color: '#64748b' },
+  tabBadgeTexto: { fontSize: 13, fontWeight: '700', color: '#64748b' },
   tabBadgeTextoAtivo: { color: '#7c3aed' },
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
   vazioTexto: { color: '#94a3b8', fontSize: 15 },
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
   cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  cartaoProc: { fontSize: 12, color: '#94a3b8', marginTop: 2, textTransform: 'capitalize' },
+  cartaoProc: { fontSize: 13, color: '#94a3b8', marginTop: 2, textTransform: 'capitalize' },
   motivoBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  motivoTexto: { fontSize: 12, fontWeight: '700' },
+  motivoTexto: { fontSize: 13, fontWeight: '700' },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
   infoTexto: { fontSize: 13, color: '#64748b' },
   btnLevantar: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#ede9fe', paddingVertical: 8, borderRadius: 10, justifyContent: 'center', marginTop: 10 },
   btnLevantarTexto: { color: '#7c3aed', fontWeight: '700', fontSize: 14 },
   medidasBox: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
   medidaBadge: { backgroundColor: '#f1f5f9', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
-  medidaTexto: { fontSize: 11, color: '#475569', fontWeight: '500' },
+  medidaTexto: { fontSize: 13, color: '#475569', fontWeight: '500' },
 });

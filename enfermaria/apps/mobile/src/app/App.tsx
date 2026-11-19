@@ -29,6 +29,7 @@ import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import { corpoAdministracao } from '../lib/administracao';
+import { SyncStatusBanner } from '../components/SyncStatusBanner';
 // Os imports ES são içados: TODOS executam antes de qualquer instrução do corpo do
 // módulo. Ter esta chamada no meio da lista de imports não a tornava mais cedo — só
 // partia a regra `import/first` (22 erros de lint) e dava uma falsa ideia de
@@ -219,6 +220,8 @@ function App() {
         </View>
       )}
 
+      {/* UX-24: o estado da sincronização à vista em toda a app. */}
+      <SyncStatusBanner global />
       <NavigationContainer>
         {grupoRole(utilizador.role) === 'ti' ? (
           /* ── Navigator TI ──────────────────────────────── */
@@ -299,7 +302,7 @@ function App() {
               component={() => null}
               options={{
                 tabBarButton: () => (
-                  <TouchableOpacity style={estilos.scanBotaoWrapper} onPress={() => setScannerAberto(true)} activeOpacity={0.85}>
+                  <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.scanQr')} style={estilos.scanBotaoWrapper} onPress={() => setScannerAberto(true)} activeOpacity={0.85}>
                     <View style={estilos.scanCirculo}>
                       <Ionicons name="qr-code-outline" size={24} color="#fff" />
                     </View>
@@ -324,7 +327,7 @@ const estilos = StyleSheet.create({
   tabBar: { height: 72, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#e2e8f0' },
   tabItem: { justifyContent: 'center', alignItems: 'center', paddingTop: 10, paddingBottom: 10 },
   tabIcon: { alignItems: 'center', justifyContent: 'center', gap: 3 },
-  tabLabel: { fontSize: 10, fontWeight: '500' },
+  tabLabel: { fontSize: 13, fontWeight: '500' },
   scanBotaoWrapper: {
     flex: 1,
     alignItems: 'center',

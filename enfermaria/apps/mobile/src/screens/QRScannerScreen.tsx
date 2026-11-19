@@ -304,7 +304,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
 
           {/* Botões de acção */}
           <View style={s.botoesRow}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={s.btnNovo}
               onPress={() => { setResultado(null); setScanned(false); setJustificacao(''); setConfirmados({}); setQrLido(null); }}
             >
@@ -313,7 +313,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
             </TouchableOpacity>
 
             {onAdministrar && (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnAdministrar, !podeAdministrar && s.btnDisabled]}
                 onPress={handleAdministrar}
                 disabled={!podeAdministrar}
@@ -387,7 +387,7 @@ const s = StyleSheet.create({
     borderRadius: 12,
   },
   erroTexto: { color: '#fca5a5', fontSize: 13, fontWeight: '500' },
-  dica: { color: '#475569', fontSize: 12, marginTop: 20 },
+  dica: { color: '#475569', fontSize: 13, marginTop: 20 },
   // ── Resultado ────────────────────────────────────────────────────────────────
   resultadoScroll: { width: '100%', paddingHorizontal: 16 },
   bannerResultado: {
@@ -426,7 +426,7 @@ const s = StyleSheet.create({
   certoOk:    { backgroundColor: 'rgba(34,197,94,0.08)' },
   certoFalha: { backgroundColor: 'rgba(239,68,68,0.08)' },
   certoNome:  { color: '#e2e8f0', fontSize: 14, fontWeight: '600' },
-  certoMotivo: { color: '#94a3b8', fontSize: 12, marginTop: 2 },
+  certoMotivo: { color: '#94a3b8', fontSize: 13, marginTop: 2 },
   overrideBox: {
     backgroundColor: '#1e293b',
     borderRadius: 12,

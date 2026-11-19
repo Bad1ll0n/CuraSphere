@@ -32,7 +32,7 @@ export default function TabIA({ doenteId }: Props) {
       </View>
 
       {!analise && !loading && (
-        <TouchableOpacity style={s.botao} onPress={analisar}>
+        <TouchableOpacity accessibilityRole="button" style={s.botao} onPress={analisar}>
           <Text style={s.botaoIcon}>🧠</Text>
           <Text style={s.botaoTexto}>Analisar com IA</Text>
         </TouchableOpacity>
@@ -92,7 +92,7 @@ export default function TabIA({ doenteId }: Props) {
             </View>
           )}
 
-          <TouchableOpacity style={s.botaoReanalisar} onPress={analisar}>
+          <TouchableOpacity accessibilityRole="button" style={s.botaoReanalisar} onPress={analisar}>
             <Text style={s.botaoReanalisarTexto}>↺ Reanalisar</Text>
           </TouchableOpacity>
         </View>
@@ -106,7 +106,7 @@ const s = StyleSheet.create({
   content: { padding: 16 },
   cabecalho: { marginBottom: 16 },
   titulo: { fontSize: 17, fontWeight: '700', color: '#1e1b4b' },
-  subtitulo: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   botao: { backgroundColor: '#7c3aed', borderRadius: 14, paddingVertical: 18, alignItems: 'center', gap: 6 },
   botaoIcon: { fontSize: 28 },
   botaoTexto: { color: '#fff', fontSize: 16, fontWeight: '700' },

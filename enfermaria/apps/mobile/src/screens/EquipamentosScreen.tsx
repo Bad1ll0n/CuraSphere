@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -221,7 +222,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
     const tipo = TIPOS[eq.tipo] ?? { label: eq.tipo, icon: 'build-outline' as keyof typeof Ionicons.glyphMap };
     const alerta = alertaManutencao(eq.proximaManutencao);
     return (
-      <TouchableOpacity key={eq.id} style={s.card} onPress={() => abrirDetalhe(eq)} activeOpacity={0.75}>
+      <TouchableOpacity accessibilityRole="button" key={eq.id} style={s.card} onPress={() => abrirDetalhe(eq)} activeOpacity={0.75}>
         <View style={s.cardTopo}>
           <View style={[s.tipoBox, { backgroundColor: '#f1f5f9' }]}>
             <Ionicons name={tipo.icon} size={18} color="#475569" />
@@ -254,7 +255,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Equipamentos</Text>
@@ -264,7 +265,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
       {/* Tabs */}
       <View style={s.tabRow}>
         {(['inventario', 'alertas'] as const).map((t) => (
-          <TouchableOpacity key={t} style={[s.tab, aba === t && s.tabAtiva]} onPress={() => setAba(t)}>
+          <TouchableOpacity accessibilityRole="button" key={t} style={[s.tab, aba === t && s.tabAtiva]} onPress={() => setAba(t)}>
             <Text style={[s.tabLabel, aba === t && s.tabLabelAtiva]}>
               {t === 'inventario' ? 'Inventário' : `Alertas${alertas.length ? ` (${alertas.length})` : ''}`}
             </Text>
@@ -296,7 +297,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
               const est = ESTADO[e];
               const ativo = filtroEstado === e;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={e || 'todos'}
                   style={[s.filtroPill, ativo && { backgroundColor: (est?.cor ?? '#0f172a') + '18', borderColor: est?.cor ?? '#0f172a' }]}
                   onPress={() => { setFiltroEstado(e); }}
@@ -341,7 +342,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
           <View style={s.modal}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo} numberOfLines={1}>{detalhe.nome}</Text>
-              <TouchableOpacity onPress={() => setDetalhe(null)} style={s.modalFechar}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setDetalhe(null)} style={s.modalFechar}>
                 <Ionicons name="close" size={22} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -359,7 +360,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
 
               {/* Botão reportar */}
               {podeReportar && (
-                <TouchableOpacity style={s.btnReportar} onPress={() => abrirNovaMan(detalhe.id, detalhe.nome)} activeOpacity={0.8}>
+                <TouchableOpacity accessibilityRole="button" style={s.btnReportar} onPress={() => abrirNovaMan(detalhe.id, detalhe.nome)} activeOpacity={0.8}>
                   <Ionicons name="add-circle-outline" size={18} color="#fff" />
                   <Text style={s.btnReportarLabel}>Reportar Manutenção</Text>
                 </TouchableOpacity>
@@ -376,7 +377,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
                   const pr = PRIORIDADE[man.prioridade] ?? { label: man.prioridade, cor: '#6b7280' };
                   const est = ESTADO[man.estado] ?? { label: man.estado, cor: '#6b7280', fundo: '#f1f5f9' };
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={man.id}
                       style={s.manCard}
                       onPress={() => podeAtualizarMan && abrirAtualizar(man)}
@@ -415,7 +416,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
           <View style={s.modal}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo} numberOfLines={1}>Reportar Manutenção</Text>
-              <TouchableOpacity onPress={() => setModalNovaMan(null)} style={s.modalFechar}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setModalNovaMan(null)} style={s.modalFechar}>
                 <Ionicons name="close" size={22} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -426,7 +427,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
               <CampoLabel label="Tipo de Manutenção" />
               <View style={s.gradeOpcoes}>
                 {TIPOS_MANUTENCAO.map((t) => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={t}
                     style={[s.opcaoBtn, novaManTipo === t && s.opcaoBtnAtivo]}
                     onPress={() => setNovaManTipo(t)}
@@ -444,7 +445,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
                   const pr = PRIORIDADE[p];
                   const ativo = novaManPrior === p;
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={p}
                       style={[s.opcaoBtn, { flex: 1 }, ativo && { backgroundColor: pr.cor + '20', borderColor: pr.cor }]}
                       onPress={() => setNovaManPrior(p)}
@@ -479,7 +480,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
                 textAlignVertical="top"
               />
 
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnPrimario, gravando && s.btnDesativado]}
                 onPress={gravarManutencao}
                 disabled={gravando}
@@ -508,7 +509,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
                 const est = ESTADO[e] ?? { cor: '#6b7280', label: e };
                 const ativo = novoEstadoMan === e;
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={e}
                     style={[s.opcaoBtn, ativo && { backgroundColor: (est.cor) + '20', borderColor: est.cor }]}
                     onPress={() => setNovoEstadoMan(e)}
@@ -534,10 +535,10 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
             />
 
             <View style={s.sheetBotoes}>
-              <TouchableOpacity style={s.btnSecundario} onPress={() => setModalAtualizar(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnSecundario} onPress={() => setModalAtualizar(null)}>
                 <Text style={s.btnSecundarioLabel}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnPrimario, { flex: 1 }, atualizando && s.btnDesativado]}
                 onPress={gravarAtualizacao}
                 disabled={atualizando}
@@ -593,7 +594,7 @@ const s = StyleSheet.create({
 
   filtroScroll:     { flexGrow: 0, backgroundColor: '#fff', paddingVertical: 8 },
   filtroPill:       { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  filtroPillLabel:  { fontSize: 12, color: '#64748b', fontWeight: '500' },
+  filtroPillLabel:  { fontSize: 13, color: '#64748b', fontWeight: '500' },
 
   lista:            { padding: 16, gap: 10, paddingBottom: 32 },
   centro:           { flex: 1, alignItems: 'center', justifyContent: 'center' },
@@ -603,14 +604,14 @@ const s = StyleSheet.create({
   cardTopo:         { flexDirection: 'row', alignItems: 'flex-start' },
   tipoBox:          { width: 38, height: 38, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   cardNome:         { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-  cardSub:          { fontSize: 12, color: '#64748b', marginTop: 2 },
+  cardSub:          { fontSize: 13, color: '#64748b', marginTop: 2 },
   cardRodape:       { marginTop: 8, gap: 3 },
-  cardMeta:         { fontSize: 11, color: '#94a3b8' },
+  cardMeta:         { fontSize: 13, color: '#94a3b8' },
   estadoBadge:      { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoLabel:      { fontSize: 11, fontWeight: '600' },
+  estadoLabel:      { fontSize: 13, fontWeight: '600' },
   alertaBadge:      { flexDirection: 'row', alignItems: 'center', gap: 3, alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8, marginTop: 2 },
-  alertaLabel:      { fontSize: 11, fontWeight: '600' },
-  priorBadge:       { fontSize: 11, fontWeight: '600' },
+  alertaLabel:      { fontSize: 13, fontWeight: '600' },
+  priorBadge:       { fontSize: 13, fontWeight: '600' },
 
   // modal
   modal:            { flex: 1, backgroundColor: '#fff' },
@@ -632,7 +633,7 @@ const s = StyleSheet.create({
   manCard:          { backgroundColor: '#f8fafc', borderRadius: 10, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: '#e2e8f0' },
   manCardTopo:      { flexDirection: 'row', gap: 8 },
   manTipo:          { fontSize: 13, fontWeight: '700', color: '#0f172a', marginBottom: 2 },
-  manDesc:          { fontSize: 12, color: '#475569' },
+  manDesc:          { fontSize: 13, color: '#475569' },
   manCardRodape:    { marginTop: 6, gap: 2 },
 
   equip:            { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 16 },

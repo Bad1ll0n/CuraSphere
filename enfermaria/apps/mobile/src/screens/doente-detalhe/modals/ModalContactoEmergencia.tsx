@@ -33,7 +33,7 @@ export default function ModalContactoEmergencia({ visible, doenteId, onClose, on
         <View style={shared.modalSheet}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Contacto de Emergência</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           <Text style={shared.formLabel}>Nome *</Text>
           <TextInput style={shared.formInput} value={nome} onChangeText={setNome} placeholder="Nome completo" />
@@ -41,15 +41,15 @@ export default function ModalContactoEmergencia({ visible, doenteId, onClose, on
           <SelectPicker options={[{ value: 'cônjuge', label: 'Cônjuge' }, { value: 'filho/a', label: 'Filho/a' }, { value: 'pai/mãe', label: 'Pai/Mãe' }, { value: 'outro', label: 'Outro' }]} value={relacao} onChange={setRelacao} />
           <Text style={shared.formLabel}>Telefone *</Text>
           <TextInput style={shared.formInput} value={tel} onChangeText={setTel} placeholder="9xx xxx xxx" keyboardType="phone-pad" />
-          <TouchableOpacity style={s.checkRow} onPress={() => setPrincipal(!principal)}>
+          <TouchableOpacity accessibilityRole="button" style={s.checkRow} onPress={() => setPrincipal(!principal)}>
             <View style={[s.check, { backgroundColor: principal ? '#2563eb' : 'transparent' }]}>
               {principal && <Text style={s.checkMark}>✓</Text>}
             </View>
             <Text style={s.checkLabel}>Contacto principal</Text>
           </TouchableOpacity>
           <View style={shared.modalBotoes}>
-            <TouchableOpacity style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
-            <TouchableOpacity style={[shared.submeterBotao, disabled && shared.submeterDesativado]} onPress={submeter} disabled={disabled}>
+            <TouchableOpacity accessibilityRole="button" style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" style={[shared.submeterBotao, disabled && shared.submeterDesativado]} onPress={submeter} disabled={disabled}>
               <Text style={shared.submeterTexto}>{salvando ? 'A guardar...' : 'Guardar'}</Text>
             </TouchableOpacity>
           </View>
@@ -62,6 +62,6 @@ export default function ModalContactoEmergencia({ visible, doenteId, onClose, on
 const s = StyleSheet.create({
   checkRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12, marginTop: 8 },
   check: { width: 20, height: 20, borderRadius: 4, borderWidth: 2, borderColor: '#2563eb', alignItems: 'center', justifyContent: 'center' },
-  checkMark: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  checkMark: { color: '#fff', fontSize: 13, fontWeight: '700' },
   checkLabel: { fontSize: 14, color: '#1e293b' },
 });

@@ -66,11 +66,11 @@ export default function PerfilScreen({ utilizador, onLogout }: Props) {
         </View>
       </View>
 
-      <TouchableOpacity style={s.pwdBotao} onPress={() => { setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setModalPwd(true); }}>
+      <TouchableOpacity accessibilityRole="button" style={s.pwdBotao} onPress={() => { setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setModalPwd(true); }}>
         <Text style={s.pwdTexto}>Alterar Password</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={s.sairBotao} onPress={confirmarLogout}>
+      <TouchableOpacity accessibilityRole="button" style={s.sairBotao} onPress={confirmarLogout}>
         <Text style={s.sairTexto}>Sair</Text>
       </TouchableOpacity>
 
@@ -80,7 +80,7 @@ export default function PerfilScreen({ utilizador, onLogout }: Props) {
           <View style={s.modalBox}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo}>Alterar Password</Text>
-              <TouchableOpacity onPress={() => setModalPwd(false)}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModalPwd(false)}>
                 <Text style={s.fechar}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -102,10 +102,10 @@ export default function PerfilScreen({ utilizador, onLogout }: Props) {
               </View>
             ))}
             <View style={s.modalBotoes}>
-              <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalPwd(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBotao} onPress={() => setModalPwd(false)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.confirmarBotao, salvando && { opacity: 0.6 }]}
                 onPress={alterarPassword}
                 disabled={salvando}
@@ -140,7 +140,7 @@ const s = StyleSheet.create({
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   modalTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b' },
   fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  inputLabel: { fontSize: 12, fontWeight: '600', color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
+  inputLabel: { fontSize: 13, fontWeight: '600', color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
   input: { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, padding: 12, fontSize: 14, color: '#1e293b', backgroundColor: '#f8fafc' },
   modalBotoes: { flexDirection: 'row', gap: 10, marginTop: 20 },
   cancelarBotao: { flex: 1, paddingVertical: 13, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },

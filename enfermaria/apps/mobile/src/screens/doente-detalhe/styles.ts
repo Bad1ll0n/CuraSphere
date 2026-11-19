@@ -23,10 +23,10 @@ export const shared = StyleSheet.create({
   iconBotaoTexto: { fontSize: 15 },
   iconBotaoTextoAzul: { color: '#fff', fontWeight: '700' as const, fontSize: 20, lineHeight: 24 },
   infoCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8 },
-  infoLabel: { fontSize: 12, color: '#94a3b8', fontWeight: '600' as const, textTransform: 'uppercase' as const, letterSpacing: 0.5, marginBottom: 6 },
+  infoLabel: { fontSize: 13, color: '#94a3b8', fontWeight: '600' as const, textTransform: 'uppercase' as const, letterSpacing: 0.5, marginBottom: 6 },
   infoValor: { fontSize: 15, color: '#1e293b', fontWeight: '500' as const, marginTop: 2 },
   vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center' as const, padding: 20 },
   historicoItem: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   historicoDescricao: { fontSize: 14, color: '#334155', fontWeight: '500' as const },
-  historicoMeta: { fontSize: 12, color: '#94a3b8', marginTop: 3 },
+  historicoMeta: { fontSize: 13, color: '#94a3b8', marginTop: 3 },
 });

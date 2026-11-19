@@ -144,7 +144,7 @@ export default function TabFeridas({ doenteId, podeRegistar }: Props) {
               </Text>
             </View>
             {podeRegistar && (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={s.fotoBotao}
                 onPress={() => uploadFoto(av.id)}
                 disabled={uploadingId === av.id}>
@@ -183,14 +183,14 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
   emptyText: { fontSize: 14, color: '#64748b', fontWeight: '600', marginBottom: 4 },
-  emptySubText: { fontSize: 12, color: '#94a3b8', textAlign: 'center' },
+  emptySubText: { fontSize: 13, color: '#94a3b8', textAlign: 'center' },
   card: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#e2e8f0' },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start' },
   tipo: { fontSize: 13, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
   localizacao: { fontSize: 13, color: '#475569', marginBottom: 2 },
-  meta: { fontSize: 11, color: '#94a3b8' },
+  meta: { fontSize: 13, color: '#94a3b8' },
   fotoBotao: { backgroundColor: '#2563eb', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, minWidth: 70, alignItems: 'center', justifyContent: 'center' },
-  fotoBotaoTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  fotoBotaoTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   thumbnail: { width: 72, height: 72, borderRadius: 10, marginRight: 8, borderWidth: 1, borderColor: '#e2e8f0' },
-  semFotos: { fontSize: 12, color: '#cbd5e1', fontStyle: 'italic', marginTop: 8 },
+  semFotos: { fontSize: 13, color: '#cbd5e1', fontStyle: 'italic', marginTop: 8 },
 });

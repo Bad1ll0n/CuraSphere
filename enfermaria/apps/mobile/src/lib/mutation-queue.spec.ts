@@ -1,5 +1,6 @@
 import {
   enqueue, flushMutationQueue, getQueue, getQueueLength, clearQueue, definirDonoDaFila, MAX_OPERACOES, MAX_BYTES_OPERACAO,
+  estadoSincronizacao, limparDescartadas, aoMudarFila,
 } from './mutation-queue';
 import { chamadas, falharCom, limpar } from '../test-doubles/api';
 import AsyncStorage from '../test-doubles/async-storage';
@@ -296,5 +297,43 @@ describe('armazenamento da fila (PERF-18)', () => {
     const [primeira] = await getQueue();
     await AsyncStorage.setItem(`curasphere:mq:op:${primeira.id}`, '{lixo');
     expect((await getQueue()).map((o) => (o.body as any).ordem)).toEqual([2]);
+  });
+});
+
+describe('estado da sincronização para o aviso (UX-24)', () => {
+  it('pendentes, última sincronização e descartadas com o motivo — e só os desta sessão', async () => {
+    expect((await estadoSincronizacao()).ultimaSincronizacao).toBeNull();
+    await enqueue({ ...administracao, body: { ordem: 1 } });
+    expect((await estadoSincronizacao()).pendentes).toHaveLength(1);
+
+    falharCom(() => Object.assign(new Error('HTTP 400'), { response: { status: 400, data: { message: 'doente incorrecto' } } }));
+    await flushMutationQueue();
+    const e = await estadoSincronizacao();
+    expect(e.pendentes).toHaveLength(0);
+    expect(e.descartadas).toEqual([expect.objectContaining({ url: '/medicacao/registar', motivo: 'doente incorrecto', dono: 'enf-a' })]);
+    expect(e.ultimaSincronizacao).toEqual(expect.any(Number));
+
+    await definirDonoDaFila('enf-b');
+    expect((await estadoSincronizacao()).descartadas).toHaveLength(0);
+    await definirDonoDaFila('enf-a');
+    await limparDescartadas();
+    expect((await estadoSincronizacao()).descartadas).toHaveLength(0);
+  });
+
+  it('sem rede, a última sincronização não avança', async () => {
+    await enqueue(administracao);
+    falharCom(() => erroDeRede());
+    await flushMutationQueue();
+    expect((await estadoSincronizacao()).ultimaSincronizacao).toBeNull();
+  });
+
+  it('enfileirar e sincronizar avisam quem mostra o estado', async () => {
+    const chamadasAviso: number[] = [];
+    const parar = aoMudarFila(() => chamadasAviso.push(1));
+    await enqueue(administracao);
+    await flushMutationQueue();
+    parar();
+    await enqueue(administracao);
+    expect(chamadasAviso).toHaveLength(2);
   });
 });

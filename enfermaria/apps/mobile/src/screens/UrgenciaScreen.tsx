@@ -10,6 +10,7 @@ import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
+import i18n from '../lib/i18n';
 
 
 /** Handler explícito para toques que devem ser absorvidos sem efeito. */
@@ -163,7 +164,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -171,7 +172,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
           <Text style={s.headerSub}>{erroCarga ? 'Lista por carregar' : `${ativos.length} episódio(s) activo(s)`}</Text>
         </View>
         {podeTriar && (
-          <TouchableOpacity onPress={() => setModalEntrada(true)} style={s.addBtn}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.add')} onPress={() => setModalEntrada(true)} style={s.addBtn}>
             <Ionicons name="add" size={22} color="#fff" />
           </TouchableOpacity>
         )}
@@ -190,7 +191,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
       {/* Filtros */}
       <View style={s.filtros}>
         {([{ key: 'ativos', label: 'Activos' }, { key: 'todos', label: 'Todos' }] as const).map(f => (
-          <TouchableOpacity key={f.key} style={[s.filtro, filtro === f.key && s.filtroAtivo]} onPress={() => setFiltro(f.key)}>
+          <TouchableOpacity accessibilityRole="button" key={f.key} style={[s.filtro, filtro === f.key && s.filtroAtivo]} onPress={() => setFiltro(f.key)}>
             <Text style={[s.filtroTexto, filtro === f.key && s.filtroTextoAtivo]}>{f.label}</Text>
           </TouchableOpacity>
         ))}
@@ -221,7 +222,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
               const nomePaciente = ep.doente?.nome ?? ep.nomeTemporario ?? 'Doente desconhecido';
               const temAcoes = PROXIMOS_ESTADOS[ep.estadoEpisodio]?.length > 0;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={ep.id}
                   style={[s.cartao, { borderLeftColor: t?.cor ?? '#94a3b8' }]}
                   onPress={() => podeTriar && temAcoes ? setEpisodioSel(ep) : undefined}
@@ -303,7 +304,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.fieldLabel}>Prioridade de Triagem *</Text>
             <View style={s.triagemGrid}>
               {TRIAGEM.map(t => (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={t.id}
                   style={[s.triagemBtn, { borderColor: t.cor, backgroundColor: formTriagem === t.id ? t.cor : t.bg }]}
                   onPress={() => setFormTriagem(t.id)}
@@ -327,10 +328,10 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
             />
 
             <View style={s.modalBtns}>
-              <TouchableOpacity style={s.btnCancelar} onPress={() => { setModalEntrada(false); setFormQueixa(''); setFormTriagem(''); setFormNome(''); setFormNotas(''); }}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnCancelar} onPress={() => { setModalEntrada(false); setFormQueixa(''); setFormTriagem(''); setFormNome(''); setFormNotas(''); }}>
                 <Text style={s.btnCancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnConfirmar, { backgroundColor: formTriagem ? (triagemById[formTriagem]?.cor ?? '#dc2626') : '#94a3b8' }]}
                 onPress={registarEntrada}
                 disabled={submitting}
@@ -346,9 +347,9 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
 
       {/* Modal: Acções de episódio */}
       <Modal visible={!!episodioSel} animationType="slide" transparent onRequestClose={() => setEpisodioSel(null)}>
-        <TouchableOpacity style={s.modalOverlay} activeOpacity={1} onPress={() => setEpisodioSel(null)}>
+        <TouchableOpacity accessibilityRole="button" style={s.modalOverlay} activeOpacity={1} onPress={() => setEpisodioSel(null)}>
           {/* Intercepta o toque para que carregar no conteúdo não feche o modal. */}
-          <TouchableOpacity activeOpacity={1} onPress={naoFazNada}>
+          <TouchableOpacity accessibilityRole="button" activeOpacity={1} onPress={naoFazNada}>
             <View style={s.modalSheet}>
               <View style={s.modalHandle} />
               {episodioSel && (() => {
@@ -371,7 +372,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
                       <Text style={s.semAcoes}>Episódio encerrado — sem acções disponíveis.</Text>
                     ) : (
                       proximos.map(p => (
-                        <TouchableOpacity
+                        <TouchableOpacity accessibilityRole="button"
                           key={p.estado}
                           style={[s.acaoBtn, { borderColor: ESTADO_COR[p.estado] ?? '#94a3b8' }]}
                           onPress={() => mudarEstado(episodioSel.id, p.estado)}
@@ -401,7 +402,7 @@ const s = StyleSheet.create({
   voltarBtn:       { padding: 4 },
   addBtn:          { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.25)', alignItems: 'center', justifyContent: 'center' },
   headerTitulo:    { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub:       { fontSize: 12, color: '#fecaca', marginTop: 2 },
+  headerSub:       { fontSize: 13, color: '#fecaca', marginTop: 2 },
   contadoresRow:   { flexDirection: 'row', backgroundColor: '#fff', paddingVertical: 12, paddingHorizontal: 12, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   contadorCard:    { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderWidth: 2, borderRadius: 10, paddingVertical: 6 },
   contadorNum:     { fontSize: 17, fontWeight: '800' },
@@ -417,26 +418,26 @@ const s = StyleSheet.create({
   cartaoTopo:      { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
   nomePaciente:    { fontSize: 15, fontWeight: '700', color: '#1e293b' },
   triagemRow:      { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 3 },
-  triagemLabel:    { fontSize: 12, fontWeight: '700' },
-  triagemTempo:    { fontSize: 11, color: '#94a3b8' },
+  triagemLabel:    { fontSize: 13, fontWeight: '700' },
+  triagemTempo:    { fontSize: 13, color: '#94a3b8' },
   estadoBadge:     { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto:     { fontSize: 12, fontWeight: '600' },
+  estadoTexto:     { fontSize: 13, fontWeight: '600' },
   queixa:          { fontSize: 13, color: '#475569', marginBottom: 8 },
   rodape:          { flexDirection: 'row', gap: 14, flexWrap: 'wrap' },
   infoRow:         { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  infoTexto:       { fontSize: 12, color: '#64748b' },
+  infoTexto:       { fontSize: 13, color: '#64748b' },
   // Modal
   modalOverlay:    { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' },
   modalSheet:      { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24 },
   modalHandle:     { width: 40, height: 4, borderRadius: 2, backgroundColor: '#e2e8f0', alignSelf: 'center', marginBottom: 20 },
   modalTitulo:     { fontSize: 18, fontWeight: '700', color: '#0f172a', marginBottom: 20 },
-  fieldLabel:      { fontSize: 12, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
-  fieldOpcional:   { fontSize: 11, fontWeight: '400', color: '#94a3b8', textTransform: 'none', letterSpacing: 0 },
+  fieldLabel:      { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  fieldOpcional:   { fontSize: 13, fontWeight: '400', color: '#94a3b8', textTransform: 'none', letterSpacing: 0 },
   input:           { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 12, padding: 12, fontSize: 14, color: '#1e293b', backgroundColor: '#f8fafc', marginBottom: 16 },
   triagemGrid:     { gap: 8, marginBottom: 16 },
   triagemBtn:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2, borderRadius: 12, padding: 12 },
   triagemBtnLabel: { fontSize: 14, fontWeight: '700' },
-  triagemBtnTempo: { fontSize: 12, fontWeight: '600' },
+  triagemBtnTempo: { fontSize: 13, fontWeight: '600' },
   modalBtns:       { flexDirection: 'row', gap: 10, marginTop: 4 },
   btnCancelar:     { flex: 1, paddingVertical: 13, borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center' },
   btnCancelarTexto:{ fontSize: 14, fontWeight: '600', color: '#64748b' },
@@ -446,7 +447,7 @@ const s = StyleSheet.create({
   acaoHeader:      { borderLeftWidth: 4, paddingLeft: 12, marginBottom: 4 },
   acaoNome:        { fontSize: 16, fontWeight: '700', color: '#0f172a' },
   acaoQueixa:      { fontSize: 13, color: '#64748b', marginTop: 2 },
-  acaoEstado:      { fontSize: 12, color: '#64748b', fontWeight: '600' },
+  acaoEstado:      { fontSize: 13, color: '#64748b', fontWeight: '600' },
   semAcoes:        { fontSize: 13, color: '#94a3b8', fontStyle: 'italic', textAlign: 'center', marginTop: 8 },
   acaoBtn:         { flexDirection: 'row', alignItems: 'center', gap: 10, borderWidth: 1.5, borderRadius: 12, padding: 14, marginBottom: 8, backgroundColor: '#f8fafc' },
   acaoBtnTexto:    { fontSize: 14, fontWeight: '700' },

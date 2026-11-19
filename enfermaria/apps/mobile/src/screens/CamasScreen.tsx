@@ -85,7 +85,7 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
@@ -94,7 +94,7 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.subtitulo}>{ocupadas} de {camas.length} ocupadas</Text>
           </View>
           {podeCriar && (
-            <TouchableOpacity style={s.addBotao} onPress={() => setModalCama(true)}>
+            <TouchableOpacity accessibilityRole="button" style={s.addBotao} onPress={() => setModalCama(true)}>
               <Text style={s.addTexto}>+ Cama</Text>
             </TouchableOpacity>
           )}
@@ -122,7 +122,7 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
               <Text style={s.quartoTitulo}>Quarto {quarto}</Text>
               <View style={s.camasGrid}>
                 {camas.filter((c) => c.quarto === quarto).map((cama) => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={cama.id}
                     style={[s.camaCard, { borderColor: estadoCor[cama.estado] + '60', backgroundColor: estadoCor[cama.estado] + '10' }]}
                     onPress={() => podeGerir && cama.estado !== 'ocupada' && setCamaEditando(cama)}
@@ -159,11 +159,11 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
 
       {/* Modal: Alterar Estado Cama */}
       <Modal visible={!!camaEditando} transparent animationType="fade" onRequestClose={() => setCamaEditando(null)}>
-        <TouchableOpacity style={s.overlay} activeOpacity={1} onPress={() => setCamaEditando(null)}>
+        <TouchableOpacity accessibilityRole="button" style={s.overlay} activeOpacity={1} onPress={() => setCamaEditando(null)}>
           <View onStartShouldSetResponder={() => true} style={s.sheet}>
             <Text style={s.sheetTitulo}>Cama {camaEditando?.numero} — Alterar Estado</Text>
             {(['livre', 'em_limpeza', 'reservada'] as const).map((estado) => (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={estado}
                 style={[s.estadoOpcao, camaEditando?.estado === estado && s.estadoOpcaoAtiva]}
                 onPress={() => alterarEstado(camaEditando.id, estado)}
@@ -183,7 +183,7 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
           <View style={s.sheet}>
             <View style={s.sheetCabecalho}>
               <Text style={s.sheetTitulo}>Nova Cama</Text>
-              <TouchableOpacity onPress={() => setModalCama(false)}>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModalCama(false)}>
                 <Text style={s.fechar}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -192,10 +192,10 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.formLabel}>Número da Cama</Text>
             <TextInput style={s.formInput} value={novaCamaNumero} onChangeText={setNovaCamaNumero} placeholder="Ex: 1, 2A" />
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelar} onPress={() => setModalCama(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelar} onPress={() => setModalCama(false)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.submeter, (!novaCamaNumero.trim() || !novaCamaQuarto.trim() || salvandoCama) && s.submeterDes]}
                 onPress={criarCama}
                 disabled={!novaCamaNumero.trim() || !novaCamaQuarto.trim() || salvandoCama}
@@ -215,7 +215,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
@@ -224,7 +224,7 @@ const s = StyleSheet.create({
   legenda: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   legendaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   legendaDot: { width: 8, height: 8, borderRadius: 4 },
-  legendaTexto: { fontSize: 12, color: '#64748b' },
+  legendaTexto: { fontSize: 13, color: '#64748b' },
   quartoSecao: { padding: 16, paddingBottom: 8 },
   quartoTitulo: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
   camasGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
@@ -233,12 +233,12 @@ const s = StyleSheet.create({
   camaDot: { width: 8, height: 8, borderRadius: 4 },
   camaNumero: { fontSize: 13, fontWeight: '700', color: '#334155' },
   camaEstadoBadge: { alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 20, marginBottom: 6 },
-  camaEstadoTexto: { fontSize: 11, fontWeight: '600' },
+  camaEstadoTexto: { fontSize: 13, fontWeight: '600' },
   doenteMini: { marginTop: 4 },
-  doenteMiniNome: { fontSize: 12, fontWeight: '600', color: '#1e293b' },
-  doenteMiniEstado: { fontSize: 11, marginTop: 1 },
-  semDoente: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
-  editarTexto: { fontSize: 10, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
+  doenteMiniNome: { fontSize: 13, fontWeight: '600', color: '#1e293b' },
+  doenteMiniEstado: { fontSize: 13, marginTop: 1 },
+  semDoente: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  editarTexto: { fontSize: 13, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },

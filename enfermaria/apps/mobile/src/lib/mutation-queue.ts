@@ -7,6 +7,49 @@ const QUEUE_KEY = 'curasphere:mutation_queue';
 const KEY_INDICE = 'curasphere:mq:indice';
 const keyOp = (id: string) => `curasphere:mq:op:${id}`;
 const KEY_CORROMPIDA = 'curasphere:mq:corrompida';
+/** UX-24: última sincronização e operações descartadas — para o aviso persistente da app. */
+const KEY_ESTADO = 'curasphere:mq:estado';
+const MAX_DESCARTADAS = 20;
+
+export interface Descartada { id: string; method: string; url: string; timestamp: number; dono?: string; motivo: string }
+interface EstadoGuardado { ultimaSincronizacao: number | null; descartadas: Descartada[] }
+
+/** Quem mostra o estado da fila (o aviso) ouve aqui: enfileirar e sincronizar avisam. */
+const ouvintes = new Set<() => void>();
+export function aoMudarFila(fn: () => void): () => void {
+  ouvintes.add(fn);
+  return () => { ouvintes.delete(fn); };
+}
+const avisar = () => ouvintes.forEach((fn) => { try { fn(); } catch { /* um ouvinte não pára os outros */ } });
+
+async function lerEstado(): Promise<EstadoGuardado> {
+  try {
+    const raw = await AsyncStorage.getItem(KEY_ESTADO);
+    const e = raw ? JSON.parse(raw) : null;
+    return { ultimaSincronizacao: typeof e?.ultimaSincronizacao === 'number' ? e.ultimaSincronizacao : null, descartadas: Array.isArray(e?.descartadas) ? e.descartadas : [] };
+  } catch {
+    return { ultimaSincronizacao: null, descartadas: [] };
+  }
+}
+
+/** O que ESTA sessão tem por enviar, o que foi descartado e quando sincronizou pela última vez. */
+export async function estadoSincronizacao(): Promise<{ pendentes: QueuedOp[]; descartadas: Descartada[]; ultimaSincronizacao: number | null }> {
+  const [fila, estado] = await Promise.all([getQueue(), emExclusao(lerEstado)]);
+  return {
+    pendentes: fila.filter(doDonoActual),
+    descartadas: estado.descartadas.filter((d) => donoActual !== null && d.dono === donoActual),
+    ultimaSincronizacao: estado.ultimaSincronizacao,
+  };
+}
+
+/** O enfermeiro viu a lista dos descartados: deixa de os mostrar. */
+export async function limparDescartadas(): Promise<void> {
+  await emExclusao(async () => {
+    const e = await lerEstado();
+    await AsyncStorage.setItem(KEY_ESTADO, JSON.stringify({ ...e, descartadas: e.descartadas.filter((d) => d.dono !== donoActual) }));
+  });
+  avisar();
+}
 const MAX_TENTATIVAS = 3;
 /**
  * PERF-18: limites. Um turno de 12 h com rede a falhar não chega perto de 300 atos; uma
@@ -183,6 +226,7 @@ export async function enqueue(op: Omit<QueuedOp, 'id' | 'timestamp' | 'dono'>): 
     await escreverOp(nova);
     await escreverIndice([...indice, nova.id]);
   });
+  avisar();
 }
 
 export async function getQueue(): Promise<QueuedOp[]> {
@@ -259,6 +303,8 @@ export async function flushMutationQueue(): Promise<{
 
     const concluidas = new Set<string>();
     const descartadas = new Set<string>();
+    const motivos = new Map<string, string>();
+    let houveRede = true;
     const avaliadas = new Set<string>();
     let sucesso = 0;
     let falha = 0;
@@ -273,12 +319,15 @@ export async function flushMutationQueue(): Promise<{
         sucesso++;
       } catch (erro) {
         const gasta = gastaTentativa(erro);
+        if (typeof (erro as any)?.response?.status !== 'number') houveRede = false;
         if (gasta) avaliadas.add(op.id);
         const tentativas = (op.tentativas ?? 0) + (gasta ? 1 : 0);
         if (!vaiMelhorarSeRepetir(erro) || tentativas >= MAX_TENTATIVAS) {
           // Deixar uma operação a tentar para sempre esconde o problema do enfermeiro.
           // Sai da fila e conta como descartada, para a interface o poder dizer.
           descartadas.add(op.id);
+          const status = (erro as any)?.response?.status;
+          motivos.set(op.id, (erro as any)?.response?.data?.message ?? (status ? `HTTP ${status}` : 'sem resposta'));
         }
         falha++;
       }
@@ -295,7 +344,16 @@ export async function flushMutationQueue(): Promise<{
         if (sair(o)) await AsyncStorage.removeItem(keyOp(o.id));
         else if (avaliadas.has(o.id)) await escreverOp({ ...o, tentativas: (o.tentativas ?? 0) + 1 });
       }
+      // UX-24: o que foi descartado fica à vista (não some em silêncio) e a hora da última
+      // sincronização só avança quando o servidor respondeu.
+      const estado = await lerEstado();
+      const novas: Descartada[] = actual.filter((o) => descartadas.has(o.id)).map((o) => ({ id: o.id, method: o.method, url: o.url, timestamp: o.timestamp, dono: o.dono, motivo: String(motivos.get(o.id) ?? '').slice(0, 200) }));
+      await AsyncStorage.setItem(KEY_ESTADO, JSON.stringify({
+        ultimaSincronizacao: houveRede ? Date.now() : estado.ultimaSincronizacao,
+        descartadas: [...novas, ...estado.descartadas].slice(0, MAX_DESCARTADAS),
+      }));
     });
+    avisar();
 
     return { sucesso, falha, descartadas: descartadas.size };
   })();
@@ -312,5 +370,7 @@ export async function clearQueue(): Promise<void> {
     for (const id of await lerIndice()) await AsyncStorage.removeItem(keyOp(id));
     await AsyncStorage.removeItem(KEY_INDICE);
     await AsyncStorage.removeItem(QUEUE_KEY);
+    await AsyncStorage.removeItem(KEY_ESTADO);
   });
+  avisar();
 }

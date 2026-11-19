@@ -52,7 +52,7 @@ export default function TabAlertas({ alertas, onMarcarLido }: Props) {
       {sorted.map((alerta) => {
         const estilo = ALERT_STYLES[alerta.tipo] ?? ALERT_STYLES.default;
         return (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={alerta.id}
             onPress={() => !alerta.lido && onMarcarLido(alerta.id)}
             activeOpacity={alerta.lido ? 1 : 0.7}
@@ -83,10 +83,10 @@ const s = StyleSheet.create({
   vazioTexto:   { color: '#94a3b8', fontSize: 14, textAlign: 'center' },
   card:         { borderLeftWidth: 4, borderRadius: 12, padding: 14, backgroundColor: '#f8fafc' },
   cardTopo:     { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  cardLabel:    { fontSize: 12, fontWeight: '700' },
+  cardLabel:    { fontSize: 13, fontWeight: '700' },
   cardDireita:  { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  cardTempo:    { fontSize: 11, color: '#94a3b8' },
+  cardTempo:    { fontSize: 13, color: '#94a3b8' },
   badgeNaoLido: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#ef4444' },
   cardMensagem: { fontSize: 13, color: '#334155', lineHeight: 19 },
-  tapParaLer:   { fontSize: 11, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
+  tapParaLer:   { fontSize: 13, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
 });

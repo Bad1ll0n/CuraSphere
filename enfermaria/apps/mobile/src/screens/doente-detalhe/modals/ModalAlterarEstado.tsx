@@ -19,13 +19,13 @@ interface Props {
 export default function ModalAlterarEstado({ visible, estadoAtual, onClose, onSelect }: Props) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <TouchableOpacity style={shared.overlay} activeOpacity={1} onPress={onClose}>
+      <TouchableOpacity accessibilityRole="button" style={shared.overlay} activeOpacity={1} onPress={onClose}>
         <View onStartShouldSetResponder={() => true} style={s.sheet}>
           <Text style={shared.sheetTitulo}>Alterar Estado</Text>
           {Object.entries(estadoLabel)
             .filter(([k]) => k !== estadoAtual)
             .map(([k, label]) => (
-              <TouchableOpacity key={k} style={s.opcao} onPress={() => onSelect(k)}>
+              <TouchableOpacity accessibilityRole="button" key={k} style={s.opcao} onPress={() => onSelect(k)}>
                 <View style={[s.dot, { backgroundColor: estadoCor[k] }]} />
                 <Text style={s.opcaoTexto}>{label}</Text>
               </TouchableOpacity>

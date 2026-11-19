@@ -80,12 +80,12 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <Text style={s.titulo}>Pedidos Internos</Text>
-          <TouchableOpacity style={s.novoBotao} onPress={() => setModal(true)}>
+          <TouchableOpacity accessibilityRole="button" style={s.novoBotao} onPress={() => setModal(true)}>
             <Text style={s.novoTexto}>+ Novo</Text>
           </TouchableOpacity>
         </View>
@@ -95,7 +95,7 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtrosScroll}>
         <View style={s.filtrosRow}>
           {filtros.map(f => (
-            <TouchableOpacity key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
+            <TouchableOpacity accessibilityRole="button" key={f} style={[s.filtroChip, filtro === f && s.filtroChipAtivo]} onPress={() => setFiltro(f)}>
               <Text style={[s.filtroTexto, filtro === f && s.filtroTextoAtivo]}>
                 {f === 'todos' ? 'Todos' : ESTADO_LABEL[f]}
               </Text>
@@ -133,12 +133,12 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
                   {p.executadoPor && <Text style={s.cardInfo}>Executado por {p.executadoPor.nome.split(' ')[0]}</Text>}
                 </View>
                 {eOperacional && p.estado === 'pendente' && (
-                  <TouchableOpacity style={s.acaoBtn} onPress={() => aceitar(p.id)}>
+                  <TouchableOpacity accessibilityRole="button" style={s.acaoBtn} onPress={() => aceitar(p.id)}>
                     <Text style={s.acaoTexto}>Aceitar</Text>
                   </TouchableOpacity>
                 )}
                 {eOperacional && p.estado === 'em_curso' && p.executadoPor?.id === utilizador.id && (
-                  <TouchableOpacity style={[s.acaoBtn, { backgroundColor: '#dcfce7' }]} onPress={() => concluir(p.id)}>
+                  <TouchableOpacity accessibilityRole="button" style={[s.acaoBtn, { backgroundColor: '#dcfce7' }]} onPress={() => concluir(p.id)}>
                     <Text style={[s.acaoTexto, { color: '#16a34a' }]}>Concluir</Text>
                   </TouchableOpacity>
                 )}
@@ -154,13 +154,13 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
           <ScrollView style={[s.sheet, { maxHeight: '85%' }]}>
             <View style={s.sheetCab}>
               <Text style={s.sheetTitulo}>Novo Pedido Interno</Text>
-              <TouchableOpacity onPress={() => setModal(false)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModal(false)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>Tipo</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 4 }}>
               {TIPOS.map(t => (
-                <TouchableOpacity key={t} style={[s.chip, form.tipo === t && s.chipAtivo]} onPress={() => setForm(f => ({ ...f, tipo: t }))}>
+                <TouchableOpacity accessibilityRole="button" key={t} style={[s.chip, form.tipo === t && s.chipAtivo]} onPress={() => setForm(f => ({ ...f, tipo: t }))}>
                   <Text style={[s.chipTexto, form.tipo === t && s.chipTextoAtivo]}>{TIPO_LABEL[t]}</Text>
                 </TouchableOpacity>
               ))}
@@ -169,7 +169,7 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.formLabel}>Prioridade</Text>
             <View style={{ flexDirection: 'row', gap: 8, marginBottom: 4 }}>
               {PRIORIDADES.map(p => (
-                <TouchableOpacity key={p} style={[s.chip, form.prioridade === p && { backgroundColor: PRIORIDADE_COR[p] }]} onPress={() => setForm(f => ({ ...f, prioridade: p }))}>
+                <TouchableOpacity accessibilityRole="button" key={p} style={[s.chip, form.prioridade === p && { backgroundColor: PRIORIDADE_COR[p] }]} onPress={() => setForm(f => ({ ...f, prioridade: p }))}>
                   <Text style={[s.chipTexto, form.prioridade === p && { color: '#fff' }]}>{PRIORIDADE_LABEL[p]}</Text>
                 </TouchableOpacity>
               ))}
@@ -187,10 +187,10 @@ export default function PedidosInternosScreen({ utilizador, onVoltar }: Props) {
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModal(false)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModal(false)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeter} disabled={salvando}>
                 <Text style={s.submeterTexto}>{salvando ? 'A criar...' : 'Criar Pedido'}</Text>
               </TouchableOpacity>
             </View>
@@ -207,7 +207,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   novoBotao: { backgroundColor: '#f97316', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10 },
@@ -223,11 +223,11 @@ const s = StyleSheet.create({
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6, flexWrap: 'wrap', gap: 6 },
   cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
   badge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 11, fontWeight: '700' },
+  badgeTexto: { fontSize: 13, fontWeight: '700' },
   cardDesc: { fontSize: 13, color: '#475569', marginBottom: 4 },
-  cardLocal: { fontSize: 12, color: '#94a3b8', marginBottom: 4 },
+  cardLocal: { fontSize: 13, color: '#94a3b8', marginBottom: 4 },
   cardRodape: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  cardInfo: { fontSize: 12, color: '#94a3b8' },
+  cardInfo: { fontSize: 13, color: '#94a3b8' },
   acaoBtn: { marginTop: 10, backgroundColor: '#eff6ff', paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
   acaoTexto: { color: '#2563eb', fontWeight: '700', fontSize: 13 },
   vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 32, alignItems: 'center' },
