@@ -97,6 +97,8 @@ model Utilizador {
   auditLogs                      AuditLog[]
   sinaisVitaisRegistados         SinalVital[]                @relation("SinaisVitaisRegistados")
   leiturasMonitorValidadas       LeituraMonitor[]            @relation("LeiturasMonitorValidadas")
+  referenciacoesCriadas          ReferenciacaoContinuidade[] @relation("ReferenciacoesCriadas")
+  ensinosRealizados              EnsinoDoente[]              @relation("EnsinosRealizados")
   dispositivosTokens             DispositivoToken[]
   notificacoesInApp              NotificacaoInApp[]
   avaliacoesRisco                AvaliacaoRisco[]
@@ -329,6 +331,8 @@ model Doente {
   passagensTurno          PassagemTurno[]
   sinaisVitais            SinalVital[]
   leiturasMonitor         LeituraMonitor[]
+  referenciacoes          ReferenciacaoContinuidade[]
+  ensinos                 EnsinoDoente[]
   alergias                Alergia[]
   contactosEmergencia     ContactoEmergencia[]
   alertasClinicos         AlertaClinico[]
@@ -2871,6 +2875,52 @@ model BaselineDoente {
 
 // ─── Session 49: Planeamento de Alta ─────────────────────────────────────────
 
+/// PROD-13 — referenciação para a continuidade de cuidados (RNCCI, CSP, apoio social).
+/// O pedido formal à RNCCI faz-se na plataforma da Rede; aqui fica o estado, visível à equipa
+/// e contado nas altas proteladas.
+model ReferenciacaoContinuidade {
+  id           String    @id @default(uuid())
+  doenteId     String
+  doente       Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId   String?
+  destino      String // ver DESTINOS em planeamento-alta.constantes.ts
+  estado       String    @default("proposta") // proposta | enviada | aceite | vaga_atribuida | recusada | cancelada
+  motivo       String    @db.VarChar(1000)
+  nota         String?   @db.VarChar(1000) // última nota (vaga, motivo da recusa…)
+  criadaPorId  String
+  criadaPor    Utilizador @relation("ReferenciacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Restrict)
+  criadaEm     DateTime  @default(now())
+  enviadaEm    DateTime?
+  aceiteEm     DateTime?
+  vagaEm       DateTime?
+  fechadaEm    DateTime? // recusada ou cancelada
+  historico    Json      @default("[]") // [{ estado, em, porId, nota }]
+
+  @@index([doenteId, episodioId])
+  @@index([estado])
+  @@map("referenciacoes_continuidade")
+}
+
+/// PROD-13 — ensino ao doente e/ou ao cuidador, com a verificação da compreensão (teach-back).
+model EnsinoDoente {
+  id             String    @id @default(uuid())
+  doenteId       String
+  doente         Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId     String?
+  tema           String // código de TEMAS_ENSINO ou 'outro'
+  titulo         String    @db.VarChar(200)
+  destinatario   String // 'doente' | 'cuidador' | 'ambos'
+  cuidadorNome   String?   @db.VarChar(200)
+  compreensao    String // 'compreendeu' | 'parcial' | 'nao_compreendeu'
+  nota           String?   @db.VarChar(1000)
+  realizadoPorId String
+  realizadoPor   Utilizador @relation("EnsinosRealizados", fields: [realizadoPorId], references: [id], onDelete: Restrict)
+  realizadoEm    DateTime  @default(now())
+
+  @@index([doenteId, episodioId])
+  @@map("ensinos_doente")
+}
+
 model PlanoAlta {
   id          String    @id @default(uuid())
   // PROD-02: um plano de alta por episódio.
@@ -2889,6 +2939,10 @@ model PlanoAlta {
   medicacaoPreparada   Boolean @default(false)
   consultaSegAlt       Boolean @default(false)
   notas                String? @db.VarChar(1000)
+  // PROD-13: o dia em que o doente ficou clinicamente pronto para a alta. Daí em diante, cada dia
+  // internado é "dia após alta clínica" (alta protelada, quase sempre por razões sociais).
+  altaClinicaEm        DateTime?
+  altaClinicaPorId     String?
 
   doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 

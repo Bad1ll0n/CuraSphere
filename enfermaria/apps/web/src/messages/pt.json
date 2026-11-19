@@ -1006,5 +1006,119 @@
   "deferredRecord": {
     "badge": "registo diferido · {quando}",
     "hint": "Registado no sistema em {quando}, depois do ato (à cabeceira sem rede). A hora mostrada é a do ato."
+  },
+  "continuity": {
+    "title": "Continuidade de cuidados",
+    "loading": "A carregar a continuidade de cuidados...",
+    "loadError": "Não foi possível carregar a continuidade de cuidados.",
+    "retry": "Tentar de novo",
+    "error": "Não foi possível guardar",
+    "clinicalDischarge": {
+      "none": "Sem alta clínica",
+      "since": "Alta clínica {quando} · {dias, plural, =0 {hoje} one {# dia internado depois} other {# dias internado depois}}",
+      "mark": "Marcar alta clínica",
+      "undo": "Anular alta clínica",
+      "saved": "Alta clínica atualizada"
+    },
+    "flags": {
+      "title": "Sinalização precoce",
+      "dependencia": "Dependência",
+      "sem_cuidador": "Sem cuidador identificado",
+      "ensino_nao_compreendido": "Ensinos",
+      "sem_avaliacao_inicial": "Avaliação inicial em falta"
+    },
+    "referral": {
+      "title": "Referenciação (RNCCI, CSP, apoio social)",
+      "none": "Sem referenciações neste internamento.",
+      "by": "{por} · {quando}",
+      "destination": "Destino",
+      "choose": "Escolher…",
+      "reason": "Motivo / necessidade",
+      "submit": "Referenciar",
+      "created": "Referenciação registada",
+      "updated": "Referenciação atualizada"
+    },
+    "prompts": {
+      "reason": "Motivo",
+      "vacancy": "Vaga (unidade, data de entrada)",
+      "confirm": "Confirmar"
+    },
+    "teaching": {
+      "title": "Ensinos ao doente e ao cuidador",
+      "none": "Sem ensinos registados neste internamento.",
+      "topic": "Tema",
+      "choose": "Escolher um tema…",
+      "other": "Outro tema",
+      "customTopic": "Qual?",
+      "recipient": "A quem",
+      "to": {
+        "doente": "Doente",
+        "cuidador": "Cuidador",
+        "ambos": "Doente e cuidador"
+      },
+      "caregiver": "Nome do cuidador",
+      "teachBack": "Compreensão (teach-back)",
+      "understood": {
+        "compreendeu": "Compreendeu",
+        "parcial": "Compreendeu em parte",
+        "nao_compreendeu": "Não compreendeu"
+      },
+      "note": "Nota (obrigatória se não compreendeu tudo)",
+      "submit": "Registar ensino",
+      "saved": "Ensino registado"
+    },
+    "state": {
+      "proposta": "Proposta",
+      "enviada": "Enviada",
+      "aceite": "Aceite",
+      "vaga_atribuida": "Vaga atribuída",
+      "recusada": "Recusada",
+      "cancelada": "Cancelada"
+    },
+    "action": {
+      "enviada": "Marcar como enviada",
+      "aceite": "Aceite",
+      "vaga_atribuida": "Vaga atribuída",
+      "recusada": "Recusada",
+      "cancelada": "Cancelar",
+      "proposta": "Proposta"
+    }
+  },
+  "delayedDischarges": {
+    "title": "Altas proteladas",
+    "summary": "{doentes} · {dias} d",
+    "loading": "A carregar...",
+    "loadError": "Não foi possível carregar as altas proteladas.",
+    "retry": "Tentar de novo",
+    "empty": "Nenhum doente internado depois da alta clínica",
+    "noReferral": "Sem referenciação pendente",
+    "days": "{n, plural, one {# dia} other {# dias}}",
+    "waiting": {
+      "proposta": "{destino}: por enviar",
+      "enviada": "{destino}: à espera de resposta",
+      "aceite": "{destino}: à espera de vaga"
+    },
+    "destination": {
+      "rncci_convalescenca": "RNCCI convalescença",
+      "rncci_media_duracao": "RNCCI média duração",
+      "rncci_longa_duracao": "RNCCI longa duração",
+      "rncci_paliativos": "RNCCI paliativos",
+      "rncci_ecci": "ECCI",
+      "csp_usf": "USF/UCSP",
+      "csp_ucc": "UCC",
+      "apoio_social": "Resposta social",
+      "outro": "Outro"
+    }
+  },
+  "portalDischarge": {
+    "back": "← Voltar",
+    "title": "Plano de alta",
+    "loading": "A carregar...",
+    "loadError": "Não foi possível carregar o plano de alta. Tente mais tarde.",
+    "empty": "Plano de alta ainda não definido",
+    "expectedDate": "Data prevista de alta",
+    "notes": "Notas da equipa",
+    "teachings": "O que lhe ensinámos",
+    "noTeachings": "Ainda sem ensinos registados."
   }
 }
