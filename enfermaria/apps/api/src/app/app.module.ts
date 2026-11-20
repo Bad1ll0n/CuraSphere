@@ -10,7 +10,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerRedisStorage } from './common/throttler-redis.storage';
 import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
 import { ScheduleModule } from '@nestjs/schedule';
-import * as Joi from 'joi';
 import { sanitizarUrlParaLog } from './common/sanitizar-url-log';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
@@ -31,6 +30,7 @@ import { OperacionalModule } from './operacional.module';
 import { StorageModule } from './common/storage.module';
 import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.module';
 import { GuidelinesModule } from './guidelines/guidelines.module';
+import { esquemaConfiguracao } from './config/esquema-config';
 import { PortalDoenteModule } from './portal-doente/portal-doente.module';
 import { RgpdModule } from './rgpd/rgpd.module';
 import { Hl7Module } from './hl7/hl7.module';
@@ -56,20 +56,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-        REDIS_URL: Joi.string().default('redis://localhost:6379'),
-        JWT_SECRET: Joi.string().min(32).required(),
-        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('15m'),
-        ENCRYPTION_KEY: Joi.string().hex().min(64).required(),
-        ALLOWED_ORIGINS: Joi.when('NODE_ENV', {
-          is: 'production',
-          then: Joi.string().required(),
-          otherwise: Joi.string().optional(),
-        }),
-        PORT: Joi.number().default(3333),
-        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
-      }),
+      // ARQ-20: esquema completo e fechado em produção — ver config/esquema-config.ts.
+      validationSchema: esquemaConfiguracao,
     }),
     LoggerModule.forRoot({
       pinoHttp: {

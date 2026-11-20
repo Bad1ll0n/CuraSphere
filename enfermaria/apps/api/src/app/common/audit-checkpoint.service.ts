@@ -27,7 +27,8 @@ export class AuditCheckpointService implements OnModuleDestroy {
 
   constructor(private readonly prisma: PrismaService) {
     if (SIGNING_KEY === DEFAULT_KEY && process.env['NODE_ENV'] === 'production') {
-      this.logger.error('SEGURANÇA: AUDIT_SIGNING_KEY não configurada — checkpoints assinados com chave-default PÚBLICA. O tamper-proof contra insider NÃO está ativo. Definir AUDIT_SIGNING_KEY (fora da BD).');
+      // ARQ-20: fechado — antes só registava um erro e assinava com uma chave PÚBLICA.
+      throw new Error('SEGURANÇA: AUDIT_SIGNING_KEY não configurada — em produção a API não arranca sem ela (o tamper-proof dos checkpoints depende dela).');
     } else if (SIGNING_KEY === DEFAULT_KEY) {
       this.logger.warn('AUDIT_SIGNING_KEY não definida — a usar chave-default (dev). Definir em produção.');
     }

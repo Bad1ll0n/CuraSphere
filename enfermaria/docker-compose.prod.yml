@@ -285,9 +285,10 @@ services:
       # o /metrics devolve 401 e o sistema fica sem métricas nenhumas. Definir
       # se houver recolha (ver OPS-11). Gerar: openssl rand -hex 32
       METRICS_TOKEN:           ${METRICS_TOKEN:-}
-      # Assinatura das etiquetas QR de medicação. Cai no JWT_SECRET quando
-      # ausente (omissão segura), mas convém ser uma chave própria.
-      MEDICACAO_QR_SECRET:     ${MEDICACAO_QR_SECRET:-}
+      # Assinatura das etiquetas QR de medicação — chave própria, obrigatória em produção (ARQ-20).
+      MEDICACAO_QR_SECRET:     ${MEDICACAO_QR_SECRET:?MEDICACAO_QR_SECRET em falta — openssl rand -hex 32 (já não reutiliza o JWT_SECRET)}
+      # OPS-20: durante a rotação da ENCRYPTION_KEY, as chaves antigas (só leitura). Ver docs/SEGREDOS.md.
+      ENCRYPTION_KEYS_ANTERIORES: ${ENCRYPTION_KEYS_ANTERIORES:-}
       # Idade máxima de um token de quiosque (SEC-17). Omissão no código.
       QUIOSQUE_TOKEN_MAX_DIAS: ${QUIOSQUE_TOKEN_MAX_DIAS:-}
 
