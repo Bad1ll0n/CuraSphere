@@ -97,3 +97,6 @@ nginx/ssl/*.key
 
 # PERF-09: sumários dos testes de carga (gerados pelo k6)
 load/k6-summary*.json
+
+# OPS-19: as redes reais do hospital (exemplo versionado em nginx/rede-interna.conf.example)
+nginx/rede-interna.conf

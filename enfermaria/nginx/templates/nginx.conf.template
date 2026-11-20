@@ -1,3 +1,10 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-19 — TEMPLATE. A imagem oficial do nginx gera /etc/nginx/nginx.conf a partir daqui no
+# arranque (envsubst; ver o serviço `nginx` no docker-compose.prod.yml). Só se substituem
+# DOMINIO e TLS_DIR (NGINX_ENVSUBST_FILTER) — as variáveis do nginx ($host, $uri…)
+# ficam como estão. O domínio e as redes do hospital já não estão versionados ("ALTERAR"):
+# vêm do .env.prod (DOMINIO) e de nginx/rede-interna.conf (fora do repositório).
+# ─────────────────────────────────────────────────────────────────────────────
 worker_processes auto;
 error_log /var/log/nginx/error.log warn;
 pid       /tmp/nginx.pid;
@@ -69,6 +76,34 @@ http {
     # Ocultar versão do nginx
     server_tokens off;
 
+    # ── Quem chega a quê (OPS-19) ───────────────────────────────────────────
+    # Antes havia um `allow`/`deny all` no bloco HTTPS inteiro: fora da LAN/VPN nada passava —
+    # incluindo o portal do doente e o acesso da família, que existem precisamente para quem
+    # está em casa. Agora a aplicação do PESSOAL continua só para a rede do hospital, e as rotas
+    # públicas (portal, família e os recursos estáticos de que precisam) ficam abertas — a API
+    # aplica a sua própria autenticação, limites e consentimentos a essas rotas.
+    geo $rede_interna {
+        default 0;
+        127.0.0.1/32 1;                          # o próprio host (healthchecks, deploy)
+        include /etc/nginx/rede-interna.conf;    # LAN e VPN do hospital (nginx/rede-interna.conf)
+    }
+    map $uri $rota_publica {
+        default 0;
+        ~^/(portal|familia)(/|$)                 1;
+        ~^/api/v1/(portal|familia)(/|$)          1;
+        ~^/api/v1/csrf-token$                     1;   # o portal pede o token CSRF antes de submeter
+        ~^/_next/(static|image)/                 1;
+        ~^/(favicon\.ico|manifest\.json|robots\.txt|sw\.js)$ 1;
+        ~^/(icons|images|fonts)/                 1;
+        ~^/\.well-known/acme-challenge/          1;
+    }
+    # 1 = recusar: nem rede interna nem rota pública.
+    map "$rede_interna:$rota_publica" $acesso_recusado {
+        default 1;
+        ~^1:     0;
+        ~:1$     0;
+    }
+
     # ── Upstreams (OPS-09 / OPS-12) ─────────────────────────────────────────
     # `api` e `web` são resolvidos no DNS do Docker sempre que o nginx carrega a configuração
     # (arranque e `nginx -s reload`), e TODAS as réplicas entram no balanceamento. O nginx só
@@ -108,6 +143,13 @@ http {
             deny  all;
             return 200 "ok\n";
         }
+        # OPS-18: desafio ACME (Let's Encrypt, HTTP-01) — o certbot escreve aqui (volume
+        # partilhado) na emissão e em cada renovação. Tem de estar em HTTP: é assim que a CA valida.
+        location ^~ /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+            default_type text/plain;
+            try_files $uri =404;
+        }
         location / {
             return 301 https://$host$request_uri;
         }
@@ -117,23 +159,24 @@ http {
     server {
         listen 443 ssl;
         http2  on;   # `listen ... http2` está obsoleto desde o nginx 1.25.1
-        # ALTERAR: substituir pelo domínio real do hospital
-        server_name curasphere.hospital.pt;
+        server_name ${DOMINIO};
         # Os `proxy_set_header Host` abaixo usam `$server_name` e não o cabeçalho Host do
         # pedido: este é o único bloco TLS e por isso o default para qualquer Host recebido.
 
-        # ── Restrição de rede — apenas LAN hospitalar e VPN ────────────────
-        # ALTERAR: substituir pelos intervalos de IP reais da rede hospitalar
-        # Exemplos: 192.168.0.0/16 = LAN típica; 10.0.0.0/8 = VPN ou rede interna maior
-        allow 127.0.0.1;        # localhost (deploys locais / healthcheck)
-        allow 192.168.0.0/16;   # LAN hospitalar (ajustar ao range real)
-        allow 10.0.0.0/8;       # VPN hospitalar (ajustar ao range real)
-        deny all;               # bloquear todo o tráfego externo
+        # ── Restrição de rede (OPS-19) ──────────────────────────────────────
+        # A aplicação do pessoal só da LAN/VPN do hospital; portal e família de qualquer lado
+        # (ver $acesso_recusado acima). `return` no nível do server corre antes das locations.
+        if ($acesso_recusado) {
+            return 403;
+        }
 
-        # Certificados SSL — colocar em nginx/ssl/
-        # Para Let's Encrypt: fullchain.pem e privkey.pem
-        ssl_certificate     /etc/nginx/ssl/fullchain.pem;
-        ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+        # ── Certificado (OPS-18) ────────────────────────────────────────────
+        # TLS_DIR: /etc/letsencrypt/live/curasphere (emitido e renovado pelo certbot — ver
+        # scripts/emitir-certificado.sh) ou /etc/nginx/ssl (certificado da CA interna do
+        # hospital, posto à mão). Em ambos: fullchain.pem, privkey.pem e chain.pem.
+        ssl_certificate         ${TLS_DIR}/fullchain.pem;
+        ssl_certificate_key     ${TLS_DIR}/privkey.pem;
+        ssl_trusted_certificate ${TLS_DIR}/chain.pem;
 
         # Configuração TLS moderna
         ssl_protocols             TLSv1.2 TLSv1.3;
@@ -142,8 +185,13 @@ http {
         ssl_session_cache         shared:SSL:10m;
         ssl_session_timeout       1d;
         ssl_session_tickets       off;
+        # OPS-18: o stapling estava ligado mas não funcionava — sem `resolver` o nginx não
+        # consegue chegar ao respondedor OCSP, e sem `ssl_trusted_certificate` não verifica a
+        # resposta. 127.0.0.11 é o DNS do Docker, que reencaminha os nomes externos.
         ssl_stapling              on;
         ssl_stapling_verify       on;
+        resolver                  127.0.0.11 valid=300s ipv6=off;
+        resolver_timeout          5s;
 
         # ── Cabeçalhos de segurança (OPS-06) ────────────────────────────────
         # O nginx só herda `add_header` do nível de cima quando o nível actual não define

@@ -114,6 +114,16 @@ groups:
           resumo: "O último backup bem-sucedido tem mais de 26 h."
           accao: "docker logs curasphere-backup --tail 100 (ver DR-RUNBOOK.md)"
 
+      # OPS-04: escrita pelo backup-all.sh quando a rotina falha — avisa na hora.
+      - alert: BackupFalhou
+        expr: >
+          curasphere_backup_ultima_falha_timestamp_segundos > curasphere_backup_ultimo_sucesso_timestamp_segundos
+          or (curasphere_backup_ultima_falha_timestamp_segundos unless curasphere_backup_ultimo_sucesso_timestamp_segundos)
+        labels: { severidade: critico }
+        annotations:
+          resumo: "A última rotina de backup falhou (e não houve nenhuma bem-sucedida depois)."
+          accao: "docker logs curasphere-backup --tail 100; tail /backups/backup.log (ver DR-RUNBOOK.md §3)"
+
       - alert: BackupNuncaRegistado
         expr: absent(curasphere_backup_ultimo_sucesso_timestamp_segundos)
         for: 26h

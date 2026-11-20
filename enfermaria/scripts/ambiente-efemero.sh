@@ -22,7 +22,8 @@ CURL_IMG="curlimages/curl:8.17.0"
 falhar() { echo "FALHOU: $*"; dc ps || true; dc logs --tail 60 api nginx web 2>/dev/null || true; exit 1; }
 
 descer() {
-  [ "${CERT_TEMPORARIO:-0}" = "1" ] && rm -f nginx/ssl/fullchain.pem nginx/ssl/privkey.pem
+  [ "${CERT_TEMPORARIO:-0}" = "1" ] && rm -f nginx/ssl/fullchain.pem nginx/ssl/privkey.pem nginx/ssl/chain.pem
+  [ "${REDE_TEMPORARIA:-0}" = "1" ] && rm -f nginx/rede-interna.conf
   [ "${MANTER:-0}" = "1" ] && { echo "(MANTER=1: o ambiente fica a correr; descer com: docker compose -p curasphere-efemero down -v)"; return; }
   dc down -v --remove-orphans >/dev/null 2>&1 || true
   rm -f "$ENV_FILE"
@@ -32,6 +33,12 @@ trap descer EXIT
 # ── 1. Segredos aleatórios (descartáveis) e certificado autoassinado ─────────
 if [ ! -f "$ENV_FILE" ]; then
   aleat() { openssl rand -hex "$1"; }
+  # SEC-11: par ES256 dos tokens (a API assina; o web só tem a pública), PEM numa linha com \n.
+  CHAVES=$(mktemp -d)
+  openssl ecparam -name prime256v1 -genkey -noout 2>/dev/null | openssl pkcs8 -topk8 -nocrypt -out "$CHAVES/p.pem"
+  openssl ec -in "$CHAVES/p.pem" -pubout -out "$CHAVES/q.pem" 2>/dev/null
+  numa_linha() { awk 'NF {printf "%s\\n", $0}' "$1"; }
+  JWT_PRIVADA=$(numa_linha "$CHAVES/p.pem"); JWT_PUBLICA=$(numa_linha "$CHAVES/q.pem"); rm -rf "$CHAVES"
   cat > "$ENV_FILE" <<EOF
 # Gerado por scripts/ambiente-efemero.sh — descartável, apagado no fim.
 CURASPHERE_VERSION=efemero
@@ -39,6 +46,11 @@ DB_USER=curasphere
 DB_PASSWORD=$(aleat 16)
 DB_NAME=enfermaria
 JWT_SECRET=$(aleat 32)
+JWT_PRIVATE_KEY="$JWT_PRIVADA"
+JWT_PUBLIC_KEY="$JWT_PUBLICA"
+MEDICACAO_QR_SECRET=$(aleat 32)
+DOMINIO=$DOMINIO
+TLS_DIR=/etc/nginx/ssl
 ENCRYPTION_KEY=$(aleat 32)
 AUDIT_SIGNING_KEY=$(aleat 32)
 METRICS_TOKEN=$(aleat 16)
@@ -58,7 +70,13 @@ fi
 if [ ! -f nginx/ssl/fullchain.pem ]; then
   MSYS_NO_PATHCONV=1 openssl req -x509 -newkey rsa:2048 -nodes -days 2 -subj "/CN=$DOMINIO" \
     -keyout nginx/ssl/privkey.pem -out nginx/ssl/fullchain.pem >/dev/null 2>&1
+  cp nginx/ssl/fullchain.pem nginx/ssl/chain.pem   # autoassinado: a cadeia é o próprio
   CERT_TEMPORARIO=1
+fi
+# OPS-19: a "rede do hospital" deste ensaio é a rede cliente (10.250.0.0/24).
+if [ ! -f nginx/rede-interna.conf ]; then
+  echo "10.250.0.0/24 1;" > nginx/rede-interna.conf
+  REDE_TEMPORARIA=1
 fi
 
 # ── 2. Imagens (as mesmas que a release constrói) ────────────────────────────
@@ -108,6 +126,12 @@ fi
 # Allowlist: um IP fora da LAN/VPN (rede Docker 172.x) é recusado pelo nginx.
 e=$(docker run --rm --network curasphere-lb "$CURL_IMG" -sk -o /dev/null -w '%{http_code}' --resolve "$DOMINIO:443:$(docker inspect -f '{{(index .NetworkSettings.Networks "curasphere-lb").IPAddress}}' "$(dc ps -q nginx)")" "https://$DOMINIO/login")
 [ "$e" = "403" ] || falhar "a allowlist devia recusar um IP fora da rede do hospital (HTTP $e)"
+# OPS-19: o portal do doente e a família chegam de fora (é para isso que existem).
+NGINX_LB=$(docker inspect -f '{{(index .NetworkSettings.Networks "curasphere-lb").IPAddress}}' "$(dc ps -q nginx)")
+e=$(docker run --rm --network curasphere-lb "$CURL_IMG" -sk -o /dev/null -w '%{http_code}' --resolve "$DOMINIO:443:$NGINX_LB" "https://$DOMINIO/portal/login")
+[ "$e" = "200" ] || falhar "o portal devia chegar de fora da rede do hospital (HTTP $e)"
+e=$(docker run --rm --network curasphere-lb "$CURL_IMG" -sk -o /dev/null -w '%{http_code}' --resolve "$DOMINIO:443:$NGINX_LB" "https://$DOMINIO/api/v1/portal/me")
+[ "$e" = "401" ] || falhar "a API do portal devia responder de fora (401 sem sessão), não ser bloqueada (HTTP $e)"
 
 # ── 6. Trilho de auditoria imutável na BD que acabou de nascer ───────────────
 echo "[5/5] Trilho de auditoria append-only..."

@@ -25,6 +25,7 @@ on:
       - 'enfermaria/postgres/**'
       - 'enfermaria/monitoring/**'
       - 'enfermaria/nginx/**'
+      - 'enfermaria/infra/backup/**'
       - 'enfermaria/docker-compose.prod.yml'
       - '.github/workflows/ensaio-dr.yml'
 
@@ -66,13 +67,22 @@ jobs:
         working-directory: enfermaria
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: nginx.conf de produção (nginx -t)
+      # OPS-18/19: o nginx.conf gera-se do template (envsubst da imagem) — valida-se o gerado,
+      # com o script de arranque que confirma domínio, redes e certificado.
+      - name: nginx.conf de produção (template → nginx -t)
         run: |
           mkdir -p /tmp/ssl
           openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/ssl/privkey.pem -out /tmp/ssl/fullchain.pem -days 1 -subj /CN=ensaio
+          cp /tmp/ssl/fullchain.pem /tmp/ssl/chain.pem
           docker run --rm --add-host api:127.0.0.1 --add-host web:127.0.0.1 \
-            -v "$PWD/nginx/nginx.conf:/etc/nginx/nginx.conf:ro" -v /tmp/ssl:/etc/nginx/ssl:ro \
+            -e DOMINIO=ensaio.local -e TLS_DIR=/etc/nginx/ssl -e NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx -e 'NGINX_ENVSUBST_FILTER=^(DOMINIO|TLS_DIR)$' \
+            -v "$PWD/nginx/templates:/etc/nginx/templates:ro" -v "$PWD/nginx/rede-interna.conf.example:/etc/nginx/rede-interna.conf:ro" \
+            -v "$PWD/nginx/entrypoint.d/05-curasphere-validar.sh:/docker-entrypoint.d/05-curasphere-validar.sh:ro" \
+            -v /tmp/ssl:/etc/nginx/ssl:ro \
             nginx:1.30-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311 nginx -t
+      # OPS-04: a imagem de backup constrói-se e tem as ferramentas (o build falha se faltar alguma).
+      - name: Imagem de backup
+        run: docker build -q -t curasphere-backup:ensaio -f infra/backup/Dockerfile .
       - name: Ensaio de rolamento
         run: |
           set -o pipefail

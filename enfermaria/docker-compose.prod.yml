@@ -85,7 +85,13 @@ services:
           cpus: "0.25"
         reservations:
           memory: 64M
-    image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
+    # OPS-04: imagem própria (infra/backup/Dockerfile) com openssl, tar, age e rclone instalados no
+    # build — antes instalavam-se a cada arranque, com `|| true`, e uma falha deixava a rotina sem
+    # cifra nem cópia externa sem ninguém saber.
+    build:
+      context: .
+      dockerfile: infra/backup/Dockerfile
+    image: curasphere-backup:${CURASPHERE_VERSION:-local}
     container_name: curasphere-backup
     restart: unless-stopped
     environment:
@@ -132,7 +138,6 @@ services:
     # domingo 03:00 — base backup físico (ponto de partida do PITR).
     entrypoint: >
       sh -c "
-        apk add --no-cache openssl tar age rclone >/dev/null 2>&1 || true;
         printf '%s\n'
           '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1'
           '*/5 * * * * /scripts/enviar-wal.sh >> /backups/wal.log 2>&1'
@@ -535,9 +540,22 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    # OPS-19: o nginx.conf gera-se do template no arranque (envsubst da imagem oficial), só com
+    # DOMINIO e TLS_DIR — o domínio e as redes do hospital deixam de estar versionados.
+    environment:
+      DOMINIO: ${DOMINIO:?DOMINIO em falta no .env.prod — o domínio do hospital, por exemplo curasphere.hospital.pt}
+      # OPS-18: Let's Encrypt (certbot, perfil `acme`) ou, com CA interna, /etc/nginx/ssl.
+      TLS_DIR: ${TLS_DIR:-/etc/letsencrypt/live/curasphere}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
+      NGINX_ENVSUBST_FILTER: "^(DOMINIO|TLS_DIR)$$"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - ./nginx/rede-interna.conf:/etc/nginx/rede-interna.conf:ro
+      - ./nginx/entrypoint.d/05-curasphere-validar.sh:/docker-entrypoint.d/05-curasphere-validar.sh:ro
+      - ./nginx/entrypoint.d/40-curasphere-recarregar.sh:/docker-entrypoint.d/40-curasphere-recarregar.sh:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
       # OPS-07: sem volume de logs — o nginx escreve para stdout/stderr (a imagem oficial liga
       # access.log/error.log a eles), com rotação pelo json-file e recolha pelo Alloy/Loki.
     depends_on:
@@ -554,6 +572,29 @@ services:
       retries: 3
     labels:
       autoheal: "true"
+
+  # ── Certificados (OPS-18) ──────────────────────────────────────────────────
+  # Let's Encrypt: a 1.ª emissão faz-se com scripts/emitir-certificado.sh; daqui em diante este
+  # serviço tenta renovar de 12 em 12 h (o certbot só renova a menos de 30 dias do fim) pelo
+  # desafio HTTP-01, que o nginx serve a partir do volume certbot_www. O nginx recarrega o
+  # certificado sozinho (nginx/entrypoint.d/40-curasphere-recarregar.sh). Perfil `acme`: com um
+  # certificado da CA interna do hospital não é preciso (TLS_DIR=/etc/nginx/ssl).
+  # O CertificadoAExpirar (Prometheus/blackbox) avisa a 14 dias se a renovação falhar.
+  certbot:
+    image: certbot/certbot:v4.1.1@sha256:263fe7ee9dde6440bf8baa957c0a8eb0118fc05ef86cf743c4cc84ca84303a21
+    container_name: curasphere-certbot
+    profiles: ["acme"]
+    restart: unless-stopped
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM;
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --quiet --no-random-sleep-on-renew;
+          sleep 12h & wait $${!};
+        done"
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 
   # ── Autoheal (OPS-06) ──────────────────────────────────────────────────────
   # O Docker sem orquestrador NÃO reinicia contentores unhealthy (`restart` só reage à saída
@@ -734,6 +775,9 @@ networks:
 
 volumes:
   postgres_data:
+  # OPS-18: certificados do Let's Encrypt (conta ACME, chaves e renovações) e o webroot do desafio.
+  certbot_conf:
+  certbot_www:
   # OPS-02: WAL arquivado (PITR). Copiado cifrado para fora do host a cada 5 min.
   wal_arquivo:
   # OPS-05: métricas escritas pelos scripts de backup/WAL, lidas pelo node-exporter.
