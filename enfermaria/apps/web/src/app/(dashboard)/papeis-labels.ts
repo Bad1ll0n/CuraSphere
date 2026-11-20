@@ -1,0 +1,65 @@
+/** Rótulos e cores dos papéis, sub-papéis e serviços (separados dos dados do menu, em nav-data.tsx). */
+export const roleLabel: Record<string, string> = {
+  medico:         'Médico',
+  enfermeiro:     'Enfermeiro',
+  auxiliar:       'Auxiliar',
+  tecnico_saude:  'Técnico de Saúde',
+  farmaceutico:   'Farmacêutico',
+  administrativo: 'Administrativo',
+  operacional:    'Operacional',
+  ti:             'TI',
+  qualidade:      'Qualidade',
+  direcao:        'Direção',
+};
+
+export const subRoleLabel: Record<string, string> = {
+  clinico_geral: 'Clínico Geral', cirurgiao_geral: 'Cirurgião Geral',
+  medico_anestesia: 'Anestesiologista', medico_imagem: 'Radiologista',
+  anatomia_patologica: 'Patologista', medico_gestor: 'Médico Gestor',
+  generalista: 'Generalista', supervisor_enfermagem: 'Supervisor',
+  triador: 'Triador', instrumentista: 'Instrumentista',
+  apoio_geral: 'Apoio Geral',
+  tae: 'TAE', reabilitacao_fisica: 'Fisioterapeuta',
+  reabilitacao_fala: 'Terapeuta da Fala', nutricao_clinica: 'Nutricionista',
+  psicologia_clinica: 'Psicólogo',
+  farmaceutico_hospitalar: 'Hospitalar', farmaceutico_oncologico: 'Oncológico',
+  tecnico_farmacia_assist: 'Técnico',
+  front_desk: 'Rececionista', secretariado: 'Secretário', backoffice: 'Backoffice',
+  scheduling: 'Agenda', billing_officer: 'Faturação', hr_specialist: 'RH', procurement: 'Compras',
+  transporte_interno: 'Maqueiro', cssd: 'Esterilização',
+  higiene_hospitalar: 'Limpeza', gestao_textil: 'Lavandaria',
+  equipamentos_medicos: 'Eng. Biomédico', facilities: 'Manutenção',
+  vigilancia: 'Segurança', seguranca_trabalho: 'SST',
+  it_admin: 'IT Admin', cio: 'CIO', his_erp: 'HIS/ERP',
+  database_admin: 'DBA', security_officer: 'Cibersegurança', dados_clinicos: 'BI/Dados',
+  quality_manager: 'Gestor Qualidade', compliance: 'Compliance',
+  infection_control: 'Controlo Infeção', internal_audit: 'Auditoria', dpo_role: 'DPO',
+  compliance_director: 'Dir. Qualidade',
+  ceo_hospitalar: 'Diretor Geral', diretor_medico: 'Dir. Clínico',
+  head_nurse: 'Dir. Enfermagem', cfo: 'Dir. Financeiro',
+  coo: 'Dir. Operacional', hr_director: 'Dir. RH',
+};
+
+export const servicoLabel: Record<string, string> = {
+  internamento:       'Internamento',
+  urgencia:           'Urgência',
+  bloco_operatorio:   'Bloco Operatório',
+  consultas_externas: 'Consultas Externas',
+  farmacia:           'Farmácia',
+  fisioterapia:       'Fisioterapia',
+  transporte:         'Transporte',
+  administrativo:     'Administrativo',
+};
+
+export const roleColor: Record<string, string> = {
+  medico:         'bg-violet-500/15 text-violet-400',
+  enfermeiro:     'bg-teal-500/15 text-teal-400',
+  auxiliar:       'bg-slate-500/15 text-slate-500',
+  tecnico_saude:  'bg-sky-500/15 text-sky-400',
+  farmaceutico:   'bg-emerald-500/15 text-emerald-400',
+  administrativo: 'bg-pink-500/15 text-pink-400',
+  operacional:    'bg-orange-500/15 text-orange-400',
+  ti:             'bg-cyan-500/15 text-cyan-400',
+  qualidade:      'bg-indigo-500/15 text-indigo-400',
+  direcao:        'bg-yellow-500/15 text-yellow-400',
+};

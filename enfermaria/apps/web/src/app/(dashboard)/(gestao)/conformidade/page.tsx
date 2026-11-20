@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
+import { linhaCsv } from '@/lib/csv';
 
 interface AuditEntry {
   id: string;
@@ -100,7 +101,7 @@ export default function ConformidadePage() {
         a.acao, a.entidadeTipo ?? '', a.ip ?? '',
       ]),
     ];
-    const csv = linhas.map(r => r.join(';')).join('\n');
+    const csv = linhas.map(r => linhaCsv(r, ';')).join('\n'); // SEC-15: aspas e sem fórmulas
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

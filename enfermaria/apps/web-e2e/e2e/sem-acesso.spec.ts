@@ -38,5 +38,28 @@ test.describe('Ficha sem atribuição', () => {
     await dialogo.getByLabel('Justificação').fill('Chamada pela colega do quarto ao lado para uma queda');
     await dialogo.getByRole('button', { name: 'Aceder agora' }).click();
     await expect(page.getByRole('heading', { name: new RegExp(`Doente Sem Acesso ${marca}`) })).toBeVisible({ timeout: 15000 });
+
+    // SEC-14: o acesso fica por rever; a qualidade revê-o (não pode ser quem o fez).
+    await loginAs(page, '00010');
+    await page.goto('/acessos-emergencia');
+    const cartao = page.getByRole('listitem').filter({ hasText: `Doente Sem Acesso ${marca}` });
+    await expect(cartao).toBeVisible({ timeout: 15000 });
+    await expect(cartao).toContainText('Chamada pela colega do quarto ao lado');
+    await cartao.getByRole('button', { name: 'Justificado', exact: true }).click();
+    await expect(page.getByText('Revisão registada')).toBeVisible();
+    await page.getByRole('tab', { name: 'Histórico' }).click();
+    await expect(page.getByRole('listitem').filter({ hasText: `Doente Sem Acesso ${marca}` })).toContainText(/Justificado — revisto por/);
+  });
+
+  test('justificação curta é recusada pela API (SEC-14)', async () => {
+    const dir = await pwRequest.newContext({ baseURL: API });
+    await dir.get('/v1/csrf-token');
+    await dir.post('/v1/auth/login', { data: { numeroFuncionario: '00001', password: 'Teste1234!' } });
+    await dir.get('/v1/csrf-token');
+    const h = { 'x-csrf-token': (await dir.storageState()).cookies.find((c) => c.name === 'csrf-token')?.value ?? '' };
+    const lista = await (await dir.get('/v1/doentes?todos=true&limit=1')).json();
+    const r = await dir.post('/v1/break-glass', { data: { doenteId: lista.data[0].id, motivo: 'x' }, headers: h });
+    expect(r.status()).toBe(400);
+    await dir.dispose();
   });
 });

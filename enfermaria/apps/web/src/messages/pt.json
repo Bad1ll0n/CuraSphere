@@ -561,7 +561,8 @@
     "comunicacao": "Comunicação",
     "relatorios": "Relatórios DGS",
     "dietas": "Dietas",
-    "bancoSangue": "Banco de Sangue"
+    "bancoSangue": "Banco de Sangue",
+    "acessosEmergencia": "Acessos de emergência"
   },
   "bloodBank": {
     "title": "Banco de Sangue",
@@ -1307,5 +1308,28 @@
     "searching": "A pesquisar…",
     "more": "A mostrar {n} de {total} — refine a pesquisa",
     "error": "Não foi possível pesquisar doentes"
+  },
+  "emergencyAccessReview": {
+    "title": "Acessos de emergência",
+    "subtitle": "Cada acesso de emergência (break-glass) é revisto por quem não o fez. Sem revisão em 72 horas, é escalado para a direção e a qualidade.",
+    "tabPending": "Por rever ({n})",
+    "tabHistory": "Histórico",
+    "loading": "A carregar…",
+    "loadError": "Não foi possível carregar os acessos.",
+    "retry": "Tentar de novo",
+    "emptyPending": "Não há acessos de emergência por rever.",
+    "emptyHistory": "Ainda não há acessos de emergência registados.",
+    "who": "<b>{nome}</b> ({papel}) acedeu ao processo de <doente></doente>",
+    "overdue": "Sem revisão há {h} horas",
+    "reviewedJustified": "Justificado — revisto por {por} em {quando}",
+    "reviewedUnjustified": "Injustificado — revisto por {por} em {quando}",
+    "ownAccess": "É um acesso seu: tem de ser revisto por outra pessoa.",
+    "noteLabel": "Porque é injustificado? (pelo menos 10 caracteres)",
+    "confirmUnjustified": "Marcar como injustificado",
+    "cancel": "Cancelar",
+    "justified": "Justificado",
+    "unjustified": "Injustificado…",
+    "saved": "Revisão registada",
+    "error": "Não foi possível registar a revisão"
   }
 }

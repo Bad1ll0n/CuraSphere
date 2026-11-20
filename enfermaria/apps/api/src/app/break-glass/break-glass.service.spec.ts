@@ -13,7 +13,10 @@ const mockPrisma = {
     create: jest.fn(),
     findFirst: jest.fn(),
     findMany: jest.fn(),
+    findUnique: jest.fn(),
+    updateMany: jest.fn(),
   },
+  tryBecomeLeader: jest.fn(),
   auditLog: {
     create: jest.fn(),
   },
@@ -184,6 +187,63 @@ describe('BreakGlassService', () => {
         }),
       );
       expect(resultado).toEqual(lista);
+    });
+  });
+
+  // ── SEC-14: revisão obrigatória ──────────────────────────────────────────────
+  describe('rever()', () => {
+    const acesso = { id: 'bg1', utilizadorId: 'autor', doenteId: 'd1', revistoEm: null };
+
+    it('ninguém revê o próprio acesso', async () => {
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue(acesso);
+      await expect(service.rever('bg1', 'autor', 'justificado')).rejects.toThrow(/próprio/);
+    });
+
+    it('injustificado exige motivo e termina o acesso', async () => {
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue(acesso);
+      await expect(service.rever('bg1', 'chefe', 'injustificado', 'curto')).rejects.toThrow(/motivo/);
+
+      mockPrisma.breakGlassAccess.updateMany.mockResolvedValue({ count: 1 });
+      await service.rever('bg1', 'chefe', 'injustificado', 'Doente não estava em emergência nenhuma');
+      const { where, data } = mockPrisma.breakGlassAccess.updateMany.mock.calls[0][0];
+      expect(where).toEqual({ id: 'bg1', revistoEm: null });
+      expect(data).toMatchObject({ revistoPorId: 'chefe', revisaoResultado: 'injustificado', ativo: false });
+      expect(mockAudit.registar).toHaveBeenCalledWith(expect.objectContaining({ acao: 'BREAK_GLASS_REVISTO' }));
+      expect(mockNotificacoes.enviarParaRole).toHaveBeenCalledWith('qualidade', expect.any(String), expect.any(String), { breakGlassId: 'bg1' });
+    });
+
+    it('justificado mantém o acesso em vigor; uma segunda revisão é recusada', async () => {
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue(acesso);
+      mockPrisma.breakGlassAccess.updateMany.mockResolvedValue({ count: 1 });
+      await service.rever('bg1', 'chefe', 'justificado');
+      expect(mockPrisma.breakGlassAccess.updateMany.mock.calls[0][0].data).not.toHaveProperty('ativo');
+
+      mockPrisma.breakGlassAccess.updateMany.mockResolvedValue({ count: 0 });
+      await expect(service.rever('bg1', 'outro', 'justificado')).rejects.toThrow(/já foi revisto/);
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue({ ...acesso, revistoEm: new Date() });
+      await expect(service.rever('bg1', 'outro', 'justificado')).rejects.toThrow(/já foi revisto/);
+    });
+  });
+
+  describe('escalarPorRever()', () => {
+    it('escala uma vez os acessos sem revisão há mais de 72 h, para a direção e a qualidade', async () => {
+      mockPrisma.tryBecomeLeader.mockResolvedValue(true);
+      mockPrisma.breakGlassAccess.findMany.mockResolvedValue([{ id: 'a' }, { id: 'b' }]);
+      mockPrisma.breakGlassAccess.updateMany.mockResolvedValue({ count: 2 });
+      mockPrisma.utilizador.findMany.mockResolvedValue([{ id: 'dir' }, { id: 'qual' }]);
+      const agora = new Date('2026-11-20T12:00:00Z');
+
+      expect(await service.escalarPorRever(agora)).toBe(2);
+      const filtro = mockPrisma.breakGlassAccess.findMany.mock.calls[0][0].where;
+      expect(filtro).toMatchObject({ revistoEm: null, escaladoEm: null });
+      expect(filtro.criadoEm.lt.toISOString()).toBe('2026-11-17T12:00:00.000Z');
+      expect(mockNotificacoes.enviarParaUtilizador).toHaveBeenCalledTimes(2);
+    });
+
+    it('não corre noutra instância (líder)', async () => {
+      mockPrisma.tryBecomeLeader.mockResolvedValue(false);
+      expect(await service.escalarPorRever()).toBe(0);
+      expect(mockPrisma.breakGlassAccess.findMany).not.toHaveBeenCalled();
     });
   });
 });

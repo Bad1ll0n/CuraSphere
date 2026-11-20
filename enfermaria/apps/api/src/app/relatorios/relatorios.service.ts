@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { linhaCsv } from '../common/csv';
 
 @Injectable()
 export class RelatoriosService {
@@ -206,14 +207,8 @@ export class RelatoriosService {
   toCSV(data: Record<string, any>[]): string {
     if (data.length === 0) return '';
     const headers = Object.keys(data[0]);
-    const rows = data.map((row) =>
-      headers.map((h) => {
-        const val = row[h];
-        if (val === null || val === undefined) return '';
-        const str = typeof val === 'object' ? JSON.stringify(val) : String(val);
-        return str.includes(',') || str.includes('"') ? `"${str.replace(/"/g, '""')}"` : str;
-      }).join(','),
-    );
-    return [headers.join(','), ...rows].join('\n');
+    // SEC-15: células seguras (sem injeção de fórmulas) — ver common/csv.ts.
+    const rows = data.map((row) => linhaCsv(headers.map((h) => row[h])));
+    return [linhaCsv(headers), ...rows].join('\n');
   }
 }

@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { linhaCsv } from '@/lib/csv';
 
 interface LogUtilizador {
   id: string;
@@ -175,7 +176,7 @@ export default function AuditoriaPagina() {
         l.ip ?? '—',
       ]),
     ];
-    const csv = linhas.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const csv = linhas.map(r => linhaCsv(r, ';')).join('\n'); // SEC-15: sem injeção de fórmulas
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
