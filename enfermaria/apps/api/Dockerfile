@@ -65,8 +65,31 @@ COPY --from=builder /workspace/apps/api/dist/ ./
 # da raiz: a API arrancaria sem @nestjs/config, @nestjs/jwt, pg ou socket.io. Instala-se
 # aqui exactamente o que o bundle externaliza, a partir do lockfile podado.
 ENV NODE_ENV=production
+# OPS-16: o pnpm instala automaticamente os "peers" das dependências de produção, e alguns são
+# ferramentas de BUILD que nunca correm aqui: o CLI do Prisma (com o Prisma Studio, o pglite e o
+# effect — o @prisma/client declara-o como peer), o webpack/terser/swc (peers do plugin de
+# bundling do @sentry/node), o esbuild/lightningcss e o TypeScript. ~230 MB que só aumentavam o
+# tempo de deploy e a superfície de ataque. O @swc/helpers fica (é runtime do pdfmake).
+# A verificação a seguir carrega TODAS as dependências de produção e o cliente Prisma gerado:
+# se alguma deixar de carregar, o build falha aqui e não em produção.
+# Instalar, podar e verificar no MESMO `RUN`: num RUN à parte, o que se apaga continua na camada
+# da instalação e a imagem não diminui.
+COPY apps/api/scripts/verificar-dependencias.cjs /tmp/verificar-dependencias.cjs
 RUN pnpm install --prod --frozen-lockfile \
- && pnpm store prune
+ && pnpm store prune \
+ && for p in prisma@ @prisma+dev@ @prisma+studio-core@ @prisma+config@ @electric-sql+ effect@ \
+             webpack@ webpack-cli@ @webpack-cli+ terser-webpack-plugin@ minimizer-webpack-plugin@ \
+             @swc+core esbuild@ @esbuild+ lightningcss@ lightningcss- typescript@ \
+             @sentry+bundler-plugins@ @sentry+webpack-plugin@ @sentry+babel-plugin; do \
+      rm -rf node_modules/.pnpm/${p}*; \
+    done \
+ && node /tmp/verificar-dependencias.cjs && rm /tmp/verificar-dependencias.cjs \
+ # Nada de gestores de pacotes em runtime: o pnpm só servia a instalação acima, e o npm/yarn
+ # da imagem base não fazem nada numa imagem imutável (só superfície de ataque).
+ && npm uninstall -g pnpm >/dev/null 2>&1 \
+ && rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+           /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn* /usr/local/bin/yarn /usr/local/bin/yarnpkg \
+           /root/.npm /root/.cache /root/.local/share/pnpm
 
 # Directório de uploads (comunicacao.controller.ts guarda anexos em disco) —
 # tem de existir e pertencer ao utilizador sem privilégios antes do runtime

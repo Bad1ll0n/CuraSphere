@@ -46,7 +46,37 @@ services:
           -c archive_mode=on \
           -c archive_timeout=300 \
           -c 'archive_command=/scripts/arquivar-wal.sh %p %f' \
-          -c max_wal_senders=3
+          -c max_wal_senders=3 \
+          -c shared_preload_libraries=pg_stat_statements \
+          -c pg_stat_statements.track=top \
+          -c pg_stat_statements.max=5000 \
+          -c track_io_timing=on \
+          -c shared_buffers=${PG_SHARED_BUFFERS:-512MB} \
+          -c effective_cache_size=${PG_EFFECTIVE_CACHE_SIZE:-1536MB} \
+          -c work_mem=${PG_WORK_MEM:-8MB} \
+          -c maintenance_work_mem=${PG_MAINTENANCE_WORK_MEM:-128MB} \
+          -c max_connections=${PG_MAX_CONNECTIONS:-150} \
+          -c random_page_cost=1.1 \
+          -c effective_io_concurrency=200 \
+          -c wal_buffers=16MB \
+          -c checkpoint_completion_target=0.9 \
+          -c max_wal_size=2GB \
+          -c min_wal_size=512MB \
+          -c idle_in_transaction_session_timeout=60s \
+          -c log_min_duration_statement=${PG_LOG_LENTAS_MS:-500} \
+          -c log_lock_waits=on \
+          -c log_temp_files=10MB
+    # PERF-15: o Postgres corria com a configuração por omissão da imagem — 128 MB de
+    # shared_buffers num contentor de 2 GB, custos de disco rotativo, checkpoints apertados — e sem
+    # pg_stat_statements, por isso não havia como saber que queries pesavam. Os valores acima são
+    # para o limite de 2 GB deste contentor (¼ em shared_buffers, ¾ como cache efectiva, SSD) e
+    # ajustam-se no .env.prod (PG_*) se o contentor mudar de tamanho. max_connections cobre as
+    # réplicas da API × DB_POOL_MAX (2 × 20) mais migrações, backup, exporter e manutenção.
+    # Diagnóstico: queries > 500 ms e esperas por locks no log; transacções esquecidas abertas
+    # (idle in transaction) terminam ao fim de 60 s. O consumo: docs/DESEMPENHO-BD.md.
+    # shm: as queries paralelas usam memória partilhada POSIX (/dev/shm); os 64 MB por omissão
+    # do Docker davam "could not resize shared memory segment".
+    shm_size: 256mb
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # OPS-01: o Postgres já não monta ./backups — não precisa, e montava-o em leitura-escrita.
@@ -697,6 +727,8 @@ services:
     restart: unless-stopped
     environment:
       DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-enfermaria}?sslmode=disable"
+    # PERF-15: as queries mais pesadas (pg_stat_statements) também no Prometheus/Grafana.
+    command: ["--collector.stat_statements", "--collector.stat_statements.limit=50"]
     networks: [curasphere-internal]
     logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 

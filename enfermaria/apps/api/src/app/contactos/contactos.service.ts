@@ -6,10 +6,13 @@ export class ContactosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async listar(doenteId: string) {
-    return this.prisma.contactoEmergencia.findMany({
+    // PERF-16: o nome está cifrado (IV aleatório) — ordenar por ele no SQL dava uma ordem
+    // aleatória. Ordena-se depois de decifrar; são poucos contactos por doente.
+    const contactos = await this.prisma.contactoEmergencia.findMany({
       where: { doenteId, deletedAt: null },
-      orderBy: [{ principal: 'desc' }, { nome: 'asc' }],
+      orderBy: { principal: 'desc' },
     });
+    return contactos.sort((a, b) => Number(b.principal) - Number(a.principal) || a.nome.localeCompare(b.nome, 'pt'));
   }
 
   async criar(doenteId: string, body: Record<string, any>) {

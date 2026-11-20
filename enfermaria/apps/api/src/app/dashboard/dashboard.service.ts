@@ -330,33 +330,42 @@ export class DashboardService {
       include: { doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } } },
     });
 
-    const doenteIds = atribuicoes.filter(a => a.doente).map(a => a.doenteId!);
+    const doenteIds = [...new Set(atribuicoes.filter(a => a.doente).map(a => a.doenteId!))];
     if (doenteIds.length === 0) return [];
 
-    return Promise.all(doenteIds.map(async (doenteId) => {
+    // PERF-14: eram 4 consultas POR doente atribuído (a cada pedido do painel do turno — com 12
+    // doentes, 48 idas à BD em paralelo). São 4 no total, agrupadas por doente.
+    const em = { in: doenteIds };
+    const [medicacao, tarefas, alertas, sinais] = await Promise.all([
+      this.prisma.medicacao.groupBy({
+        by: ['doenteId'],
+        where: { doenteId: em, registos: { none: { administradoEm: { gte: oitoHorasAtras } } } } as any,
+        _count: { _all: true },
+      }),
+      this.prisma.tarefa.groupBy({
+        by: ['doenteId'],
+        where: { doenteId: em, estado: { in: ['pendente', 'em_progresso'] }, prazo: { lt: agora } },
+        _count: { _all: true },
+      }),
+      this.prisma.alertaClinico.groupBy({ by: ['doenteId'], where: { doenteId: em, lido: false }, _count: { _all: true } }),
+      this.prisma.sinalVital.groupBy({ by: ['doenteId'], where: { doenteId: em }, _max: { data: true } }),
+    ]);
+    const contagem = (linhas: any[]) => new Map(linhas.map((l) => [l.doenteId, l._count?._all ?? 0]));
+    const med = contagem(medicacao as any[]);
+    const tar = contagem(tarefas as any[]);
+    const ale = contagem(alertas as any[]);
+    const ultimo = new Map((sinais as any[]).map((l) => [l.doenteId, l._max?.data as Date | null]));
+
+    return doenteIds.map((doenteId) => {
       const doente = atribuicoes.find(a => a.doenteId === doenteId)?.doente;
-      const [medicacoesPendentes, tarefasAtrasadas, alertasNaoLidos, ultimoSinalVital] = await Promise.all([
-        this.prisma.medicacao.count({
-          where: { doenteId, registos: { none: { administradoEm: { gte: oitoHorasAtras } } } } as any,
-        }),
-        this.prisma.tarefa.count({
-          where: { doenteId, estado: { in: ['pendente', 'em_progresso'] }, prazo: { lt: agora } },
-        }),
-        this.prisma.alertaClinico.count({ where: { doenteId, lido: false } }),
-        this.prisma.sinalVital.findFirst({
-          where: { doenteId },
-          orderBy: { data: 'desc' },
-          select: { data: true },
-        }),
-      ]);
       return {
         doente: { id: doenteId, nome: doente?.nome ?? '', cama: doente?.cama?.numero ?? null, quarto: doente?.cama?.quarto ?? null },
-        medicacoesPendentes,
-        tarefasAtrasadas,
-        alertasNaoLidos,
-        ultimoSinalVital: ultimoSinalVital?.data?.toISOString() ?? null,
+        medicacoesPendentes: med.get(doenteId) ?? 0,
+        tarefasAtrasadas: tar.get(doenteId) ?? 0,
+        alertasNaoLidos: ale.get(doenteId) ?? 0,
+        ultimoSinalVital: ultimo.get(doenteId)?.toISOString() ?? null,
       };
-    }));
+    });
   }
 
   async dashboardQualidade() {

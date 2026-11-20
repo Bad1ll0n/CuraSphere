@@ -166,6 +166,23 @@ function decryptAny(model: string, result: any): any {
   return result;
 }
 
+/**
+ * PERF-16 — decifrar uma lista grande sem prender o event loop. A decifragem é síncrona (AES-GCM
+ * por campo, mais o percurso das relações): numa exportação ou num relatório com milhares de
+ * linhas, a API deixava de responder a todos os outros pedidos — incluindo os alertas clínicos em
+ * tempo real — até acabar. Por lotes, com uma pausa (setImmediate) entre eles, os outros pedidos
+ * são servidos pelo meio. Listas pequenas (o normal) decifram-se de uma vez, como antes.
+ */
+export const LOTE_DECIFRAGEM = 200;
+export async function decifrarSemBloquear(model: string, result: any, lote = LOTE_DECIFRAGEM): Promise<any> {
+  if (!Array.isArray(result) || result.length <= lote) return decryptAny(model, result);
+  for (let i = 0; i < result.length; i += lote) {
+    for (let j = i; j < Math.min(i + lote, result.length); j++) decryptDeep(model, result[j]);
+    if (i + lote < result.length) await new Promise<void>((ok) => setImmediate(ok));
+  }
+  return result;
+}
+
 /* ------------------------------------------------------------------ *
  * Índice cego para pesquisa por nome (QA-05)
  *
@@ -331,7 +348,7 @@ export function criarClienteComEncriptacao(prisma: any) {
           }
         }
         const resultado = await executar(args);
-        return decryptAny(model, resultado);
+        return decifrarSemBloquear(model, resultado);
       },
     },
   };
