@@ -1335,5 +1335,27 @@
     "unjustified": "Unjustified…",
     "saved": "Review recorded",
     "error": "Could not record the review"
+  },
+  "dataSubjectRights": {
+    "title": "Data subject rights and retention",
+    "exportTitle": "Data access request (GDPR art. 15 and 20)",
+    "exportHint": "For a data subject who asked at the desk. It is audited. Patients with portal access export there.",
+    "export": "Export data (JSON)",
+    "exporting": "Exporting…",
+    "exported": "Export complete",
+    "retentionTitle": "Records past the retention period",
+    "policy": "Policy: identification is anonymised {anos} years after the last discharge; attendance data (tickets, waiting room) after {dias} days.",
+    "automatic": "Automatic anonymisation is on.",
+    "manual": "Anonymisation is decided here, case by case.",
+    "loadError": "Could not load the retention data.",
+    "noneEligible": "No record is past the retention period.",
+    "eligibleRow": "Record {processo} — last discharge on {alta}",
+    "anonymize": "Anonymise…",
+    "reasonLabel": "Reason (at least 10 characters)",
+    "irreversible": "Irreversible: name, contacts and identifiers are removed. Clinical content remains, unlinked from the person.",
+    "confirmAnonymize": "Anonymise permanently",
+    "cancel": "Cancel",
+    "anonymized": "Record anonymised",
+    "error": "Could not complete the request"
   }
 }

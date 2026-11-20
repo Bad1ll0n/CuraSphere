@@ -6,6 +6,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
+import { RgpdService } from '../rgpd/rgpd.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
@@ -27,6 +28,7 @@ export class PortalDoenteController {
     private readonly service: PortalDoenteService,
     private readonly leituras: AcessoLeituraService,
     private readonly consentimentos: ConsentimentosTratamentoService,
+    private readonly rgpd: RgpdService,
   ) {}
 
   // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
@@ -123,8 +125,10 @@ export class PortalDoenteController {
 
   @Get('exportar/json')
   @UseGuards(PortalJwtGuard)
+  @Throttle({ default: { ttl: 3600000, limit: 10 } })
   exportarJson(@Request() req: any) {
-    return this.service.exportarJson(req.user.doenteId);
+    // SEC-20: a exportação completa (todas as tabelas do titular + quem consultou o processo).
+    return this.rgpd.exportar(req.user.doenteId, { via: 'portal' });
   }
 
   @Get('teleconsultas')

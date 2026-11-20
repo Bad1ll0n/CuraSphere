@@ -32,6 +32,7 @@ import { StorageModule } from './common/storage.module';
 import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.module';
 import { GuidelinesModule } from './guidelines/guidelines.module';
 import { PortalDoenteModule } from './portal-doente/portal-doente.module';
+import { RgpdModule } from './rgpd/rgpd.module';
 import { Hl7Module } from './hl7/hl7.module';
 import { DashboardConfigModule } from './dashboard-config/dashboard-config.module';
 import { AnomalyDetectionModule } from './common/anomaly-detection.module';
@@ -127,6 +128,7 @@ import { gerarIdCorrelacao } from './common/correlacao';
     SistemasExternosModule,
     GuidelinesModule,
     PortalDoenteModule,
+    RgpdModule,
     Hl7Module,
     DashboardConfigModule,
     AnomalyDetectionModule,

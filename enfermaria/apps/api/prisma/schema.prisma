@@ -307,6 +307,8 @@ model Doente {
   motivoIsolamento     String?
   deletedAt            DateTime?
   fotoUrl              String?
+  // SEC-20: identificação anonimizada no fim do prazo de retenção (o conteúdo clínico fica).
+  anonimizadoEm        DateTime?
 
   // PROD-22: sexo (valores do RNU) e antropometria de referência — sem eles não há TFG
   // correcta, dose por kg/superfície corporal, cama por sexo nem Patient.gender no FHIR.
