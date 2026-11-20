@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
@@ -82,6 +83,10 @@ export default function RiscoClinicoPage() {
   const toast = useToast();
   const qc = useQueryClient();
   const [ordenacao, setOrdenacao] = useState<'news2' | 'estado' | 'admissao'>('news2');
+  // UX-03: vindo de um contador do dashboard (?banda=alto…), mostra só essa banda NEWS2.
+  const banda = useSearchParams().get('banda');
+  const naBanda = (n: number | null) => banda === 'alto' ? n != null && n >= 7 : banda === 'medio' ? n != null && n >= 5 && n < 7
+    : banda === 'baixo' ? n != null && n < 5 : banda === 'semRegisto' ? n == null : true;
 
   const { data: doentes = [], isLoading: loadingD } = useQuery<DoenteRisco[]>({
     queryKey: ['doentes-risco'],
@@ -101,7 +106,7 @@ export default function RiscoClinicoPage() {
     onError: () => toast.error('Erro ao acusar alerta'),
   });
 
-  const doentesOrdenados = [...doentes].sort((a, b) => {
+  const doentesOrdenados = doentes.filter((d) => naBanda(d.news2)).sort((a, b) => {
     if (ordenacao === 'news2') {
       const na = a.news2 ?? -1, nb = b.news2 ?? -1;
       return nb - na;

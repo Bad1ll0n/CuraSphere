@@ -106,7 +106,14 @@ export class NotificacoesService {
       }),
     ]);
     const naoLidas = await this.prisma.notificacaoInApp.count({ where: { utilizadorId, lida: false } });
-    return { total, naoLidas, pagina: page, totalPaginas: Math.ceil(total / limit), notificacoes };
+    // UX-11: tipo, nível e doente à superfície (vêm em dadosExtra), para o sino e a página.
+    const comNivel = notificacoes.map((n) => {
+      const extra = (n.dadosExtra ?? {}) as Record<string, unknown>;
+      const tipo = typeof extra['tipo'] === 'string' ? (extra['tipo'] as string) : undefined;
+      const nivel = typeof extra['nivel'] === 'string' ? extra['nivel'] : tipo === 'sos' || tipo === 'sepsis' ? 'critico' : 'informativo';
+      return { ...n, tipo, nivel, doenteId: typeof extra['doenteId'] === 'string' ? extra['doenteId'] : undefined };
+    });
+    return { total, naoLidas, pagina: page, totalPaginas: Math.ceil(total / limit), notificacoes: comNivel };
   }
 
   async marcarLida(id: string, utilizadorId: string) {
@@ -250,13 +257,19 @@ export class NotificacoesService {
     return ativos.map((u) => u.id);
   }
 
-  async enviarParaDoente(doenteId: string, titulo: string, corpo: string): Promise<void> {
+  /**
+   * UX-11: a notificação leva o tipo e o NÍVEL (crítico / aviso / informativo) e o doente — o
+   * sino só tocava e destacava "críticos" por um `tipo` que nunca era enviado, e o clique não
+   * sabia para onde ir.
+   */
+  async enviarParaDoente(doenteId: string, titulo: string, corpo: string, extra: { tipo?: string; severidade?: number } = {}): Promise<void> {
     const ids = await this.destinatariosDoDoente(doenteId);
     if (ids.length === 0) {
       // Visível nos logs: um alerta clínico que não chegou a ninguém é um incidente.
       this.logger.error(`Alerta do doente ${doenteId} sem destinatários — "${titulo}"`);
       return;
     }
-    await Promise.all(ids.map((id) => this.enviarParaUtilizador(id, titulo, corpo, { doenteId })));
+    const nivel = (extra.severidade ?? 1) >= 3 ? 'critico' : (extra.severidade ?? 1) >= 2 ? 'aviso' : 'informativo';
+    await Promise.all(ids.map((id) => this.enviarParaUtilizador(id, titulo, corpo, { doenteId, ...(extra.tipo ? { tipo: extra.tipo } : {}), nivel })));
   }
 }

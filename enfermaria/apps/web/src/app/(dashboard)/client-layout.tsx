@@ -11,7 +11,8 @@ import { useNaoLidasCount } from '@/lib/hooks';
 import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
 import { filtrarMenus } from './nav-data';
-import { SosBanner } from './sos-banner';
+import { FilaAlertasCriticos, chaveAlerta, type AlertaCritico } from './sos-banner';
+import { useAlertaSonoro } from '@/lib/alerta-sonoro';
 import { SocketStatusBanner } from '@/components/socket-status-banner';
 import { SidebarNav } from './sidebar-nav';
 import { RouteGuard } from './route-guard';
@@ -68,23 +69,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { data: notifData } = useNaoLidasCount();
   const naoLidas = notifData?.count ?? 0;
 
-  const [sosAlerta, setSosAlerta] = useState<{
-    doenteId: string;
-    doenteNome?: string;
-    quarto: string;
-    acionadoPor?: string;
-    acionadoPorNome?: string;
-    tipo?: 'sos' | 'sepsis';
-  } | null>(null);
-  const sosTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // UX-11: fila de alertas críticos, persistentes até alguém responder (não se substituem nem
+  // desaparecem sozinhos), com som no primeiro e repetido enquanto houver algum por responder.
+  const [alertasCriticos, setAlertasCriticos] = useState<AlertaCritico[]>([]);
+  useAlertaSonoro(alertasCriticos.filter((a) => a.respondidoPor == null).length);
   // O handshake autentica-se por bilhete pedido com o cookie de sessão (ver use-socket.ts).
   // Antes passava-se aqui `utilizador?.id` na posição do token — não era um token, e o
   // gateway, se o aceitasse, estaria a autenticar por identificador adivinhável.
   const { estado: estadoTempoReal, reconectar: reconectarTempoReal } = useSocket({
-    'sos:alerta': (data) => {
-      setSosAlerta(data);
-      if (sosTimeoutRef.current) clearTimeout(sosTimeoutRef.current);
-      sosTimeoutRef.current = setTimeout(() => setSosAlerta(null), 30000);
+    'sos:alerta': (data: AlertaCritico) => {
+      setAlertasCriticos((fila) => fila.some((a) => chaveAlerta(a) === chaveAlerta(data)) ? fila : [...fila, data]);
+    },
+    'alerta:respondido': (r: { alertaId: string; porNome: string | null }) => {
+      setAlertasCriticos((fila) => fila.map((a) => a.alertaId === r.alertaId ? { ...a, respondidoPor: r.porNome ?? '' } : a));
     },
   });
 
@@ -152,8 +149,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         />
       )}
 
-      {sosAlerta && (
-        <SosBanner sosAlerta={sosAlerta} onClose={() => setSosAlerta(null)} />
+      {alertasCriticos.length > 0 && (
+        <FilaAlertasCriticos alertas={alertasCriticos}
+          onResponder={(a) => {
+            setAlertasCriticos((fila) => fila.map((x) => chaveAlerta(x) === chaveAlerta(a) ? { ...x, respondidoPor: utilizador?.nome ?? '' } : x));
+            api.patch(`/alertas/${a.alertaId}/acusar`).catch(() => {
+              setAlertasCriticos((fila) => fila.map((x) => chaveAlerta(x) === chaveAlerta(a) ? { ...x, respondidoPor: null } : x));
+            });
+          }}
+          onFechar={(a) => setAlertasCriticos((fila) => fila.filter((x) => chaveAlerta(x) !== chaveAlerta(a)))} />
       )}
 
       {mostrarTour && utilizador && (

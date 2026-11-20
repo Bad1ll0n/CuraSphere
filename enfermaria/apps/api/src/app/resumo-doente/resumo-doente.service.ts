@@ -37,6 +37,7 @@ export class ResumoDoenteService {
         sinaisVitais: { orderBy: { data: 'desc' }, take: 2, select: { news2: true, data: true } },
         avaliacoesRisco: { orderBy: { criadaEm: 'desc' }, take: 6, select: { tipo: true, risco: true, pontuacao: true } },
         sinalizacoes: { where: { resolvida: false }, select: { motivo: true, nivelUrgencia: true }, take: 3 },
+        alertasSepsis: { where: { resolvido: false }, select: { id: true }, take: 1 },
       },
     });
     if (!d) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
@@ -54,6 +55,7 @@ export class ResumoDoenteService {
       riscoUlcera: braden ? { risco: braden.risco, pontuacao: braden.pontuacao } : null,
       news2: sv ? { valor: sv.news2, em: sv.data, tendencia: tendencia(sv.news2, svAnt?.news2) } : null,
       sinalizacoes: d.sinalizacoes,
+      sepsisAtiva: (d.alertasSepsis ?? []).length > 0, // UX-03
     };
   }
 
