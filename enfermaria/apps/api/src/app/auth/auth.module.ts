@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { opcoesModuloJwt } from './chaves-jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,20 +23,8 @@ import { SessaoCacheSincronizacao } from './sessao-cache.sync';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: {
-          expiresIn: config.get<string>('JWT_EXPIRES_IN', '15m') as any,
-          algorithm: 'HS256',
-          issuer: 'curasphere-api',
-          audience: 'curasphere',
-        },
-        verifyOptions: {
-          algorithms: ['HS256'],
-          issuer: 'curasphere-api',
-          audience: 'curasphere',
-        },
-      }),
+      // SEC-11: ES256 (chave privada só na API) em produção; HS256 com JWT_SECRET fora dela.
+      useFactory: (config: ConfigService) => opcoesModuloJwt(config.get<string>('JWT_EXPIRES_IN', '15m')),
     }),
   ],
   controllers: [AuthController, WebAuthnController, SsoController],

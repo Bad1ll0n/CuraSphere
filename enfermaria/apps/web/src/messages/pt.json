@@ -895,7 +895,11 @@
     "keepCode": "Guarde o seu código de marcação:",
     "keepCodeHint": "No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.",
     "done": "Concluir",
-    "footer": "CuraSphere — Sistema de Gestão Hospitalar"
+    "footer": "CuraSphere — Sistema de Gestão Hospitalar",
+    "nifDobHint": "Para sua segurança, indique o NIF e a data de nascimento.",
+    "nifLabel": "NIF",
+    "dobLabel": "Data de nascimento",
+    "tooManyAttempts": "Demasiadas tentativas. Aguarde um minuto ou dirija-se ao balcão."
   },
   "carePlan": {
     "title": "Plano de cuidados de enfermagem",

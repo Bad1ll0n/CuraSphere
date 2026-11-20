@@ -101,6 +101,16 @@ jobs:
       - name: Build API
         run: pnpm exec nx build @org/api
 
+      # SEC-11: em produção a API assina os tokens com ES256 — par de chaves efémero para este job.
+      - name: Gerar par de chaves ES256 (efémero)
+        run: |
+          openssl ecparam -name prime256v1 -genkey -noout | openssl pkcs8 -topk8 -nocrypt -out "$RUNNER_TEMP/jwt.pem"
+          openssl ec -in "$RUNNER_TEMP/jwt.pem" -pubout -out "$RUNNER_TEMP/jwt.pub" 2>/dev/null
+          {
+            echo 'JWT_PRIVATE_KEY<<FIM_PEM'; cat "$RUNNER_TEMP/jwt.pem"; echo 'FIM_PEM'
+            echo 'JWT_PUBLIC_KEY<<FIM_PEM'; cat "$RUNNER_TEMP/jwt.pub"; echo 'FIM_PEM'
+          } >> "$GITHUB_ENV"
+
       - name: Arrancar API em background
         run: |
           node apps/api/dist/main.js &

@@ -13,7 +13,7 @@
     "app/(dashboard)/(gestao)/horarios/page.tsx": 1405,
     "app/(dashboard)/(suporte)/farmacia/page.tsx": 899,
     "app/(dashboard)/nav-data.tsx": 833,
-    "app/quiosque/page.tsx": 1069
+    "app/quiosque/page.tsx": 1018
   },
   "cargaManual": {
     "app/(auth)/login/mfa-setup/page.tsx": 1,

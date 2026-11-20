@@ -1,3 +1,4 @@
+import { chavesJwt } from './chaves-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -29,9 +30,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey: config.get<string>('JWT_SECRET')!,
+      // SEC-11: chave pública (ES256) ou segredo (HS256, fora de produção).
+      secretOrKey: chavesJwt().verificacao,
       // Pinning explícito do algoritmo — impede ataques "alg: none" e algorithm-confusion
-      algorithms: ['HS256'],
+      algorithms: [chavesJwt().algoritmo],
       issuer: JWT_ISSUER,
       // SEC-01: só as audiências do domínio "pessoal". Um token do portal do doente
       // (aud 'curasphere-portal') ou um desafio de MFA (aud 'curasphere-mfa-challenge')

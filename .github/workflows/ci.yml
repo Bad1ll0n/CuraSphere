@@ -201,6 +201,8 @@ jobs:
           DB_PASSWORD: ci
           DB_NAME: enfermaria
           JWT_SECRET: ci-placeholder-secret-32-chars-minimo!!
+          JWT_PRIVATE_KEY: ci-placeholder
+          JWT_PUBLIC_KEY: ci-placeholder
           ENCRYPTION_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
           AUDIT_SIGNING_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
           ALLOWED_ORIGINS: https://exemplo.pt

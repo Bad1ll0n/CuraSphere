@@ -895,7 +895,11 @@
     "keepCode": "Keep your appointment code:",
     "keepCodeHint": "On the day, enter this code at the kiosk to check in and get your ticket.",
     "done": "Done",
-    "footer": "CuraSphere — Hospital management"
+    "footer": "CuraSphere — Hospital management",
+    "nifDobHint": "For your security, enter your tax number and date of birth.",
+    "nifLabel": "Tax number (NIF)",
+    "dobLabel": "Date of birth",
+    "tooManyAttempts": "Too many attempts. Wait a minute or go to the desk."
   },
   "carePlan": {
     "title": "Nursing care plan",

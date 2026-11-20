@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { quiosqueFetch } from '@/lib/quiosque-token';
+import { IdentificarNif, type UtenteIdentificado } from '@/components/quiosque/identificar-nif';
 
 const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
@@ -48,10 +49,9 @@ export default function QuiosquePage() {
   const [ticket, setTicket] = useState<{ numero: string; tipo: string; prioridade: string } | null>(null);
 
   // NIF
-  const [nifInput, setNifInput] = useState('');
-  const [nifErro, setNifErro] = useState('');
-  const [buscandoNif, setBuscandoNif] = useState(false);
-  const [pacienteNif, setPacienteNif] = useState<{ id: string; nome: string; dataNascimento?: string } | null>(null);
+  // SEC-12: identificação por NIF + data de nascimento (ver IdentificarNif); só o nome abreviado.
+  const [pacienteNif, setPacienteNif] = useState<UtenteIdentificado | null>(null);
+  const comIdentificacao = (): HeadersInit => (pacienteNif ? { 'x-quiosque-identificacao': pacienteNif.identificacao } : {});
   const [marcacoesHoje, setMarcacoesHoje] = useState<Array<{ id: string; dataHora: string; checkinEm?: string; medico: { nome: string; especialidade?: string } }>>([]);
   const [buscandoMarcacoesHoje, setBuscandoMarcacoesHoje] = useState(false);
 
@@ -113,8 +113,6 @@ export default function QuiosquePage() {
     setCodigoInput('');
     setMarcacaoEncontrada(null);
     setMarcacaoErro('');
-    setNifInput('');
-    setNifErro('');
     setPacienteNif(null);
     setMarcacoesHoje([]);
     setMedicos([]);
@@ -187,9 +185,8 @@ export default function QuiosquePage() {
     try {
       const res = await quiosqueFetch(`${API}/quiosque/marcacao-nova`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...comIdentificacao() },
         body: JSON.stringify({
-          doenteId: pacienteNif.id,
           medicoId: medicoSelecionado.id,
           dataHora: slotSelecionado.dataHora,
         }),
@@ -207,29 +204,11 @@ export default function QuiosquePage() {
     }
   }
 
-  async function buscarPacientePorNif() {
-    if (nifInput.trim().length < 9) return;
-    setBuscandoNif(true);
-    setNifErro('');
-    try {
-      const res = await quiosqueFetch(`${API}/quiosque/paciente?nif=${nifInput.trim()}`);
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        setNifErro(err.message ?? t('nifNotFound'));
-        return;
-      }
-      setPacienteNif(await res.json());
-      setEstado('nif_resultado');
-    } finally {
-      setBuscandoNif(false);
-    }
-  }
-
   async function verMarcacoesHoje() {
     if (!pacienteNif) return;
     setBuscandoMarcacoesHoje(true);
     try {
-      const res = await quiosqueFetch(`${API}/quiosque/paciente/${pacienteNif.id}/marcacoes-hoje`);
+      const res = await quiosqueFetch(`${API}/quiosque/identificacao/marcacoes-hoje`, { headers: comIdentificacao() });
       setMarcacoesHoje(res.ok ? await res.json() : []);
       setEstado('nif_marcacoes');
     } finally {
@@ -422,37 +401,7 @@ export default function QuiosquePage() {
 
       {/* ESTADO: Inserir NIF */}
       {estado === 'nif' && (
-        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>{t('identifyNif')}</h2>
-          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginBottom: 32 }}>
-            {t('nifHint')}
-          </p>
-          <input
-            type="tel"
-            value={nifInput}
-            onChange={e => { setNifInput(e.target.value.replace(/\D/g, '')); setNifErro(''); }}
-            placeholder="000000000"
-            maxLength={9}
-            style={{
-              width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: 12, padding: '16px', color: '#fff', fontSize: 32, fontWeight: 800,
-              textAlign: 'center', letterSpacing: 6, boxSizing: 'border-box', marginBottom: 16,
-              fontFamily: 'monospace',
-            }}
-            onKeyDown={e => { if (e.key === 'Enter') buscarPacientePorNif(); }}
-          />
-          {nifErro && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{nifErro}</p>}
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={reiniciar}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              {t('back')}
-            </button>
-            <button onClick={buscarPacientePorNif} disabled={buscandoNif || nifInput.length < 9}
-              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: buscandoNif || nifInput.length < 9 ? 0.6 : 1 }}>
-              {buscandoNif ? t('searching') : t('identify')}
-            </button>
-          </div>
-        </div>
+        <IdentificarNif api={API} onVoltar={reiniciar} onIdentificado={(u) => { setPacienteNif(u); setEstado('nif_resultado'); }} />
       )}
 
       {/* ESTADO: Paciente identificado por NIF */}
