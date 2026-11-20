@@ -173,50 +173,6 @@ export class PortalDoenteService {
     return this.pdf.gerarSumarioAlta(doenteId);
   }
 
-  async exportarJson(doenteId: string) {
-    const doente = await this.prisma.doente.findUnique({
-      where: { id: doenteId },
-      select: {
-        id: true, nome: true, dataNascimento: true, numeroProcesso: true,
-        diagnosticoPrincipal: true, dataAdmissao: true, dataAltaPrevista: true, estado: true,
-      },
-    });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
-
-    const [medicacao, sinaisVitais, documentos, planoAlta] = await Promise.all([
-      this.prisma.medicacao.findMany({
-        where: { doenteId, ativo: true, deletedAt: null },
-        select: { nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true },
-      }),
-      this.prisma.sinalVital.findMany({
-        where: { doenteId, data: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } },
-        orderBy: { data: 'desc' },
-        select: { data: true, pressaoSistolica: true, pressaoDiastolica: true, pulso: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true, news2: true },
-        take: 100,
-      }),
-      this.prisma.documentoSaude.findMany({
-        where: { doenteId, deletedAt: null },
-        select: { titulo: true, tipo: true, formato: true, origem: true, dataDocumento: true },
-        orderBy: { dataDocumento: 'desc' },
-      }),
-      this.prisma.planoAlta.findFirst({
-        where: { doenteId },
-        orderBy: { criadoEm: 'desc' },
-        select: { dataAlvoDia: true, notas: true, criadoEm: true },
-      }),
-    ]);
-
-    return {
-      exportadoEm: new Date().toISOString(),
-      regulamento: 'RGPD Art. 20 — Direito à portabilidade dos dados',
-      doente,
-      medicacaoActiva: medicacao,
-      sinaisVitaisUltimos30Dias: sinaisVitais,
-      documentosClinicosListagem: documentos,
-      planoAlta,
-    };
-  }
-
   async teleconsultas(portalId: string) {
     const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
     if (!portal) throw new UnauthorizedException();

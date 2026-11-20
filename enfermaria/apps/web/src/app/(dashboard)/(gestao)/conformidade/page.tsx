@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { linhaCsv } from '@/lib/csv';
+import { DireitosTitular } from '@/components/rgpd/direitos-titular';
 
 interface AuditEntry {
   id: string;
@@ -282,6 +283,7 @@ export default function ConformidadePage() {
           )}
         </>
       )}
+      <DireitosTitular />
     </div>
   );
 }

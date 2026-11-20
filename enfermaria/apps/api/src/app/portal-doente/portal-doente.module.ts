@@ -7,9 +7,10 @@ import { StorageModule } from '../common/storage.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { PdfService } from '../common/pdf.service';
 import { ConsentimentosTratamentoModule } from '../consentimentos-tratamento/consentimentos-tratamento.module';
+import { RgpdModule } from '../rgpd/rgpd.module';
 
 @Module({
-  imports: [AuthModule, StorageModule, PrismaModule, ConsentimentosTratamentoModule],
+  imports: [AuthModule, StorageModule, PrismaModule, ConsentimentosTratamentoModule, RgpdModule],
   controllers: [PortalDoenteController],
   providers: [PortalDoenteService, PortalJwtStrategy, PdfService],
 })

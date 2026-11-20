@@ -1335,5 +1335,27 @@
     "unjustified": "Injustificado…",
     "saved": "Revisão registada",
     "error": "Não foi possível registar a revisão"
+  },
+  "dataSubjectRights": {
+    "title": "Direitos do titular e retenção",
+    "exportTitle": "Pedido de acesso aos dados (art.º 15.º e 20.º RGPD)",
+    "exportHint": "Para um titular que pediu os dados ao balcão. Fica registado na auditoria. Quem tem portal exporta lá.",
+    "export": "Exportar dados (JSON)",
+    "exporting": "A exportar…",
+    "exported": "Exportação concluída",
+    "retentionTitle": "Processos fora do prazo de retenção",
+    "policy": "Política: a identificação é anonimizada {anos} anos após a última alta; os dados de atendimento (senhas, sala de espera) ao fim de {dias} dias.",
+    "automatic": "Anonimização automática ligada.",
+    "manual": "A anonimização é decidida aqui, caso a caso.",
+    "loadError": "Não foi possível carregar a retenção.",
+    "noneEligible": "Nenhum processo ultrapassou o prazo de retenção.",
+    "eligibleRow": "Processo {processo} — última alta em {alta}",
+    "anonymize": "Anonimizar…",
+    "reasonLabel": "Motivo (pelo menos 10 caracteres)",
+    "irreversible": "Irreversível: o nome, os contactos e os identificadores deixam de existir. O conteúdo clínico fica, sem ligação à pessoa.",
+    "confirmAnonymize": "Anonimizar definitivamente",
+    "cancel": "Cancelar",
+    "anonymized": "Processo anonimizado",
+    "error": "Não foi possível concluir o pedido"
   }
 }
