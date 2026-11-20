@@ -1,4 +1,5 @@
-import './tracing'; // deve ser o PRIMEIRO import — inicia o OpenTelemetry antes de tudo
+import './carregar-segredos'; // OPS-20: `<NOME>_FILE` → process.env, antes de qualquer módulo ler o ambiente
+import './tracing'; // logo a seguir — inicia o OpenTelemetry antes de tudo
 import * as Sentry from '@sentry/node';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';

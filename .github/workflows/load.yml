@@ -52,7 +52,9 @@ jobs:
       JWT_EXPIRES_IN: 1h
       JWT_REFRESH_EXPIRES_IN: 7d
       ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
-      AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
+      # ARQ-20: cada segredo é próprio (a API recusa segredos repetidos em produção).
+      AUDIT_SIGNING_KEY: ffeeddccbbaa99887766554433221100ffeeddccbbaa99887766554433221100
+      MEDICACAO_QR_SECRET: ci-efemero-qr-medicacao-0123456789abcdef0123456789
       NODE_ENV: production
       # PERF-09: obrigatório em produção (validação do ConfigModule) — sem ele a API nem arrancava.
       ALLOWED_ORIGINS: http://localhost:3000
