@@ -234,6 +234,10 @@ services:
       DB_POOL_TIMEOUT_MS:      ${DB_POOL_TIMEOUT_MS:-10000}
       DB_STATEMENT_TIMEOUT_MS: ${DB_STATEMENT_TIMEOUT_MS:-15000}
       JWT_SECRET:              ${JWT_SECRET:?JWT_SECRET em falta (min. 32 chars) — validado por Joi no arranque}
+      # SEC-11: os tokens assinam-se com ES256. A chave privada fica SÓ aqui; o web recebe a pública.
+      # PEM numa linha, com as quebras escritas como \n (ver .env.example para os comandos openssl).
+      JWT_PRIVATE_KEY:         ${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY em falta — em produção os tokens são ES256 (SEC-11)}
+      JWT_PUBLIC_KEY:          ${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY em falta — em produção os tokens são ES256 (SEC-11)}
       JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}
       ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS:?ALLOWED_ORIGINS em falta — obrigatório em produção (Joi)}
@@ -471,10 +475,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      # TEM de ser o mesmo valor que a API — src/middleware.ts verifica a assinatura
-      # JWT (HS256) server-side; sem isto o secret resolve para a string "undefined"
-      # e todos os utilizadores autenticados são redirecionados para /login
-      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET em falta — o middleware do web rejeitaria todas as sessões}
+      # SEC-11: só a chave PÚBLICA — src/middleware.ts verifica a sessão (ES256) mas não a
+      # consegue assinar. O JWT_SECRET já não entra neste contentor (com ele, quem comprometesse o
+      # web forjava sessões de qualquer pessoa).
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY em falta — o middleware do web rejeitaria todas as sessões}
       # Sentry server-side do Next.js (o DSN público é build-arg, este não).
       SENTRY_DSN: ${SENTRY_DSN:-}
       # Origem pública do MinIO/S3. Os documentos e fotografias clínicas abrem-se por URL

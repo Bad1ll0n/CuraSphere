@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import * as jwt from 'jsonwebtoken';
 import { AUDIENCIAS_PESSOAL, JWT_ISSUER } from '../auth/token-audiences';
+import { chavesJwt } from '../auth/chaves-jwt';
 
 /**
  * Limitação de pedidos por UTILIZADOR, não por IP (PERF-02).
@@ -24,14 +25,16 @@ export class ThrottlerPorUtilizadorGuard extends ThrottlerGuard {
 }
 
 function utilizadorDaSessao(req: Record<string, any>): string | null {
-  const segredo = process.env['JWT_SECRET'];
+  let chaves: ReturnType<typeof chavesJwt>;
+  try { chaves = chavesJwt(); } catch { return null; }
+  const segredo = chaves.verificacao;
   const autorizacao: string | undefined = req['headers']?.['authorization'];
   const token: string | undefined =
     req['cookies']?.['access_token'] ?? (autorizacao?.startsWith('Bearer ') ? autorizacao.slice(7) : undefined);
   if (!token || !segredo) return null;
   try {
     const payload = jwt.verify(token, segredo, {
-      algorithms: ['HS256'],
+      algorithms: [chaves.algoritmo],
       issuer: JWT_ISSUER,
       audience: AUDIENCIAS_PESSOAL as [string, ...string[]],
     }) as jwt.JwtPayload;

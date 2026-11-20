@@ -27,7 +27,7 @@ describe('cifragem em repouso — validação da configuração', () => {
     const campos = over.campos ?? {
       Doente: ['id', 'nome'],
       ContactoEmergencia: ['id', 'nome', 'telefone'],
-      FicheiroPessoalDoente: ['id', 'morada', 'telefone', 'email'],
+      FicheiroPessoalDoente: ['id', 'morada', 'telefone', 'email', 'nif', 'nifBusca'],
     };
     const cliente: any = {
       $extends: jest.fn(() => ({ estendido: true })),

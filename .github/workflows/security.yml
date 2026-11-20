@@ -187,6 +187,7 @@ jobs:
       ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
       AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
       NODE_ENV: production
+      ALLOWED_ORIGINS: http://localhost:3000 # obrigatório em produção (Joi)
       LOG_PRETTY: 'false'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -218,6 +219,16 @@ jobs:
 
       - name: Build API
         run: pnpm exec nx build @org/api
+
+      # SEC-11: em produção a API assina os tokens com ES256 — par de chaves efémero para este job.
+      - name: Gerar par de chaves ES256 (efémero)
+        run: |
+          openssl ecparam -name prime256v1 -genkey -noout | openssl pkcs8 -topk8 -nocrypt -out "$RUNNER_TEMP/jwt.pem"
+          openssl ec -in "$RUNNER_TEMP/jwt.pem" -pubout -out "$RUNNER_TEMP/jwt.pub" 2>/dev/null
+          {
+            echo 'JWT_PRIVATE_KEY<<FIM_PEM'; cat "$RUNNER_TEMP/jwt.pem"; echo 'FIM_PEM'
+            echo 'JWT_PUBLIC_KEY<<FIM_PEM'; cat "$RUNNER_TEMP/jwt.pub"; echo 'FIM_PEM'
+          } >> "$GITHUB_ENV"
 
       - name: Arrancar API em background
         run: |

@@ -23,7 +23,7 @@ const KEY = KEY_HEX.length === 64 ? Buffer.from(KEY_HEX, 'hex') : null;
 const ENCRYPTED_FIELDS: Record<string, string[]> = {
   Doente: ['nome'],
   ContactoEmergencia: ['nome', 'telefone'],
-  FicheiroPessoalDoente: ['morada', 'telefone', 'email'],
+  FicheiroPessoalDoente: ['morada', 'telefone', 'email', 'nif'], // SEC-12: o NIF também
 };
 
 /** Nome do delegate Prisma (camelCase) para cada modelo cifrado. */
@@ -63,6 +63,10 @@ function encryptData(model: string, data: Record<string, any>): void {
   // Índice cego do nome (QA-05): calculado a partir do valor EM CLARO, antes de cifrar.
   if (model === 'Doente' && typeof data['nome'] === 'string' && !data['nome'].startsWith('enc:')) {
     data['nomeBusca'] = tokensDeBuscaNome(data['nome']);
+  }
+  // SEC-12: índice cego do NIF (igualdade exata), calculado do valor em claro.
+  if (model === 'FicheiroPessoalDoente' && typeof data['nif'] === 'string' && !data['nif'].startsWith('enc:')) {
+    data['nifBusca'] = indiceNif(data['nif']);
   }
   for (const f of fields) {
     // Um valor já cifrado não se cifra outra vez (ex.: recifragem de linhas antigas).
@@ -149,6 +153,42 @@ function normalizar(texto: string): string[] {
 
 function tokenBusca(parte: string): string {
   return createHmac('sha256', CHAVE_BUSCA as Buffer).update(parte).digest('hex').slice(0, 16);
+}
+
+/**
+ * SEC-11 — segredos que o servidor tem de voltar a ler (semente TOTP, segredo de webhook) ficam
+ * cifrados em repouso com a ENCRYPTION_KEY. Não passam pela cifragem automática por modelo (o
+ * `Utilizador` está ligado a quase tudo e a decifragem em profundidade correria em cada leitura):
+ * cifra-se e decifra-se onde se escreve e lê. Um valor antigo em claro continua a ler-se.
+ */
+export function cifrarSegredo(valor: string): string;
+export function cifrarSegredo(valor: string | null): string | null;
+export function cifrarSegredo(valor: string | null): string | null {
+  if (valor == null || valor.startsWith('enc:')) return valor;
+  return encrypt(valor);
+}
+export function decifrarSegredo(valor: string): string;
+export function decifrarSegredo(valor: string | null): string | null;
+export function decifrarSegredo(valor: string | null): string | null {
+  return valor == null ? null : decrypt(valor);
+}
+
+/**
+ * SEC-12 — índice cego do NIF: HMAC (chave derivada, própria do NIF) dos 9 dígitos. Só revela
+ * igualdade. Sem ENCRYPTION_KEY (desenvolvimento) não há cifragem, e procura-se o NIF em claro.
+ */
+const CHAVE_NIF = KEY ? createHmac('sha256', KEY).update('curasphere:indice-cego:nif:v1').digest() : null;
+
+export function indiceNif(nif: string): string | null {
+  const digitos = String(nif).replace(/\D/g, '');
+  if (!CHAVE_NIF || !digitos) return null;
+  return createHmac('sha256', CHAVE_NIF).update(digitos).digest('hex');
+}
+
+/** Filtro Prisma para encontrar uma ficha pelo NIF (no índice cego, ou em claro sem chave). */
+export function filtroNif(nif: string): Record<string, unknown> {
+  const indice = indiceNif(nif);
+  return indice ? { nifBusca: indice } : { nif: String(nif).replace(/\D/g, '') };
 }
 
 /** Tokens de busca de um nome em claro, como ` t1 t2 … ` (espaços nas pontas para `contains` exato). */

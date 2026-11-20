@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Query, Body, Sse, UseGuards, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Controller, Post, Get, Param, Query, Body, Sse, UseGuards, NotFoundException, BadRequestException, ConflictException, Request, UnauthorizedException } from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { map } from 'rxjs';
 import { TicketsService } from './tickets.service';
@@ -8,6 +8,9 @@ import { normalizarCodigoMarcacao } from '../consultas/codigo-marcacao';
 import { CriarMarcacaoQuiosqueDto } from './dto/criar-marcacao-quiosque.dto';
 import { TirarSenhaDto } from './dto/tirar-senha.dto';
 import { QuiosqueGuard } from '../common/quiosque.guard';
+import { filtroNif } from '../prisma/encryption.middleware';
+import { IdentificarQuiosqueDto } from './dto/identificar-quiosque.dto';
+import { doenteIdentificado, emitirIdentificacao, mesmaDataNascimento, nomeAbreviado } from './identificacao-quiosque';
 
 /**
  * SEC-02: este controlador não tinha `@UseGuards` nenhum — o único APP_GUARD da app é o
@@ -51,32 +54,32 @@ export class QuiosqueController {
     return this.service.statsHoje();
   }
 
-  // ─── NIF ──────────────────────────────────────────────────────────────────
+  // ─── Identificação (SEC-12: NIF + data de nascimento) ────────────────────
 
-  @Get('paciente')
-  async buscarPaciente(@Query('nif') nif: string) {
-    if (!nif) throw new BadRequestException('NIF obrigatório');
+  @Post('identificar')
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  async identificar(@Body() dto: IdentificarQuiosqueDto, @Request() req: any) {
     const ficha = await this.prisma.ficheiroPessoalDoente.findFirst({
-      where: { nif: nif.trim() },
-      include: { doente: { select: { id: true, nome: true, dataNascimento: true } } },
+      where: filtroNif(dto.nif), // índice cego — o NIF está cifrado
+      include: { doente: { select: { id: true, nome: true, dataNascimento: true, ativo: true } } },
     });
-    if (!ficha) throw new NotFoundException('Nenhum utente encontrado com esse NIF');
-    return {
-      id: ficha.doente.id,
-      nome: ficha.doente.nome,
-      dataNascimento: ficha.doente.dataNascimento,
-    };
+    // A mesma resposta para "NIF desconhecido" e "data errada": não se confirma que o NIF existe.
+    if (!ficha?.doente?.ativo || !mesmaDataNascimento(ficha.doente.dataNascimento, dto.dataNascimento)) {
+      throw new UnauthorizedException('Não foi possível identificar — confirme o NIF e a data de nascimento');
+    }
+    return { identificacao: emitirIdentificacao(ficha.doente.id, req.quiosque.servicoId), nome: nomeAbreviado(ficha.doente.nome) };
   }
 
-  @Get('paciente/:doenteId/marcacoes-hoje')
-  async marcacoesHoje(@Param('doenteId') doenteId: string) {
+  @Get('identificacao/marcacoes-hoje')
+  async marcacoesHoje(@Request() req: any) {
+    const doenteId = doenteIdentificado(req);
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
     const amanha = new Date(hoje);
     amanha.setDate(amanha.getDate() + 1);
     return this.prisma.consulta.findMany({
       where: { doenteId, estado: 'agendada', dataHora: { gte: hoje, lt: amanha } },
-      include: { medico: { select: { nome: true, subRole: true } } },
+      select: { id: true, dataHora: true, checkinEm: true, especialidade: true, medico: { select: { nome: true, subRole: true } } },
       orderBy: { dataHora: 'asc' },
     });
   }
@@ -158,9 +161,12 @@ export class QuiosqueController {
   @Post('marcacao-nova')
   async criarMarcacaoQuiosque(
     @Body() dto: CriarMarcacaoQuiosqueDto,
+    @Request() req: any,
   ) {
+    // SEC-12: o doente é o identificado neste quiosque — já não vem do corpo do pedido.
+    const doenteId = doenteIdentificado(req);
     const [doente, medico] = await Promise.all([
-      this.prisma.doente.findUnique({ where: { id: dto.doenteId }, select: { id: true, nome: true } }),
+      this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true, nome: true } }),
       this.prisma.utilizador.findUnique({ where: { id: dto.medicoId }, select: { id: true, nome: true, subRole: true } }),
     ]);
     if (!doente) throw new NotFoundException('Utente não encontrado');
@@ -174,7 +180,7 @@ export class QuiosqueController {
     if (!slot || !slot.disponivel) throw new ConflictException('Horário já ocupado ou inválido');
 
     return this.consultasService.agendar({
-      doenteId: dto.doenteId,
+      doenteId,
       nomeDoente: doente.nome,
       medicoId: dto.medicoId,
       especialidade: medico.subRole ?? 'Geral',

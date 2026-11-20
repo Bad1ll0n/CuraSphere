@@ -3,7 +3,8 @@ import { UnauthorizedException, BadRequestException, ConflictException, Forbidde
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
-import { AuthService } from './auth.service';
+import { AuthService, hashRefreshToken } from './auth.service';
+import { decifrarSegredo } from '../prisma/encryption.middleware';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
@@ -494,9 +495,11 @@ describe('AuthService', () => {
       expect(resultado).toHaveProperty('secret', 'JBSWY3DPEHPK3PXP');
       expect(resultado).toHaveProperty('qrCodeDataUrl', 'data:image/png;base64,fake');
       // SEC-02: o segredo proposto fica guardado no servidor.
-      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith({
-        where: { id: 'user-id-1' }, data: { mfaSecretPendente: 'JBSWY3DPEHPK3PXP' },
-      });
+      // SEC-11: e fica cifrado em repouso (nunca a semente TOTP em claro na BD).
+      const gravado = mockPrisma.utilizador.update.mock.calls[0][0];
+      expect(gravado.where).toEqual({ id: 'user-id-1' });
+      expect(gravado.data.mfaSecretPendente).toMatch(/^enc:/);
+      expect(decifrarSegredo(gravado.data.mfaSecretPendente)).toBe('JBSWY3DPEHPK3PXP');
     });
   });
 
@@ -546,7 +549,7 @@ describe('AuthService', () => {
       expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'user-id-1' },
-          data: { mfaSecret: 'MY-SECRET', mfaAtivo: true, mfaSecretPendente: null },
+          data: { mfaSecret: expect.stringMatching(/^enc:/), mfaAtivo: true, mfaSecretPendente: null },
         }),
       );
       expect(resultado).toMatchObject({ mensagem: expect.stringContaining('ativada') });
@@ -710,8 +713,12 @@ describe('AuthService', () => {
       const resultado = await service.refresh('tok-antigo');
 
       expect(mockPrisma.refreshToken.update).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { token: 'tok-antigo' }, data: { revogado: true } }),
+        expect.objectContaining({ where: { token: hashRefreshToken('tok-antigo') }, data: { revogado: true } }),
       );
+      // SEC-11: o token novo guarda-se em hash — o valor devolvido ao cliente nunca vai para a BD.
+      const novo = mockPrisma.refreshToken.create.mock.calls[0][0].data.token;
+      expect(novo).toMatch(/^[0-9a-f]{64}$/);
+      expect(novo).toBe(hashRefreshToken(resultado.refreshToken));
       expect(resultado).toHaveProperty('accessToken');
       expect(typeof resultado.refreshToken).toBe('string');
     });

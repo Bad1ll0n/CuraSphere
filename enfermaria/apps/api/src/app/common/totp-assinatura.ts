@@ -1,7 +1,8 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { verify } from 'otplib';
 import * as crypto from 'crypto';
-import type { PrismaService } from '../prisma/prisma.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import { decifrarSegredo } from '../prisma/encryption.middleware';
 
 // Janela do otplib (30 s + 1 passo de tolerância). 90 s cobre-a com margem.
 const JANELA_MS = 90_000;
@@ -33,13 +34,14 @@ export async function verificarTotpAssinatura(
     throw new ForbiddenException('MFA não configurado. Configure o autenticador antes de assinar.');
   }
 
-  const { valid } = await verify({ token: totpCode, secret: utilizador.mfaSecret });
+  const segredoMfa = decifrarSegredo(utilizador.mfaSecret); // SEC-11: cifrado em repouso
+  const { valid } = await verify({ token: totpCode, secret: segredoMfa });
   if (!valid) throw new ForbiddenException('Código TOTP inválido');
 
   // Hash de âmbito+utilizador+segredo+código — nunca persiste o segredo nem o código.
   const chave = crypto
     .createHash('sha256')
-    .update(`assinatura:${ambito}:${utilizadorId}:${utilizador.mfaSecret}:${totpCode}`)
+    .update(`assinatura:${ambito}:${utilizadorId}:${segredoMfa}:${totpCode}`)
     .digest('hex');
   // Comparação com Date parametrizada (não `now()`) — ver a nota em `consumirTotpUmaVez`.
   const agora = new Date();

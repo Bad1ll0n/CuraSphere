@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenEx
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
-import { filtroPesquisaNome } from '../prisma/encryption.middleware';
+import { filtroNif, filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { StorageService } from '../common/storage.service';
@@ -190,7 +190,7 @@ export class DoenteService {
       // PROD-02: a mesma pessoa não se cria duas vezes. Se já cá esteve, reinterna-se
       // (POST /doentes/:id/reinternar) e as alergias e antecedentes continuam com ela.
       if (data.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: data.nif }, select: { doenteId: true } });
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: filtroNif(data.nif), select: { doenteId: true } });
         if (existenteNif) throw await conflitoPessoaExistente(tx, existenteNif.doenteId, `o NIF ${data.nif}`);
       }
       if (data.numeroSNS) {
@@ -921,7 +921,7 @@ export class DoenteService {
 
     return this.prisma.$transaction(async (tx) => {
       if (dto.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: dto.nif } });
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: filtroNif(dto.nif) });
         if (existenteNif) throw new ConflictException(`Já existe um registo com o NIF ${dto.nif}`);
       }
       if (dto.numeroSNS) {

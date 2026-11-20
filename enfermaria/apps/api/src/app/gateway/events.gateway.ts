@@ -11,6 +11,7 @@ import { RedisService } from '../redis/redis.service';
 import { ModuleRef } from '@nestjs/core';
 import { VERIFICADOR_ACESSO_DOENTE, type VerificadorAcessoDoente } from '../doentes/acesso-doente.token';
 import { AUD_SOCKET, JWT_ISSUER, type TipoToken } from '../auth/token-audiences';
+import { chavesJwt } from '../auth/chaves-jwt';
 
 interface JwtPayload {
   sub: string;
@@ -83,7 +84,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly jwt: JwtService,
-    private readonly config: ConfigService,
+    _config: ConfigService, // SEC-11: as chaves dos tokens vêm de chavesJwt()
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     // Resolvido em tempo de chamada, não injectado: o DoenteService arrasta o ciclo
@@ -102,9 +103,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // ligação e entrava na sala 'geral', que difunde alertas clínicos. A separação de
       // domínios feita em token-audiences.ts não cobre este ponto, porque não passa pela
       // JwtStrategy: o socket verifica o token por sua conta e tem de repetir as mesmas regras.
+      const chaves = chavesJwt(); // SEC-11
       const payload = this.jwt.verify(token, {
-        secret: this.config.get('JWT_SECRET'),
-        algorithms: ['HS256'],
+        ...(chaves.algoritmo === 'ES256' ? { publicKey: chaves.verificacao } : { secret: chaves.verificacao }),
+        algorithms: [chaves.algoritmo],
         issuer: JWT_ISSUER,
         audience: AUD_SOCKET,
       }) as JwtPayload;

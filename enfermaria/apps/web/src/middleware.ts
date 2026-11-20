@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
+import { importSPKI, jwtVerify } from 'jose';
 import { construirCsp, construirPermissionsPolicy } from './lib/csp';
 
 // /portal and /familia have their own auth (patient Bearer token / family access token,
@@ -36,6 +36,21 @@ function comCabecalhosDeSeguranca(response: NextResponse, csp: string): NextResp
   return response;
 }
 
+/**
+ * SEC-11: em produção a API assina com ES256 e o web só tem a chave PÚBLICA (`JWT_PUBLIC_KEY`) —
+ * verifica a sessão mas não a consegue forjar. Sem ela (desenvolvimento), o HS256 com o
+ * `JWT_SECRET`, como antes.
+ */
+let chavePublica: Promise<CryptoKey> | null = null;
+function chaveDeVerificacao(): { chave: Promise<CryptoKey | Uint8Array>; algoritmo: 'ES256' | 'HS256' } {
+  const pem = process.env.JWT_PUBLIC_KEY?.trim().replace(/\\n/g, '\n');
+  if (pem) {
+    chavePublica ??= importSPKI(pem, 'ES256');
+    return { chave: chavePublica, algoritmo: 'ES256' };
+  }
+  return { chave: Promise.resolve(new TextEncoder().encode(process.env.JWT_SECRET)), algoritmo: 'HS256' };
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('access_token')?.value;
@@ -58,10 +73,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // Validate JWT expiry server-side
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
   try {
-    await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
+    const { chave, algoritmo } = chaveDeVerificacao();
+    await jwtVerify(token, await chave, {
+      algorithms: [algoritmo],
       issuer: 'curasphere-api',
       audience: 'curasphere',
     });

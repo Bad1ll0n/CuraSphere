@@ -2335,6 +2335,8 @@ model FicheiroPessoalDoente {
   doenteId           String      @unique
   doente             Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   nif                String?
+  // SEC-12: o NIF vai cifrado (encryption.middleware); `nifBusca` é o índice cego (HMAC) para o encontrar.
+  nifBusca           String?
   numeroSNS          String?
   morada             String?
   codigoPostal       String?
@@ -2348,6 +2350,7 @@ model FicheiroPessoalDoente {
   atualizadoPorId    String?
   atualizadoPor      Utilizador? @relation(fields: [atualizadoPorId], references: [id], onDelete: SetNull)
 
+  @@index([nifBusca])
   @@map("fichas_pessoais_doente")
 }
 
