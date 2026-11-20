@@ -80,7 +80,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const { data } = await api.get('/doentes', { params: { search: query, take: 8 } });
+        const { data } = await api.get('/doentes', { params: { search: query, limit: 8, todos: 'true' } });
         setDoentes(data?.data ?? data ?? []);
       } catch { setDoentes([]); }
       finally { setLoading(false); }

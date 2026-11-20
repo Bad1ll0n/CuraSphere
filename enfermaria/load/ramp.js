@@ -1,45 +1,31 @@
-// k6 ramp/soak — sobe a carga por degraus para encontrar o ponto onde a latência degrada.
-// Corre:  k6 run load/ramp.js   (ajusta os alvos ao teu hardware/ambiente)
-import http from 'k6/http';
-import { check, sleep } from 'k6';
-
-const BASE = __ENV.BASE_URL || 'http://localhost:3333';
-const USER = __ENV.LOGIN_USER || '00001';
-const PASS = __ENV.LOGIN_PASS || 'Teste1234!';
+// k6 rampa — os mesmos cenários do smoke (turno, supervisão, tempo real), a subir por degraus para
+// encontrar onde a latência degrada.  Corre:  k6 run load/ramp.js   (ajusta os alvos ao ambiente)
+import { setup as preparar, turno, supervisao, tempoReal, handleSummary as resumo } from './smoke.js';
 
 export const options = {
   scenarios: {
-    rampa: {
-      executor: 'ramping-vus',
-      startVUs: 0,
+    turno: {
+      executor: 'ramping-vus', exec: 'turno', startVUs: 0, gracefulRampDown: '10s',
       stages: [
-        { duration: '30s', target: 10 },  // aquecer
-        { duration: '1m', target: 25 },   // carga nominal
-        { duration: '1m', target: 50 },   // pico
-        { duration: '30s', target: 0 },   // arrefecer
+        { duration: '30s', target: 10 }, // aquecer
+        { duration: '1m', target: 25 }, // carga nominal (um serviço em hora de registos)
+        { duration: '1m', target: 50 }, // pico
+        { duration: '30s', target: 0 }, // arrefecer
       ],
-      gracefulRampDown: '10s',
     },
+    supervisao: { executor: 'constant-vus', exec: 'supervisao', vus: 3, duration: '3m' },
+    tempo_real: { executor: 'ramping-vus', exec: 'tempoReal', startVUs: 0, stages: [{ duration: '1m', target: 20 }, { duration: '2m', target: 40 }] },
   },
   thresholds: {
+    checks: ['rate>0.98'],
     http_req_failed: ['rate<0.02'],
     'http_req_duration{tipo:leitura}': ['p(95)<800', 'p(99)<1500'],
+    'http_req_duration{tipo:pesquisa}': ['p(95)<1000'],
+    'http_req_duration{tipo:escrita}': ['p(95)<1200'],
+    ws_ligou: ['rate>0.98'],
   },
 };
 
-export function setup() {
-  const res = http.post(`${BASE}/v1/auth/login`, JSON.stringify({ numeroFuncionario: USER, password: PASS }), {
-    headers: { 'Content-Type': 'application/json' },
-  });
-  return { cookies: res.cookies };
-}
-
-export default function (data) {
-  const jar = http.cookieJar();
-  for (const [name, arr] of Object.entries(data.cookies || {})) {
-    if (arr && arr[0]) jar.set(BASE, name, arr[0].value);
-  }
-  const r = http.get(`${BASE}/v1/doentes?limit=20`, { tags: { tipo: 'leitura' } });
-  check(r, { 'ok': (x) => x.status === 200 });
-  sleep(Math.random() * 2);
-}
+export const setup = preparar;
+export { turno, supervisao, tempoReal };
+export function handleSummary(d) { return resumo(d); }

@@ -94,3 +94,6 @@ nginx/ssl/*.key
 .env.prod
 .env.staging
 .env.efemero
+
+# PERF-09: sumários dos testes de carga (gerados pelo k6)
+load/k6-summary*.json

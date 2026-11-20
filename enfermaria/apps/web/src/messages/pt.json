@@ -1297,5 +1297,15 @@
       "transferencia": "Transferência / receção do doente",
       "outro": "Outro"
     }
+  },
+  "patientPicker": {
+    "placeholder": "Pesquisar doente (nome ou n.º de processo)…",
+    "results": "Doentes encontrados",
+    "bed": "Q{quarto}/C{numero}",
+    "noResults": "Nenhum doente encontrado",
+    "typeToSearch": "Escreva para pesquisar",
+    "searching": "A pesquisar…",
+    "more": "A mostrar {n} de {total} — refine a pesquisa",
+    "error": "Não foi possível pesquisar doentes"
   }
 }

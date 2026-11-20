@@ -14,12 +14,14 @@ import { WebhooksModule } from '../webhooks/webhooks.module';
 import { BreakGlassModule } from '../break-glass/break-glass.module';
 import { EpisodiosModule } from '../episodios/episodios.module';
 import { AltaService } from './alta.service';
+import { ListagemDoentesService } from './listagem-doentes.service';
 
 @Module({
   imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule, EpisodiosModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [
     DoenteService,
+    ListagemDoentesService,
     AltaService,
     CartaAltaService,
     PdfService,

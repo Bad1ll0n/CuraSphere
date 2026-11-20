@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ApenasNotificar } from './apenas-notificar';
+import { SeletorDoente } from '@/components/seletor-doente';
 
 interface EventoAdverso {
   id: string;
@@ -83,13 +84,6 @@ export default function EventosAdversosPage() {
     },
     staleTime: 30_000,
     enabled: podeGerir,
-  });
-
-  const { data: doentesLista = [] } = useQuery<{ id: string; nome: string }[]>({
-    queryKey: ['doentes-lista-eventos'],
-    queryFn: () => api.get('/doentes?todos=true').then(r => (r.data?.data ?? r.data ?? []).map((d: any) => ({ id: d.id, nome: d.nome }))).catch(() => []),
-    enabled: modalNovo,
-    staleTime: 60_000,
   });
 
   const invalidar = () => qc.invalidateQueries({ queryKey: ['eventos-adversos'] });
@@ -303,12 +297,7 @@ export default function EventosAdversosPage() {
 
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente (opcional)</label>
-              <select id="fpage-4" value={form.doenteId} onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                style={{ padding: '10px 14px' }}>
-                <option value="">Sem doente associado</option>
-                {doentesLista.map(d => <option key={d.id} value={d.id}>{d.nome}</option>)}
-              </select>
+              <SeletorDoente id="fpage-4" value={form.doenteId} onChange={(id) => setForm(f => ({ ...f, doenteId: id }))} opcional="Sem doente associado" />
             </div>
 
             <div style={{ marginBottom: '14px' }}>

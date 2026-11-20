@@ -11,6 +11,12 @@ name: Load Test (k6)
 # Carga é ruidosa e lenta — não corre por PR. Gate periódico + sob demanda.
 on:
   workflow_dispatch:
+    inputs:
+      cenario:
+        description: 'smoke (30 s, 10 VUs) ou ramp (3 min, até 50 VUs + 40 sockets)'
+        type: choice
+        options: [smoke, ramp]
+        default: smoke
   schedule:
     - cron: '0 5 * * 1' # Segunda 05:00 UTC
 
@@ -48,6 +54,8 @@ jobs:
       ENCRYPTION_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
       AUDIT_SIGNING_KEY: 00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff
       NODE_ENV: production
+      # PERF-09: obrigatório em produção (validação do ConfigModule) — sem ele a API nem arrancava.
+      ALLOWED_ORIGINS: http://localhost:3000
       LOG_PRETTY: 'false'
       LOGIN_THROTTLE_LIMIT: '100'
       MFA_THROTTLE_LIMIT: '100'
@@ -78,13 +86,15 @@ jobs:
         run: node apps/api/scripts/apply-audit-triggers.mjs
 
       - name: Seed utilizadores de teste
-        run: cd apps/api && pnpm exec ts-node src/prisma/seed-test-users.ts
+        run: cd apps/api && pnpm exec ts-node --transpile-only src/prisma/seed-test-users.ts
 
       # Carga contra uma BD vazia mede o planeador do Postgres a fazer seq-scan em
       # tabelas de 0 linhas, o que não se parece com produção. Este passo enche a
-      # BD com um volume representativo antes de medir.
+      # BD com um volume representativo antes de medir (doentes com nome cifrado e
+      # índice cego, camas, episódios, sinais vitais e as atribuições do turno).
+      # PERF-09: antes chamava `load/seed-volume.mjs`, que nunca existiu.
       - name: Seed de volume representativo
-        run: node load/seed-volume.mjs
+        run: cd apps/api && pnpm exec ts-node --transpile-only src/prisma/seed-volume.ts
         env:
           SEED_DOENTES: '500'
 
@@ -100,14 +110,16 @@ jobs:
           done
           echo "API não respondeu a tempo"; exit 1
 
-      - name: k6 smoke
+      - name: k6 ${{ inputs.cenario || 'smoke' }}
         uses: grafana/k6-action@e4714b734f2b0afaabeb7b4a69142745548ab9ec # v0.3.1
         with:
           # Input de action: relativo a GITHUB_WORKSPACE (raiz do git), NÃO
           # afectado por defaults.run.working-directory.
-          filename: enfermaria/load/smoke.js
+          filename: enfermaria/load/${{ inputs.cenario || 'smoke' }}.js
         env:
           BASE_URL: http://localhost:3333
+          # O k6 corre na raiz do git: o sumário (handleSummary) vai para onde o upload o procura.
+          SUMMARY_PATH: enfermaria/load/k6-summary.json
 
       - name: Publicar sumário k6
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

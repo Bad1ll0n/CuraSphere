@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import type { Tarefa as SharedTarefa } from '@org/shared';
+import { SeletorDoente } from '@/components/seletor-doente';
 
 interface TarefaDoente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
 interface Tarefa extends SharedTarefa {
@@ -58,8 +59,6 @@ export default function TarefasPage() {
 
   // Modal nova tarefa
   const [modalNovaTarefa, setModalNovaTarefa] = useState(false);
-  const [doentes, setDoentes] = useState<{ id: string; nome: string; cama: { quarto: string; numero: string } }[]>([]);
-  const [searchDoente, setSearchDoente] = useState('');
   const [doenteSelId, setDoenteSelId] = useState('');
   const [tDesc, setTDesc] = useState('');
   const [tTipo, setTTipo] = useState<'clinica' | 'logistica'>('clinica');
@@ -67,7 +66,6 @@ export default function TarefasPage() {
   const [tGrupo, setTGrupo] = useState<'enfermeiro' | 'medico' | 'auxiliar'>('enfermeiro');
   const [tPrazo, setTPrazo] = useState('');
   const [criando, setCriando] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // Modal editar tarefa
   const [modalEditarTarefa, setModalEditarTarefa] = useState<Tarefa | null>(null);
@@ -119,15 +117,10 @@ export default function TarefasPage() {
     };
   }, []);
 
-  const abrirModalNovaTarefa = async () => {
-    setTDesc(''); setDoenteSelId(''); setSearchDoente('');
+  const abrirModalNovaTarefa = () => {
+    setTDesc(''); setDoenteSelId('');
     setTTipo('clinica'); setTPrioridade('media'); setTGrupo('enfermeiro'); setTPrazo('');
     setModalNovaTarefa(true);
-    try {
-      const r = await api.get('/doentes?todos=true');
-      setDoentes(r.data?.data ?? r.data ?? []);
-    } catch { setDoentes([]); }
-    setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const criarTarefa = async () => {
@@ -358,22 +351,7 @@ export default function TarefasPage() {
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
-              <input id="fpage-0" ref={inputRef} type="text" placeholder="Pesquisar doente..." value={searchDoente}
-                onChange={(e) => { setSearchDoente(e.target.value); setDoenteSelId(''); }}
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                style={{ padding: '10px 14px' }} />
-              {searchDoente.length >= 2 && !doenteSelId && (
-                <div className="border border-slate-200 rounded-xl bg-white shadow-lg" style={{ maxHeight: '160px', overflowY: 'auto', marginTop: '4px' }}>
-                  {doentes.filter((d) => d.nome.toLowerCase().includes(searchDoente.toLowerCase())).slice(0, 8).map((d) => (
-                    <button key={d.id} onClick={() => { setDoenteSelId(d.id); setSearchDoente(d.nome); }}
-                      className="w-full text-left text-sm hover:bg-slate-50 transition-colors"
-                      style={{ padding: '10px 14px', borderBottom: '1px solid #f1f5f9' }}>
-                      <span className="font-medium text-slate-800">{d.nome}</span>
-                      <span className="text-slate-500 text-xs" style={{ marginLeft: '8px' }}>Q{(d.cama?.quarto ?? '—')}/C{(d.cama?.numero ?? '—')}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <SeletorDoente id="fpage-0" value={doenteSelId} onChange={(id) => setDoenteSelId(id)} soComAcesso autoFocus />
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
