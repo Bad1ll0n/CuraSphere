@@ -113,11 +113,25 @@ Um backup no mesmo host que a BD não sobrevive à perda desse host nem a ransom
 # backups cifrados: BACKUP_AGE_IDENTITY=<chave privada> (age) ou BACKUP_ENCRYPTION_KEY (openssl)
 ```
 
-### 4.3 Restaurar o armazenamento de objetos
-- Repor o bucket S3/MinIO a partir da réplica/versionamento (`S3_BUCKET`).
-- Se a BD foi restaurada para um ponto anterior ao object storage (ou vice-versa), há URLs de
-  ficheiros na BD sem objeto correspondente — a app degrada graciosamente (documento indisponível),
-  não quebra. Registar a divergência para reconciliação.
+### 4.3 Restaurar os ficheiros clínicos (uploads)
+Depende de onde estão os ficheiros (`STORAGE_PROVIDER`):
+
+- **`local` (omissão) — volume `api_uploads`.** É o que a rotina diária copia
+  (`uploads_*.tar.gz.age`/`.enc`). Repor com `scripts/restaurar-uploads.sh` (OPS-03). Decifra e
+  lista o arquivo antes de tocar no destino, pede confirmação se o destino não estiver vazio e
+  confirma no fim o número de ficheiros:
+  ```bash
+  docker compose -f docker-compose.prod.yml stop api        # ninguém escreve durante o restauro
+  docker run --rm -v curasphere_api_uploads:/destino -v "$PWD:/w" -w /w     -e UPLOADS_DESTINO=/destino -e BACKUP_AGE_IDENTITY=/w/<chave-age>     curasphere-backup:<versão> ./scripts/restaurar-uploads.sh backups/uploads_<data>.tar.gz.age
+  ```
+  Usar o arquivo **do mesmo dia** do dump/PITR reposto. Ficheiros criados entre a cópia e o
+  incidente perdem-se; a BD pode ter referências a eles (o documento aparece indisponível).
+- **`s3`/MinIO — bucket.** Repor a partir do versionamento ou da réplica do bucket
+  (`S3_BUCKET`), para o instante da BD reposta.
+
+Se a BD foi reposta para um ponto anterior aos ficheiros (ou vice-versa), há referências sem
+ficheiro. A app mostra "documento indisponível" e não quebra. Registar a divergência para
+reconciliação.
 
 ### 4.4 Reaplicar / verificar os triggers de auditoria (append-only)
 O dump `pg_dump` inclui triggers e funções, mas **confirmar** que a auditoria tamper-proof está
@@ -191,12 +205,15 @@ Este ensaio prova o mecanismo, mas não a base real. Por isso, uma vez por trime
 2. `DB_HOST=staging ./scripts/restore-db.sh` com o backup de produção mais recente.
 3. Correr o checklist do §5 contra staging.
 4. Cronometrar (valida o RTO) e registar a data/resultado do drill.
-5. Testar também o restauro dos **segredos** e do **object storage**, não só da BD.
+5. Testar também o restauro dos **segredos** e dos **ficheiros**, não só da BD:
+   `UPLOADS_DESTINO=/tmp/ensaio RESTAURO_NAO_INTERATIVO=sim ./scripts/restaurar-uploads.sh` e
+   comparar a contagem com a do arquivo.
 
 ### 6.1 Registo de drills
 
 | Data | Âmbito | Resultado | Tempos | Executado por |
 |---|---|---|---|---|
+| 2026-11-20 | Rotina completa com a imagem `curasphere-backup` (OPS-03/04): BD + uploads cifrados (openssl) → BD vazia + directório vazio | **Passou** | 17 utilizadores e 469 triggers iguais na origem e no restauro; 3 uploads idênticos (SHA-256); falha com password errada → código 1 e métrica de falha | Correcção pós-auditoria |
 | 2026-09-03 | Base de dados (dev → scratch descartável) | **Passou** | backup 1 s (2,0 MB) · restauro 2 s · restauro sobre base já povoada 3 s · total 8 s | Correcção pós-auditoria |
 | 2026-11-06 | PITR ponta a ponta (`ensaio-pitr.sh`, 200 000 linhas) | **Passou** | estado exacto em T (500 linhas antes de T presentes, 300 depois ausentes) · restauro + recuperação 6 s | Plano de melhoria, Fase 1 (OPS-02) |
 | 2026-11-06 | PITR ponta a ponta (`ensaio-pitr.sh`, 5 000 000 linhas) | **Passou** | base backup cifrado 154 MB · 60 segmentos de WAL · estado exacto em T · restauro + recuperação **53 s** | Plano de melhoria, Fase 1 (OPS-02) |

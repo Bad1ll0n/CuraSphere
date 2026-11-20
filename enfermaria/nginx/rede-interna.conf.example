@@ -1,0 +1,7 @@
+# OPS-19 — redes do hospital que chegam à aplicação do PESSOAL (LAN e VPN).
+# Copiar para nginx/rede-interna.conf (fora do repositório — está no .gitignore) e ajustar aos
+# intervalos reais. Formato do bloco `geo` do nginx: "<rede/máscara> 1;". O portal do doente e o
+# acesso da família ficam acessíveis de qualquer rede (ver nginx/templates/nginx.conf.template).
+# Tem de coincidir com `https_redes_permitidas` em infra/ansible/group_vars/all.yml.
+192.168.0.0/16 1;   # LAN hospitalar
+10.0.0.0/8     1;   # VPN hospitalar

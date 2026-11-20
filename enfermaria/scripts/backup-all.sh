@@ -34,6 +34,20 @@ export BACKUP_DIR
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 . "$SCRIPT_DIR/backup-cifra.sh"
+. "$SCRIPT_DIR/metricas-textfile.sh"
+
+# OPS-04: uma rotina que falha regista-o logo — o alerta BackupFalhou dispara na hora, em vez
+# de se esperar 26 h pelo BackupAtrasado. Também limpa os ficheiros parciais.
+terminar() {
+  rc=$?
+  rm -f "${UPLOADS_PARCIAL:-}" "${RC_TAR:-}"
+  if [ "$rc" -ne 0 ]; then
+    metrica_escrever curasphere_backup_falha curasphere_backup_ultima_falha_timestamp_segundos "$(date +%s)"       "Momento da última rotina de backup que FALHOU."
+    log "=== Rotina FALHOU (código $rc) ==="
+  fi
+  exit "$rc"
+}
+trap terminar EXIT
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
@@ -64,7 +78,6 @@ fi
 UPLOADS_FILE="${BACKUP_DIR}/uploads_${TIMESTAMP}.tar.gz${EXT}"
 UPLOADS_PARCIAL="${UPLOADS_FILE}.parcial"
 RC_TAR="${BACKUP_DIR}/.tar_rc.$$"
-trap 'rm -f "$UPLOADS_PARCIAL" "$RC_TAR"' EXIT
 
 # `-C` para guardar caminhos relativos: o restauro não deve depender de onde o volume
 # estava montado na altura da cópia. OPS-01: o tar vai por pipe para a cifra — o arquivo
@@ -124,7 +137,6 @@ find "$BACKUP_DIR" -name 'uploads_*.tar.gz*' ! -name '*.parcial' -mtime +"$RETEN
 find "$BACKUP_DIR" -name 'backup_*.sql.gz*'  ! -name '*.parcial' -mtime +"$RETENCAO_DIAS" -delete
 
 # OPS-05: métricas para o alerta "backup atrasado" (textfile collector do node-exporter).
-. "$SCRIPT_DIR/metricas-textfile.sh"
 metrica_escrever curasphere_backup curasphere_backup_ultimo_sucesso_timestamp_segundos "$(date +%s)" \
   "Momento da última rotina de backup (BD + uploads) concluída com sucesso."
 metrica_escrever curasphere_backup_remoto curasphere_backup_copia_externa "$([ -n "${BACKUP_REMOTE:-}" ] && echo 1 || echo 0)" \

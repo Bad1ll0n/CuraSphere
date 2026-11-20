@@ -207,6 +207,7 @@ jobs:
           ENCRYPTION_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
           AUDIT_SIGNING_KEY: '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
           ALLOWED_ORIGINS: https://exemplo.pt
+          DOMINIO: exemplo.pt
           NEXT_PUBLIC_API_URL: https://exemplo.pt/api
           NEXT_PUBLIC_WEB_URL: https://exemplo.pt
           NEXT_PUBLIC_JITSI_SERVER: https://jitsi.exemplo.pt
