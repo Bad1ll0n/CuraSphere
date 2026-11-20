@@ -561,7 +561,8 @@
     "comunicacao": "Communication",
     "relatorios": "DGS Reports",
     "dietas": "Diets",
-    "bancoSangue": "Blood Bank"
+    "bancoSangue": "Blood Bank",
+    "acessosEmergencia": "Emergency access"
   },
   "bloodBank": {
     "title": "Blood Bank",
@@ -1307,5 +1308,28 @@
     "searching": "Searching…",
     "more": "Showing {n} of {total} — refine the search",
     "error": "Could not search patients"
+  },
+  "emergencyAccessReview": {
+    "title": "Emergency access",
+    "subtitle": "Every emergency (break-glass) access is reviewed by someone other than who made it. Without review within 72 hours, it is escalated to management and quality.",
+    "tabPending": "To review ({n})",
+    "tabHistory": "History",
+    "loading": "Loading…",
+    "loadError": "Could not load the accesses.",
+    "retry": "Try again",
+    "emptyPending": "There are no emergency accesses to review.",
+    "emptyHistory": "No emergency accesses recorded yet.",
+    "who": "<b>{nome}</b> ({papel}) accessed the record of <doente></doente>",
+    "overdue": "Unreviewed for {h} hours",
+    "reviewedJustified": "Justified — reviewed by {por} on {quando}",
+    "reviewedUnjustified": "Unjustified — reviewed by {por} on {quando}",
+    "ownAccess": "This is your own access: someone else must review it.",
+    "noteLabel": "Why is it unjustified? (at least 10 characters)",
+    "confirmUnjustified": "Mark as unjustified",
+    "cancel": "Cancel",
+    "justified": "Justified",
+    "unjustified": "Unjustified…",
+    "saved": "Review recorded",
+    "error": "Could not record the review"
   }
 }

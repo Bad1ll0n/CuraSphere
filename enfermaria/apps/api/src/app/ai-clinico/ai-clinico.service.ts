@@ -12,6 +12,7 @@ import { AiMetricsService } from './ai-metrics.service';
 import { AI_MODELS } from '../common/ai-models';
 import { exigirIaPermitida, iaPermitida } from '../common/funcoes-ia';
 import { doentesComOposicaoIA, exigirTratamentoPermitido } from '../common/consentimento-tratamento';
+import { linhaCsv } from '../common/csv';
 import {
   parseWithSchema,
   AnaliseClinicoSchema,
@@ -171,14 +172,13 @@ export class AiClinicoService {
     });
 
     const cabecalho = 'id,tipo,doenteId,utilizador,role,aceite,overrideMotivo,criadoEm\n';
-    const linhas = decisoes.map(d =>
-      [
+    const linhas = decisoes.map(d => linhaCsv([ // SEC-15: o motivo é texto livre — sem fórmulas
         d.id, d.tipo, d.doenteId ?? '', (d.utilizador as any).nome,
         (d.utilizador as any).role,
         d.aceite === null ? 'sem_feedback' : d.aceite ? 'aceite' : 'rejeitado',
-        (d.overrideMotivo ?? '').replace(/,/g, ';'),
+        d.overrideMotivo ?? '',
         d.criadoEm.toISOString(),
-      ].join(',')
+      ])
     ).join('\n');
 
     return cabecalho + linhas;

@@ -80,6 +80,18 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
    * (fail-open vs fail-closed). Para segurança crítica (anti-replay TOTP),
    * o caller deve interpretar `null` como "indisponível" e recusar.
    */
+  /** O valor em bruto (sem JSON.parse); `null` se não existir ou o Redis estiver indisponível. */
+  async obterTexto(key: string): Promise<string | null> {
+    if (!this.connected) return null;
+    try { return await this.client.get(key); } catch { return null; }
+  }
+
+  /** GETDEL — lê e apaga numa só operação (consumo de uso único, sem corrida entre pedidos). */
+  async consumir(key: string): Promise<string | null> {
+    if (!this.connected) return null;
+    try { return await this.client.getdel(key); } catch { return null; }
+  }
+
   async setIfNotExists(key: string, value: string, ttlSeconds: number): Promise<boolean | null> {
     if (!this.connected) return null;
     try {

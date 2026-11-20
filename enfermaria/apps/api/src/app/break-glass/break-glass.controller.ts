@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, ParseUUIDPipe, Query, UseGuards, Request } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { BreakGlassService } from './break-glass.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
+import { AtivarBreakGlassDto, ReverBreakGlassDto } from './dto/ativar-break-glass.dto';
 import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 import { AtribuicoesService } from '../atribuicoes/atribuicoes.service';
 import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
@@ -35,7 +35,8 @@ export class BreakGlassController {
   }
 
   @Throttle({ default: { ttl: 86400000, limit: 10 } })
-  @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_enfermeiros')
+  // SEC-14 / QA-11: a TI não tem acesso clínico, nem de emergência.
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'direcao', 'chefe_enfermeiros')
   @Post()
   ativar(
     @Body() dto: AtivarBreakGlassDto,
@@ -45,9 +46,23 @@ export class BreakGlassController {
     return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
   }
 
-  @Roles('direcao', 'ti')
+  @Roles('direcao', 'ti', 'qualidade', 'chefe_enfermeiros')
   @Get()
   listar(@Query('doenteId') doenteId?: string) {
     return this.service.listar(doenteId);
+  }
+
+  /** SEC-14: os acessos de emergência por rever. */
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
+  @Get('por-rever')
+  porRever() {
+    return this.service.porRever();
+  }
+
+  /** SEC-14: rever um acesso (justificado / injustificado) — nunca o próprio. */
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
+  @Patch(':id/revisao')
+  rever(@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReverBreakGlassDto, @Request() req: any) {
+    return this.service.rever(id, req.user.sub, dto.resultado, dto.nota);
   }
 }

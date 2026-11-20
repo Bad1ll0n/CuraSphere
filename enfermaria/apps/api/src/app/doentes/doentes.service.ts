@@ -13,8 +13,10 @@ import { BreakGlassService } from '../break-glass/break-glass.service';
 import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { PAPEIS_SEM_ACESSO_CLINICO, temAtribuicaoEmVigor } from './acesso-por-atribuicao';
 import { ultimosSinaisVitais } from '../common/ultimos-registos';
 import { abrirEpisodio, ocuparCama } from '../episodios/episodios.core';
+import { celulaCsv } from '../common/csv';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -93,19 +95,16 @@ export class DoenteService {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
-    // Atribuição direta
-    const atribuicaoDireta = await this.prisma.atribuicaoDoente.findFirst({
-      where: { doenteId, enfermeiroId: utilizadorId },
-      select: { id: true },
-    });
-    if (atribuicaoDireta) return;
+    // SEC-14 / QA-11: TI e administrativo não têm acesso clínico — nem por break-glass.
+    if (PAPEIS_SEM_ACESSO_CLINICO.includes(role)) {
+      this.logger.warn(`Acesso clínico recusado ao papel ${role}: utilizador ${utilizadorId}, doente ${doenteId}`);
+      throw new ForbiddenException({ message: 'Este perfil não tem acesso ao processo clínico', errorCode: 'SEM_ACESSO_CLINICO' });
+    }
 
-    // Atribuição via horário de turno (qualquer histórico — clinicians podem precisar de continuidade)
-    const atribuicaoTurno = await this.prisma.atribuicaoHorarioTurno.findFirst({
-      where: { doenteId, utilizadorId },
-      select: { id: true },
-    });
-    if (atribuicaoTurno) return;
+    // SEC-14: atribuição (direta ou em turno) no turno em curso ou dentro do prazo de continuidade
+    // — já não "qualquer atribuição de sempre". Ver acesso-por-atribuicao.ts.
+    if (await temAtribuicaoEmVigor(this.prisma, utilizadorId, doenteId)) return;
+
 
     // Acesso de emergência (break-glass) já activo cobre todos os endpoints deste doente+utilizador
     if (await this.breakGlass.verificarAtivoParaDoente(utilizadorId, doenteId)) return;
@@ -1133,10 +1132,7 @@ export class DoenteService {
       orderBy: { dataAdmissao: 'asc' },
     });
 
-    const escapeCsv = (v: string | null | undefined) => {
-      const s = String(v ?? '');
-      return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
-    };
+    const escapeCsv = (v: unknown) => celulaCsv(v); // SEC-15: sem injeção de fórmulas
 
     const header = 'Nome,NIF,SNS,Diagnóstico,Estado,Serviço,Cama,Data Admissão';
     const rows = doentes.map((d: any) =>

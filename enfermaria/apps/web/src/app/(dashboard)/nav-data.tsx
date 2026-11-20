@@ -500,6 +500,20 @@ export const navItems = [
     ),
   },
   {
+    // SEC-14: revisão dos acessos de emergência (break-glass) — direção, qualidade e chefia de enfermagem.
+    href: '/acessos-emergencia',
+    label: 'Acessos de emergência',
+    servicos: null,
+    roles: [...ROLES_DIRECAO, ...ROLES_QUALIDADE, 'enfermeiro'],
+    subRolesByRole: { enfermeiro: ['chefe_enfermeiros'] },
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    ),
+  },
+  {
     href: '/auditoria',
     label: 'Auditoria',
     servicos: null,
@@ -806,70 +820,7 @@ export function destinoInicial(u: UtilizadorNav & { subRole?: string | null }): 
   return '/';
 }
 
-export const roleLabel: Record<string, string> = {
-  medico:         'Médico',
-  enfermeiro:     'Enfermeiro',
-  auxiliar:       'Auxiliar',
-  tecnico_saude:  'Técnico de Saúde',
-  farmaceutico:   'Farmacêutico',
-  administrativo: 'Administrativo',
-  operacional:    'Operacional',
-  ti:             'TI',
-  qualidade:      'Qualidade',
-  direcao:        'Direção',
-};
-
-export const subRoleLabel: Record<string, string> = {
-  clinico_geral: 'Clínico Geral', cirurgiao_geral: 'Cirurgião Geral',
-  medico_anestesia: 'Anestesiologista', medico_imagem: 'Radiologista',
-  anatomia_patologica: 'Patologista', medico_gestor: 'Médico Gestor',
-  generalista: 'Generalista', supervisor_enfermagem: 'Supervisor',
-  triador: 'Triador', instrumentista: 'Instrumentista',
-  apoio_geral: 'Apoio Geral',
-  tae: 'TAE', reabilitacao_fisica: 'Fisioterapeuta',
-  reabilitacao_fala: 'Terapeuta da Fala', nutricao_clinica: 'Nutricionista',
-  psicologia_clinica: 'Psicólogo',
-  farmaceutico_hospitalar: 'Hospitalar', farmaceutico_oncologico: 'Oncológico',
-  tecnico_farmacia_assist: 'Técnico',
-  front_desk: 'Rececionista', secretariado: 'Secretário', backoffice: 'Backoffice',
-  scheduling: 'Agenda', billing_officer: 'Faturação', hr_specialist: 'RH', procurement: 'Compras',
-  transporte_interno: 'Maqueiro', cssd: 'Esterilização',
-  higiene_hospitalar: 'Limpeza', gestao_textil: 'Lavandaria',
-  equipamentos_medicos: 'Eng. Biomédico', facilities: 'Manutenção',
-  vigilancia: 'Segurança', seguranca_trabalho: 'SST',
-  it_admin: 'IT Admin', cio: 'CIO', his_erp: 'HIS/ERP',
-  database_admin: 'DBA', security_officer: 'Cibersegurança', dados_clinicos: 'BI/Dados',
-  quality_manager: 'Gestor Qualidade', compliance: 'Compliance',
-  infection_control: 'Controlo Infeção', internal_audit: 'Auditoria', dpo_role: 'DPO',
-  compliance_director: 'Dir. Qualidade',
-  ceo_hospitalar: 'Diretor Geral', diretor_medico: 'Dir. Clínico',
-  head_nurse: 'Dir. Enfermagem', cfo: 'Dir. Financeiro',
-  coo: 'Dir. Operacional', hr_director: 'Dir. RH',
-};
-
-export const servicoLabel: Record<string, string> = {
-  internamento:       'Internamento',
-  urgencia:           'Urgência',
-  bloco_operatorio:   'Bloco Operatório',
-  consultas_externas: 'Consultas Externas',
-  farmacia:           'Farmácia',
-  fisioterapia:       'Fisioterapia',
-  transporte:         'Transporte',
-  administrativo:     'Administrativo',
-};
-
-export const roleColor: Record<string, string> = {
-  medico:         'bg-violet-500/15 text-violet-400',
-  enfermeiro:     'bg-teal-500/15 text-teal-400',
-  auxiliar:       'bg-slate-500/15 text-slate-500',
-  tecnico_saude:  'bg-sky-500/15 text-sky-400',
-  farmaceutico:   'bg-emerald-500/15 text-emerald-400',
-  administrativo: 'bg-pink-500/15 text-pink-400',
-  operacional:    'bg-orange-500/15 text-orange-400',
-  ti:             'bg-cyan-500/15 text-cyan-400',
-  qualidade:      'bg-indigo-500/15 text-indigo-400',
-  direcao:        'bg-yellow-500/15 text-yellow-400',
-};
+export { roleLabel, subRoleLabel, servicoLabel, roleColor } from './papeis-labels';
 
 export function Avatar({ nome }: { nome: string }) {
   const initials = nome.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();

@@ -642,7 +642,7 @@ describe('estrutura — tamanho dos ficheiros', () => {
   const GRANDES: Record<string, number> = {
     'ai-clinico/ai-clinico.service.ts': 1248,
     'medicacao/medicacao.service.ts': 1331,
-    'doentes/doentes.service.ts': 1160,
+    'doentes/doentes.service.ts': 1156,
   };
   const actuais = Object.fromEntries(
     ficheiros(RAIZ_APP, '.ts')

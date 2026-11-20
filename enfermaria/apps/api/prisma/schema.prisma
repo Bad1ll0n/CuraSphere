@@ -181,7 +181,7 @@ model Utilizador {
   registosCheckin                RegistoCheckin[]
   consentimentosCriados          ConsentimentoInformado[]    @relation("ConsentimentoCriador")
   consentimentosTestemunha       ConsentimentoInformado[]    @relation("ConsentimentoTestemunha")
-  breakGlassUsados               BreakGlassAccess[]
+  breakGlassUsados               BreakGlassAccess[] @relation("BreakGlassUtilizador")
   protocolosAtivados             ProtocoloClinico[]
   itensProtocoloConcluidos       ItemProtocolo[]
   prescricoesDietaCriadas        PrescricaoDieta[]
@@ -239,6 +239,7 @@ model Utilizador {
   @@index([role, ativo])
   @@index([servico])
   @@unique([ssoProviderId, ssoSubject])
+  breakGlassRevistos BreakGlassAccess[] @relation("BreakGlassRevisor")
   @@map("utilizadores")
 }
 
@@ -2719,7 +2720,7 @@ model ConsentimentoInformado {
 model BreakGlassAccess {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
+  utilizador   Utilizador @relation("BreakGlassUtilizador", fields: [utilizadorId], references: [id], onDelete: Restrict)
   doenteId     String
   doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   motivo       String
@@ -2728,7 +2729,18 @@ model BreakGlassAccess {
   criadoEm     DateTime   @default(now())
   expiradoEm   DateTime
 
+  // SEC-14: cada acesso de emergência é revisto por quem não o fez (direção, qualidade ou chefia).
+  // `revisaoResultado`: 'justificado' | 'injustificado'. Sem revisão em 72 h, escala (`escaladoEm`).
+  revistoEm        DateTime?
+  revistoPorId     String?
+  revistoPor       Utilizador? @relation("BreakGlassRevisor", fields: [revistoPorId], references: [id], onDelete: Restrict)
+  revisaoResultado String?
+  revisaoNota      String?
+  escaladoEm       DateTime?
+
   @@index([utilizadorId, doenteId, ativo])
+  @@index([revistoEm, criadoEm])
+  @@index([revistoPorId])
   @@index([expiradoEm])
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é

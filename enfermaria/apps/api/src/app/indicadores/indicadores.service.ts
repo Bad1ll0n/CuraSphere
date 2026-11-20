@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { celulaCsv } from '../common/csv';
 import {
   DEFINICOES, DISPOSITIVOS_VIGIADOS, H48, diasInternamento, mediana, percentagem, por1000, reinternamentos, sobreposicao, turnosCompletos,
   type Definicao, type EpisodioBase,
@@ -125,7 +126,7 @@ export class IndicadoresService {
   /** CSV (separador ;, para o Excel em pt-PT) — o resumo, ou os casos de um indicador. */
   async exportarCsv(q: { inicio?: string; fim?: string; servico?: string; codigo?: string }): Promise<string> {
     const r = await this.calcular(q);
-    const esc = (v: unknown) => { const s = v == null ? '' : String(v); return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+    const esc = (v: unknown) => celulaCsv(v, ';'); // SEC-15: sem injeção de fórmulas
     const linhas: unknown[][] = q.codigo
       ? [['indicador', 'versao', 'processo', 'doente', 'quando', 'detalhe'], ...(r.indicadores[0].casos ?? []).map((c) => [r.indicadores[0].codigo, r.indicadores[0].versao, c.numeroProcesso, c.nome, c.quando?.toISOString() ?? '', c.detalhe])]
       : [['indicador', 'versao', 'nome', 'valor', 'unidade', 'numerador', 'denominador', 'inicio', 'fim', 'servico'],

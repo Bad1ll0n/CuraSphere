@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
+import { linhaCsv } from '@/lib/csv';
 
 type Episodio = {
   id: string;
@@ -43,9 +44,9 @@ function fmt(n: number) {
 
 function exportCSV(episodios: Episodio[]) {
   const rows = [
-    ['ID', 'Data', 'Doente', 'Nº Processo', 'Estado', 'Total Base', 'Total Cobrado', 'Notas', 'Criado Por'].join(';'),
+    linhaCsv(['ID', 'Data', 'Doente', 'Nº Processo', 'Estado', 'Total Base', 'Total Cobrado', 'Notas', 'Criado Por'], ';'),
     ...episodios.map((ep) =>
-      [
+      linhaCsv([
         ep.id,
         new Date(ep.criadoEm).toLocaleDateString('pt-PT'),
         ep.doente?.nome ?? '',
@@ -55,7 +56,7 @@ function exportCSV(episodios: Episodio[]) {
         ep.totalCobrado.toFixed(2).replace('.', ','),
         ep.notas ?? '',
         ep.criadoPor?.nome ?? '',
-      ].join(';'),
+      ], ';'),
     ),
   ].join('\n');
 
