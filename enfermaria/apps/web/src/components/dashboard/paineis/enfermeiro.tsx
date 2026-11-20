@@ -6,9 +6,11 @@ import api from '@/lib/api';
 import { useTranslations } from 'next-intl';
 import { VigilanciaEmAtraso } from '@/components/vigilancia-em-atraso';
 import { estadoCor, estadoLabel, prioridadeCor, StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
+import { DistribuicaoNews2 } from '../distribuicao-news2';
 
 export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
   const tEnf = useTranslations('dashboard');
+  const tN2 = useTranslations('news2Distribution');
   // auxiliar partilha este dashboard mas não tem acesso a /dashboard/news2 (clínico) — evitar o pedido
   const podeNews2 = utilizador.role === 'enfermeiro';
   const { data = {}, isLoading } = useQuery({
@@ -60,26 +62,8 @@ export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
       {/* PROD-10: observações devidas e não feitas */}
       {podeNews2 && <VigilanciaEmAtraso />}
 
-      {/* Widget NEWS2 clínico */}
-      {news2Data && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '24px' }}>
-          <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '14px' }}>NEWS2 — Distribuição Actual ({news2Data.totalAtivos} doentes activos)</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
-              { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
-              { label: 'Alto', value: news2Data.news2?.alto ?? 0, badge: 'bg-red-100 text-red-700', sub: '≥7' },
-              { label: 'Sem Registo', value: news2Data.news2?.semRegisto ?? 0, badge: 'bg-slate-100 text-slate-500', sub: '—' },
-            ].map(({ label, value, badge, sub }) => (
-              <div key={label} className={`rounded-xl text-center ${badge}`} style={{ padding: '14px 8px' }}>
-                <p className="text-2xl font-black">{value}</p>
-                <p className="text-xs font-semibold" style={{ marginTop: '2px' }}>{label}</p>
-                <p className="text-xs opacity-70">{sub}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Widget NEWS2 clínico — UX-03: cada número leva aos doentes do turno. */}
+      {news2Data && <div style={{ marginBottom: '24px' }}><DistribuicaoNews2 dados={news2Data} destino="/meu-turno" titulo={tN2('titleCurrent', { n: news2Data.totalAtivos ?? 0 })} /></div>}
 
       {turno && (
         <div className="bg-teal-50 border border-teal-200 rounded-2xl flex items-center gap-3" style={{ padding: '14px 20px', marginBottom: '24px' }}>

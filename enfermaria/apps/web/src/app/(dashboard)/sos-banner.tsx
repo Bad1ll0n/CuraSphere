@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
-interface SosAlerta {
+export interface AlertaCritico {
   doenteId: string;
   // S-09: só a equipa do doente recebe o nome. Os restantes profissionais recebem o alerta
   // com a localização — como um código anunciado no hospital — e o banner serve os dois.
@@ -11,57 +12,65 @@ interface SosAlerta {
   acionadoPor?: string;
   acionadoPorNome?: string;
   tipo?: 'sos' | 'sepsis';
+  /** UX-11: o alerta clínico a acusar com "Eu respondo". */
+  alertaId?: string;
+  ts?: number;
+  /** Preenchido quando alguém da equipa respondeu. */
+  respondidoPor?: string | null;
 }
 
-interface SosBannerProps {
-  sosAlerta: SosAlerta;
-  onClose: () => void;
-}
+/** Chave de um alerta na fila: o mesmo SOS repetido não duplica; SOS e sépsis do mesmo doente são dois. */
+export const chaveAlerta = (a: Pick<AlertaCritico, 'doenteId' | 'tipo' | 'alertaId'>) => a.alertaId ?? `${a.tipo ?? 'sos'}:${a.doenteId}`;
 
-export function SosBanner({ sosAlerta, onClose }: SosBannerProps) {
-  const rotulo = sosAlerta.tipo === 'sepsis' ? 'Alerta de sépsis' : 'SOS';
-  // Sem nome, é a localização que identifica o alerta.
-  const identificacao = sosAlerta.doenteNome ?? sosAlerta.quarto;
-  // "Por" mostrava o id de quem accionou. Sem nome (a sépsis é automática), não se mostra.
-  const detalhe = [
-    sosAlerta.doenteNome ? sosAlerta.quarto : null,
-    sosAlerta.acionadoPorNome ? `Por ${sosAlerta.acionadoPorNome}` : null,
-  ]
-    .filter(Boolean)
-    .join(' · ');
-
+/**
+ * UX-11 — fila de alertas críticos (SOS, sépsis).
+ *
+ * Antes: um só alerta em memória (um segundo SOS substituía o primeiro) que desaparecia ao fim
+ * de 30 s sem ninguém confirmar. Agora cada alerta fica até alguém responder ("Eu respondo",
+ * visível a toda a equipa) e só então pode ser fechado; os mais antigos primeiro.
+ */
+export function FilaAlertasCriticos({ alertas, onResponder, onFechar }: {
+  alertas: AlertaCritico[];
+  onResponder: (a: AlertaCritico) => void;
+  onFechar: (a: AlertaCritico) => void;
+}) {
+  const t = useTranslations('criticalAlerts');
+  if (!alertas.length) return null;
   return (
-    // O alerta clínico mais crítico da aplicação não era anunciado a leitores de ecrã:
-    // sem `role`/`aria-live`, um enfermeiro com leitor de ecrã não sabia que ele existia.
-    // Assertivo de propósito — interromper é o comportamento correcto para um SOS.
-    <div
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      className="fixed top-4 left-1/2 z-[9999] -translate-x-1/2 flex items-center gap-4 bg-red-600 text-white rounded-2xl shadow-2xl animate-pulse"
-      style={{ padding: '16px 24px', minWidth: '420px', maxWidth: '600px' }}
-    >
-      <svg className="w-6 h-6 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-      <div className="flex-1 min-w-0">
-        <p className="font-bold text-sm">{rotulo} — {identificacao}</p>
-        {detalhe && <p className="text-xs text-red-100">{detalhe}</p>}
-      </div>
-      <Link
-        href={`/doentes/${sosAlerta.doenteId}`}
-        onClick={onClose}
-        className="shrink-0 text-xs font-semibold bg-white text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-        style={{ padding: '8px 14px', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}
-      >
-        Ver ficha
-      </Link>
-      <button
-        onClick={onClose}
-        aria-label={`Fechar ${rotulo} — ${identificacao}`}
-        className="shrink-0 text-red-200 hover:text-white text-lg leading-none"
-        style={{ minWidth: '44px', minHeight: '44px' }}
-      >✕</button>
+    <div className="fixed top-4 left-1/2 z-[9999] -translate-x-1/2 flex flex-col gap-2" style={{ minWidth: '420px', maxWidth: '640px' }}>
+      {alertas.map((a) => {
+        const rotulo = a.tipo === 'sepsis' ? t('sepsis') : t('sos');
+        const identificacao = a.doenteNome ?? a.quarto;
+        const detalhe = [a.doenteNome ? a.quarto : null, a.acionadoPorNome ? t('by', { nome: a.acionadoPorNome }) : null].filter(Boolean).join(' · ');
+        const respondido = a.respondidoPor !== undefined && a.respondidoPor !== null;
+        return (
+          // O alerta clínico mais crítico da aplicação é anunciado a leitores de ecrã, de forma assertiva.
+          <div key={chaveAlerta(a)} role="alert" aria-live="assertive" aria-atomic="true"
+            className={`flex items-center gap-3 text-white rounded-2xl shadow-2xl ${respondido ? 'bg-slate-700' : 'bg-red-600 animate-pulse'}`}
+            style={{ padding: '14px 20px' }}>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-sm">{rotulo} — {identificacao}</p>
+              {detalhe && <p className="text-xs text-red-100">{detalhe}</p>}
+              {respondido && <p className="text-xs font-semibold text-green-200">{t('responded', { nome: a.respondidoPor || t('someone') })}</p>}
+            </div>
+            <Link href={`/doentes/${a.doenteId}`}
+              className="shrink-0 text-xs font-semibold bg-white text-red-600 hover:bg-red-50 rounded-lg"
+              style={{ padding: '8px 12px', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>
+              {t('openFile')}
+            </Link>
+            {!respondido && a.alertaId && (
+              <button type="button" onClick={() => onResponder(a)}
+                className="shrink-0 text-xs font-bold bg-red-900 hover:bg-red-950 rounded-lg" style={{ padding: '8px 12px', minHeight: '44px' }}>
+                {t('respond')}
+              </button>
+            )}
+            {(respondido || !a.alertaId) && (
+              <button type="button" onClick={() => onFechar(a)} aria-label={t('close', { rotulo, identificacao })}
+                className="shrink-0 text-red-100 hover:text-white text-lg leading-none" style={{ minWidth: '44px', minHeight: '44px' }}>✕</button>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

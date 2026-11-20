@@ -1,137 +1,123 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import type { Notificacao } from '@org/shared';
 import { useToast } from '@/components/toast';
 import { useNotificacoes, useMarcarLida, useMarcarTodasLidas } from '@/lib/hooks';
 
-export default function NotificacoesPage() {
-  const toast = useToast();
-  const [page, setPage] = useState(1);
-  const [filtro, setFiltro] = useState<'todas' | 'nao_lidas'>('todas');
+const ORDEM = { critico: 0, aviso: 1, informativo: 2 } as const;
+const ESTILO: Record<string, string> = {
+  critico: 'border-red-300 bg-red-50/60',
+  aviso: 'border-amber-200 bg-amber-50/40',
+  informativo: 'border-slate-100',
+};
+const fmt = (d: string) => new Date(d).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
-  const { data, isLoading } = useNotificacoes(page);
+/**
+ * UX-11 — notificações com prioridade (crítico / aviso / informativo), agrupadas por doente,
+ * críticas primeiro; o clique abre a ficha do doente (antes só marcava como lida). Os não
+ * críticos ficam resumidos num grupo próprio, para não competirem com os críticos.
+ */
+export default function NotificacoesPage() {
+  const t = useTranslations('notifications');
+  const toast = useToast();
+  const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [filtro, setFiltro] = useState<'todas' | 'nao_lidas'>('nao_lidas');
+
+  const { data, isLoading, isError, refetch } = useNotificacoes(page);
   const mutLer = useMarcarLida();
   const mutTodasLidas = useMarcarTodasLidas();
 
   const notificacoes = data?.notificacoes ?? [];
-  const lista = filtro === 'nao_lidas' ? notificacoes.filter(n => !n.lida) : notificacoes;
+  const lista = (filtro === 'nao_lidas' ? notificacoes.filter((n) => !n.lida) : notificacoes)
+    .slice().sort((a, b) => ORDEM[a.nivel ?? 'informativo'] - ORDEM[b.nivel ?? 'informativo'] || b.criadaEm.localeCompare(a.criadaEm));
 
-  const fmt = (d: string) => new Date(d).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  // Agrupar por doente (o grupo herda o nível mais alto); sem doente vão para o fim.
+  const grupos = new Map<string, Notificacao[]>();
+  for (const n of lista) {
+    const chave = n.doenteId ?? '';
+    grupos.set(chave, [...(grupos.get(chave) ?? []), n]);
+  }
+  const ordenados = [...grupos.entries()].sort(([ka, a], [kb, b]) =>
+    Number(ka === '') - Number(kb === '') || ORDEM[a[0].nivel ?? 'informativo'] - ORDEM[b[0].nivel ?? 'informativo']);
+
+  const abrir = (n: Notificacao) => {
+    if (!n.lida) mutLer.mutate(n.id);
+    if (n.doenteId) router.push(`/doentes/${n.doenteId}`);
+  };
 
   return (
     <div style={{ padding: '32px 40px' }}>
-      <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
+      <div className="flex items-start justify-between" style={{ marginBottom: '24px' }}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Notificações</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
-            {data?.naoLidas ? `${data.naoLidas} não lida${data.naoLidas > 1 ? 's' : ''}` : 'Todas lidas'}
-          </p>
+          <h1 className="text-2xl font-bold text-slate-900">{t('title')}</h1>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>{data?.naoLidas ? t('unread', { n: data.naoLidas }) : t('allRead')}</p>
         </div>
         {(data?.naoLidas ?? 0) > 0 && (
-          <button
-            onClick={() => mutTodasLidas.mutate(undefined, { onSuccess: () => toast.success('Todas marcadas como lidas'), onError: () => toast.error('Erro ao marcar como lidas') })}
+          <button onClick={() => mutTodasLidas.mutate(undefined, { onSuccess: () => toast.success(t('allMarked')), onError: () => toast.error(t('markError')) })}
             disabled={mutTodasLidas.isPending}
-            className="text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-xl disabled:opacity-50"
-            style={{ padding: '8px 16px' }}>
-            Marcar todas como lidas
+            className="text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-xl disabled:opacity-50" style={{ padding: '8px 16px' }}>
+            {t('markAll')}
           </button>
         )}
       </div>
 
-      {/* Filtros */}
       <div className="flex gap-1 bg-slate-100 rounded-xl p-1 w-fit" style={{ marginBottom: '20px' }}>
-        {(['todas', 'nao_lidas'] as const).map(f => (
+        {(['nao_lidas', 'todas'] as const).map((f) => (
           <button key={f} onClick={() => setFiltro(f)}
             className={`text-sm font-semibold rounded-lg px-4 py-2 transition-all ${filtro === f ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-            {f === 'todas' ? 'Todas' : 'Não lidas'}
+            {t(f === 'todas' ? 'filterAll' : 'filterUnread')}
           </button>
         ))}
       </div>
 
-      {isLoading ? (
-        <div className="flex justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-        </div>
-      ) : lista.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto" style={{ marginBottom: '12px' }}>
-            <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
+      {isLoading ? <p className="text-sm text-slate-500" style={{ padding: '40px 0' }}>{t('loading')}</p>
+        : isError ? (
+          <p role="alert" className="text-sm text-red-700">{t('loadError')}{' '}<button type="button" className="underline font-semibold" onClick={() => refetch()}>{t('retry')}</button></p>
+        ) : lista.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '48px 40px' }}>
+            <p className="text-slate-700 font-semibold">{t('empty')}</p>
+            <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>{t(filtro === 'nao_lidas' ? 'emptyUnread' : 'emptyAll')}</p>
           </div>
-          <p className="text-slate-700 font-semibold">Sem notificações</p>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
-            {filtro === 'nao_lidas' ? 'Todas as notificações foram lidas.' : 'Não há notificações de momento.'}
-          </p>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2">
-          {lista.map(n => {
-            const isWatchdog = n.tipo === 'ia_watchdog';
-            const isEscalacao = n.tipo === 'escalacao_automatica';
-            const borderClass = isEscalacao
-              ? 'border-red-200 bg-red-50/40'
-              : isWatchdog
-              ? 'border-violet-200 bg-violet-50/30'
-              : n.lida ? 'border-slate-100' : 'border-blue-100 bg-blue-50/30';
+        ) : (
+          <div className="flex flex-col gap-4">
+            {ordenados.map(([doenteId, ns]) => (
+              <section key={doenteId || 'geral'} aria-label={doenteId ? t('groupPatient', { n: ns.length }) : t('groupGeneral')} className="flex flex-col gap-2">
+                {ns.length > 1 && <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{doenteId ? t('groupPatient', { n: ns.length }) : t('groupGeneral')}</p>}
+                {ns.map((n) => (
+                  <button key={n.id} type="button" onClick={() => abrir(n)}
+                    className={`w-full text-left bg-white rounded-2xl border flex items-start gap-4 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${ESTILO[n.nivel ?? 'informativo']} ${n.lida ? 'opacity-70' : ''}`}
+                    style={{ padding: '16px 20px' }}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {n.nivel && n.nivel !== 'informativo' && (
+                          <span className={`text-xs font-bold rounded-lg ${n.nivel === 'critico' ? 'text-red-700 bg-red-100' : 'text-amber-800 bg-amber-100'}`} style={{ padding: '1px 6px' }}>
+                            {t(n.nivel === 'critico' ? 'critical' : 'warning')}
+                          </span>
+                        )}
+                        <p className={`text-sm font-semibold ${n.lida ? 'text-slate-600' : 'text-slate-900'}`}>{n.titulo}</p>
+                      </div>
+                      <p className="text-sm text-slate-600" style={{ marginTop: '2px' }}>{n.corpo}</p>
+                      <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}{n.doenteId ? ` · ${t('openFile')}` : ''}</p>
+                    </div>
+                    {!n.lida && <span className="shrink-0 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full" style={{ padding: '2px 8px' }}>{t('new')}</span>}
+                  </button>
+                ))}
+              </section>
+            ))}
+          </div>
+        )}
 
-            return (
-              <div key={n.id}
-                role="button"
-                tabIndex={0}
-                aria-label={n.lida ? n.titulo : `${n.titulo} — marcar como lida`}
-                className={`bg-white rounded-2xl border flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${borderClass}`}
-                style={{ padding: '18px 20px' }}
-                onClick={() => { if (!n.lida) mutLer.mutate(n.id); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!n.lida) mutLer.mutate(n.id); } }}>
-                <div className={`w-6 h-6 rounded-full shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold ${
-                  isEscalacao ? 'bg-red-100 text-red-600' :
-                  isWatchdog ? 'bg-violet-100 text-violet-600' :
-                  n.lida ? 'bg-slate-100 text-slate-500' : 'bg-blue-100 text-blue-600'
-                }`}>
-                  {isEscalacao ? '⬆' : isWatchdog ? '🧠' : n.lida ? '' : '·'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className={`text-sm font-semibold ${n.lida ? 'text-slate-600' : 'text-slate-900'}`}>{n.titulo}</p>
-                    {isEscalacao && (
-                      <span className="text-xs font-bold text-red-700 bg-red-100 rounded-lg" style={{ padding: '1px 6px' }}>ESCALAÇÃO</span>
-                    )}
-                    {isWatchdog && (
-                      <span className="text-xs font-bold text-violet-700 bg-violet-100 rounded-lg" style={{ padding: '1px 6px' }}>IA Watchdog</span>
-                    )}
-                  </div>
-                  <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>{n.corpo}</p>
-                  <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}</p>
-                </div>
-                {!n.lida && (
-                  <span className={`shrink-0 text-xs font-semibold rounded-full ${
-                    isEscalacao ? 'text-red-700 bg-red-50' :
-                    isWatchdog ? 'text-violet-700 bg-violet-50' :
-                    'text-blue-600 bg-blue-50'
-                  }`} style={{ padding: '2px 8px' }}>Nova</span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Paginação */}
       {(data?.totalPaginas ?? 1) > 1 && (
         <div className="flex justify-center gap-2" style={{ marginTop: '24px' }}>
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40"
-            style={{ padding: '8px 16px' }}>← Anterior</button>
-          <span className="text-sm text-slate-500 flex items-center" style={{ padding: '8px 12px' }}>
-            {page} / {data?.totalPaginas}
-          </span>
-          <button onClick={() => setPage(p => Math.min(data?.totalPaginas ?? 1, p + 1))} disabled={page === (data?.totalPaginas ?? 1)}
-            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40"
-            style={{ padding: '8px 16px' }}>Seguinte →</button>
+          <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
+            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40" style={{ padding: '8px 16px' }}>{t('prev')}</button>
+          <span className="text-sm text-slate-500 flex items-center" style={{ padding: '8px 12px' }}>{page} / {data?.totalPaginas}</span>
+          <button onClick={() => setPage((p) => Math.min(data?.totalPaginas ?? 1, p + 1))} disabled={page === (data?.totalPaginas ?? 1)}
+            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40" style={{ padding: '8px 16px' }}>{t('next')}</button>
         </div>
       )}
     </div>

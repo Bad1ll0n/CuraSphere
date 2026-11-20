@@ -40,6 +40,8 @@ export interface FaixaDoente<D = string> {
   riscoUlcera: { risco: string; pontuacao: number } | null;
   news2: News2Resumo<D> | null;
   sinalizacoes: { motivo: string; nivelUrgencia: string }[];
+  /** UX-03: há um alerta de sépsis por resolver. */
+  sepsisAtiva: boolean;
 }
 
 /** Uma linha de "O meu turno" (UX-30). */

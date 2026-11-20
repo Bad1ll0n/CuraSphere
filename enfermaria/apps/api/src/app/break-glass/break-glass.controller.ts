@@ -6,12 +6,33 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
 import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import { AtribuicoesService } from '../atribuicoes/atribuicoes.service';
+import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+
+export class PedidoAtribuicaoDto {
+  @IsUUID() doenteId: string;
+  @IsOptional() @IsString() @MaxLength(300) nota?: string;
+}
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoenteIsento('break-glass: é o pedido de acesso de emergência ao próprio doente')
 @Controller('break-glass')
 export class BreakGlassController {
-  constructor(private readonly service: BreakGlassService) {}
+  constructor(
+    private readonly service: BreakGlassService,
+    private readonly atribuicoes: AtribuicoesService,
+  ) {}
+
+  /**
+   * UX-10 — a alternativa não urgente ao break-glass: pedir à chefia que o atribua ao doente.
+   * Fica aqui porque é, como o break-glass, um pedido de acesso de quem ainda não o tem.
+   */
+  @Throttle({ default: { ttl: 3600000, limit: 20 } })
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
+  @Post('pedido-atribuicao')
+  pedirAtribuicao(@Body() dto: PedidoAtribuicaoDto, @Request() req: any) {
+    return this.atribuicoes.pedirAtribuicao(dto.doenteId, req.user.sub, dto.nota);
+  }
 
   @Throttle({ default: { ttl: 86400000, limit: 10 } })
   @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_enfermeiros')

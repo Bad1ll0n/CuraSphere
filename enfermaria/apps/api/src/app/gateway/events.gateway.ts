@@ -399,14 +399,21 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('urgencia:update', { id: data.id, ts });
   }
 
-  emitirSOS(doenteId: string, doenteNome: string, quarto: string, acionadoPor: string) {
+  emitirSOS(doenteId: string, doenteNome: string, quarto: string, acionadoPor: string, alertaId?: string) {
     return this.emitirAlertaCritico({
       tipo: 'sos',
       doenteId,
       doenteNome,
       localizacao: quarto,
       acionadoPorId: acionadoPor,
+      alertaId,
     });
+  }
+
+  /** UX-11: alguém respondeu a um alerta crítico — as mesmas salas que o receberam. */
+  emitirAlertaRespondido(r: { alertaId: string; doenteId: string; porNome: string | null }) {
+    if (!this.server) return;
+    this.server.to([`doente:${r.doenteId}`, 'role:medico', 'role:enfermeiro']).emit('alerta:respondido', { ...r, ts: Date.now() });
   }
 
   /**
@@ -428,6 +435,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     localizacao: string;
     acionadoPorId?: string;
     detalhe?: Record<string, unknown>;
+    /** UX-11: o alerta clínico a acusar com "Eu respondo". */
+    alertaId?: string;
   }): Promise<void> {
     if (!this.server) return;
     const salasEquipa = [`doente:${alerta.doenteId}`];
@@ -455,6 +464,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       acionadoPor: alerta.acionadoPorId,
       // O banner mostrava o id em "Por": quem acciona um SOS identifica-se pelo nome.
       acionadoPorNome,
+      alertaId: alerta.alertaId,
       ts: Date.now(),
     };
 
