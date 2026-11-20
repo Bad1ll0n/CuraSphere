@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { SeletorDoente } from '@/components/seletor-doente';
 
 interface Interconsulta {
   id: string;
@@ -63,13 +64,6 @@ export default function InterconsultasPage() {
       return { recebidas: recRes.data ?? [], enviadas: envRes.data ?? [] };
     },
     staleTime: 30_000,
-  });
-
-  const { data: doentesLista = [] } = useQuery<{ id: string; nome: string }[]>({
-    queryKey: ['doentes-lista-interconsultas'],
-    queryFn: () => api.get('/doentes?todos=true').then(r => (r.data?.data ?? r.data ?? []).map((d: any) => ({ id: d.id, nome: d.nome }))).catch(() => []),
-    enabled: modalNova,
-    staleTime: 60_000,
   });
 
   const recebidas: Interconsulta[] = (data as any).recebidas ?? [];
@@ -230,12 +224,7 @@ export default function InterconsultasPage() {
 
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente</label>
-              <select id="fpage-0" value={novaDoenteId} onChange={e => setNovaDoenteId(e.target.value)}
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar doente...</option>
-                {doentesLista.map(d => <option key={d.id} value={d.id}>{d.nome}</option>)}
-              </select>
+              <SeletorDoente id="fpage-0" value={novaDoenteId} onChange={(id) => setNovaDoenteId(id)} soComAcesso />
             </div>
 
             <div style={{ marginBottom: '14px' }}>

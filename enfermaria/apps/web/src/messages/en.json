@@ -1297,5 +1297,15 @@
       "transferencia": "Patient transfer / reception",
       "outro": "Other"
     }
+  },
+  "patientPicker": {
+    "placeholder": "Search patient (name or record number)…",
+    "results": "Patients found",
+    "bed": "R{quarto}/B{numero}",
+    "noResults": "No patients found",
+    "typeToSearch": "Type to search",
+    "searching": "Searching…",
+    "more": "Showing {n} of {total} — refine the search",
+    "error": "Could not search patients"
   }
 }

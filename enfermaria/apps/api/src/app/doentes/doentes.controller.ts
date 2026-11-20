@@ -2,6 +2,7 @@ import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuard
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
+import { ListagemDoentesService } from './listagem-doentes.service';
 import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -28,13 +29,8 @@ import { EpisodiosService } from '../episodios/episodios.service';
 import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
 import { AltaService } from './alta.service';
 
-/** QA-11: o que o papel administrativo vê do doente — identificação e internamento, sem dados clínicos. */
-export function visaoAdministrativa(d: any) {
-  if (!d) return d;
-  const { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, cama, identificadorHis } = d;
-  return { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, identificadorHis,
-    cama: cama ? { id: cama.id, numero: cama.numero, quarto: cama.quarto, servico: cama.servico } : null };
-}
+import { visaoAdministrativa } from './visao-administrativa';
+export { visaoAdministrativa };
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -46,6 +42,7 @@ export class DoenteController {
     private readonly leituras: AcessoLeituraService,
     private readonly episodios: EpisodiosService,
     private readonly alta: AltaService,
+    private readonly listagem: ListagemDoentesService,
   ) {}
 
   @Get()
@@ -54,24 +51,27 @@ export class DoenteController {
     @Query('todos') todos?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('search') search?: string,
   ) {
     // O bypass `todos=true` só é permitido para roles de supervisão.
+    // (Administrativo e TI já não precisam dele: fora dos papéis restritos, recebem a visão
+    // administrativa de todos — QA-11. Com `todos` passavam a 'todos' e viam o processo clínico.)
     // Antes qualquer utilizador autenticado podia ignorar o filtro de atribuição via querystring.
     // temPapel() considera o sub-papel, para a chefia de enfermagem (role=enfermeiro,
     // subRole=chefe_enfermeiros) poder supervisionar toda a ala como se pretendia.
-    const rolesPodemVerTodos = ['direcao', 'qualidade', 'ti', 'chefe_enfermeiros', 'administrativo'];
+    const rolesPodemVerTodos = ['direcao', 'qualidade', 'chefe_enfermeiros'];
     const ignorarFiltro = todos === 'true' && temPapel(req.user, rolesPodemVerTodos);
 
     const pageNum = Math.max(1, page ? parseInt(page, 10) || 1 : 1);
     // Limite máximo defensivo — evita DoS com listagens gigantes
     const limitNum = Math.min(100, Math.max(1, limit ? parseInt(limit, 10) || 25 : 25));
 
-    return this.doenteService.listar(
-      req.user.sub,
-      ignorarFiltro ? 'todos' : req.user.role,
-      pageNum,
-      limitNum,
-    );
+    // PERF-05: a pesquisa é feita no servidor (antes `search` nem era lido).
+    return this.listagem.listar(req.user.sub, ignorarFiltro ? 'todos' : req.user.role, {
+      page: pageNum,
+      limit: limitNum,
+      search: typeof search === 'string' ? search : undefined,
+    });
   }
 
   // SEC-09: trilho de acessos ao processo de um doente (DPO / auditoria interna).

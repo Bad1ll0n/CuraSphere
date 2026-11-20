@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { SeletorDoente } from '@/components/seletor-doente';
 
 interface Doente { id: string; nome: string; numeroProcesso: string; }
 interface ItemFatura { id: string; descricao: string; categoria: string; quantidade: number; precoUnitario: number; total: number; }
@@ -49,7 +50,6 @@ export default function FaturacaoPage() {
 
   // Modal criar episódio
   const [modalCriar, setModalCriar] = useState(false);
-  const [doentes, setDoentes] = useState<Doente[]>([]);
   const [novoDoenteId, setNovoDoenteId] = useState('');
   const [novoTipo, setNovoTipo] = useState('');
   const [novoNotas, setNovoNotas] = useState('');
@@ -108,13 +108,7 @@ export default function FaturacaoPage() {
     } catch { /* silencioso */ } finally { setCriando(false); }
   };
 
-  const abrirModalCriar = async () => {
-    setModalCriar(true);
-    if (doentes.length === 0) {
-      const r = await api.get('/doentes?todos=true&limit=200');
-      setDoentes(r.data.data ?? r.data);
-    }
-  };
+  const abrirModalCriar = () => setModalCriar(true);
 
   const adicionarItem = async () => {
     if (!detalhe) return;
@@ -437,12 +431,7 @@ export default function FaturacaoPage() {
 
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Doente</label>
-              <select id="fpage-0" value={novoDoenteId} onChange={e => setNovoDoenteId(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                style={{ padding: '10px 14px' }}>
-                <option value="">Selecionar doente...</option>
-                {doentes.map(d => <option key={d.id} value={d.id}>{d.nome} ({d.numeroProcesso})</option>)}
-              </select>
+              <SeletorDoente id="fpage-0" value={novoDoenteId} onChange={(id) => setNovoDoenteId(id)} />
             </div>
 
             <div style={{ marginBottom: '16px' }}>

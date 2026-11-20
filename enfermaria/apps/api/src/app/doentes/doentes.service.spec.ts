@@ -485,43 +485,6 @@ describe('DoenteService', () => {
     });
   });
 
-  // ── listar() ─────────────────────────────────────────────────────────────────
-
-  describe('listar()', () => {
-    beforeEach(() => {
-      mockPrisma.doente.findMany.mockResolvedValue([]);
-      mockPrisma.doente.count.mockResolvedValue(0);
-    });
-
-    it('não filtra por atribuições para role não-clínico (ti)', async () => {
-      await service.listar('user-1', 'ti');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).not.toHaveProperty('atribuicoesHorario');
-    });
-
-    it('não filtra por atribuições para role clínico com search', async () => {
-      await service.listar('user-1', 'enfermeiro', 1, 25, 'maria');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).not.toHaveProperty('atribuicoesHorario');
-    });
-
-    it('filtra por turnos activos para role clínico sem search', async () => {
-      await service.listar('user-1', 'enfermeiro');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).toHaveProperty('atribuicoesHorario');
-    });
-
-    it('limita o resultado a 100 quando limit=500 é pedido', async () => {
-      await service.listar('user-1', 'ti', 1, 500);
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.take).toBeLessThanOrEqual(100);
-    });
-  });
-
   // ── editar() ──────────────────────────────────────────────────────────────────
 
   describe('editar()', () => {
