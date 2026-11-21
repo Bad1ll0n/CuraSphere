@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
+import { registarFalha } from '../common/falhas';
 
 const PARAMETROS = ['pulso', 'pressaoSistolica', 'pressaoDiastolica', 'temperatura', 'saturacaoO2', 'frequenciaRespiratoria'] as const;
 type Param = typeof PARAMETROS[number];
@@ -87,7 +88,7 @@ export class BaselinesService {
         doenteId,
         'desvio_baseline',
         `📊 ${nomePretty[d.parametro] ?? d.parametro}: ${d.valor} (baseline ${d.media} ± ${d.sd}) — ${d.desvios} DP`,
-      ).catch(() => null);
+      ).catch(registarFalha('alerta:desvio-baseline', 'erro'));
     }
   }
 
@@ -96,18 +97,37 @@ export class BaselinesService {
   }
 
   async calcularRisco(doenteId: string): Promise<{ score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] }> {
-    const [ultimosSV, sepsis, sinalizacoes, baseline] = await Promise.all([
-      this.prisma.sinalVital.findMany({
-        where: { doenteId },
-        orderBy: { data: 'desc' },
-        take: 3,
-        select: { news2: true, data: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true },
-      }),
-      this.prisma.alertaSepsis.findFirst({ where: { doenteId, resolvido: false }, select: { id: true } }),
-      this.prisma.sinalizacaoPreocupante.findMany({ where: { doenteId, resolvida: false }, select: { nivelUrgencia: true } }),
-      this.prisma.baselineDoente.findUnique({ where: { doenteId } }),
-    ]);
+    const dados = await this.dadosDeRisco([doenteId]);
+    return this.pontuarRisco(dados.get(doenteId)!);
+  }
 
+  /**
+   * ARQ-23 — os dados do risco de VÁRIOS doentes em 4 consultas (era ~5 por doente, mais uma
+   * para o último sinal vital). Os 3 últimos sinais vitais de cada doente numa só query (janela).
+   */
+  private async dadosDeRisco(doenteIds: string[]) {
+    const [sinais, sepsis, sinalizacoes, baselines] = await Promise.all([
+      doenteIds.length
+        ? this.prisma.$queryRaw<any[]>`
+            SELECT "doenteId", news2, data, pulso, "pressaoSistolica", "pressaoDiastolica", temperatura, "saturacaoO2", "frequenciaRespiratoria"
+            FROM (SELECT sv.*, row_number() OVER (PARTITION BY "doenteId" ORDER BY data DESC) AS ordem
+                  FROM sinais_vitais sv WHERE "doenteId" = ANY(${doenteIds}::text[])) t
+            WHERE ordem <= 3 ORDER BY "doenteId", data DESC`
+        : [],
+      this.prisma.alertaSepsis.findMany({ where: { doenteId: { in: doenteIds }, resolvido: false }, select: { doenteId: true } }),
+      this.prisma.sinalizacaoPreocupante.findMany({ where: { doenteId: { in: doenteIds }, resolvida: false }, select: { doenteId: true, nivelUrgencia: true } }),
+      this.prisma.baselineDoente.findMany({ where: { doenteId: { in: doenteIds } } }),
+    ]);
+    const porDoente = new Map(doenteIds.map((id) => [id, { ultimosSV: [] as any[], sepsis: false, sinalizacoes: [] as { nivelUrgencia: string | null }[], baseline: null as any }]));
+    for (const s of sinais) porDoente.get(s.doenteId)?.ultimosSV.push(s);
+    for (const a of sepsis) { const d = porDoente.get(a.doenteId); if (d) d.sepsis = true; }
+    for (const s of sinalizacoes) porDoente.get(s.doenteId)?.sinalizacoes.push(s);
+    for (const b of baselines) { const d = porDoente.get(b.doenteId); if (d) d.baseline = b; }
+    return porDoente;
+  }
+
+  private pontuarRisco({ ultimosSV, sepsis, sinalizacoes, baseline }: { ultimosSV: any[]; sepsis: boolean; sinalizacoes: { nivelUrgencia: string | null }[]; baseline: any }):
+    { score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] } {
     let score = 0;
     const factores: string[] = [];
     const news2Actual = ultimosSV[0]?.news2 ?? null;
@@ -171,17 +191,12 @@ export class BaselinesService {
       orderBy: { cama: { numero: 'asc' } },
     });
 
-    const resultados = await Promise.all(
-      doentes.map(async d => {
-        const risco = await this.calcularRisco(d.id);
-        const ultimoSV = await this.prisma.sinalVital.findFirst({
-          where: { doenteId: d.id },
-          orderBy: { data: 'desc' },
-          select: { data: true },
-        });
-        return { doenteId: d.id, nome: d.nome, cama: d.cama?.numero ?? '?', ...risco, ultimoSV: ultimoSV?.data ?? null };
-      })
-    );
+    // ARQ-23: 4 consultas para todos (eram ~6 por doente, todas em paralelo).
+    const dados = await this.dadosDeRisco(doentes.map((d) => d.id));
+    const resultados = doentes.map((d) => {
+      const dd = dados.get(d.id)!;
+      return { doenteId: d.id, nome: d.nome, cama: d.cama?.numero ?? '?', ...this.pontuarRisco(dd), ultimoSV: dd.ultimosSV[0]?.data ?? null };
+    });
 
     return resultados.sort((a, b) => b.score - a.score);
   }

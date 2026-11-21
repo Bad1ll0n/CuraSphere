@@ -4,6 +4,10 @@ import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { gerarCodigoMarcacao } from './codigo-marcacao';
 import { configJitsi, dadosSala, novaSalaJitsi, tokenJitsi } from '../common/jitsi';
+import { registarFalha } from '../common/falhas';
+
+/** ARQ-23: tecto de uma listagem de consultas (uma agenda de um dia ou de um doente cabe largamente). */
+export const LIMITE_LISTA_CONSULTAS = 500;
 
 @Injectable()
 export class ConsultasService {
@@ -151,7 +155,10 @@ export class ConsultasService {
       const d = new Date(data); const fim = new Date(d); fim.setDate(fim.getDate() + 1);
       where.dataHora = { gte: d, lt: fim };
     }
-    return this.prisma.consulta.findMany({ where, orderBy: { dataHora: 'asc' }, include: this.includeRelations() });
+    // ARQ-23: sem nenhum filtro devolvia TODAS as consultas de sempre (a receção pedia-as todas e
+    // filtrava as de hoje no browser). Sem filtro: de ontem em diante. Em qualquer caso, um tecto.
+    if (!medicoId && !especialidade && !doenteId && !data) where.dataHora = { gte: new Date(Date.now() - 24 * 3600_000) };
+    return this.prisma.consulta.findMany({ where, orderBy: { dataHora: 'asc' }, include: this.includeRelations(), take: LIMITE_LISTA_CONSULTAS });
   }
 
   async agendaMedico(medicoId: string) {
@@ -335,7 +342,7 @@ export class ConsultasService {
     if (portal?.ativo) {
       await this.notificacoesService
         .enviarParaUtilizador(portal.id, 'Teleconsulta iniciada', 'O seu médico está à sua espera na videochamada.')
-        .catch(() => undefined);
+        .catch(registarFalha('teleconsulta:notificar-portal'));
     }
     const medico = (c as any).medico;
     return { ...dadosSala(cfg, videoRoomId, tokenJitsi(cfg, videoRoomId, { nome: medico?.nome ?? 'Médico', moderador: true, id: userId })), consultaId };

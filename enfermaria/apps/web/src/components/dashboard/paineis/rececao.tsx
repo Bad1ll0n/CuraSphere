@@ -12,13 +12,15 @@ export function DashboardRececao({ utilizador }: { utilizador: any }) {
 
   const amanha = new Date(); amanha.setDate(amanha.getDate() + 1);
   const amanhaStr = amanha.toISOString().split('T')[0];
+  // ARQ-23: só as consultas de hoje (antes pedia todas as de sempre e filtrava no browser).
+  const hojeStr = new Date().toLocaleDateString('sv-SE'); // AAAA-MM-DD no fuso local
 
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-rececao'],
     queryFn: async () => {
       const hoje = new Date().toDateString();
       const [r, ra] = await Promise.all([
-        api.get('/consultas').catch(() => ({ data: [] })),
+        api.get(`/consultas?data=${hojeStr}`).catch(() => ({ data: [] })),
         api.get(`/consultas?data=${amanhaStr}`).catch(() => ({ data: [] })),
       ]);
       return {

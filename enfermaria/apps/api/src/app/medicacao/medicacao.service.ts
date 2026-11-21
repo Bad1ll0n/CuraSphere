@@ -29,6 +29,8 @@ import { iaPermitida } from '../common/funcoes-ia';
 import { tfgCkdEpi2021 } from '../common/antropometria';
 import { reavaliacaoDorAte } from '../common/vigilancia';
 import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/hora-do-ato';
+import { registarFalha } from '../common/falhas';
+import { assinarQR } from './qr-assinatura';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -113,7 +115,7 @@ export class MedicacaoService {
         where: { doenteId, parametro: { contains: 'Creatinina', mode: 'insensitive' } },
         orderBy: { registadoEm: 'desc' },
         select: { valor: true, unidade: true },
-      }).catch(() => null) ?? null,
+      }).catch(registarFalha('medicacao:creatinina-tfg')) ?? null,
       this.prisma.doente.findUnique({ where: { id: doenteId }, select: { dataNascimento: true, sexo: true } }),
     ]);
     if (!creatinina || !Number.isFinite(Number(creatinina.valor))) return null;
@@ -568,7 +570,7 @@ export class MedicacaoService {
       });
     }, { isolationLevel: 'Serializable' });
 
-    this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(() => null);
+    this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(registarFalha('webhook:medicacao.administrada'));
     return registo;
   }
 
@@ -1064,17 +1066,6 @@ export class MedicacaoService {
 
   // ── Verificação QR 5 Certos ─────────────────────────────────────────────────
 
-  /** Segredo de assinatura das etiquetas QR. Cai no JWT_SECRET (obrigatório no boot). */
-  private get qrSecret(): string {
-    const secret = process.env.MEDICACAO_QR_SECRET || process.env.JWT_SECRET;
-    if (!secret) throw new Error('MEDICACAO_QR_SECRET/JWT_SECRET não configurado');
-    return secret;
-  }
-
-  private assinarQR(corpo: string): string {
-    return crypto.createHmac('sha256', this.qrSecret).update(corpo).digest('base64url');
-  }
-
   /**
    * Gera a etiqueta QR **assinada** de uma medicação. Sem isto o payload do QR era JSON
    * simples produzido pelo cliente — qualquer pessoa podia fabricar um.
@@ -1112,7 +1103,7 @@ export class MedicacaoService {
       via: medicacao.via,
       emitidoEm: new Date().toISOString(),
     })).toString('base64url');
-    return { qrPayload: `${corpo}.${this.assinarQR(corpo)}` };
+    return { qrPayload: `${corpo}.${assinarQR(corpo)}` };
   }
 
   /** Valida a assinatura e devolve o conteúdo do QR, ou `null` se não for de confiança. */
@@ -1123,7 +1114,7 @@ export class MedicacaoService {
     if (partes.length !== 2) return null;
     const [corpo, assinatura] = partes;
 
-    const esperada = this.assinarQR(corpo);
+    const esperada = assinarQR(corpo);
     const a = Buffer.from(assinatura);
     const b = Buffer.from(esperada);
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;

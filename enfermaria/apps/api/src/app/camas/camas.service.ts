@@ -6,8 +6,9 @@ import { TenantContextService } from '../prisma/tenant-context.service';
 import { RedisService } from '../redis/redis.service';
 import { EstadoCama } from '../common/enums';
 
-const KEY_LISTA = 'camas:lista';
-const KEY_OCUPACAO = 'camas:ocupacao';
+// PERF-07: as chaves eram fixas — um tenant recebia a lista de camas (com doentes) de outro.
+const KEY_LISTA = (tenant: string) => `camas:lista:${tenant}`;
+const KEY_OCUPACAO = (tenant: string) => `camas:ocupacao:${tenant}`;
 const CACHE_TTL = 30; // 30 segundos
 
 @Injectable()
@@ -29,7 +30,7 @@ export class CamasService {
 
   /** Para quem muda camas fora deste serviço (pedidos de cama, transferências, admissão). */
   async invalidarCache() {
-    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    await this.redis.del(KEY_LISTA(this.tenantContext.tenantId), KEY_OCUPACAO(this.tenantContext.tenantId));
     this.emit('camas_alteradas', {});
   }
 
@@ -42,7 +43,8 @@ export class CamasService {
   }
 
   async listar() {
-    const cached = await this.redis.get<unknown[]>(KEY_LISTA);
+    // PERF-07: a lista traz nomes e diagnósticos — vai cifrada para o Redis.
+    const cached = await this.redis.getCifrado<unknown[]>(KEY_LISTA(this.tenantContext.tenantId));
     if (cached) return cached;
 
     const result = await this.prisma.cama.findMany({
@@ -52,7 +54,7 @@ export class CamasService {
       orderBy: [{ quarto: 'asc' }, { numero: 'asc' }],
     });
 
-    await this.redis.set(KEY_LISTA, result, CACHE_TTL);
+    await this.redis.setCifrado(KEY_LISTA(this.tenantContext.tenantId), result, CACHE_TTL);
     return result;
   }
 
@@ -61,7 +63,7 @@ export class CamasService {
     if (existe) throw new ConflictException('Número de cama já existe');
 
     const cama = await this.prisma.cama.create({ data: { ...data, tenantId: this.tenantContext.tenantId } });
-    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    await this.redis.del(KEY_LISTA(this.tenantContext.tenantId), KEY_OCUPACAO(this.tenantContext.tenantId));
     return cama;
   }
 
@@ -74,7 +76,7 @@ export class CamasService {
       data: { estado },
       include: { doente: { select: { id: true, nome: true } } },
     });
-    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    await this.redis.del(KEY_LISTA(this.tenantContext.tenantId), KEY_OCUPACAO(this.tenantContext.tenantId));
     this.emit('cama_atualizada', result);
     return result;
   }
@@ -106,7 +108,7 @@ export class CamasService {
       data: { estado: 'livre' },
       include: { doente: { select: { id: true, nome: true } } },
     });
-    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    await this.redis.del(KEY_LISTA(this.tenantContext.tenantId), KEY_OCUPACAO(this.tenantContext.tenantId));
     this.emit('cama_atualizada', result);
     return result;
   }
@@ -116,7 +118,7 @@ export class CamasService {
   }
 
   async ocupacao() {
-    const cached = await this.redis.get<Record<string, number>>(KEY_OCUPACAO);
+    const cached = await this.redis.get<Record<string, number>>(KEY_OCUPACAO(this.tenantContext.tenantId));
     if (cached) return cached;
 
     const [total, ocupadas, livres, emLimpeza, reservadas] = await Promise.all([
@@ -137,7 +139,7 @@ export class CamasService {
       this.prisma.pedidoCama.count({ where: { estado: { in: ['pedido', 'atribuida'] } } }),
     ]);
     const result = { total, ocupadas, livres, emLimpeza, reservadas, altasPrevistasHoje, altasPrevistasAmanha, pedidosEmEspera };
-    await this.redis.set(KEY_OCUPACAO, result, CACHE_TTL);
+    await this.redis.set(KEY_OCUPACAO(this.tenantContext.tenantId), result, CACHE_TTL);
     return result;
   }
 }

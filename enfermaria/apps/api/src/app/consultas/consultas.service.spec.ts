@@ -7,6 +7,7 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 const mockTx = {
   consulta: {
+    findMany: jest.fn().mockResolvedValue([]),
     findFirst: jest.fn(),
     findUnique: jest.fn().mockResolvedValue(null), // null = código único disponível
     create: jest.fn(),
@@ -308,6 +309,21 @@ describe('ConsultasService', () => {
       // Deve haver pelo menos um slot marcado como ocupado
       const temOcupado = slots.some((s: any) => !s.disponivel);
       expect(temOcupado).toBe(true);
+    });
+  });
+
+  describe('listar() — ARQ-23', () => {
+    it('sem filtros: só de ontem em diante, e sempre com tecto', async () => {
+      await service.listar();
+      const args = mockPrisma.consulta.findMany.mock.calls.at(-1)[0];
+      expect(args.take).toBe(500);
+      expect(args.where.dataHora.gte.getTime()).toBeGreaterThan(Date.now() - 25 * 3600_000);
+    });
+    it('com filtro (doente): não impõe a janela de datas, mas mantém o tecto', async () => {
+      await service.listar(undefined, undefined, undefined, 'd1');
+      const args = mockPrisma.consulta.findMany.mock.calls.at(-1)[0];
+      expect(args.where).toEqual({ doenteId: 'd1' });
+      expect(args.take).toBe(500);
     });
   });
 });

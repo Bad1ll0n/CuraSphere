@@ -26,17 +26,17 @@ describe('ultimos-registos (PERF-03)', () => {
 describe('cache dos dashboards (PERF-06)', () => {
   it('a segunda leitura não recalcula', async () => {
     const prisma = { doente: { findMany: jest.fn().mockResolvedValue([]) }, $queryRaw: jest.fn() };
-    const redis = { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined) };
+    const redis = { getCifrado: jest.fn().mockResolvedValue(null), setCifrado: jest.fn().mockResolvedValue(undefined) }; // PERF-07: cifrado
     const s = new DashboardService(prisma as never, redis as never, { tenantId: 't1' } as never);
     await s.news2Distribuicao();
     await s.news2Distribuicao();
     expect(prisma.doente.findMany).toHaveBeenCalledTimes(1);
-    expect(redis.set).toHaveBeenCalledWith('dashboard:news2Distribuicao:t1', expect.anything(), expect.any(Number));
+    expect(redis.setCifrado).toHaveBeenCalledWith('dashboard:news2Distribuicao:t1', expect.anything(), expect.any(Number));
   });
 
   it('usa o valor de outra réplica (Redis) sem recalcular', async () => {
     const prisma = { doente: { findMany: jest.fn() } };
-    const redis = { get: jest.fn().mockResolvedValue({ totalAtivos: 7 }), set: jest.fn() };
+    const redis = { getCifrado: jest.fn().mockResolvedValue({ totalAtivos: 7 }), setCifrado: jest.fn() };
     const s = new DashboardService(prisma as never, redis as never, { tenantId: 't1' } as never);
     expect(await s.news2Distribuicao()).toEqual({ totalAtivos: 7 });
     expect(prisma.doente.findMany).not.toHaveBeenCalled();

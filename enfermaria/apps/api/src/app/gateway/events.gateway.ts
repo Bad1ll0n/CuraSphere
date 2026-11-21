@@ -12,6 +12,7 @@ import { ModuleRef } from '@nestjs/core';
 import { VERIFICADOR_ACESSO_DOENTE, type VerificadorAcessoDoente } from '../doentes/acesso-doente.token';
 import { AUD_SOCKET, JWT_ISSUER, type TipoToken } from '../auth/token-audiences';
 import { chavesJwt } from '../auth/chaves-jwt';
+import { registarFalha } from '../common/falhas';
 
 interface JwtPayload {
   sub: string;
@@ -202,7 +203,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         turnoAtual: { select: { dataInicio: true, dataFim: true } },
         turnoAnterior: { select: { chefeTurnoId: true } },
       },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:passagem-turno'));
 
     if (!passagem || passagem.estadoDesafio !== 'pendente') return;
 
@@ -219,7 +220,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       },
       // Chave composta (horarioTurnoId, utilizadorId): o modelo não tem `id`.
       select: { horarioTurnoId: true },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:passagem-turno'));
 
     if (!escalado) {
       client.emit('turno:passagem-recusada', {
@@ -312,7 +313,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const nota = await this.prisma.notaClinica.findUnique({
       where: { id: data.notaId },
       select: { doenteId: true },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:bloqueio-nota'));
     if (!nota || nota.doenteId !== data.doenteId) {
       client.emit('nota:acesso-negado', { doenteId: data.doenteId, notaId: data.notaId });
       return;
@@ -365,7 +366,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async estaOnline(utilizadorId: string): Promise<boolean> {
     const presenca = await this.prisma.presencaOnline.findUnique({
       where: { utilizadorId },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:presenca'));
     if (!presenca) return false;
     // Considerar offline se último ping há mais de 2 min
     const doisMinutos = 2 * 60 * 1000;

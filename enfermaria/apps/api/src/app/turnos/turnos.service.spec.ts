@@ -56,6 +56,7 @@ const mockPrisma = {
   },
   auditLog: {
     findFirst: jest.fn(),
+    groupBy: jest.fn(),
   },
   $transaction: jest.fn(),
 };
@@ -225,6 +226,29 @@ describe('TurnosService', () => {
         expect.objectContaining({ data: notaData }),
       );
       expect(resultado).toEqual(notaCriada);
+    });
+  });
+
+  describe('inatividade() — ARQ-23', () => {
+    it('uma só consulta agrupada à auditoria para todos os profissionais do turno', async () => {
+      mockPrisma.turno.findFirst.mockResolvedValue({ id: 't1' });
+      mockPrisma.horarioEntrada.findMany.mockResolvedValue([
+        { utilizadorId: 'u1', utilizador: { id: 'u1', nome: 'Ana', role: 'enfermeiro' } },
+        { utilizadorId: 'u2', utilizador: { id: 'u2', nome: 'Rui', role: 'enfermeiro' } },
+        { utilizadorId: 'u3', utilizador: { id: 'u3', nome: 'Eva', role: 'auxiliar' } },
+      ]);
+      mockPrisma.auditLog.groupBy.mockResolvedValue([
+        { utilizadorId: 'u1', _max: { createdAt: new Date(Date.now() - 10 * 60_000) } }, // ativo
+        { utilizadorId: 'u2', _max: { createdAt: new Date(Date.now() - 3 * 3_600_000) } }, // inativo 3 h
+      ]); // u3 nunca fez nada
+
+      const r: any = await service.inatividade();
+
+      expect(mockPrisma.auditLog.groupBy).toHaveBeenCalledTimes(1);
+      expect(mockPrisma.auditLog.findFirst).not.toHaveBeenCalled();
+      expect(r.profissionais.map((p: any) => p.utilizador.id)).toEqual(['u2', 'u3']);
+      expect(r.profissionais[0].minutosInativo).toBeGreaterThanOrEqual(179);
+      expect(r.profissionais[1]).toMatchObject({ ultimaAccao: null, minutosInativo: null });
     });
   });
 });

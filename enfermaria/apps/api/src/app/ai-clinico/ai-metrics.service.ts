@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { registarFalha } from '../common/falhas';
 
 export interface AiMetricEntry {
   feature: string;
@@ -16,7 +17,7 @@ export class AiMetricsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async registar(entry: AiMetricEntry): Promise<void> {
-    await this.prisma.aiMetrica.create({ data: entry }).catch(() => null);
+    await this.prisma.aiMetrica.create({ data: entry }).catch(registarFalha('ia:metricas'));
   }
 
   async resumo(dias = 7) {

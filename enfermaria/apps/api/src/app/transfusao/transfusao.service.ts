@@ -5,6 +5,7 @@ import { CriarPedidoTransfusaoDto } from './dto/criar-pedido-transfusao.dto';
 import { AdicionarBolsaDto } from './dto/adicionar-bolsa.dto';
 import { RegistarTransfusaoDto } from './dto/registar-transfusao.dto';
 import { RegistarReacaoDto } from './dto/registar-reacao.dto';
+import { registarFalha } from '../common/falhas';
 
 // ── Compatibilidade ABO/Rh ────────────────────────────────────────────────────
 // Regras de compatibilidade DADOR → RECETOR. Núcleo de segurança da transfusão.
@@ -310,7 +311,7 @@ export class TransfusaoService {
       grave ? 'reacao_transfusional_grave' : 'reacao_transfusional',
       `Reação transfusional (${dto.tipo.replace(/_/g, ' ')}, ${dto.gravidade}): ${dto.sintomas}`,
       grave ? 4 : 3,
-    ).catch(() => null);
+    ).catch(registarFalha('alerta:reacao-transfusional', 'erro'));
 
     return reacao;
   }

@@ -41,6 +41,17 @@ describe('PedidosInternosService', () => {
       const r = await service.listar();
       expect(r).toHaveLength(1);
     });
+
+    it('ARQ-23: activos todos, fechados só dos últimos 7 dias, e um tecto', async () => {
+      mockPrisma.pedidoInterno.findMany.mockResolvedValue([]);
+      await service.listar('Medicina');
+      const { where, take } = mockPrisma.pedidoInterno.findMany.mock.calls.at(-1)[0];
+      expect(take).toBe(500);
+      expect(where.AND[0]).toEqual({ OR: [{ servicoOrigem: 'Medicina' }, { tipo: 'transporte', estado: 'pendente' }] });
+      const [activos, recentes] = where.AND[1].OR;
+      expect(activos).toEqual({ estado: { in: ['pendente', 'em_curso'] } });
+      expect(Date.now() - recentes.criadoEm.gte.getTime()).toBeGreaterThan(6.9 * 24 * 3600_000);
+    });
   });
 
   describe('aceitar()', () => {
