@@ -701,3 +701,26 @@ describe('estrutura — tamanho dos ficheiros', () => {
     expect(desceu).toEqual([]);
   });
 });
+
+/**
+ * ARQ-08 — erosão da segurança de tipos. Os controladores recebiam `@Request() req: any` (mais de
+ * 300): um campo inventado passava sem aviso, e `req.user.userId` (que não existe) gravava o autor
+ * de resultados de análises e de outcomes como `undefined`. Agora o pedido é tipado
+ * (auth/pedido-autenticado.ts) e o número de `any` no código da API só pode descer.
+ */
+const TECTO_ANY = 394; // era ~720 antes do ARQ-08; actualizar só para BAIXO, quando se remove `any`
+
+describe('estrutura — segurança de tipos', () => {
+  const codigo = ficheiros(RAIZ_APP, '.ts').filter((f) => !f.endsWith('.spec.ts') && !f.includes('generated'));
+
+  it('nenhum pedido sem tipo (`@Request() req: any`) — usar PedidoAutenticado / PedidoPortal / PedidoQuiosque', () => {
+    const infratores = codigo.filter((f) => /@(Request|Req)\(\)\s+\w+:\s*any\b/.test(lerCodigo(f))).map(caminhoRelativo);
+    expect(infratores).toEqual([]);
+  });
+
+  it('o número de `any` não sobe (ratchet)', () => {
+    const total = codigo.reduce((n, f) => n + (lerCodigo(f).match(/(:\s*any\b|\bas any\b|<any>|\bany\[\])/g) ?? []).length, 0);
+    // Subiu: tipar em vez de `any`. Desceu: baixar o TECTO_ANY para o novo valor.
+    expect(total).toBe(TECTO_ANY);
+  });
+});

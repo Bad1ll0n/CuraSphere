@@ -5,6 +5,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ResumoDoenteService } from './resumo-doente.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class NaoReanimarDto {
   @ApiProperty() @IsBoolean() ativo!: boolean;
@@ -19,7 +20,7 @@ export class ResumoDoenteController {
 
   @Get('meu-turno')
   @Roles('enfermeiro', 'auxiliar', 'medico')
-  meuTurno(@Request() req: any) {
+  meuTurno(@Request() req: PedidoAutenticado) {
     return this.service.meuTurno(req.user.sub);
   }
 
@@ -37,7 +38,7 @@ export class ResumoDoenteController {
 
   @Patch('doente/:doenteId/nao-reanimar')
   @Roles('medico')
-  naoReanimar(@Param('doenteId') doenteId: string, @Body() dto: NaoReanimarDto, @Request() req: any) {
+  naoReanimar(@Param('doenteId') doenteId: string, @Body() dto: NaoReanimarDto, @Request() req: PedidoAutenticado) {
     return this.service.definirNaoReanimar(doenteId, req.user.sub, dto);
   }
 }

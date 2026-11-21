@@ -6,6 +6,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { DotacoesService } from './dotacoes.service';
 import type { Turno } from './dotacoes.regras';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 class HorasCategoriaDto {
   @IsNumber() I: number;
@@ -79,7 +80,7 @@ export class DotacoesController {
 
   @Put('servicos/:servico/parametros')
   @Roles('chefe_enfermeiros', 'direcao')
-  guardar(@Param('servico') servico: string, @Body() dto: ParametrosDotacaoDto, @Request() req: any) {
+  guardar(@Param('servico') servico: string, @Body() dto: ParametrosDotacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.guardarParametros(servico, req.user.sub, dto as any);
   }
 }

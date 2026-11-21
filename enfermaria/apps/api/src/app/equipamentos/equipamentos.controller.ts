@@ -6,7 +6,8 @@ import { EquipamentosService } from './equipamentos.service';
 import { CriarEquipamentoDto } from './dto/criar-equipamento.dto';
 import { AtualizarEquipamentoDto } from './dto/atualizar-equipamento.dto';
 import { CriarManutencaoDto } from './dto/criar-manutencao.dto';
-import { AtualizarManutencaoDto } from './dto/atualizar-manutencao.dto';
+import { AtualizarManutencaoDto } from './dto/atualizar-manutencao.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipamentos')
@@ -57,7 +58,7 @@ export class EquipamentosController {
   criarManutencao(
     @Param('id') equipamentoId: string,
     @Body() dto: CriarManutencaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criarManutencao(equipamentoId, dto, req.user.sub);
   }

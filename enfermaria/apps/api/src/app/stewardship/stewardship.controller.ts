@@ -2,7 +2,8 @@ import { Controller, Get, Patch, Param, UseGuards, Request } from '@nestjs/commo
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { StewardshipService } from './stewardship.service';
+import { StewardshipService } from './stewardship.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('stewardship')
@@ -17,7 +18,7 @@ export class StewardshipController {
 
   @Roles('medico', 'farmaceutico')
   @Patch(':id/aprovar')
-  aprovar(@Param('id') id: string, @Request() req: any) {
+  aprovar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.aprovar(id, req.user.sub);
   }
 }

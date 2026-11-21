@@ -4,7 +4,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SinaisVitaisService } from './sinais-vitais.service';
 import { DoenteService } from '../doentes/doentes.service';
-import { CriarSinalVitalDto } from './dto/criar-sinal-vital.dto';
+import { CriarSinalVitalDto } from './dto/criar-sinal-vital.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sinais-vitais')
@@ -16,30 +17,30 @@ export class SinaisVitaisController {
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
   @Post(':doenteId')
-  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarSinalVitalDto, @Request() req: any) {
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarSinalVitalDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(doenteId, req.user.sub, req.user.role, dto);
   }
 
   @Get(':doenteId')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
 
   @Get(':doenteId/ultimo')
-  async ultimo(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async ultimo(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.ultimo(doenteId);
   }
 
   @Get(':doenteId/scores')
-  async calcularScores(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async calcularScores(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.calcularScores(doenteId);
   }
 
   @Get(':doenteId/tendencia')
-  async analisarTendencia(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async analisarTendencia(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.analisarTendencia(doenteId);
   }

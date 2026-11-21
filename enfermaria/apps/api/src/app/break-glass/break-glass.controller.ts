@@ -7,7 +7,8 @@ import { Roles } from '../auth/roles.decorator';
 import { AtivarBreakGlassDto, ReverBreakGlassDto } from './dto/ativar-break-glass.dto';
 import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
 import { AtribuicoesService } from '../atribuicoes/atribuicoes.service';
-import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class PedidoAtribuicaoDto {
   @IsUUID() doenteId: string;
@@ -30,7 +31,7 @@ export class BreakGlassController {
   @Throttle({ default: { ttl: 3600000, limit: 20 } })
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
   @Post('pedido-atribuicao')
-  pedirAtribuicao(@Body() dto: PedidoAtribuicaoDto, @Request() req: any) {
+  pedirAtribuicao(@Body() dto: PedidoAtribuicaoDto, @Request() req: PedidoAutenticado) {
     return this.atribuicoes.pedirAtribuicao(dto.doenteId, req.user.sub, dto.nota);
   }
 
@@ -40,7 +41,7 @@ export class BreakGlassController {
   @Post()
   ativar(
     @Body() dto: AtivarBreakGlassDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
     return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
@@ -62,7 +63,7 @@ export class BreakGlassController {
   /** SEC-14: rever um acesso (justificado / injustificado) — nunca o próprio. */
   @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
   @Patch(':id/revisao')
-  rever(@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReverBreakGlassDto, @Request() req: any) {
+  rever(@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReverBreakGlassDto, @Request() req: PedidoAutenticado) {
     return this.service.rever(id, req.user.sub, dto.resultado, dto.nota);
   }
 }

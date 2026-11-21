@@ -6,7 +6,8 @@ import { ExamesService } from './exames.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { SolicitarExameDto } from './dto/solicitar-exame.dto';
 import { RegistarResultadoDto } from './dto/registar-resultado.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('exame')
@@ -19,7 +20,7 @@ export class ExamesController {
 
   @Post(':doenteId')
   @Roles('medico', 'enfermeiro')
-  solicitar(@Param('doenteId') doenteId: string, @Body() dto: SolicitarExameDto, @Request() req: any) {
+  solicitar(@Param('doenteId') doenteId: string, @Body() dto: SolicitarExameDto, @Request() req: PedidoAutenticado) {
     return this.service.solicitar(doenteId, dto, req.user.sub);
   }
 
@@ -30,7 +31,7 @@ export class ExamesController {
   }
 
   @Get(':doenteId')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
@@ -43,7 +44,7 @@ export class ExamesController {
 
   @Patch(':id/resultado')
   @Roles('medico', 'farmaceutico', 'administrativo', 'enfermeiro', 'tecnico_saude')
-  registarResultado(@Param('id') id: string, @Body() dto: RegistarResultadoDto, @Request() req: any) {
+  registarResultado(@Param('id') id: string, @Body() dto: RegistarResultadoDto, @Request() req: PedidoAutenticado) {
     return this.service.registarResultado(id, { ...dto, dataResultado: dto.dataResultado ? new Date(dto.dataResultado) : undefined }, req.user.sub);
   }
 

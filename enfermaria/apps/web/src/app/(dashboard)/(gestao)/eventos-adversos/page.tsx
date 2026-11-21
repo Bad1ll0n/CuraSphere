@@ -69,7 +69,7 @@ export default function EventosAdversosPage() {
   const [novoEstado, setNovoEstado] = useState('');
 
   const role = utilizador?.role ?? '';
-  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'qualidade'].includes(role);
+  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico', 'qualidade'].includes(role);
   // A lista (incidentes de todos os doentes) é da gestão de risco — igual à regra da API.
   const podeGerir = ['qualidade', 'direcao'].includes(role) || ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno'].includes(utilizador?.subRole ?? '');
 

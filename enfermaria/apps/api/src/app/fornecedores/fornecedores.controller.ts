@@ -6,7 +6,8 @@ import { Roles } from '../auth/roles.decorator';
 import { CriarFornecedorDto } from './dto/criar-fornecedor.dto';
 import { AtualizarFornecedorDto } from './dto/atualizar-fornecedor.dto';
 import { CriarEncomendaDto } from './dto/criar-encomenda.dto';
-import { ReceberEncomendaDto } from './dto/receber-encomenda.dto';
+import { ReceberEncomendaDto } from './dto/receber-encomenda.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('fornecedores')
@@ -52,7 +53,7 @@ export class FornecedoresController {
   receberEncomenda(
     @Param('id') id: string,
     @Body() dto: ReceberEncomendaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.fornecedoresService.receberEncomenda(id, dto.quantidadeRecebida, req.user.sub);
   }

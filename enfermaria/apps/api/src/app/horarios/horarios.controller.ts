@@ -6,7 +6,8 @@ import { Roles } from '../auth/roles.decorator';
 import { CriarEscalaDto } from './dto/criar-escala.dto';
 import { AdicionarTurnoDto } from './dto/adicionar-turno.dto';
 import { EditarTurnoDto } from './dto/editar-turno.dto';
-import { GerarAutomaticoDto } from './dto/gerar-automatico.dto';
+import { GerarAutomaticoDto } from './dto/gerar-automatico.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('horarios')
@@ -33,7 +34,7 @@ export class HorariosController {
   }
 
   @Get('meu')
-  meuHorario(@Request() req: any, @Query('mes') mes: string, @Query('ano') ano: string) {
+  meuHorario(@Request() req: PedidoAutenticado, @Query('mes') mes: string, @Query('ano') ano: string) {
     const agora = new Date();
     return this.horariosService.horarioUtilizador(
       req.user.sub,
@@ -44,7 +45,7 @@ export class HorariosController {
 
   @Roles('enfermeiro', 'administrativo')
   @Post()
-  criar(@Body() dto: CriarEscalaDto, @Request() req: any) {
+  criar(@Body() dto: CriarEscalaDto, @Request() req: PedidoAutenticado) {
     return this.horariosService.criar({ ...dto, criadaPorId: req.user.sub });
   }
 
@@ -76,7 +77,7 @@ export class HorariosController {
   @Post('gerar-automatico')
   gerarAutomatico(
     @Body() dto: GerarAutomaticoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.horariosService.gerarEscalaAutomatica(dto.mes, dto.ano, req.user.sub, dto.servico);
   }

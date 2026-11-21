@@ -30,6 +30,7 @@ import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import { corpoAdministracao } from '../lib/administracao';
 import { SyncStatusBanner } from '../components/SyncStatusBanner';
+import { ROLES_ENFERMAGEM, ROLES_CLINICO } from '@org/shared';
 // Os imports ES são içados: TODOS executam antes de qualquer instrução do corpo do
 // módulo. Ter esta chamada no meio da lista de imports não a tornava mais cedo — só
 // partia a regra `import/first` (22 erros de lint) e dava uma falsa ideia de
@@ -44,9 +45,7 @@ const Tab = createBottomTabNavigator();
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
-const ROLES_MEDICO     = ['medico'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
-const ROLES_CLINICO    = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
+// ARQ-24: as constantes de papéis vêm da matriz partilhada com a web (libs/shared/permissoes).
 
 function grupoRole(role: string): 'clinical' | 'ti' | 'admin' | 'operacional' | 'direcao' | 'qualidade' {
   if (ROLES_CLINICO.includes(role)) return 'clinical';

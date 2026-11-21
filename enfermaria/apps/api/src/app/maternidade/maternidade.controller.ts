@@ -7,7 +7,8 @@ import { MaternidadeService } from './maternidade.service';
 import { CriarGravidezDto } from './dto/criar-gravidez.dto';
 import { RegistoPartogramaDto } from './dto/registo-partograma.dto';
 import { RegistarPartoDto } from './dto/registar-parto.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('gravidez', 'gravidezId')
@@ -20,21 +21,21 @@ export class MaternidadeController {
 
   @Get('doente/:doenteId/gravidez')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async gravidezAtiva(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async gravidezAtiva(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.gravidezAtiva(doenteId);
   }
 
   @Post('doente/:doenteId/gravidez')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async criarGravidez(@Param('doenteId') doenteId: string, @Body() dto: CriarGravidezDto, @Request() req: any) {
+  async criarGravidez(@Param('doenteId') doenteId: string, @Body() dto: CriarGravidezDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.criarGravidez(doenteId, dto, req.user.sub);
   }
 
   @Get('gravidez/:gravidezId/partograma')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async listarPartograma(@Param('gravidezId') gravidezId: string, @Request() req: any) {
+  async listarPartograma(@Param('gravidezId') gravidezId: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDaGravidez(gravidezId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarPartograma(gravidezId);
@@ -42,7 +43,7 @@ export class MaternidadeController {
 
   @Post('gravidez/:gravidezId/partograma')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async adicionarPartograma(@Param('gravidezId') gravidezId: string, @Body() dto: RegistoPartogramaDto, @Request() req: any) {
+  async adicionarPartograma(@Param('gravidezId') gravidezId: string, @Body() dto: RegistoPartogramaDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDaGravidez(gravidezId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.adicionarPartograma(gravidezId, dto, req.user.sub);
@@ -50,7 +51,7 @@ export class MaternidadeController {
 
   @Post('gravidez/:gravidezId/parto')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async registarParto(@Param('gravidezId') gravidezId: string, @Body() dto: RegistarPartoDto, @Request() req: any) {
+  async registarParto(@Param('gravidezId') gravidezId: string, @Body() dto: RegistarPartoDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDaGravidez(gravidezId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.registarParto(gravidezId, dto, req.user.sub);

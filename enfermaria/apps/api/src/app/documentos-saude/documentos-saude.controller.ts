@@ -10,7 +10,8 @@ import { Roles } from '../auth/roles.decorator';
 import { DocumentosSaudeService } from './documentos-saude.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
-import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
 const TIPOS_PERMITIDOS = [
@@ -62,7 +63,7 @@ export class DocumentosSaudeController {
     @Param('doenteId') doenteId: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: UploadDocumentoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     if (!file) throw new BadRequestException('Ficheiro obrigatório');
     const valido = await validarMagicBytes(file.buffer, file.mimetype);
@@ -72,25 +73,25 @@ export class DocumentosSaudeController {
 
   @Get(':id/download')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'tecnico_saude')
-  getDownloadUrl(@Param('id') docId: string, @Request() req: any) {
+  getDownloadUrl(@Param('id') docId: string, @Request() req: PedidoAutenticado) {
     return this.service.getDownloadUrl(docId, req.user.sub);
   }
 
   @Post('doente/:doenteId/sincronizar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sincronizar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  sincronizar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.sincronizar(doenteId, req.user.sub);
   }
 
   @Post(':id/assinar')
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
-  assinar(@Param('id') docId: string, @Request() req: any) {
+  assinar(@Param('id') docId: string, @Request() req: PedidoAutenticado) {
     return this.service.assinar(docId, req.user.sub);
   }
 
   @Delete(':id')
   @Roles('medico', 'chefe_enfermeiros', 'ti')
-  remover(@Param('id') docId: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+  remover(@Param('id') docId: string, @Body() dto: MotivoRemocaoDto, @Request() req: PedidoAutenticado) {
     return this.service.remover(docId, req.user.sub, req.user.role, dto.motivo);
   }
 }

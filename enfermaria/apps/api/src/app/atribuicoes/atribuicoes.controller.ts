@@ -2,7 +2,8 @@ import { Controller, Get, Post, Delete, Body, Param, Query, UseGuards, Request }
 import { AtribuicoesService } from './atribuicoes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AtribuirDoenteDto } from './dto/atribuir-doente.dto';
-import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard)
 @Controller('atribuicoes')
@@ -39,7 +40,7 @@ export class AtribuicoesController {
   atribuir(
     @Param('turnoId') turnoId: string,
     @Body() dto: AtribuirDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.atribuir(turnoId, dto.doenteId, dto.utilizadorId, req.user.sub);
   }
@@ -49,7 +50,7 @@ export class AtribuicoesController {
   remover(
     @Param('turnoId') turnoId: string,
     @Body() dto: AtribuirDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.remover(turnoId, dto.doenteId, dto.utilizadorId, req.user.sub);
   }

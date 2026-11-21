@@ -14,7 +14,8 @@ import { createReadStream } from 'fs';
 import { stat } from 'fs/promises';
 import { join } from 'path';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
 
@@ -45,7 +46,7 @@ export class FicheirosController {
   @Get('mensagens/:ficheiro')
   async anexoDeMensagem(
     @Param('ficheiro') ficheiro: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Res() res: Response,
   ) {
     if (!NOME_SEGURO.test(ficheiro)) {

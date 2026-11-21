@@ -3,7 +3,8 @@ import { IsString, IsNotEmpty, IsOptional, IsObject, IsArray, IsBoolean, MaxLeng
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { RegrasCliniciasService } from './regras-clinicas.service';
+import { RegrasCliniciasService } from './regras-clinicas.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 class CriarRegraClinicaDto {
   @IsString() @IsNotEmpty() @MaxLength(200) nome!: string;
@@ -35,7 +36,7 @@ export class RegrasCliniciasController {
   @Roles('ti', 'direcao', 'chefe_enfermeiros')
   criar(
     @Body() dto: CriarRegraClinicaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criar(req.user.sub, dto);
   }

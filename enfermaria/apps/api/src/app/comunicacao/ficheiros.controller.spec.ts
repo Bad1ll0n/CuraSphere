@@ -1,5 +1,8 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { FicheirosController } from './ficheiros.controller';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
+
+const pedido = (sub: string) => ({ user: { sub } }) as unknown as PedidoAutenticado;
 
 /**
  * S-02: os anexos clínicos eram servidos por `useStaticAssets`, fora do pipeline do Nest —
@@ -37,7 +40,7 @@ describe('FicheirosController', () => {
   it('recusa nomes que tentem sair da pasta de uploads', async () => {
     for (const nome of ['../../etc/passwd', 'a/b.pdf', '..', '.oculto']) {
       await expect(
-        controller.anexoDeMensagem(nome, { user: { sub: 'u1' } }, resposta()),
+        controller.anexoDeMensagem(nome, pedido('u1'), resposta()),
       ).rejects.toBeInstanceOf(BadRequestException);
     }
     expect(prisma.anexoMensagem.findFirst).not.toHaveBeenCalled();
@@ -48,7 +51,7 @@ describe('FicheirosController', () => {
     prisma.anexoMensagem.findFirst.mockResolvedValue(null);
 
     await expect(
-      controller.anexoDeMensagem('abc123.pdf', { user: { sub: 'u1' } }, resposta()),
+      controller.anexoDeMensagem('abc123.pdf', pedido('u1'), resposta()),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
@@ -58,7 +61,7 @@ describe('FicheirosController', () => {
     prisma.anexoMensagem.findFirst.mockResolvedValue(anexoDe('enf-1', 'enf-2'));
 
     await expect(
-      controller.anexoDeMensagem('abc123.pdf', { user: { sub: 'enf-3' } }, resposta()),
+      controller.anexoDeMensagem('abc123.pdf', pedido('enf-3'), resposta()),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
@@ -70,7 +73,7 @@ describe('FicheirosController', () => {
       // passa e falha depois no `stat` — que é exactamente o que se quer demonstrar:
       // a barreira de autorização ficou para trás.
       await expect(
-        controller.anexoDeMensagem('abc123.pdf', { user: { sub } }, resposta()),
+        controller.anexoDeMensagem('abc123.pdf', pedido(sub), resposta()),
       ).rejects.toBeInstanceOf(NotFoundException);
     }
   });
@@ -79,7 +82,7 @@ describe('FicheirosController', () => {
     prisma.anexoMensagem.findFirst.mockResolvedValue(anexoDe('enf-1', 'enf-2'));
 
     await controller
-      .anexoDeMensagem('abc123.pdf', { user: { sub: 'enf-1' } }, resposta())
+      .anexoDeMensagem('abc123.pdf', pedido('enf-1'), resposta())
       .catch(() => undefined);
 
     expect(prisma.anexoMensagem.findFirst).toHaveBeenCalledWith(

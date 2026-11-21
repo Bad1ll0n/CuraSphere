@@ -5,6 +5,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RgpdService, politicaRetencao } from './rgpd.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class AnonimizarDto {
   @IsString() @MinLength(10) @MaxLength(500) motivo: string;
@@ -23,7 +24,7 @@ export class RgpdController {
   @Roles('qualidade', 'direcao')
   @Throttle({ default: { ttl: 3600000, limit: 30 } })
   @Get('titular/:doenteId/exportacao')
-  exportar(@Param('doenteId', ParseUUIDPipe) doenteId: string, @Request() req: any) {
+  exportar(@Param('doenteId', ParseUUIDPipe) doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.exportar(doenteId, { utilizadorId: req.user.sub, via: 'dpo' });
   }
 
@@ -36,7 +37,7 @@ export class RgpdController {
   @Roles('qualidade')
   @Throttle({ default: { ttl: 3600000, limit: 50 } })
   @Post('titular/:doenteId/anonimizar')
-  anonimizar(@Param('doenteId', ParseUUIDPipe) doenteId: string, @Body() dto: AnonimizarDto, @Request() req: any) {
+  anonimizar(@Param('doenteId', ParseUUIDPipe) doenteId: string, @Body() dto: AnonimizarDto, @Request() req: PedidoAutenticado) {
     return this.service.anonimizar(doenteId, req.user.sub, dto.motivo);
   }
 }

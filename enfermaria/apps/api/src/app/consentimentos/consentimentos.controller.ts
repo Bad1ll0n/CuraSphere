@@ -7,7 +7,8 @@ import { Roles } from '../auth/roles.decorator';
 import { CriarConsentimentoDto } from './dto/criar-consentimento.dto';
 import { AssinarConsentimentoDto } from './dto/assinar-consentimento.dto';
 import { RecusarConsentimentoDto } from './dto/recusar-consentimento.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('consentimentoInformado')
@@ -20,12 +21,12 @@ export class ConsentimentosController {
 
   @Roles('medico', 'enfermeiro')
   @Post()
-  criar(@Body() dto: CriarConsentimentoDto, @Request() req: any) {
+  criar(@Body() dto: CriarConsentimentoDto, @Request() req: PedidoAutenticado) {
     return this.service.criar({ ...dto, criadoPorId: req.user.sub });
   }
 
   @Get('doente/:doenteId')
-  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarPorDoente(doenteId);
   }
@@ -35,7 +36,7 @@ export class ConsentimentosController {
   assinar(
     @Param('id') id: string,
     @Body() dto: AssinarConsentimentoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.assinar(id, dto.testemunhaId ?? req.user.sub);
   }

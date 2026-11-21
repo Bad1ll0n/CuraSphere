@@ -29,7 +29,8 @@ import { EpisodiosService } from '../episodios/episodios.service';
 import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
 import { AltaService } from './alta.service';
 
-import { visaoAdministrativa } from './visao-administrativa';
+import { visaoAdministrativa } from './visao-administrativa';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 export { visaoAdministrativa };
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,7 +48,7 @@ export class DoenteController {
 
   @Get()
   listar(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Query('todos') todos?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
@@ -85,7 +86,7 @@ export class DoenteController {
   @Header('Content-Type', 'text/csv; charset=utf-8')
   @Header('Content-Disposition', 'attachment; filename="doentes.csv"')
   @Get('export')
-  async exportarCsv(@Res() res: Response, @Request() req: any) {
+  async exportarCsv(@Res() res: Response, @Request() req: PedidoAutenticado) {
     // SEC-09: exportação de TODOS os doentes — o acesso mais amplo que existe; fica registado.
     this.leituras.registar({
       utilizadorId: req.user.sub, utilizadorNome: req.user.nome ?? null, utilizadorRole: req.user.role ?? null,
@@ -113,11 +114,12 @@ export class DoenteController {
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id')
-  async buscarPorId(@Param('id') id: string, @Request() req: any) {
+  async buscarPorId(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     // Endpoint de entrada principal do doente — único ponto que activa break-glass a partir do header;
     // uma vez concedido, assertAcessoDoente reconhece o acesso em todos os restantes endpoints deste doente.
     const motivoHeader = req.headers['x-break-glass-reason'];
-    const motivoBreakGlass = motivoHeader ? decodeURIComponent(motivoHeader) : undefined;
+    const motivoBruto = Array.isArray(motivoHeader) ? motivoHeader[0] : motivoHeader;
+    const motivoBreakGlass = motivoBruto ? decodeURIComponent(motivoBruto) : undefined;
     // QA-11: o administrativo vê a identificação e o internamento, não o processo clínico.
     const administrativo = req.user.role === 'administrativo' && !motivoBreakGlass;
     await this.verificarERegistarLeitura(req, id, motivoBreakGlass, administrativo);
@@ -153,7 +155,7 @@ export class DoenteController {
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/historico')
-  async historico(@Param('id') id: string, @Request() req: any) {
+  async historico(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id);
     return this.doenteService.historico(id);
   }
@@ -162,14 +164,14 @@ export class DoenteController {
   @Post('registro-rapido')
   registroRapido(
     @Body() dto: RegistroRapidoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.registroRapido(dto as any, req.user.sub);
   }
 
   @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
-  admitir(@Body() dto: AdmitirDoenteDto, @Request() req: any) {
+  admitir(@Body() dto: AdmitirDoenteDto, @Request() req: PedidoAutenticado) {
     return this.doenteService.admitir({ ...dto, dataNascimento: new Date(dto.dataNascimento), dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined, administrativoAdmissaoId: req.user.sub } as any);
   }
 
@@ -177,7 +179,7 @@ export class DoenteController {
   // Mesmos papéis que a admissão; o doente ainda não tem equipa atribuída.
   @Roles('administrativo', 'enfermeiro')
   @Post(':id/atribuir-cama')
-  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto, @Request() req: any) {
+  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto, @Request() req: PedidoAutenticado) {
     return this.doenteService.atribuirCama(id, dto.camaId, req.user.sub);
   }
 
@@ -185,7 +187,7 @@ export class DoenteController {
 
   /** Internamentos do doente (episódios, movimentos de cama/serviço, alta). */
   @Get(':id/episodios')
-  async episodiosDoDoente(@Param('id') id: string, @Request() req: any) {
+  async episodiosDoDoente(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id, undefined, true); // QA-11: dados administrativos
     return this.episodios.listar(id);
   }
@@ -196,34 +198,34 @@ export class DoenteController {
    */
   @Roles('administrativo', 'enfermeiro')
   @Post(':id/reinternar')
-  reinternar(@Param('id') id: string, @Body() dto: ReinternarDto, @Request() req: any) {
+  reinternar(@Param('id') id: string, @Body() dto: ReinternarDto, @Request() req: PedidoAutenticado) {
     return this.episodios.reinternar(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro')
   @Post(':id/episodio/alergias-revistas')
-  async alergiasRevistas(@Param('id') id: string, @Request() req: any) {
+  async alergiasRevistas(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.episodios.marcarAlergiasRevistas(id, req.user.sub);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Post(':id/transferir')
-  async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: any) {
+  async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.episodios.transferir(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
-  async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: any) {
+  async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.doenteService.editar(id, { ...dto, dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined } as any);
   }
 
   @Roles('enfermeiro', 'medico')
   @Patch(':id/estado')
-  async atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto, @Request() req: any) {
+  async atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.atualizarEstado(id, dto.estado);
   }
@@ -233,7 +235,7 @@ export class DoenteController {
   async adicionarNota(
     @Param('id') doenteId: string,
     @Body() dto: NotaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.adicionarNota(doenteId, req.user.sub, dto.texto);
@@ -245,7 +247,7 @@ export class DoenteController {
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
     @Body() dto: NotaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.editarNota(notaId, req.user.sub, dto.texto);
   }
@@ -256,7 +258,7 @@ export class DoenteController {
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
     @Body() dto: MotivoRemocaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.apagarNota(notaId, req.user.sub, dto.motivo);
   }
@@ -266,7 +268,7 @@ export class DoenteController {
   async altaEstruturada(
     @Param('id') doenteId: string,
     @Body() dto: AltaEstruturadaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     // QA-11: o processamento da alta é também administrativo (os requisitos clínicos são verificados no serviço).
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, undefined, true);
@@ -276,48 +278,48 @@ export class DoenteController {
 
   /** PROD-12: o que falta para a alta (reconciliação, nota de enfermagem, plano). */
   @Get(':id/alta/requisitos')
-  async requisitosAlta(@Param('id') id: string, @Request() req: any) {
+  async requisitosAlta(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.alta.requisitos(id);
   }
 
   @Get(':id/nota-alta-enfermagem')
-  async notaAltaEnfermagem(@Param('id') id: string, @Request() req: any) {
+  async notaAltaEnfermagem(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id);
     return this.alta.notaEnfermagem(id);
   }
 
   @Roles('enfermeiro')
   @Put(':id/nota-alta-enfermagem')
-  async guardarNotaAltaEnfermagem(@Param('id') id: string, @Body() dto: NotaAltaEnfermagemDto, @Request() req: any) {
+  async guardarNotaAltaEnfermagem(@Param('id') id: string, @Body() dto: NotaAltaEnfermagemDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.alta.guardarNotaEnfermagem(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/sumario-alta')
-  async getSumarioAlta(@Param('id') doenteId: string, @Request() req: any) {
+  async getSumarioAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.getSumarioAlta(doenteId);
   }
 
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   @Get(':id/resumo-alta')
-  async gerarResumoAlta(@Param('id') doenteId: string, @Request() req: any) {
+  async gerarResumoAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.gerarResumoAlta(doenteId);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/timeline')
-  async getTimeline(@Param('id') doenteId: string, @Request() req: any) {
+  async getTimeline(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.timeline(doenteId);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/alta/pdf')
-  async pdfAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
+  async pdfAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     // Sanitiza doenteId para Content-Disposition (anti-CRLF / anti-injection)
     const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -329,7 +331,7 @@ export class DoenteController {
   // PROD-11: o médico revê (edita ou aceita) o rascunho da IA…
   @Roles('medico')
   @Patch(':id/carta-alta')
-  async reverCartaAlta(@Param('id') doenteId: string, @Body() dto: ReverCartaAltaDto, @Request() req: any) {
+  async reverCartaAlta(@Param('id') doenteId: string, @Body() dto: ReverCartaAltaDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.cartaAlta.rever(doenteId, req.user.sub, dto.texto);
   }
@@ -337,14 +339,14 @@ export class DoenteController {
   // …e assina-o com o TOTP. Só a carta assinada sai em PDF.
   @Roles('medico')
   @Post(':id/carta-alta/assinar')
-  async assinarCartaAlta(@Param('id') doenteId: string, @Body() dto: AssinarCartaAltaDto, @Request() req: any) {
+  async assinarCartaAlta(@Param('id') doenteId: string, @Body() dto: AssinarCartaAltaDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.cartaAlta.assinar(doenteId, req.user.sub, dto.totpCode);
   }
 
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   @Get(':id/carta-alta/pdf')
-  async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
+  async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     await this.cartaAlta.garantirAssinada(doenteId);
     const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -358,7 +360,7 @@ export class DoenteController {
   async criarTarefa(
     @Param('id') doenteId: string,
     @Body() dto: TarefaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.criarTarefa(doenteId, req.user.sub, dto as any);
@@ -375,7 +377,7 @@ export class DoenteController {
   async atualizarIsolamento(
     @Param('id') id: string,
     @Body() dto: AtualizarIsolamentoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.atualizarIsolamento(id, dto.emIsolamento, dto.motivoIsolamento);
@@ -392,7 +394,7 @@ export class DoenteController {
   atualizarFicheiroPessoal(
     @Param('id') id: string,
     @Body() dto: AtualizarFichaPessoalDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.atualizarFicheiroPessoal(id, dto, req.user.sub);
   }
@@ -401,7 +403,7 @@ export class DoenteController {
 
   @Get(':id/problemas')
   @Roles('medico', 'enfermeiro', 'administrativo')
-  async listarProblemas(@Param('id') id: string, @Request() req: any) {
+  async listarProblemas(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.listarProblemas(id);
   }
@@ -411,7 +413,7 @@ export class DoenteController {
   async criarProblema(
     @Param('id') id: string,
     @Body() dto: CriarProblemaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.criarProblema(id, dto, req.user.sub);
@@ -423,7 +425,7 @@ export class DoenteController {
     @Param('id') doenteId: string,
     @Param('problemaId') problemaId: string,
     @Body() dto: AtualizarProblemaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.atualizarProblema(doenteId, problemaId, dto);
@@ -431,14 +433,14 @@ export class DoenteController {
 
   @Get(':id/followups')
   @Roles('medico', 'enfermeiro', 'administrativo')
-  async listarFollowUps(@Param('id') id: string, @Request() req: any) {
+  async listarFollowUps(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.listarFollowUps(id);
   }
 
   @Patch('followup/:followUpId/concluir')
   @Roles('medico', 'enfermeiro')
-  async concluirFollowUp(@Param('followUpId') followUpId: string, @Request() req: any) {
+  async concluirFollowUp(@Param('followUpId') followUpId: string, @Request() req: PedidoAutenticado) {
     return this.doenteService.concluirFollowUp(followUpId, req.user.sub);
   }
 
@@ -448,7 +450,7 @@ export class DoenteController {
   async uploadFoto(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.uploadFoto(id, file, req.user.sub, req.user.role);
   }

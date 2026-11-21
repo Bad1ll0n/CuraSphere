@@ -9,6 +9,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 import { ProcessoEnfermagemService } from './processo-enfermagem.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class AvaliacaoInicialDto {
   @ApiProperty() @IsObject() dados!: Record<string, unknown>;
@@ -99,33 +100,33 @@ export class ProcessoEnfermagemController {
 
   @Put('doente/:doenteId/avaliacao-inicial')
   @Roles(...ENFERMAGEM)
-  guardarAvaliacaoInicial(@Param('doenteId') doenteId: string, @Body() dto: AvaliacaoInicialDto, @Request() req: any) {
+  guardarAvaliacaoInicial(@Param('doenteId') doenteId: string, @Body() dto: AvaliacaoInicialDto, @Request() req: PedidoAutenticado) {
     return this.service.guardarAvaliacaoInicial(doenteId, req.user.sub, dto);
   }
 
   @Post('doente/:doenteId/diagnosticos')
   @Roles(...ENFERMAGEM)
-  criarDiagnostico(@Param('doenteId') doenteId: string, @Body() dto: NovoDiagnosticoDto, @Request() req: any) {
+  criarDiagnostico(@Param('doenteId') doenteId: string, @Body() dto: NovoDiagnosticoDto, @Request() req: PedidoAutenticado) {
     return this.service.criarDiagnostico(doenteId, req.user.sub, dto);
   }
 
   @Post('doente/:doenteId/conjuntos/:conjuntoId')
   @Roles(...ENFERMAGEM)
-  aplicarConjunto(@Param('doenteId') doenteId: string, @Param('conjuntoId') conjuntoId: string, @Request() req: any) {
+  aplicarConjunto(@Param('doenteId') doenteId: string, @Param('conjuntoId') conjuntoId: string, @Request() req: PedidoAutenticado) {
     return this.service.aplicarConjunto(doenteId, req.user.sub, conjuntoId);
   }
 
   @Patch('diagnosticos/:id/encerrar')
   @Roles(...ENFERMAGEM)
   @AcessoDoentePor('diagnosticoEnfermagem')
-  encerrar(@Param('id') id: string, @Body() dto: EncerrarDiagnosticoDto, @Request() req: any) {
+  encerrar(@Param('id') id: string, @Body() dto: EncerrarDiagnosticoDto, @Request() req: PedidoAutenticado) {
     return this.service.encerrarDiagnostico(id, req.user.sub, dto);
   }
 
   @Post('diagnosticos/:id/avaliacoes')
   @Roles(...ENFERMAGEM)
   @AcessoDoentePor('diagnosticoEnfermagem')
-  avaliar(@Param('id') id: string, @Body() dto: AvaliarDiagnosticoDto, @Request() req: any) {
+  avaliar(@Param('id') id: string, @Body() dto: AvaliarDiagnosticoDto, @Request() req: PedidoAutenticado) {
     return this.service.avaliarDiagnostico(id, req.user.sub, dto);
   }
 
@@ -139,7 +140,7 @@ export class ProcessoEnfermagemController {
   @Post('intervencoes/:id/execucoes')
   @Roles(...ENFERMAGEM, 'auxiliar')
   @AcessoDoentePor('intervencaoEnfermagem')
-  registarExecucao(@Param('id') id: string, @Body() dto: ExecucaoDto, @Request() req: any) {
+  registarExecucao(@Param('id') id: string, @Body() dto: ExecucaoDto, @Request() req: PedidoAutenticado) {
     return this.service.registarExecucao(id, req.user.sub, dto);
   }
 }

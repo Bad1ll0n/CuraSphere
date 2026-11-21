@@ -102,8 +102,9 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
   const [loadingDoentes, setLoadingDoentes] = useState(false);
   const [searchDoente, setSearchDoente] = useState('');
 
-  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'qualidade'].includes(utilizador.role);
-  const podeGerir = ['qualidade', 'direcao', 'medico'].includes(utilizador.role);
+  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico', 'qualidade'].includes(utilizador.role);
+  // ARQ-24: igual à API (GET /eventos-adversos) — o médico sem chefia recebia 403.
+  const podeGerir = ['qualidade', 'direcao'].includes(utilizador.role) || ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno'].includes(utilizador.subRole ?? '');
 
   const carregar = async () => {
     try {

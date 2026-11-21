@@ -9,7 +9,8 @@ import { RegistarFormacaoDto } from './dto/registar-formacao.dto';
 import { CriarAvaliacaoDto } from './dto/criar-avaliacao.dto';
 import { AtualizarAvaliacaoDto } from './dto/atualizar-avaliacao.dto';
 import { CriarContratoDto } from './dto/criar-contrato.dto';
-import { CriarTrocaFolgaDto } from './dto/criar-troca-folga.dto';
+import { CriarTrocaFolgaDto } from './dto/criar-troca-folga.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
 
@@ -32,7 +33,7 @@ export class RhController {
   // ── Ausências ─────────────────────────────────────────────────────────────
 
   @Post('ausencias')
-  criarAusencia(@Body() dto: CriarAusenciaDto, @Request() req: any) {
+  criarAusencia(@Body() dto: CriarAusenciaDto, @Request() req: PedidoAutenticado) {
     return this.rh.criarAusencia(req.user.sub, dto);
   }
 
@@ -47,27 +48,27 @@ export class RhController {
   }
 
   @Get('ausencias/minhas')
-  minhasAusencias(@Request() req: any) {
+  minhasAusencias(@Request() req: PedidoAutenticado) {
     return this.rh.minhasAusencias(req.user.sub);
   }
 
   @Get('ausencias/para-aprovar')
-  ausenciasParaAprovar(@Request() req: any) {
+  ausenciasParaAprovar(@Request() req: PedidoAutenticado) {
     return this.rh.ausenciasParaAprovar(req.user.sub);
   }
 
   @Patch('ausencias/:id/aprovar')
-  aprovarAusencia(@Param('id') id: string, @Request() req: any) {
+  aprovarAusencia(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.aprovarAusencia(id, req.user.sub, req.user.role);
   }
 
   @Patch('ausencias/:id/rejeitar')
-  rejeitarAusencia(@Param('id') id: string, @Request() req: any) {
+  rejeitarAusencia(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.rejeitarAusencia(id, req.user.sub, req.user.role);
   }
 
   @Delete('ausencias/:id')
-  cancelarAusencia(@Param('id') id: string, @Request() req: any) {
+  cancelarAusencia(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.cancelarAusencia(id, req.user.sub);
   }
 
@@ -78,7 +79,7 @@ export class RhController {
   }
 
   @Get('saldo-ferias')
-  meuSaldoFerias(@Request() req: any) {
+  meuSaldoFerias(@Request() req: PedidoAutenticado) {
     return this.rh.calcularSaldoFerias(req.user.sub);
   }
 
@@ -103,7 +104,7 @@ export class RhController {
   }
 
   @Get('formacoes/minhas')
-  minhasFormacoes(@Request() req: any) {
+  minhasFormacoes(@Request() req: PedidoAutenticado) {
     return this.rh.minhasFormacoes(req.user.sub);
   }
 
@@ -127,7 +128,7 @@ export class RhController {
 
   @Post('avaliacoes')
   @Roles(...RH_ROLES)
-  criarAvaliacao(@Body() dto: CriarAvaliacaoDto, @Request() req: any) {
+  criarAvaliacao(@Body() dto: CriarAvaliacaoDto, @Request() req: PedidoAutenticado) {
     return this.rh.criarAvaliacao(req.user.sub, dto);
   }
 
@@ -154,37 +155,37 @@ export class RhController {
   // ── Trocas de Folga ───────────────────────────────────────────────────────
 
   @Post('trocas-folga')
-  criarTrocaFolga(@Body() dto: CriarTrocaFolgaDto, @Request() req: any) {
+  criarTrocaFolga(@Body() dto: CriarTrocaFolgaDto, @Request() req: PedidoAutenticado) {
     return this.rh.criarTrocaFolga(req.user.sub, dto);
   }
 
   @Get('trocas-folga/minhas')
-  minhasTrocasFolga(@Request() req: any) {
+  minhasTrocasFolga(@Request() req: PedidoAutenticado) {
     return this.rh.minhasTrocasFolga(req.user.sub);
   }
 
   @Get('trocas-folga/para-aprovar')
-  trocasFolgaParaAprovar(@Request() req: any) {
+  trocasFolgaParaAprovar(@Request() req: PedidoAutenticado) {
     return this.rh.trocasFolgaParaAprovar(req.user.sub);
   }
 
   @Patch('trocas-folga/:id/aceitar')
-  aceitarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+  aceitarTrocaFolga(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.aceitarTrocaFolga(id, req.user.sub);
   }
 
   @Patch('trocas-folga/:id/recusar')
-  recusarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+  recusarTrocaFolga(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.recusarTrocaFolga(id, req.user.sub);
   }
 
   @Patch('trocas-folga/:id/aprovar')
-  aprovarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+  aprovarTrocaFolga(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.aprovarTrocaFolga(id, req.user.sub, req.user.role);
   }
 
   @Patch('trocas-folga/:id/cancelar')
-  cancelarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+  cancelarTrocaFolga(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.rh.cancelarTrocaFolga(id, req.user.sub);
   }
 
@@ -193,7 +194,7 @@ export class RhController {
   @Post('wellbeing/submeter')
   submeterWellbeing(
     @Body() dto: SubmeterWellbeingDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     const utilizadorId = dto.anonimo ? null : (req.user.sub as string);
     return this.rh.submeterWellbeing(utilizadorId, dto.respostas);

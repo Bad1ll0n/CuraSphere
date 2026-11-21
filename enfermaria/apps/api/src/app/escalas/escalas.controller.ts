@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Param, Query, UseGuards, Request } from '@
 import { EscalasService } from './escalas.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CriarEscalaDto } from './dto/criar-escala.dto';
+import { CriarEscalaDto } from './dto/criar-escala.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard)
 @Controller('escalas')
@@ -13,7 +14,7 @@ export class EscalasController {
   ) {}
 
   @Get(':doenteId')
-  async listarUltimas(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarUltimas(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.escalasService.listarUltimas(doenteId);
   }
@@ -21,7 +22,7 @@ export class EscalasController {
   @Get(':doenteId/historico')
   async historico(
     @Param('doenteId') doenteId: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Query('tipo') tipo?: string,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
@@ -32,7 +33,7 @@ export class EscalasController {
   criar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarEscalaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.escalasService.criar(
       doenteId,

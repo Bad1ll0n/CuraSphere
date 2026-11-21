@@ -10,7 +10,8 @@ import { TirarSenhaDto } from './dto/tirar-senha.dto';
 import { QuiosqueGuard } from '../common/quiosque.guard';
 import { filtroNif } from '../prisma/encryption.middleware';
 import { IdentificarQuiosqueDto } from './dto/identificar-quiosque.dto';
-import { doenteIdentificado, emitirIdentificacao, mesmaDataNascimento, nomeAbreviado } from './identificacao-quiosque';
+import { doenteIdentificado, emitirIdentificacao, mesmaDataNascimento, nomeAbreviado } from './identificacao-quiosque';
+import type { PedidoQuiosque } from '../auth/pedido-autenticado';
 
 /**
  * SEC-02: este controlador não tinha `@UseGuards` nenhum — o único APP_GUARD da app é o
@@ -58,7 +59,7 @@ export class QuiosqueController {
 
   @Post('identificar')
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
-  async identificar(@Body() dto: IdentificarQuiosqueDto, @Request() req: any) {
+  async identificar(@Body() dto: IdentificarQuiosqueDto, @Request() req: PedidoQuiosque) {
     const ficha = await this.prisma.ficheiroPessoalDoente.findFirst({
       where: filtroNif(dto.nif), // índice cego — o NIF está cifrado
       include: { doente: { select: { id: true, nome: true, dataNascimento: true, ativo: true } } },
@@ -71,7 +72,7 @@ export class QuiosqueController {
   }
 
   @Get('identificacao/marcacoes-hoje')
-  async marcacoesHoje(@Request() req: any) {
+  async marcacoesHoje(@Request() req: PedidoQuiosque) {
     const doenteId = doenteIdentificado(req);
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -161,7 +162,7 @@ export class QuiosqueController {
   @Post('marcacao-nova')
   async criarMarcacaoQuiosque(
     @Body() dto: CriarMarcacaoQuiosqueDto,
-    @Request() req: any,
+    @Request() req: PedidoQuiosque,
   ) {
     // SEC-12: o doente é o identificado neste quiosque — já não vem do corpo do pedido.
     const doenteId = doenteIdentificado(req);

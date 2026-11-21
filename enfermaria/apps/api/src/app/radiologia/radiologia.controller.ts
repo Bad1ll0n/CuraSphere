@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RadiologiaService } from './radiologia.service';
-import { GuardarLaudoDto } from './dto/guardar-laudo.dto';
+import { GuardarLaudoDto } from './dto/guardar-laudo.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 // Reporting radiológico (RIS): sobre o fluxo de Exame existente. Role-gated (radiologista=médico),
 // sem assertAcessoDoente — os radiologistas reportam exames de doentes a que não estão atribuídos,
@@ -27,13 +28,13 @@ export class RadiologiaController {
 
   @Post('exame/:exameId/laudo')
   @Roles('medico')
-  guardar(@Param('exameId') exameId: string, @Body() dto: GuardarLaudoDto, @Request() req: any) {
+  guardar(@Param('exameId') exameId: string, @Body() dto: GuardarLaudoDto, @Request() req: PedidoAutenticado) {
     return this.service.guardarLaudo(exameId, dto, req.user.sub);
   }
 
   @Post('laudo/:laudoId/assinar')
   @Roles('medico')
-  assinar(@Param('laudoId') laudoId: string, @Request() req: any) {
+  assinar(@Param('laudoId') laudoId: string, @Request() req: PedidoAutenticado) {
     return this.service.assinarLaudo(laudoId, req.user.sub);
   }
 }
