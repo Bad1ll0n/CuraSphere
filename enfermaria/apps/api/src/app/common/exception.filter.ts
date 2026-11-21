@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/node';
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma';
 import { sanitizarUrlParaLog } from './sanitizar-url-log';
+import { eConflitoDeSerializacao } from './transacao';
 
 const HTTP_CODE_MAP: Record<number, string> = {
   400: 'BAD_REQUEST',
@@ -23,6 +24,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
+
+    // QA-09: um conflito de serialização que esgotou as retentativas (comRetentativas) não é um erro
+    // interno — outra pessoa registou ao mesmo tempo. Com 500, o enfermeiro repetia o pedido e
+    // agravava a duplicação; com 409, a UI pede para actualizar e ver o que ficou registado.
+    if (eConflitoDeSerializacao(exception)) {
+      this.logger.warn(`${request.method} ${sanitizarUrlParaLog(request.url)} → 409 (conflito de serialização esgotado)`);
+      return response.status(409).json({
+        statusCode: 409,
+        error: 'CONFLICT',
+        errorCode: 'REGISTO_CONCORRENTE',
+        message: 'Registo em curso por outro utilizador — actualize e confirme antes de repetir',
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       if (exception.code === 'P2002') {

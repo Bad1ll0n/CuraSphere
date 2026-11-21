@@ -3,7 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView, Styl
 import { shared } from '../styles';
 import api from '../../../lib/api';
 import { useNetworkStatus } from '../../../lib/network';
-import { enqueue } from '../../../lib/mutation-queue';
+import { enqueue } from '../../../lib/mutation-queue';
+import { avaliarCoerenciaVitais } from '@org/shared';
 
 interface Props { visible: boolean; doenteId: string; onClose: () => void; onSaved: () => void }
 
@@ -38,6 +39,22 @@ export default function ModalRegistarVitais({ visible, doenteId, onClose, onSave
       // datado da sincronização — a tendência do NEWS2 lia os valores no momento errado.
       medidoEm: new Date().toISOString(),
     };
+    // QA-16: a mesma regra da API (libs/shared). Avaliada aqui, antes da fila offline: um 4xx na
+    // sincronização perdia o registo.
+    const { erro, criticos } = avaliarCoerenciaVitais(body);
+    if (erro) { Alert.alert('Registo incoerente', erro); return; }
+    if (criticos.length) {
+      Alert.alert(
+        'Valores críticos',
+        `Estes valores são incompatíveis com a vida ou extremos: ${criticos.join(', ')}. Confirme que estão certos (se for uma emergência, ative o protocolo).`,
+        [{ text: 'Corrigir', style: 'cancel' }, { text: 'Os valores estão certos', style: 'destructive', onPress: () => void enviar({ ...body, confirmarValorCritico: true }) }],
+      );
+      return;
+    }
+    await enviar(body);
+  };
+
+  const enviar = async (body: object) => {
     setSalvando(true);
     try {
       if (!isOnline) {

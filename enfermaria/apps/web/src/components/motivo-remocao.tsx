@@ -74,6 +74,38 @@ export function pedirMotivoRemocao(titulo: string, descricao?: string): Promise<
   });
 }
 
+interface OpcoesConfirmacao { titulo: string; descricao: string; confirmar: string; cancelar: string }
+
+function DialogoConfirmacao({ titulo, descricao, confirmar, cancelar, onFim }: OpcoesConfirmacao & { onFim: (ok: boolean) => void }) {
+  return (
+    <Modal isOpen titulo={titulo} onClose={() => onFim(false)} maxWidth="460px">
+      <p className="text-sm text-slate-700" role="alert">{descricao}</p>
+      <div className="flex gap-3" style={{ marginTop: '16px' }}>
+        <button autoFocus onClick={() => onFim(false)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '10px' }}>
+          {cancelar}
+        </button>
+        <button onClick={() => onFim(true)} className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700" style={{ padding: '10px' }}>
+          {confirmar}
+        </button>
+      </div>
+    </Modal>
+  );
+}
+
+/** Pede uma confirmação explícita (o foco começa em "cancelar"). Resolve com `true` só se confirmar. */
+export function pedirConfirmacao(opcoes: OpcoesConfirmacao): Promise<boolean> {
+  return new Promise((resolve) => {
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+    const root = createRoot(host);
+    const fim = (ok: boolean) => {
+      resolve(ok);
+      setTimeout(() => { root.unmount(); host.remove(); }, 0);
+    };
+    root.render(<DialogoConfirmacao {...opcoes} onFim={fim} />);
+  });
+}
+
 /** Pede um texto obrigatório (justificação, motivo…) num diálogo. Resolve com o texto ou `null`. */
 export function pedirTexto(opcoes: OpcoesTexto): Promise<string | null> {
   return new Promise((resolve) => {

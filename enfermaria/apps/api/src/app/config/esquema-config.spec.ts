@@ -11,6 +11,11 @@ const producao = {
 };
 
 describe('configuração (ARQ-20)', () => {
+  it('QA-15: o modo de validação antes de administrar só aceita os três valores', () => {
+    expect(erroDeConfiguracao({ ...base, VALIDACAO_ANTES_DE_ADMINISTRAR: 'primeira_dose' })).toBeNull();
+    expect(erroDeConfiguracao({ ...base, VALIDACAO_ANTES_DE_ADMINISTRAR: 'bloqueiar' })).toMatch(/VALIDACAO_ANTES_DE_ADMINISTRAR/);
+  });
+
   it('desenvolvimento: só o essencial', () => {
     expect(erroDeConfiguracao(base)).toBeNull();
   });

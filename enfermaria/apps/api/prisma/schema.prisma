@@ -186,6 +186,7 @@ model Utilizador {
   itensProtocoloConcluidos       ItemProtocolo[]
   prescricoesDietaCriadas        PrescricaoDieta[]
   medicacoesAssinadas            Medicacao[]                 @relation("MedicacaoAssinatura")
+  medicacoesDescontinuadas       Medicacao[]                 @relation("MedicacaoDescontinuacao")
   notasAssinadas                 NotaClinica[]               @relation("NotaAssinatura")
   adendasNotasClinicas           NotaClinicaAdenda[]         @relation("NotaClinicaAdendaAutor")
   transfusoesSegundaVerificacao  RegistoTransfusao[]         @relation("TransfusoesSegundaVerificacao")
@@ -720,6 +721,9 @@ model Medicacao {
   motivoRejeicao  String?
   assinadoEm      DateTime?
   assinadoPorId   String?
+  // QA-14: quem descontinuou e porquê (antes só ficava `ativo=false` e a hora).
+  descontinuadoPorId   String?
+  motivoDescontinuacao String? @db.VarChar(500)
 
   // Override de alergia — prescrição feita apesar de alergia documentada.
   // Persistido para rasto clínico/medico-legal (antes era descartado antes do create).
@@ -749,6 +753,7 @@ model Medicacao {
   prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Restrict)
   validadoPor       Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
   assinadoPor       Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
+  descontinuadoPor  Utilizador?             @relation("MedicacaoDescontinuacao", fields: [descontinuadoPorId], references: [id], onDelete: SetNull)
   overrideAlergenio Alergia?                @relation("MedicacaoOverrideAlergia", fields: [overrideAlergenioId], references: [id], onDelete: SetNull)
   registos          RegistoMedicacao[]
   stewardship       StewardshipAntibiotico?
@@ -794,6 +799,8 @@ model RegistoMedicacao {
   motivoNaoAdmin     String?
   // QA-08: SOS administrado antes do intervalo mínimo (ou acima do máximo diário) — porquê.
   justificacaoSOS    String? @db.VarChar(500)
+  // QA-15: administração antes da validação farmacêutica (1.ª dose urgente) — porquê.
+  justificacaoNaoValidada String? @db.VarChar(500)
   // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada até este momento.
   reavaliarDorAte    DateTime?
   // UX-08: leitura por código (BCMA) — pulseira do doente e embalagem/unidose, verificadas no

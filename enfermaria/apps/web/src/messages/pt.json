@@ -335,7 +335,11 @@
     "notes": "Notas",
     "notesPlaceholder": "Observações...",
     "news2Hint": "O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.",
-    "fromMonitor": "monitor"
+    "fromMonitor": "monitor",
+    "criticalTitle": "Valores críticos",
+    "criticalBody": "Estes valores são incompatíveis com a vida ou extremos: {valores}. Confirme que estão certos (se for uma emergência, ative o protocolo).",
+    "criticalConfirm": "Os valores estão certos",
+    "criticalCancel": "Corrigir"
   },
   "ai": {
     "suggestions": "Sugestões IA",
@@ -651,7 +655,12 @@
     "notesOptional": "Observações (opcional)",
     "notesPlaceholder": "Ex: Administrado com alimento, doente com dificuldade...",
     "confirmAdministration": "Confirmar Administração",
-    "itemsLeft": "{n, plural, one {Falta # item} other {Faltam # itens}}"
+    "itemsLeft": "{n, plural, one {Falta # item} other {Faltam # itens}}",
+    "notValidated": "Por validar",
+    "notValidatedTitle": "Prescrição por validar",
+    "notValidatedLabel": "Porque é urgente dar a 1.ª dose",
+    "notValidatedButton": "Administrar 1.ª dose",
+    "notValidatedPlaceholder": "Ex.: dor 9/10, farmácia sem turno até às 8h"
   },
   "myShift": {
     "title": "O meu turno",

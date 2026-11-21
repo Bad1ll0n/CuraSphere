@@ -14,6 +14,8 @@ import { useToast } from '@/components/toast';
 import { HelpTooltip } from '@/components/help-tooltip';
 import { FormField } from '@/components/form-field';
 import { RegistoDiferido } from '@/components/registo-diferido';
+import { pedirConfirmacao } from '@/components/motivo-remocao';
+import { avaliarCoerenciaVitais } from '@org/shared';
 import { LeiturasMonitorPanel } from './leituras-monitor-panel';
 
 interface Props {
@@ -185,22 +187,36 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
 
   const submeterSinalVital = async () => {
     if (!validarSV()) return;
+    const corpo = {
+      pressaoSistolica:       svPressaoS  ? parseInt(svPressaoS)  : undefined,
+      pressaoDiastolica:      svPressaoD  ? parseInt(svPressaoD)  : undefined,
+      pulso:                  svPulso     ? parseInt(svPulso)     : undefined,
+      temperatura:            svTemp      ? parseFloat(svTemp)    : undefined,
+      saturacaoO2:            svSpO2      ? parseInt(svSpO2)      : undefined,
+      frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
+      peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
+      notas: svNotas || undefined,
+      avpu: svAvpu || undefined,
+      o2Suplementar: svO2Suplementar || undefined,
+      dor:       svDor !== '' ? parseInt(svDor) : undefined,
+      escalaDor: svDor !== '' ? svEscalaDor : undefined,
+    };
+    // QA-16: a mesma regra da API (libs/shared) — PAD ≥ PAS é erro; valores incompatíveis com a
+    // vida pedem confirmação explícita antes de chegarem ao NEWS2.
+    const { erro, criticos } = avaliarCoerenciaVitais(corpo);
+    if (erro) { toast.error(erro); return; }
+    if (criticos.length) {
+      const ok = await pedirConfirmacao({
+        titulo: t('criticalTitle'),
+        descricao: t('criticalBody', { valores: criticos.join(', ') }),
+        confirmar: t('criticalConfirm'),
+        cancelar: t('criticalCancel'),
+      });
+      if (!ok) return;
+    }
     setSalvando(true);
     try {
-      await api.post(`/sinais-vitais/${doenteId}`, {
-        pressaoSistolica:       svPressaoS  ? parseInt(svPressaoS)  : undefined,
-        pressaoDiastolica:      svPressaoD  ? parseInt(svPressaoD)  : undefined,
-        pulso:                  svPulso     ? parseInt(svPulso)     : undefined,
-        temperatura:            svTemp      ? parseFloat(svTemp)    : undefined,
-        saturacaoO2:            svSpO2      ? parseInt(svSpO2)      : undefined,
-        frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
-        peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
-        notas: svNotas || undefined,
-        avpu: svAvpu || undefined,
-        o2Suplementar: svO2Suplementar || undefined,
-        dor:       svDor !== '' ? parseInt(svDor) : undefined,
-        escalaDor: svDor !== '' ? svEscalaDor : undefined,
-      });
+      await api.post(`/sinais-vitais/${doenteId}`, { ...corpo, ...(criticos.length ? { confirmarValorCritico: true } : {}) });
       setSvDor('');
       toast.success(t('recorded'));
       setModalSinalVital(false);

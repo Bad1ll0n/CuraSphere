@@ -22,6 +22,7 @@ const mockPrisma = {
     update: jest.fn(),
   },
   registoMedicacao: { create: jest.fn(), findMany: jest.fn(), count: jest.fn() },
+  tarefa: { create: jest.fn() },
   atribuicaoHorarioTurno: { findMany: jest.fn() },
 };
 
@@ -341,6 +342,7 @@ describe('MedicacaoService', () => {
     const medAtiva = {
       id: 'med-1', ativo: true, doenteId: 'doente-1', nome: 'Paracetamol 1g',
       dose: '1g', via: 'oral', frequencia: 'SOS', overrideAlergia: false, registos: [],
+      estadoValidacao: 'aprovada', assinadoEm: new Date(), // validada: QA-15 tem testes próprios
     };
     const base = { medicacaoId: 'med-1', doenteId: 'doente-1', administradoPorId: 'enf-1' };
 
@@ -545,26 +547,42 @@ describe('MedicacaoService', () => {
 
   // ── descontinuar() ───────────────────────────────────────────────────────────
 
-  describe('descontinuar()', () => {
+  describe('descontinuar() — QA-14', () => {
+    const enf = { id: 'enf-1', role: 'enfermeiro' };
+    const med = { id: 'med-1', nome: 'Metformina', ativo: true, doenteId: 'doente-1', prescritoPorId: 'med-pres' };
+
     it('lança NotFoundException quando medicação não existe', async () => {
       mockPrisma.medicacao.findUnique.mockResolvedValue(null);
-
-      await expect(service.descontinuar('id-inexistente')).rejects.toThrow(NotFoundException);
+      await expect(service.descontinuar('id-inexistente', enf, 'fim do tratamento')).rejects.toThrow(NotFoundException);
     });
 
-    it('marca medicação como inativa com terminadoEm preenchido', async () => {
-      mockPrisma.medicacao.findUnique.mockResolvedValue({ id: 'med-1', nome: 'Metformina', ativo: true });
-      mockPrisma.medicacao.update.mockResolvedValue({ id: 'med-1', ativo: false, terminadoEm: new Date() });
+    it('recusa descontinuar duas vezes', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue({ ...med, ativo: false });
+      await expect(service.descontinuar('med-1', enf, 'fim do tratamento')).rejects.toThrow(/já foi descontinuada/);
+    });
 
-      const resultado = await service.descontinuar('med-1');
+    it('guarda quem descontinuou e porquê', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(med);
+      mockPrisma.medicacao.update.mockResolvedValue({ id: 'med-1', ativo: false });
+      await service.descontinuar('med-1', enf, '  reação adversa  ');
+      expect(mockPrisma.medicacao.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: 'med-1' },
+        data: expect.objectContaining({ ativo: false, descontinuadoPorId: 'enf-1', motivoDescontinuacao: 'reação adversa' }),
+      }));
+    });
 
-      expect(resultado.ativo).toBe(false);
-      expect(mockPrisma.medicacao.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: { id: 'med-1' },
-          data: expect.objectContaining({ ativo: false }),
-        }),
-      );
+    it('enfermeiro descontinua → o prescritor recebe tarefa para confirmar', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(med);
+      mockPrisma.medicacao.update.mockResolvedValue({ id: 'med-1', ativo: false });
+      await service.descontinuar('med-1', enf, 'reação adversa');
+      expect(mockPrisma.tarefa.create).toHaveBeenCalledWith({ data: expect.objectContaining({ responsavelId: 'med-pres', criadoPorId: 'enf-1', prioridade: 'alta' }) });
+    });
+
+    it('médico descontinua → sem tarefa', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(med);
+      mockPrisma.medicacao.update.mockResolvedValue({ id: 'med-1', ativo: false });
+      await service.descontinuar('med-1', { id: 'med-2', role: 'medico' }, 'fim do tratamento');
+      expect(mockPrisma.tarefa.create).not.toHaveBeenCalled();
     });
   });
 

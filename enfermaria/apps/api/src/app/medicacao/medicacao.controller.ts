@@ -12,6 +12,7 @@ import { RejeitarMedicacaoDto } from './dto/rejeitar-medicacao.dto';
 import { AdministrarMedicacaoDto } from './dto/administrar-medicacao.dto';
 import { NaoAdministrarDto } from './dto/nao-administrar.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
+import { DescontinuarMedicacaoDto } from './dto/descontinuar-medicacao.dto';
 import { Verificar5CertosDto } from './dto/verificar-5-certos.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
@@ -97,6 +98,7 @@ export class MedicacaoController {
       via: dto.via,
       observacoes: dto.observacoes,
       justificacaoSOS: dto.justificacaoSOS,
+      justificacaoNaoValidada: dto.justificacaoNaoValidada,
       leituraPulseira: dto.leituraPulseira,
       leituraMedicamento: dto.leituraMedicamento,
       leituraExcecao: dto.leituraExcecao,
@@ -134,8 +136,8 @@ export class MedicacaoController {
 
   @Roles('medico', 'enfermeiro')
   @Patch(':id/descontinuar')
-  descontinuar(@Param('id') id: string) {
-    return this.medicacaoService.descontinuar(id);
+  descontinuar(@Param('id') id: string, @Body() dto: DescontinuarMedicacaoDto, @Request() req: PedidoAutenticado) {
+    return this.medicacaoService.descontinuar(id, { id: req.user.sub, role: req.user.role }, dto.motivo);
   }
 
   // `:doenteId` e não `:id`: é o nome que a verificação global de acesso procura. Esta rota

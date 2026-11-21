@@ -1,4 +1,4 @@
-import { Injectable, Logger, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -15,6 +15,7 @@ import {
 import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
 import { ESCALAS_DOR, proximaAvaliacaoSinaisVitais } from '../common/vigilancia';
 import { eRegistoDiferido, resolverHoraDoAto } from '../common/hora-do-ato';
+import { avaliarCoerenciaVitais } from '@org/shared';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -40,6 +41,8 @@ export interface CriarSinalVitalDto {
   /** PROD-09: intensidade da dor e escala usada. */
   dor?: number;
   escalaDor?: string;
+  /** QA-16: confirma um valor crítico (pulso < 20, FR < 4, PAS < 50, SpO2 < 50, T < 32 °C). */
+  confirmarValorCritico?: boolean;
 }
 
 interface CriticoIndividual {
@@ -88,6 +91,15 @@ export class SinaisVitaisService {
     if (!ROLES_PODEM_REGISTAR.includes(role)) {
       throw new ForbiddenException('Sem permissão para registar sinais vitais');
     }
+    // QA-16: valores incompatíveis com a vida só com confirmação explícita (erro de digitação ou emergência).
+    const { criticos } = avaliarCoerenciaVitais(dto);
+    if (criticos.length && dto.confirmarValorCritico !== true) {
+      throw new UnprocessableEntityException({
+        message: `VALOR_CRITICO: ${criticos.join(', ')} — confirme que o valor está certo (confirmarValorCritico).`,
+        errorCode: 'VALOR_CRITICO_POR_CONFIRMAR',
+        contexto: { criticos },
+      });
+    }
     return this._processarVital(doenteId, utilizadorId, dto, 'manual');
   }
 
@@ -133,6 +145,9 @@ export class SinaisVitaisService {
 
     // PROD-09: a escala decide o limite (CPOT 0–8); dor sem escala é a escala numérica.
     if (dto.escalaDor && dto.dor == null) throw new BadRequestException('Indique a intensidade da dor para a escala escolhida.');
+    // QA-16: `{}` passava a ser "o último registo" e escondia o anterior; PAD ≥ PAS gerava alarmes falsos.
+    const { erro } = avaliarCoerenciaVitais(dto);
+    if (erro) throw new BadRequestException(erro);
     if (dto.dor != null) {
       const escala = ESCALAS_DOR[dto.escalaDor ?? 'numerica'];
       if (dto.dor < escala.min || dto.dor > escala.max) {
@@ -148,7 +163,8 @@ export class SinaisVitaisService {
     // desloca a tendência do NEWS2 e a detecção de deterioração para o momento errado.
     // PROD-16: a hora declarada só é aceite dentro da janela de registo diferido (futuro = relógio
     // errado; mais antiga do que a janela = registo retrospetivo, que se faz como nota).
-    const { medidoEm, ...valores } = dto;
+    // `confirmarValorCritico` é uma confirmação do pedido (QA-16), não uma coluna.
+    const { medidoEm, confirmarValorCritico: _confirmado, ...valores } = dto;
     const data: any = { doenteId, registadoPorId, origem, ...valores, ...(dispositivoId && { dispositivoId }) };
     const instante = resolverHoraDoAto(medidoEm);
     if (medidoEm) data.data = instante;

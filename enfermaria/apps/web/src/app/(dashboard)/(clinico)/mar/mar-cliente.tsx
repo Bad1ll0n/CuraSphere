@@ -133,7 +133,8 @@ export function MarCliente() {
     } finally { setRegistandoNaoAdmin(false); }
   };
 
-  const administrar = async (justificacaoSOS?: string) => {
+  // QA-08 (SOS) e QA-15 (1.ª dose antes da validação): o servidor pede uma justificação com 409.
+  const administrar = async (extra: { justificacaoSOS?: string; justificacaoNaoValidada?: string } = {}) => {
     if (!modalId || !todasMarcadas || leituraBloqueia(leitura)) return;
     setAdministrando(modalId);
     try {
@@ -146,7 +147,7 @@ export function MarCliente() {
         atestadoPeloEnfermeiro: todasMarcadas,
         observacoes: obs || undefined,
         ...camposLeitura(leitura),
-        ...(justificacaoSOS ? { justificacaoSOS } : {}),
+        ...extra,
       });
       toast.success(t('administered'));
       setModalId(null);
@@ -164,7 +165,19 @@ export function MarCliente() {
             botao: t('sosButton'),
             placeholder: t('sosPlaceholder'),
           });
-          if (justificacao) { setTimeout(() => void administrar(justificacao), 0); return; }
+          if (justificacao) { setTimeout(() => void administrar({ ...extra, justificacaoSOS: justificacao }), 0); return; }
+        }
+        // QA-15: prescrição por validar — só a 1.ª dose, urgente e justificada.
+        const naoValidada = e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '');
+        if (naoValidada) {
+          const justificacao = await pedirTexto({
+            titulo: t('notValidatedTitle'),
+            descricao: e.response.data.message,
+            rotulo: t('notValidatedLabel'),
+            botao: t('notValidatedButton'),
+            placeholder: t('notValidatedPlaceholder'),
+          });
+          if (justificacao) { setTimeout(() => void administrar({ ...extra, justificacaoNaoValidada: justificacao }), 0); return; }
         }
         toast.error(e?.response?.data?.message ?? t('administerError'));
     } finally { setAdministrando(null); }
@@ -260,9 +273,11 @@ export function MarCliente() {
                           <span className={`text-xs font-medium rounded-md badge-pad py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
                           {validacao && (
                             <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-500'}`}>
-                              {validacao === 'aprovada' ? t('validated') : t('rejected')}
+                              {validacao === 'aprovada' ? t('validated') : validacao === 'rejeitada' ? t('rejected') : t('notValidated')}
                             </span>
                           )}
+                          {/* QA-15: por validar pela farmácia — a administração pode ser bloqueada ou pedir justificação. */}
+                          {!validacao && <span className="text-xs font-medium text-amber-700">{t('notValidated')}</span>}
                           {ultimaAdmin?.verificacao5Certas && (
                             <span className="text-xs font-medium text-emerald-600 bg-emerald-50 rounded-md badge-pad py-0.5">5✓</span>
                           )}

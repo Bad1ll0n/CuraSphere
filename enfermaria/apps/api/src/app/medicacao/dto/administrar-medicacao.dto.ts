@@ -57,6 +57,14 @@ export class AdministrarMedicacaoDto {
   @MaxLength(500)
   justificacaoSOS?: string;
 
+  @ApiPropertyOptional({
+    description: 'QA-15: porque se administra a 1.ª dose antes da validação farmacêutica (urgente).',
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(500)
+  justificacaoNaoValidada?: string;
+
   // UX-08: o que o leitor de códigos leu à cabeceira (verificado no servidor).
   @ApiPropertyOptional({ description: 'Conteúdo lido da pulseira do doente' })
   @IsString()
