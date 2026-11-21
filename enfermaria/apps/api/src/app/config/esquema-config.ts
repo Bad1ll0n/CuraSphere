@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { erroOrigens } from '../common/origens-permitidas';
 
 /**
  * ARQ-20 — validação da configuração no arranque, completa e fechada em produção.
@@ -50,6 +51,11 @@ export const esquemaConfiguracao = Joi.object({
   HL7_API_TOKEN: opcionalForte(32),
   // QA-15: um erro de escrita caía em silêncio no modo por omissão — aqui recusa-se no arranque.
   VALIDACAO_ANTES_DE_ADMINISTRAR: Joi.string().valid('bloquear', 'primeira_dose', 'avisar').optional(),
+  // SEC-22: de onde o motor HL7 pode chamar (IPs/CIDR). Obrigatório em produção se o HL7 estiver ligado.
+  HL7_ORIGENS_PERMITIDAS: Joi.string().allow('').optional().custom((v: string, h) => {
+    const erro = erroOrigens(v);
+    return erro ? h.message({ custom: `HL7_ORIGENS_PERMITIDAS: ${erro}` }) : v;
+  }),
 })
   .custom((valores: Record<string, unknown>, helpers) => {
     if (valores['NODE_ENV'] !== 'production') return valores;
@@ -61,6 +67,9 @@ export const esquemaConfiguracao = Joi.object({
       const repetido = vistos.get(v);
       if (repetido) return helpers.message({ custom: `${nome} é igual a ${repetido} — cada segredo tem de ser próprio` });
       vistos.set(v, nome);
+    }
+    if (valores['HL7_API_TOKEN'] && !valores['HL7_ORIGENS_PERMITIDAS']) {
+      return helpers.message({ custom: 'HL7_ORIGENS_PERMITIDAS é obrigatório com HL7_API_TOKEN — indique os IPs do motor de integração' });
     }
     return valores;
   })

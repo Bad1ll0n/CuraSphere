@@ -362,6 +362,8 @@ services:
       # Token do endpoint HL7. Omissão '' e o controlador falha FECHADO
       # (401 em /hl7/receive) — opção segura: vazio = integração HL7 desligada.
       HL7_API_TOKEN:           ${HL7_API_TOKEN:-}
+      # SEC-22: de onde o motor HL7 pode chamar (IPs/CIDR); obrigatório se o token estiver definido.
+      HL7_ORIGENS_PERMITIDAS:  ${HL7_ORIGENS_PERMITIDAS:-}
 
       # ── IA clínica ─────────────────────────────────────────────────────────
       # Sem ANTHROPIC_API_KEY: AI Clínico e stewardship antibiótico desligados.

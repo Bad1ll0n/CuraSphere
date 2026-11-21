@@ -375,9 +375,6 @@ importers:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
-      dicom-parser:
-        specifier: ^1.8.21
-        version: 1.8.21
       exceljs:
         specifier: ^4.4.0
         version: 4.4.0
@@ -414,9 +411,6 @@ importers:
       openai:
         specifier: ^6.42.0
         version: 6.42.0(ws@8.22.0)(zod@4.6.7)
-      openid-client:
-        specifier: ^6.8.4
-        version: 6.8.4
       otplib:
         specifier: ^13.6.0
         version: 13.6.0
@@ -426,9 +420,6 @@ importers:
       passport-jwt:
         specifier: ^4.0.1
         version: 4.0.1
-      passport-openidconnect:
-        specifier: ^0.1.2
-        version: 0.1.2
       pdf-parse:
         specifier: ^2.4.5
         version: 2.4.5
@@ -459,15 +450,9 @@ importers:
       socket.io:
         specifier: ^4.8.4
         version: 4.8.4
-      swagger-ui-express:
-        specifier: ^5.0.1
-        version: 5.0.1(express@5.3.0)
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
-      xml2js:
-        specifier: ^0.6.2
-        version: 0.6.2
       zod:
         specifier: ^4.6.7
         version: 4.6.7
@@ -499,9 +484,6 @@ importers:
       '@types/qrcode':
         specifier: ^1.5.6
         version: 1.5.6
-      '@types/xml2js':
-        specifier: ^0.4.14
-        version: 0.4.14
       pino-pretty:
         specifier: ^13.1.3
         version: 13.1.3
@@ -658,9 +640,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.106.1
         version: 5.106.1(@types/react@19.3.0)(react@19.2.4)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.100.10
-        version: 5.100.10(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       '@types/react-grid-layout':
         specifier: ^2.1.0
         version: 2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -6826,17 +6805,8 @@ packages:
   '@tanstack/query-core@5.106.1':
     resolution: {integrity: sha512-erYv/UACddcdgjOL2ixmFdK6tO/AVBeUcTCOtX2N51yZpDQ2U7KJ+xgB/bCNfsF3uoCDTqGHEEbDiFsIO9YUmQ==}
 
-  '@tanstack/query-devtools@5.100.10':
-    resolution: {integrity: sha512-3DmJf25hDPus5IpVvp6ujXv6bKV2zPzI9vpbAmpJigsL/H6DPvPjmf7/Q9yVKEke//8fgeQ45abjgnLuyYxAiw==}
-
   '@tanstack/query-persist-client-core@5.106.1':
     resolution: {integrity: sha512-UprIWmgSMdzj4aW0Erv4BbM89lwmkmsnPuVwsUbEFHg5XUVBIlrOjVTVW837GnqI/AKZykpS0TBiXREpSrh1MQ==}
-
-  '@tanstack/react-query-devtools@5.100.10':
-    resolution: {integrity: sha512-zes0+o9ef5rAZXJ9f/SeaLs2nufJaeVkZkl/Or9NGrWVF41kL9Od9ED9nCwtQlgiF2VGtrzhEw5AU/igAO+aAg==}
-    peerDependencies:
-      '@tanstack/react-query': ^5.100.10
-      react: ^18 || ^19
 
   '@tanstack/react-query-persist-client@5.106.1':
     resolution: {integrity: sha512-sigG1TAR+AlfK/yKTzw9vtmmCdjLmaOCYHwpKRi/YOC2oDBmz7o3dwedTS2ibJjNtxhzffw3E97UiVvqMtN1Cg==}
@@ -12522,12 +12492,6 @@ packages:
       '@swc/core':
         optional: true
 
-  oauth4webapi@3.8.6:
-    resolution: {integrity: sha512-iwemM91xz8nryHti2yTmg5fhyEMVOkOXwHNqbvcATjyajb5oQxCQzrNOA6uElRHuMhQQTKUyFKV9y/CNyg25BQ==}
-
-  oauth@0.10.2:
-    resolution: {integrity: sha512-JtFnB+8nxDEXgNyniwz573xxbKSOu3R8D40xQKqcjwJ2CDkYqUDI53o6IuzDJBx60Z8VKCm271+t8iFjakrl8Q==}
-
   ob1@0.83.3:
     resolution: {integrity: sha512-egUxXCDwoWG06NGCS5s5AdcpnumHKJlfd3HH06P3m9TEMwwScfcY35wpQxbm9oHof+dM/lVH9Rfyu1elTVelSA==}
     engines: {node: '>=20.19.4'}
@@ -12650,9 +12614,6 @@ packages:
   opener@1.5.2:
     resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
     hasBin: true
-
-  openid-client@6.8.4:
-    resolution: {integrity: sha512-QSw0BA08piujetEwfZsHoTrDpMEha7GDZDicQqVwX4u0ChCjefvjDB++TZ8BTg76UpwhzIQgdvvfgfl3HpCSAw==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -12784,10 +12745,6 @@ packages:
 
   passport-jwt@4.0.1:
     resolution: {integrity: sha512-UCKMDYhNuGOBE9/9Ycuoyh7vP6jpeTp/+sfMJl7nLff/t6dps+iaeE0hhNkKN8/HZHcJ7lCdOyDxHdDoxoSvdQ==}
-
-  passport-openidconnect@0.1.2:
-    resolution: {integrity: sha512-JX3rTyW+KFZ/E9OF/IpXJPbyLO9vGzcmXB5FgSP2jfL3LGKJPdV7zUE8rWeKeeI/iueQggOeFa3onrCmhxXZTg==}
-    engines: {node: '>= 0.6.0'}
 
   passport-strategy@1.0.0:
     resolution: {integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA==}
@@ -14757,17 +14714,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  swagger-ui-dist@5.32.6:
-    resolution: {integrity: sha512-75ttZNaYCLoFPnozPZcTUU6mS3wKT8l7WLjU5zJSHFeJa23i5vtnze6IiCl4jDMPeQTXVXIgovq4M11NNfQvSA==}
-
   swagger-ui-dist@5.34.0:
     resolution: {integrity: sha512-H6tAIjr3XqE31PbkZl0OFya1ziRLDfTwh3J6OHdumPtPCLfjTnyLeagl/55kFNZcTOz9a9QI9WP0FXldwiGJag==}
-
-  swagger-ui-express@5.0.1:
-    resolution: {integrity: sha512-SrNU3RiBGTLLmFU8GIJdOdanJTl4TOmT27tt3bWWHppqYmAZ6IDuEuBvMU6nZq0zLEe6b/1rACXCgLZqO6ZfrA==}
-    engines: {node: '>= v0.10.32'}
-    peerDependencies:
-      express: '>=4.0.0 || >=5.0.0-beta'
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -23430,17 +23378,9 @@ snapshots:
 
   '@tanstack/query-core@5.106.1': {}
 
-  '@tanstack/query-devtools@5.100.10': {}
-
   '@tanstack/query-persist-client-core@5.106.1':
     dependencies:
       '@tanstack/query-core': 5.106.1
-
-  '@tanstack/react-query-devtools@5.100.10(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@tanstack/query-devtools': 5.100.10
-      '@tanstack/react-query': 5.106.1(@types/react@19.3.0)(react@19.2.4)
-      react: 19.2.4
 
   '@tanstack/react-query-persist-client@5.106.1(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(@types/react@19.3.0)(react@19.2.4)':
     dependencies:
@@ -24949,7 +24889,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.29.7
       find-cache-dir: 4.0.0
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
 
   babel-plugin-const-enum@1.2.0(@babel/core@7.29.7):
@@ -25750,7 +25690,7 @@ snapshots:
     dependencies:
       glob-parent: 6.0.2
       normalize-path: 3.0.0
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       serialize-javascript: 7.1.4
       tinyglobby: 0.2.17
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
@@ -25861,7 +25801,7 @@ snapshots:
       cssnano: 7.1.9(postcss@8.5.31)
       jest-worker: 30.5.1
       postcss: 8.5.31
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       serialize-javascript: 7.1.4
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
     optionalDependencies:
@@ -30231,7 +30171,7 @@ snapshots:
 
   mini-css-extract-plugin@2.4.7(webpack@5.112.2):
     dependencies:
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
 
   mini-svg-data-uri@1.4.4: {}
@@ -30260,11 +30200,11 @@ snapshots:
 
   minimist@1.2.8: {}
 
-  minimizer-webpack-plugin@5.13.1(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack@5.112.2):
+  minimizer-webpack-plugin@5.13.1(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       terser: 5.51.2
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
     optionalDependencies:
@@ -30681,10 +30621,6 @@ snapshots:
       '@swc-node/register': 1.11.1(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@swc/core@1.16.21(@swc/helpers@0.5.18))(@swc/types@0.1.28)(typescript@6.0.3)
       '@swc/core': 1.16.21(@swc/helpers@0.5.18)
 
-  oauth4webapi@3.8.6: {}
-
-  oauth@0.10.2: {}
-
   ob1@0.83.3:
     dependencies:
       flow-enums-runtime: 0.0.6
@@ -30809,11 +30745,6 @@ snapshots:
       zod: 4.6.7
 
   opener@1.5.2: {}
-
-  openid-client@6.8.4:
-    dependencies:
-      jose: 6.2.3
-      oauth4webapi: 3.8.6
 
   optionator@0.9.4:
     dependencies:
@@ -31062,11 +30993,6 @@ snapshots:
   passport-jwt@4.0.1:
     dependencies:
       jsonwebtoken: 9.0.3
-      passport-strategy: 1.0.0
-
-  passport-openidconnect@0.1.2:
-    dependencies:
-      oauth: 0.10.2
       passport-strategy: 1.0.0
 
   passport-strategy@1.0.0: {}
@@ -32637,7 +32563,7 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
-  schema-utils@4.8.1(webpack@5.112.2):
+  schema-utils@4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))):
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
@@ -33412,18 +33338,9 @@ snapshots:
       picocolors: 1.1.1
       sax: 1.6.1
 
-  swagger-ui-dist@5.32.6:
-    dependencies:
-      '@scarf/scarf': 1.4.0
-
   swagger-ui-dist@5.34.0:
     dependencies:
       '@scarf/scarf': 1.4.0
-
-  swagger-ui-express@5.0.1(express@5.3.0):
-    dependencies:
-      express: 5.3.0
-      swagger-ui-dist: 5.32.6
 
   symbol-tree@3.2.4: {}
 
@@ -33510,7 +33427,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       terser: 5.51.2
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
     optionalDependencies:
@@ -34236,7 +34153,7 @@ snapshots:
       mime-types: 3.0.2
       on-finished: 2.4.2
       range-parser: 1.3.0
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
     optionalDependencies:
       webpack: 5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2))
 
@@ -34263,7 +34180,7 @@ snapshots:
       launch-editor: 2.14.2
       open: 10.2.0
       p-retry: 6.2.1
-      schema-utils: 4.8.1(webpack@5.112.2)
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       selfsigned: 5.5.0
       serve-index: 1.9.2
       sockjs: 0.3.24
@@ -34344,8 +34261,8 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.13.1(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack@5.112.2)
-      schema-utils: 4.8.1(webpack@5.112.2)
+      minimizer-webpack-plugin: 5.13.1(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
+      schema-utils: 4.8.1(webpack@5.112.2(@swc/core@1.16.21(@swc/helpers@0.5.18))(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(webpack-cli@5.1.4(webpack@5.112.2)))
       tapable: 2.3.3
       watchpack: 2.6.3
       webpack-sources: 3.6.0

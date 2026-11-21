@@ -45,9 +45,10 @@ export class PortalDoenteController {
 
     // SEC-07: o token do portal passa a viajar em cookie `httpOnly`, como o do pessoal.
     // Enquanto vivia em `localStorage` bastava um XSS no portal para o ler; aqui o
-    // JavaScript da página não lhe toca. O `accessToken` continua no corpo apenas
-    // durante a transição do cliente — assim que o portal deixar de o ler, retirar daqui.
-    res.cookie('portal_token', resultado.accessToken, {
+    // JavaScript da página não lhe toca. QA-28: o token já não vai no corpo — o portal só usa
+    // o cookie; com ele no corpo, um XSS voltava a conseguir lê-lo e anulava o SEC-07.
+    const { accessToken, ...publico } = resultado;
+    res.cookie('portal_token', accessToken, {
       httpOnly: true,
       secure: process.env['NODE_ENV'] === 'production',
       sameSite: 'strict',
@@ -55,7 +56,7 @@ export class PortalDoenteController {
       maxAge: PORTAL_COOKIE_MAX_AGE,
     });
 
-    return resultado;
+    return publico;
   }
 
   /**

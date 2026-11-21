@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Servico } from '../common/enums';
 import { hashPassword } from '../common/password';
 import { invalidarCacheSessao } from '../auth/sessao-cache';
+import { exigirPasswordForte } from '../auth/politica-password';
 
 // Campos que viajam no access token: mudá-los obriga a terminar as sessões abertas.
 const CAMPOS_DO_TOKEN = ['nome', 'role', 'subRole', 'servico'] as const;
@@ -20,6 +21,7 @@ export class UtilizadoresService {
     servico?: Servico;
     ordemExperiencia?: number;
   }) {
+    exigirPasswordForte(data.password, { numeroFuncionario: data.numeroFuncionario, nome: data.nome }); // SEC-25
     const passwordHash = await hashPassword(data.password, 12);
 
     return this.prisma.$transaction(async (tx) => {

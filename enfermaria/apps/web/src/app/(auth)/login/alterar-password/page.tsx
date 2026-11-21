@@ -20,7 +20,7 @@ export default function AlterarPasswordExpiradaPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (novaPassword !== confirmar) { setErro('As passwords não coincidem.'); return; }
-    if (novaPassword.length < 8) { setErro('Mínimo 8 caracteres.'); return; }
+    if ([...novaPassword].length < 12) { setErro('Mínimo 12 caracteres (uma frase curta serve).'); return; } // SEC-25
     setErro('');
     setLoading(true);
     try {

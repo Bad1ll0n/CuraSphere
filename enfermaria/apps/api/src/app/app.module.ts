@@ -49,6 +49,7 @@ import { PopulationHealthModule } from './population-health/population-health.mo
 import { TransferenciasModule } from './transferencias/transferencias.module';
 import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module';
 import { gerarIdCorrelacao } from './common/correlacao';
+import { CAMINHOS_REDACT, CENSURA } from './common/redact-log';
 
 @Module({
   imports: [
@@ -84,17 +85,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
             return { statusCode: res.statusCode };
           },
         },
-        redact: {
-          paths: [
-            'req.headers.authorization',
-            'req.headers.cookie',
-            // PII — RGPD: redactar campos sensíveis em qualquer objecto logado
-            '*.password', '*.passwordHash', '*.mfaSecret', '*.secret',
-            '*.nome', '*.contacto', '*.morada', '*.nif', '*.dataNascimento',
-            '[*].nome', '[*].contacto', '[*].morada', '[*].nif',
-          ],
-          censor: '[REDACTED]',
-        },
+        // SEC-21: segredos e PII em qualquer profundidade, e o pedido agarrado aos erros do axios.
+        redact: { paths: CAMINHOS_REDACT, censor: CENSURA },
         autoLogging: { ignore: (req) => req.url === '/v1/health' || (req.url ?? '').startsWith('/v1/health/') },
       },
     }),

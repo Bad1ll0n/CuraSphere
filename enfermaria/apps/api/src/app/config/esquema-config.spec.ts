@@ -16,6 +16,13 @@ describe('configuração (ARQ-20)', () => {
     expect(erroDeConfiguracao({ ...base, VALIDACAO_ANTES_DE_ADMINISTRAR: 'bloqueiar' })).toMatch(/VALIDACAO_ANTES_DE_ADMINISTRAR/);
   });
 
+  it('SEC-22: em produção, o HL7 ligado exige a lista de origens (e o formato é validado)', () => {
+    const hl7 = { HL7_API_TOKEN: 'h'.repeat(40) };
+    expect(erroDeConfiguracao({ ...producao, ...hl7 })).toMatch(/HL7_ORIGENS_PERMITIDAS/);
+    expect(erroDeConfiguracao({ ...producao, ...hl7, HL7_ORIGENS_PERMITIDAS: '10.0.0.0/24' })).toBeNull();
+    expect(erroDeConfiguracao({ ...base, HL7_ORIGENS_PERMITIDAS: 'motor.hospital' })).toMatch(/HL7_ORIGENS_PERMITIDAS/);
+  });
+
   it('desenvolvimento: só o essencial', () => {
     expect(erroDeConfiguracao(base)).toBeNull();
   });

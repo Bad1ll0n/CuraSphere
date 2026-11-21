@@ -103,9 +103,9 @@ describe('PortalDoenteService', () => {
       mockPrisma.portalDoente.findUnique.mockResolvedValue(null);
       mockPrisma.portalDoente.upsert.mockResolvedValue({ id: 'p1', doenteId: 'd1', email: 'test@test.com', ativo: true, criadoEm: new Date() });
 
-      const resultado = await service.criarAcesso('d1', 'test@test.com', 'senha123', 'admin-1');
+      const resultado = await service.criarAcesso('d1', 'test@test.com', 'nuvem violeta quarta', 'admin-1');
 
-      expect(hashPassword).toHaveBeenCalledWith('senha123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('nuvem violeta quarta', 12);
       expect(mockPrisma.portalDoente.upsert).toHaveBeenCalledWith(
         expect.objectContaining({ create: expect.objectContaining({ passwordHash: 'hash-simulado' }) }),
       );

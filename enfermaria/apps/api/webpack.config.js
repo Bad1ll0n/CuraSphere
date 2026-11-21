@@ -50,6 +50,19 @@ module.exports = {
       externalDependencies: 'all',
     }),
     ...OPTIONAL_UNUSED_PEERS.map((resourceRegExp) => new webpack.IgnorePlugin({ resourceRegExp })),
+    // As libs do workspace (@org/shared) chegam já compiladas (`libs/*/dist/*.js`). O ts-loader do
+    // Nx apanhava esses .js como ficheiros de raiz do programa TS da api (TS6059, fora do rootDir) e
+    // o build falhava — o webpack empacota-os como JS normal; os tipos vêm dos .d.ts no typecheck.
+    {
+      apply(compiler) {
+        const distDasLibs = /[\\/]libs[\\/][^\\/]+[\\/]dist[\\/]/;
+        for (const regra of compiler.options.module.rules ?? []) {
+          if (regra && JSON.stringify(regra.loader ?? regra.use ?? '').includes('ts-loader')) {
+            regra.exclude = [].concat(regra.exclude ?? [], distDasLibs);
+          }
+        }
+      },
+    },
     // Externalizar o cliente Prisma GERADO (não o empacotar). Empacotar o runtime pré-minificado do
     // Prisma faz o webpack reordenar `this`/`super` das suas classes de erro → em runtime rebenta com
     // "Must call super constructor in derived class…", pelo que P2002/P2025 nunca são instâncias de

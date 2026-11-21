@@ -74,11 +74,11 @@ describe('UtilizadoresService', () => {
       await service.criar({
         numeroFuncionario: '12345',
         nome: 'Dr. Ana',
-        password: 'senhaSegura123',
+        password: 'cavalo bateria agrafo',
         role: 'medico',
       });
 
-      expect(hashPassword).toHaveBeenCalledWith('senhaSegura123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('cavalo bateria agrafo', 12);
     });
 
     it('SEC-03: a password inicial definida pelo TI nasce expirada', async () => {
@@ -103,7 +103,7 @@ describe('UtilizadoresService', () => {
       await service.criar({
         numeroFuncionario: '12345',
         nome: 'Dr. Ana',
-        password: 'senhaSegura123',
+        password: 'cavalo bateria agrafo',
         role: 'medico',
       });
 
@@ -125,7 +125,7 @@ describe('UtilizadoresService', () => {
         service.criar({
           numeroFuncionario: '12345',
           nome: 'Outro',
-          password: 'pass',
+          password: 'cavalo bateria agrafo',
           role: 'enfermeiro',
         }),
       ).rejects.toThrow(ConflictException);

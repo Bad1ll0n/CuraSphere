@@ -1425,7 +1425,7 @@ export default function DoenteDetalhe() {
                 <div style={{ marginBottom: '24px' }}>
                   <label htmlFor="fpage-11" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
                   <input id="fpage-11" type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
-                    placeholder="Mínimo 8 caracteres"
+                    placeholder="Mínimo 12 caracteres"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />
                   <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>O doente poderá alterar a password após o primeiro acesso.</p>
@@ -1435,7 +1435,7 @@ export default function DoenteDetalhe() {
                     className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
                     style={{ padding: '11px' }}>Cancelar</button>
                   <button
-                    disabled={criandoPortal || !portalEmail.trim() || portalSenha.length < 8}
+                    disabled={criandoPortal || !portalEmail.trim() || portalSenha.length < 12}
                     onClick={async () => {
                       setCriandoPortal(true);
                       try {

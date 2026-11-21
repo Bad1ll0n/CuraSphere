@@ -10,6 +10,7 @@ import { AUD_PORTAL } from '../auth/token-audiences';
 import { configJitsi, dadosSala, tokenJitsi } from '../common/jitsi';
 import { exigirTratamentoPermitido } from '../common/consentimento-tratamento';
 import { TEMAS_ENSINO } from '../planeamento-alta/planeamento-alta.regras';
+import { exigirPasswordForte } from '../auth/politica-password';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta quando a conta
 // não existe. Mesma constante e mesma técnica do login de pessoal (`auth.service.ts`).
@@ -38,6 +39,7 @@ export class PortalDoenteService {
       throw new ConflictException('Email já utilizado por outro doente');
     }
 
+    exigirPasswordForte(senha, { email, nome: doente.nome }); // SEC-25
     const passwordHash = await hashPassword(senha, 12);
     return this.prisma.portalDoente.upsert({
       where: { doenteId },

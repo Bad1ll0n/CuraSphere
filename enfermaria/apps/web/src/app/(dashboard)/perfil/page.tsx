@@ -122,8 +122,8 @@ export default function PerfilPage() {
       setMsgPwd({ tipo: 'erro', texto: 'As passwords não coincidem' });
       return;
     }
-    if (novaPassword.length < 8) {
-      setMsgPwd({ tipo: 'erro', texto: 'A nova password deve ter pelo menos 8 caracteres' });
+    if ([...novaPassword].length < 12) { // SEC-25
+      setMsgPwd({ tipo: 'erro', texto: 'A nova password deve ter pelo menos 12 caracteres (uma frase curta serve)' });
       return;
     }
     setLoadingPwd(true);

@@ -34,6 +34,7 @@ const MAX_FALHAS_LOGIN = 5;
 const JANELA_FALHAS_MS = 15 * 60 * 1000;
 
 import { cifrarSegredo, decifrarSegredo } from '../prisma/encryption.middleware';
+import { exigirPasswordForte } from './politica-password';
 
 /** SEC-11: o refresh token guarda-se como SHA-256 (é aleatório, de 384 bits — não precisa de sal). */
 export const hashRefreshToken = (token: string) => crypto.createHash('sha256').update(token).digest('hex');
@@ -437,6 +438,8 @@ export class AuthService {
 
     const passwordValida = await verifyPassword(passwordAtual, utilizador.passwordHash);
     if (!passwordValida) throw new UnauthorizedException('Password atual incorreta');
+    // SEC-25: comprimento, comuns, dados pessoais e diferente da atual.
+    exigirPasswordForte(novaPassword, { numeroFuncionario: utilizador.numeroFuncionario, nome: utilizador.nome, atual: passwordAtual });
 
     const novaPasswordHash = await hashPassword(novaPassword, 12);
     await this.prisma.utilizador.update({
