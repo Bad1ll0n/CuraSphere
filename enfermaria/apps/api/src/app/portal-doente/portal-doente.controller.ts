@@ -10,6 +10,7 @@ import { RgpdService } from '../rgpd/rgpd.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
+import type { PedidoPortal } from '../auth/pedido-autenticado';
 import {
   PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
   SubmeterProDto, CriarTemplateProDto,
@@ -72,38 +73,38 @@ export class PortalDoenteController {
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   criarAcesso(
     @Body() dto: CriarAcessoPortalDto,
-    @Request() req: any,
+    @Request() req: PedidoPortal,
   ) {
     return this.service.criarAcesso(dto.doenteId, dto.email, dto.senha, req.user.sub);
   }
 
   @Get('me')
   @UseGuards(PortalJwtGuard)
-  me(@Request() req: any) {
+  me(@Request() req: PedidoPortal) {
     return this.service.me(req.user.doenteId);
   }
 
   @Get('documentos')
   @UseGuards(PortalJwtGuard)
-  documentos(@Request() req: any) {
+  documentos(@Request() req: PedidoPortal) {
     return this.service.meusDocumentos(req.user.doenteId);
   }
 
   @Get('medicacao')
   @UseGuards(PortalJwtGuard)
-  medicacao(@Request() req: any) {
+  medicacao(@Request() req: PedidoPortal) {
     return this.service.minhaMedicacao(req.user.doenteId);
   }
 
   @Get('plano-alta')
   @UseGuards(PortalJwtGuard)
-  planoAlta(@Request() req: any) {
+  planoAlta(@Request() req: PedidoPortal) {
     return this.service.meuPlanoAlta(req.user.doenteId);
   }
 
   @Post('mensagem')
   @UseGuards(PortalJwtGuard)
-  mensagem(@Body() dto: MensagemPortalDto, @Request() req: any) {
+  mensagem(@Body() dto: MensagemPortalDto, @Request() req: PedidoPortal) {
     return this.service.enviarMensagem(req.user.doenteId, dto.conteudo);
   }
 
@@ -111,7 +112,7 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="meus-dados-clinicos.pdf"')
-  async exportarPdf(@Request() req: any, @Res() res: Response) {
+  async exportarPdf(@Request() req: PedidoPortal, @Res() res: Response) {
     const buffer = await this.service.exportarDados(req.user.doenteId);
     res.send(buffer);
   }
@@ -119,27 +120,27 @@ export class PortalDoenteController {
   // SEC-09 / art. 15.º RGPD: o titular vê quem consultou o seu processo.
   @Get('acessos')
   @UseGuards(PortalJwtGuard)
-  acessos(@Request() req: any) {
+  acessos(@Request() req: PedidoPortal) {
     return this.leituras.listarPorDoente(req.user.doenteId, { paraTitular: true, limite: 100 });
   }
 
   @Get('exportar/json')
   @UseGuards(PortalJwtGuard)
   @Throttle({ default: { ttl: 3600000, limit: 10 } })
-  exportarJson(@Request() req: any) {
+  exportarJson(@Request() req: PedidoPortal) {
     // SEC-20: a exportação completa (todas as tabelas do titular + quem consultou o processo).
     return this.rgpd.exportar(req.user.doenteId, { via: 'portal' });
   }
 
   @Get('teleconsultas')
   @UseGuards(PortalJwtGuard)
-  teleconsultas(@Request() req: any) {
+  teleconsultas(@Request() req: PedidoPortal) {
     return this.service.teleconsultas(req.user.sub);
   }
 
   @Get('teleconsultas/:id/video')
   @UseGuards(PortalJwtGuard)
-  entrarVideoPortal(@Param('id') id: string, @Request() req: any) {
+  entrarVideoPortal(@Param('id') id: string, @Request() req: PedidoPortal) {
     return this.service.entrarVideoPortal(id, req.user.sub);
   }
 
@@ -147,19 +148,19 @@ export class PortalDoenteController {
 
   @Get('consentimentos')
   @UseGuards(PortalJwtGuard)
-  consentimentosDoente(@Request() req: any) {
+  consentimentosDoente(@Request() req: PedidoPortal) {
     return this.consentimentos.estado(req.user.doenteId);
   }
 
   @Post('consentimentos')
   @UseGuards(PortalJwtGuard)
-  registarConsentimento(@Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: any) {
+  registarConsentimento(@Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: PedidoPortal) {
     return this.consentimentos.registar(req.user.doenteId, dto, 'portal', null);
   }
 
   @Post('consentimentos/:finalidade/revogar')
   @UseGuards(PortalJwtGuard)
-  revogarConsentimento(@Param('finalidade') finalidade: string, @Request() req: any) {
+  revogarConsentimento(@Param('finalidade') finalidade: string, @Request() req: PedidoPortal) {
     return this.consentimentos.revogar(req.user.doenteId, finalidade, 'portal', null);
   }
 
@@ -175,14 +176,14 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   submeterPRO(
     @Body() dto: SubmeterProDto,
-    @Request() req: any,
+    @Request() req: PedidoPortal,
   ) {
     return this.service.submeterPRO(req.user.doenteId, dto.templateId, dto.respostas);
   }
 
   @Get('pro/historico')
   @UseGuards(PortalJwtGuard)
-  historicoPRO(@Request() req: any, @Query('templateId') templateId?: string) {
+  historicoPRO(@Request() req: PedidoPortal, @Query('templateId') templateId?: string) {
     return this.service.historicoPRO(req.user.doenteId, templateId);
   }
 

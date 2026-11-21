@@ -5,7 +5,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { CriarFaturacaoDto } from './dto/criar-faturacao.dto';
 import { CriarItemFaturaDto } from './dto/criar-item-fatura.dto';
-import { RegistarPagamentoDto } from './dto/registar-pagamento.dto';
+import { RegistarPagamentoDto } from './dto/registar-pagamento.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('administrativo')
@@ -36,7 +37,7 @@ export class FaturacaoController {
   }
 
   @Post()
-  criar(@Body() dto: CriarFaturacaoDto, @Request() req: any) {
+  criar(@Body() dto: CriarFaturacaoDto, @Request() req: PedidoAutenticado) {
     return this.faturacaoService.criar({ ...dto, criadoPorId: req.user.sub });
   }
 
@@ -62,7 +63,7 @@ export class FaturacaoController {
   registarPagamento(
     @Param('id') id: string,
     @Body() dto: RegistarPagamentoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.faturacaoService.registarPagamento(id, { ...dto, registadoPorId: req.user.sub });
   }

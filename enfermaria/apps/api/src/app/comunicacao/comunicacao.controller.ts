@@ -11,7 +11,8 @@ import { CriarAnuncioDto } from './dto/criar-anuncio.dto';
 import { EnviarMensagemDto } from './dto/enviar-mensagem.dto';
 import { EnviarBroadcastDto } from './dto/enviar-broadcast.dto';
 
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 const UPLOAD_DIR = join(process.cwd(), 'uploads', 'mensagens');
 
 async function validarMagicBytes(filePath: string, mimetype: string): Promise<boolean> {
@@ -53,46 +54,46 @@ export class ComunicacaoController {
   constructor(private readonly service: ComunicacaoService) {}
 
   @Get('anuncios')
-  listarAnuncios(@Request() req: any) {
+  listarAnuncios(@Request() req: PedidoAutenticado) {
     return this.service.listarAnuncios(req.user.servico);
   }
 
   @UseGuards(RolesGuard)
   @Roles('enfermeiro', 'medico', 'administrativo', 'direcao')
   @Post('anuncios')
-  publicarAnuncio(@Body() dto: CriarAnuncioDto, @Request() req: any) {
+  publicarAnuncio(@Body() dto: CriarAnuncioDto, @Request() req: PedidoAutenticado) {
     return this.service.publicarAnuncio(dto, req.user.sub);
   }
 
   @Get('mensagens')
-  inbox(@Request() req: any, @Query('page') page = '1') {
+  inbox(@Request() req: PedidoAutenticado, @Query('page') page = '1') {
     return this.service.inbox(req.user.sub, parseInt(page));
   }
 
   @Get('mensagens/nao-lidas')
-  contarNaoLidas(@Request() req: any) {
+  contarNaoLidas(@Request() req: PedidoAutenticado) {
     return this.service.contarNaoLidas(req.user.sub);
   }
 
   @Get('mensagens/enviadas')
-  enviadas(@Request() req: any, @Query('page') page = '1') {
+  enviadas(@Request() req: PedidoAutenticado, @Query('page') page = '1') {
     return this.service.enviadas(req.user.sub, parseInt(page));
   }
 
   @Post('mensagens')
-  enviarMensagem(@Body() dto: EnviarMensagemDto, @Request() req: any) {
+  enviarMensagem(@Body() dto: EnviarMensagemDto, @Request() req: PedidoAutenticado) {
     return this.service.enviarMensagem(dto, req.user.sub);
   }
 
   @Patch('mensagens/:id/lida')
-  marcarLida(@Param('id') id: string, @Request() req: any) {
+  marcarLida(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.marcarLida(id, req.user.sub);
   }
 
   @UseGuards(RolesGuard)
   @Roles('medico', 'enfermeiro', 'administrativo', 'direcao')
   @Post('broadcast')
-  enviarBroadcast(@Body() dto: EnviarBroadcastDto, @Request() req: any) {
+  enviarBroadcast(@Body() dto: EnviarBroadcastDto, @Request() req: PedidoAutenticado) {
     return this.service.enviarBroadcast(dto, req.user.sub);
   }
 
@@ -120,7 +121,7 @@ export class ComunicacaoController {
   async adicionarAnexo(
     @Param('id') mensagemId: string,
     @UploadedFile() file: Express.Multer.File,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     if (!file) throw new BadRequestException('Ficheiro obrigatório');
     const valido = await validarMagicBytes(file.path, file.mimetype);

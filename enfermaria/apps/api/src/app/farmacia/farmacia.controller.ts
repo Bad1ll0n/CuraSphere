@@ -7,7 +7,8 @@ import { CriarStockItemDto } from './dto/criar-stock-item.dto';
 import { CriarPedidoFarmaciaDto } from './dto/criar-pedido-farmacia.dto';
 import { AtualizarQuantidadeDto } from './dto/atualizar-quantidade.dto';
 import { RejeitarPedidoDto } from './dto/rejeitar-pedido.dto';
-import { CriarTransferenciaDto } from './dto/criar-transferencia.dto';
+import { CriarTransferenciaDto } from './dto/criar-transferencia.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('farmacia')
@@ -30,7 +31,7 @@ export class FarmaciaController {
   atualizarQuantidade(
     @Param('id') id: string,
     @Body() dto: AtualizarQuantidadeDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.atualizarQuantidade(id, dto.quantidade, dto.motivo, dto.tipo, req.user.sub);
   }
@@ -42,7 +43,7 @@ export class FarmaciaController {
   }
 
   @Post('pedido')
-  criarPedido(@Body() dto: CriarPedidoFarmaciaDto, @Request() req: any) {
+  criarPedido(@Body() dto: CriarPedidoFarmaciaDto, @Request() req: PedidoAutenticado) {
     return this.service.criarPedido(dto, req.user.sub);
   }
 
@@ -60,7 +61,7 @@ export class FarmaciaController {
 
   @Roles('medico', 'direcao')
   @Patch('pedido/:id/aprovar')
-  aprovarPedido(@Param('id') id: string, @Request() req: any) {
+  aprovarPedido(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.aprovarPedido(id, req.user.sub);
   }
 
@@ -69,14 +70,14 @@ export class FarmaciaController {
   rejeitarPedido(
     @Param('id') id: string,
     @Body() dto: RejeitarPedidoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.rejeitarPedido(id, req.user.sub, dto.motivoRejeicao);
   }
 
   @Roles('farmaceutico')
   @Patch('pedido/:id/dispensar')
-  dispensar(@Param('id') id: string, @Request() req: any) {
+  dispensar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.dispensar(id, req.user.sub);
   }
 
@@ -92,7 +93,7 @@ export class FarmaciaController {
   criarTransferencia(
     @Param('id') id: string,
     @Body() dto: CriarTransferenciaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criarTransferencia(id, dto.servicoDestino, dto.quantidade, dto.motivo, req.user.sub);
   }
@@ -105,7 +106,7 @@ export class FarmaciaController {
 
   @Roles('farmaceutico')
   @Patch('transferencias/:id/confirmar')
-  confirmarTransferencia(@Param('id') id: string, @Request() req: any) {
+  confirmarTransferencia(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.confirmarTransferencia(id, req.user.sub);
   }
 

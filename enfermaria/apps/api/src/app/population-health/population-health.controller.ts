@@ -3,7 +3,8 @@ import { IsString, IsNotEmpty, IsObject, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { PopulationHealthService } from './population-health.service';
+import { PopulationHealthService } from './population-health.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 const PH_ROLES = ['medico', 'direcao', 'qualidade'] as const;
 
@@ -21,7 +22,7 @@ export class PopulationHealthController {
   @Post('coortes')
   criarCoorte(
     @Body() dto: CriarCoorteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criarCoorte(req.user.sub, dto);
   }

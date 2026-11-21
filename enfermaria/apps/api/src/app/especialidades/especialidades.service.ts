@@ -12,8 +12,8 @@ const SUBROLE_TIPO: Record<string, string> = {
 export class EspecialidadesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listar(profissionalId: string, subRole: string) {
-    const tipo = SUBROLE_TIPO[subRole];
+  async listar(profissionalId: string, subRole?: string) {
+    const tipo = subRole ? SUBROLE_TIPO[subRole] : undefined;
     return this.prisma.sessaoEspecialidade.findMany({
       where: { profissionalId, ...(tipo ? { tipo } : {}) },
       orderBy: { data: 'desc' },
@@ -30,10 +30,10 @@ export class EspecialidadesService {
     });
   }
 
-  async criar(profissionalId: string, subRole: string, dto: {
+  async criar(profissionalId: string, subRole: string | undefined, dto: {
     doenteId: string; data: string; duracao: number; descricao?: string;
   }) {
-    const tipo = SUBROLE_TIPO[subRole];
+    const tipo = subRole ? SUBROLE_TIPO[subRole] : undefined;
     if (!tipo) throw new ForbiddenException('Sub-role sem tipo de especialidade associado');
     return this.prisma.sessaoEspecialidade.create({
       data: {

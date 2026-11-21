@@ -8,6 +8,7 @@ import { AuditCheckpointService } from './audit-checkpoint.service';
 import { AtualizarChecklistDto } from './dto/atualizar-checklist.dto';
 
 import { chaveDiaClinico } from './dia-clinico.helper';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -91,7 +92,7 @@ export class AuditController {
   async atualizarChecklist(
     @Param('itemKey') itemKey: string,
     @Body() dto: AtualizarChecklistDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.prisma.conformidadeChecklistItem.upsert({
       where: { itemKey },

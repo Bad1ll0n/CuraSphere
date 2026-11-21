@@ -4,7 +4,8 @@ import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { PrescreverDietaDto } from './dto/prescrever-dieta.dto';
+import { PrescreverDietaDto } from './dto/prescrever-dieta.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('dietas')
@@ -18,19 +19,19 @@ export class DietasController {
   @Post()
   prescrever(
     @Body() dto: PrescreverDietaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.prescrever({ ...dto, criadaPorId: req.user.sub });
   }
 
   @Get('doente/:doenteId')
-  async dietaAtual(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async dietaAtual(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.dietaAtual(doenteId);
   }
 
   @Get('doente/:doenteId/historico')
-  async historico(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async historico(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.historico(doenteId);
   }

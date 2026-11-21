@@ -5,7 +5,8 @@ import { Roles, SubRoles } from '../auth/roles.decorator';
 import { IncidentesTIService } from './incidentes-ti.service';
 import { CriarIncidenteDto } from './dto/criar-incidente.dto';
 import { AtualizarIncidenteDto } from './dto/atualizar-incidente.dto';
-import { AdicionarNotaDto } from './dto/adicionar-nota.dto';
+import { AdicionarNotaDto } from './dto/adicionar-nota.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('incidentes-ti')
@@ -13,12 +14,12 @@ export class IncidentesTIController {
   constructor(private readonly service: IncidentesTIService) {}
 
   @Post()
-  criar(@Body() dto: CriarIncidenteDto, @Request() req: any) {
+  criar(@Body() dto: CriarIncidenteDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(dto, req.user.sub);
   }
 
   @Get()
-  listar(@Request() req: any) {
+  listar(@Request() req: PedidoAutenticado) {
     return this.service.listar(req.user.sub, req.user.role);
   }
 
@@ -28,7 +29,7 @@ export class IncidentesTIController {
   }
 
   @Patch(':id')
-  atualizar(@Param('id') id: string, @Body() dto: AtualizarIncidenteDto, @Request() req: any) {
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarIncidenteDto, @Request() req: PedidoAutenticado) {
     return this.service.atualizar(id, dto, req.user.role);
   }
 
@@ -38,7 +39,7 @@ export class IncidentesTIController {
   }
 
   @Post(':id/notas')
-  adicionarNota(@Param('id') id: string, @Body() dto: AdicionarNotaDto, @Request() req: any) {
+  adicionarNota(@Param('id') id: string, @Body() dto: AdicionarNotaDto, @Request() req: PedidoAutenticado) {
     return this.service.adicionarNota(id, req.user.sub, dto);
   }
 

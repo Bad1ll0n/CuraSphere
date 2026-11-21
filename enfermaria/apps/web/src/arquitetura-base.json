@@ -12,7 +12,7 @@
     "app/(dashboard)/(gestao)/comunicacao/page.tsx": 604,
     "app/(dashboard)/(gestao)/horarios/page.tsx": 1405,
     "app/(dashboard)/(suporte)/farmacia/page.tsx": 899,
-    "app/(dashboard)/nav-data.tsx": 833,
+    "app/(dashboard)/nav-data.tsx": 805,
     "app/quiosque/page.tsx": 1018
   },
   "cargaManual": {

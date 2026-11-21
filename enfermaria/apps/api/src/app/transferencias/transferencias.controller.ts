@@ -4,7 +4,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { TransferenciasService } from './transferencias.service';
-import { DoenteService } from '../doentes/doentes.service';
+import { DoenteService } from '../doentes/doentes.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 class CriarTransferenciaDto {
   @IsString() @IsNotEmpty() doenteId!: string;
@@ -30,7 +31,7 @@ export class TransferenciasController {
 
   @Post()
   @Roles('medico', 'chefe_enfermeiros')
-  async criar(@Body() dto: CriarTransferenciaDto, @Request() req: any) {
+  async criar(@Body() dto: CriarTransferenciaDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, dto.doenteId);
     return this.service.criar(req.user.sub, dto);
   }
@@ -43,7 +44,7 @@ export class TransferenciasController {
 
   @Get(':id')
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
-  async obter(@Param('id') id: string, @Request() req: any) {
+  async obter(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     const transferencia = await this.service.obter(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, transferencia.doenteId);
     return transferencia;
@@ -54,7 +55,7 @@ export class TransferenciasController {
   async atualizarEstado(
     @Param('id') id: string,
     @Body() dto: AtualizarEstadoTransferenciaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     const transferencia = await this.service.obter(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, transferencia.doenteId);

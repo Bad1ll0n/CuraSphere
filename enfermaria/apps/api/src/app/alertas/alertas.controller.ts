@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AlertasService } from './alertas.service';
-import { DoenteService } from '../doentes/doentes.service';
+import { DoenteService } from '../doentes/doentes.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('alertas')
@@ -28,31 +29,31 @@ export class AlertasController {
   }
 
   @Get(':doenteId')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarNaoLidos(doenteId);
   }
 
   @Patch(':id/ler')
-  async marcarLido(@Param('id') id: string, @Request() req: any) {
+  async marcarLido(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.getDoenteIdByAlertaId(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.marcarLido(id);
   }
 
   @Patch(':doenteId/ler-todos')
-  async marcarTodosLidos(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async marcarTodosLidos(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.marcarTodosLidos(doenteId);
   }
 
   @Post(':doenteId/sos')
-  acionarSOS(@Param('doenteId') doenteId: string, @Request() req: any) {
+  acionarSOS(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.acionarSOS(doenteId, req.user.sub);
   }
 
   @Patch(':id/acusar')
-  acusar(@Param('id') id: string, @Request() req: any) {
+  acusar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.acusar(id, req.user.sub);
   }
 }

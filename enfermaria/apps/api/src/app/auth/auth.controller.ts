@@ -6,7 +6,8 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { TiposToken } from './tipos-token.decorator';
+import { TiposToken } from './tipos-token.decorator';
+import type { PedidoAutenticado } from './pedido-autenticado';
 
 class MfaVerificarDto {
   @IsString() @IsNotEmpty() mfaChallengeToken: string;
@@ -45,7 +46,7 @@ export class AuthController {
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
-    @Req() req: any,
+    @Req() req: PedidoAutenticado,
   ) {
     const result = await this.authService.login(dto.numeroFuncionario, dto.password, req.ip);
     if (result.mfaPendente) {
@@ -81,7 +82,7 @@ export class AuthController {
   @TiposToken('pessoal', 'mfa_setup')
   @SkipThrottle()
   @Get('mfa/setup')
-  mfaSetup(@Request() req: any) {
+  mfaSetup(@Request() req: PedidoAutenticado) {
     return this.authService.setupMfa(req.user.sub);
   }
 
@@ -89,21 +90,21 @@ export class AuthController {
   @TiposToken('pessoal', 'mfa_setup')
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
-  mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
+  mfaAtivar(@Request() req: PedidoAutenticado, @Body() dto: MfaAtivarDto) {
     return this.authService.ativarMfa(req.user.sub, dto.code, dto.setupToken);
   }
 
   @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/desativar')
-  mfaDesativar(@Request() req: any, @Body() dto: MfaDesativarDto) {
+  mfaDesativar(@Request() req: PedidoAutenticado, @Body() dto: MfaDesativarDto) {
     return this.authService.desativarMfa(req.user.sub, dto.code);
   }
 
   @Throttle({ default: { ttl: 60000, limit: 20 } })
   @Post('refresh')
   async refresh(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = req.cookies?.refresh_token;
@@ -122,7 +123,7 @@ export class AuthController {
   @SkipThrottle()
   @Post('logout')
   async logout(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = req.cookies?.refresh_token;
@@ -135,7 +136,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @SkipThrottle()
   @Get('me')
-  me(@Request() req: any) {
+  me(@Request() req: PedidoAutenticado) {
     return this.authService.getMe(req.user.sub);
   }
 
@@ -146,14 +147,14 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @SkipThrottle()
   @Get('socket-ticket')
-  socketTicket(@Request() req: any) {
+  socketTicket(@Request() req: PedidoAutenticado) {
     return { ticket: this.authService.emitirBilheteSocket(req.user) };
   }
 
   @UseGuards(JwtAuthGuard)
   @SkipThrottle()
   @Get('password-status')
-  async passwordStatus(@Request() req: any) {
+  async passwordStatus(@Request() req: PedidoAutenticado) {
     return this.authService.passwordStatus(req.user.sub);
   }
 
@@ -163,7 +164,7 @@ export class AuthController {
   @Throttle({ default: { ttl: 3600000, limit: 3 } })
   @Patch('alterar-password')
   async alterarPassword(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Body() dto: AlterarPasswordDto,
     @Res({ passthrough: true }) res: Response,
   ) {

@@ -5,7 +5,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
-import { PassagemIsbarService } from './passagem-isbar.service';
+import { PassagemIsbarService } from './passagem-isbar.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class PassagemIsbarDto {
   @ApiProperty() @IsString() @MaxLength(4000) identificacao!: string;
@@ -27,7 +28,7 @@ export class PassagemIsbarController {
 
   @Get()
   @Roles('enfermeiro', 'medico')
-  listar(@Request() req: any, @Query('servico') servico?: string) {
+  listar(@Request() req: PedidoAutenticado, @Query('servico') servico?: string) {
     return this.service.listar(req.user, servico || undefined);
   }
 
@@ -45,14 +46,14 @@ export class PassagemIsbarController {
 
   @Put('doente/:doenteId')
   @Roles('enfermeiro', 'medico')
-  guardar(@Param('doenteId') doenteId: string, @Body() dto: PassagemIsbarDto, @Request() req: any) {
+  guardar(@Param('doenteId') doenteId: string, @Body() dto: PassagemIsbarDto, @Request() req: PedidoAutenticado) {
     return this.service.guardar(doenteId, req.user.sub, dto);
   }
 
   @Post(':id/receber')
   @Roles('enfermeiro', 'medico')
   @AcessoDoentePor('passagemIsbar')
-  receber(@Param('id') id: string, @Request() req: any) {
+  receber(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.receber(id, req.user.sub);
   }
 }

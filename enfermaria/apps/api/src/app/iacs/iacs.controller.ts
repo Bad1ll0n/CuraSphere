@@ -6,7 +6,8 @@ import { IacsService } from './iacs.service';
 import { RegistarCulturaDto } from './dto/registar-cultura.dto';
 import { AtualizarCulturaDto } from './dto/atualizar-cultura.dto';
 import { RegistarSurtoDto } from './dto/registar-surto.dto';
-import { AtualizarSurtoDto } from './dto/atualizar-surto.dto';
+import { AtualizarSurtoDto } from './dto/atualizar-surto.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('iacs')
@@ -20,7 +21,7 @@ export class IacsController {
 
   @Post('cultura')
   @Roles('medico', 'enfermeiro', 'tecnico_saude')
-  registarCultura(@Body() dto: RegistarCulturaDto, @Request() req: any) {
+  registarCultura(@Body() dto: RegistarCulturaDto, @Request() req: PedidoAutenticado) {
     return this.service.registarCultura(dto, req.user.sub);
   }
 
@@ -41,7 +42,7 @@ export class IacsController {
 
   @Post('surto')
   @Roles('medico', 'enfermeiro', 'qualidade')
-  registarSurto(@Body() dto: RegistarSurtoDto, @Request() req: any) {
+  registarSurto(@Body() dto: RegistarSurtoDto, @Request() req: PedidoAutenticado) {
     return this.service.registarSurto(dto, req.user.sub);
   }
 

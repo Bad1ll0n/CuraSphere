@@ -2,6 +2,7 @@ import { Controller, Get, Put, Delete, Body, Request, UseGuards } from '@nestjs/
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { DashboardConfigService } from './dashboard-config.service';
 import { GuardarConfigDto } from './dto/guardar-config.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard)
 @Controller('dashboard-config')
@@ -9,17 +10,17 @@ export class DashboardConfigController {
   constructor(private readonly service: DashboardConfigService) {}
 
   @Get()
-  getConfig(@Request() req: any) {
-    return this.service.getConfig(req.user.sub ?? req.user.id);
+  getConfig(@Request() req: PedidoAutenticado) {
+    return this.service.getConfig(req.user.sub);
   }
 
   @Put()
-  saveConfig(@Body() dto: GuardarConfigDto, @Request() req: any) {
-    return this.service.saveConfig(req.user.sub ?? req.user.id, dto.widgets);
+  saveConfig(@Body() dto: GuardarConfigDto, @Request() req: PedidoAutenticado) {
+    return this.service.saveConfig(req.user.sub, dto.widgets);
   }
 
   @Delete()
-  resetConfig(@Request() req: any) {
-    return this.service.resetConfig(req.user.sub ?? req.user.id);
+  resetConfig(@Request() req: PedidoAutenticado) {
+    return this.service.resetConfig(req.user.sub);
   }
 }

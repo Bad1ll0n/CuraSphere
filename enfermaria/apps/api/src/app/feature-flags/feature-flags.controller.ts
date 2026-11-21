@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { FeatureFlagsService } from './feature-flags.service';
-import { UpsertFlagDto } from './dto/upsert-flag.dto';
+import { UpsertFlagDto } from './dto/upsert-flag.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard)
 @Controller('feature-flags')
@@ -12,7 +13,7 @@ export class FeatureFlagsController {
 
   /** Flags resolvidas para o utilizador atual (consumido pelo hook do frontend). */
   @Get('me')
-  me(@Request() req: any) {
+  me(@Request() req: PedidoAutenticado) {
     return this.flags.paraContexto({ userId: req.user.sub, role: req.user.role, servico: req.user.servico });
   }
 
@@ -27,7 +28,7 @@ export class FeatureFlagsController {
   @UseGuards(RolesGuard)
   @Roles('ti', 'direcao')
   @Put(':key')
-  upsert(@Param('key') key: string, @Body() dto: UpsertFlagDto, @Request() req: any) {
+  upsert(@Param('key') key: string, @Body() dto: UpsertFlagDto, @Request() req: PedidoAutenticado) {
     return this.flags.upsert(key, dto, req.user.sub);
   }
 

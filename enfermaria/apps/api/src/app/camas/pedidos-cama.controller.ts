@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PedidosCamaService } from './pedidos-cama.service';
-import { AtribuirCamaPedidoDto, CancelarPedidoCamaDto, CriarPedidoCamaDto, OcuparPedidoCamaDto } from './dto/pedido-cama.dto';
+import { AtribuirCamaPedidoDto, CancelarPedidoCamaDto, CriarPedidoCamaDto, OcuparPedidoCamaDto } from './dto/pedido-cama.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 /** PROD-03 — pedidos de cama (urgência, bloco, consulta, outro serviço). */
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -25,21 +26,21 @@ export class PedidosCamaController {
 
   @Post()
   @Roles('medico', 'enfermeiro', 'administrativo')
-  criar(@Body() dto: CriarPedidoCamaDto, @Request() req: any) {
+  criar(@Body() dto: CriarPedidoCamaDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(dto, req.user.sub);
   }
 
   /** Gestão de camas: reservar uma cama para o pedido. */
   @Patch(':id/atribuir')
   @Roles('enfermeiro', 'administrativo')
-  atribuir(@Param('id') id: string, @Body() dto: AtribuirCamaPedidoDto, @Request() req: any) {
+  atribuir(@Param('id') id: string, @Body() dto: AtribuirCamaPedidoDto, @Request() req: PedidoAutenticado) {
     return this.service.atribuir(id, dto, req.user.sub);
   }
 
   /** O doente chegou à cama: internado, episódio aberto. */
   @Post(':id/ocupar')
   @Roles('enfermeiro', 'administrativo')
-  ocupar(@Param('id') id: string, @Body() dto: OcuparPedidoCamaDto, @Request() req: any) {
+  ocupar(@Param('id') id: string, @Body() dto: OcuparPedidoCamaDto, @Request() req: PedidoAutenticado) {
     return this.service.ocupar(id, dto, req.user.sub);
   }
 

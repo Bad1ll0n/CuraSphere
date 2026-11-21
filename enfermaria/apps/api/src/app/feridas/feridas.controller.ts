@@ -11,7 +11,8 @@ import { DoenteService } from '../doentes/doentes.service';
 import { FeridasService } from './feridas.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
-import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 const TIPOS_FOTO = ['image/jpeg', 'image/png'];
 
@@ -35,20 +36,20 @@ export class FeridasController {
   async criar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarAvaliacaoFerida,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.criar(doenteId, dto, req.user.sub, req.user.role);
   }
 
   @Get(':doenteId')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
 
   @Get(':doenteId/ultima')
-  async buscarUltima(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async buscarUltima(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.buscarUltima(doenteId);
   }
@@ -69,7 +70,7 @@ export class FeridasController {
   async adicionarFoto(
     @Param('avaliacaoId') avaliacaoId: string,
     @UploadedFile() file: Express.Multer.File,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     if (!file) throw new BadRequestException('Ficheiro obrigatório');
     const valido = await validarMagicBytesFoto(file.buffer, file.mimetype);
@@ -89,7 +90,7 @@ export class FeridasController {
   analisarFoto(
     @Param('avaliacaoId') avaliacaoId: string,
     @Param('fotoId') fotoId: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.analisarFoto(fotoId, avaliacaoId, req.user.sub);
   }
@@ -97,14 +98,14 @@ export class FeridasController {
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @AcessoDoentePor('fotoFerida', 'fotoId', 'avaliacao.doenteId')
   @Delete('fotos/:fotoId')
-  removerFoto(@Param('fotoId') fotoId: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+  removerFoto(@Param('fotoId') fotoId: string, @Body() dto: MotivoRemocaoDto, @Request() req: PedidoAutenticado) {
     return this.service.removerFoto(fotoId, req.user.sub, req.user.role, dto.motivo);
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @AcessoDoentePor('avaliacaoFerida')
   @Delete(':id')
-  apagar(@Param('id') id: string, @Request() req: any) {
+  apagar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.apagar(id, req.user.sub, req.user.role);
   }
 }

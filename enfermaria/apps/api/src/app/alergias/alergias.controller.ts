@@ -5,7 +5,8 @@ import { Roles } from '../auth/roles.decorator';
 import { AlergiasService } from './alergias.service';
 import { CriarAlergiaDto, AvaliacaoAlergiasDto } from './dto/criar-alergia.dto';
 import { RemoverAlergiaDto } from './dto/remover-alergia.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('alergia')
@@ -26,13 +27,13 @@ export class AlergiasController {
   // PROD-06: "perguntámos e o doente não tem alergias conhecidas".
   @Roles('medico', 'enfermeiro')
   @Post(':doenteId/avaliacao')
-  registarAvaliacao(@Param('doenteId') doenteId: string, @Body() _dto: AvaliacaoAlergiasDto, @Request() req: any) {
+  registarAvaliacao(@Param('doenteId') doenteId: string, @Body() _dto: AvaliacaoAlergiasDto, @Request() req: PedidoAutenticado) {
     return this.service.registarSemAlergias(doenteId, req.user.sub, req.user.role);
   }
 
   @Roles('medico', 'enfermeiro')
   @Post(':doenteId')
-  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarAlergiaDto, @Request() req: any) {
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarAlergiaDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(doenteId, req.user.role, dto, req.user.sub);
   }
 
@@ -40,7 +41,7 @@ export class AlergiasController {
   // reação grave em todas as prescrições seguintes.
   @Roles('medico')
   @Delete(':id')
-  remover(@Param('id') id: string, @Body() dto: RemoverAlergiaDto, @Request() req: any) {
+  remover(@Param('id') id: string, @Body() dto: RemoverAlergiaDto, @Request() req: PedidoAutenticado) {
     return this.service.remover(id, req.user.sub, req.user.role, dto.motivo);
   }
 }

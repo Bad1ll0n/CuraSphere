@@ -4,7 +4,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles, SubRoles } from '../auth/roles.decorator';
 import { PedidosTIService } from './pedidos-ti.service';
 import { CriarPedidoDto } from './dto/criar-pedido.dto';
-import { AtualizarPedidoDto } from './dto/atualizar-pedido.dto';
+import { AtualizarPedidoDto } from './dto/atualizar-pedido.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('pedidos-ti')
@@ -12,12 +13,12 @@ export class PedidosTIController {
   constructor(private readonly service: PedidosTIService) {}
 
   @Post()
-  criar(@Body() dto: CriarPedidoDto, @Request() req: any) {
+  criar(@Body() dto: CriarPedidoDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(dto, req.user.sub);
   }
 
   @Get()
-  listar(@Request() req: any) {
+  listar(@Request() req: PedidoAutenticado) {
     return this.service.listar(req.user.sub, req.user.role);
   }
 
@@ -27,14 +28,14 @@ export class PedidosTIController {
   }
 
   @Patch(':id')
-  atualizar(@Param('id') id: string, @Body() dto: AtualizarPedidoDto, @Request() req: any) {
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarPedidoDto, @Request() req: PedidoAutenticado) {
     return this.service.atualizar(id, dto, req.user.role);
   }
 
   @Delete(':id')
   @Roles('ti')
   @SubRoles('it_admin')
-  eliminar(@Param('id') id: string, @Request() req: any) {
+  eliminar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.eliminar(id, req.user.role);
   }
 }

@@ -6,6 +6,7 @@ import { Roles } from '../auth/roles.decorator';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 import { PlaneamentoAltaService } from './planeamento-alta.service';
 import { COMPREENSAO, DESTINATARIOS, ESTADOS_REFERENCIACAO, type EstadoReferenciacao } from './planeamento-alta.regras';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class AltaClinicaDto {
   @IsBoolean() altaClinica: boolean;
@@ -58,26 +59,26 @@ export class PlaneamentoAltaController {
 
   @Put('doente/:doenteId/alta-clinica')
   @Roles('medico')
-  altaClinica(@Param('doenteId') doenteId: string, @Body() dto: AltaClinicaDto, @Request() req: any) {
+  altaClinica(@Param('doenteId') doenteId: string, @Body() dto: AltaClinicaDto, @Request() req: PedidoAutenticado) {
     return this.service.marcarAltaClinica(doenteId, req.user.sub, dto.altaClinica);
   }
 
   @Post('doente/:doenteId/referenciacoes')
   @Roles(...EQUIPA)
-  referenciar(@Param('doenteId') doenteId: string, @Body() dto: CriarReferenciacaoDto, @Request() req: any) {
+  referenciar(@Param('doenteId') doenteId: string, @Body() dto: CriarReferenciacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.criarReferenciacao(doenteId, req.user.sub, dto);
   }
 
   @Patch('referenciacoes/:id')
   @Roles(...EQUIPA)
   @AcessoDoentePor('referenciacaoContinuidade')
-  estado(@Param('id') id: string, @Body() dto: EstadoReferenciacaoDto, @Request() req: any) {
+  estado(@Param('id') id: string, @Body() dto: EstadoReferenciacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.alterarEstado(id, req.user.sub, dto);
   }
 
   @Post('doente/:doenteId/ensinos')
   @Roles('enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
-  ensino(@Param('doenteId') doenteId: string, @Body() dto: EnsinoDto, @Request() req: any) {
+  ensino(@Param('doenteId') doenteId: string, @Body() dto: EnsinoDto, @Request() req: PedidoAutenticado) {
     return this.service.registarEnsino(doenteId, req.user.sub, dto);
   }
 }

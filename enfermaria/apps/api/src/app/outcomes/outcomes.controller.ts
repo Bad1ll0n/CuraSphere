@@ -3,6 +3,7 @@ import { OutcomesService, CriarOutcomeDto } from './outcomes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @Controller('outcomes')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -11,8 +12,8 @@ export class OutcomesController {
 
   @Post()
   @Roles('medico', 'enfermeiro', 'direcao')
-  criar(@Body() dto: CriarOutcomeDto, @Request() req: any) {
-    return this.service.criar(dto, req.user.userId);
+  criar(@Body() dto: CriarOutcomeDto, @Request() req: PedidoAutenticado) {
+    return this.service.criar(dto, req.user.sub);
   }
 
   @Get('dashboard')

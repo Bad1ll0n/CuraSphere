@@ -15,6 +15,7 @@ import { TotpCodeDto } from './dto/totp-code.dto';
 import { Verificar5CertosDto } from './dto/verificar-5-certos.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
 import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 export class VerificarLeituraDto {
   @IsUUID() @IsOptional() doenteId?: string;
@@ -33,26 +34,26 @@ export class MedicacaoController {
   ) {}
 
   @Get('doente/:doenteId')
-  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.listarPorDoente(doenteId);
   }
 
   @Get('doente/:doenteId/historico')
-  async historicoAdministracao(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async historicoAdministracao(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.historicoAdministracao(doenteId);
   }
 
   @Roles('medico')
   @Post('prescrever')
-  prescrever(@Body() dto: PrescreverMedicacaoDto, @Request() req: any) {
+  prescrever(@Body() dto: PrescreverMedicacaoDto, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.prescrever({ ...dto, prescritoPorId: req.user.sub });
   }
 
   @Roles('enfermeiro')
   @Post('propor')
-  proporPrescricao(@Body() dto: ProporMedicacaoDto, @Request() req: any) {
+  proporPrescricao(@Body() dto: ProporMedicacaoDto, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.proporPrescricao({ ...dto, prescritoPorId: req.user.sub });
   }
 
@@ -64,7 +65,7 @@ export class MedicacaoController {
 
   @Roles('medico', 'direcao')
   @Patch(':id/aprovar-medico')
-  aprovarPrescricaoMedico(@Param('id') id: string, @Request() req: any) {
+  aprovarPrescricaoMedico(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.aprovarPrescricaoMedico(id, req.user.sub);
   }
 
@@ -73,7 +74,7 @@ export class MedicacaoController {
   rejeitarPrescricaoMedico(
     @Param('id') id: string,
     @Body() dto: RejeitarMedicacaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.medicacaoService.rejeitarPrescricaoMedico(id, req.user.sub, dto.motivoRejeicao);
   }
@@ -83,7 +84,7 @@ export class MedicacaoController {
   registarAdministracao(
     @Param('id') id: string,
     @Body() dto: AdministrarMedicacaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.medicacaoService.registarAdministracao({
       medicacaoId: id,
@@ -122,7 +123,7 @@ export class MedicacaoController {
   naoAdministrar(
     @Param('id') id: string,
     @Body() dto: NaoAdministrarDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.medicacaoService.naoAdministrar({
       medicacaoId: id,
@@ -145,7 +146,7 @@ export class MedicacaoController {
     @Param('doenteId') doenteId: string,
     @Query('data') data: string | undefined,
     @Res() res: Response,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     const buffer = await this.pdfService.gerarMar(doenteId, data);
@@ -159,7 +160,7 @@ export class MedicacaoController {
   }
 
   @Get('mar')
-  mar(@Request() req: any) {
+  mar(@Request() req: PedidoAutenticado) {
     return this.medicacaoService.mar(req.user.sub);
   }
 
@@ -171,24 +172,24 @@ export class MedicacaoController {
 
   @Roles('farmaceutico')
   @Patch(':id/validar')
-  validar(@Param('id') id: string, @Request() req: any) {
+  validar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.validarPrescricao(id, req.user.sub);
   }
 
   @Roles('farmaceutico')
   @Patch(':id/rejeitar')
-  rejeitar(@Param('id') id: string, @Body() dto: RejeitarMedicacaoDto, @Request() req: any) {
+  rejeitar(@Param('id') id: string, @Body() dto: RejeitarMedicacaoDto, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, dto.motivoRejeicao);
   }
 
   @Roles('medico', 'enfermeiro')
   @Post(':id/assinar')
-  assinar(@Param('id') id: string, @Body() dto: TotpCodeDto, @Request() req: any) {
+  assinar(@Param('id') id: string, @Body() dto: TotpCodeDto, @Request() req: PedidoAutenticado) {
     return this.medicacaoService.assinar(id, req.user.sub, dto.totpCode);
   }
 
   @Get('interacoes')
-  async verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string, @Request() req: any) {
+  async verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string, @Request() req: PedidoAutenticado) {
     if (doenteId) {
       await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     }
@@ -219,7 +220,7 @@ export class MedicacaoController {
 
   @Get('doente/:doenteId/interacoes')
   @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros')
-  async listarInteracoesPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarInteracoesPorDoente(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.listarInteracoesPorDoente(doenteId);
   }
@@ -229,7 +230,7 @@ export class MedicacaoController {
   async ajusteRenal(
     @Query('doenteId') doenteId: string,
     @Query('medicamento') medicamento: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     if (doenteId) {
       await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);

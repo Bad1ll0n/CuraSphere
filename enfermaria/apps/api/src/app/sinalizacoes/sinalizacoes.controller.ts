@@ -4,7 +4,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SinalizacoesService } from './sinalizacoes.service';
 import { CriarSinalizacaoDto } from './dto/criar-sinalizacao.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('sinalizacaoPreocupante')
@@ -17,14 +18,14 @@ export class SinalizacoesController {
   criar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarSinalizacaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criar(doenteId, dto, req.user.sub);
   }
 
   @Patch(':id/resolver')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  resolver(@Param('id') id: string, @Request() req: any) {
+  resolver(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.resolver(id, req.user.sub);
   }
 

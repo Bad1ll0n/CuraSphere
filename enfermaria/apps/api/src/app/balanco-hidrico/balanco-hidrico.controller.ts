@@ -6,7 +6,8 @@ import { DoenteService } from '../doentes/doentes.service';
 import { BalancoHidricoService } from './balanco-hidrico.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
 import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
-import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('balancoHidrico')
@@ -22,7 +23,7 @@ export class BalancoHidricoController {
   async registar(
     @Param('doenteId') doenteId: string,
     @Body() dto: RegistarBalancoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.registar(doenteId, dto, req.user.sub, req.user.role);
@@ -32,7 +33,7 @@ export class BalancoHidricoController {
   async listar(
     @Param('doenteId') doenteId: string,
     @Query('data') data: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId, data);
@@ -42,7 +43,7 @@ export class BalancoHidricoController {
   async historico(
     @Param('doenteId') doenteId: string,
     @Query('dias') dias: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.historico(doenteId, dias ? parseInt(dias, 10) : 7);
@@ -50,7 +51,7 @@ export class BalancoHidricoController {
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_enfermeiros')
   @Delete(':id')
-  apagar(@Param('id') id: string, @Body() dto: MotivoRemocaoDto, @Request() req: any) {
+  apagar(@Param('id') id: string, @Body() dto: MotivoRemocaoDto, @Request() req: PedidoAutenticado) {
     return this.service.apagar(id, req.user.sub, req.user.role, dto.motivo);
   }
 }
