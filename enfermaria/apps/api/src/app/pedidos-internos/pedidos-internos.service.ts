@@ -16,10 +16,20 @@ export class PedidosInternosService {
   }
 
   async listar(servico?: string) {
+    // ARQ-23: os pedidos concluídos e cancelados acumulavam-se para sempre e vinham todos em cada
+    // pedido (o ecrã e o painel de transporte fazem-no de minuto a minuto). Os activos vêm todos;
+    // os fechados, só os dos últimos 7 dias. E um tecto.
+    const recentes = new Date(Date.now() - 7 * 24 * 3600_000);
     return this.prisma.pedidoInterno.findMany({
-      where: servico ? { OR: [{ servicoOrigem: servico }, { tipo: 'transporte', estado: 'pendente' }] } : {},
+      where: {
+        AND: [
+          servico ? { OR: [{ servicoOrigem: servico }, { tipo: 'transporte', estado: 'pendente' }] } : {},
+          { OR: [{ estado: { in: ['pendente', 'em_curso'] } }, { criadoEm: { gte: recentes } }] },
+        ],
+      } as any,
       orderBy: [{ prioridade: 'asc' }, { criadoEm: 'asc' }],
       include: this.includeRelations(),
+      take: 500,
     });
   }
 

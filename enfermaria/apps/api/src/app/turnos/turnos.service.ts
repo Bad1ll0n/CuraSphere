@@ -224,20 +224,22 @@ export class TurnosService {
       include: { utilizador: { select: { id: true, nome: true, role: true } } },
     });
 
+    // ARQ-23: a última acção de cada profissional numa só consulta (MAX agrupado, pelo índice
+    // utilizadorId+createdAt) — era um findFirst por profissional, sobre a tabela de auditoria.
+    const ids = [...new Set(horariosEntrada.map((h) => h.utilizadorId))];
+    const ultimas = ids.length
+      ? await this.prisma.auditLog.groupBy({ by: ['utilizadorId'], where: { utilizadorId: { in: ids } }, _max: { createdAt: true } })
+      : [];
+    const ultimaDe = new Map(ultimas.map((u: any) => [u.utilizadorId, u._max.createdAt as Date | null]));
+
     const resultado = [];
     for (const h of horariosEntrada) {
-      const ultimaAccao = await this.prisma.auditLog.findFirst({
-        where: { utilizadorId: h.utilizadorId },
-        orderBy: { createdAt: 'desc' },
-      });
-      const inativo = !ultimaAccao || ultimaAccao.createdAt < duasHorasAtras;
-      if (inativo) {
+      const ultimaAccao = ultimaDe.get(h.utilizadorId) ?? null;
+      if (!ultimaAccao || ultimaAccao < duasHorasAtras) {
         resultado.push({
           utilizador: h.utilizador,
-          ultimaAccao: ultimaAccao?.createdAt ?? null,
-          minutosInativo: ultimaAccao
-            ? Math.floor((Date.now() - ultimaAccao.createdAt.getTime()) / 60000)
-            : null,
+          ultimaAccao,
+          minutosInativo: ultimaAccao ? Math.floor((Date.now() - ultimaAccao.getTime()) / 60000) : null,
         });
       }
     }

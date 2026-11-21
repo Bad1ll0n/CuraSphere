@@ -39,7 +39,7 @@ describe('DashboardService', () => {
         DashboardService,
         { provide: PrismaService, useValue: mockPrisma },
         // PERF-06: cache — o Redis devolve sempre miss nos testes.
-        { provide: RedisService, useValue: { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined) } },
+        { provide: RedisService, useValue: { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined), getCifrado: jest.fn().mockResolvedValue(null), setCifrado: jest.fn().mockResolvedValue(undefined) } },
         { provide: TenantContextService, useValue: { tenantId: 'default' } },
       ],
     }).compile();

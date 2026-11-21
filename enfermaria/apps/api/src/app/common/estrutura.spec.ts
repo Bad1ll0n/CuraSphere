@@ -410,6 +410,42 @@ describe('estrutura — aleatoriedade', () => {
 });
 
 /* ------------------------------------------------------------------ *
+ * ARQ-07 — nenhuma falha engolida em silêncio
+ * ------------------------------------------------------------------ */
+describe('estrutura — falhas tratadas', () => {
+  // `.catch(() => null|undefined|{})` e `catch {}` vazios: a falha desaparece sem rasto. Usar
+  // `registarFalha('contexto')` (common/falhas.ts), que regista e conta. Ficam só estes, por
+  // desenho: limpeza de temporários, ficheiro inexistente = null, e o Redis opcional (a ligação
+  // tem o seu próprio tratamento de erros e a cache degrada para a BD).
+  const SILENCIO_POR_DESENHO: Record<string, number> = {
+    'common/storage.service.ts': 2, // unlink de temporário; readFile de ficheiro que não existe → null
+    'comunicacao/comunicacao.controller.ts': 1, // unlink do temporário do upload
+    'common/throttler-redis.storage.ts': 2, // connect/quit do Redis opcional
+    'redis/barramento.service.ts': 4, // connect/subscribe do Redis opcional (religa sozinho)
+    'dashboard/dashboard.service.ts': 2, // cache em Redis: falhar = calcular na BD
+  };
+  const SILENCIO = /\.catch\(\s*\(\s*\w*\s*\)\s*=>\s*(null|undefined|\{\s*\})\s*\)|catch\s*(\(\s*\w*\s*\))?\s*\{\s*\}/g;
+  // Sobre o texto original: um `catch { /* porquê */ }` comentado está documentado — não é silêncio.
+  const contar = (f: string) => (readFileSync(f, 'utf8').match(SILENCIO) ?? []).length;
+
+  it('nenhum código novo engole erros em silêncio', () => {
+    const infratores = ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .map((f) => [caminhoRelativo(f), contar(f)] as const)
+      .filter(([f, n]) => n > (SILENCIO_POR_DESENHO[f] ?? 0))
+      .map(([f, n]) => `${f}: ${n}`);
+    expect(infratores).toEqual([]);
+  });
+
+  it('a lista só encolhe', () => {
+    const encolheram = Object.entries(SILENCIO_POR_DESENHO)
+      .filter(([f, n]) => contar(join(RAIZ_APP, f)) < n)
+      .map(([f]) => f);
+    expect(encolheram).toEqual([]);
+  });
+});
+
+/* ------------------------------------------------------------------ *
  * 5. Fronteiras de dia (BE-03)
  * ------------------------------------------------------------------ */
 
@@ -640,9 +676,9 @@ describe('estrutura — cascatas no schema (ARQ-03)', () => {
 describe('estrutura — tamanho dos ficheiros', () => {
   const LIMITE_LINHAS = 800;
   const GRANDES: Record<string, number> = {
-    'ai-clinico/ai-clinico.service.ts': 1248,
-    'medicacao/medicacao.service.ts': 1331,
-    'doentes/doentes.service.ts': 1156,
+    'ai-clinico/ai-clinico.service.ts': 1222,
+    'medicacao/medicacao.service.ts': 1322,
+    'doentes/doentes.service.ts': 1153,
   };
   const actuais = Object.fromEntries(
     ficheiros(RAIZ_APP, '.ts')

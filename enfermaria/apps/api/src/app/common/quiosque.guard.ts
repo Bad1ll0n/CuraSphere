@@ -22,6 +22,13 @@ export interface PayloadQuiosque {
  */
 export const MAX_IDADE_DIAS_OMISSAO = 30;
 
+/** Emite o token de um quiosque (validado pelo QuiosqueGuard abaixo — os dois lados no mesmo sítio). */
+export function emitirTokenQuiosque(servicoId: string, secret: string | undefined, maxDias?: string): string {
+  if (!secret) throw new Error('QUIOSQUE_SECRET não configurado');
+  const dias = Number(maxDias ?? MAX_IDADE_DIAS_OMISSAO);
+  return jwt.sign({ servicoId, purpose: 'quiosque' }, secret, { expiresIn: `${dias}d`, algorithm: 'HS256' });
+}
+
 /**
  * Autentica os terminais de quiosque (SEC-02).
  *

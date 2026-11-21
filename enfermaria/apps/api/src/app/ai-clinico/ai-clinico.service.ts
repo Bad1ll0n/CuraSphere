@@ -13,6 +13,8 @@ import { AI_MODELS } from '../common/ai-models';
 import { exigirIaPermitida, iaPermitida } from '../common/funcoes-ia';
 import { doentesComOposicaoIA, exigirTratamentoPermitido } from '../common/consentimento-tratamento';
 import { linhaCsv } from '../common/csv';
+import { registarFalha, falhaTratada } from '../common/falhas';
+import { alertasDeLabs } from './labs-criticos';
 import {
   parseWithSchema,
   AnaliseClinicoSchema,
@@ -113,7 +115,7 @@ export class AiClinicoService {
         inputTokens: msg.usage?.input_tokens ?? 0,
         outputTokens: msg.usage?.output_tokens ?? 0,
         success: true,
-      }).catch(() => null);
+      }).catch(registarFalha('ia:metricas'));
       return msg;
     } catch (err) {
       success = false;
@@ -126,7 +128,7 @@ export class AiClinicoService {
         outputTokens: 0,
         success,
         erro,
-      }).catch(() => null);
+      }).catch(registarFalha('ia:metricas'));
       throw err;
     }
   }
@@ -143,9 +145,7 @@ export class AiClinicoService {
         data: { tipo, payload, utilizadorId, doenteId, inputPayload: inputPayload ?? null },
       });
       return decisao.id;
-    } catch {
-      return null;
-    }
+    } catch (e) { falhaTratada('ia:registo-decisao', e, 'erro'); return null; } // ARQ-07: a decisão de IA fica sem registo — tem de se saber
   }
 
   async registarFeedback(decisaoId: string, aceite: boolean, overrideMotivo?: string) {
@@ -693,45 +693,14 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     return (n * sumXY - sumX * sumY) / denom;
   }
 
-  private async verificarLabsCriticos(doenteId: string): Promise<string[]> {
+  /** ARQ-23: análises das últimas 48 h de TODOS os doentes numa consulta (era uma por doente). */
+  private async labsCriticosPorDoente(ids: string[]): Promise<Map<string, string[]>> {
+    const porDoente = new Map<string, any[]>();
     try {
-      const limite = new Date(Date.now() - 48 * 3600_000);
-      const labs = await (this.prisma as any).resultadoAnalise.findMany({
-        where: { doenteId, registadoEm: { gte: limite } },
-        orderBy: { registadoEm: 'desc' },
-        take: 50,
-      });
-
-      const alertas: string[] = [];
-      const valoresPorParametro: Record<string, number[]> = {};
-
-      for (const lab of labs) {
-        const p = (lab.parametro ?? '').toLowerCase();
-        const v = typeof lab.valor === 'number' ? lab.valor : parseFloat(String(lab.valor ?? ''));
-        if (isNaN(v)) continue;
-
-        if (!valoresPorParametro[p]) valoresPorParametro[p] = [];
-        valoresPorParametro[p].push(v);
-
-        if (p.includes('troponina') && v > 0.04) alertas.push(`Troponina elevada: ${v} µg/L`);
-        if (p.includes('lactato') && v > 2.0) alertas.push(`Lactato elevado: ${v} mmol/L`);
-        if ((p === 'hb' || p === 'hemoglobina' || p.includes('hemoglobin')) && v < 7.0) alertas.push(`Hemoglobina crítica: ${v} g/dL`);
-        if ((p.includes('leucocit') || p === 'wbc') && (v > 12.0 || v < 4.0)) alertas.push(`Leucócitos anómalos: ${v} ×10⁹/L`);
-      }
-
-      // AKI: progressão creatinina > 0.3 mg/dL nas últimas 48h
-      const creatKeys = Object.keys(valoresPorParametro).filter(k => k.includes('creatinin'));
-      for (const key of creatKeys) {
-        const vals = valoresPorParametro[key]; // mais recente primeiro (orderBy desc)
-        if (vals.length >= 2 && vals[0] - vals[vals.length - 1] > 0.3) {
-          alertas.push(`Progressão creatinina: ${vals[vals.length - 1]} → ${vals[0]} mg/dL (AKI suspeito)`);
-        }
-      }
-
-      return [...new Set(alertas)]; // deduplica
-    } catch {
-      return [];
-    }
+      const labs = await (this.prisma as any).resultadoAnalise.findMany({ where: { doenteId: { in: ids }, registadoEm: { gte: new Date(Date.now() - 48 * 3600_000) } }, orderBy: { registadoEm: 'desc' } });
+      for (const l of labs) { const a = porDoente.get(l.doenteId) ?? []; if (a.length < 50) a.push(l); porDoente.set(l.doenteId, a); }
+    } catch (e) { falhaTratada('ia:labs-criticos', e); } // ARQ-07: antes `catch { return [] }` em silêncio
+    return new Map(ids.map((id) => [id, alertasDeLabs(porDoente.get(id) ?? [])]));
   }
 
   @Cron('0 */30 * * * *')
@@ -752,18 +721,23 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     let flagged = 0;
     const vintequatroHorasAtras = new Date(Date.now() - 24 * 3600_000);
 
+    // ARQ-23: sinais vitais e análises de todos os doentes em 2 consultas (eram 2 por doente).
+    const ids = doentes.map((d) => d.id);
+    const [sinaisTodos, labsPorDoente] = await Promise.all([
+      this.prisma.sinalVital.findMany({ where: { doenteId: { in: ids }, data: { gte: vintequatroHorasAtras } }, orderBy: { data: 'asc' }, select: { doenteId: true, news2: true, data: true, pressaoSistolica: true, saturacaoO2: true, pulso: true } }),
+      this.labsCriticosPorDoente(ids),
+    ]);
+    const sinaisPorDoente = new Map<string, typeof sinaisTodos>();
+    for (const sv of sinaisTodos) sinaisPorDoente.set(sv.doenteId, [...(sinaisPorDoente.get(sv.doenteId) ?? []), sv]);
+
     for (const doente of doentes) {
       try {
-        const sinais24h = await this.prisma.sinalVital.findMany({
-          where: { doenteId: doente.id, data: { gte: vintequatroHorasAtras } },
-          orderBy: { data: 'asc' },
-          select: { news2: true, data: true, pressaoSistolica: true, saturacaoO2: true, pulso: true },
-        });
+        const sinais24h = sinaisPorDoente.get(doente.id) ?? [];
 
         const ultimoSinal = sinais24h.at(-1);
         const slopeNews2 = this.calcularSlopeNews2(sinais24h);
 
-        const labsAlertas = await this.verificarLabsCriticos(doente.id);
+        const labsAlertas = labsPorDoente.get(doente.id) ?? [];
 
         const requerAnalise =
           (ultimoSinal?.news2 ?? 0) >= 5 ||
@@ -891,7 +865,7 @@ Máximo 5 diagnósticos. Ordena por probabilidade decrescente. Responde APENAS c
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
     const resultado = (() => { try { return JSON.parse(texto); } catch { return []; } })();
 
-    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId, { sintomas }).catch(() => undefined);
+    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId, { sintomas }).catch(registarFalha('ia:registo-decisao', 'erro'));
     return resultado;
   }
 
@@ -930,7 +904,7 @@ Tabelas disponíveis e campos:
     });
 
     if (utilizadorId) {
-      this.logDecisao('nlq', { filtros, count: resultados.length }, utilizadorId, undefined, { query }).catch(() => undefined);
+      this.logDecisao('nlq', { filtros, count: resultados.length }, utilizadorId, undefined, { query }).catch(registarFalha('ia:registo-decisao', 'erro'));
     }
 
     return { resultados, explicacao: filtros.explicacao ?? 'Pesquisa concluída', total: resultados.length };
@@ -1199,7 +1173,7 @@ Tabelas disponíveis e campos:
           await this.prisma.aiPromptInsight.update({
             where: { id: existing.id },
             data: { taxaRejeicao: insight.taxaRejeicao ?? 0, padroes: insight.padroes ?? '', sugestao: insight.sugestao ?? '' },
-          }).catch(() => null);
+          }).catch(registarFalha('ia:insights'));
         } else {
           await this.prisma.aiPromptInsight.create({
             data: {
@@ -1209,7 +1183,7 @@ Tabelas disponíveis e campos:
               padroes: insight.padroes ?? '',
               sugestao: insight.sugestao ?? '',
             },
-          }).catch(() => null);
+          }).catch(registarFalha('ia:insights'));
         }
       }
 
@@ -1217,7 +1191,7 @@ Tabelas disponíveis e campos:
         await this.notificacoes.enviarParaRole('ti',
           '⚠ IA: Taxa de rejeição elevada detectada',
           `${insights.length} tipo(s) com rejeição >20% na última semana. Ver insights em Auditoria IA.`,
-        ).catch(() => null);
+        ).catch(registarFalha('ia:aviso-rejeicao'));
       }
 
       this.logger.log(`Feedback analysis semanal: ${insights.length} insights gerados`);

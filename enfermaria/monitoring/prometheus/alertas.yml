@@ -103,6 +103,21 @@ groups:
         annotations:
           resumo: "Menos de 10 % de memória disponível no host."
 
+  # ARQ-07: falhas de passos acessórios que antes desapareciam em silêncio (common/falhas.ts).
+  - name: falhas-tratadas
+    rules:
+      - alert: FalhaComImpactoClinico
+        expr: sum by (contexto) (increase(curasphere_falhas_tratadas_total{gravidade="erro"}[15m])) > 0
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Falhou um passo com impacto clínico ou de auditoria: {{ $labels.contexto }} (alerta clínico, registo de decisão de IA, PEM…)."
+          accao: "Logs da API (FalhaTratada) no Loki; ver o contexto em common/falhas.ts."
+      - alert: FalhasRepetidas
+        expr: sum by (contexto) (increase(curasphere_falhas_tratadas_total{gravidade="aviso"}[1h])) > 20
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "{{ $labels.contexto }} falhou mais de 20 vezes na última hora."
+
   - name: backups-e-certificados
     rules:
       # Métrica escrita pelo scripts/backup-all.sh no fim de cada cópia bem-sucedida

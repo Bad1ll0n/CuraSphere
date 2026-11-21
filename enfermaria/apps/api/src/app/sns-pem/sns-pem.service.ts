@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { criarPemClient, PemClient } from './pem-client';
 import { EmitirReceitaDto } from './dto/emitir-receita.dto';
+import { registarFalha } from '../common/falhas';
 
 @Injectable()
 export class SnsPemService {
@@ -30,7 +31,7 @@ export class SnsPemService {
       // Persiste a tentativa falhada (rastreabilidade), mas propaga o erro ao chamador.
       await this.prisma.receitaEletronica.create({
         data: { doenteId, prescritoPorId, estado: 'erro', ambiente: this.pem.ambiente, medicamentos: dto.medicamentos as any, erro: e?.message ?? 'erro desconhecido' },
-      }).catch(() => null);
+      }).catch(registarFalha('pem:registar-tentativa-falhada', 'erro'));
       throw e;
     }
   }

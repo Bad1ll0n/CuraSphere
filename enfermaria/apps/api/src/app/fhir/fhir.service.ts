@@ -242,11 +242,13 @@ export class FhirService {
     const apiKey = process.env['SPMS_API_KEY'];
     if (!apiKey) return null;
 
-    const cacheKey = `spms:${nsns}`;
+    // PERF-07: o n.º de utente não fica no nome da chave (visível num KEYS/SCAN) e os dados do
+    // utente vão cifrados para o Redis — como na BD.
+    const cacheKey = `spms:${createHash('sha256').update(nsns).digest('hex').slice(0, 32)}`;
     const TTL_SECONDS = 600; // 10 minutes
 
     // 1. Try Redis cache
-    const cached = await this.redis.get<any>(cacheKey);
+    const cached = await this.redis.getCifrado<any>(cacheKey);
     if (cached !== null) return cached;
 
     // 2. Try in-memory fallback cache
@@ -270,19 +272,19 @@ export class FhirService {
       });
 
       if (!response.ok) {
-        this.logger.warn(`SPMS API error ${response.status} for nsns=${nsns}`);
+        this.logger.warn(`SPMS API error ${response.status} (utente ***${nsns.slice(-3)})`);
         return null;
       }
 
       const data = await response.json();
 
       // Cache result
-      await this.redis.set(cacheKey, data, TTL_SECONDS);
+      await this.redis.setCifrado(cacheKey, data, TTL_SECONDS);
       this.spmsMemCache.set(cacheKey, { value: data, expiresAt: Date.now() + TTL_SECONDS * 1000 });
 
       return data;
     } catch (err: any) {
-      this.logger.warn(`SPMS fetch failed for nsns=${nsns}: ${err?.message ?? err}`);
+      this.logger.warn(`SPMS fetch failed (utente ***${nsns.slice(-3)}): ${err?.message ?? err}`);
       return null;
     } finally {
       clearTimeout(timeout);

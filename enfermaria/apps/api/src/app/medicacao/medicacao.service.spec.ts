@@ -9,6 +9,7 @@ import { TenantContextService } from '../prisma/tenant-context.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { CatalogoService } from '../catalogo/catalogo.service';
+import { assinarQR } from './qr-assinatura';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -397,8 +398,10 @@ describe('MedicacaoService', () => {
         await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: horasAtras(13).toISOString() })).rejects.toThrow(/nota retrospetiva/);
       });
       it('a hora certa conta-se a partir do ATO — também contra uma toma registada depois dele', async () => {
-        // Toma das 8/8h registada às 06:00 (online); a das 03:10 chega às 07:45 (offline): 2,8 h entre elas.
-        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, frequencia: '8/8h', registos: [{ administradoEm: horasAtras(1.75) }] });
+        // Toma das 8/8h registada há 1,7 h (online); a de há 4,6 h chega depois (offline): 2,9 h entre elas.
+        // (Era 1,75 → 2,85 h, na fronteira do arredondamento: os milissegundos entre as duas chamadas
+        // a horasAtras decidiam se a mensagem dizia 2,8 ou 2,9 — o teste falhava de vez em quando.)
+        mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, frequencia: '8/8h', registos: [{ administradoEm: horasAtras(1.7) }] });
         await expect(service.registarAdministracao({ ...base, atestadoPeloEnfermeiro: true, ocorridoEm: horasAtras(4.6).toISOString() }))
           .rejects.toThrow(/administração prematura.*outra administração a 2\.9h/);
       });
@@ -669,7 +672,7 @@ describe('MedicacaoService', () => {
       const corpo = Buffer.from(
         JSON.stringify({ medicacaoId: 'med-1', doenteId: 'doente-1' }),
       ).toString('base64url');
-      const assinatura = (service as any).assinarQR(corpo);
+      const assinatura = assinarQR(corpo);
       mockPrisma.medicacao.findUnique.mockResolvedValue(medAtiva);
 
       const r = await service.verificar5Certos(`${corpo}.${assinatura}`, 'doente-1');

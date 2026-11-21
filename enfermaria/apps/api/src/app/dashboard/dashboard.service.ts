@@ -28,14 +28,15 @@ export class DashboardService {
     const agora = Date.now();
     const local = this.cacheLocal.get(chave);
     if (local && local.expira > agora) return local.valor as T;
-    const remoto = await this.redis.get<T>(chave).catch(() => null);
+    // PERF-07: os painéis trazem nomes de doentes (alertas recentes…) — cifrados no Redis.
+    const remoto = await this.redis.getCifrado<T>(chave).catch(() => null);
     if (remoto !== null && remoto !== undefined) {
       this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor: remoto });
       return remoto;
     }
     const valor = await calcular();
     this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor });
-    await this.redis.set(chave, valor, TTL_DASHBOARD_S).catch(() => undefined);
+    await this.redis.setCifrado(chave, valor, TTL_DASHBOARD_S).catch(() => undefined);
     return valor;
   }
 

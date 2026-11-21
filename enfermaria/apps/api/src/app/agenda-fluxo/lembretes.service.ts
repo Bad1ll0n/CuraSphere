@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { MailerService } from '../mailer/mailer.service';
 import { escaparHtml } from '../common/escapar-html';
+import { registarFalha } from '../common/falhas';
 
 @Injectable()
 export class LembretesService {
@@ -53,7 +54,7 @@ export class LembretesService {
         }).catch((e) => this.logger.warn('Lembrete email falhou', e?.message ?? String(e)));
       }
 
-      await this.prisma.consulta.update({ where: { id: c.id }, data: { lembreteEnviadoEm: new Date() } }).catch(() => null);
+      await this.prisma.consulta.update({ where: { id: c.id }, data: { lembreteEnviadoEm: new Date() } }).catch(registarFalha('lembretes:marcar-enviado'));
     }
     this.logger.log(`Lembretes de consulta enviados: ${consultas.length}`);
   }

@@ -4,6 +4,7 @@ import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { avaliarRisco } from '../common/escalas-motor';
 import { proximaAvaliacaoRisco } from '../common/vigilancia';
+import { registarFalha } from '../common/falhas';
 
 const ROLES_PODEM = [
   'enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos',
@@ -55,7 +56,7 @@ export class EscalasService {
     const r = avaliarRisco(tipo === 'braden' ? 'braden' : 'morse', itens);
     const { pontuacao, risco } = r;
     const agora = new Date();
-    const servico = await this.prisma.cama.findFirst({ where: { doente: { id: doenteId } }, select: { servico: true } }).catch(() => null);
+    const servico = await this.prisma.cama.findFirst({ where: { doente: { id: doenteId } }, select: { servico: true } }).catch(registarFalha('escalas:servico-do-doente'));
 
     const avaliacao = await this.prisma.avaliacaoRisco.create({
       data: {

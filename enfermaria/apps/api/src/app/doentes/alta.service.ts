@@ -6,6 +6,7 @@ import { WebhooksService } from '../webhooks/webhooks.service';
 import { episodioAtivo, fecharEpisodio } from '../episodios/episodios.core';
 import { temPapel } from '../common/roles.util';
 import type { AltaEstruturadaDto, NotaAltaEnfermagemDto } from './dto/alta-estruturada.dto';
+import { registarFalha } from '../common/falhas';
 
 export type RequisitoAlta = 'reconciliacao' | 'nota_enfermagem' | 'plano';
 const REQUISITOS_VALIDOS: RequisitoAlta[] = ['reconciliacao', 'nota_enfermagem', 'plano'];
@@ -166,7 +167,7 @@ export class AltaService {
       this.aiClinico.gerarCartaAlta(doenteId).catch((err) => this.logger.warn('gerarCartaAlta falhou', err?.message));
       this.aiClinico.calcularRiscoReadmissao(doenteId).catch((err) => this.logger.warn('calcularRiscoReadmissao falhou', err?.message));
     }
-    this.webhooks.dispatcharEvento('doente.alta', { doenteId, nome: doente.nome }).catch(() => null);
+    this.webhooks.dispatcharEvento('doente.alta', { doenteId, nome: doente.nome }).catch(registarFalha('webhook:doente.alta'));
     return sumario;
   }
 

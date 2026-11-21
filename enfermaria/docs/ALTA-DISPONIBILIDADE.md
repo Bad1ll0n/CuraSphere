@@ -34,8 +34,35 @@ qual é o caminho para o eliminar. Não promete o que não está feito.
 |---|---|---|
 | **O host** (uma máquina) | Avaria do host = serviço em baixo até repor noutro. | RPO ≤ 5 min (PITR com WAL fora do host), RTO medido de restauro da BD 53 s + provisionamento (ver `DR-RUNBOOK.md`) |
 | **PostgreSQL** (uma instância) | Reiniciar ou avariar a BD = API não pronta. | idem |
-| **Redis** (uma instância, sem persistência obrigatória) | O tempo real e as caches degradam para o modo local de cada réplica. Não há perda de dados clínicos. O throttler cai para a contagem por réplica. | n/a (estado efémero) |
+| **Redis** (uma instância, sem persistência obrigatória) | Não se perdem dados clínicos, mas há funções que **param** e outras que degradam — ver a secção 2.1. | n/a (estado efémero) |
 | **nginx** (um contentor) | Reinício em segundos (`autoheal`); sem réplica, sem IP flutuante. | segundos |
+
+### 2.1 Sem Redis: o que pára e o que degrada (PERF-07)
+
+O Redis não guarda nada que não se possa perder, mas várias funções precisam dele. Umas falham
+**fechadas**, por segurança; outras continuam em modo local.
+
+| Função | Sem Redis | Porquê |
+|---|---|---|
+| Login por **SSO** (SAML/OIDC) | **Pára** | O estado do pedido e o anti-replay das asserções SAML vivem no Redis. Sem eles, aceitar uma resposta seria aceitá-la sem anti-replay (SEC-06). |
+| Login por **passkey** | **Pára** | O desafio WebAuthn de uso único vive no Redis (60 s). |
+| Ativar o MFA (QR novo) | Degrada | A marca de "setup já usado" não fica; o código TOTP continua de uso único (está na BD). |
+| Login por password + TOTP | Funciona | O anti-replay do TOTP e os desafios MFA estão na BD. |
+| Bloqueio do portal após falhas | Degrada | O contador de tentativas não persiste; fica o limite de pedidos do throttler. |
+| Limites de pedidos (throttler) | Degrada | A contagem passa a ser por réplica (com 2 réplicas, o dobro do limite). |
+| Tempo real (Socket.IO, SSE de camas, tarefas, receção, urgência) | Degrada | Cada utilizador só recebe os eventos da réplica onde está ligado. |
+| Bloqueio de edição de notas | Degrada | Deixa de impedir duas pessoas de editarem a mesma nota ao mesmo tempo. |
+| Idempotência dos pedidos (mobile offline) | Degrada | Um reenvio da fila offline pode duplicar um registo. |
+| Revogação de sessões e feature flags | Degrada | O aviso imediato só chega à réplica que a recebeu; as outras apanham-na quando a cache de sessão expira (10 s, `TTL_CACHE_SESSAO_MS`). |
+| Caches (camas, dashboards, catálogo, RNU/SPMS) | Degrada | Calcula-se na BD a cada pedido (mais carga, os mesmos dados). |
+
+As caches com dados pessoais (lista de camas com doentes, painéis com alertas, dados do RNU) vão
+**cifradas** para o Redis (`RedisService.setCifrado`, ENCRYPTION_KEY), com chave por tenant e sem
+identificadores no nome da chave. Antes, a lista de camas tinha uma chave fixa: um tenant podia
+receber a de outro, e um dump do Redis era uma lista de doentes com diagnósticos.
+
+Monitorização: o `/v1/health` indica o estado do Redis, e o `redis-exporter` (perfil `monitoring`)
+alimenta o Prometheus.
 
 ## 3. Caminho para eliminar os SPOF (por ordem de valor)
 
