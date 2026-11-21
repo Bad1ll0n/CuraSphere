@@ -30,7 +30,9 @@ import { tfgCkdEpi2021 } from '../common/antropometria';
 import { reavaliacaoDorAte } from '../common/vigilancia';
 import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/hora-do-ato';
 import { registarFalha } from '../common/falhas';
-import { assinarQR } from './qr-assinatura';
+import { assinarQR } from './qr-assinatura';
+import { verificarValidacaoFarmaceutica } from './politica-validacao';
+import { descontinuarMedicacao } from './descontinuacao';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -397,6 +399,7 @@ export class MedicacaoService {
     atestadoPeloEnfermeiro?: boolean;
     qrPayload?: string;
     justificacaoSOS?: string;
+    justificacaoNaoValidada?: string; // QA-15
     leituraPulseira?: string;
     leituraMedicamento?: string;
     leituraExcecao?: string;
@@ -439,6 +442,7 @@ export class MedicacaoService {
       if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
       const minutosProxima = minutosAoRegistoMaisProximo(medicacao.registos.map((r) => r.administradoEm), momento);
       if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
+      const validacao = verificarValidacaoFarmaceutica({ estadoValidacao: medicacao.estadoValidacao, assinadoEm: medicacao.assinadoEm, jaAdministrada: medicacao.registos.length > 0 }, data.justificacaoNaoValidada);
 
       // 1. Doente certo — agora incondicional.
       if (data.doenteId !== medicacao.doenteId) {
@@ -552,6 +556,7 @@ export class MedicacaoService {
           administradoEm: momento,
           observacoes: data.observacoes,
           ...(sosForaDoLimite && { justificacaoSOS: data.justificacaoSOS!.trim().slice(0, 500) }),
+          justificacaoNaoValidada: validacao.justificacaoNaoValidada,
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
           certosVerificados: certosComLeitura,
@@ -567,7 +572,7 @@ export class MedicacaoService {
           administradoPor: { select: { id: true, nome: true } },
           medicacao: { select: { nome: true, dose: true, via: true } },
         },
-      });
+      }).then((r) => ({ ...r, avisos: validacao.avisos }));
     }, { isolationLevel: 'Serializable' });
 
     this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(registarFalha('webhook:medicacao.administrada'));
@@ -661,15 +666,9 @@ export class MedicacaoService {
     });
   }
 
-  async descontinuar(id: string) {
-    const medicacao = await this.prisma.medicacao.findUnique({ where: { id } });
-    if (!medicacao) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
-
-    return this.prisma.medicacao.update({
-      where: { id },
-      data: { ativo: false, terminadoEm: new Date() },
-      select: { id: true, nome: true, ativo: true, terminadoEm: true },
-    });
+  /** QA-14: com autor e motivo; se não for o médico, o prescritor confirma (descontinuacao.ts). */
+  descontinuar(id: string, autor: { id: string; role: string }, motivo: string) {
+    return descontinuarMedicacao(this.prisma, id, autor, motivo);
   }
 
   async historicoAdministracao(doenteId: string) {

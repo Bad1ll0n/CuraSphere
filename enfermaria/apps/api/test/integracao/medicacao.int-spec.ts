@@ -66,6 +66,8 @@ describe('integração: medicação segura', () => {
     expect((await med.pedido('POST', '/medicacao/prescrever', { doenteId: d.doenteId, nome: 'Metoclopramida', dose: '10 mg', via: 'iv', frequencia: 'SOS' })).status).toBe(400);
     const sos = await med.pedido('POST', '/medicacao/prescrever', { doenteId: d.doenteId, nome: 'Metoclopramida', dose: '10 mg', via: 'iv', frequencia: 'SOS', intervaloMinimoH: 8, maxDosesDia: 3 });
     expect(sos.status).toBe(201);
+    // QA-15: o circuito completo — a farmácia valida antes de se administrar.
+    expect((await (await entrar(ctx, '00006')).pedido('PATCH', `/medicacao/${sos.json.id}/validar`, {})).status).toBe(200);
     const enf = await entrar(ctx, '00003');
     const adm = (extra = {}) => enf.pedido('POST', `/medicacao/${sos.json.id}/administrar`, { doenteId: d.doenteId, atestadoPeloEnfermeiro: true, ...extra });
     expect((await adm()).status).toBe(201);
@@ -113,6 +115,7 @@ describe('integração: medicação segura', () => {
     expect((await med.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(201);
     const p = await med.pedido('POST', '/medicacao/prescrever', { doenteId: novo.doenteId, nome: 'Omeprazol 20mg', dose: '20 mg', via: 'oral', frequencia: '1x/dia' });
     expect(p.status).toBe(201);
+    expect((await (await entrar(ctx, '00006')).pedido('PATCH', `/medicacao/${p.json.id}/validar`, {})).status).toBe(200); // QA-15
 
     const enf = await entrar(ctx, '00003');
     const pulseira = await enf.pedido('GET', `/resumo/doente/${novo.doenteId}/pulseira`);

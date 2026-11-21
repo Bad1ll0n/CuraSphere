@@ -335,7 +335,11 @@
     "notes": "Notes",
     "notesPlaceholder": "Observations...",
     "news2Hint": "The NEWS2 score is calculated automatically from the recorded values. A score ≥5 raises a clinical alert.",
-    "fromMonitor": "monitor"
+    "fromMonitor": "monitor",
+    "criticalTitle": "Critical values",
+    "criticalBody": "These values are incompatible with life or extreme: {valores}. Confirm they are correct (if this is an emergency, activate the protocol).",
+    "criticalConfirm": "Values are correct",
+    "criticalCancel": "Correct"
   },
   "ai": {
     "suggestions": "AI Suggestions",
@@ -651,7 +655,12 @@
     "notesOptional": "Notes (optional)",
     "notesPlaceholder": "E.g. given with food, patient had difficulty...",
     "confirmAdministration": "Confirm administration",
-    "itemsLeft": "{n, plural, one {# item left} other {# items left}}"
+    "itemsLeft": "{n, plural, one {# item left} other {# items left}}",
+    "notValidated": "Not validated",
+    "notValidatedTitle": "Prescription not validated",
+    "notValidatedLabel": "Why the first dose is urgent",
+    "notValidatedButton": "Give first dose",
+    "notValidatedPlaceholder": "E.g. pain 9/10, pharmacy closed until 8am"
   },
   "myShift": {
     "title": "My shift",

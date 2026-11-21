@@ -97,14 +97,15 @@ export default function TimelineMedicacoesPage() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [servico, turno, data]);
 
-  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao, justificacaoSOS?: string) => {
+  // QA-08 (SOS) e QA-15 (1.ª dose antes da validação): o servidor pede uma justificação com 409.
+  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao, extra: { justificacaoSOS?: string; justificacaoNaoValidada?: string } = {}) => {
     // Segunda barreira: mesmo que dois eventos passem o `disabled`, só o primeiro entra.
     if (administrando) return;
     setAdministrando(med.medicacaoId);
     try {
       // UX-01: os 5 certos foram percorridos no diálogo — vai como atestação, como no MAR.
       await api.post(`/medicacao/${med.medicacaoId}/administrar`, {
-        doenteId: med.doenteId, ...confirmacao, ...(justificacaoSOS ? { justificacaoSOS } : {}),
+        doenteId: med.doenteId, ...confirmacao, ...extra,
       });
       setConfirmar(null);
       // Marca localmente antes do recarregamento para o botão não voltar a ficar activo
@@ -136,7 +137,18 @@ export default function TimelineMedicacoesPage() {
             placeholder: 'Ex.: dor 8/10 persistente, médico contactado',
           });
           // Repete depois de o `finally` libertar a guarda de duplo-submit.
-          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, justificacao), 0); return; }
+          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, { ...extra, justificacaoSOS: justificacao }), 0); return; }
+        }
+        // QA-15: prescrição por validar — só a 1.ª dose, urgente e justificada.
+        if (e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '')) {
+          const justificacao = await pedirTexto({
+            titulo: 'Prescrição por validar',
+            descricao: e.response.data.message,
+            rotulo: 'Porque é urgente dar a 1.ª dose',
+            botao: 'Administrar 1.ª dose',
+            placeholder: 'Ex.: dor 9/10, farmácia sem turno até às 8h',
+          });
+          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, { ...extra, justificacaoNaoValidada: justificacao }), 0); return; }
         }
       toast.error(e?.response?.data?.message ?? 'Erro');
     } finally {

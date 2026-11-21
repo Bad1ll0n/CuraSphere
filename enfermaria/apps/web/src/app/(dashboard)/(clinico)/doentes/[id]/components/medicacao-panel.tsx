@@ -7,6 +7,7 @@ import { useEtiquetaUnidose } from '@/lib/hooks';
 import { useToast } from '@/components/toast';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { pedirTexto } from '@/components/motivo-remocao';
 
 interface Medicacao {
   id: string;
@@ -285,22 +286,17 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     } finally { setSalvando(false); }
   };
 
-  const concluirMedicacao = (medId: string) => {
-    setConfirmarAcao({
-      titulo: 'Descontinuar Medicação',
-      mensagem: 'Confirmar conclusão desta medicação? Esta acção não pode ser revertida.',
-      variant: 'warning',
-      onConfirmar: async () => {
-        setConfirmarAcao(null);
-        try {
-          await api.patch(`/medicacao/${medId}/descontinuar`);
-          toast.success('Medicação descontinuada');
-          onRefresh();
-        } catch (e: any) {
-          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
-        }
-      },
-    });
+  // QA-14: descontinuar é uma decisão terapêutica — fica o motivo e o autor (se não for o médico, o prescritor confirma).
+  const concluirMedicacao = async (medId: string) => {
+    const motivo = await pedirTexto({ titulo: 'Descontinuar medicação', rotulo: 'Motivo da descontinuação', botao: 'Descontinuar', minimo: 5,
+      descricao: 'A prescrição deixa de estar ativa. Fica no processo com o seu nome, a hora e o motivo; se não for o médico, o prescritor recebe uma tarefa para confirmar.',
+      placeholder: 'Ex.: fim do tratamento, reação adversa' });
+    if (!motivo) return;
+    try {
+      await api.patch(`/medicacao/${medId}/descontinuar`, { motivo });
+      toast.success('Medicação descontinuada');
+      onRefresh();
+    } catch (e: any) { toast.error(e?.response?.data?.message ?? 'Erro ao guardar'); }
   };
 
   const submeterProposta = async () => {

@@ -48,6 +48,8 @@ export const esquemaConfiguracao = Joi.object({
   QUIOSQUE_SECRET: opcionalForte(32),
   METRICS_TOKEN: opcionalForte(24),
   HL7_API_TOKEN: opcionalForte(32),
+  // QA-15: um erro de escrita caía em silêncio no modo por omissão — aqui recusa-se no arranque.
+  VALIDACAO_ANTES_DE_ADMINISTRAR: Joi.string().valid('bloquear', 'primeira_dose', 'avisar').optional(),
 })
   .custom((valores: Record<string, unknown>, helpers) => {
     if (valores['NODE_ENV'] !== 'production') return valores;

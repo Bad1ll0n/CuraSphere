@@ -9,6 +9,12 @@ describe('transacções Serializable (F4)', () => {
     expect(eConflitoDeSerializacao({ code: 'P2025', message: 'Registo não encontrado' })).toBe(false);
   });
 
+  it('QA-09: reconhece o conflito do adaptador pg (DriverAdapterError: TransactionWriteConflict)', () => {
+    const erro = Object.assign(new Error('TransactionWriteConflict'), { name: 'DriverAdapterError', cause: { kind: 'TransactionWriteConflict' } });
+    expect(eConflitoDeSerializacao(erro)).toBe(true);
+    expect(eConflitoDeSerializacao({ cause: { kind: 'TransactionWriteConflict' } })).toBe(true);
+  });
+
   it('repete e devolve o resultado da tentativa que passa', async () => {
     let chamadas = 0;
 

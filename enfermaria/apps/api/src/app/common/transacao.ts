@@ -13,10 +13,15 @@ const CODIGOS_DE_CONFLITO = new Set(['P2034', '40001', '40P01']);
 const logger = new Logger('Transacao');
 
 export function eConflitoDeSerializacao(erro: unknown): boolean {
-  const e = erro as { code?: string; message?: string } | null;
+  const e = erro as { code?: string; message?: string; cause?: { kind?: string } } | null;
   if (e?.code && CODIGOS_DE_CONFLITO.has(e.code)) return true;
+  // QA-09: com o adaptador `pg` (Prisma 7), o conflito chega como `DriverAdapterError:
+  // TransactionWriteConflict` — sem código P2034. Não era reconhecido: nem se repetia a transacção,
+  // nem o filtro o devolvia como 409 (três administrações em simultâneo davam dois 500).
+  if (e?.cause?.kind === 'TransactionWriteConflict') return true;
   const mensagem = e?.message ?? '';
   return (
+    mensagem.includes('TransactionWriteConflict') ||
     mensagem.includes('40001') ||
     mensagem.includes('could not serialize access') ||
     mensagem.includes('deadlock detected')

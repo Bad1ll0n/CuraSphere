@@ -89,7 +89,7 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
               </TouchableOpacity>
             )}
             {podePrescreveMed && (
-              <TouchableOpacity accessibilityRole="button" style={s.descontinuarBotao} onPress={() => Alert.alert('Confirmar', 'Concluir esta medicação?', [{ text: 'Cancelar', style: 'cancel' }, { text: 'Concluir', style: 'destructive', onPress: () => onConcluir(m.id) }])}>
+              <TouchableOpacity accessibilityRole="button" style={s.descontinuarBotao} accessibilityLabel={`Descontinuar ${m.nome}`} onPress={() => onConcluir(m.id)}>
                 <Text style={s.descontinuarTexto}>✕</Text>
               </TouchableOpacity>
             )}

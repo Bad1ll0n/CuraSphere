@@ -677,7 +677,7 @@ describe('estrutura — tamanho dos ficheiros', () => {
   const LIMITE_LINHAS = 800;
   const GRANDES: Record<string, number> = {
     'ai-clinico/ai-clinico.service.ts': 1222,
-    'medicacao/medicacao.service.ts': 1322,
+    'medicacao/medicacao.service.ts': 1321,
     'doentes/doentes.service.ts': 1153,
   };
   const actuais = Object.fromEntries(

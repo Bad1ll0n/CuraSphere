@@ -32,6 +32,7 @@ import ModalRegistarVitais from './doente-detalhe/modals/ModalRegistarVitais';
 import ModalAltaEstruturada from './doente-detalhe/modals/ModalAltaEstruturada';
 import ModalAvaliacaoEscala from './doente-detalhe/modals/ModalAvaliacaoEscala';
 import ModalEditarDoente from './doente-detalhe/modals/ModalEditarDoente';
+import ModalMotivo from './doente-detalhe/modals/ModalMotivo';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
@@ -53,6 +54,8 @@ type Aba = 'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas' | '
 
 export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: Props) {
   const [doente, setDoente] = useState<any>(null);
+  // QA-14 (motivo de descontinuação) e QA-15 (justificação da 1.ª dose por validar).
+  const [pedidoMotivo, setPedidoMotivo] = useState<null | { tipo: 'descontinuar' | 'primeiraDose'; id: string; corpo?: object }>(null);
   const [loading, setLoading] = useState(true);
   const [alergias, setAlergias] = useState<any[]>([]);
   const [contactos, setContactos] = useState<any[]>([]);
@@ -181,9 +184,24 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     } catch { Alert.alert('Erro', 'Não foi possível concluir a tarefa'); }
   };
 
-  const concluirMedicacao = async (id: string) => {
-    try { await api.patch(`/medicacao/${id}/descontinuar`); await carregar(); }
-    catch { Alert.alert('Erro', 'Não foi possível concluir a medicação'); }
+  const concluirMedicacao = (id: string) => setPedidoMotivo({ tipo: 'descontinuar', id });
+
+  const confirmarMotivo = async (texto: string) => {
+    const pedido = pedidoMotivo;
+    setPedidoMotivo(null);
+    if (!pedido) return;
+    try {
+      if (pedido.tipo === 'descontinuar') {
+        await api.patch(`/medicacao/${pedido.id}/descontinuar`, { motivo: texto });
+        await carregar();
+      } else {
+        await api.post(`/medicacao/${pedido.id}/administrar`, { ...pedido.corpo, justificacaoNaoValidada: texto });
+        Alert.alert('Registado', 'Administração registada com sucesso');
+      }
+    } catch (e: any) {
+      registarFalhaSilenciosa('DoenteDetalheScreen.confirmarMotivo', e);
+      Alert.alert('Não registado', e?.response?.data?.message ?? 'Não foi possível registar.');
+    }
   };
 
   const registarMedicacao = (id: string) => {
@@ -206,6 +224,11 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       await api.post(`/medicacao/${id}/administrar`, corpo);
       Alert.alert('Registado', 'Administração registada com sucesso');
     } catch (e: any) {
+      // QA-15: prescrição por validar — a 1.ª dose só com justificação (pedida aqui, e o pedido repete-se).
+      if (e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '')) {
+        setPedidoMotivo({ tipo: 'primeiraDose', id, corpo });
+        return;
+      }
       registarFalhaSilenciosa('DoenteDetalheScreen.registarMedicacao', e);
       const motivo = e?.response?.data?.message ?? 'Não foi possível registar.';
       Alert.alert('Administração NÃO registada', motivo);
@@ -399,6 +422,18 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       <ModalContactoEmergencia visible={modalContacto} doenteId={doenteId} onClose={() => setModalContacto(false)} onSaved={carregarContactos} />
       <ModalCincoCertos medicacao={medAConfirmar} doente={{ nome: doente.nome, numeroProcesso: doente.numeroProcesso }} offline={!isOnline}
         onConfirmar={administrarConfirmada} onCancelar={() => setMedAConfirmar(null)} />
+      <ModalMotivo
+        visible={!!pedidoMotivo}
+        titulo={pedidoMotivo?.tipo === 'primeiraDose' ? 'Prescrição por validar' : 'Descontinuar medicação'}
+        descricao={pedidoMotivo?.tipo === 'primeiraDose'
+          ? 'A farmácia ainda não validou esta prescrição. Só a 1.ª dose, se for urgente.'
+          : 'Fica no processo com o seu nome, a hora e o motivo. Se não for o médico, o prescritor recebe uma tarefa para confirmar.'}
+        rotulo={pedidoMotivo?.tipo === 'primeiraDose' ? 'Porque é urgente dar a 1.ª dose' : 'Motivo da descontinuação'}
+        botao={pedidoMotivo?.tipo === 'primeiraDose' ? 'Administrar 1.ª dose' : 'Descontinuar'}
+        minimo={pedidoMotivo?.tipo === 'primeiraDose' ? 10 : 5}
+        onCancelar={() => setPedidoMotivo(null)}
+        onConfirmar={confirmarMotivo}
+      />
       <ModalRegistarVitais visible={modalVitais} doenteId={doenteId} onClose={() => setModalVitais(false)} onSaved={carregarVitais} />
       <ModalAltaEstruturada visible={modalAltaEstruturada} doenteId={doenteId} onClose={() => setModalAltaEstruturada(false)} onDone={onVoltar} />
       <ModalAvaliacaoEscala visible={modalEscala !== null} tipo={modalEscala} doenteId={doenteId} onClose={() => setModalEscala(null)} onSaved={carregarEscalas} />

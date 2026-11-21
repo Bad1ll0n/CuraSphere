@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { avaliarCoerenciaVitais } from '@org/shared';
 import { SinaisVitaisService } from './sinais-vitais.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
@@ -70,6 +71,19 @@ describe('SinaisVitaisService', () => {
       await expect(
         service.criar('d1', 'u1', 'enfermeiro', { pulso: 70 }),
       ).rejects.toThrow(NotFoundException);
+    });
+
+    it('QA-16: registo vazio e PAD ≥ PAS → 400', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', ativo: true, cama: null });
+      await expect(service.criar('d1', 'u1', 'enfermeiro', {})).rejects.toThrow(BadRequestException);
+      await expect(service.criar('d1', 'u1', 'enfermeiro', { pressaoSistolica: 40, pressaoDiastolica: 200 })).rejects.toThrow(/diastólica/);
+    });
+
+    it('QA-16: pulso 0 sem confirmação → 422; com confirmação regista', async () => {
+      await expect(service.criar('d1', 'u1', 'enfermeiro', { pulso: 0 })).rejects.toThrow(UnprocessableEntityException);
+      expect(mockPrisma.sinalVital.create).not.toHaveBeenCalled();
+      await service.criar('d1', 'u1', 'enfermeiro', { pulso: 0, confirmarValorCritico: true }).catch(() => undefined);
+      expect(mockPrisma.doente.findUnique).toHaveBeenCalled();
     });
   });
 
@@ -482,5 +496,26 @@ describe('SinaisVitaisService', () => {
       const spo2Tendencia = result.tendencias.find(t => t.parametro === 'SpO₂ (%)');
       expect(spo2Tendencia?.alerta).toBe(true);
     });
+  });
+});
+
+describe('QA-16 — coerência dos sinais vitais (avaliarCoerenciaVitais)', () => {
+  // A regra vive em libs/shared (a mesma na API, na web e no mobile).
+  it('registo vazio é erro (notas e O2 sozinhos não são uma medição)', () => {
+    expect(avaliarCoerenciaVitais({}).erro).toMatch(/vazio/);
+    expect(avaliarCoerenciaVitais({ notas: 'x', o2Suplementar: true }).erro).toMatch(/vazio/);
+    expect(avaliarCoerenciaVitais({ pulso: 80 }).erro).toBeNull();
+    expect(avaliarCoerenciaVitais({ avpu: 'A' }).erro).toBeNull();
+  });
+  it('PAD ≥ PAS é erro', () => {
+    expect(avaliarCoerenciaVitais({ pressaoSistolica: 40, pressaoDiastolica: 200 }).erro).toMatch(/diastólica/);
+    expect(avaliarCoerenciaVitais({ pressaoSistolica: 120, pressaoDiastolica: 120 }).erro).toMatch(/diastólica/);
+    expect(avaliarCoerenciaVitais({ pressaoSistolica: 120, pressaoDiastolica: 75 }).erro).toBeNull();
+  });
+  it('valores incompatíveis com a vida pedem confirmação', () => {
+    const r = avaliarCoerenciaVitais({ pressaoSistolica: 45, pressaoDiastolica: 30, pulso: 0, temperatura: 31, frequenciaRespiratoria: 0, saturacaoO2: 40 });
+    expect(r.erro).toBeNull();
+    expect(r.criticos).toHaveLength(5);
+    expect(avaliarCoerenciaVitais({ pulso: 48, frequenciaRespiratoria: 8, saturacaoO2: 88 }).criticos).toEqual([]);
   });
 });
