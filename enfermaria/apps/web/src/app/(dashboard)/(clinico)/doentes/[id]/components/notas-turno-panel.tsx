@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import { useRascunho } from '@/lib/rascunhos';
 import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -140,7 +141,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
 
   const [modalNota, setModalNota] = useState(false);
-  const [notaTexto, setNotaTexto] = useState('');
+  const [notaTexto, setNotaTexto] = useRascunho(`nota-turno:${doenteId}`, ''); // UX-21
   const [notaEditandoId, setNotaEditandoId] = useState<string | null>(null);
   const [notaEditTexto, setNotaEditTexto] = useState('');
   const [salvandoNota, setSalvandoNota] = useState(false);

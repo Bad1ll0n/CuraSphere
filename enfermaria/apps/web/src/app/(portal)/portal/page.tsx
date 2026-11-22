@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { PortalAuthProvider, usePortalAuth, portalFetch } from '../portal-auth-context';
 
 function Dashboard() {
+  const t = useTranslations('patientPortal');
   const { autenticado, loading, logout } = usePortalAuth();
   const [doente, setDoente] = useState<any>(null);
 
@@ -33,10 +35,11 @@ function Dashboard() {
     <div>
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>
-          Olá{doente?.nome ? `, ${doente.nome.split(' ')[0]}` : ''}
+          {/* UX-28: saudação neutra (antes "Bem-vindo" fixo no masculino). */}
+          {doente?.nome ? t('helloName', { nome: doente.nome.split(' ')[0] }) : t('hello')}
         </h1>
         <p style={{ fontSize: '13px', color: 'var(--text-soft)' }}>
-          {doente?.diagnosticoPrincipal ? `Diagnóstico: ${doente.diagnosticoPrincipal}` : 'Bem-vindo ao seu portal de saúde'}
+          {doente?.diagnosticoPrincipal ? t('diagnosis', { diagnostico: doente.diagnosticoPrincipal }) : t('welcome')}
         </p>
       </div>
 

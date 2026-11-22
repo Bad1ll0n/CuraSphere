@@ -8,10 +8,12 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { PdfService } from '../common/pdf.service';
 import { ConsentimentosTratamentoModule } from '../consentimentos-tratamento/consentimentos-tratamento.module';
 import { RgpdModule } from '../rgpd/rgpd.module';
+import { MailerModule } from '../mailer/mailer.module';
+import { PortalRecuperacaoService } from './portal-recuperacao.service';
 
 @Module({
-  imports: [AuthModule, StorageModule, PrismaModule, ConsentimentosTratamentoModule, RgpdModule],
+  imports: [AuthModule, StorageModule, PrismaModule, ConsentimentosTratamentoModule, RgpdModule, MailerModule],
   controllers: [PortalDoenteController],
-  providers: [PortalDoenteService, PortalJwtStrategy, PdfService],
+  providers: [PortalDoenteService, PortalRecuperacaoService, PortalJwtStrategy, PdfService],
 })
 export class PortalDoenteModule {}

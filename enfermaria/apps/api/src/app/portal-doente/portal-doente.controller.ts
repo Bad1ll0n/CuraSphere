@@ -6,13 +6,14 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
+import { PortalRecuperacaoService } from './portal-recuperacao.service';
 import { RgpdService } from '../rgpd/rgpd.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
 import type { PedidoPortal } from '../auth/pedido-autenticado';
 import {
-  PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
+  PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto, PortalRecuperarDto, PortalRedefinirDto,
   SubmeterProDto, CriarTemplateProDto,
 } from './dto/portal.dto';
 
@@ -30,6 +31,7 @@ export class PortalDoenteController {
     private readonly leituras: AcessoLeituraService,
     private readonly consentimentos: ConsentimentosTratamentoService,
     private readonly rgpd: RgpdService,
+    private readonly recuperacao: PortalRecuperacaoService,
   ) {}
 
   // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
@@ -63,6 +65,24 @@ export class PortalDoenteController {
    * SEC-07: sem isto, terminar sessão no portal deixava o cookie válido no browser
    * durante 8 h. O cookie é `httpOnly`, por isso só o servidor o pode apagar.
    */
+  /**
+   * UX-28: "esqueci-me da password". Público; resposta sempre igual (não revela se o email tem
+   * conta). O link aponta para PORTAL_URL (ou a 1.ª origem permitida) — nunca para o Host do
+   * pedido, que um atacante controla.
+   */
+  @Throttle({ default: { ttl: 900000, limit: 3 } })
+  @Post('recuperar')
+  recuperar(@Body() dto: PortalRecuperarDto) {
+    const origem = process.env['PORTAL_URL'] ?? (process.env['ALLOWED_ORIGINS'] ?? '').split(',')[0]?.trim() ?? '';
+    return this.recuperacao.pedir(dto.email, origem || 'http://localhost:3000');
+  }
+
+  @Throttle({ default: { ttl: 900000, limit: 10 } })
+  @Post('redefinir')
+  redefinir(@Body() dto: PortalRedefinirDto) {
+    return this.recuperacao.redefinir(dto.token, dto.senha);
+  }
+
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('portal_token', { path: '/', httpOnly: true, sameSite: 'strict' });

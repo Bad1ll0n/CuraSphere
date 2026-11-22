@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+import { textoChamadaSenha } from '@org/shared';
 import { useEffect, useRef, useState } from 'react';
 import { quiosqueFetch, urlComTokenQuiosque } from '@/lib/quiosque-token';
 
@@ -53,6 +55,29 @@ export default function PainelPage() {
   const esRef = useRef<EventSource | null>(null);
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // UX-26: anúncio por voz e sinal sonoro a cada chamada (antes só havia o número no ecrã), e uma
+  // região aria-live para leitores de ecrã. Os browsers só deixam falar depois de um toque, por
+  // isso o painel pede-o uma vez ("Ativar som").
+  const tPainel = useTranslations('callPanel');
+  const [somAtivo, setSomAtivo] = useState(false);
+  const [anuncio, setAnuncio] = useState('');
+  const anunciarRef = useRef<(numero: string, balcao?: string) => void>(() => undefined);
+  anunciarRef.current = (numero, balcao) => {
+    const texto = textoChamadaSenha(numero, balcao);
+    setAnuncio(texto);
+    if (!somAtivo) return;
+    try {
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator(); osc.frequency.value = 880; osc.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.25);
+    } catch { /* sem áudio */ }
+    try {
+      const fala = new SpeechSynthesisUtterance(texto);
+      fala.lang = 'pt-PT'; fala.rate = 0.9;
+      setTimeout(() => window.speechSynthesis?.speak(fala), 400);
+    } catch { /* sem síntese de voz */ }
+  };
+
   function triggerFlash() {
     setFlash(true);
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
@@ -87,6 +112,7 @@ export default function PainelPage() {
       es.addEventListener('ticket_chamado', (e) => {
         const payload = JSON.parse(e.data);
         setUltimoChamado(payload.ticket);
+        if (payload.ticket?.numero) anunciarRef.current(payload.ticket.numero, payload.ticket.balcao);
         if (Array.isArray(payload.ultimos)) setUltimos(payload.ultimos);
         if (Array.isArray(payload.fila)) setFila(payload.fila);
         triggerFlash();
@@ -127,6 +153,13 @@ export default function PainelPage() {
         overflow: 'hidden',
       }}
     >
+      <p aria-live="assertive" className="sr-only">{anuncio}</p>
+      {!somAtivo && (
+        <button type="button" onClick={() => setSomAtivo(true)}
+          style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 10, background: 'var(--accent)', color: 'var(--bg-card)', border: 0, borderRadius: 12, padding: '10px 16px', fontWeight: 700 }}>
+          {tPainel('enableSound')}
+        </button>
+      )}
       {/* Header */}
       <div
         style={{

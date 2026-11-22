@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useRascunho } from '@/lib/rascunhos';
 import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -31,7 +32,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
 
   const [notasClincias, setNotasClincias] = useState<any[]>([]);
   const [modalNotaClinica, setModalNotaClinica] = useState(false);
-  const [soapForm, setSoapForm] = useState({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
+  const [soapForm, setSoapForm] = useRascunho(`soap:${doenteId}`, { subjetivo: '', objetivo: '', avaliacao: '', plano: '' }); // UX-21
   const [salvandoSoap, setSalvandoSoap] = useState(false);
   const [notaSoapEditandoId, setNotaSoapEditandoId] = useState<string | null>(null);
   const dlgSoap = useDialogoAcessivel({ aberto: modalNotaClinica, onFechar: () => setModalNotaClinica(false), titulo: 'Nota clínica SOAP' });

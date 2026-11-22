@@ -3594,8 +3594,25 @@ model PortalDoente {
 
   doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   criadoPor Utilizador @relation("PortalDoentesCriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
+  recuperacoes RecuperacaoPortal[]
 
   @@map("portal_doentes")
+}
+
+// UX-28: pedidos de "esqueci-me da password" no portal. Só o SHA-256 do token (o token vai no
+// email); válido 30 min e uma vez.
+model RecuperacaoPortal {
+  id        String    @id @default(uuid())
+  portalId  String
+  tokenHash String    @unique
+  expiraEm  DateTime
+  usadoEm   DateTime?
+  criadoEm  DateTime  @default(now())
+
+  portal PortalDoente @relation(fields: [portalId], references: [id], onDelete: Cascade)
+
+  @@index([portalId])
+  @@map("recuperacoes_portal")
 }
 
 // ─── HL7 v2 ──────────────────────────────────────────────────────────────────

@@ -1,9 +1,13 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
+import { CampoPassword } from './campo-password';
 
 function LoginForm() {
   const { login } = usePortalAuth();
+  const t = useTranslations('patientPortal');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,7 +29,7 @@ function LoginForm() {
   return (
     <div>
       <div style={{ marginBottom: '32px', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>Aceder ao Meu Portal</h1>
+        <h1 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>Aceder ao Meu Portal</h1>
         <p style={{ fontSize: '13px', color: 'var(--text-soft)' }}>Consulte os seus documentos, medicação e informações de saúde</p>
       </div>
 
@@ -44,19 +48,11 @@ function LoginForm() {
               style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '11px 14px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
-          <div style={{ marginBottom: '24px' }}>
-            <span style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-              Password
-            </span>
-            <input
-              type="password"
-              value={senha}
-              onChange={e => setSenha(e.target.value)}
-              placeholder="••••••••"
-              required
-              style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '11px 14px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-            />
-          </div>
+          {/* UX-28: mostrar / ocultar a password e "Esqueci-me da password". */}
+          <CampoPassword id="portal-senha" rotulo={t('password')} valor={senha} onChange={setSenha} autoComplete="current-password" />
+          <p style={{ textAlign: 'right', marginTop: '-6px', marginBottom: '20px', fontSize: '13px' }}>
+            <Link href="/portal/login/recuperar" style={{ color: 'var(--accent)' }}>{t('forgotLink')}</Link>
+          </p>
           {erro && (
             <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px', color: 'var(--danger)', fontSize: '13px', marginBottom: '16px' }}>
               {erro}
@@ -65,7 +61,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', background: '#3b82f6', color: '#fff', fontWeight: 600, borderRadius: '12px', padding: '12px', fontSize: '14px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+            style={{ width: '100%', background: 'var(--accent)', color: 'var(--bg-card)', fontWeight: 600, borderRadius: '12px', padding: '12px', fontSize: '14px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
             {loading ? 'A entrar...' : 'Entrar'}
           </button>
         </form>

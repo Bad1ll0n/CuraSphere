@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import api, { initCsrf } from '@/lib/api';
 import Link from 'next/link';
@@ -20,6 +20,7 @@ import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
 import { TourOverlay } from '@/components/tour-overlay';
 import { CommandPalette } from '@/components/command-palette';
+import { AvisoInatividade, EcraBloqueado, useSessaoPosto } from '@/components/sessao-posto';
 import { DarkModeToggle } from '@/components/dark-mode-toggle';
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal';
 import { NotificationBell } from '@/components/notification-bell';
@@ -31,6 +32,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { utilizador, loading, logout, passwordAviso } = useAuth();
   const tCommon = useTranslations('common');
   const tLayout = useTranslations('layout');
+  const tSessao = useTranslations('session');
   const router = useRouter();
   const pathname = usePathname();
 
@@ -85,29 +87,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
   });
 
-  const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const resetIdleTimer = useCallback(() => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    idleTimerRef.current = setTimeout(async () => {
-      try {
-        await api.post('/auth/logout');
-      } catch { /* ignore */ }
-      router.push('/login');
-    }, IDLE_TIMEOUT_MS);
-  }, [router]);
-
-  useEffect(() => {
-    resetIdleTimer();
-    const events = ['mousemove', 'keydown', 'click', 'touchstart'] as const;
-    events.forEach(e => window.addEventListener(e, resetIdleTimer, { passive: true }));
-    return () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      events.forEach(e => window.removeEventListener(e, resetIdleTimer));
-    };
-  }, [resetIdleTimer]);
+  // UX-21: aviso aos 13 min, fim aos 15 (os rascunhos ficam para o mesmo profissional) e bloqueio
+  // rápido do posto. Antes: `api.post('/auth/logout')` em silêncio, sem limpar a cache de dados.
+  const sessao = useSessaoPosto(utilizador?.id ?? null, () => logout({ manterRascunhos: true, motivo: 'inatividade' }));
 
   useEffect(() => {
     if (!loading && !utilizador) { router.push('/login'); return; }
@@ -167,6 +149,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }} />
       )}
 
+      {sessao.bloqueado && (
+        <EcraBloqueado nome={utilizador.nome} alertasCriticos={alertasCriticos.filter((a) => a.respondidoPor == null).length}
+          onDesbloqueado={sessao.desbloqueado} onTrocarUtilizador={() => { sessao.desbloqueado(); logout({ manterRascunhos: true }); }} />
+      )}
+      {!sessao.bloqueado && sessao.avisoSegundos != null && (
+        <AvisoInatividade segundos={sessao.avisoSegundos} onContinuar={sessao.continuar} onSair={() => logout()} />
+      )}
+
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)}
         itens={itemsVisiveis.map((i) => ({ href: i.href, label: i.label }))} utilizadorId={utilizador.id}
         podePesquisarDoentes={rotaPermitida('/doentes', utilizador)} podeAdmitir={rotaPermitida('/doentes/admitir', utilizador)} />
@@ -200,6 +190,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
+          <button type="button" onClick={sessao.bloquear} title={tSessao('lockHint')} aria-label={tSessao('lock')}
+            className="h-10 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2" style={{ padding: '0 12px' }}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <span className="hidden sm:inline">{tSessao('lock')}</span>
+          </button>
           <NotificationBell />
           <LanguageSwitcher />
           <DarkModeToggle />
@@ -223,7 +218,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             </div>
           )}
-          <RouteGuard>{children}</RouteGuard>
+          {/* UX-21: com o posto bloqueado, o conteúdo clínico nem fica no DOM. */}
+          {!sessao.bloqueado && <RouteGuard>{children}</RouteGuard>}
         </ToastProvider>
       </main>
 

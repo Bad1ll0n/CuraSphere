@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { SERVICOS, useReposicaoQuiosque } from '@/components/quiosque/servicos';
 import { useLocale, useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { quiosqueFetch } from '@/lib/quiosque-token';
@@ -8,15 +9,6 @@ import { IdentificarNif, type UtenteIdentificado } from '@/components/quiosque/i
 
 const API = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'}/v1`;
 
-const SERVICOS = [
-  // UX-07: o nome vem de kiosk.service.<tipo>.
-  { tipo: 'admissao', letra: 'A', cor: '#3b82f6' },
-  { tipo: 'consulta', letra: 'C', cor: '#8b5cf6' },
-  { tipo: 'faturacao', letra: 'F', cor: '#f59e0b' },
-  { tipo: 'farmacia', letra: 'R', cor: '#10b981' },
-  { tipo: 'exames', letra: 'E', cor: '#06b6d4' },
-  { tipo: 'geral', letra: 'G', cor: '#6b7280' },
-];
 
 type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes' | 'nova_especialidade' | 'nova_medico' | 'nova_data' | 'nova_slot' | 'nova_confirmar' | 'nova_sucesso';
 
@@ -102,6 +94,8 @@ export default function QuiosquePage() {
       setEmissao(false);
     }
   }
+
+  useReposicaoQuiosque(estado, reiniciar); // UX-26: volta sozinho ao início
 
   function reiniciar() {
     setEstado('selecionar');

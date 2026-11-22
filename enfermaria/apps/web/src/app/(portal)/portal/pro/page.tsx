@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
@@ -27,6 +29,7 @@ interface Registo {
 }
 
 function PROContent() {
+  const t = useTranslations('patientPortal');
   const { user, autenticado, loading: authLoading } = usePortalAuth();
   const router = useRouter();
 
@@ -78,6 +81,8 @@ function PROContent() {
 
   return (
     <div style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px' }}>
+      {/* UX-28: navegação consistente — as outras páginas do portal já tinham "Voltar". */}
+      <Link href="/portal" className="text-sm text-slate-500" style={{ display: 'inline-block', marginBottom: '16px' }}>← {t('back')}</Link>
       <h1 className="text-2xl font-bold text-slate-900" style={{ marginBottom: '8px' }}>Como se sente?</h1>
       <p className="text-slate-500 text-sm" style={{ marginBottom: '28px' }}>Registe os seus sintomas e bem-estar. Estes dados são partilhados com a sua equipa clínica.</p>
 
@@ -96,7 +101,7 @@ function PROContent() {
           {!templateSel ? (
             <div>
               <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Seleccione um questionário:</p>
-              {templates.length === 0 && <p className="text-slate-500 text-sm">Sem questionários disponíveis.</p>}
+              {templates.length === 0 && <p className="text-slate-500 text-sm">{t('noQuestionnaires')}</p>}
               <div className="space-y-3">
                 {templates.map(t => (
                   <button key={t.id} onClick={() => { setTemplateSel(t); setRespostas({}); }}

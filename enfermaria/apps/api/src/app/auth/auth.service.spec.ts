@@ -293,6 +293,30 @@ describe('AuthService', () => {
 
   // ── verificarMfaLogin() ────────────────────────────────────────────────────
 
+  describe('confirmarPasswordSessao() — desbloqueio do ecrã (UX-21)', () => {
+    const base = { id: '1', ativo: true, passwordHash: '', numeroFuncionario: '12345', ultimaFalhaLoginEm: null, bloqueadoAte: null };
+
+    it('password certa desbloqueia e limpa as falhas', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 2 });
+      await expect(service.confirmarPasswordSessao('1', 'passwordCorreta')).resolves.toEqual({ desbloqueado: true });
+      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(expect.objectContaining({ data: { tentativasLoginFalhadas: 0, ultimaFalhaLoginEm: null } }));
+    });
+
+    it('password errada conta como falha de login (não é um oráculo sem limite)', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 4, ultimaFalhaLoginEm: new Date() });
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 5 });
+      await expect(service.confirmarPasswordSessao('1', 'passwordErrada')).rejects.toThrow(/bloqueada/i);
+      expect(mockPrisma.utilizador.update).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        data: expect.objectContaining({ bloqueadoAte: expect.any(Date) }),
+      }));
+    });
+
+    it('conta bloqueada não desbloqueia, mesmo com a password certa', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 0, bloqueadoAte: new Date(Date.now() + 60_000) });
+      await expect(service.confirmarPasswordSessao('1', 'passwordCorreta')).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
   describe('verificarMfaLogin()', () => {
     it('lança UnauthorizedException quando jwt.verify lança', async () => {
       mockJwt.verify.mockImplementation(() => { throw new Error('expired'); });

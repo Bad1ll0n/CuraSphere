@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, Patch, UseGuards, Request, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { Throttle, SkipThrottle } from '@nestjs/throttler';
 import type { Response } from 'express';
-import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, Length, MaxLength } from 'class-validator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
@@ -24,6 +24,10 @@ class MfaAtivarDto {
 
 class MfaDesativarDto {
   @IsString() @Length(6, 6) code: string;
+}
+
+class DesbloquearDto {
+  @IsString() @IsNotEmpty() @MaxLength(128) password: string;
 }
 
 const COOKIE_MAX_AGE_ACCESS  = 60 * 60 * 1000;
@@ -118,6 +122,14 @@ export class AuthController {
     const result = await this.authService.refresh(token);
     this.setTokenCookies(res, result.accessToken, result.refreshToken);
     return { utilizador: result.utilizador };
+  }
+
+  /** UX-21: desbloqueio do ecrã de um posto partilhado (a sessão continua a mesma). */
+  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
+  @Post('desbloquear')
+  desbloquear(@Request() req: PedidoAutenticado, @Body() dto: DesbloquearDto) {
+    return this.authService.confirmarPasswordSessao(req.user.sub, dto.password);
   }
 
   @SkipThrottle()

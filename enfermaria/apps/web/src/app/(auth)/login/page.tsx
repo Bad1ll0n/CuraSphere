@@ -15,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const t = useTranslations('login');
 
+  const tSessaoLogin = useTranslations('session');
   const [numeroFuncionario, setNumeroFuncionario] = useState('');
   const [password, setPassword] = useState('');
   const [erro, setErro] = useState('');
@@ -29,6 +30,8 @@ export default function LoginPage() {
         .then(setPasskeySuportada)
         .catch(() => { /* vazio */ });
     }
+    // UX-21: depois do fim por inatividade, diz porquê e que as notas a meio não se perderam.
+    if (new URLSearchParams(window.location.search).get('motivo') === 'inatividade') setErro(tSessaoLogin('expiredInfo'));
     // Carregar providers SSO disponíveis
     api.get('/auth/sso/providers')
       .then(({ data }) => setSsoProviders(data))

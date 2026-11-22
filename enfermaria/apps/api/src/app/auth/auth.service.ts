@@ -102,6 +102,58 @@ export class AuthService {
     }
   }
 
+  /**
+   * Conta uma password errada (janela de 15 min a partir da última falha) e bloqueia a conta à
+   * 5.ª. Lança sempre 401. Serve o login e o desbloqueio do ecrã (UX-21), para que o ecrã
+   * bloqueado não seja uma forma de adivinhar passwords sem limite.
+   */
+  private async registarFalhaPassword(
+    utilizador: { id: string; numeroFuncionario: string; ultimaFalhaLoginEm: Date | null },
+    agora: Date,
+  ): Promise<never> {
+    const naJanela =
+      utilizador.ultimaFalhaLoginEm && agora.getTime() - utilizador.ultimaFalhaLoginEm.getTime() < JANELA_FALHAS_MS;
+    const { tentativasLoginFalhadas: falhas } = await this.prisma.utilizador.update({
+      where: { id: utilizador.id },
+      data: {
+        tentativasLoginFalhadas: naJanela ? { increment: 1 } : 1,
+        ultimaFalhaLoginEm: agora,
+      },
+      select: { tentativasLoginFalhadas: true },
+    });
+    if (falhas >= MAX_FALHAS_LOGIN) {
+      await this.prisma.utilizador.update({
+        where: { id: utilizador.id },
+        data: { bloqueadoAte: new Date(agora.getTime() + JANELA_FALHAS_MS), tentativasLoginFalhadas: 0 },
+      });
+      this.logger.warn(`Conta bloqueada por excesso de falhas: ${utilizador.numeroFuncionario}`);
+      throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
+    }
+    this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/${MAX_FALHAS_LOGIN})`);
+    throw new UnauthorizedException('Credenciais inválidas');
+  }
+
+  /**
+   * UX-21: desbloqueia o ecrã de um posto partilhado. Confirma a password do utilizador da
+   * sessão em curso — não cria sessão nova nem roda tokens. As falhas contam como no login.
+   */
+  async confirmarPasswordSessao(utilizadorId: string, password: string): Promise<{ desbloqueado: true }> {
+    const utilizador = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId } });
+    if (!utilizador || !utilizador.ativo) {
+      await verifyPassword(password, DUMMY_BCRYPT_HASH).catch(() => false);
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
+    const agora = new Date();
+    if (utilizador.bloqueadoAte && utilizador.bloqueadoAte > agora) {
+      throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
+    }
+    if (!(await verifyPassword(password, utilizador.passwordHash))) await this.registarFalhaPassword(utilizador, agora);
+    if (utilizador.tentativasLoginFalhadas > 0) {
+      await this.prisma.utilizador.update({ where: { id: utilizador.id }, data: { tentativasLoginFalhadas: 0, ultimaFalhaLoginEm: null } });
+    }
+    return { desbloqueado: true };
+  }
+
   async login(numeroFuncionario: string, password: string, ip?: string) {
     const utilizador = await this.prisma.utilizador.findUnique({
       where: { numeroFuncionario },
@@ -122,29 +174,7 @@ export class AuthService {
     }
 
     const passwordValida = await verifyPassword(password, utilizador.passwordHash);
-    if (!passwordValida) {
-      // As falhas contam numa janela de 15 min a partir da última; fora dela recomeçam em 1.
-      const naJanela =
-        utilizador.ultimaFalhaLoginEm && agora.getTime() - utilizador.ultimaFalhaLoginEm.getTime() < JANELA_FALHAS_MS;
-      const { tentativasLoginFalhadas: falhas } = await this.prisma.utilizador.update({
-        where: { id: utilizador.id },
-        data: {
-          tentativasLoginFalhadas: naJanela ? { increment: 1 } : 1,
-          ultimaFalhaLoginEm: agora,
-        },
-        select: { tentativasLoginFalhadas: true },
-      });
-      if (falhas >= MAX_FALHAS_LOGIN) {
-        await this.prisma.utilizador.update({
-          where: { id: utilizador.id },
-          data: { bloqueadoAte: new Date(agora.getTime() + JANELA_FALHAS_MS), tentativasLoginFalhadas: 0 },
-        });
-        this.logger.warn(`Conta bloqueada por excesso de falhas: ${utilizador.numeroFuncionario}`);
-        throw new UnauthorizedException('Conta temporariamente bloqueada. Tente novamente em 15 minutos.');
-      }
-      this.logger.warn(`Password incorreta para funcionário: ${utilizador.numeroFuncionario} (${falhas}/${MAX_FALHAS_LOGIN})`);
-      throw new UnauthorizedException('Credenciais inválidas');
-    }
+    if (!passwordValida) await this.registarFalhaPassword(utilizador, agora);
 
     if (utilizador.tentativasLoginFalhadas > 0 || utilizador.bloqueadoAte) {
       await this.prisma.utilizador.update({
