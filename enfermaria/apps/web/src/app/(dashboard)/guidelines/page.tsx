@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
@@ -31,6 +32,7 @@ const catInfo = (cat: string) => CATEGORIAS.find(c => c.value === cat) ?? { labe
 const EMPTY_FORM = { titulo: '', categoria: 'geral', fonte: '', versao: '', conteudo: '' };
 
 export default function GuidelinesPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const { utilizador } = useAuth();
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
@@ -187,7 +189,7 @@ export default function GuidelinesPage() {
                     <p className="text-xs text-slate-500 line-clamp-2" style={{ marginTop: '4px' }}>{g.conteudo.slice(0, 160)}...</p>
                   </div>
                   {podeGerir && (
-                    <button onClick={() => remover(g.id)}
+                    <button aria-label={tA11y('removeGuideline')} onClick={() => remover(g.id)}
                       className="w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center shrink-0 transition-colors"
                       title="Remover guideline">
                       <svg className="w-4 h-4 text-slate-300 hover:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,7 +210,7 @@ export default function GuidelinesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Nova Guideline Clínica</h2>
-              <button onClick={() => setModal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => setModal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

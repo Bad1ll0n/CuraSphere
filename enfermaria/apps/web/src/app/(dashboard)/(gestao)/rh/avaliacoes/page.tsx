@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -51,6 +52,7 @@ function Estrelas({ valor }: { valor: number }) {
 const PERIODOS = ['2026-Anual', '2026-S1', '2026-S2', '2025-Anual', '2025-S1', '2025-S2'];
 
 export default function AvaliacoesPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const qc = useQueryClient();
   const toast = useToast();
   const [filtroPeriodo, setFiltroPeriodo] = useState('');
@@ -234,7 +236,7 @@ export default function AvaliacoesPage() {
                 <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
-                    <button key={n} type="button" onClick={() => setForm(f => ({ ...f, pontuacaoGeral: n }))}
+                    <button aria-label={tA11y('rating', { n })} aria-pressed={n <= form.pontuacaoGeral} key={n} type="button" onClick={() => setForm(f => ({ ...f, pontuacaoGeral: n }))}
                       className="transition-transform hover:scale-110">
                       <svg className={`w-7 h-7 ${n <= form.pontuacaoGeral ? 'text-amber-400' : 'text-slate-200'}`} fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -289,7 +291,7 @@ export default function AvaliacoesPage() {
                 <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
-                    <button key={n} type="button"
+                    <button aria-label={tA11y('rating', { n })} key={n} type="button"
                       onClick={() => setEditando(e => e ? { ...e, pontuacaoGeral: n } : e)}
                       className="transition-transform hover:scale-110">
                       <svg className={`w-7 h-7 ${n <= editando.pontuacaoGeral ? 'text-amber-400' : 'text-slate-200'}`} fill="currentColor" viewBox="0 0 24 24">

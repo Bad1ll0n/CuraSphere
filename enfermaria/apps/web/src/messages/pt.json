@@ -510,7 +510,8 @@
     "aiSearch": "Pesquisa inteligente (IA) no Cmd+K",
     "showShortcuts": "Mostrar esta lista de atalhos",
     "closeModal": "Fechar modal, paleta ou overlay",
-    "hint": "Prima ? para reabrir"
+    "hint": "Prima ? para reabrir",
+    "fileTab": "Na ficha: {separador}"
   },
   "theme": {
     "activateDark": "Activar modo escuro",
@@ -609,8 +610,8 @@
     "currentShift": "Turno atual: {turno}",
     "shift": {
       "morning": "Manhã (08:00–16:00)",
-      "afternoon": "Tarde (16:00–23:00)",
-      "night": "Noite (23:00–08:00)"
+      "afternoon": "Tarde (16:00–24:00)",
+      "night": "Noite (00:00–08:00)"
     },
     "loading": "A carregar MAR...",
     "loadErrorTitle": "Não foi possível carregar o MAR",
@@ -646,7 +647,7 @@
     "sosLabel": "Porque se administra agora",
     "sosButton": "Administrar com justificação",
     "sosPlaceholder": "Ex.: dor 8/10 persistente, médico contactado",
-    "fiveRightsTitle": "Verificação das 5 Corretas",
+    "fiveRightsTitle": "Verificação dos 5 Certos",
     "fiveRightsHint": "Confirme cada item antes de administrar. Todos os 5 devem estar verificados.",
     "right": {
       "0": "Doente certo",
@@ -1371,5 +1372,45 @@
     "cancel": "Cancelar",
     "anonymized": "Processo anonimizado",
     "error": "Não foi possível concluir o pedido"
+  },
+  "palette": {
+    "title": "Pesquisa rápida",
+    "placeholder": "Pesquisar doentes, ações, páginas… ou ? + pergunta para IA",
+    "aiMode": "Modo IA",
+    "searching": "A pesquisar…",
+    "empty": "Sem resultados.",
+    "aiResults": "Resultados",
+    "aiError": "Erro na pesquisa IA",
+    "bed": "Cama {numero}",
+    "thisRecord": "Neste doente",
+    "patients": "Doentes",
+    "recent": "Abertos recentemente",
+    "actions": "Ações",
+    "navigation": "Ir para",
+    "admit": "Admitir doente",
+    "patientList": "Lista de doentes",
+    "hintNavigate": "navegar",
+    "hintOpen": "abrir",
+    "hintClose": "fechar",
+    "hintAi": "+ texto para pesquisa IA"
+  },
+  "a11y": {
+    "close": "Fechar",
+    "removeItem": "Remover item",
+    "previousMonth": "Mês anterior",
+    "nextMonth": "Mês seguinte",
+    "cancelEdit": "Cancelar edição",
+    "back": "Voltar",
+    "activeAct": "Ato ativo",
+    "refresh": "Atualizar",
+    "removeGuideline": "Remover guideline",
+    "taskHistory": "Histórico de tarefas",
+    "completeTask": "Concluir tarefa",
+    "edit": "Editar",
+    "uploadDocument": "Carregar documento",
+    "reactivate": "Reativar",
+    "deactivate": "Desativar",
+    "rating": "{n} de 5",
+    "discontinue": "Descontinuar"
   }
 }

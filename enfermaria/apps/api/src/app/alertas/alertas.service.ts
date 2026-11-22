@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { turnoEmCurso } from '../common/turno-em-curso';
 @Injectable()
 export class AlertasService {
   private readonly logger = new Logger(AlertasService.name);
@@ -281,17 +281,9 @@ export class AlertasService {
 
   // ─── helpers ──────────────────────────────────────────────────────────────
 
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
   private turnoAtual() {
-    const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    let tipoTurno: string;
-    if (min >= 8 * 60 && min < 16 * 60 + 30) tipoTurno = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
-    else tipoTurno = 'noite';
-
-    const diaStr = chaveDiaClinico(agora);
-    const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFim = new Date(dataHoje.getTime() + 24 * 60 * 60 * 1000 - 1);
-    return { tipoTurno, dataHoje, dataFim };
+    const t = turnoEmCurso();
+    return { tipoTurno: t.tipo, dataHoje: t.data.gte, dataFim: t.data.lte };
   }
 }

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
@@ -24,6 +25,7 @@ const TIPO_LABELS: Record<string, string> = {
 const DEFAULT_FORM = { nome: '', tipo: 'fhir_r4', endpoint: '', authTipo: 'api_key', authConfig: '', ativo: true };
 
 export default function SistemasExternosPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const [sistemas, setSistemas] = useState<Sistema[]>([]);
   const [modal, setModal] = useState<Sistema | 'novo' | null>(null);
@@ -184,7 +186,7 @@ export default function SistemasExternosPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{modal === 'novo' ? 'Novo Conector' : 'Editar Conector'}</h2>
-              <button onClick={() => setModal(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => setModal(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>

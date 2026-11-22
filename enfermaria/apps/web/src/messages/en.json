@@ -510,7 +510,8 @@
     "aiSearch": "AI smart search in Cmd+K",
     "showShortcuts": "Show this shortcuts list",
     "closeModal": "Close modal, palette or overlay",
-    "hint": "Press ? to reopen"
+    "hint": "Press ? to reopen",
+    "fileTab": "In the patient file: {separador}"
   },
   "theme": {
     "activateDark": "Activate dark mode",
@@ -609,8 +610,8 @@
     "currentShift": "Current shift: {turno}",
     "shift": {
       "morning": "Morning (08:00–16:00)",
-      "afternoon": "Afternoon (16:00–23:00)",
-      "night": "Night (23:00–08:00)"
+      "afternoon": "Afternoon (16:00–24:00)",
+      "night": "Night (00:00–08:00)"
     },
     "loading": "Loading MAR...",
     "loadErrorTitle": "Could not load the MAR",
@@ -1371,5 +1372,45 @@
     "cancel": "Cancel",
     "anonymized": "Record anonymised",
     "error": "Could not complete the request"
+  },
+  "palette": {
+    "title": "Quick search",
+    "placeholder": "Search patients, actions, pages… or ? + question for AI",
+    "aiMode": "AI mode",
+    "searching": "Searching…",
+    "empty": "No results.",
+    "aiResults": "Results",
+    "aiError": "AI search failed",
+    "bed": "Bed {numero}",
+    "thisRecord": "This patient",
+    "patients": "Patients",
+    "recent": "Recently opened",
+    "actions": "Actions",
+    "navigation": "Go to",
+    "admit": "Admit patient",
+    "patientList": "Patient list",
+    "hintNavigate": "navigate",
+    "hintOpen": "open",
+    "hintClose": "close",
+    "hintAi": "+ text for AI search"
+  },
+  "a11y": {
+    "close": "Close",
+    "removeItem": "Remove item",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "cancelEdit": "Cancel editing",
+    "back": "Back",
+    "activeAct": "Active procedure",
+    "refresh": "Refresh",
+    "removeGuideline": "Remove guideline",
+    "taskHistory": "Task history",
+    "completeTask": "Complete task",
+    "edit": "Edit",
+    "uploadDocument": "Upload document",
+    "reactivate": "Reactivate",
+    "deactivate": "Deactivate",
+    "rating": "{n} of 5",
+    "discontinue": "Discontinue"
   }
 }

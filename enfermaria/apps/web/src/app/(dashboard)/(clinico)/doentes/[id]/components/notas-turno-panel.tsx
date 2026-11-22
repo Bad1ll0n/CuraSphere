@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
@@ -134,6 +135,7 @@ function getDeadlineEdicao(criadaEm: string): Date {
 }
 
 export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefresh }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
 
@@ -249,7 +251,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
                       </span>
                       {isNotaEditavel(n) && (
                         <div className="flex items-center gap-1" style={{ marginLeft: 'auto' }}>
-                          <button onClick={() => { setNotaEditandoId(n.id); setNotaEditTexto(n.texto); }} title="Editar"
+                          <button aria-label={tA11y('edit')} onClick={() => { setNotaEditandoId(n.id); setNotaEditTexto(n.texto); }} title="Editar"
                             className="w-6 h-6 rounded-md hover:bg-indigo-100 flex items-center justify-center transition-colors">
                             <svg className="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

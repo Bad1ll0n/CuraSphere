@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
@@ -127,6 +128,7 @@ const grupoLabel: Record<string, string> = {
 };
 
 export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const role = utilizador?.role ?? '';
   const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(role);
@@ -207,7 +209,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
             </span>
           )}
           <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
-            <button onClick={abrirHistorico}
+            <button aria-label={tA11y('taskHistory')} onClick={abrirHistorico}
               title="Histórico de tarefas"
               className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
               <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +262,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                       {prioridadeLabel[t.prioridade]}
                     </span>
                     {podeConcluir && (
-                      <button
+                      <button aria-label={tA11y('completeTask')}
                         onClick={async () => {
                           try {
                             await api.patch(`/tarefas/${t.id}/estado`, { estado: 'concluida' });
@@ -353,7 +355,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
                 </svg>
                 <h2 className="text-xl font-bold text-slate-900">Histórico de Tarefas</h2>
               </div>
-              <button onClick={() => setModalHistorico(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+              <button aria-label={tA11y('close')} onClick={() => setModalHistorico(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

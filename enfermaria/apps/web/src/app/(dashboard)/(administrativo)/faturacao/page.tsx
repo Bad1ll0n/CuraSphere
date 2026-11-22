@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { SeletorDoente } from '@/components/seletor-doente';
@@ -39,6 +40,7 @@ const metodoLabel: Record<string, string> = {
 };
 
 export default function FaturacaoPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const [episodios, setEpisodios] = useState<Episodio[]>([]);
   const [total, setTotal] = useState(0);
@@ -294,7 +296,7 @@ export default function FaturacaoPage() {
                 <h2 className="text-xl font-bold text-slate-900">{detalhe.doente.nome}</h2>
                 <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>Processo: {detalhe.doente.numeroProcesso}</p>
               </div>
-              <button onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 transition-colors">
+              <button aria-label={tA11y('close')} onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -347,7 +349,7 @@ export default function FaturacaoPage() {
                             </div>
                             <span className="text-sm font-semibold text-slate-700">{item.total.toFixed(2)} €</span>
                             {detalhe.estado !== 'paga' && detalhe.estado !== 'anulada' && (
-                              <button onClick={() => removerItem(item.id)} className="text-slate-300 hover:text-red-400 transition-colors">
+                              <button aria-label={tA11y('removeItem')} onClick={() => removerItem(item.id)} className="text-slate-300 hover:text-red-400 transition-colors">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>

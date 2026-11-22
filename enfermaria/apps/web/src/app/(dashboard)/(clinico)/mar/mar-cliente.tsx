@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { turnoDaHora } from '@org/shared';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import api from '@/lib/api';
@@ -191,7 +192,8 @@ export function MarCliente() {
   }, {});
 
   const horaAtual = new Date().getHours();
-  const turnoLabel = t(horaAtual >= 8 && horaAtual < 16 ? 'shift.morning' : horaAtual >= 16 && horaAtual < 23 ? 'shift.afternoon' : 'shift.night');
+  // UX-12: a definição única dos turnos (libs/shared) — antes a tarde acabava aqui às 23.
+  const turnoLabel = t(({ manha: 'shift.morning', tarde: 'shift.afternoon', noite: 'shift.night' } as const)[turnoDaHora(horaAtual)]);
 
   const modalMed = medicacoes.find((m) => m.id === modalId);
   const certasValues = getCertasValues(modalMed, t);

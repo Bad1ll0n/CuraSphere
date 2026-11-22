@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
@@ -239,6 +240,7 @@ const COR_ESCALAS: Record<string, string> = {
 };
 
 export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [escalasClinicas, setEscalasClinicas] = useState<any[]>([]);
@@ -367,7 +369,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
             <div {...dlgEscalaClinica.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                 <h2 className="text-xl font-bold text-slate-900">Registar Escala Clínica</h2>
-                <button onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <button aria-label={tA11y('close')} onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                   <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>

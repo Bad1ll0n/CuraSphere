@@ -10,7 +10,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useNaoLidasCount } from '@/lib/hooks';
 import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
-import { filtrarMenus } from './nav-data';
+import { filtrarMenus, rotaPermitida } from './nav-data';
 import { FilaAlertasCriticos, chaveAlerta, type AlertaCritico } from './sos-banner';
 import { useAlertaSonoro } from '@/lib/alerta-sonoro';
 import { SocketStatusBanner } from '@/components/socket-status-banner';
@@ -167,7 +167,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }} />
       )}
 
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)}
+        itens={itemsVisiveis.map((i) => ({ href: i.href, label: i.label }))} utilizadorId={utilizador.id}
+        podePesquisarDoentes={rotaPermitida('/doentes', utilizador)} podeAdmitir={rotaPermitida('/doentes/admitir', utilizador)} />
       <KeyboardShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
 
       <SidebarNav

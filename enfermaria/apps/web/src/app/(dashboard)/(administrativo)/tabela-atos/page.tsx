@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 
 interface AtoClinico {
@@ -49,6 +50,7 @@ const TABS = ['todos', 'consulta', 'exame', 'procedimento', 'medicacao', 'outro'
 const FORM_VAZIO = { codigo: '', descricao: '', categoria: 'consulta', precoBase: '', especialidade: '', ativo: true };
 
 export default function TabelaAtosPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const [atos, setAtos] = useState<AtoClinico[]>([]);
   const [tab, setTab] = useState<typeof TABS[number]>('todos');
   const [modal, setModal] = useState(false);
@@ -221,19 +223,19 @@ export default function TabelaAtosPage() {
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       <div className="flex items-center gap-2 justify-end">
-                        <button onClick={() => abrirEditar(ato)} className="text-slate-500 hover:text-blue-600 transition-colors" title="Editar">
+                        <button aria-label={tA11y('edit')} onClick={() => abrirEditar(ato)} className="text-slate-500 hover:text-blue-600 transition-colors" title="Editar">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
                         </button>
                         {ato.ativo ? (
-                          <button onClick={() => desativar(ato)} className="text-slate-500 hover:text-red-500 transition-colors" title="Desativar">
+                          <button aria-label={tA11y('deactivate')} onClick={() => desativar(ato)} className="text-slate-500 hover:text-red-500 transition-colors" title="Desativar">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>
                           </button>
                         ) : (
-                          <button onClick={() => reativar(ato)} className="text-slate-500 hover:text-emerald-600 transition-colors" title="Reativar">
+                          <button aria-label={tA11y('reactivate')} onClick={() => reativar(ato)} className="text-slate-500 hover:text-emerald-600 transition-colors" title="Reativar">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -328,7 +330,7 @@ export default function TabelaAtosPage() {
 
               {/* Ativo */}
               <div className="col-span-2 flex items-center gap-3">
-                <button
+                <button role="switch" aria-checked={form.ativo} aria-label={tA11y('activeAct')}
                   type="button"
                   onClick={() => setForm(f => ({ ...f, ativo: !f.ativo }))}
                   className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${form.ativo ? 'bg-blue-600' : 'bg-slate-200'}`}

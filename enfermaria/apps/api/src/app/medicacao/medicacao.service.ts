@@ -33,6 +33,7 @@ import { registarFalha } from '../common/falhas';
 import { assinarQR } from './qr-assinatura';
 import { verificarValidacaoFarmaceutica } from './politica-validacao';
 import { descontinuarMedicacao } from './descontinuacao';
+import { HORAS_TURNO } from '@org/shared';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -907,8 +908,7 @@ export class MedicacaoService {
    * cama — antes devolvia os fármacos do hospital inteiro.
    */
   async timeline(servico: string, turno: 'manha' | 'tarde' | 'noite', dataStr?: string) {
-    const TURNOS = { manha: { inicio: 8, fim: 16 }, tarde: { inicio: 16, fim: 24 }, noite: { inicio: 0, fim: 8 } };
-    const { inicio, fim } = TURNOS[turno];
+    const { inicio, fim } = HORAS_TURNO[turno]; // UX-12: a definição única (libs/shared)
 
     // `data` vem como YYYY-MM-DD: meio-dia UTC desse dia cai sempre no mesmo dia clínico.
     const dataRef = dataStr && /^\d{4}-\d{2}-\d{2}$/.test(dataStr) ? new Date(`${dataStr}T12:00:00Z`) : new Date();

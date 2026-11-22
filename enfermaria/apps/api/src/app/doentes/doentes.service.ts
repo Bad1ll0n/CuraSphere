@@ -17,6 +17,9 @@ import { ultimosSinaisVitais } from '../common/ultimos-registos';
 import { abrirEpisodio, ocuparCama } from '../episodios/episodios.core';
 import { celulaCsv } from '../common/csv';
 import { registarFalha } from '../common/falhas';
+import { filtroHorarioTurnoAtivo } from '../common/turno-em-curso';
+import { minutosLimiteEdicao } from '@org/shared';
+import { minutosDoDiaClinico } from '../common/dia-clinico.helper';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -463,31 +466,13 @@ export class DoenteService {
   }
 
   /**
-   * Calcula o deadline de edição de uma nota com base no turno real:
-   *   Manhã  08:00–16:00 → editável até 16:30
-   *   Tarde  16:00–23:00 → editável até 23:30
-   *   Noite  23:00–08:00 → editável até 08:30 do dia seguinte
+   * Prazo de edição de uma nota: o fim do turno em que foi escrita mais os 30 min da passagem
+   * (manhã → 16:30, tarde → 00:30, noite → 08:30).
    */
   private getDeadlineEdicaoNota(criadaEm: Date): Date {
-    const min = criadaEm.getHours() * 60 + criadaEm.getMinutes();
-    const deadline = new Date(criadaEm);
-
-    if (min >= 8 * 60 && min < 16 * 60) {
-      // Manhã → 16:30 mesmo dia
-      deadline.setHours(16, 30, 0, 0);
-    } else if (min >= 16 * 60 && min < 23 * 60) {
-      // Tarde → 23:30 mesmo dia
-      deadline.setHours(23, 30, 0, 0);
-    } else if (min >= 23 * 60) {
-      // Noite (início) → 08:30 do dia seguinte
-      deadline.setDate(deadline.getDate() + 1);
-      deadline.setHours(8, 30, 0, 0);
-    } else {
-      // 00:00–08:30 (continuação da noite anterior) → 08:30 mesmo dia
-      deadline.setHours(8, 30, 0, 0);
-    }
-
-    return deadline;
+    // UX-12: até ao fim do turno em que a nota foi escrita, mais a passagem (libs/shared).
+    const minutos = minutosDoDiaClinico(criadaEm);
+    return new Date(criadaEm.getTime() + (minutosLimiteEdicao(minutos) - minutos) * 60_000 - criadaEm.getSeconds() * 1000 - criadaEm.getMilliseconds());
   }
 
   private notaDentroDoTurno(criadaEm: Date): boolean {
@@ -499,33 +484,9 @@ export class DoenteService {
 
   /** Verifica se o utilizador tem um HorarioTurno ativo neste momento */
   private async verificarTurnoAtivo(utilizadorId: string): Promise<void> {
-    const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-
-    let tipo: string;
-    const dataRef = new Date(agora);
-
-    if (min >= 8 * 60 && min < 16 * 60) {
-      tipo = 'manha';
-    } else if (min >= 16 * 60 && min < 23 * 60) {
-      tipo = 'tarde';
-    } else if (min >= 23 * 60) {
-      tipo = 'noite';
-    } else {
-      // 00:00–08:30 → noite de ontem
-      tipo = 'noite';
-      dataRef.setDate(dataRef.getDate() - 1);
-    }
-
-    const diaStr = chaveDiaClinico(dataRef);
-    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
-
+    // UX-12: o turno em curso ou, nos 30 min de passagem, o que está a sair.
     const turno = await this.prisma.horarioTurnoProfissional.findFirst({
-      where: {
-        utilizadorId,
-        horarioTurno: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },
-      },
+      where: { utilizadorId, horarioTurno: filtroHorarioTurnoAtivo() },
     });
 
     if (!turno) throw new ForbiddenException('Não tens turno ativo neste momento');

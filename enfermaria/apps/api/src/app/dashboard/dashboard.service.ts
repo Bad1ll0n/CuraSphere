@@ -4,6 +4,7 @@ import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../commo
 import { ultimosSinaisVitais } from '../common/ultimos-registos';
 import { RedisService } from '../redis/redis.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
+import { turnoEmCurso } from '../common/turno-em-curso';
 
 /** PERF-06: indicadores agregados — 30 s de frescura chega para painéis de gestão. */
 const TTL_DASHBOARD_S = Number(process.env['DASHBOARD_CACHE_S'] ?? 30);
@@ -40,23 +41,11 @@ export class DashboardService {
     return valor;
   }
 
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
   private turnoAtual() {
     const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    const dataRef = new Date(agora);
-    let tipoTurno: string;
-    if (min >= 8 * 60 && min < 16 * 60 + 30)      tipoTurno = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
-    else {
-      tipoTurno = 'noite';
-      if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
-    }
-    // BE-03: a janela do turno é o dia DO HOSPITAL. Derivada de `toISOString()`, a partir
-    // de uma hora local, deslocava-se um dia durante o horário de verão — precisamente na
-    // madrugada, que é quando o turno da noite a consulta.
-    const dataInicio = inicioDoDiaClinico(dataRef);
-    const dataFimDia = new Date(somarDiasClinicos(dataInicio, 1).getTime() - 1);
-    return { tipoTurno, dataInicio, dataFimDia, agora };
+    const t = turnoEmCurso(agora);
+    return { tipoTurno: t.tipo, dataInicio: t.data.gte, dataFimDia: t.data.lte, agora };
   }
 
   async analytics() {

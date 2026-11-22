@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { turnoDeEscalaEmCurso } from '@org/shared';
 import {
   View, Text, ScrollView, TouchableOpacity,
   StyleSheet, Alert, ActivityIndicator, RefreshControl, Image,
@@ -140,18 +141,17 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const verificarTurnoAtivo = async () => {
+    // UX-12: a definição única dos turnos (libs/shared) — o turno em curso ou, nos 30 min de
+    // passagem, o que está a sair (a mesma regra da api).
     const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    let tipo: string;
-    const dataRef = new Date(agora);
-    if (min >= 8 * 60 && min < 16 * 60) tipo = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60) tipo = 'tarde';
-    else if (min >= 23 * 60) tipo = 'noite';
-    else { tipo = 'noite'; dataRef.setDate(dataRef.getDate() - 1); }
+    const { emCurso, emPassagem } = turnoDeEscalaEmCurso(agora.getHours() * 60 + agora.getMinutes());
+    const janelas = [emCurso, ...(emPassagem ? [emPassagem] : [])].map((t) => {
+      const d = new Date(agora); d.setDate(d.getDate() - t.diasAtras);
+      return { tipo: t.tipo, dia: d.toDateString(), mes: d.getMonth() + 1, ano: d.getFullYear() };
+    });
     try {
-      const r = await api.get(`/horarios/meu?mes=${dataRef.getMonth() + 1}&ano=${dataRef.getFullYear()}`);
-      const diaRef = dataRef.toDateString();
-      setEmTurno(r.data.some((h: any) => h.horarioTurno.tipo === tipo && new Date(h.horarioTurno.data).toDateString() === diaRef));
+      const r = await api.get(`/horarios/meu?mes=${janelas[0].mes}&ano=${janelas[0].ano}`);
+      setEmTurno(r.data.some((h: any) => janelas.some((j) => h.horarioTurno.tipo === j.tipo && new Date(h.horarioTurno.data).toDateString() === j.dia)));
     } catch { setEmTurno(false); }
   };
 

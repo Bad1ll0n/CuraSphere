@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { HORAS_TURNO, ROTULO_TURNO, TIPOS_TURNO, turnoDaHora } from '@org/shared';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
@@ -53,18 +54,17 @@ interface TimelineData {
   doentes: DoenteTimeline[];
 }
 
-const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = [
-  { value: 'manha', label: 'Manhã', inicio: 8, fim: 16 },
-  { value: 'tarde', label: 'Tarde', inicio: 16, fim: 24 },
-  { value: 'noite', label: 'Noite', inicio: 0, fim: 8 },
-];
+// UX-12: a definição única dos turnos (libs/shared).
+const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = TIPOS_TURNO.map((value) => ({
+  value, label: ROTULO_TURNO[value], ...HORAS_TURNO[value],
+}));
 
 // '' = todos os serviços. A API filtra pelo serviço da cama.
 const SERVICOS = ['', 'Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
 
 export default function TimelineMedicacoesPage() {
   const toast = useToast();
-  const [turno, setTurno] = useState<Turno>('manha');
+  const [turno, setTurno] = useState<Turno>(() => turnoDaHora(new Date().getHours()));
   const [servico, setServico] = useState(SERVICOS[0]);
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
   const [timeline, setTimeline] = useState<TimelineData | null>(null);

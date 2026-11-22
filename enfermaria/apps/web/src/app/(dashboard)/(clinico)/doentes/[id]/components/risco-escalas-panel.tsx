@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [escalas, setEscalas] = useState<{ braden: any; morse: any }>({ braden: null, morse: null });
@@ -135,7 +137,7 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                 <h2 className="text-xl font-bold text-slate-900">
                   {isBraden ? 'Escala de Braden' : 'Escala de Morse'}
                 </h2>
-                <button onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <button aria-label={tA11y('close')} onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                   <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>

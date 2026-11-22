@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { HORAS_TURNO } from '@org/shared';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { DotacaoPanel } from './dotacao-panel';
@@ -55,6 +57,7 @@ const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Ag
 const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 export default function HorariosPagina() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const hoje = new Date();
   const [mes, setMes] = useState(hoje.getMonth() + 1);
@@ -549,7 +552,7 @@ export default function HorariosPagina() {
                 Escala gerada: <strong>{resultadoAuto.turnosCriados} turnos</strong> criados para {resultadoAuto.diasGerados} dias,
                 com <strong>{resultadoAuto.profissionaisUsados} profissionais</strong>.
               </p>
-              <button onClick={() => setResultadoAuto(null)} className="text-green-400 hover:text-green-600">
+              <button aria-label={tA11y('close')} onClick={() => setResultadoAuto(null)} className="text-green-400 hover:text-green-600">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -1162,11 +1165,8 @@ export default function HorariosPagina() {
       {diaSelecionado && (() => {
         const turnosDia = turnosPorDia[diaSelecionado] ?? [];
         const dataObj = new Date(diaSelecionado + 'T12:00:00');
-        const horasLabel: Record<string, string> = {
-          manha: '08:00 – 16:00',
-          tarde: '16:00 – 00:00',
-          noite: '00:00 – 08:00',
-        };
+        // UX-12: a definição única dos turnos (libs/shared).
+        const horasLabel: Record<string, string> = Object.fromEntries(Object.entries(HORAS_TURNO).map(([k, h]) => [k, `${String(h.inicio).padStart(2, '0')}:00 – ${String(h.fim % 24).padStart(2, '0')}:00`]));
         return (
           <>
             <div role="presentation" className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
@@ -1182,7 +1182,7 @@ export default function HorariosPagina() {
                     {dataObj.getDate()} de {meses[mes - 1]} {ano}
                   </h2>
                 </div>
-                <button onClick={() => setDiaSelecionado(null)}
+                <button aria-label={tA11y('close')} onClick={() => setDiaSelecionado(null)}
                   className="text-slate-500 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
                   style={{ padding: '8px' }}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

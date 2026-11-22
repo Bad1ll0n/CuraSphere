@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import { useSocket, usePollingDeRecurso } from '@/lib/use-socket';
 import api from '@/lib/api';
@@ -104,6 +105,7 @@ const WHO_FASES = {
 type Fase = keyof typeof WHO_FASES;
 
 export default function BlocoPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const hoje = new Date();
   const [vistaAtiva, setVistaAtiva] = useState<'agenda' | 'salas' | 'calendario'>('agenda');
@@ -296,18 +298,14 @@ export default function BlocoPage() {
           <div>
             {/* Controlos mês */}
             <div className="flex items-center gap-3" style={{ marginBottom: '20px' }}>
-              <button onClick={() => { if (calMes === 1) { setCalMes(12); setCalAno(y => y - 1); } else setCalMes(m => m - 1); }}
+              <button aria-label={tA11y('previousMonth')} onClick={() => { if (calMes === 1) { setCalMes(12); setCalAno(y => y - 1); } else setCalMes(m => m - 1); }}
                 className="w-9 h-9 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
-                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
               </button>
               <h3 className="text-base font-bold text-slate-800">{meses[calMes - 1]} {calAno}</h3>
-              <button onClick={() => { if (calMes === 12) { setCalMes(1); setCalAno(y => y + 1); } else setCalMes(m => m + 1); }}
+              <button aria-label={tA11y('nextMonth')} onClick={() => { if (calMes === 12) { setCalMes(1); setCalAno(y => y + 1); } else setCalMes(m => m + 1); }}
                 className="w-9 h-9 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
-                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               </button>
               {loadingCal && (
                 <svg className="animate-spin w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24">

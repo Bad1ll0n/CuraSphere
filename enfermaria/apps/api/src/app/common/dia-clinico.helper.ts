@@ -94,3 +94,11 @@ export function somarDiasClinicos(inicio: Date, n: number, tz: string = TZ_CLINI
   const [ano, mes, dia] = chave.split('-').map(Number);
   return inicioDoDiaClinico(new Date(Date.UTC(ano, mes - 1, dia + n, 12, 0, 0)), tz);
 }
+
+/** Minutos desde a meia-noite, na hora do hospital (UX-12: os turnos contam-se nesta hora). */
+export function minutosDoDiaClinico(instante: Date = new Date(), tz: string = TZ_CLINICO): number {
+  const partes = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(instante);
+  const h = Number(partes.find((p) => p.type === 'hour')?.value ?? 0) % 24;
+  const m = Number(partes.find((p) => p.type === 'minute')?.value ?? 0);
+  return h * 60 + m;
+}

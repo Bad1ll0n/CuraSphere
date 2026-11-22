@@ -1,6 +1,7 @@
 'use client';
 
 import { formatarDiaMes } from '@/lib/formatar';
+import { useTranslations } from 'next-intl';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
@@ -113,6 +114,7 @@ function CustomTooltipFaturacao({ active, payload, label }: any) {
 }
 
 export default function DashboardExecutivo() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const qc = useQueryClient();
   const { data: dados, isLoading: loading, dataUpdatedAt } = useQuery<DashExec>({
     queryKey: ['dashboard-executivo'],
@@ -148,7 +150,7 @@ export default function DashboardExecutivo() {
             </svg>
             Exportar CSV
           </a>
-          <button onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-500 hover:text-slate-700 transition-colors" title="Atualizar">
+          <button aria-label={tA11y('refresh')} onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-500 hover:text-slate-700 transition-colors" title="Atualizar">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>

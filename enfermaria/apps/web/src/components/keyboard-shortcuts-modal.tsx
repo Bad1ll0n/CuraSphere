@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { ACOES_FICHA } from '@/lib/paleta-comandos';
 
 interface Props {
   open: boolean;
@@ -17,6 +18,8 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
     { key: '? + texto', desc: t('aiSearch') },
     { key: '?', desc: t('showShortcuts') },
     { key: 'Escape', desc: t('closeModal') },
+    // UX-18: na ficha do doente
+    ...ACOES_FICHA.map((a) => ({ key: a.tecla, desc: t('fileTab', { separador: a.label }) })),
   ];
 
   useEffect(() => {

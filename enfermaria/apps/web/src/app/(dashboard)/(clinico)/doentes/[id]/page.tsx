@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { QRCode } from '@/components/qr-diferido';
 import { useAuth } from '@/lib/auth-context';
+import { registarRecente, useAtalhosFicha } from '@/lib/atalhos-ficha';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
@@ -143,6 +144,7 @@ const estadoLabel: Record<string, string> = {
 };
 
 export default function DoenteDetalhe() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const { utilizador } = useAuth();
@@ -158,10 +160,8 @@ export default function DoenteDetalhe() {
   const [modalQR, setModalQR] = useState(false);
   // UX-29: separador activo (fica no endereço: #vitais, #medicacao…).
   const [separador, setSeparador] = useState<string>('resumo');
-  useEffect(() => {
-    const h = window.location.hash.replace('#', '');
-    if (SEPARADORES_FICHA.some((x) => x.id === h)) setSeparador(h);
-  }, []);
+  // UX-29/UX-18: separador no endereço (#vitais…) e atalhos de uma tecla (V, M, N…).
+  useAtalhosFicha(SEPARADORES_FICHA.map((x) => x.id), setSeparador);
   const escolherSeparador = (sid: string) => {
     setSeparador(sid);
     window.history.replaceState(null, '', `#${sid}`);
@@ -292,7 +292,7 @@ export default function DoenteDetalhe() {
   const carregar = useCallback(() => {
     setLoading(true);
     api.get(`/doentes/${id}`)
-      .then((r) => { setDoente(r.data); setSemAcesso(false); }).catch((e) => setSemAcesso(eSemAtribuicao(e)))
+      .then((r) => { setDoente(r.data); setSemAcesso(false); if (utilizador?.id) registarRecente(utilizador.id, { id: r.data.id, nome: r.data.nome, cama: r.data.cama?.numero ?? null }); }).catch((e) => setSemAcesso(eSemAtribuicao(e)))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -1049,7 +1049,7 @@ export default function DoenteDetalhe() {
           <div {...dlgEditar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Editar Dados Clínicos</h2>
-              <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label={tA11y('close')} onClick={() => setModalEditarDoente(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
@@ -1115,7 +1115,7 @@ export default function DoenteDetalhe() {
           <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">{tf('startIsolation')}</h2>
-              <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label={tA11y('close')} onClick={() => setModalIsolamento(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
@@ -1141,7 +1141,7 @@ export default function DoenteDetalhe() {
           <div {...dlgQR.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h3 className="text-lg font-bold text-slate-900">QR Code do Doente</h3>
-              <button onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+              <button aria-label={tA11y('close')} onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -1202,7 +1202,7 @@ export default function DoenteDetalhe() {
           <div {...dlgAlta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Dar Alta — {doente.nome}</h2>
-              <button onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -1335,7 +1335,7 @@ export default function DoenteDetalhe() {
           <div {...dlgSinalizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">⚠ Sinalizar como Preocupante</h2>
-              <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label={tA11y('close')} onClick={() => setModalSinalizar(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -1385,7 +1385,7 @@ export default function DoenteDetalhe() {
                 <h2 className="text-lg font-bold text-slate-900">Portal do Doente</h2>
                 <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Criar ou actualizar acesso para {doente.nome}</p>
               </div>
-              <button onClick={() => setModalPortal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => setModalPortal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

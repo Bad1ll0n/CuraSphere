@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { filtroPesquisaNome } from '../prisma/encryption.middleware';
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { visaoAdministrativa } from './visao-administrativa';
+import { filtroHorarioTurnoAtivo } from '../common/turno-em-curso';
 
 /** Papéis que só veem, na lista, os doentes que lhes estão atribuídos no turno. */
 export const PAPEIS_LISTA_RESTRITA = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
@@ -60,7 +60,7 @@ export class ListagemDoentesService {
       return soIdentificacao ? { ...r, data: r.data.map(visaoAdministrativa) } : r;
     }
 
-    const meus = { atribuicoesHorario: { some: { utilizadorId, horarioTurno: turnoActual() } } };
+    const meus = { atribuicoesHorario: { some: { utilizadorId, horarioTurno: filtroHorarioTurnoAtivo() } } };
     const where = termo
       ? { ...base, estadoRegisto: 'internado', OR: [{ AND: [meus, porTermoClinico] }, porIdentificacao] }
       : { ...base, estadoRegisto: 'internado', ...meus };
@@ -78,12 +78,5 @@ export class ListagemDoentesService {
   }
 }
 
-/** O turno em curso (manhã 08:00–16:30, tarde 16:00–23:30, noite) e o dia clínico a que pertence. */
-export function turnoActual(agora = new Date()) {
-  const min = agora.getHours() * 60 + agora.getMinutes();
-  const tipo = min >= 8 * 60 && min < 16 * 60 + 30 ? 'manha' : min >= 16 * 60 && min < 23 * 60 + 30 ? 'tarde' : 'noite';
-  const dataHoje = new Date(chaveDiaClinico(agora) + 'T00:00:00.000Z');
-  const dataBase = tipo === 'noite' && min < 8 * 60 + 30 ? new Date(dataHoje.getTime() - 24 * 60 * 60 * 1000) : dataHoje;
-  const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
-  return { tipo: tipo as any, data: { gte: dataBase, lte: dataFim } };
-}
+/** UX-12: substituído por `turnoEmCurso` (common/turno-em-curso.ts), a regra única dos turnos. */
+export { turnoEmCurso as turnoActual } from '../common/turno-em-curso';

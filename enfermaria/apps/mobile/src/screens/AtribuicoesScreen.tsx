@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { turnoDaHora } from '@org/shared';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
   Modal, ActivityIndicator, RefreshControl,
@@ -62,9 +63,8 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
 
       if (lista.length > 0) {
         const agora = new Date();
-        const min = agora.getHours() * 60 + agora.getMinutes();
-        const tipoAtual = min >= 8 * 60 && min < 16 * 60 + 30 ? 'manha'
-          : min >= 16 * 60 && min < 23 * 60 + 30 ? 'tarde' : 'noite';
+        // UX-12: a definição única dos turnos (libs/shared).
+        const tipoAtual = turnoDaHora(agora.getHours());
         const inicial = turnoDoGrupo(lista, tipoAtual) ?? lista[0];
         setTurnoSelecionado((prev: any) => prev ? lista.find((t) => t.id === prev.id) ?? inicial : inicial);
       }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 
@@ -77,6 +78,7 @@ function tempoRelativo(data: string) {
 }
 
 export default function IncidentesTIPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const [incidentes, setIncidentes] = useState<Incidente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -494,7 +496,7 @@ export default function IncidentesTIPage() {
                 <h2 className="text-lg font-bold text-slate-900">Novo Incidente TI</h2>
                 <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Será encaminhado automaticamente à equipa responsável</p>
               </div>
-              <button onClick={() => setModalAberto(false)} className="text-slate-500 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
+              <button aria-label={tA11y('close')} onClick={() => setModalAberto(false)} className="text-slate-500 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

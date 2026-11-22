@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { rotuloTurnoComHoras } from '@org/shared';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
@@ -23,7 +24,7 @@ interface Linha {
 }
 interface Lista { data: string; turno: Turno; anterior: { data: string; turno: Turno }; podeVerServico: boolean; doentes: Linha[] }
 
-const TURNO: Record<Turno, string> = { manha: 'Manhã (08–16)', tarde: 'Tarde (16–24)', noite: 'Noite (00–08)' };
+const TURNO: Record<Turno, string> = { manha: rotuloTurnoComHoras('manha'), tarde: rotuloTurnoComHoras('tarde'), noite: rotuloTurnoComHoras('noite') }; // UX-12
 const SECCOES: { k: keyof Isbar; letra: string; titulo: string }[] = [
   { k: 'identificacao', letra: 'I', titulo: 'Identificação' },
   { k: 'situacao', letra: 'S', titulo: 'Situação' },

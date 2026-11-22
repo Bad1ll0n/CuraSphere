@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { DicomViewer } from '@/components/dicom-viewer';
@@ -54,6 +55,7 @@ function formatBytes(bytes?: number) {
 }
 
 export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const role = utilizador?.role ?? '';
   const podeUpload = ['medico', 'enfermeiro', 'tecnico_saude'].includes(role);
@@ -210,7 +212,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
               </button>
             )}
             {podeUpload && (
-              <button
+              <button aria-label={tA11y('uploadDocument')}
                 onClick={() => setModalUpload(true)}
                 className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
                 title="Carregar documento"
@@ -338,7 +340,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           <div {...dlgDoc.propsPainel} className="bg-white rounded-2xl shadow-2xl flex flex-col" style={{ width: '90vw', height: '90vh', maxWidth: '1200px' }}>
             <div className="flex items-center justify-between" style={{ padding: '16px 20px', borderBottom: '1px solid #f1f5f9' }}>
               <span className="text-sm font-semibold text-slate-700 truncate">{docAberto.titulo}</span>
-              <button
+              <button aria-label={tA11y('close')}
                 onClick={() => setDocAberto(null)}
                 className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors"
               >
@@ -390,7 +392,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           <div {...dlgUpload.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Carregar Documento</h2>
-              <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>

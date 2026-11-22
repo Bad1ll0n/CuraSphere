@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
@@ -17,6 +18,7 @@ const TIPOS: Record<string, string> = {
 };
 
 export default function ConsentimentosPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { id: doenteId } = useParams<{ id: string }>();
   const router = useRouter();
   const { utilizador } = useAuth();
@@ -102,7 +104,7 @@ export default function ConsentimentosPage() {
     <div className="min-h-screen bg-slate-50 p-6">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <button
+          <button aria-label={tA11y('back')}
             onClick={() => router.back()}
             className="text-slate-500 hover:text-slate-600 transition-colors"
           >

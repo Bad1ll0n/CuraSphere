@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
@@ -25,6 +26,7 @@ function BtnAdd({ onClick, label = 'Adicionar' }: { onClick: () => void; label?:
 }
 
 export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [notasClincias, setNotasClincias] = useState<any[]>([]);
@@ -231,7 +233,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
           <div {...dlgSoap.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
-              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('cancelEdit')} onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
