@@ -366,7 +366,8 @@
     "networkError": "No network connection",
     "sessionExpired": "Session expired. Please sign in again.",
     "forbiddenTitle": "No access to this area",
-    "forbiddenBody": "Your profile is not allowed to view this. Redirecting to your workspace."
+    "forbiddenBody": "Your profile is not allowed to view this. Redirecting to your workspace.",
+    "forbiddenGoHome": "Go to start page"
   },
   "roles": {
     "medico": "Doctor",
@@ -1463,5 +1464,17 @@
     "contactTeam": "Contact the team",
     "noQuestionnaires": "Your team has not assigned you any questionnaires yet. They will appear here.",
     "back": "Back"
+  },
+  "patientRegistration": {
+    "unknownTitle": "Unidentified patient",
+    "unknownBody": "Registers with a temporary identification (\"Desconhecido YYYY-MM-DD #N\"). The real details are merged later.",
+    "duplicatesTitle": "{n, plural, one {This patient may already exist} other {# records of this patient may already exist}}",
+    "process": "record {numero}",
+    "duplicatesHint": "Check before creating a new record — open the existing one if it is the same person.",
+    "reason": {
+      "nif": "same tax number",
+      "sns": "same SNS number",
+      "nome_e_data": "same name and date of birth"
+    }
   }
 }

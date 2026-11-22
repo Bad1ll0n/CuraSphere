@@ -63,8 +63,8 @@ export default function CatalogoPage() {
 
   const mutEditar = useMutation({
     mutationFn: (body: Partial<typeof form>) => api.patch(`/catalogo/${editItem!.id}`, body),
-    onSuccess: () => { toast.success('Medicamento actualizado'); setModal(null); setEditItem(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar medicamento'),
+    onSuccess: () => { toast.success('Medicamento atualizado'); setModal(null); setEditItem(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar medicamento'),
   });
 
   const mutDesativar = useMutation({

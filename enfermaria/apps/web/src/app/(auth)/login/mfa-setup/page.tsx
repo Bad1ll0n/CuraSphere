@@ -62,7 +62,7 @@ export default function MfaSetupPage() {
             disabled={loading || code.length !== 6}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg py-3 font-medium transition-colors"
           >
-            {loading ? 'A activar...' : 'Activar e Continuar'}
+            {loading ? 'A ativar...' : 'Ativar e Continuar'}
           </button>
         </form>
         <button

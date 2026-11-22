@@ -257,7 +257,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
               </TouchableOpacity>
             </View>
 
-            <Text style={s.stepLabel}>1. O teu turno</Text>
+            <Text style={s.stepLabel}>1. O seu turno</Text>
             {meusTurnos.length === 0
               ? <Text style={s.vazioTexto}>Sem turnos futuros disponíveis</Text>
               : (

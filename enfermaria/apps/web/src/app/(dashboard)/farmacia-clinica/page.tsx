@@ -105,7 +105,7 @@ export default function FarmaciaPage() {
   };
 
   const TABS: { value: Tab; label: string }[] = [
-    { value: 'prescricoes', label: 'Prescrições Activas' },
+    { value: 'prescricoes', label: 'Prescrições Ativas' },
     { value: 'interacoes', label: 'Interacções' },
     { value: 'reconciliacao', label: 'Reconciliação' },
   ];
@@ -125,7 +125,7 @@ export default function FarmaciaPage() {
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Farmácia Clínica</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Prescrições, interacções medicamentosas e reconciliação</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Prescrições, interações medicamentosas e reconciliação</p>
         </div>
         {tab === 'reconciliacao' && (
           <button onClick={() => setModalRec(true)}
@@ -169,7 +169,7 @@ export default function FarmaciaPage() {
               <tr className="border-b border-slate-100 bg-slate-50">
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Doente</th>
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Cama</th>
-                <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Medicações Activas</th>
+                <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Medicações Ativas</th>
               </tr>
             </thead>
             <tbody>
@@ -192,7 +192,7 @@ export default function FarmaciaPage() {
                 </tr>
               ))}
               {prescricoes.length === 0 && (
-                <tr><td colSpan={3} className="text-center text-slate-500 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
+                <tr><td colSpan={3} className="text-center text-slate-500 text-sm" style={{ padding: '40px' }}>Sem prescrições ativas</td></tr>
               )}
             </tbody>
           </table>
@@ -204,7 +204,7 @@ export default function FarmaciaPage() {
         <div className="flex flex-col gap-3">
           {interacoes.length === 0 && (
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
-              Nenhuma interacção medicamentosa activa detectada
+              Nenhuma interação medicamentosa ativa detetada
             </div>
           )}
           {interacoes.map((i, idx) => (

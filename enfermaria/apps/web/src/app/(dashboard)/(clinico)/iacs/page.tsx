@@ -99,11 +99,11 @@ export default function IacsPage() {
   const [formSurto, setFormSurto] = useState({ agente: '', servico: '', dataInicio: new Date().toISOString().split('T')[0], numCasos: 1, observacoes: '' });
   const [salvandoSurto, setSalvandoSurto] = useState(false);
   const [editSurto, setEditSurto] = useState<SurtoIACS | null>(null);
-  const dlgIsolamento = useDialogoAcessivel({ aberto: !!modalIsolamento, onFechar: () => setModalIsolamento(null), titulo: 'Activar isolamento' });
+  const dlgIsolamento = useDialogoAcessivel({ aberto: !!modalIsolamento, onFechar: () => setModalIsolamento(null), titulo: 'Ativar isolamento' });
   const dlgCultura = useDialogoAcessivel({ aberto: modalCultura, onFechar: () => setModalCultura(false), titulo: 'Registar cultura microbiológica' });
   const dlgEditCultura = useDialogoAcessivel({ aberto: !!editCultura, onFechar: () => setEditCultura(null), titulo: 'Registar resultado de cultura' });
   const dlgSurto = useDialogoAcessivel({ aberto: modalSurto, onFechar: () => setModalSurto(false), titulo: 'Registar surto' });
-  const dlgEditSurto = useDialogoAcessivel({ aberto: !!editSurto, onFechar: () => setEditSurto(null), titulo: 'Actualizar surto' });
+  const dlgEditSurto = useDialogoAcessivel({ aberto: !!editSurto, onFechar: () => setEditSurto(null), titulo: 'Atualizar surto' });
 
   const [formEditSurto, setFormEditSurto] = useState({ estado: 'activo', numCasos: 1, observacoes: '' });
 
@@ -194,7 +194,7 @@ export default function IacsPage() {
       <div className="flex items-start justify-between" style={{ marginBottom: '24px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Controlo IACS</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Infecções Associadas aos Cuidados de Saúde</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Infeções Associadas aos Cuidados de Saúde</p>
         </div>
       </div>
 
@@ -232,7 +232,7 @@ export default function IacsPage() {
           ) : isolados.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-100 flex flex-col items-center text-center" style={{ padding: '80px' }}>
               <p className="text-slate-700 font-semibold">Nenhum doente em isolamento</p>
-              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Sem casos IACS activos de momento</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Sem casos IACS ativos de momento</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -428,7 +428,7 @@ export default function IacsPage() {
                         <button onClick={() => { setEditSurto(s); setFormEditSurto({ estado: s.estado, numCasos: s.numCasos, observacoes: s.observacoes ?? '' }); }}
                           className="shrink-0 border border-slate-200 text-slate-600 text-xs font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                           style={{ padding: '8px 14px' }}>
-                          Actualizar
+                          Atualizar
                         </button>
                       )}
                     </div>
@@ -603,7 +603,7 @@ export default function IacsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
           <div {...dlgEditSurto.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
-              <h2 className="text-lg font-bold text-slate-900">Actualizar Surto</h2>
+              <h2 className="text-lg font-bold text-slate-900">Atualizar Surto</h2>
               <button aria-label="Fechar" onClick={() => setEditSurto(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editSurto.agente} · {editSurto.servico}</p>
@@ -611,7 +611,7 @@ export default function IacsPage() {
               <label htmlFor="fpage-12" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Estado</label>
               <select id="fpage-12" value={formEditSurto.estado} onChange={e => setFormEditSurto(f => ({ ...f, estado: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
-                <option value="activo">Activo</option>
+                <option value="activo">Ativo</option>
                 <option value="controlado">Controlado</option>
                 <option value="encerrado">Encerrado</option>
               </select>

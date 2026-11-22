@@ -15,11 +15,13 @@ import { BreakGlassModule } from '../break-glass/break-glass.module';
 import { EpisodiosModule } from '../episodios/episodios.module';
 import { AltaService } from './alta.service';
 import { ListagemDoentesService } from './listagem-doentes.service';
+import { RegistoUtenteService } from './registo-utente.service';
 
 @Module({
   imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule, EpisodiosModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [
+    RegistoUtenteService,
     DoenteService,
     ListagemDoentesService,
     AltaService,

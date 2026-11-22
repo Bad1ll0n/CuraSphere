@@ -31,11 +31,11 @@ interface ChecklistItem {
 }
 
 const CHECKLIST = [
-  { id: 'rgpd_1', label: 'Registo de acessos a dados pessoais activo', categoria: 'RGPD' },
+  { id: 'rgpd_1', label: 'Registo de acessos a dados pessoais ativo', categoria: 'RGPD' },
   { id: 'rgpd_2', label: 'Política de retenção de dados documentada', categoria: 'RGPD' },
   { id: 'rgpd_3', label: 'Designação de DPO comunicada à CNPD', categoria: 'RGPD' },
   { id: 'dgs_1',  label: 'Notificação de incidentes de segurança à DGS', categoria: 'DGS' },
-  { id: 'dgs_2',  label: 'Plano de emergência hospitalar actualizado', categoria: 'DGS' },
+  { id: 'dgs_2',  label: 'Plano de emergência hospitalar atualizado', categoria: 'DGS' },
   { id: 'acss_1', label: 'Relatório de qualidade enviado à ACSS', categoria: 'ACSS' },
   { id: 'acss_2', label: 'Indicadores de segurança do doente registados', categoria: 'ACSS' },
   { id: 'sns_1',  label: 'Integração SNS24 testada', categoria: 'SNS' },

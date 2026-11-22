@@ -221,7 +221,7 @@ export function TarefasPanel({ doenteId, utilizador, tarefas, emTurno, onRefresh
         </div>
         {tarefas.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
-            {podeCriarTarefa ? 'Sem tarefas — clica em + para criar' : 'Sem tarefas pendentes'}
+            {podeCriarTarefa ? 'Sem tarefas — clique em + para criar' : 'Sem tarefas pendentes'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">

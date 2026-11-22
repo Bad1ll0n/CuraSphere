@@ -127,7 +127,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
 
   const salvar = async () => {
     if (!doenteId) {
-      Alert.alert('Atenção', 'Seleccione um doente.');
+      Alert.alert('Atenção', 'Selecione um doente.');
       return;
     }
     setSalvando(true);

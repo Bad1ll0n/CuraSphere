@@ -315,7 +315,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
         </div>
         {escalasClinicas.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
-            {podeRegistarEscala ? 'Sem escalas registadas — clica em + para adicionar' : 'Sem escalas registadas'}
+            {podeRegistarEscala ? 'Sem escalas registadas — clique em + para adicionar' : 'Sem escalas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">

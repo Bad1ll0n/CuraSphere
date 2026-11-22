@@ -132,7 +132,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
   const apagarNotaClinica = (notaId: string) => {
     setConfirmarAcao({
       titulo: 'Apagar Nota Clínica',
-      mensagem: 'Apagar esta nota clínica permanentemente? Esta acção não pode ser revertida.',
+      mensagem: 'Apagar esta nota clínica permanentemente? Esta ação não pode ser revertida.',
       variant: 'danger',
       onConfirmar: async () => {
         setConfirmarAcao(null);
@@ -172,7 +172,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
         </div>
         {notasClincias.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
-            {podeCriarNotaClinica ? 'Sem notas SOAP — clica em + para adicionar' : 'Sem notas clínicas registadas'}
+            {podeCriarNotaClinica ? 'Sem notas SOAP — clique em + para adicionar' : 'Sem notas clínicas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-4">

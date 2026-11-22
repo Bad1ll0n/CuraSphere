@@ -113,7 +113,7 @@ export default function TrocasPage() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Trocas de Turno</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
-            Pede a um colega para cobrir o teu turno
+            Pede a um colega para cobrir o seu turno
           </p>
         </div>
         <button onClick={abrirModal}
@@ -205,7 +205,7 @@ export default function TrocasPage() {
                 </svg>
               </div>
               <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem pedidos</p>
-              <p className="text-slate-500 text-sm">Clica em "Pedir Cobertura" para pedir a um colega que faça o teu turno</p>
+              <p className="text-slate-500 text-sm">Clique em "Pedir Cobertura" para pedir a um colega que faça o seu turno</p>
             </div>
           )}
         </div>
@@ -223,7 +223,7 @@ export default function TrocasPage() {
             {/* Passo 1 */}
             <div style={{ marginBottom: '24px' }}>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
-                1. O teu turno
+                1. O seu turno
               </span>
               {meusTurnos.length === 0 ? (
                 <p className="text-sm text-slate-500">Sem turnos futuros disponíveis</p>

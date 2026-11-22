@@ -70,8 +70,8 @@ export function ConsentimentosTratamentoPanel({ doenteId, utilizador }: { doente
 
   const pedirConfirmacao = (f: Finalidade, decisao: 'consentimento' | 'oposicao' | 'revogar') => {
     const efeito =
-      f.finalidade === 'partilha_familiares' && decisao !== 'consentimento' ? ' Os links de familiares activos deixam de funcionar.'
-        : f.finalidade === 'portal_doente' && decisao !== 'consentimento' ? ' A conta do portal é desactivada.' : '';
+      f.finalidade === 'partilha_familiares' && decisao !== 'consentimento' ? ' Os links de familiares ativos deixam de funcionar.'
+        : f.finalidade === 'portal_doente' && decisao !== 'consentimento' ? ' A conta do portal é desativada.' : '';
     const verbo = decisao === 'revogar' ? (f.regime === 'oposicao' ? 'Retirar a oposição' : 'Revogar o consentimento')
       : decisao === 'consentimento' ? 'Registar o consentimento' : f.regime === 'oposicao' ? 'Registar a oposição' : 'Registar a recusa';
     setConfirmar({

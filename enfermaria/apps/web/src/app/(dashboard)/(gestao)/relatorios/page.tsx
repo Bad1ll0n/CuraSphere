@@ -395,7 +395,7 @@ export default function RelatoriosPage() {
                       </table>
                     </div>
                     <p className="text-xs text-slate-500 mt-3">
-                      Profissionais sem actividade no período aparecem a transparência reduzida. Inclui médicos, enfermeiros, auxiliares, técnicos de saúde e farmacêuticos activos.
+                      Profissionais sem atividade no período aparecem a transparência reduzida. Inclui médicos, enfermeiros, auxiliares, técnicos de saúde e farmacêuticos ativos.
                     </p>
                   </div>
                 )}

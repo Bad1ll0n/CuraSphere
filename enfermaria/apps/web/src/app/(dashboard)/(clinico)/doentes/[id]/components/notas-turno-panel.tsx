@@ -211,7 +211,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
         </div>
         {notasFiltradas.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
-            {podeCriarNota ? 'Sem notas — clica em + para adicionar' : 'Sem notas registadas'}
+            {podeCriarNota ? 'Sem notas — clique em + para adicionar' : 'Sem notas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">

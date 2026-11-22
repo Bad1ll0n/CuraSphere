@@ -19,6 +19,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { EpisodiosService } from '../episodios/episodios.service';
 import { AltaService } from './alta.service';
+import { RegistoUtenteService } from './registo-utente.service';
 
 const mockDoenteService = {
   listar: jest.fn(),
@@ -63,6 +64,7 @@ describe('DoenteController', () => {
       providers: [
         { provide: DoenteService, useValue: mockDoenteService },
         { provide: ListagemDoentesService, useValue: mockListagem },
+        { provide: RegistoUtenteService, useValue: { registroRapido: jest.fn(), possiveisDuplicados: jest.fn() } },
         { provide: PdfService, useValue: mockPdfService },
         { provide: AcessoLeituraService, useValue: mockLeituras },
         { provide: CartaAltaService, useValue: { rever: jest.fn(), assinar: jest.fn(), garantirAssinada: jest.fn() } },

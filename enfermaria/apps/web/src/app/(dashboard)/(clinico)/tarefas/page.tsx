@@ -157,7 +157,7 @@ export default function TarefasPage() {
         descricao: eDesc, prioridade: ePrioridade,
         grupoResponsavel: eGrupo, prazo: ePrazo || null,
       });
-      toast.success('Tarefa actualizada');
+      toast.success('Tarefa atualizada');
       setModalEditarTarefa(null);
       await carregar();
     } catch (e: any) {
@@ -173,7 +173,7 @@ export default function TarefasPage() {
       await api.patch(`/tarefas/${tarefa.id}/estado`, { estado: tarefa.estado === 'pendente' ? 'em_progresso' : 'pendente' });
       await carregar();
     } catch (e: any) {
-      toast.error(e?.response?.data?.message ?? 'Erro ao actualizar tarefa');
+      toast.error(e?.response?.data?.message ?? 'Erro ao atualizar tarefa');
     } finally { setAtualizando(null); }
   };
 
@@ -224,7 +224,7 @@ export default function TarefasPage() {
               </span>
             )}
           </div>
-          <p className="text-slate-500 text-sm">Tarefas pendentes dos teus doentes neste turno</p>
+          <p className="text-slate-500 text-sm">Tarefas pendentes dos seus doentes neste turno</p>
         </div>
         <div className="flex items-center gap-3">
           {podeCriar && (
@@ -306,7 +306,7 @@ export default function TarefasPage() {
             {tarefas.length === 0 ? 'Sem tarefas pendentes' : 'Sem tarefas com estes filtros'}
           </p>
           <p className="text-slate-500 text-sm">
-            {tarefas.length === 0 ? 'Sem tarefas pendentes para os teus doentes neste turno' : 'Tenta ajustar os filtros'}
+            {tarefas.length === 0 ? 'Sem tarefas pendentes para os seus doentes neste turno' : 'Tente ajustar os filtros'}
           </p>
         </div>
       ) : (

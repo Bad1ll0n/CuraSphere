@@ -42,7 +42,7 @@ export default function TabAlertas({ alertas, onMarcarLido }: Props) {
   if (sorted.length === 0) {
     return (
       <View style={s.vazio}>
-        <Text style={s.vazioTexto}>Sem alertas activos</Text>
+        <Text style={s.vazioTexto}>Sem alertas ativos</Text>
       </View>
     );
   }

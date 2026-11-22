@@ -251,7 +251,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const submeterMed = async () => {
     if (!medNome.trim() || !medDose.trim() || !medVia.trim() || !medFreq.trim()) return;
     if (temInteracaoGrave && !justificativaInteracao.trim()) {
-      setErroModal('Interacção grave detectada — é obrigatório registar a justificação clínica.');
+      setErroModal('Interação grave detetada — é obrigatório registar a justificação clínica.');
       return;
     }
     setSalvando(true); setErroModal('');
@@ -322,7 +322,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     setSalvandoProposta('aprovar');
     try {
       await api.patch(`/medicacao/${medicacaoId}/aprovar-medico`);
-      toast.success('Prescrição aprovada e activada');
+      toast.success('Prescrição aprovada e ativada');
       onRefresh(); carregarPropostas();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao aprovar');
@@ -410,7 +410,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         </div>
         {medicacoes.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
-            {podePrescreveMed ? 'Sem medicação ativa — clica em + para prescrever' : 'Sem medicação ativa'}
+            {podePrescreveMed ? 'Sem medicação ativa — clique em + para prescrever' : 'Sem medicação ativa'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
@@ -643,7 +643,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     rows={2}
                     value={justificativaInteracao}
                     onChange={(e) => setJustificativaInteracao(e.target.value)}
-                    placeholder="Fundamente clinicamente a prescrição apesar da interacção grave..."
+                    placeholder="Fundamente clinicamente a prescrição apesar da interação grave..."
                     className="w-full border border-red-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
                     style={{ padding: '8px 12px' }}
                   />
@@ -699,7 +699,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <select id="fmedicaca-6" value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {['Oral','IV','IM','SC','Tópica','Inalatória','SL','Retal','Nasal'].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </div>
@@ -708,7 +708,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <select id="fmedicaca-7" value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {['SOS','1x/dia','2x/dia','3x/dia','4x/dia','6/6h','8/8h','12/12h','Contínuo'].map(f => <option key={f} value={f}>{f}</option>)}
               </select>
             </div>

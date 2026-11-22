@@ -264,8 +264,8 @@ function UrgenciaPageInner() {
 
   const mutEstado = useMutation({
     mutationFn: ({ id, estado }: { id: string; estado: string }) => api.patch(`/urgencia/${id}/estado`, { estado }),
-    onSuccess: () => { toast.success('Estado actualizado'); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar estado'),
+    onSuccess: () => { toast.success('Estado atualizado'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar estado'),
   });
 
   const mutInternar = useMutation({
@@ -299,8 +299,8 @@ function UrgenciaPageInner() {
   const mutActivarEspecialidade = useMutation({
     mutationFn: ({ id, tipo }: { id: string; tipo: string }) =>
       api.post(`/urgencia/${id}/activar-especialidade`, { tipo }),
-    onSuccess: () => { toast.success('Especialidade activada — notificação enviada'); setSugestaoEspecialidade(null); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao activar especialidade'),
+    onSuccess: () => { toast.success('Especialidade ativada — notificação enviada'); setSugestaoEspecialidade(null); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao ativar especialidade'),
   });
 
   const AI_NIVEL_COR: Record<string, string> = {
@@ -406,7 +406,7 @@ function UrgenciaPageInner() {
               disabled={mutActivarEspecialidade.isPending}
               className="text-xs font-bold bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors disabled:opacity-50"
               style={{ padding: '7px 14px' }}>
-              {mutActivarEspecialidade.isPending ? 'A activar...' : `Activar ${sugestaoEspecialidade.tipo.toUpperCase()}`}
+              {mutActivarEspecialidade.isPending ? 'A ativar...' : `Activar ${sugestaoEspecialidade.tipo.toUpperCase()}`}
             </button>
           </div>
         </div>
@@ -544,7 +544,7 @@ function UrgenciaPageInner() {
             </svg>
           </div>
           <p className="text-slate-700 font-semibold text-lg">Urgência sem doentes em espera</p>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Não existem episódios activos de urgência.</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Não existem episódios ativos de urgência.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -804,7 +804,7 @@ function UrgenciaPageInner() {
               <select id="fpage-6" value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">— Seleccionar médico —</option>
+                <option value="">— Selecionar médico —</option>
                 {medicos.map(m => (
                   <option key={m.id} value={m.id}>{m.nome}</option>
                 ))}

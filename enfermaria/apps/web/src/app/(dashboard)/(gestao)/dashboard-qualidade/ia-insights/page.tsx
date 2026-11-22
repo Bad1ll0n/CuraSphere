@@ -131,7 +131,7 @@ export default function IaInsightsPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                     {tipoEntries.length === 0 && (
-                      <tr><td colSpan={5} className="px-5 py-6 text-center text-slate-500">Sem dados para o período seleccionado</td></tr>
+                      <tr><td colSpan={5} className="px-5 py-6 text-center text-slate-500">Sem dados para o período selecionado</td></tr>
                     )}
                     {tipoEntries.map(([tipo, stats]) => {
                       const comFeedback = stats.aceites + stats.rejeitados;

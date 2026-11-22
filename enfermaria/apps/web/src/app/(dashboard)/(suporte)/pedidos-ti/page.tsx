@@ -119,7 +119,7 @@ export default function PedidosTIPage() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Pedidos TI</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
-            {isTI ? 'Gestão de pedidos internos de tecnologia de informação' : 'Os teus pedidos ao departamento de TI'}
+            {isTI ? 'Gestão de pedidos internos de tecnologia de informação' : 'Os seus pedidos ao departamento de TI'}
           </p>
         </div>
         <button
@@ -188,7 +188,7 @@ export default function PedidosTIPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           <p className="text-slate-500 font-medium">Sem pedidos</p>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Clica em "Novo Pedido" para submeter um pedido ao departamento TI</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Clique em "Novo Pedido" para submeter um pedido ao departamento TI</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">

@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { nifValido, numeroSnsValido, telefoneValido } from '@org/shared';
+import { AlternarProvisorio, AvisoDuplicados } from './identificacao-utente';
 
 const TIPOS_VISITA: Record<string, { label: string; icon: string; cor: string }> = {
   consulta:     { label: 'Consulta',     icon: '👨‍⚕️', cor: '#8b5cf6' },
@@ -53,7 +55,7 @@ const TIPOS_VISITA_FORM = [
 
 const formVazio = {
   tipoVisita: '',
-  nome: '', dataNascimento: '', nif: '', numeroSNS: '',
+  provisorio: false, nome: '', dataNascimento: '', nif: '', numeroSNS: '',
   telefone: '', email: '', tipoCobertura: 'sns',
   morada: '', codigoPostal: '', localidade: '',
   entidadeSeguradora: '', numeroApolice: '',
@@ -109,15 +111,14 @@ export default function RegistosAdministrativosPage() {
   function validar(f: typeof form): Record<string, string> {
     const e: Record<string, string> = {};
     if (!f.tipoVisita) e.tipoVisita = 'Selecione o tipo de visita';
-    if (!f.nome.trim()) e.nome = 'Nome é obrigatório';
-    if (!f.dataNascimento) e.dataNascimento = 'Data de nascimento é obrigatória';
-    else if (new Date(f.dataNascimento) >= new Date()) e.dataNascimento = 'Data deve ser no passado';
-    if (!f.nif) e.nif = 'NIF é obrigatório';
-    else if (!/^\d{9}$/.test(f.nif)) e.nif = 'NIF deve ter exactamente 9 dígitos';
-    if (!f.telefone) e.telefone = 'Telefone é obrigatório';
-    else if (!/^[239]\d{8}$/.test(f.telefone.replace(/\s/g, ''))) e.telefone = 'Inválido (9 dígitos, começa com 2, 3 ou 9)';
-    if (!f.numeroSNS) e.numeroSNS = 'Número SNS é obrigatório';
-    else if (!/^\d{9}$/.test(f.numeroSNS.replace(/\s/g, ''))) e.numeroSNS = 'SNS deve ter 9 dígitos';
+    // UX-23: só o nome e a data são obrigatórios (nada, para o utente não identificado); NIF
+    // (com dígito de controlo), SNS e telefone validam-se quando vêm.
+    if (!f.provisorio && !f.nome.trim()) e.nome = 'Nome é obrigatório';
+    if (!f.provisorio && !f.dataNascimento) e.dataNascimento = 'Data de nascimento é obrigatória';
+    else if (f.dataNascimento && new Date(f.dataNascimento) >= new Date()) e.dataNascimento = 'Data deve ser no passado';
+    if (f.nif && !nifValido(f.nif)) e.nif = 'NIF inválido — confirme os 9 dígitos';
+    if (f.telefone && !telefoneValido(f.telefone)) e.telefone = 'Inválido (9 dígitos, começa com 2, 3 ou 9)';
+    if (f.numeroSNS && !numeroSnsValido(f.numeroSNS)) e.numeroSNS = 'SNS deve ter 9 dígitos';
     if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = 'Email inválido';
     if (f.codigoPostal && !/^\d{4}-\d{3}$/.test(f.codigoPostal)) e.codigoPostal = 'Formato: 0000-000';
     if (f.tipoCobertura === 'seguro') {
@@ -141,6 +142,8 @@ export default function RegistosAdministrativosPage() {
   useEffect(() => {
     if (podeVer) carregar();
   }, [podeVer, carregar]);
+  // UX-23: o "+ Registar Utente" da receção abre logo o formulário.
+  useEffect(() => { if (new URLSearchParams(window.location.search).get('novo') === '1') setModalAberto(true); }, []);
 
   async function criarRegisto(e: React.FormEvent) {
     e.preventDefault();
@@ -151,7 +154,8 @@ export default function RegistosAdministrativosPage() {
     setErro('');
     try {
       const res = await api.post('/doentes/registro-rapido', {
-        nome: form.nome,
+        provisorio: form.provisorio || undefined,
+        nome: form.provisorio ? undefined : form.nome,
         tipoVisita: form.tipoVisita,
         dataNascimento: form.dataNascimento || undefined,
         nif: form.nif || undefined,
@@ -423,6 +427,7 @@ export default function RegistosAdministrativosPage() {
                   </div>
 
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
+                  <AlternarProvisorio ativo={form.provisorio} onMudar={(v) => { setForm(f => ({ ...f, provisorio: v })); setErros({}); }} />
 
                   <div>
                     <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -447,7 +452,7 @@ export default function RegistosAdministrativosPage() {
                     </div>
                     <div>
                       <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
-                        NIF <span style={{ color: '#ef4444' }}>*</span>
+                        NIF
                       </span>
                       <input value={form.nif}
                         onChange={e => { setForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') })); setErros(p => ({ ...p, nif: '' })); }}
@@ -460,7 +465,7 @@ export default function RegistosAdministrativosPage() {
 
                   <div>
                     <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
-                      Nº SNS <span style={{ color: '#ef4444' }}>*</span>
+                      Nº SNS
                     </span>
                     <input value={form.numeroSNS}
                       onChange={e => { setForm(f => ({ ...f, numeroSNS: e.target.value.replace(/\D/g, '') })); setErros(p => ({ ...p, numeroSNS: '' })); }}
@@ -469,13 +474,14 @@ export default function RegistosAdministrativosPage() {
                       placeholder="000000000" />
                     {erros.numeroSNS && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{erros.numeroSNS}</p>}
                   </div>
+                  {!form.provisorio && <AvisoDuplicados nome={form.nome} dataNascimento={form.dataNascimento} nif={form.nif} numeroSNS={form.numeroSNS} />}
 
                   <p style={{ color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
                       <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
-                        Telefone <span style={{ color: '#ef4444' }}>*</span>
+                        Telefone 
                       </span>
                       <input type="tel" value={form.telefone}
                         onChange={e => { setForm(f => ({ ...f, telefone: e.target.value })); setErros(p => ({ ...p, telefone: '' })); }}

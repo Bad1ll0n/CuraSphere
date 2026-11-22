@@ -171,7 +171,7 @@ export default function QuiosqueServico() {
             border: `1px solid ${dados.alertasCriticosCount > 0 ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.08)'}`,
             borderRadius: 20, padding: '28px 32px'
           }}>
-            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Alertas Activos</p>
+            <p style={{ color: 'var(--text-soft)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 12px' }}>Alertas Ativos</p>
             <span style={{ fontSize: 56, fontWeight: 800, color: dados.alertasCriticosCount > 0 ? '#ef4444' : '#475569', lineHeight: 1 }}>
               {dados.alertasCriticosCount}
             </span>

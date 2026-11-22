@@ -99,7 +99,7 @@ export default function RecepcaoPage() {
     if (!f.dataNascimento) e.dataNascimento = 'Data de nascimento é obrigatória';
     else if (new Date(f.dataNascimento) >= new Date()) e.dataNascimento = 'Data deve ser no passado';
     if (!f.nif) e.nif = 'NIF é obrigatório';
-    else if (!/^\d{9}$/.test(f.nif)) e.nif = 'NIF deve ter exactamente 9 dígitos';
+    else if (!/^\d{9}$/.test(f.nif)) e.nif = 'NIF deve ter exatamente 9 dígitos';
     if (!f.telefone) e.telefone = 'Telefone é obrigatório';
     else if (!/^[239]\d{8}$/.test(f.telefone.replace(/\s/g, ''))) e.telefone = 'Inválido (9 dígitos, começa com 2, 3 ou 9)';
     if (!f.numeroSNS) e.numeroSNS = 'Número SNS é obrigatório';
@@ -283,7 +283,7 @@ export default function RecepcaoPage() {
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <a
-            href="/registos-administrativos"
+            href="/registos-administrativos?novo=1"
             style={{
               background: '#10b981',
               border: 'none',
@@ -416,7 +416,7 @@ export default function RecepcaoPage() {
                     </div>
                   </div>
                 ) : (
-                  <p style={{ color: 'var(--text-muted)' }}>Nenhuma chamada activa</p>
+                  <p style={{ color: 'var(--text-muted)' }}>Nenhuma chamada ativa</p>
                 )}
               </div>
 

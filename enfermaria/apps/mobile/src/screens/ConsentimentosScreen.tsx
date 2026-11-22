@@ -258,7 +258,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
       {!doenteSelec ? (
         <View style={s.centro}>
           <Ionicons name="document-text-outline" size={48} color="#cbd5e1" />
-          <Text style={s.emptyTitulo}>Seleccione um doente</Text>
+          <Text style={s.emptyTitulo}>Selecione um doente</Text>
           <Text style={s.emptySub}>Pesquise pelo nome ou número de processo</Text>
         </View>
       ) : carregando ? (

@@ -1,8 +1,15 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, ValidateIf, IsNotEmpty } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegistroRapidoDto {
+  /** UX-23: utente não identificado — o nome é gerado ("Desconhecido AAAA-MM-DD #N"). */
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  provisorio?: boolean;
+
   @ApiProperty()
+  @ValidateIf((o) => !o.provisorio)
   @IsString()
   @IsNotEmpty()
   nome: string;

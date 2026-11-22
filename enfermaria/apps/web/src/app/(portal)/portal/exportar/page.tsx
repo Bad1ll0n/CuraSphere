@@ -79,7 +79,7 @@ function ExportarPage() {
       <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '14px', padding: '20px', marginBottom: '16px' }}>
         <p style={{ fontSize: '13px', fontWeight: 700, color: '#166534', marginBottom: '4px' }}>⬇ Exportar como PDF</p>
         <p style={{ fontSize: '12px', color: '#4b5563', marginBottom: '16px' }}>
-          Relatório clínico completo: dados pessoais, alergias, medicação activa, sinais vitais e notas de enfermagem.
+          Relatório clínico completo: dados pessoais, alergias, medicação ativa, sinais vitais e notas de enfermagem.
         </p>
         <button
           onClick={downloadPdf}

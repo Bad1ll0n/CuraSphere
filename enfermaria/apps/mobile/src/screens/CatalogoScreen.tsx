@@ -132,7 +132,7 @@ export default function CatalogoScreen({ utilizador, onVoltar }: Props) {
                     <View style={s.formaBadge}>
                       <Text style={s.formaTexto}>{FORMA_LABEL[item.formaFarmaceutica] ?? item.formaFarmaceutica}</Text>
                     </View>
-                    {!item.ativo && <Text style={s.inativoTexto}>Inactivo</Text>}
+                    {!item.ativo && <Text style={s.inativoTexto}>Inativo</Text>}
                   </View>
                 </View>
                 <Text style={s.cardClasse}>{item.classeTerap}{item.codigoATC ? ` · ${item.codigoATC}` : ''}</Text>

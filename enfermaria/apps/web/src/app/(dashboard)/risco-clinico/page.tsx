@@ -135,14 +135,14 @@ export default function RiscoClinicoPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Dashboard de Risco Clínico</h1>
-            <p className="text-sm text-slate-500">Monitorização em tempo real · actualizado a cada minuto</p>
+            <p className="text-sm text-slate-500">Monitorização em tempo real · atualizado a cada minuto</p>
           </div>
         </div>
       </div>
 
       {/* Resumo — 4 cartões */}
       <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '32px', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <StatCard label="Total internados" value={totalInternados} sub="doentes activos" />
+        <StatCard label="Total internados" value={totalInternados} sub="doentes ativos" />
         <StatCard
           label="NEWS2 crítico (≥7)"
           value={news2Criticos}

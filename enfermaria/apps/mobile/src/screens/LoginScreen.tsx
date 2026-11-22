@@ -93,7 +93,7 @@ export default function LoginScreen({ onLogin }: Props) {
       } else {
         Alert.alert(
           '⚠️ Recomendação de segurança',
-          'Active biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
+          'Ative biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
           [{ text: 'OK' }],
         );
       }
@@ -235,14 +235,14 @@ export default function LoginScreen({ onLogin }: Props) {
 
         {oferecerBiometria && (
           <View style={s.bioOferta}>
-            <Text style={s.bioOfertaTitulo}>Activar autenticação biométrica?</Text>
+            <Text style={s.bioOfertaTitulo}>Ativar autenticação biométrica?</Text>
             <Text style={s.bioOfertaDesc}>Utilize Face ID / Touch ID nos próximos acessos</Text>
             <View style={s.bioOfertaBotoes}>
               <TouchableOpacity accessibilityRole="button" style={s.bioNao} onPress={() => { setOferecerBiometria(false); onLogin(); }}>
                 <Text style={s.bioNaoTexto}>Agora não</Text>
               </TouchableOpacity>
               <TouchableOpacity accessibilityRole="button" style={s.bioSim} onPress={activarBiometria}>
-                <Text style={s.bioSimTexto}>Activar</Text>
+                <Text style={s.bioSimTexto}>Ativar</Text>
               </TouchableOpacity>
             </View>
           </View>

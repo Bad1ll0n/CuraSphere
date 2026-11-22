@@ -14,6 +14,7 @@ import { CriarProblemaDto } from './dto/criar-problema.dto';
 import { AtualizarProblemaDto } from './dto/atualizar-problema.dto';
 import { AtualizarIsolamentoDto } from './dto/atualizar-isolamento.dto';
 import { RegistroRapidoDto } from './dto/registro-rapido.dto';
+import { RegistoUtenteService } from './registo-utente.service';
 import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
 import { AtribuirCamaDto } from './dto/atribuir-cama.dto';
 import { AssinarCartaAltaDto, ReverCartaAltaDto } from './dto/carta-alta.dto';
@@ -44,6 +45,7 @@ export class DoenteController {
     private readonly episodios: EpisodiosService,
     private readonly alta: AltaService,
     private readonly listagem: ListagemDoentesService,
+    private readonly registoUtente: RegistoUtenteService,
   ) {}
 
   @Get()
@@ -100,6 +102,16 @@ export class DoenteController {
   // Rotas de caminho estático (ex.: 'registos-administrativos', 'risco-clinico') têm de ser
   // declaradas antes de ':id' — caso contrário o Express interpreta-as como o valor do
   // parâmetro dinâmico e nunca chegam ao handler certo (ver também 'risco-clinico' abaixo).
+  /** UX-23: possíveis duplicados antes de registar (NIF, SNS, ou nome + data de nascimento). */
+  @Roles('administrativo')
+  @Get('possiveis-duplicados')
+  possiveisDuplicados(
+    @Query('nome') nome?: string, @Query('dataNascimento') dataNascimento?: string,
+    @Query('nif') nif?: string, @Query('numeroSNS') numeroSNS?: string,
+  ) {
+    return this.registoUtente.possiveisDuplicados({ nome, dataNascimento, nif, numeroSNS });
+  }
+
   @Roles('administrativo')
   @Get('registos-administrativos')
   listarRegistosAdministrativos(@Query('search') search?: string) {
@@ -166,7 +178,7 @@ export class DoenteController {
     @Body() dto: RegistroRapidoDto,
     @Request() req: PedidoAutenticado,
   ) {
-    return this.doenteService.registroRapido(dto as any, req.user.sub);
+    return this.registoUtente.registroRapido(dto, req.user.sub);
   }
 
   @Roles('administrativo', 'enfermeiro')

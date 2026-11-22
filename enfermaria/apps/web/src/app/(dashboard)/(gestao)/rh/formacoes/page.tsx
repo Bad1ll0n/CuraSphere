@@ -198,7 +198,7 @@ export default function FormacoesPage() {
               <select id="fpage-0" value={novaUtilizadorId} onChange={e => setNovaUtilizadorId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {utilizadoresLista.map(u => <option key={u.id} value={u.id}>{u.nome} ({u.role})</option>)}
               </select>
             </div>

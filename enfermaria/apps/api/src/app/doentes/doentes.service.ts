@@ -790,18 +790,6 @@ export class DoenteService {
     });
   }
 
-  private async gerarNumeroProcesso(tx: { doente: { findFirst: (args: any) => Promise<{ numeroProcesso: string } | null> } }) {
-    const ano = new Date().getFullYear();
-    const prefixo = `${ano}-`;
-    const ultimo = await tx.doente.findFirst({
-      where: { numeroProcesso: { startsWith: prefixo } },
-      orderBy: { numeroProcesso: 'desc' },
-      select: { numeroProcesso: true },
-    });
-    const proximoNum = ultimo ? parseInt(ultimo.numeroProcesso.split('-')[1], 10) + 1 : 1;
-    return `${ano}-${String(proximoNum).padStart(8, '0')}`;
-  }
-
   async listarProblemas(doenteId: string) {
     return this.prisma.problemaClinico.findMany({
       where: { doenteId },
@@ -845,89 +833,6 @@ export class DoenteService {
         ...(dto.dataFim ? { dataFim: new Date(dto.dataFim) } : {}),
       },
       include: { registadoPor: { select: { nome: true, role: true } } },
-    });
-  }
-
-  async registroRapido(
-    dto: {
-      nome: string;
-      tipoVisita?: string;
-      dataNascimento: string;
-      nif: string;
-      numeroSNS: string;
-      telefone: string;
-      email?: string;
-      tipoCobertura?: string;
-      morada?: string;
-      codigoPostal?: string;
-      localidade?: string;
-      entidadeSeguradora?: string;
-      numeroApolice?: string;
-    },
-    criadoPorId: string,
-  ) {
-    if (!dto.nome?.trim()) throw new BadRequestException('Nome é obrigatório');
-    if (!dto.dataNascimento) throw new BadRequestException('Data de nascimento é obrigatória');
-    if (!dto.nif || !/^\d{9}$/.test(dto.nif)) throw new BadRequestException('NIF inválido — deve ter 9 dígitos');
-    if (!dto.telefone || !/^[239]\d{8}$/.test(dto.telefone.replace(/\s/g, '')))
-      throw new BadRequestException('Telefone inválido — 9 dígitos, começa com 2, 3 ou 9');
-    if (!dto.numeroSNS || !/^\d{9}$/.test(dto.numeroSNS.replace(/\s/g, '')))
-      throw new BadRequestException('Número SNS inválido — deve ter 9 dígitos');
-    if (dto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
-      throw new BadRequestException('Email inválido');
-    if (dto.tipoCobertura === 'seguro') {
-      if (!dto.entidadeSeguradora?.trim()) throw new BadRequestException('Entidade seguradora obrigatória para seguro');
-      if (!dto.numeroApolice?.trim()) throw new BadRequestException('Número de apólice obrigatório para seguro');
-    }
-
-    return this.prisma.$transaction(async (tx) => {
-      if (dto.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: filtroNif(dto.nif) });
-        if (existenteNif) throw new ConflictException(`Já existe um registo com o NIF ${dto.nif}`);
-      }
-      if (dto.numeroSNS) {
-        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: dto.numeroSNS } });
-        if (existenteSns) throw new ConflictException(`Já existe um registo com o número SNS ${dto.numeroSNS}`);
-      }
-
-      const numeroProcesso = await this.gerarNumeroProcesso(tx);
-      // Internamento → pendente_cama (aguarda cama clínica); tudo o resto → ambulatorio
-      const estadoRegisto = dto.tipoVisita === 'internamento' ? 'pendente_cama' : 'ambulatorio';
-      const doente = await tx.doente.create({
-        data: {
-          nome: dto.nome,
-          dataNascimento: dto.dataNascimento ? new Date(dto.dataNascimento) : null,
-          numeroProcesso,
-          estadoRegisto,
-          tipoVisita: dto.tipoVisita ?? null,
-          administrativoAdmissaoId: criadoPorId,
-        },
-      });
-
-      const temDadosAdmin = dto.nif || dto.numeroSNS || dto.telefone || dto.email
-        || dto.morada || dto.codigoPostal || dto.localidade
-        || dto.entidadeSeguradora || dto.numeroApolice;
-
-      if (temDadosAdmin) {
-        await tx.ficheiroPessoalDoente.create({
-          data: {
-            doenteId: doente.id,
-            nif: dto.nif ?? null,
-            numeroSNS: dto.numeroSNS ?? null,
-            telefone: dto.telefone ?? null,
-            email: dto.email ?? null,
-            tipoCobertura: dto.tipoCobertura ?? null,
-            morada: dto.morada ?? null,
-            codigoPostal: dto.codigoPostal ?? null,
-            localidade: dto.localidade ?? null,
-            entidadeSeguradora: dto.entidadeSeguradora ?? null,
-            numeroApolice: dto.numeroApolice ?? null,
-            atualizadoPorId: criadoPorId,
-          },
-        });
-      }
-
-      return doente;
     });
   }
 

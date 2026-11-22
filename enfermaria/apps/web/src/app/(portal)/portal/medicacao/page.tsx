@@ -23,7 +23,7 @@ function MedicacaoContent() {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
         <Link href="/portal" style={{ textDecoration: 'none', color: 'var(--text-soft)', fontSize: '13px' }}>← Voltar</Link>
-        <h1 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-main)' }}>Medicação Activa</h1>
+        <h1 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-main)' }}>Medicação Ativa</h1>
       </div>
 
       {loading ? (
@@ -48,7 +48,7 @@ function MedicacaoContent() {
                   {m.posologia && <p style={{ fontSize: '13px', color: 'var(--text-soft)' }}>Posologia: {m.posologia}</p>}
                 </div>
                 <span style={{ background: '#f0fdf4', color: 'var(--success)', fontSize: '11px', fontWeight: 600, borderRadius: '6px', padding: '3px 8px', whiteSpace: 'nowrap' }}>
-                  Activa
+                  Ativa
                 </span>
               </div>
               {m.via && (

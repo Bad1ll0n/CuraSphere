@@ -129,7 +129,7 @@
     "noOutcomes": "Sem outcomes registados",
     "myPatients": "Meus Doentes",
     "noPatientsShift": "Sem doentes atribuídos neste turno",
-    "workloadMyShift": "Workload — Meu Turno",
+    "workloadMyShift": "Carga de trabalho — Meu Turno",
     "noPatientsCurrentShift": "Sem doentes atribuídos no turno atual"
   },
   "patients": {
@@ -180,7 +180,7 @@
     "clearFilters": "Limpar filtros",
     "searchPlaceholder": "Pesquisar por nome, processo ou cama...",
     "clearSearch": "Limpar pesquisa",
-    "autoRefresh": "Actualização automática cada 2 min",
+    "autoRefresh": "Atualização automática cada 2 min",
     "computingRisk": "A calcular scores de risco...",
     "col": {
       "bed": "Cama",
@@ -198,7 +198,7 @@
     "view": "Ver",
     "riskLoadErrorTitle": "Não foi possível carregar o risco do turno",
     "riskLoadErrorBody": "Isto não quer dizer que não haja doentes em risco neste serviço. Verifique a ligação e tente de novo.",
-    "noActive": "Sem doentes activos neste serviço",
+    "noActive": "Sem doentes ativos neste serviço",
     "loadErrorTitle": "Não foi possível carregar os doentes",
     "loadErrorBody": "Isto não quer dizer que não haja doentes atribuídos ou internados. Verifique a ligação e tente de novo.",
     "noneFound": "Nenhum doente encontrado",
@@ -228,7 +228,7 @@
     "startDate": "Início",
     "endDate": "Fim",
     "confirmTitle": "Confirmar administração",
-    "confirmBody": "Vai registar a administração de {farmaco} a {doente} (cama {cama}). Esta acção fica no registo clínico e não pode ser desfeita.",
+    "confirmBody": "Vai registar a administração de {farmaco} a {doente} (cama {cama}). Esta ação fica no registo clínico e não pode ser desfeita.",
     "administering": "A registar..."
   },
   "vitals": {
@@ -366,7 +366,8 @@
     "networkError": "Sem ligação à rede",
     "sessionExpired": "Sessão expirada. Por favor autentique-se novamente.",
     "forbiddenTitle": "Sem acesso a esta área",
-    "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho."
+    "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho.",
+    "forbiddenGoHome": "Ir para o início"
   },
   "roles": {
     "medico": "Médico",
@@ -455,8 +456,8 @@
   "layout": {
     "skipToContent": "Ir para conteúdo principal",
     "openMenu": "Abrir menu",
-    "passwordExpired": "A tua password expirou. Altera-a agora para continuar a aceder.",
-    "passwordExpiresSoon": "A tua password expira em {days} dia{plural}. Altera-a brevemente.",
+    "passwordExpired": "A sua password expirou. Altere-a agora para continuar a aceder.",
+    "passwordExpiresSoon": "A sua password expira em {days} dia{plural}. Altere-a brevemente.",
     "changePassword": "Alterar password",
     "day": "dia",
     "days": "dias",
@@ -514,9 +515,9 @@
     "fileTab": "Na ficha: {separador}"
   },
   "theme": {
-    "activateDark": "Activar modo escuro",
-    "activateHighContrast": "Activar modo alto contraste",
-    "activateLight": "Activar modo claro"
+    "activateDark": "Ativar modo escuro",
+    "activateHighContrast": "Ativar modo alto contraste",
+    "activateLight": "Ativar modo claro"
   },
   "navItems": {
     "dashboard": "Dashboard",
@@ -617,7 +618,7 @@
     "loadErrorTitle": "Não foi possível carregar o MAR",
     "loadErrorBody": "Isto não quer dizer que não haja medicações por administrar neste turno. Verifique a ligação e tente de novo antes de dar a ronda por concluída.",
     "emptyTitle": "Sem medicações para este turno",
-    "emptyBody": "Não tens doentes atribuídos com medicações ativas",
+    "emptyBody": "Não tem doentes atribuídos com medicações ativas",
     "showAllPatients": "← Ver todos os meus doentes",
     "roomBed": "Quarto {quarto} · Cama {cama}",
     "medCount": "{n, plural, one {# medicação} other {# medicações}}",
@@ -774,7 +775,7 @@
     "sections": "Secções da ficha",
     "notFound": "Doente não encontrado",
     "removeIsolation": "Remover Isolamento",
-    "startIsolation": "🔶 Activar Isolamento",
+    "startIsolation": "🔶 Ativar Isolamento",
     "sosSent": "SOS enviado",
     "sos": "SOS",
     "concerning": "⚠ Preocupante",
@@ -842,7 +843,7 @@
     "checkinError": "Erro ao fazer check-in. Tente novamente.",
     "bookingNotFound": "Marcação não encontrada",
     "subtitle": "Sistema de Gestão de Filas",
-    "chooseService": "Seleccione o serviço pretendido",
+    "chooseService": "Selecione o serviço pretendido",
     "ticketSeries": "Senha {letra}",
     "identifyNif": "Identificar pelo NIF",
     "haveBooking": "Já tenho marcação",
@@ -1463,5 +1464,17 @@
     "contactTeam": "Contactar a equipa",
     "noQuestionnaires": "A sua equipa ainda não lhe atribuiu questionários. Quando o fizer, aparecem aqui.",
     "back": "Voltar"
+  },
+  "patientRegistration": {
+    "unknownTitle": "Utente não identificado",
+    "unknownBody": "Regista com identificação provisória (\"Desconhecido AAAA-MM-DD #N\"). Os dados reais juntam-se depois, quando forem conhecidos.",
+    "duplicatesTitle": "{n, plural, one {Pode já existir este utente} other {Podem já existir # registos deste utente}}",
+    "process": "processo {numero}",
+    "duplicatesHint": "Confirme antes de criar um registo novo — abra o processo existente se for a mesma pessoa.",
+    "reason": {
+      "nif": "mesmo NIF",
+      "sns": "mesmo nº SNS",
+      "nome_e_data": "mesmo nome e data de nascimento"
+    }
   }
 }

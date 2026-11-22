@@ -12,7 +12,7 @@ import i18n from '../lib/i18n';
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
 const TIPOS: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap }> = {
-  cama_eletrica:  { label: 'Cama Eléctrica',   icon: 'bed-outline' },
+  cama_eletrica:  { label: 'Cama Elétrica',   icon: 'bed-outline' },
   ventilador:     { label: 'Ventilador',        icon: 'cloud-outline' },
   monitor:        { label: 'Monitor',           icon: 'desktop-outline' },
   cadeira_rodas:  { label: 'Cadeira de Rodas',  icon: 'accessibility-outline' },
@@ -209,7 +209,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
         setManutDetalhe(r.data);
       }
     } catch {
-      Alert.alert('Erro', 'Não foi possível actualizar a manutenção.');
+      Alert.alert('Erro', 'Não foi possível atualizar a manutenção.');
     } finally {
       setAtualizando(false);
     }

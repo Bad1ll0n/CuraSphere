@@ -54,7 +54,7 @@ export default function SistemasExternosPage() {
         toast.success('Sistema criado');
       } else if (modal) {
         await api.patch(`/sistemas-externos/${(modal as Sistema).id}`, payload);
-        toast.success('Sistema actualizado');
+        toast.success('Sistema atualizado');
       }
       setModal(null);
       carregar();
@@ -129,7 +129,7 @@ export default function SistemasExternosPage() {
                         <span className="text-xs font-medium text-indigo-600 bg-indigo-50 rounded-full px-2 py-0.5">
                           {TIPO_LABELS[s.tipo] ?? s.tipo}
                         </span>
-                        {!s.ativo && <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">Inactivo</span>}
+                        {!s.ativo && <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">Inativo</span>}
                       </div>
                       {s.endpoint && (
                         <p className="text-xs text-slate-500 font-mono" style={{ marginTop: '4px' }}>{s.endpoint}</p>
@@ -232,7 +232,7 @@ export default function SistemasExternosPage() {
             </div>
             <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
               <input type="checkbox" id="ativo" checked={form.ativo} onChange={e => setForm(f => ({ ...f, ativo: e.target.checked }))} className="w-4 h-4 rounded" />
-              <label htmlFor="ativo" className="text-sm text-slate-600">Sistema activo</label>
+              <label htmlFor="ativo" className="text-sm text-slate-600">Sistema ativo</label>
             </div>
             <div className="flex gap-3">
               <button onClick={() => setModal(null)}

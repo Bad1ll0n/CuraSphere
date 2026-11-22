@@ -23,7 +23,7 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
   const abrirScanner = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permissão necessária', 'Active o acesso à câmara para usar o scanner.');
+      Alert.alert('Permissão necessária', 'Ative o acesso à câmara para usar o scanner.');
       return;
     }
     setScanFeito(false);

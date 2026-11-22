@@ -62,7 +62,7 @@ export default function TabIA({ doenteId }: Props) {
 
           {(analise.padroesDetectados?.length ?? 0) > 0 && (
             <View style={s.secao}>
-              <Text style={s.secaoTitulo}>Padrões Detectados</Text>
+              <Text style={s.secaoTitulo}>Padrões Detetados</Text>
               {analise.padroesDetectados.map((p: string, i: number) => (
                 <View key={i} style={s.item}>
                   <Text style={s.itemBullet}>·</Text>

@@ -136,7 +136,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
             {mostrarFactores && (
               <div className="bg-slate-50 rounded-xl" style={{ padding: '12px', marginTop: '8px' }}>
                 <ul className="space-y-1">
-                  {['Diagnóstico principal', 'Medicação activa', 'Sinais vitais recentes', 'Alertas clínicos', 'Notas de turno', 'Avaliações de escala'].map((f, i) => (
+                  {['Diagnóstico principal', 'Medicação ativa', 'Sinais vitais recentes', 'Alertas clínicos', 'Notas de turno', 'Avaliações de escala'].map((f, i) => (
                     <li key={i} className="text-xs text-slate-600 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-indigo-300 shrink-0" />
                       {f}
@@ -156,7 +156,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
                 disabled={loading}
                 className="text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 hover:bg-indigo-50 rounded-lg transition-colors disabled:opacity-50"
                 style={{ padding: '5px 12px' }}>
-                Actualizar
+                Atualizar
               </button>
             </div>
           </div>
@@ -167,7 +167,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
         <div style={{ padding: '0 24px 24px' }}>
           <div className="text-center py-6">
             <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>
-              Verificar aderência aos protocolos clínicos activos para este doente.
+              Verificar aderência aos protocolos clínicos ativos para este doente.
             </p>
             <button
               onClick={verificar}

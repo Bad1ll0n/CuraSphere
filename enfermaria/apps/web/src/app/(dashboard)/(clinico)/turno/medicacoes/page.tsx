@@ -177,7 +177,7 @@ export default function TimelineMedicacoesPage() {
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Timeline de Medicação</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Vista por turno — actualização automática cada 60s</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Vista por turno — atualização automática cada 60s</p>
         </div>
         <div className="flex items-center gap-3">
           <input type="date" value={data} onChange={e => setData(e.target.value)}
@@ -292,7 +292,7 @@ export default function TimelineMedicacoesPage() {
 
           {timeline.doentes.length === 0 && (
             <div className="text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
-              Sem doentes activos neste serviço
+              Sem doentes ativos neste serviço
             </div>
           )}
         </div>
@@ -310,7 +310,7 @@ export default function TimelineMedicacoesPage() {
           <div className="w-3 h-3 rounded ring-2 ring-red-500" />
           <span className="text-xs text-slate-500">⚠️ Alto risco</span>
         </div>
-        <span className="text-xs text-slate-500 ml-auto">Click no bloco → confirmar administração</span>
+        <span className="text-xs text-slate-500 ml-auto">Clique no bloco → confirmar administração</span>
       </div>
 
       {/* UX-01: o mesmo diálogo de administração do MAR e da ficha. */}

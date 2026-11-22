@@ -91,7 +91,7 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
   const cancelarExame = (exameId: string) => {
     setConfirmarAcao({
       titulo: 'Cancelar Exame',
-      mensagem: 'Cancelar este exame? Esta acção não pode ser revertida.',
+      mensagem: 'Cancelar este exame? Esta ação não pode ser revertida.',
       variant: 'warning',
       onConfirmar: async () => {
         setConfirmarAcao(null);

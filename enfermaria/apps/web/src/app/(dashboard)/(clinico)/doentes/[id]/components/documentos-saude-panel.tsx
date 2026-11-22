@@ -136,7 +136,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   };
 
   const submeterUpload = async () => {
-    if (!fileSeleccionado) { toast.error('Selecciona um ficheiro'); return; }
+    if (!fileSeleccionado) { toast.error('Selecione um ficheiro'); return; }
     setEnviando(true);
     try {
       const fd = new FormData();
@@ -158,7 +158,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   };
 
   const assinarDocumento = async (docId: string) => {
-    if (!confirm('Assinar digitalmente este documento? Esta acção não pode ser revertida.')) return;
+    if (!confirm('Assinar digitalmente este documento? Esta ação não pode ser revertida.')) return;
     try {
       await api.post(`/documentos-saude/${docId}/assinar`);
       toast.success('Documento assinado com sucesso');
@@ -420,7 +420,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                   <svg className="w-8 h-8 text-slate-300" style={{ marginBottom: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <p className="text-sm text-slate-500">Arrasta ou clica para seleccionar</p>
+                  <p className="text-sm text-slate-500">Arraste ou clique para selecionar</p>
                   <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>PDF, JPEG, PNG, DICOM — até 50 MB</p>
                 </>
               )}

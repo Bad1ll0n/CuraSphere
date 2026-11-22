@@ -12,3 +12,4 @@ export * from './lib/coerencia-vitais.js';
 export * from './lib/news2.js';
 export * from './lib/turnos.js';
 export * from './lib/senhas.js';
+export * from './lib/identificacao.js';

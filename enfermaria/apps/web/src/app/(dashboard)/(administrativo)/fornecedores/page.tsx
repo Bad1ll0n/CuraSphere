@@ -88,8 +88,8 @@ export default function FornecedoresPage() {
 
   const mutEditarForn = useMutation({
     mutationFn: (body: Partial<typeof formForn>) => api.patch(`/fornecedores/${editForn!.id}`, body),
-    onSuccess: () => { toast.success('Fornecedor actualizado'); setModalForn(null); setEditForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar fornecedor'),
+    onSuccess: () => { toast.success('Fornecedor atualizado'); setModalForn(null); setEditForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar fornecedor'),
   });
 
   const mutDesativarForn = useMutation({
@@ -106,8 +106,8 @@ export default function FornecedoresPage() {
 
   const mutReceberEncomenda = useMutation({
     mutationFn: () => api.patch(`/fornecedores/encomendas/${modalReceber!.id}/receber`, { quantidadeRecebida: qtdRecebida }),
-    onSuccess: () => { toast.success('Recepção registada'); setModalReceber(null); setQtdRecebida(0); invalidar(); qc.invalidateQueries({ queryKey: ['farmacia'] }); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar recepção'),
+    onSuccess: () => { toast.success('Receção registada'); setModalReceber(null); setQtdRecebida(0); invalidar(); qc.invalidateQueries({ queryKey: ['farmacia'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar receção'),
   });
 
   const abrirEditarForn = (f: Fornecedor) => {
@@ -298,7 +298,7 @@ export default function FornecedoresPage() {
                 <select id="fpage-1" value={formEnc.fornecedorId} onChange={e => setFormEnc(f => ({ ...f, fornecedorId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {fornecedores.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
                 </select>
               </div>
@@ -307,7 +307,7 @@ export default function FornecedoresPage() {
                 <select id="fpage-2" value={formEnc.stockItemId} onChange={e => setFormEnc(f => ({ ...f, stockItemId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   style={{ padding: '10px 14px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {stockItems.map(s => <option key={s.id} value={s.id}>{s.nome} ({s.servico})</option>)}
                 </select>
               </div>
@@ -370,7 +370,7 @@ export default function FornecedoresPage() {
               <button onClick={() => setModalReceber(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={() => mutReceberEncomenda.mutate()} disabled={mutReceberEncomenda.isPending || qtdRecebida <= 0}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
-                {mutReceberEncomenda.isPending ? 'A registar...' : 'Confirmar Recepção'}
+                {mutReceberEncomenda.isPending ? 'A registar...' : 'Confirmar Receção'}
               </button>
             </div>
           </div>

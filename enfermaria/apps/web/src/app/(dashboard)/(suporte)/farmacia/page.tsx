@@ -521,7 +521,7 @@ export default function FarmaciaPage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
-              <p className="text-slate-500">Selecciona um período e clica em Calcular.</p>
+              <p className="text-slate-500">Selecione um período e clique em Calcular.</p>
             </div>
           )}
         </div>
@@ -783,7 +783,7 @@ export default function FarmaciaPage() {
               <select id="fpage-10" value={transferirForm.servicoDestino} onChange={e => setTransferirForm(f => ({ ...f, servicoDestino: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {SERVICOS.filter(s => s !== transferirModal.servico).map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>

@@ -114,7 +114,7 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={s.headerTitulo}>IACS</Text>
-          <Text style={s.headerSub}>Infecções Associadas aos Cuidados de Saúde</Text>
+          <Text style={s.headerSub}>Infeções Associadas aos Cuidados de Saúde</Text>
         </View>
       </View>
 

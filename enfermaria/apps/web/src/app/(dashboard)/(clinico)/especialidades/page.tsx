@@ -221,7 +221,7 @@ export default function EspecialidadesPage() {
                   onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }}>
-                  <option value="">Seleccionar doente...</option>
+                  <option value="">Selecionar doente...</option>
                   {doentes.map((d: Doente) => <option key={d.id} value={d.id}>{d.nome}</option>)}
                 </select>
               </div>
@@ -242,7 +242,7 @@ export default function EspecialidadesPage() {
                 </div>
               </div>
               <div>
-                <label htmlFor="fpage-3" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Descrição / Objectivos</label>
+                <label htmlFor="fpage-3" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Descrição / Objetivos</label>
                 <textarea id="fpage-3" value={form.descricao} rows={3}
                   onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -277,7 +277,7 @@ export default function EspecialidadesPage() {
               <label htmlFor="fpage-4" className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Notas de Evolução</label>
               <textarea id="fpage-4" value={evolucaoText} rows={5}
                 onChange={e => setEvolucaoText(e.target.value)}
-                placeholder="Descreva a evolução clínica, resposta ao tratamento, próximos objectivos..."
+                placeholder="Descreva a evolução clínica, resposta ao tratamento, próximos objetivos..."
                 className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 12px' }} />
             </div>

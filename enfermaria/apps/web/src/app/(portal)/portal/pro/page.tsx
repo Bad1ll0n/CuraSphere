@@ -100,7 +100,7 @@ function PROContent() {
         <div>
           {!templateSel ? (
             <div>
-              <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Seleccione um questionário:</p>
+              <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Selecione um questionário:</p>
               {templates.length === 0 && <p className="text-slate-500 text-sm">{t('noQuestionnaires')}</p>}
               <div className="space-y-3">
                 {templates.map(t => (

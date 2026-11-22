@@ -288,7 +288,7 @@ export default function ComunicacaoPage() {
         <div className="grid gap-4">
           {anuncios.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
-              <p className="text-slate-500">Nenhum anúncio activo para o seu serviço.</p>
+              <p className="text-slate-500">Nenhum anúncio ativo para o seu serviço.</p>
             </div>
           ) : anuncios.map(a => (
             <div key={a.id} className="bg-white rounded-2xl border border-slate-200" style={{ padding: '24px 28px' }}>
@@ -398,7 +398,7 @@ export default function ComunicacaoPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <p className="text-orange-700 text-xs">
-                Sem filtros seleccionados, a mensagem é enviada para <strong>todos os utilizadores</strong> da plataforma.
+                Sem filtros selecionados, a mensagem é enviada para <strong>todos os utilizadores</strong> da plataforma.
               </p>
             </div>
 

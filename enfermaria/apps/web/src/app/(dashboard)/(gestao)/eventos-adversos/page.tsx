@@ -101,8 +101,8 @@ export default function EventosAdversosPage() {
 
   const mutAcao = useMutation({
     mutationFn: ({ id, body }: { id: string; body: object }) => api.patch(`/eventos-adversos/${id}`, body),
-    onSuccess: () => { toast.success('Evento adverso actualizado'); setModalAcao(null); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar evento'),
+    onSuccess: () => { toast.success('Evento adverso atualizado'); setModalAcao(null); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar evento'),
   });
 
   const criar = () => {
@@ -283,7 +283,7 @@ export default function EventosAdversosPage() {
                 <select id="fpage-2" value={form.servicoId} onChange={e => setForm(f => ({ ...f, servicoId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {SERVICOS.map(s => <option key={s} value={s} className="capitalize">{s}</option>)}
                 </select>
               </div>

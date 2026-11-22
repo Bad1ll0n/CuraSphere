@@ -17,7 +17,7 @@
   },
   "session": {
     "expiringTitle": "Sessão prestes a expirar",
-    "expiringBody": "Sem actividade há 13 minutos. Toque OK para continuar."
+    "expiringBody": "Sem atividade há 13 minutos. Toque OK para continuar."
   },
   "administer": {
     "recordedTitle": "Registado",

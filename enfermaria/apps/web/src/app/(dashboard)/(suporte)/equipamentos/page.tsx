@@ -7,7 +7,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 
 const TIPOS_EQUIP: Record<string, { label: string; icon: string }> = {
-  cama_eletrica:  { label: 'Cama Eléctrica',   icon: '🛏️' },
+  cama_eletrica:  { label: 'Cama Elétrica',   icon: '🛏️' },
   ventilador:     { label: 'Ventilador',        icon: '🌬️' },
   monitor:        { label: 'Monitor',           icon: '📺' },
   cadeira_rodas:  { label: 'Cadeira de Rodas',  icon: '♿' },
@@ -149,8 +149,8 @@ export default function EquipamentosPage() {
       localizacao: body.localizacao || undefined,
       proximaManutencao: body.proximaManutencao || undefined,
     }),
-    onSuccess: () => { toast.success('Equipamento actualizado'); setModalEditarEq(null); setFormEditarEq(formEditarVazio); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar equipamento'),
+    onSuccess: () => { toast.success('Equipamento atualizado'); setModalEditarEq(null); setFormEditarEq(formEditarVazio); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar equipamento'),
   });
 
   const mutCriarMan = useMutation({
@@ -165,8 +165,8 @@ export default function EquipamentosPage() {
   const mutAtualizarMan = useMutation({
     mutationFn: ({ id, estado, tecnicoIdVal }: { id: string; estado: string; tecnicoIdVal?: string }) =>
       api.patch(`/equipamentos/manutencoes/${id}`, { estado, tecnicoId: tecnicoIdVal || undefined }),
-    onSuccess: () => { toast.success('Manutenção actualizada'); setModalAtualizarMan(null); setTecnicoId(''); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar manutenção'),
+    onSuccess: () => { toast.success('Manutenção atualizada'); setModalAtualizarMan(null); setTecnicoId(''); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar manutenção'),
   });
 
   const manutencoesFiltradas = (manutencoes as Manutencao[]).filter(m => !filtroManEstado || m.estado === filtroManEstado);
@@ -513,7 +513,7 @@ export default function EquipamentosPage() {
                   onClick={() => mutAtualizarMan.mutate({ id: modalAtualizarMan.id, estado: modalAtualizarMan.novoEstado, tecnicoIdVal: tecnicoId || undefined })}
                   disabled={mutAtualizarMan.isPending}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: modalAtualizarMan.novoEstado === 'em_curso' ? '#f59e0b' : '#10b981', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutAtualizarMan.isPending ? 0.5 : 1 }}>
-                  {mutAtualizarMan.isPending ? 'A actualizar...' : (modalAtualizarMan.novoEstado === 'em_curso' ? 'Iniciar' : 'Concluir')}
+                  {mutAtualizarMan.isPending ? 'A atualizar...' : (modalAtualizarMan.novoEstado === 'em_curso' ? 'Iniciar' : 'Concluir')}
                 </button>
               </div>
             </div>

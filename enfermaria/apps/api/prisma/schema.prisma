@@ -300,6 +300,8 @@ model Doente {
   grupoSanguineo       String? // grupo ABO/Rh do doente (ex.: 'A+', 'O-') — do type & screen
   estadoRegisto        String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
   tipoVisita           String? // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
+  // UX-23: utente não identificado à entrada ("Desconhecido AAAA-MM-DD #N"); funde-se depois.
+  identificacaoProvisoria Boolean @default(false)
   dataAdmissao         DateTime     @default(now())
   dataAltaPrevista     DateTime?
   dataAlta             DateTime?

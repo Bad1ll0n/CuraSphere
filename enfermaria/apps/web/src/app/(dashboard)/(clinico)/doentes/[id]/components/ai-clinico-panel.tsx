@@ -58,7 +58,7 @@ const ROLES_COM_ACESSO = ['medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_tu
 const FACTORES_ANALISADOS = [
   'Diagnóstico principal e comorbilidades',
   'Sinais vitais (últimas 3 medições)',
-  'Medicação activa e prescrições',
+  'Medicação ativa e prescrições',
   'Tarefas pendentes e alertas clínicos',
   'Notas de turno recentes',
   'Avaliações de escala (Braden, Morse)',
@@ -271,7 +271,7 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
 
                 {isMedico && (resposta.padroesDetectados ?? []).length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Padrões Detectados</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Padrões Detetados</p>
                     <ul className="space-y-2">
                       {resposta.padroesDetectados!.map((p, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-slate-700">

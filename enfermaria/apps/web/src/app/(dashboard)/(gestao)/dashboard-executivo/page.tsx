@@ -310,7 +310,7 @@ export default function DashboardExecutivo() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
-                  <span className="text-sm text-slate-600">Ausências Activas</span>
+                  <span className="text-sm text-slate-600">Ausências Ativas</span>
                   <span className={`text-sm font-bold ${(dados.ausenciasAtivas ?? 0) > 0 ? 'text-red-600' : 'text-slate-500'}`}>
                     {dados.ausenciasAtivas ?? 0}
                   </span>

@@ -212,7 +212,7 @@ export default function AvaliacoesPage() {
                 <select id="fpage-0" value={form.utilizadorId} onChange={e => setForm(f => ({ ...f, utilizadorId: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {colaboradores.map((c: Colaborador) => <option key={c.id} value={c.id}>{c.nome} ({ROLE_LABEL[c.role] ?? c.role})</option>)}
                 </select>
               </div>

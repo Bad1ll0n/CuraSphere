@@ -133,7 +133,7 @@ function CartaoDoente({ linha, onAlterado }: { linha: Linha; onAlterado: () => v
               </button>
               <button onClick={() => guardar(true)} disabled={aGuardar || !completo}
                 className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50" style={{ padding: '8px 14px' }}>
-                {p?.estado === 'entregue' ? 'Actualizar entrega' : 'Entregar passagem'}
+                {p?.estado === 'entregue' ? 'Atualizar entrega' : 'Entregar passagem'}
               </button>
             </div>
           )}

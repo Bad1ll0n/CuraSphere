@@ -130,7 +130,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
 
   const registarEntrada = async () => {
     if (!formQueixa.trim()) { Alert.alert('Campo obrigatório', 'Indique a queixa principal.'); return; }
-    if (!formTriagem) { Alert.alert('Campo obrigatório', 'Seleccione a prioridade de triagem.'); return; }
+    if (!formTriagem) { Alert.alert('Campo obrigatório', 'Selecione a prioridade de triagem.'); return; }
     setSubmitting(true);
     try {
       await api.post('/urgencia/episodio', {
@@ -154,7 +154,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
       setEpisodioSel(null);
       await carregar();
     } catch (e: any) {
-      Alert.alert('Erro', e?.response?.data?.message ?? 'Erro ao actualizar estado');
+      Alert.alert('Erro', e?.response?.data?.message ?? 'Erro ao atualizar estado');
     } finally { setAtualizando(false); }
   };
 
@@ -206,7 +206,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
         ) : filtrados.length === 0 ? (
           <View style={s.vazio}>
             <Ionicons name="medical-outline" size={40} color="#cbd5e1" />
-            <Text style={s.vazioTexto}>Sem episódios{filtro === 'ativos' ? ' activos' : ''}</Text>
+            <Text style={s.vazioTexto}>Sem episódios{filtro === 'ativos' ? ' ativos' : ''}</Text>
           </View>
         ) : (
           filtrados
@@ -260,7 +260,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
                     {podeTriar && temAcoes && (
                       <View style={s.infoRow}>
                         <Ionicons name="chevron-forward-outline" size={13} color="#94a3b8" />
-                        <Text style={[s.infoTexto, { color: '#94a3b8' }]}>Acções</Text>
+                        <Text style={[s.infoTexto, { color: '#94a3b8' }]}>Ações</Text>
                       </View>
                     )}
                   </View>
@@ -369,7 +369,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
 
                     <Text style={[s.fieldLabel, { marginTop: 20 }]}>Avançar Estado</Text>
                     {proximos.length === 0 ? (
-                      <Text style={s.semAcoes}>Episódio encerrado — sem acções disponíveis.</Text>
+                      <Text style={s.semAcoes}>Episódio encerrado — sem ações disponíveis.</Text>
                     ) : (
                       proximos.map(p => (
                         <TouchableOpacity accessibilityRole="button"

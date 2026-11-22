@@ -121,7 +121,7 @@ export default function DashboardQualidade() {
         <svg className="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
         </svg>
-        <p className="text-red-700 text-sm font-medium">Erro ao carregar dados de qualidade. Tenta recarregar a página.</p>
+        <p className="text-red-700 text-sm font-medium">Erro ao carregar dados de qualidade. Tente recarregar a página.</p>
       </div>
     </div>
   );
@@ -151,12 +151,12 @@ export default function DashboardQualidade() {
         <KpiCard
           titulo="Doentes em Isolamento"
           valor={dados.iacs.totalIsolados}
-          sub="IACS activos"
+          sub="IACS ativos"
           cor="bg-red-50"
           icone={<svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>}
         />
         <KpiCard
-          titulo="Alertas Clínicos Activos"
+          titulo="Alertas Clínicos Ativos"
           valor={dados.alertas.naoLidos}
           sub="não lidos"
           cor="bg-amber-50"
@@ -183,9 +183,9 @@ export default function DashboardQualidade() {
         {/* IACS por Motivo */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
           <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>IACS — Por Agente</h2>
-          <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Doentes em isolamento activo</p>
+          <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Doentes em isolamento ativo</p>
           {dados.iacs.porMotivo.length === 0 ? (
-            <p className="text-sm text-slate-500 text-center" style={{ paddingTop: '20px' }}>Sem isolamentos activos</p>
+            <p className="text-sm text-slate-500 text-center" style={{ paddingTop: '20px' }}>Sem isolamentos ativos</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {dados.iacs.porMotivo.map(({ motivo, total }) => (
@@ -280,7 +280,7 @@ export default function DashboardQualidade() {
           </div>
           {dados.alertas.recentes.length === 0 ? (
             <div className="text-center text-slate-500 text-sm" style={{ padding: '24px 0' }}>
-              Sem alertas activos
+              Sem alertas ativos
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>

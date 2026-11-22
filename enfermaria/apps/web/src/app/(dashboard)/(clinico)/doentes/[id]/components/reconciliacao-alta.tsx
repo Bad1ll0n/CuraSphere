@@ -44,7 +44,7 @@ export function ReconciliacaoAlta({ requisitos, decisoes, setDecisoes, novas, se
 
       <span className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Reconciliação terapêutica de saída</span>
       {requisitos.prescricoesAtivas.length === 0 ? (
-        <p className="text-xs text-slate-500" style={{ marginBottom: '8px' }}>Sem prescrições activas.</p>
+        <p className="text-xs text-slate-500" style={{ marginBottom: '8px' }}>Sem prescrições ativas.</p>
       ) : (
         <ul className="flex flex-col gap-2" style={{ marginBottom: '8px' }}>
           {requisitos.prescricoesAtivas.map((p) => {

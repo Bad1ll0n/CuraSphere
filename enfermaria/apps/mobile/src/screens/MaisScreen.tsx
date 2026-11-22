@@ -148,7 +148,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     // — Clínico especializado
     { key: 'iacs',         icon: 'shield-outline',           cor: '#7c3aed', titulo: 'IACS',               sub: 'Doentes em isolamento',            visivel: itemMaisVisivel('iacs', utilizador) },
     { key: 'mar',          icon: 'medical-outline',          cor: '#3b82f6', titulo: 'MAR',                sub: 'Mapa de administração de medicação', visivel: itemMaisVisivel('mar', utilizador) },
-    { key: 'urgencia',     icon: 'heart-outline',            cor: '#ef4444', titulo: 'Urgência',           sub: 'Episódios de urgência activos',    visivel: itemMaisVisivel('urgencia', utilizador) },
+    { key: 'urgencia',     icon: 'heart-outline',            cor: '#ef4444', titulo: 'Urgência',           sub: 'Episódios de urgência ativos',    visivel: itemMaisVisivel('urgencia', utilizador) },
     { key: 'salaespera',   icon: 'people-circle-outline',    cor: '#f97316', titulo: 'Sala de Espera',     sub: 'Fila de espera da urgência',       visivel: itemMaisVisivel('salaespera', utilizador) },
     { key: 'consultas',    icon: 'calendar-number-outline',  cor: '#10b981', titulo: 'Consultas',          sub: 'Consultas externas agendadas',     visivel: itemMaisVisivel('consultas', utilizador) },
     { key: 'farmacia',     icon: 'flask-outline',            cor: '#ec4899', titulo: 'Farmácia',           sub: 'Stock e pedidos de medicação',     visivel: itemMaisVisivel('farmacia', utilizador) },

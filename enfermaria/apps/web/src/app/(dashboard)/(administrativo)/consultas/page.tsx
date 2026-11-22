@@ -378,7 +378,7 @@ export default function ConsultasPage() {
               onChange={e => setAgendaMedicoId(e.target.value)}
               style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 14px', fontSize: 14, background: 'var(--bg-card)', minWidth: 280 }}
             >
-              <option value="">Seleccionar médico...</option>
+              <option value="">Selecionar médico...</option>
               {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}{m.subRole ? ` (${m.subRole})` : ''}</option>)}
             </select>
           </div>
@@ -386,7 +386,7 @@ export default function ConsultasPage() {
           {!agendaMedicoId ? (
             <div style={{ background: 'var(--bg-card)', borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center', padding: '64px 40px', color: 'var(--text-dim)' }}>
               <div style={{ fontSize: 48 }}>👨‍⚕️</div>
-              <p style={{ marginTop: 12 }}>Seleccione um médico para ver ou editar a disponibilidade semanal</p>
+              <p style={{ marginTop: 12 }}>Selecione um médico para ver ou editar a disponibilidade semanal</p>
             </div>
           ) : (
             <div>
@@ -435,7 +435,7 @@ export default function ConsultasPage() {
 
               <div style={{ background: 'var(--bg-card)', borderRadius: 14, border: '1px solid #e2e8f0', padding: '16px 20px' }}>
                 <p style={{ color: 'var(--text-soft)', fontSize: 13 }}>
-                  Use o botão <strong>"Definir Disponibilidade"</strong> para adicionar ou actualizar um dia da semana.
+                  Use o botão <strong>"Definir Disponibilidade"</strong> para adicionar ou atualizar um dia da semana.
                   Os slots são gerados automaticamente com base no horário e duração configurados.
                 </p>
               </div>
@@ -461,7 +461,7 @@ export default function ConsultasPage() {
                 onChange={e => setNovaForm(f => ({ ...f, medicoId: e.target.value }))}
                 style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}
               >
-                <option value="">Seleccionar médico...</option>
+                <option value="">Selecionar médico...</option>
                 {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}{m.subRole ? ` — ${m.subRole}` : ''}</option>)}
               </select>
             </div>
@@ -700,7 +700,7 @@ export default function ConsultasPage() {
               <label htmlFor="fpage-9" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Médico *</label>
               <select id="fpage-9" value={agendaForm.medicoId} onChange={e => setAgendaForm(f => ({ ...f, medicoId: e.target.value }))}
                 style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: 'var(--bg-page)' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {medicos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
               </select>
             </div>

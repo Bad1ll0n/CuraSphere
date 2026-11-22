@@ -182,7 +182,7 @@ export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props
             {dados.iacs.tendencia.length > 0 && (
               <View style={s.secao}>
                 <Text style={s.secaoTitulo}>Tendência IACS — 7 dias</Text>
-                <Text style={s.secaoSub}>Isolamentos activos por dia</Text>
+                <Text style={s.secaoSub}>Isolamentos ativos por dia</Text>
                 <View style={s.tendenciaGrafico}>
                   {dados.iacs.tendencia.map(({ data, total }) => (
                     <View key={data} style={s.tendenciaColuna}>
@@ -219,7 +219,7 @@ export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props
                 )}
               </View>
               {dados.alertas.recentes.length === 0 ? (
-                <Text style={s.semDados}>Sem alertas activos</Text>
+                <Text style={s.semDados}>Sem alertas ativos</Text>
               ) : dados.alertas.recentes.slice(0, 8).map(alerta => (
                 <View key={alerta.id} style={s.alertaRow}>
                   <View style={s.alertaPonto} />

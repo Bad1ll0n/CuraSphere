@@ -109,7 +109,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
       if (!dentroGeofence) {
         Alert.alert(
           '⚠️ Localização fora do hospital',
-          'O check-in foi registado, mas a tua localização indica que podes estar fora das instalações hospitalares. O chefe de turno foi notificado.',
+          'O check-in foi registado, mas a sua localização indica que pode estar fora das instalações hospitalares. O chefe de turno foi notificado.',
           [{ text: 'OK' }],
         );
       } else {
@@ -206,7 +206,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
       ) : doentes.length === 0 && (
         <View style={s.centro}>
           <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
-          <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
+          <Text style={s.semTurnoSub}>Não tem doentes atribuídos no turno atual</Text>
         </View>
       )}
 

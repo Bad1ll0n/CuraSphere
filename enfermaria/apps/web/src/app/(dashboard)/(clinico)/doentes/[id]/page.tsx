@@ -232,7 +232,7 @@ export default function DoenteDetalhe() {
   const [criandoPortal, setCriandoPortal] = useState(false);
   const [portalCriado, setPortalCriado] = useState(false);
   const dlgEditar = useDialogoAcessivel({ aberto: modalEditarDoente, onFechar: () => setModalEditarDoente(false), titulo: 'Editar doente' });
-  const dlgIsolamento = useDialogoAcessivel({ aberto: modalIsolamento, onFechar: () => setModalIsolamento(false), titulo: 'Activar isolamento' });
+  const dlgIsolamento = useDialogoAcessivel({ aberto: modalIsolamento, onFechar: () => setModalIsolamento(false), titulo: 'Ativar isolamento' });
   const dlgQR = useDialogoAcessivel({ aberto: modalQR, onFechar: () => setModalQR(false), titulo: 'Código QR do doente' });
   const dlgAlta = useDialogoAcessivel({ aberto: modalAltaEstruturada, onFechar: () => setModalAltaEstruturada(false), titulo: 'Alta estruturada' });
   const dlgSinalizar = useDialogoAcessivel({ aberto: modalSinalizar, onFechar: () => setModalSinalizar(false), titulo: 'Sinalizar doente como preocupante' });

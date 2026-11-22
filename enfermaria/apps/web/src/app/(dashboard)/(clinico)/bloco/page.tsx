@@ -422,7 +422,7 @@ export default function BlocoPage() {
               <button onClick={carregarSalas} disabled={loadingSalas}
                 className="text-xs font-semibold text-blue-600 hover:text-blue-800 disabled:opacity-50"
                 style={{ padding: '4px 8px' }}>
-                {loadingSalas ? 'A actualizar...' : '↻ Actualizar'}
+                {loadingSalas ? 'A atualizar...' : '↻ Atualizar'}
               </button>
             </div>
             <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>

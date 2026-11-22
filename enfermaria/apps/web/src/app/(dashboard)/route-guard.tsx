@@ -24,14 +24,19 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
 
   const permitido = !utilizador || rotaPermitida(pathname, utilizador);
 
+  // UX-23: a recusa diz-se — antes o redirecionamento era imediato e a mensagem só piscava (o
+  // administrativo em /doentes/admitir ia parar ao dashboard sem saber porquê). Fica 6 s, com
+  // um botão para ir já.
+  const destino = utilizador ? destinoPorOmissao(utilizador) : '/';
   useEffect(() => {
     if (loading || !utilizador || permitido) return;
-    router.replace(destinoPorOmissao(utilizador));
-  }, [loading, utilizador, permitido, router]);
+    const t = setTimeout(() => router.replace(destino), 6000);
+    return () => clearTimeout(t);
+  }, [loading, utilizador, permitido, router, destino]);
 
   if (permitido) return <>{children}</>;
 
-  // Estado de permissão insuficiente enquanto a redirecção não acontece — anunciado a
+  // Estado de permissão insuficiente enquanto a redireção não acontece — anunciado a
   // leitores de ecrã em vez de um ecrã em branco silencioso.
   return (
     <div role="alert" style={{ padding: '64px 48px', maxWidth: '640px', margin: '0 auto' }}>
@@ -48,6 +53,10 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
           {t('forbiddenTitle')}
         </h1>
         <p className="text-sm text-slate-500">{t('forbiddenBody')}</p>
+        <button type="button" onClick={() => router.replace(destino)}
+          className="rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700" style={{ marginTop: '20px', padding: '8px 16px' }}>
+          {t('forbiddenGoHome')}
+        </button>
       </div>
     </div>
   );
