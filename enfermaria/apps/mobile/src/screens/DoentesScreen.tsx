@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
+  View, Text, ScrollView, FlatList, TouchableOpacity,
   StyleSheet, TextInput, ActivityIndicator, RefreshControl,
   Modal, Alert,
 } from 'react-native';
@@ -153,12 +153,17 @@ export default function DoentesScreen({ utilizador }: Props) {
       {loading ? (
         <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
       ) : (
-        <ScrollView
+        <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todas as linhas)
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
-        >
-          {filtrados.length === 0 ? (
+          data={filtrados}
+          keyExtractor={(d) => d.id}
+          initialNumToRender={10}
+          windowSize={7}
+          ListEmptyComponent={(
             <View style={s.vazio}><Text style={s.vazioTexto}>Sem doentes encontrados</Text></View>
-          ) : filtrados.map((d) => (
+                    )}
+          ListFooterComponent={<View style={{ height: 16 }} />}
+          renderItem={({ item: d }) => (
             <TouchableOpacity accessibilityRole="button" key={d.id} style={s.cartao} onPress={() => setDoenteAberto(d.id)} activeOpacity={0.8}>
               <View style={[s.estadoBar, { backgroundColor: estadoCor[d.estado] }]} />
               <View style={s.cartaoConteudo}>
@@ -172,9 +177,8 @@ export default function DoentesScreen({ utilizador }: Props) {
                 <Text style={s.cama}>Cama {d.cama.quarto}/{d.cama.numero} · Proc. {d.numeroProcesso}</Text>
               </View>
             </TouchableOpacity>
-          ))}
-          <View style={{ height: 16 }} />
-        </ScrollView>
+          )}
+        />
       )}
 
       {/* Modal: Admitir Doente */}

@@ -1,35 +1,30 @@
 import { QueryClient } from '@tanstack/react-query';
-import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/**
+ * ARQ-26 — a cache de leitura (doentes, vitais, medicação…) fica **só em memória**.
+ *
+ * Antes era persistida em claro no AsyncStorage (`curasphere:query_cache`) durante 24 h: num
+ * dispositivo partilhado, os dados clínicos ficavam em disco, legíveis com acesso ao aparelho.
+ * Desde o SEC-23 a sessão também não sobrevive ao fecho da app (só a entrada por biometria a
+ * retoma, e com rede), por isso a cópia em disco já não servia a ninguém — só ao risco. Durante
+ * a sessão, a cache em memória continua a servir o trabalho sem rede; os registos feitos offline
+ * vão pela fila (mutation-queue), que essa sim tem de sobreviver.
+ */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30_000,
-      gcTime: 24 * 60 * 60_000, // 24h — mantém cache offline
+      gcTime: 12 * 60 * 60_000, // um turno: a cache em memória cobre as quebras de rede
       retry: 1,
     },
   },
 });
 
-const asyncStoragePersister = createAsyncStoragePersister({
-  storage: AsyncStorage,
-  key: 'curasphere:query_cache',
-});
+/** Chave da cópia em disco das versões antigas. */
+const CHAVE_CACHE_ANTIGA = 'curasphere:query_cache';
 
-persistQueryClient({
-  queryClient,
-  persister: asyncStoragePersister,
-  maxAge: 24 * 60 * 60_000, // expirar cache após 24h
-});
-
-/**
- * A9: `queryClient.clear()` limpa a memória, mas a cópia em disco só é reescrita depois do
- * intervalo do persister (1 s). Se a app for terminada nesse intervalo, os dados de doentes
- * da sessão anterior ficam no AsyncStorage e são restaurados no arranque seguinte — num
- * dispositivo partilhado, para quem vier a seguir. O logout apaga a cópia explicitamente.
- */
+/** Apaga a cache em disco que versões antigas deixaram (no arranque e no logout). */
 export async function apagarCacheOffline(): Promise<void> {
-  await asyncStoragePersister.removeClient();
+  await AsyncStorage.removeItem(CHAVE_CACHE_ANTIGA);
 }

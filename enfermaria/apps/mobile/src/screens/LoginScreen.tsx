@@ -5,11 +5,8 @@ import {
   ActivityIndicator, ScrollView, Alert,
 } from 'react-native';
 import Svg, { Circle, Ellipse, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
-import { login, logout } from '../lib/auth';
-import {
-  autenticarComBiometria, biometriaDisponivel,
-  guardarCredenciaisBiometricas, obterCredenciaisBiometricas,
-} from '../lib/biometric';
+import { ativarEntradaBiometrica, entrarComBiometria, login, logout, verificarMfa, type ResultadoLogin } from '../lib/auth';
+import { autenticarComBiometria, biometriaDisponivel, temSessaoBiometrica } from '../lib/biometric';
 
 const PAPEIS_CLINICOS = ['medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros'];
 
@@ -46,74 +43,94 @@ export default function LoginScreen({ onLogin }: Props) {
   const [erro, setErro] = useState('');
   const [temBiometria, setTemBiometria] = useState(false);
   const [oferecerBiometria, setOferecerBiometria] = useState(false);
+  // SEC-23: passo do código MFA (papéis clínicos têm MFA obrigatório).
+  const [desafioMfa, setDesafioMfa] = useState<string | null>(null);
+  const [codigoMfa, setCodigoMfa] = useState('');
+
+  const entrarPorBiometria = async () => {
+    setLoading(true);
+    setErro('');
+    try {
+      // O sistema pede Face ID / impressão digital para libertar a sessão guardada.
+      const u = await entrarComBiometria();
+      if (u) onLogin();
+      else { setTemBiometria(false); setErro('A sessão guardada expirou. Entre com a password.'); }
+    } finally { setLoading(false); }
+  };
 
   useEffect(() => {
     (async () => {
-      const disponivel = await biometriaDisponivel();
-      if (!disponivel) return;
-      const credenciais = await obterCredenciaisBiometricas();
-      if (credenciais) {
-        setTemBiometria(true);
-        // Auto-tentativa biométrica ao abrir a app
-        const ok = await autenticarComBiometria();
-        if (ok) {
-          setLoading(true);
-          try {
-            await login(credenciais.username, credenciais.password);
-            onLogin();
-          } catch {
-            setErro('Sessão expirada. Por favor inicie sessão manualmente.');
-          } finally {
-            setLoading(false);
-          }
-        }
-      }
+      if (!(await biometriaDisponivel()) || !(await temSessaoBiometrica())) return;
+      setTemBiometria(true);
+      await entrarPorBiometria();
     })();
   }, []);
+
+  /** Depois de autenticado (com ou sem MFA): biometria obrigatória para papéis clínicos. */
+  const concluir = async (r: ResultadoLogin) => {
+    if (r.tipo === 'mfa') { setDesafioMfa(r.desafio); setCodigoMfa(''); return; }
+    if (r.tipo === 'mfa_setup') {
+      setErro('Este perfil exige autenticação de dois fatores. Configure-a primeiro na aplicação web e volte a entrar.');
+      return;
+    }
+    if (r.tipo === 'password_expirada') {
+      setErro('A sua password expirou. Altere-a na aplicação web e volte a entrar.');
+      return;
+    }
+    setDesafioMfa(null);
+    const disponivel = await biometriaDisponivel();
+    if (PAPEIS_CLINICOS.includes(r.utilizador.role)) {
+      if (disponivel) {
+        const ok = await autenticarComBiometria();
+        if (!ok) {
+          await logout();
+          Alert.alert(
+            'Biometria necessária',
+            'A biometria é obrigatória para acesso clínico. Tente novamente e confirme com Face ID / Touch ID.',
+          );
+          return;
+        }
+      } else {
+        Alert.alert(
+          '⚠️ Recomendação de segurança',
+          'Active biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
+          [{ text: 'OK' }],
+        );
+      }
+    }
+    if (disponivel && !temBiometria) setOferecerBiometria(true);
+    else onLogin();
+  };
 
   const handleLogin = async () => {
     if (!numeroFuncionario || !password) return;
     setLoading(true);
     setErro('');
     try {
-      const utilizador = await login(numeroFuncionario, password);
-      const disponivel = await biometriaDisponivel();
-
-      // Biometria obrigatória para papéis clínicos
-      if (PAPEIS_CLINICOS.includes(utilizador.role)) {
-        if (disponivel) {
-          const ok = await autenticarComBiometria();
-          if (!ok) {
-            await logout();
-            Alert.alert(
-              'Biometria necessária',
-              'A biometria é obrigatória para acesso clínico. Tente novamente e confirme com Face ID / Touch ID.',
-            );
-            return;
-          }
-        } else {
-          Alert.alert(
-            '⚠️ Recomendação de segurança',
-            'Active biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
-            [{ text: 'OK' }],
-          );
-        }
-      }
-
-      if (disponivel && !temBiometria) {
-        setOferecerBiometria(true);
-      } else {
-        onLogin();
-      }
+      await concluir(await login(numeroFuncionario, password));
     } catch {
       setErro('Número de funcionário ou password incorretos.');
     } finally {
+      setPassword(''); // SEC-23: a password não fica em memória depois de usada
       setLoading(false);
     }
   };
 
+  const handleMfa = async () => {
+    if (!desafioMfa || codigoMfa.length !== 6) return;
+    setLoading(true);
+    setErro('');
+    try {
+      await concluir(await verificarMfa(desafioMfa, codigoMfa));
+    } catch {
+      setCodigoMfa('');
+      setErro('Código inválido ou expirado. Tente o código seguinte da sua aplicação.');
+    } finally { setLoading(false); }
+  };
+
   const activarBiometria = async () => {
-    await guardarCredenciaisBiometricas(numeroFuncionario, password);
+    // SEC-23: guarda a sessão (refresh token) protegida por biometria — nunca a password.
+    await ativarEntradaBiometrica();
     setTemBiometria(true);
     setOferecerBiometria(false);
     onLogin();
@@ -180,32 +197,38 @@ export default function LoginScreen({ onLogin }: Props) {
           </View>
         ) : null}
 
+        {desafioMfa ? (
+          <View style={s.campo}>
+            <Text style={s.label}>Código de autenticação (6 dígitos)</Text>
+            <TextInput
+              style={s.input}
+              value={codigoMfa}
+              onChangeText={(v) => setCodigoMfa(v.replace(/\D/g, '').slice(0, 6))}
+              placeholder="000000"
+              placeholderTextColor="#94a3b8"
+              keyboardType="number-pad"
+              autoComplete="one-time-code"
+              textContentType="oneTimeCode"
+              accessibilityLabel="Código de autenticação de dois fatores"
+              autoFocus
+            />
+          </View>
+        ) : null}
+
         <TouchableOpacity accessibilityRole="button"
-          style={[s.botao, (!numeroFuncionario || !password || loading) && s.botaoDesativado]}
-          onPress={handleLogin}
-          disabled={!numeroFuncionario || !password || loading}
+          style={[s.botao, (desafioMfa ? codigoMfa.length !== 6 : (!numeroFuncionario || !password)) || loading ? s.botaoDesativado : null]}
+          onPress={desafioMfa ? handleMfa : handleLogin}
+          disabled={(desafioMfa ? codigoMfa.length !== 6 : (!numeroFuncionario || !password)) || loading}
           activeOpacity={0.85}
         >
           {loading
             ? <ActivityIndicator color="#fff" />
-            : <Text style={s.botaoTexto}>Entrar</Text>
+            : <Text style={s.botaoTexto}>{desafioMfa ? 'Confirmar código' : 'Entrar'}</Text>
           }
         </TouchableOpacity>
 
         {temBiometria && !oferecerBiometria && (
-          <TouchableOpacity accessibilityRole="button" style={s.botaoBio} onPress={async () => {
-            const credenciais = await obterCredenciaisBiometricas();
-            if (!credenciais) return;
-            const ok = await autenticarComBiometria();
-            if (!ok) return;
-            setLoading(true);
-            try {
-              await login(credenciais.username, credenciais.password);
-              onLogin();
-            } catch {
-              setErro('Sessão expirada. Por favor inicie sessão manualmente.');
-            } finally { setLoading(false); }
-          }} activeOpacity={0.8}>
+          <TouchableOpacity accessibilityRole="button" style={s.botaoBio} onPress={entrarPorBiometria} activeOpacity={0.8}>
             <Text style={s.botaoBioTexto}>🔒 Entrar com biometria</Text>
           </TouchableOpacity>
         )}

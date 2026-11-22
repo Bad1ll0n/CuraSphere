@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
+  View, Text, ScrollView, FlatList, TouchableOpacity, StyleSheet,
   ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -106,16 +106,20 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
           <ActivityIndicator size="large" color="#6366f1" />
         </View>
       ) : (
-        <ScrollView
-          style={s.lista}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} tintColor="#6366f1" />}
-        >
-          {notificacoes.length === 0 ? (
+        <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todas as linhas)
+          style={s.lista} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} tintColor="#6366f1" />}
+          data={notificacoes}
+          keyExtractor={(n) => n.id}
+          initialNumToRender={10}
+          windowSize={7}
+          ListEmptyComponent={(
             <View style={s.vazio}>
               <Ionicons name="notifications-off-outline" size={48} color="#cbd5e1" />
               <Text style={s.vazioTexto}>Sem notificações</Text>
             </View>
-          ) : notificacoes.map((n) => (
+                    )}
+          ListFooterComponent={<View style={{ height: 32 }} />}
+          renderItem={({ item: n }) => (
             <TouchableOpacity accessibilityRole="button"
               key={n.id}
               style={[s.card, !n.lida && s.cardNaoLido]}
@@ -140,9 +144,8 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
                 )}
               </View>
             </TouchableOpacity>
-          ))}
-          <View style={{ height: 32 }} />
-        </ScrollView>
+          )}
+        />
       )}
     </View>
   );

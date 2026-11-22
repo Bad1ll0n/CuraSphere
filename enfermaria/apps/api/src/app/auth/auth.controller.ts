@@ -6,13 +6,29 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { TiposToken } from './tipos-token.decorator';
+import { TiposToken } from './tipos-token.decorator';
 import type { PedidoAutenticado } from './pedido-autenticado';
 
 class MfaVerificarDto {
   @IsString() @IsNotEmpty() mfaChallengeToken: string;
   @IsString() @Length(6, 6) code: string;
 }
+
+/** SEC-23: o cliente nativo (app mobile) apresenta o refresh token no corpo, não em cookie. */
+class RefreshNativoDto {
+  @IsOptional() @IsString() @MaxLength(512) refreshToken?: string;
+}
+
+/**
+ * SEC-23 — sessão do cliente nativo. A app mobile não é um browser: cookies + CSRF não lhe
+ * servem (sem `Origin`, o CSRF recusava; e o token que gravava no SecureStore vinha
+ * `undefined`, porque a API só o punha em cookie — o login no mobile falhava sempre).
+ * Com `X-Cliente: mobile`, o login, o MFA e o refresh devolvem os tokens no corpo e não
+ * põem cookies; o refresh e o logout só aceitam o refresh token do corpo. Um XSS na web
+ * que envie o cabeçalho não ganha nada: o refresh token do browser vive num cookie
+ * httpOnly que ele não lê, e o modo nativo nunca o usa.
+ */
+const eClienteNativo = (req?: { headers?: Record<string, unknown> }) => req?.headers?.['x-cliente'] === 'mobile';
 
 class MfaAtivarDto {
   // SEC-02: ignorado — o servidor usa o segredo que ele próprio gerou em `mfa/setup`.
@@ -62,8 +78,10 @@ export class AuthController {
     if (result.passwordExpirada) {
       return { passwordExpirada: true, passwordExpiredToken: result.passwordExpiredToken };
     }
+    const extra = { passwordExpiradoAviso: result.passwordExpiradoAviso, diasRestantesSenha: result.diasRestantesSenha };
+    if (eClienteNativo(req)) return { utilizador: result.utilizador, accessToken: result.accessToken, refreshToken: result.refreshToken, ...extra };
     this.setTokenCookies(res, result.accessToken!, result.refreshToken!);
-    return { utilizador: result.utilizador, passwordExpiradoAviso: result.passwordExpiradoAviso, diasRestantesSenha: result.diasRestantesSenha };
+    return { utilizador: result.utilizador, ...extra };
   }
 
   @Throttle({ default: { ttl: 600000, limit: MFA_THROTTLE_LIMIT } })
@@ -71,11 +89,13 @@ export class AuthController {
   async mfaVerificar(
     @Body() dto: MfaVerificarDto,
     @Res({ passthrough: true }) res: Response,
+    @Req() req?: PedidoAutenticado,
   ) {
     const result = await this.authService.verificarMfaLogin(dto.mfaChallengeToken, dto.code);
     if ('passwordExpirada' in result) {
       return { passwordExpirada: true, passwordExpiredToken: result.passwordExpiredToken };
     }
+    if (eClienteNativo(req)) return { utilizador: result.utilizador, accessToken: result.accessToken, refreshToken: result.refreshToken };
     this.setTokenCookies(res, result.accessToken, result.refreshToken);
     return { utilizador: result.utilizador };
   }
@@ -110,7 +130,13 @@ export class AuthController {
   async refresh(
     @Request() req: PedidoAutenticado,
     @Res({ passthrough: true }) res: Response,
+    @Body() dto?: RefreshNativoDto,
   ) {
+    if (eClienteNativo(req)) {
+      if (!dto?.refreshToken) throw new UnauthorizedException('Sessão expirada. Faça login novamente.');
+      const r = await this.authService.refresh(dto.refreshToken);
+      return { utilizador: r.utilizador, accessToken: r.accessToken, refreshToken: r.refreshToken };
+    }
     const token = req.cookies?.refresh_token;
     if (!token) {
       // Com `passthrough: true` o Nest envia a resposta; um `res.json()` aqui fazia-o duas
@@ -137,8 +163,9 @@ export class AuthController {
   async logout(
     @Request() req: PedidoAutenticado,
     @Res({ passthrough: true }) res: Response,
+    @Body() dto?: RefreshNativoDto,
   ) {
-    const token = req.cookies?.refresh_token;
+    const token = eClienteNativo(req) ? dto?.refreshToken : req.cookies?.refresh_token;
     if (token) await this.authService.logout(token);
     res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'strict' });
     res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'strict' });

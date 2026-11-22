@@ -12,7 +12,7 @@ import { queryClient } from '../lib/query-client';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
 
-import { getUtilizador, logout, Utilizador } from '../lib/auth';
+import { getUtilizador, limparPersistenciaAntiga, logout, Utilizador } from '../lib/auth';
 import api, { setUnauthorizedCallback } from '../lib/api';
 import LoginScreen from '../screens/LoginScreen';
 import DashboardScreen from '../screens/DashboardScreen';
@@ -147,6 +147,8 @@ function App() {
     setUnauthorizedCallback(() => setUtilizador(null));
 
     const iniciar = async () => {
+      // SEC-23: o que versões antigas guardavam em disco (token, perfil, password) sai no arranque.
+      await limparPersistenciaAntiga();
       const u = await getUtilizador();
       if (!u) { setLoading(false); return; }
 

@@ -46,11 +46,11 @@ export async function parar(ctx: Contexto | undefined): Promise<void> {
 }
 
 export const PASSWORD = 'Teste1234!';
-const SEGREDO_TOTP = 'EWA62CRGBGCMZVKZOEQ7GL2YIMOUSIBV';
+export const SEGREDO_TOTP = 'EWA62CRGBGCMZVKZOEQ7GL2YIMOUSIBV';
 // Anti-replay do TOTP: o mesmo utilizador não pode usar o mesmo código duas vezes. O Jest dá a
 // cada ficheiro de teste um contexto próprio, por isso a última janela usada fica num ficheiro.
 const FICHEIRO_JANELAS = join(tmpdir(), `curasphere-integracao-totp-${process.ppid}.json`);
-async function reservarJanela(numero: string): Promise<void> {
+export async function reservarJanela(numero: string): Promise<void> {
   let usadas: Record<string, number> = {};
   try { usadas = JSON.parse(readFileSync(FICHEIRO_JANELAS, 'utf8')); } catch { /* primeira vez */ }
   const janela = () => Math.floor(Date.now() / 30_000);

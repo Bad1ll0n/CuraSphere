@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
+  View, Text, FlatList, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -104,22 +104,25 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
         ))}
       </View>
 
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}>
-        {erroCarga
-          ? (
-            <ErroCarregamento
+      <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todas as linhas)
+        data={erroCarga ? [] : filtradas}
+        keyExtractor={(m) => m.id}
+        initialNumToRender={8}
+        windowSize={7}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
+        ListEmptyComponent={erroCarga ? (
+          <ErroCarregamento
               texto={t('mar.loadError')}
               onTentarNovamente={() => { setLoading(true); carregar(); }}
             />
-          )
-          : filtradas.length === 0
-          ? (
+        ) : (
             <View style={s.vazio}>
               <Ionicons name="checkmark-circle-outline" size={48} color="#22c55e" />
               <Text style={s.vazioTexto}>{t('mar.allGiven')}</Text>
             </View>
-          )
-          : filtradas.map(m => {
+        )}
+        ListFooterComponent={<View style={{ height: 32 }} />}
+        renderItem={({ item: m }) => {
             const corVia = viaCor[m.via] ?? '#64748b';
             return (
               <View key={m.id} style={[s.cartao, m.administradoHoje && s.cartaoAdministrado]}>
@@ -161,10 +164,8 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
                 )}
               </View>
             );
-          })
-        }
-        <View style={{ height: 32 }} />
-      </ScrollView>
+        }}
+      />
     </View>
   );
 }
