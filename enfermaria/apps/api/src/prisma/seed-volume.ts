@@ -15,6 +15,7 @@
  * Idempotente: se já houver doentes de carga, não faz nada.
  * Executar (depois de seed-test-users):  cd apps/api && npx ts-node --transpile-only src/prisma/seed-volume.ts
  */
+import './carregar-env'; // QA-27: antes de tudo — a cifragem lê a chave ao ser importada
 import { randomUUID } from 'node:crypto';
 import { PrismaClient } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -23,7 +24,6 @@ import { criarClienteComEncriptacao } from '../app/prisma/encryption.middleware'
 import { turnoActual } from '../app/doentes/listagem-doentes.service';
 import { abrirEpisodiosEmFalta } from './episodios-seed';
 
-try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 
 const N = Math.max(1, Number(process.env['SEED_DOENTES'] ?? 500));
 const SERVICO = 'Medicina Carga';

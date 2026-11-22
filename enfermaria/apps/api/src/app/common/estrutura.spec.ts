@@ -739,3 +739,20 @@ describe('estrutura — identificadores do schema (PROD-24)', () => {
     expect(suspeitos).toEqual([]);
   });
 });
+
+describe('estrutura — seeds com dados pessoais (QA-27)', () => {
+  it('as seeds que criam doentes usam o cliente que cifra e carregam o .env antes de tudo', () => {
+    const dir = join(RAIZ_APP, '..', 'prisma');
+    const seeds = readdirSync(dir).filter((f) => /^seed.*\.ts$/.test(f) && !f.includes('.spec.'));
+    const problemas = seeds.flatMap((f) => {
+      const s = readFileSync(join(dir, f), 'utf8');
+      if (!/\.doente\.(create|upsert|createMany)\(/.test(s)) return [];
+      const erros: string[] = [];
+      if (!s.includes('criarClienteComEncriptacao(')) erros.push(`${f}: cria doentes sem o cliente que cifra`);
+      const primeiroImport = s.match(/^import [^\n]+$/m)?.[0] ?? '';
+      if (!primeiroImport.includes('carregar-env')) erros.push(`${f}: o .env tem de ser carregado no 1.º import`);
+      return erros;
+    });
+    expect(problemas).toEqual([]);
+  });
+});

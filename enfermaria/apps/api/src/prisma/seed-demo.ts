@@ -6,6 +6,7 @@
  * É idempotente: re-executar atualiza sem duplicar.
  */
 
+import './carregar-env'; // QA-27: antes de tudo — a cifragem lê a chave ao ser importada
 import { PrismaClient } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
@@ -13,10 +14,11 @@ import * as bcrypt from 'bcryptjs';
 import { abrirEpisodiosEmFalta } from './episodios-seed';
 import { gravarItensCatalogo, ItemCatalogo } from '../app/catalogo/catalogo-nacional';
 import amostraCatalogo from '../app/catalogo/catalogo-amostra.json';
+import { criarClienteComEncriptacao } from '../app/prisma/encryption.middleware';
 
-try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
-const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
+// QA-27: os doentes da demonstração também ficam cifrados, como os que a API cria.
+const prisma = criarClienteComEncriptacao(new PrismaClient({ adapter: new PrismaPg(pool) })) as unknown as PrismaClient;
 const PASS = bcrypt.hashSync('demo1234', 10);
 
 // ─────────────────────────── UTILIZADORES ───────────────────────────
