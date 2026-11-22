@@ -23,14 +23,23 @@ name: CI — CuraSphere
 #   `e2e`     — lento e informativo: schedule nocturno, a pedido, ou PR com a
 #               etiqueta `run-e2e`. Carga (k6) vive em `load.yml`.
 #
-# ── NOTA DE DÍVIDA (actualizada em 2026-11-06, ARQ-09/ARQ-10) ───────────────
-#   lint      : 0 erros em todos os projectos (o cliente Prisma gerado deixou de ser
-#               lintado — era 93 % dos erros). BLOQUEANTE em `verify`. Os avisos
-#               (sobretudo `no-explicit-any` na web) continuam por reduzir.
+# ── NOTA DE DÍVIDA (actualizada em 2026-11-22, QA-26/OPS-23) ────────────────
+#   lint      : 0 erros em todos os projectos. BLOQUEANTE em `verify`. Os avisos
+#               (sobretudo `no-explicit-any`) continuam por reduzir; a api tem um
+#               ratchet de `any` no estrutura.spec (ARQ-08).
 #   typecheck : todos os projectos VERDES (api, shared, web, ui, mobile). BLOQUEANTE.
-#   test      : @org/api e @org/web VERDES. BLOQUEANTES.
+#   test      : @org/api (unitários + integração), @org/web e @org/mobile VERDES.
+#               Todos BLOQUEANTES (o mobile entrou em 2026-11-22).
 #   build     : @org/api e @org/web VERDES. BLOQUEANTE.
 #   formatação: continua em `quality` (informativo) até o `nx format` ser aplicado.
+#
+# ── Eficiência (OPS-23) ─────────────────────────────────────────────────────
+#   - Cache do Nx (`.nx/cache`) guardada entre execuções: o que não mudou é lido da
+#     cache em vez de correr outra vez.
+#   - Nos PRs, typecheck, lint e testes unitários correm com `nx affected` contra o
+#     ramo de destino; em `main`, no agendamento e a pedido, correm em TODOS os
+#     projectos (`run-many`) — é aí que se apanha o que o grafo de afectados falhe.
+#   - Integração, build e o orçamento de JS correm sempre por inteiro.
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
@@ -93,13 +102,31 @@ jobs:
     defaults:
       run:
         working-directory: enfermaria
+    env:
+      # OPS-23: nos PRs, só os projectos afectados pela mudança (contra o ramo de destino);
+      # no resto, todos. `NX_ALVO` é o comando Nx a usar nos passos rápidos.
+      NX_ALVO: ${{ github.event_name == 'pull_request' && 'affected' || 'run-many' }}
+      NX_BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # o `nx affected` precisa do histórico até ao ramo de destino
 
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
+
+      # OPS-23: a cache de computação do Nx entre execuções. A chave muda com o lockfile e com o
+      # commit; o `restore-keys` aproveita a do commit anterior.
+      - name: Cache do Nx
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: enfermaria/.nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('enfermaria/pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ runner.os }}-${{ hashFiles('enfermaria/pnpm-lock.yaml') }}-
+            nx-${{ runner.os }}-
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -107,9 +134,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: enfermaria/pnpm-lock.yaml
 
-      # `pnpm install` corre build scripts só dos pacotes listados em
-      # `pnpm.onlyBuiltDependencies` (package.json) e `allowBuilds`
-      # (pnpm-workspace.yaml) — prisma, @swc/core, sharp, @node-rs/bcrypt…
+      # `pnpm install` corre build scripts só dos pacotes com `allowBuilds: true` no
+      # pnpm-workspace.yaml (SEC-24) — prisma, @swc/core, sharp, esbuild…
       # NÃO acrescentar `--ignore-scripts`: parte o cliente Prisma e o SWC, e
       # já causou problemas neste repositório.
       - name: Instalar dependências
@@ -119,8 +145,8 @@ jobs:
       # ARQ-09: baseline a ZERO em todos os projectos (api, shared, web, ui, mobile) —
       # o web e o mobile deixaram o job `quality`. O cliente Prisma é gerado pelo target
       # `prisma-generate` (ARQ-10: deixou de estar no git), de que o typecheck depende.
-      - name: TypeScript — verificar tipos (todos os projectos)
-        run: pnpm exec nx run-many -t typecheck
+      - name: TypeScript — verificar tipos
+        run: pnpm exec nx $NX_ALVO -t typecheck ${NX_BASE:+--base=$NX_BASE}
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
@@ -139,13 +165,12 @@ jobs:
       # ── Lint (BLOQUEANTE) ──────────────────────────────────────────────────
       # ARQ-09: 93 % do "lint vermelho" era o cliente Prisma gerado (agora ignorado);
       # os erros reais foram corrigidos. Avisos não reprovam; erros sim.
-      - name: Lint (todos os projectos)
-        run: pnpm exec nx run-many -t lint
+      - name: Lint
+        run: pnpm exec nx $NX_ALVO -t lint ${NX_BASE:+--base=$NX_BASE}
 
       # ── Testes unitários + cobertura (BLOQUEANTE) ──────────────────────────
-      # Thresholds de cobertura impostos em apps/api/jest.config.js.
-      # Só @org/api: a suite de @org/web tem 3 suites e 1 teste a falhar no
-      # baseline (ver NOTA DE DÍVIDA) e corre no job `quality`.
+      # Thresholds de cobertura impostos em apps/api/jest.config.js. Sempre por inteiro: a
+      # cobertura publicada abaixo tem de ser a da api toda.
       - name: Unit tests (api) com cobertura
         run: pnpm exec nx run @org/api:test --coverage --passWithNoTests
         env:
@@ -164,10 +189,11 @@ jobs:
         env:
           DATABASE_URL_INTEGRACAO: postgresql://postgres:postgres@localhost:5432/enfermaria_integracao
 
-      # ── Testes unitários da web (BLOQUEANTE) ───────────────────────────────
-      # Verde desde 2026-11 (10 suites, 69 testes); saiu do job `quality`.
-      - name: Unit tests (web)
-        run: pnpm exec nx run @org/web:test --passWithNoTests
+      # ── Testes unitários da web e do mobile (BLOQUEANTE) ────────────────────
+      # QA-26: verdes (web 82, mobile 49) mas o mobile não corria no CI. Agora ambos são gate,
+      # e nos PRs só correm se o projecto for afectado.
+      - name: Unit tests (web e mobile)
+        run: pnpm exec nx $NX_ALVO -t test --exclude=@org/api ${NX_BASE:+--base=$NX_BASE} --passWithNoTests
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3333
 

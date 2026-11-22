@@ -95,6 +95,15 @@ RUN pnpm install --prod --frozen-lockfile \
 # tem de existir e pertencer ao utilizador sem privilégios antes do runtime
 RUN mkdir -p uploads/mensagens && chown -R nestjs:nodejs uploads
 
+# OPS-08: a versão do release (tag ou SHA) — vai para o Sentry, para o tracing e para o /health/live.
+ARG VERSAO=desconhecida
+ENV APP_VERSION=$VERSAO
+# PERF-20: o threadpool do libuv tem 4 threads por omissão e é partilhado pelo bcrypt (@node-rs),
+# pela cifragem assíncrona, pelo zlib da compressão, pelo DNS e pelo fs. Com logins e PDFs em
+# simultâneo, 4 faziam fila. 16 é o valor recomendado para uma réplica com 2–4 vCPU; pode
+# sobrepor-se no compose (UV_THREADPOOL_SIZE).
+ENV UV_THREADPOOL_SIZE=16
+
 USER nestjs
 EXPOSE 3333
 

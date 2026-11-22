@@ -12,6 +12,7 @@ import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { problemaConfigJitsi } from './app/common/jitsi';
 import { configurarApp } from './app/configurar-app';
+import { versaoDaAplicacao } from './versao';
 
 // placeholder conhecido, usado só para RECUSAR arrancar com ele
 const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao'; // nosemgrep
@@ -20,6 +21,8 @@ if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'development',
+    // OPS-08: sem `release`, um erro no Sentry não dizia de que versão vinha.
+    release: versaoDaAplicacao(),
     tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.05 : 1.0,
     // RGPD / dados clínicos: no Sentry v11, `dataCollection` por omissão envia corpos HTTP,
     // queries à BD, inputs/outputs da IA clínica, cookies e dados do utilizador — também nos

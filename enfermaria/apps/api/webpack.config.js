@@ -78,6 +78,16 @@ module.exports = {
           if (request && /(^|[\\/])generated[\\/]prisma($|[\\/])/.test(request)) {
             return callback(null, 'commonjs ./generated/prisma');
           }
+          // OPS-08: o tracing só via o http/dns/net do Node — nenhum span da BD, do Express nem do
+          // Redis. Duas causas: (1) o OpenTelemetry instrumenta um módulo quando ele é `require`d, e
+          // o pg, o express e o ioredis vinham embutidos no bundle; (2) o próprio SDK vinha embutido,
+          // e aí o `require-in-the-middle` não consegue resolver caminhos reais (o `require.resolve`
+          // do webpack devolve ids), por isso só os módulos nativos eram patchados. Todos passam a
+          // ser carregados do node_modules em runtime — são dependências diretas da api,
+          // instaladas na imagem.
+          if (request && /^(pg|express|ioredis|@opentelemetry\/(sdk-node|auto-instrumentations-node|exporter-trace-otlp-http))($|\/)/.test(request)) {
+            return callback(null, 'commonjs ' + request);
+          }
           // @node-rs/bcrypt (napi + binário .node por plataforma) NÃO pode ser empacotado — o
           // webpack tentaria fazer parse do binário nativo. Externalizar → require do node_modules
           // em runtime (o binário certo é resolvido pelo próprio pacote, como o pg/ioredis).

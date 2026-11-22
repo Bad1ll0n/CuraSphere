@@ -34,6 +34,7 @@ export function carregarMonitorizacao(): Promise<SentryNext | null> {
       s.init({
         dsn: DSN,
         environment: process.env.NODE_ENV,
+        release: process.env.NEXT_PUBLIC_APP_VERSION || undefined, // OPS-08
         tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
         // RGPD: não enviar corpo do request nem cookies (dados clínicos Art. 9 RGPD)
         beforeSend: (event) => {
