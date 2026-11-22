@@ -18,7 +18,7 @@ export function requisitosConfigurados(): RequisitoAlta[] {
 }
 
 const CRITERIOS_PLANO = [
-  'afebrилApenas24h', 'mobilidadeAdequada', 'alimentacaoOral', 'doresControladas',
+  'afebril24h', 'mobilidadeAdequada', 'alimentacaoOral', 'doresControladas',
   'familiaInformada', 'transporteAssegurado', 'medicacaoPreparada', 'consultaSegAlt',
 ] as const;
 

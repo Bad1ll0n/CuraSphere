@@ -9,11 +9,14 @@ import { estadoCor, estadoLabel, prioridadeCor, StatCard, CardContainer, CardHea
 import { DistribuicaoNews2 } from '../distribuicao-news2';
 import { useTranslations } from 'next-intl';
 
-function MedicoStatsWidget({ doentes, criticos, tarefas, urgentes }: { doentes: any[]; criticos: any[]; tarefas: any[]; urgentes: any[] }) {
+function MedicoStatsWidget({ totalDoentes, criticos, tarefas, urgentes }: { totalDoentes: number; criticos: any[]; tarefas: any[]; urgentes: any[] }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 h-full content-start">
-      <StatCard label="Doentes Internados" value={doentes.length} color="bg-violet-600" />
-      <StatCard label="Estado Crítico/Grave" value={criticos.length} color={criticos.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
+      {/* UX-20: a API devolve ao médico só os doentes atribuídos (e paginados); o NEWS2 e a
+          acuidade contam o serviço inteiro. Antes o cartão dizia "Doentes Internados 0" ao lado
+          de "3 doentes" na acuidade. */}
+      <StatCard label="Os Meus Doentes" value={totalDoentes} sub="internados e atribuídos a si" color="bg-violet-600" />
+      <StatCard label="Críticos/Graves (meus)" value={criticos.length} color={criticos.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
       <StatCard label="Tarefas Pendentes" value={tarefas.length} color="bg-amber-500" />
       <StatCard label="Urgentes" value={urgentes.length} color={urgentes.length > 0 ? 'bg-orange-500' : 'bg-slate-400'} />
     </div>
@@ -35,7 +38,7 @@ function MedicoAcuidadeWidget({ news2Data }: { news2Data: any }) {
   ].filter(d => d.value > 0);
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm h-full" style={{ padding: '20px 24px' }}>
-      <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Acuidade dos Doentes</p>
+      <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Acuidade — todo o serviço</p>
       {acuidadePieData.length === 0 ? (
         <div className="flex items-center justify-center text-slate-500 text-sm" style={{ height: '120px' }}>Sem dados</div>
       ) : (
@@ -66,7 +69,7 @@ function MedicoAcuidadeWidget({ news2Data }: { news2Data: any }) {
 function MedicoDoentesWidget({ doentes }: { doentes: any[] }) {
   return (
     <CardContainer className="h-full flex flex-col">
-      <CardHeader title="Doentes — Lista Geral" count={doentes.length} />
+      <CardHeader title="Os Meus Doentes" count={doentes.length} />
       {doentes.length === 0 ? <Vazio msg="Sem doentes internados" /> : (
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {doentes.map((d: any, i: number) => (
@@ -175,6 +178,7 @@ export function DashboardMedico({ utilizador }: { utilizador: any }) {
       ]);
       return {
         doentes: d.data?.data ?? [],
+        totalDoentes: d.data?.total ?? (d.data?.data ?? []).length,
         tarefas: (t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'),
         interconsultas: ic.data ?? [],
         exames: ex.data ?? [],
@@ -186,6 +190,7 @@ export function DashboardMedico({ utilizador }: { utilizador: any }) {
   });
 
   const doentes: any[] = (data as any).doentes ?? [];
+  const totalDoentes: number = (data as any).totalDoentes ?? doentes.length;
   const tarefas: any[] = (data as any).tarefas ?? [];
   const interconsultas: any[] = (data as any).interconsultas ?? [];
   const exames: any[] = (data as any).exames ?? [];
@@ -196,7 +201,7 @@ export function DashboardMedico({ utilizador }: { utilizador: any }) {
   if (isLoading) return <Spinner />;
 
   const widgets: WidgetDef[] = [
-    { id: 'stats', label: 'Estatísticas', defaultX: 0, defaultY: 0, defaultW: 12, defaultH: 1, component: <MedicoStatsWidget doentes={doentes} criticos={criticos} tarefas={tarefas} urgentes={urgentes} /> },
+    { id: 'stats', label: 'Estatísticas', defaultX: 0, defaultY: 0, defaultW: 12, defaultH: 1, component: <MedicoStatsWidget totalDoentes={totalDoentes} criticos={criticos} tarefas={tarefas} urgentes={urgentes} /> },
     { id: 'news2', label: 'NEWS2', defaultX: 0, defaultY: 1, defaultW: 6, defaultH: 2, component: <MedicoNEWS2Widget news2Data={news2Data} /> },
     { id: 'acuidade', label: 'Acuidade', defaultX: 6, defaultY: 1, defaultW: 6, defaultH: 2, component: <MedicoAcuidadeWidget news2Data={news2Data} /> },
     { id: 'doentes', label: 'Doentes', defaultX: 0, defaultY: 3, defaultW: 6, defaultH: 4, component: <MedicoDoentesWidget doentes={doentes} /> },

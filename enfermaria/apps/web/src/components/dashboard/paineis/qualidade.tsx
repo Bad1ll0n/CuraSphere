@@ -2,32 +2,25 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { StatCard, EmBreve, DashboardHeader } from '../partilhado';
+import { AtalhoModulo, DashboardHeader } from '../partilhado';
 
 export function DashboardQualidade({ utilizador }: { utilizador: any }) {
-  const tCommon = useTranslations('common');
   const t = useTranslations('qualityDashboard');
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
-        <StatCard label="Não Conformidades" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
-        <StatCard label="Auditorias Pendentes" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
-        <StatCard label="IACS Ativos" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
+        <AtalhoModulo href="/eventos-adversos" titulo="Eventos Adversos" descricao="Notificação, análise e seguimento de incidentes e eventos adversos" />
+        <AtalhoModulo href="/iacs" titulo="Controlo de Infeção (IACS)" descricao="Doentes em isolamento, alertas de surto e vigilância epidemiológica" />
       </div>
-
-      <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
-        <EmBreve titulo="Gestão de Não Conformidades" descricao="Registo, análise e planos de ação corretiva (CAPA)" />
-        <EmBreve titulo="Controlo de Infeção (IACS)" descricao="Doentes em isolamento, alertas de surto, relatórios epidemiológicos" />
-      </div>
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* PROD-18: os indicadores de enfermagem já existem. */}
         <Link href="/dashboard-qualidade/indicadores" className="bg-white rounded-2xl border border-blue-200 shadow-sm hover:bg-blue-50/40 block" style={{ padding: '24px' }}>
           <p className="text-sm font-semibold text-slate-800">{t('indicatorsTitle')}</p>
           <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>{t('indicatorsBody')}</p>
           <span className="inline-block text-xs font-semibold text-blue-700" style={{ marginTop: '12px' }}>{t('open')} →</span>
         </Link>
-        <EmBreve titulo="Auditorias Internas" descricao="Planeamento e seguimento de auditorias por área" />
+        <AtalhoModulo href="/auditoria" titulo="Trilho de Auditoria" descricao="Quem acedeu e alterou o quê, com pesquisa por doente e por utilizador" />
       </div>
 
       <div className="bg-indigo-50 border border-indigo-200 rounded-2xl" style={{ padding: '24px', marginTop: '24px' }}>

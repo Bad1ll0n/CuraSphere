@@ -42,8 +42,7 @@
     "online": "Online",
     "offline": "Offline",
     "systemOnline": "System Online",
-    "comingSoon": "Coming soon",
-    "availableSoon": "Available soon"
+    "open": "Open"
   },
   "login": {
     "title": "CuraSphere",
@@ -317,7 +316,8 @@
       "A": "A — Alert",
       "V": "V — Responds to voice",
       "P": "P — Responds to pain",
-      "U": "U — Unresponsive"
+      "U": "U — Unresponsive",
+      "none": "— Not assessed —"
     },
     "pain": "Pain (0–{max})",
     "painIntensity": "Pain intensity",
@@ -334,12 +334,17 @@
     "news2Points": "(+2 NEWS2 points)",
     "notes": "Notes",
     "notesPlaceholder": "Observations...",
-    "news2Hint": "The NEWS2 score is calculated automatically from the recorded values. A score ≥5 raises a clinical alert.",
     "fromMonitor": "monitor",
     "criticalTitle": "Critical values",
     "criticalBody": "These values are incompatible with life or extreme: {valores}. Confirm they are correct (if this is an emergency, activate the protocol).",
     "criticalConfirm": "Values are correct",
-    "criticalCancel": "Correct"
+    "criticalCancel": "Correct",
+    "fieldPoints": "{pontos} NEWS2 {pontos, plural, one {point} other {points}} — please check the value",
+    "previewNone": "Fill in at least 3 vital signs to see the predicted NEWS2.",
+    "previewScore": "Predicted NEWS2: {score}",
+    "previewPartial": "partial — {n, plural, one {# parameter missing} other {# parameters missing}}",
+    "previewRed": "A single parameter scoring 3 — urgent clinical review, regardless of the total.",
+    "weightPlaceholder": "kg"
   },
   "ai": {
     "suggestions": "AI Suggestions",

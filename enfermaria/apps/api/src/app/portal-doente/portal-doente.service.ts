@@ -151,7 +151,7 @@ export class PortalDoenteService {
       orderBy: { criadoEm: 'desc' },
       select: {
         id: true, episodioId: true, dataAlvoDia: true, notas: true, criadoEm: true,
-        afebrилApenas24h: true, mobilidadeAdequada: true, alimentacaoOral: true,
+        afebril24h: true, mobilidadeAdequada: true, alimentacaoOral: true,
         doresControladas: true, familiaInformada: true,
       },
     });

@@ -3010,7 +3010,8 @@ model PlanoAlta {
   criadoEm    DateTime  @default(now())
   dataAlvoDia DateTime?
 
-  afebrилApenas24h   Boolean @default(false)
+  // PROD-24: o nome antigo tinha duas letras cirílicas («и», «л») no meio de "afebril" (migração 20261122100000).
+  afebril24h           Boolean @default(false)
   mobilidadeAdequada   Boolean @default(false)
   alimentacaoOral      Boolean @default(false)
   doresControladas     Boolean @default(false)

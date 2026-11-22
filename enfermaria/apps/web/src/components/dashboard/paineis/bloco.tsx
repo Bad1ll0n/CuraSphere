@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
-import { hojeISO, StatCard, EmBreve, SecaoTitulo, CardContainer, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { hojeISO, StatCard, AtalhoModulo, SecaoTitulo, CardContainer, Vazio, DashboardHeader, Spinner } from '../partilhado';
 
 export function DashboardBloco({ utilizador }: { utilizador: any }) {
   const { data: cirurgias = [], isLoading } = useQuery<any[]>({
@@ -55,9 +55,8 @@ export function DashboardBloco({ utilizador }: { utilizador: any }) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-5">
-        <EmBreve titulo="WHO Surgical Safety Checklist" descricao="Fase 7.4 — Verificação pré/intra/pós cirúrgica" />
-        <EmBreve titulo="Registo Intra-operatório" descricao="Tempo real, intercorrências, consumo de material" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <AtalhoModulo href="/bloco" titulo="Checklist de Segurança Cirúrgica (OMS)" descricao="Sign in, time out e sign out de cada cirurgia do dia" />
       </div>
     </>
   );

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import { useTranslations } from 'next-intl';
 import { VigilanciaEmAtraso } from '@/components/vigilancia-em-atraso';
-import { estadoCor, estadoLabel, prioridadeCor, StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
+import { estadoCor, estadoLabel, prioridadeCor, StatCard, AtalhoModulo, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
 import { DistribuicaoNews2 } from '../distribuicao-news2';
 
 export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
@@ -144,7 +144,7 @@ export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
               </div>
             )}
           </CardContainer>
-          {isUCI && <EmBreve titulo="Dispositivos Invasivos" descricao="Cateteres, ventiladores, drenos — Fase 7" />}
+          {isUCI && <AtalhoModulo href="/doentes" titulo="Dispositivos Invasivos" descricao="Cateteres, ventiladores e drenos — na ficha de cada doente, separador «Vitais e escalas»" />}
         </div>
       </div>
     </>

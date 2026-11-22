@@ -9,3 +9,4 @@ export * from './lib/types/notificacao.types.js';
 export * from './lib/contratos/clinico.js';
 export * from './lib/permissoes.js';
 export * from './lib/coerencia-vitais.js';
+export * from './lib/news2.js';

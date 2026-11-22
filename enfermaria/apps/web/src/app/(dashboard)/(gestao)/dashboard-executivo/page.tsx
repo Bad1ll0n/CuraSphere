@@ -1,5 +1,7 @@
 'use client';
 
+import { formatarDiaMes } from '@/lib/formatar';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { SkeletonCard } from '@/components/skeleton';
@@ -205,7 +207,7 @@ export default function DashboardExecutivo() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                  <XAxis dataKey="data" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => v.slice(5)} />
+                  <XAxis dataKey="data" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={formatarDiaMes} />
                   <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
                   <Tooltip content={<CustomTooltipOcupacao />} />
                   <Area type="monotone" dataKey="ocupadas" stroke="#6366f1" strokeWidth={2} fill="url(#gradOcup)" dot={false} activeDot={{ r: 4 }} />

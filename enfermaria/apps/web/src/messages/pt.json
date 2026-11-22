@@ -42,8 +42,7 @@
     "online": "Online",
     "offline": "Offline",
     "systemOnline": "Sistema Online",
-    "comingSoon": "Em breve",
-    "availableSoon": "Disponível em breve"
+    "open": "Abrir"
   },
   "login": {
     "title": "CuraSphere",
@@ -314,10 +313,11 @@
     "weightKg": "Peso (kg)",
     "avpuLabel": "Consciência (AVPU)",
     "avpu": {
-      "A": "A — Alert (Alerta)",
-      "V": "V — Voice (Responde à voz)",
-      "P": "P — Pain (Responde à dor)",
-      "U": "U — Unresponsive (Sem resposta)"
+      "A": "A — Alerta",
+      "V": "V — Responde à voz",
+      "P": "P — Responde à dor",
+      "U": "U — Sem resposta",
+      "none": "— Por avaliar —"
     },
     "pain": "Dor (0–{max})",
     "painIntensity": "Intensidade da dor",
@@ -334,12 +334,17 @@
     "news2Points": "(+2 pts NEWS2)",
     "notes": "Notas",
     "notesPlaceholder": "Observações...",
-    "news2Hint": "O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.",
     "fromMonitor": "monitor",
     "criticalTitle": "Valores críticos",
     "criticalBody": "Estes valores são incompatíveis com a vida ou extremos: {valores}. Confirme que estão certos (se for uma emergência, ative o protocolo).",
     "criticalConfirm": "Os valores estão certos",
-    "criticalCancel": "Corrigir"
+    "criticalCancel": "Corrigir",
+    "fieldPoints": "{pontos} {pontos, plural, one {ponto} other {pontos}} NEWS2 — confirme o valor",
+    "previewNone": "Preencha pelo menos 3 sinais vitais para ver o NEWS2 previsto.",
+    "previewScore": "NEWS2 previsto: {score}",
+    "previewPartial": "parcial — {n, plural, one {falta # parâmetro} other {faltam # parâmetros}}",
+    "previewRed": "Um parâmetro isolado com 3 pontos — revisão clínica urgente, independentemente do total.",
+    "weightPlaceholder": "kg"
   },
   "ai": {
     "suggestions": "Sugestões IA",

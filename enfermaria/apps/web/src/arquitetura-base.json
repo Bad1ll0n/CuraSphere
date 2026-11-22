@@ -98,7 +98,6 @@
     "components/command-palette.tsx": 1,
     "components/dashboard/paineis/chefeenfermagem.tsx": 3,
     "components/dashboard/paineis/enfermeiro.tsx": 5,
-    "components/dashboard/paineis/executivo.tsx": 5,
     "components/dashboard/paineis/farmacia.tsx": 1,
     "components/dashboard/paineis/generico.tsx": 2,
     "components/dashboard/paineis/medico.tsx": 4,

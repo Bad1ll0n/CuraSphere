@@ -4,11 +4,9 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
-import { useTranslations } from 'next-intl';
 import { StatCard, SecaoTitulo, CardContainer, Vazio, DashboardHeader, TIPO_EXAME_LABELS, Spinner } from '../partilhado';
 
 export function DashboardImagiologia({ utilizador }: { utilizador: any }) {
-  const tCommon = useTranslations('common');
   const qc = useQueryClient();
   const toast = useToast();
   const [atualizando, setAtualizando] = useState<string | null>(null);
@@ -40,10 +38,9 @@ export function DashboardImagiologia({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Exames Pendentes" value={worklist.length} color="bg-sky-500" sub={`${emProgresso} em progresso`} />
         <StatCard label="Urgentes" value={urgentes} color={urgentes > 0 ? 'bg-red-500' : 'bg-slate-400'} />
-        <StatCard label="Relatórios Emitidos Hoje" value={0} color="bg-slate-400" sub={tCommon('comingSoon')} />
       </div>
 
       <SecaoTitulo>Worklist — Exames Pendentes</SecaoTitulo>

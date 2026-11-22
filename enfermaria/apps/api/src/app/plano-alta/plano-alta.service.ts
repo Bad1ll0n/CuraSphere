@@ -5,7 +5,7 @@ import { episodioAtualOuUltimo } from '../episodios/episodios.core';
 
 export class AtualizarPlanoAltaDto {
   @IsOptional() @IsDateString() dataAlvoDia?: string;
-  @IsOptional() @IsBoolean() afebrилApenas24h?: boolean;
+  @IsOptional() @IsBoolean() afebril24h?: boolean;
   @IsOptional() @IsBoolean() mobilidadeAdequada?: boolean;
   @IsOptional() @IsBoolean() alimentacaoOral?: boolean;
   @IsOptional() @IsBoolean() doresControladas?: boolean;
@@ -61,7 +61,7 @@ export class PlanoAltaService {
 
   calcularProgresso(plano: Record<string, unknown>) {
     const criterios = [
-      'afebrилApenas24h', 'mobilidadeAdequada', 'alimentacaoOral',
+      'afebril24h', 'mobilidadeAdequada', 'alimentacaoOral',
       'doresControladas', 'familiaInformada', 'transporteAssegurado',
       'medicacaoPreparada', 'consultaSegAlt',
     ];

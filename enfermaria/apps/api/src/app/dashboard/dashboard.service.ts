@@ -199,7 +199,9 @@ export class DashboardService {
       this.prisma.doente.count({ where: { estadoRegisto: 'ambulatorio', ativo: true } }),
       this.prisma.doente.count({ where: { estadoRegisto: 'pendente_cama', ativo: true } }),
       this.prisma.cama.count(),
-      this.prisma.cama.count({ where: { estado: 'ocupada' } }),
+      // UX-20: "ocupada" = com um doente internado, a mesma definição do KPI "Internados". Pelo
+      // `estado` da cama, a direção via "Internados 1" ao lado de "2/2 camas ocupadas".
+      this.prisma.cama.count({ where: { doente: { is: { estadoRegisto: 'internado', ativo: true } } } }),
       this.prisma.cama.count({ where: { estado: 'em_limpeza' } }),
       this.prisma.cama.count({ where: { estado: 'reservada' } }),
       this.prisma.episodioFaturacao.findMany({ where: { criadoEm: { gte: inicioMes } }, select: { totalCobrado: true, estado: true, tipoCobertura: true } }),
@@ -211,13 +213,18 @@ export class DashboardService {
       this.prisma.ausencia.count({ where: { estado: 'aprovada', dataInicio: { lte: agora }, dataFim: { gte: agora } } }).catch(() => 0),
     ]);
 
+    // Livres pelo estado da cama (uma cama marcada ocupada sem doente não é livre).
+    const camasLivres = await this.prisma.cama.count({ where: { estado: 'livre' } });
+
     // Tendência de ocupação — 14 dias
     const totalCamas = await this.prisma.cama.count();
     const tendenciaOcupacao = await Promise.all(
       Array.from({ length: 14 }, (_, i) => {
         const inicioDia = somarDiasClinicos(inicioDoDiaClinico(agora), i - 13);
         const dia = new Date(somarDiasClinicos(inicioDia, 1).getTime() - 1);
-        return this.prisma.doente.count({
+        // UX-20: episódios de internamento (antes contava todos os doentes, ambulatório incluído,
+        // e a tendência subia para valores que nenhum outro KPI mostrava).
+        return this.prisma.episodioInternamento.count({
           where: { dataAdmissao: { lte: dia }, OR: [{ dataAlta: null }, { dataAlta: { gte: inicioDia } }] },
         }).then((ocupadas) => ({
           data: chaveDiaClinico(inicioDia),
@@ -268,7 +275,7 @@ export class DashboardService {
       doentes: { internados, ambulatorio, pendenteCama, mediaInternamento },
       camas: {
         total: todasCamas, ocupadas: camasOcupadas,
-        livres: todasCamas - camasOcupadas - camasLimpeza - camasReservadas,
+        livres: camasLivres,
         limpeza: camasLimpeza, reservadas: camasReservadas,
         taxaOcupacao: todasCamas > 0 ? Math.round((camasOcupadas / todasCamas) * 100) : 0,
       },

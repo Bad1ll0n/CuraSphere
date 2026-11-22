@@ -9,7 +9,7 @@ interface PlanoAlta {
   id: string;
   doenteId: string;
   dataAlvoDia: string | null;
-  afebrилApenas24h: boolean;
+  afebril24h: boolean;
   mobilidadeAdequada: boolean;
   alimentacaoOral: boolean;
   doresControladas: boolean;
@@ -31,7 +31,7 @@ interface SumarioAlta {
 }
 
 const CRITERIOS: { campo: keyof PlanoAlta; label: string }[] = [
-  { campo: 'afebrилApenas24h',     label: 'Afebril >24h' },
+  { campo: 'afebril24h',     label: 'Afebril >24h' },
   { campo: 'mobilidadeAdequada',   label: 'Mobilidade adequada' },
   { campo: 'alimentacaoOral',      label: 'Alimentação oral' },
   { campo: 'doresControladas',     label: 'Dores controladas' },

@@ -724,3 +724,18 @@ describe('estrutura — segurança de tipos', () => {
     expect(total).toBe(TECTO_ANY);
   });
 });
+
+describe('estrutura — identificadores do schema (PROD-24)', () => {
+  it('modelos e campos só usam letras latinas sem acentos', () => {
+    const schema = readFileSync(join(RAIZ_APP, '..', '..', 'prisma', 'schema.prisma'), 'utf8');
+    // O identificador de cada linha de modelo, enum ou campo (sem comentários).
+    const suspeitos = schema
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .split('\n')
+      .map((l) => l.replace(/\/\/.*$/, '').trim())
+      .filter((l) => l && !l.startsWith('@@') && l !== '}')
+      .map((l) => (/^(model|enum)\s/.test(l) ? l.split(/\s+/)[1] : l.split(/\s+/)[0]))
+      .filter((ident) => /[^\x20-\x7E]/.test(ident));
+    expect(suspeitos).toEqual([]);
+  });
+});

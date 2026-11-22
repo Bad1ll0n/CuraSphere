@@ -3,6 +3,8 @@
 import { useAuth } from '@/lib/auth-context';
 import { Spinner } from '@/components/dashboard/partilhado';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 // PERF-10: cada papel descarrega só o seu painel (os gráficos do executivo e do médico
 // deixam de pesar no dashboard da enfermagem e vice-versa).
@@ -17,7 +19,6 @@ const DashboardRececao = dynamic(() => import('@/components/dashboard/paineis/re
 const DashboardTransporte = dynamic(() => import('@/components/dashboard/paineis/transporte').then((m) => m.DashboardTransporte), { loading: () => <Spinner /> });
 const DashboardTI = dynamic(() => import('@/components/dashboard/paineis/ti').then((m) => m.DashboardTI), { loading: () => <Spinner /> });
 const DashboardQualidade = dynamic(() => import('@/components/dashboard/paineis/qualidade').then((m) => m.DashboardQualidade), { loading: () => <Spinner /> });
-const DashboardExecutivo = dynamic(() => import('@/components/dashboard/paineis/executivo').then((m) => m.DashboardExecutivo), { loading: () => <Spinner /> });
 const DashboardGenerico = dynamic(() => import('@/components/dashboard/paineis/generico').then((m) => m.DashboardGenerico), { loading: () => <Spinner /> });
 
 const SUBROLES_BLOCO = ['cirurgiao_geral', 'medico_anestesia'];
@@ -28,8 +29,14 @@ const SUBROLES_SUPERVISOR = ['supervisor_enfermagem', 'medico_gestor'];
 
 export default function DashboardPage() {
   const { utilizador, loading } = useAuth();
+  const router = useRouter();
+  // UX-20: a direção tinha aqui uma segunda versão, mais pobre, do Dashboard Executivo.
+  const direcao = utilizador?.role === 'direcao';
+  useEffect(() => {
+    if (direcao) router.replace('/dashboard-executivo');
+  }, [direcao, router]);
 
-  if (loading || !utilizador) return (
+  if (loading || !utilizador || direcao) return (
     <div className="min-h-screen flex items-center justify-center">
       <Spinner />
     </div>
@@ -56,7 +63,6 @@ export default function DashboardPage() {
     if (role === 'operacional')   return <DashboardTransporte {...props} />;
     if (role === 'ti')            return <DashboardTI {...props} />;
     if (role === 'qualidade')     return <DashboardQualidade {...props} />;
-    if (role === 'direcao')       return <DashboardExecutivo {...props} />;
     return <DashboardGenerico {...props} />;
   };
 

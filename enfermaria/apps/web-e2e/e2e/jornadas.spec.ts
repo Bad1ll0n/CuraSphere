@@ -20,9 +20,12 @@ test.describe('Jornadas clínicas', () => {
     await page.getByRole('button', { name: 'Registar sinais vitais' }).click();
     await expect(page.getByRole('heading', { name: 'Registar Sinais Vitais' })).toBeVisible();
     // Doente a deteriorar: hipotenso, taquicárdico, febril, dessaturado e taquipneico.
-    for (const [ph, valor] of [['120', '88'], ['80', '50'], ['72', '128'], ['36.5', '39.3'], ['98', '89'], ['16', '28']]) {
-      await page.getByPlaceholder(ph, { exact: true }).fill(valor);
+    // UX-16: os placeholders já não sugerem valores normais (só a unidade) — campos pelo rótulo.
+    for (const [rotulo, valor] of [['TA Sistólica', '88'], ['TA Diastólica', '50'], ['Pulso', '128'], ['Temperatura', '39.3'], ['SpO₂', '89'], ['Freq. Resp.', '28']]) {
+      await page.getByRole('spinbutton', { name: rotulo }).fill(valor);
     }
+    // NEWS2 previsto antes de gravar, com a mesma regra da API.
+    await expect(page.getByText(/NEWS2 previsto: \d+/)).toBeVisible();
     await page.getByRole('button', { name: 'Guardar' }).click();
     await expect(page.getByText(/NEWS2 CRÍTICO — Score \d+/)).toBeVisible({ timeout: 10000 });
   });

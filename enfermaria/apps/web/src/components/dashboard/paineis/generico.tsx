@@ -18,13 +18,14 @@ export function DashboardGenerico({ utilizador }: { utilizador: any }) {
       ];
       if (podeAnalytics) requests.push(api.get('/dashboard/analytics').catch(() => ({ data: null })));
       const [o, d, a] = await Promise.all(requests);
-      return { ocupacao: o.data, doentes: d.data?.data ?? [], analytics: a?.data ?? null };
+      return { ocupacao: o.data, doentes: d.data?.data ?? [], totalDoentes: d.data?.total ?? (d.data?.data ?? []).length, analytics: a?.data ?? null };
     },
     staleTime: 60_000,
   });
 
   const ocupacao = (data as any).ocupacao ?? null;
   const doentes: any[] = (data as any).doentes ?? [];
+  const totalDoentes: number = (data as any).totalDoentes ?? doentes.length;
   const analytics = (data as any).analytics ?? null;
   const criticos = doentes.filter((d: any) => d.estado === 'critico');
   const altasHoje = doentes.filter((d: any) => d.dataAltaPrevista && new Date(d.dataAltaPrevista).toDateString() === new Date().toDateString());
@@ -83,7 +84,7 @@ export function DashboardGenerico({ utilizador }: { utilizador: any }) {
         <div className="rounded-2xl shadow-lg flex flex-col justify-between" style={{ padding: '28px', background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)' }}>
           <div>
             <p className="text-blue-200 text-xs font-semibold uppercase tracking-widest" style={{ marginBottom: '16px' }}>Resumo Global</p>
-            <p className="text-5xl font-bold text-white" style={{ marginBottom: '4px' }}>{doentes.length}</p>
+            <p className="text-5xl font-bold text-white" style={{ marginBottom: '4px' }}>{totalDoentes}</p>
             <p className="text-blue-200 text-sm">doentes internados</p>
           </div>
           <div style={{ marginTop: '24px' }} className="space-y-2">
@@ -139,7 +140,7 @@ export function DashboardGenerico({ utilizador }: { utilizador: any }) {
       )}
 
       <CardContainer>
-        <CardHeader title="Todos os Doentes Internados" count={doentes.length} />
+        <CardHeader title="Todos os Doentes Internados" count={totalDoentes} />
         <table className="w-full text-sm">
           <thead>
             <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
