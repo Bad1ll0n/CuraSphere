@@ -7,7 +7,10 @@ import { arrancar, parar, entrar, Contexto, Resposta } from './app-teste';
 describe('integração: quiosque (SEC-12)', () => {
   let ctx: Contexto;
   let tokenQuiosque = '';
-  const nif = String(200000000 + Math.floor(Math.random() * 99999999)).slice(0, 9);
+  // UX-23: o registo valida o dígito de controlo — gera-se um NIF válido (prefixo 2).
+  const base = '2' + String(Math.floor(Math.random() * 1e7)).padStart(7, '0');
+  const resto = [...base].reduce((s, d, i) => s + Number(d) * (9 - i), 0) % 11;
+  const nif = base + String(resto < 2 ? 0 : 11 - resto);
 
   const quiosque = async (metodo: string, caminho: string, corpo?: unknown, cab: Record<string, string> = {}): Promise<Resposta> => {
     const r = await fetch(ctx.url + caminho, {
