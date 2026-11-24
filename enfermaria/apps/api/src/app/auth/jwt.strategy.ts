@@ -7,6 +7,7 @@ import { Request } from 'express';
 import { AUDIENCIAS_PESSOAL, JWT_ISSUER, type TipoToken } from './token-audiences';
 import { PrismaService } from '../prisma/prisma.service';
 import { gravarCacheSessao, lerCacheSessao, type EstadoSessao } from './sessao-cache';
+import { TENANT_UNICO } from '../prisma/tenant-context.service';
 
 interface PayloadPessoal {
   sub: string;
@@ -57,6 +58,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         // SEC-04: logout, desactivação e mudança de papel/password/MFA incrementam a
         // versão da sessão; os access tokens emitidos antes deixam de valer de imediato
         // (e não só quando expiram).
+        // ARQ-21: uma instalação, um hospital — um token de outro tenant não vale aqui.
+        if (payload.tenantId && payload.tenantId !== TENANT_UNICO) throw new UnauthorizedException('Sessão de outra instalação');
         const estado = await this.estadoSessao(payload.sub);
         if (!estado || !estado.ativo || typeof payload.sv !== 'number' || payload.sv !== estado.versaoSessao) {
           throw new UnauthorizedException('Sessão terminada. Faça login novamente.');

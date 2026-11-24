@@ -17,13 +17,11 @@ export default [
           enforceBuildableLibDependency: true,
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           // ARQ-09: fronteiras reais (antes '*' → '*', que não restringia nada).
-          // A shared é a base de todos; as apps não se importam umas às outras;
-          // a ui é só para a web.
+          // A shared é a base de todos; as apps não se importam umas às outras.
           depConstraints: [
             { sourceTag: 'scope:shared', onlyDependOnLibsWithTags: ['scope:shared'] },
-            { sourceTag: 'scope:ui', onlyDependOnLibsWithTags: ['scope:ui', 'scope:shared'] },
             { sourceTag: 'scope:api', onlyDependOnLibsWithTags: ['scope:api', 'scope:shared'] },
-            { sourceTag: 'scope:web', onlyDependOnLibsWithTags: ['scope:web', 'scope:ui', 'scope:shared'] },
+            { sourceTag: 'scope:web', onlyDependOnLibsWithTags: ['scope:web', 'scope:shared'] },
             { sourceTag: 'scope:mobile', onlyDependOnLibsWithTags: ['scope:mobile', 'scope:shared'] },
             { sourceTag: 'type:lib', onlyDependOnLibsWithTags: ['type:lib'] },
           ],

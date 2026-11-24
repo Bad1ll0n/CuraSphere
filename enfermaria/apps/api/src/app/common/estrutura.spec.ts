@@ -756,3 +756,34 @@ describe('estrutura — seeds com dados pessoais (QA-27)', () => {
     expect(problemas).toEqual([]);
   });
 });
+
+describe('estrutura — dependências entre módulos (ARQ-18)', () => {
+  it('nenhum módulo da api precisa de forwardRef (sem ciclos entre módulos)', () => {
+    const comForwardRef = ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .filter((f) => /\bforwardRef\s*\(/.test(readFileSync(f, 'utf8')))
+      .map(caminhoRelativo);
+    expect(comForwardRef).toEqual([]);
+  });
+});
+
+describe('estrutura — módulos sem consumidor (ARQ-16)', () => {
+  // Controllers que nenhum ecrã da web nem do mobile chama — documentados em
+  // docs/MODULOS-SEM-INTERFACE.md (integrações externas, indicadores, e os que aguardam decisão
+  // de produto). Um módulo novo sem interface tem de ser acrescentado lá e aqui.
+  const CONHECIDOS = [
+    'episodios', 'fhir', 'ficheiros', 'hl7', 'lista-espera', 'outcomes', 'population-health',
+    'protocolos', 'regras-clinicas', 'sns-pem', 'transferencias', 'triagem-portal', 'webhooks',
+  ];
+  it('não aparecem módulos novos sem interface nem documentação', () => {
+    const raizApps = join(RAIZ_APP, '..', '..', '..');
+    const cliente = ['web', 'mobile'].flatMap((a) => ficheiros(join(raizApps, a, 'src'), '.ts').concat(ficheiros(join(raizApps, a, 'src'), '.tsx')))
+      .filter((f) => !f.includes('.spec.'))
+      .map((f) => readFileSync(f, 'utf8')).join('\n');
+    const prefixos = ficheiros(RAIZ_APP, '.controller.ts')
+      .flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/@Controller\(\s*['"]([^'"]+)['"]/g)].map((m) => m[1].split('/')[0]))
+      .filter(Boolean);
+    const semCliente = [...new Set(prefixos)].filter((p) => !cliente.includes(`'/${p}`) && !cliente.includes(`"/${p}`) && !cliente.includes('`/' + p) && !cliente.includes(`/v1/${p}`));
+    expect(semCliente.filter((p) => !CONHECIDOS.includes(p)).sort()).toEqual([]);
+  });
+});

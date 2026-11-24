@@ -1,13 +1,13 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { TicketsService } from './tickets.service';
 import { TicketsController } from './tickets.controller';
-import { QuiosqueController } from './quiosque.controller';
-import { ConsultasModule } from '../consultas/consultas.module';
 
+// ARQ-18: o QuiosqueController (que usa senhas E consultas) é registado no ConsultasModule —
+// assim as consultas dependem das senhas e nunca o contrário (antes: ciclo com forwardRef).
 @Module({
-  imports: [PrismaModule, forwardRef(() => ConsultasModule)],
-  controllers: [TicketsController, QuiosqueController],
+  imports: [PrismaModule],
+  controllers: [TicketsController],
   providers: [TicketsService],
   exports: [TicketsService],
 })

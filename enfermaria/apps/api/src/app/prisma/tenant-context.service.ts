@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+
+/** ARQ-21: uma instalação serve um hospital — ver instalacao-unica.service.ts. */
+export const TENANT_UNICO = 'default';
 import { AsyncLocalStorage } from 'async_hooks';
 
 @Injectable()
@@ -17,6 +20,8 @@ export class TenantContextService {
 
   /** Define o tenant do pedido actual a partir da sessão verificada. */
   definir(tenantId: string): void {
+    // ARQ-21: falha fechada — um tenant que não é o desta instalação não lê nada.
+    if (tenantId !== TENANT_UNICO) throw new ForbiddenException('Sessão de outra instalação');
     const ctx = this.storage.getStore();
     if (ctx) ctx.tenantId = tenantId;
   }

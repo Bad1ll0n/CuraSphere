@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AlertasService } from './alertas.service';
-import { DoenteService } from '../doentes/doentes.service';
+import { ModuleRef } from '@nestjs/core';
+import { VERIFICADOR_ACESSO_DOENTE, type VerificadorAcessoDoente } from '../doentes/acesso-doente.token';
 import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -11,8 +12,13 @@ import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 export class AlertasController {
   constructor(
     private readonly service: AlertasService,
-    private readonly doenteService: DoenteService,
+    private readonly moduleRef: ModuleRef,
   ) {}
+
+  /** ARQ-18: a mesma regra do DoenteService, resolvida pelo token (sem importar o DoenteModule). */
+  private get doenteService(): VerificadorAcessoDoente {
+    return this.moduleRef.get<VerificadorAcessoDoente>(VERIFICADOR_ACESSO_DOENTE, { strict: false });
+  }
 
   @Get()
   @Roles('medico', 'chefe_enfermeiros', 'direcao', 'qualidade')

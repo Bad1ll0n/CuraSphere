@@ -1,17 +1,15 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AlertasService } from './alertas.service';
 import { AlertasController } from './alertas.controller';
 import { NotificacoesModule } from '../notificacoes/notificacoes.module';
 import { GatewayModule } from '../gateway/gateway.module';
 import { PrismaModule } from '../prisma/prisma.module';
-import { DoenteModule } from '../doentes/doentes.module';
 
-// forwardRef: DoenteModule -> AiClinicoModule -> AlertasModule -> DoenteModule
-// is a real cycle (Doente needs AI insights, AI insights raise alerts, alerts
-// need doente access checks) — deferring this one edge breaks the "module is
-// undefined at evaluation time" failure without restructuring the other two.
+// ARQ-18: havia um ciclo DoenteModule → AiClinicoModule → AlertasModule → DoenteModule, só para
+// o controller verificar o acesso ao doente. Agora usa o token VERIFICADOR_ACESSO_DOENTE (como
+// o gateway), que o DoenteModule fornece — o AlertasModule deixa de importar o DoenteModule.
 @Module({
-  imports: [PrismaModule, NotificacoesModule, GatewayModule, forwardRef(() => DoenteModule)],
+  imports: [PrismaModule, NotificacoesModule, GatewayModule],
   controllers: [AlertasController],
   providers: [AlertasService],
   exports: [AlertasService],
