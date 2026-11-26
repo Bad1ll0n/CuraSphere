@@ -91,7 +91,9 @@ dc up -d postgres redis
 i=0; until dc exec -T postgres pg_isready -U curasphere -d enfermaria >/dev/null 2>&1; do
   i=$((i + 1)); [ $i -lt 60 ] || falhar "a BD não ficou pronta"; sleep 2; done
 dc --profile deploy run --rm migrate || falhar "migrações / triggers de auditoria"
-dc --profile deploy run --rm migrate sh -c "npx ts-node --transpile-only src/prisma/seed-test-users.ts" >/dev/null \
+# A semente cifra os dados das personas como a API (QA-27): só este passo recebe a ENCRYPTION_KEY.
+CHAVE_CIFRA=$(grep '^ENCRYPTION_KEY=' "$ENV_FILE" | cut -d= -f2-)
+dc --profile deploy run --rm -e ENCRYPTION_KEY="$CHAVE_CIFRA" migrate sh -c "npx ts-node --transpile-only src/prisma/seed-test-users.ts" >/dev/null \
   || falhar "seed dos utilizadores de teste"
 
 # ── 4. Aplicação e nginx ──────────────────────────────────────────────────────
