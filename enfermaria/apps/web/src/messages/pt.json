@@ -472,37 +472,80 @@
       "next": "Próximo",
       "start": "Começar"
     },
-    "medico": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O seu assistente clínico digital. Vamos mostrar-lhe as principais funcionalidades.",
-      "step2Title": "📊 Dashboard em tempo real",
-      "step2Desc": "Veja todos os KPIs do serviço: ocupação, doentes internados, tarefas pendentes e alertas NEWS2.",
-      "step3Title": "🔴 Vista de Risco",
-      "step3Desc": "O separador 'Risco' mostra todos os doentes ordenados por score de deterioração. Fique sempre um passo à frente.",
-      "step4Title": "🧠 IA Clínica",
-      "step4Desc": "Sugestões de diagnóstico diferencial, risco de readmissão e resumo de turno gerados por IA. Use como apoio — nunca substitui o julgamento clínico.",
-      "step5Title": "✅ Está pronto!",
-      "step5Desc": "Explore o menu lateral para aceder a medicação, notas clínicas, exames e muito mais."
-    },
-    "enfermeiro": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O seu assistente de enfermagem digital.",
-      "step2Title": "💊 Timeline de Medicação",
-      "step2Desc": "Veja todos os medicamentos agendados, administre com os 5 Certos e registe em tempo real.",
-      "step3Title": "📋 Passagem de Turno",
-      "step3Desc": "Gere resumos de turno automáticos com IA. Partilhe com o colega do turno seguinte em segundos.",
-      "step4Title": "⚠ Sinalizar Doente",
-      "step4Desc": "Use as sinalizações para alertar a equipa sobre situações que requerem atenção especial.",
-      "step5Title": "✅ Está pronto!",
-      "step5Desc": "Explore o menu para aceder a sinais vitais, tarefas e muito mais."
-    },
-    "default": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O sistema de gestão hospitalar integrado.",
-      "step2Title": "🏥 Explore o sistema",
-      "step2Desc": "Use o menu lateral para navegar pelas funcionalidades disponíveis para o seu perfil.",
-      "step3Title": "✅ Está pronto!",
-      "step3Desc": "Em caso de dúvida, contacte o administrador do sistema."
+    "progress": "{atual} de {total}",
+    "passo": {
+      "meuTurno": {
+        "titulo": "O meu turno",
+        "texto": "A sua casa durante o turno: doentes atribuídos, doses e reavaliações em atraso e alertas, por doente."
+      },
+      "mar": {
+        "titulo": "MAR — administração",
+        "texto": "Todas as tomas do turno. Administre sempre por aqui: identifica o doente, mostra as alergias e pede os 5 certos."
+      },
+      "passagem": {
+        "titulo": "Passagem de turno",
+        "texto": "ISBAR por doente, gerada a partir do que foi registado. Quem recebe confirma."
+      },
+      "tarefas": {
+        "titulo": "Tarefas",
+        "texto": "O que tem para fazer neste turno, incluindo as tarefas geradas pelas avaliações (nutrição, prevenção de quedas…)."
+      },
+      "doentes": {
+        "titulo": "Doentes",
+        "texto": "Os seus doentes. A ficha tem separadores (V vitais, M medicação, N notas) e as alergias sempre no topo."
+      },
+      "worklist": {
+        "titulo": "Resultados por rever",
+        "texto": "Exames com resultado disponível para validar."
+      },
+      "farmacia": {
+        "titulo": "Farmácia",
+        "texto": "Stock, pedidos dos serviços e, no separador Validação, as prescrições por validar antes da dispensa."
+      },
+      "farmaciaClinica": {
+        "titulo": "Farmácia clínica",
+        "texto": "Revisão terapêutica, interações e ajuste de doses."
+      },
+      "recepcao": {
+        "titulo": "Receção",
+        "texto": "Fila de atendimento e registo rápido de utentes."
+      },
+      "registos": {
+        "titulo": "Registos administrativos",
+        "texto": "Novo utente com deteção de duplicados; para quem chega sem identificação, use \"Utente não identificado\"."
+      },
+      "camas": {
+        "titulo": "Camas",
+        "texto": "Mapa de camas em tempo real, pedidos de cama e altas previstas."
+      },
+      "executivo": {
+        "titulo": "Dashboard executivo",
+        "texto": "Ocupação, internados, urgência e indicadores do hospital, com a mesma definição em todos os ecrãs."
+      },
+      "qualidade": {
+        "titulo": "Qualidade",
+        "texto": "Indicadores de enfermagem, IACS e eventos adversos."
+      },
+      "eventos": {
+        "titulo": "Eventos adversos",
+        "texto": "Notificação e análise de incidentes."
+      },
+      "paleta": {
+        "titulo": "Pesquisa rápida (Ctrl+K)",
+        "texto": "Procure um doente, abra uma página ou, dentro da ficha, vá direto aos vitais ou à medicação."
+      },
+      "notificacoes": {
+        "titulo": "Notificações",
+        "texto": "Alertas e mensagens dirigidas a si."
+      },
+      "bloquear": {
+        "titulo": "Bloquear o posto",
+        "texto": "Vai sair do posto por pouco tempo? Bloqueie (Ctrl+Shift+L): a sessão continua e o ecrã fica protegido."
+      },
+      "ajuda": {
+        "titulo": "Ajuda",
+        "texto": "Atalhos, esta visita, os primeiros passos e o que há de novo — sempre aqui, ou com a tecla \"?\"."
+      }
     }
   },
   "shortcuts": {
@@ -512,7 +555,12 @@
     "showShortcuts": "Mostrar esta lista de atalhos",
     "closeModal": "Fechar modal, paleta ou overlay",
     "hint": "Prima ? para reabrir",
-    "fileTab": "Na ficha: {separador}"
+    "fileTab": "Na ficha: {separador}",
+    "help": "Ajuda",
+    "guidedTour": "Visita guiada",
+    "firstSteps": "Primeiros passos",
+    "whatsNew": "O que há de novo",
+    "newBadge": "novidades por ver"
   },
   "theme": {
     "activateDark": "Ativar modo escuro",
@@ -1475,6 +1523,28 @@
       "nif": "mesmo NIF",
       "sns": "mesmo nº SNS",
       "nome_e_data": "mesmo nome e data de nascimento"
+    }
+  },
+  "onboarding": {
+    "title": "Primeiros passos",
+    "close": "Fechar",
+    "done": "feito",
+    "todo": "por fazer",
+    "whatsNew": "O que há de novo",
+    "primeiro": {
+      "meuTurno": "Abrir O meu turno",
+      "mar": "Abrir o MAR",
+      "fichaDoente": "Abrir a ficha de um doente",
+      "passagem": "Ver a passagem de turno",
+      "tarefas": "Ver as tarefas",
+      "worklist": "Rever resultados",
+      "farmacia": "Abrir a farmácia",
+      "farmaciaClinica": "Abrir a farmácia clínica",
+      "recepcao": "Abrir a receção",
+      "registos": "Abrir os registos administrativos",
+      "camas": "Ver o mapa de camas",
+      "executivo": "Abrir o dashboard executivo",
+      "qualidade": "Abrir a qualidade"
     }
   }
 }

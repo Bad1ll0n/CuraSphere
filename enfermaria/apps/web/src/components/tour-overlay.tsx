@@ -1,76 +1,87 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-
-interface Passo {
-  titulo: string;
-  descricao: string;
-  emoji: string;
-}
+import { visitaDoPapel } from '@/lib/onboarding';
 
 interface Props {
   role: string;
   onConcluir: () => void;
 }
 
+/** Retângulo visível do elemento, ou null se não estiver no ecrã (menu fechado, sem acesso). */
+function retanguloDe(seletor: string): DOMRect | null {
+  const el = document.querySelector(seletor) as HTMLElement | null;
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.height > 0 ? r : null;
+}
+
+/**
+ * UX-27 — visita guiada ancorada: cada passo destaca o elemento real do ecrã (item do menu,
+ * pesquisa, bloqueio do posto) e explica-o ao lado. Por papel; volta a abrir-se no menu "?".
+ * Os passos cujo elemento não está visível saltam — o texto nunca aponta para o vazio.
+ */
 export function TourOverlay({ role, onConcluir }: Props) {
   const t = useTranslations('tour');
   const [step, setStep] = useState(0);
+  const [rect, setRect] = useState<DOMRect | null>(null);
 
-  const section = role === 'medico' ? 'medico'
-    : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'].includes(role) ? 'enfermeiro'
-    : 'default';
-
-  const count = section === 'medico' || section === 'enfermeiro' ? 5 : 3;
-  const passos: Passo[] = Array.from({ length: count }, (_, i) => ({
-    emoji: t(`${section}.step${i + 1}Title`).split(' ').find(w => /\p{Emoji}/u.test(w)) ?? '✅',
-    titulo: t(`${section}.step${i + 1}Title`),
-    descricao: t(`${section}.step${i + 1}Desc`),
-  }));
-
+  // Só os passos com o elemento à vista, avaliado ao abrir.
+  const passos = useMemo(() => visitaDoPapel(role).filter((p) => typeof document === 'undefined' || retanguloDe(p.alvo)), [role]);
   const passo = passos[step];
 
+  useLayoutEffect(() => {
+    if (!passo) return;
+    const el = document.querySelector(passo.alvo) as HTMLElement | null;
+    el?.scrollIntoView({ block: 'nearest' });
+    setRect(retanguloDe(passo.alvo));
+  }, [passo]);
+
+  useEffect(() => {
+    const atualizar = () => passo && setRect(retanguloDe(passo.alvo));
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onConcluir(); };
+    window.addEventListener('resize', atualizar);
+    document.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('resize', atualizar); document.removeEventListener('keydown', onKey); };
+  }, [passo, onConcluir]);
+
+  if (!passo) return null;
+  const ultimo = step === passos.length - 1;
+
+  // Balão à direita do elemento (menu lateral) ou por baixo (barra do topo); centrado se não houver.
+  const largura = 320;
+  const estiloBalao: React.CSSProperties = rect
+    ? rect.right + largura + 24 < window.innerWidth
+      ? { top: Math.max(16, rect.top - 8), left: rect.right + 16 }
+      : { top: rect.bottom + 12, left: Math.max(16, Math.min(rect.left, window.innerWidth - largura - 16)) }
+    : { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100]" style={{ backdropFilter: 'blur(6px)' }}>
-      <div className="bg-white rounded-2xl shadow-2xl" style={{ maxWidth: '440px', width: '90%', padding: '36px 32px' }}>
-        <div className="flex items-center gap-1.5" style={{ marginBottom: '28px' }}>
-          {passos.map((_, i) => (
-            <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'bg-blue-600 w-6' : i < step ? 'bg-blue-300 w-3' : 'bg-slate-200 w-3'}`} />
-          ))}
-        </div>
-
-        <div className="text-center" style={{ marginBottom: '32px' }}>
-          <div className="text-5xl" style={{ marginBottom: '16px' }}>{passo.emoji}</div>
-          <h2 className="text-xl font-bold text-slate-900" style={{ marginBottom: '10px' }}>{passo.titulo}</h2>
-          <p className="text-slate-500 text-sm leading-relaxed">{passo.descricao}</p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button onClick={onConcluir}
-            className="text-sm text-slate-500 hover:text-slate-600 transition-colors"
-            style={{ marginRight: 'auto' }}>
+    <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-labelledby="visita-titulo" aria-describedby="visita-texto">
+      {rect ? (
+        <div aria-hidden="true" className="fixed rounded-xl pointer-events-none transition-all"
+          style={{ top: rect.top - 6, left: rect.left - 6, width: rect.width + 12, height: rect.height + 12, boxShadow: '0 0 0 9999px rgba(15,23,42,0.6)', outline: '3px solid #60a5fa' }} />
+      ) : (
+        <div aria-hidden="true" className="fixed inset-0" style={{ background: 'rgba(15,23,42,0.6)' }} />
+      )}
+      <div className="fixed bg-white rounded-2xl shadow-2xl" style={{ width: largura, padding: '20px', ...estiloBalao }}>
+        <p className="text-xs font-semibold text-blue-700" style={{ marginBottom: '6px' }}>{t('progress', { atual: step + 1, total: passos.length })}</p>
+        <h2 id="visita-titulo" className="text-base font-bold text-slate-900" style={{ marginBottom: '6px' }}>{t(`passo.${passo.id}.titulo`)}</h2>
+        <p id="visita-texto" className="text-sm text-slate-600 leading-relaxed">{t(`passo.${passo.id}.texto`)}</p>
+        <div className="flex items-center gap-2" style={{ marginTop: '16px' }}>
+          <button type="button" onClick={onConcluir} className="text-sm text-slate-500 hover:text-slate-700" style={{ marginRight: 'auto' }}>
             {t('buttons.skip')}
           </button>
           {step > 0 && (
-            <button onClick={() => setStep(s => s - 1)}
-              className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-              style={{ padding: '10px 20px' }}>
+            <button type="button" onClick={() => setStep((s) => s - 1)} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '8px 14px' }}>
               {t('buttons.prev')}
             </button>
           )}
-          {step < passos.length - 1 ? (
-            <button onClick={() => setStep(s => s + 1)}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
-              style={{ padding: '10px 24px' }}>
-              {t('buttons.next')}
-            </button>
-          ) : (
-            <button onClick={onConcluir}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
-              style={{ padding: '10px 24px' }}>
-              {t('buttons.start')}
-            </button>
-          )}
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- o foco vai para a ação principal da visita */}
+          <button type="button" autoFocus onClick={() => (ultimo ? onConcluir() : setStep((s) => s + 1))}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl" style={{ padding: '8px 16px' }}>
+            {ultimo ? t('buttons.start') : t('buttons.next')}
+          </button>
         </div>
       </div>
     </div>

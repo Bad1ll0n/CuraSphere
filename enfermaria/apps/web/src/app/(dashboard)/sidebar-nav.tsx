@@ -141,6 +141,7 @@ export function SidebarNav({
         <div style={{ paddingLeft: '20px', paddingRight: '20px', paddingTop: '16px', paddingBottom: '4px' }}>
           <button
             onClick={onOpenPalette}
+            data-tour="paleta"
             className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 bg-white/5 hover:bg-white/10 transition-all"
             aria-label="Pesquisa rápida (Ctrl+K)"
           >

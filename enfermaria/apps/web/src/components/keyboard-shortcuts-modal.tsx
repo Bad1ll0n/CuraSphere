@@ -7,9 +7,14 @@ import { ACOES_FICHA } from '@/lib/paleta-comandos';
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** UX-27: ajuda a partir do menu "?" */
+  onVisita?: () => void;
+  onPrimeirosPassos?: () => void;
+  onNovidades?: () => void;
+  novidadePorVer?: boolean;
 }
 
-export function KeyboardShortcutsModal({ open, onClose }: Props) {
+export function KeyboardShortcutsModal({ open, onClose, onVisita, onPrimeirosPassos, onNovidades, novidadePorVer }: Props) {
   const t = useTranslations('shortcuts');
   const tCommon = useTranslations('common');
 
@@ -65,6 +70,17 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
             </div>
           ))}
         </div>
+        {(onVisita || onPrimeirosPassos || onNovidades) && (
+          <div className="flex flex-wrap gap-2" style={{ marginTop: '16px' }}>
+            {onVisita && <button type="button" onClick={onVisita} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>{t('guidedTour')}</button>}
+            {onPrimeirosPassos && <button type="button" onClick={onPrimeirosPassos} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>{t('firstSteps')}</button>}
+            {onNovidades && (
+              <button type="button" onClick={onNovidades} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>
+                {t('whatsNew')}{novidadePorVer ? ` · ${t('newBadge')}` : ''}
+              </button>
+            )}
+          </div>
+        )}
         <p className="mt-4 text-xs text-slate-500 text-center">{t('hint')}</p>
       </div>
     </div>
