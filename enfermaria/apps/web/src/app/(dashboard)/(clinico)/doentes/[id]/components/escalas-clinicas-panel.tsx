@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { avisarAcoesGeradas } from '@/lib/acoes-escala';
 
 interface Props {
   doenteId: string;
@@ -278,10 +279,11 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
       const config = ESCALA_CONFIG[tipoEscalaClinica];
       const pontuacao = config ? config.calcularPontuacao(valoresEscalaClinica) : undefined;
       const classificacao = config && pontuacao !== undefined ? config.classificar(pontuacao) : undefined;
-      await api.post(`/escalas-clinicas/${doenteId}`, {
+      const res = await api.post(`/escalas-clinicas/${doenteId}`, {
         tipo: tipoEscalaClinica, valores: valoresEscalaClinica, pontuacao, classificacao,
       });
       toast.success('Guardado com sucesso');
+      avisarAcoesGeradas(toast, res.data); // PROD-21
       setModalEscalaClinica(false);
       setValoresEscalaClinica({});
       carregarEscalasClinicas();

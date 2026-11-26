@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { avisarAcoesGeradas } from '@/lib/acoes-escala';
 
 interface Props {
   doenteId: string;
@@ -32,8 +33,9 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
     if (!modalEscala) return;
     setSalvando(true);
     try {
-      await api.post(`/escalas/${doenteId}`, { tipo: modalEscala, itens: escalaItens });
+      const res = await api.post(`/escalas/${doenteId}`, { tipo: modalEscala, itens: escalaItens });
       toast.success('Guardado com sucesso');
+      avisarAcoesGeradas(toast, res.data); // PROD-21
       setModalEscala(null); setEscalaItens({});
       carregarEscalas();
     } catch (e: any) {

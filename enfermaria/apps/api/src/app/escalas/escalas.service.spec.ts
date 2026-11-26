@@ -15,6 +15,11 @@ const mockPrisma = {
     findFirst: jest.fn(),
     findMany: jest.fn(),
   },
+  // PROD-21: tarefas geradas pelo resultado da escala.
+  tarefa: {
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn(async ({ data }: any) => ({ id: 'tarefa-1', descricao: data.descricao })),
+  },
 };
 
 const mockAlertasService = {
@@ -32,6 +37,8 @@ describe('EscalasService', () => {
     jest.resetAllMocks();
     mockNotificacoesService.enviarParaDoente.mockResolvedValue(undefined);
     mockPrisma.cama.findFirst.mockResolvedValue({ servico: 'Medicina' });
+    mockPrisma.tarefa.findFirst.mockResolvedValue(null);
+    mockPrisma.tarefa.create.mockImplementation(async ({ data }: any) => ({ id: 'tarefa-1', descricao: data.descricao }));
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -99,7 +106,9 @@ describe('EscalasService', () => {
           }),
         }),
       );
-      expect(resultado).toEqual(avaliacaoCriada);
+      expect(resultado).toMatchObject(avaliacaoCriada);
+      // PROD-21: risco alto gera a tarefa de prevenção de úlceras.
+      expect(resultado.acoesGeradas).toEqual([expect.objectContaining({ descricao: expect.stringMatching(/^Prevenção de úlceras \(Braden\)/) })]);
     });
 
     it('cria registo de avaliação Morse com pontuação > 44 (risco alto)', async () => {
@@ -135,7 +144,8 @@ describe('EscalasService', () => {
           }),
         }),
       );
-      expect(resultado).toEqual(avaliacaoCriada);
+      expect(resultado).toMatchObject(avaliacaoCriada);
+      expect(resultado.acoesGeradas[0].descricao).toMatch(/^Prevenção de quedas \(Morse\)/);
     });
 
     it('cria avaliação e aciona alertas quando risco é alto', async () => {

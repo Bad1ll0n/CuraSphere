@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { avaliarEscala } from '../common/escalas-motor';
+import { acoesDaEscala, aplicarAcoesEscala } from '../common/escala-acoes';
 
 @Injectable()
 export class EscalasClinicasService {
@@ -16,7 +17,7 @@ export class EscalasClinicasService {
     // certo com os itens; a mobile podia calcular de outra forma).
     const r = avaliarEscala(dto.tipo, dto.valores);
 
-    return this.prisma.escalaClinica.create({
+    const escala = await this.prisma.escalaClinica.create({
       data: {
         doenteId,
         registadoPorId,
@@ -29,6 +30,9 @@ export class EscalasClinicasService {
       },
       include: { registadoPor: { select: { id: true, nome: true, role: true, subRole: true } } },
     });
+    // PROD-21: o resultado desencadeia a ação (NRS-2002 → nutrição, Barthel → planeamento da alta…).
+    const acoesGeradas = await aplicarAcoesEscala(this.prisma, doenteId, registadoPorId, acoesDaEscala(dto.tipo, r.pontuacao));
+    return { ...escala, acoesGeradas };
   }
 
   async listar(doenteId: string, tipo?: string) {

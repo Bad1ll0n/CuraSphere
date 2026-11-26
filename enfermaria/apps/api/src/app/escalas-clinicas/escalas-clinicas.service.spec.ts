@@ -12,6 +12,11 @@ const mockPrisma = {
     findMany: jest.fn(),
     findFirst: jest.fn(),
   },
+  // PROD-21: tarefas geradas pelo resultado da escala.
+  tarefa: {
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn(async ({ data }: any) => ({ id: 'tarefa-1', descricao: data.descricao })),
+  },
 };
 
 describe('EscalasClinicasService', () => {
@@ -19,6 +24,8 @@ describe('EscalasClinicasService', () => {
 
   beforeEach(async () => {
     jest.resetAllMocks();
+    mockPrisma.tarefa.findFirst.mockResolvedValue(null);
+    mockPrisma.tarefa.create.mockImplementation(async ({ data }: any) => ({ id: 'tarefa-1', descricao: data.descricao }));
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -74,7 +81,7 @@ describe('EscalasClinicasService', () => {
           }),
         }),
       );
-      expect(resultado).toEqual(registoCriado);
+      expect(resultado).toEqual({ ...registoCriado, acoesGeradas: [] }); // RASS não gera ações (PROD-21)
     });
   });
 

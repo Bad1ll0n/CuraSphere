@@ -5,6 +5,7 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { avaliarRisco } from '../common/escalas-motor';
 import { proximaAvaliacaoRisco } from '../common/vigilancia';
 import { registarFalha } from '../common/falhas';
+import { acoesDaEscala, aplicarAcoesEscala } from '../common/escala-acoes';
 
 const ROLES_PODEM = [
   'enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos',
@@ -81,6 +82,8 @@ export class EscalasService {
       ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
-    return avaliacao;
+    // PROD-21: risco alto gera as medidas de prevenção como tarefa do turno (além do alerta).
+    const acoesGeradas = await aplicarAcoesEscala(this.prisma, doenteId, registadoPorId, acoesDaEscala(tipo === 'braden' ? 'braden' : 'morse', pontuacao, risco));
+    return { ...avaliacao, acoesGeradas };
   }
 }
