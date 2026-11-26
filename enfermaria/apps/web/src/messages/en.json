@@ -465,7 +465,9 @@
     "days": "days",
     "languageGroup": "Select language",
     "englishBeta": "English (beta — partial translation: some screens are still in Portuguese)",
-    "portuguese": "Português"
+    "portuguese": "Português",
+    "spanish": "Español",
+    "ukrainian": "Українська"
   },
   "tour": {
     "buttons": {

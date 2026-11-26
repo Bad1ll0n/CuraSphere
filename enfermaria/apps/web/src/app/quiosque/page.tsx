@@ -291,7 +291,7 @@ export default function QuiosquePage() {
         <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: 0, letterSpacing: -1 }}>CuraSphere</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: 18, marginTop: 8 }}>{t('subtitle')}</p>
         {/* UX-07: o utente escolhe o idioma (só no ecrã inicial, para não perder o que já escolheu). */}
-        {estado === 'selecionar' && <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}><LanguageSwitcher /></div>}
+        {estado === 'selecionar' && <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}><LanguageSwitcher idiomas={['pt', 'en', 'es', 'uk']} /></div>}
       </div>
 
       {/* ESTADO: Selecionar serviço */}

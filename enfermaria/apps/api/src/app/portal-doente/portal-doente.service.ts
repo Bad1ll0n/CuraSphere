@@ -175,6 +175,21 @@ export class PortalDoenteService {
     return this.pdf.gerarSumarioAlta(doenteId);
   }
 
+  /**
+   * UX-28: a próxima consulta agendada do doente (presencial ou teleconsulta), ou null. Só o
+   * que o doente precisa de saber para lá estar: quando, especialidade, médico e tipo.
+   */
+  async proximaConsulta(portalId: string) {
+    const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
+    if (!portal) throw new UnauthorizedException();
+    const c = await this.prisma.consulta.findFirst({
+      where: { doenteId: portal.doenteId, estado: 'agendada', dataHora: { gte: new Date() } },
+      orderBy: { dataHora: 'asc' },
+      select: { id: true, dataHora: true, especialidade: true, tipo: true, medico: { select: { nome: true } } },
+    });
+    return c ?? null;
+  }
+
   async teleconsultas(portalId: string) {
     const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
     if (!portal) throw new UnauthorizedException();

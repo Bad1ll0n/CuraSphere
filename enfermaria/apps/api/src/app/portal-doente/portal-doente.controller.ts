@@ -153,6 +153,13 @@ export class PortalDoenteController {
     return this.rgpd.exportar(req.user.doenteId, { via: 'portal' });
   }
 
+  // UX-28: o cartão "próxima consulta" no início do portal.
+  @Get('proxima-consulta')
+  @UseGuards(PortalJwtGuard)
+  proximaConsulta(@Request() req: PedidoPortal) {
+    return this.service.proximaConsulta(req.user.sub);
+  }
+
   @Get('teleconsultas')
   @UseGuards(PortalJwtGuard)
   teleconsultas(@Request() req: PedidoPortal) {
