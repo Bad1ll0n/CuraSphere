@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, relative } from 'path';
+import { CORES, LETRA, estilosTematicos, esquemaDe } from './tema';
 // O jest do mobile só cobre lógica pura: um duplo mínimo do react-native chega para o tema.
 const esquemaDoSistema = { valor: 'light' as 'light' | 'dark' | null };
 jest.mock('react-native', () => ({
@@ -7,7 +8,6 @@ jest.mock('react-native', () => ({
   StyleSheet: { create: <T,>(o: T) => o },
   useColorScheme: () => esquemaDoSistema.valor,
 }));
-import { CORES, LETRA, estilosTematicos, esquemaDe } from './tema';
 
 /** Contraste WCAG entre duas cores #rrggbb. */
 function contraste(a: string, b: string): number {

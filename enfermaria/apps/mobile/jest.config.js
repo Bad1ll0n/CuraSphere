@@ -24,6 +24,7 @@ module.exports = {
     '^@react-native-async-storage/async-storage$':
       '<rootDir>/src/test-doubles/async-storage.ts',
     '^@react-native-community/netinfo$': '<rootDir>/src/test-doubles/netinfo.ts',
+    '^expo-secure-store$': '<rootDir>/src/test-doubles/secure-store.ts',
     '^\./api$': '<rootDir>/src/test-doubles/api.ts',
   },
   coverageDirectory: 'test-output/jest/coverage',
