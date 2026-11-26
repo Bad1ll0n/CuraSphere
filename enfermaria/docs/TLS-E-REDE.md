@@ -28,6 +28,16 @@ Para o portal chegar de fora, `acesso_publico: true` no Ansible abre 80/443 na f
 a restrição da aplicação do pessoal fica no nginx. Antes, a allowlist cobria o bloco HTTPS
 inteiro e o portal e a família, feitos para quem está em casa, só funcionavam dentro do hospital.
 
+## Contentores e rede interna (OPS-17)
+
+- O nginx está só na rede de balanceamento (`curasphere-lb`): não alcança a base de dados nem o Redis.
+- **O Redis exige palavra-passe** (`REDIS_PASSWORD`, obrigatória no compose de produção), porque guarda as sessões bloqueadas, o throttler e o barramento entre réplicas. A API liga-se com `redis://:<REDIS_PASSWORD>@redis:6379` e recusa arrancar em produção com um Redis remoto sem palavra-passe.
+- **`no-new-privileges` em todos os serviços**: nenhum processo ganha privilégios por um binário setuid.
+- **API, web, migrações e exporters** correm:
+  - sem capacidades do kernel (`cap_drop: ALL`);
+  - com o sistema de ficheiros **só de leitura**. Só são graváveis `/tmp` (em memória, `noexec`), os volumes declarados (os uploads da API) e a cache do Next (`.next/cache`, em memória).
+- O Postgres, o backup, o Redis, o nginx e os restantes ficam com as capacidades de que precisam para mudar de utilizador ou abrir portas baixas, mas também com `no-new-privileges`. O cAdvisor e o node-exporter precisam de acesso ao host e ficam como estavam.
+
 ## Certificado
 
 **Let's Encrypt** (o DNS do domínio aponta para o host e a porta 80 chega da Internet):

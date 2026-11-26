@@ -28,6 +28,7 @@ services:
     image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
     container_name: curasphere-db
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       POSTGRES_DB:       ${DB_NAME:-enfermaria}
       POSTGRES_USER:     ${DB_USER}
@@ -124,6 +125,7 @@ services:
     image: curasphere-backup:${CURASPHERE_VERSION:-local}
     container_name: curasphere-backup
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       POSTGRES_DB:       ${DB_NAME:-enfermaria}
       POSTGRES_USER:     ${DB_USER}
@@ -201,11 +203,16 @@ services:
     image: redis:7-alpine@sha256:c5d34a98396a4775e223c74e929162c35c5a2182901ba26b50ade939941ce14b
     container_name: curasphere-redis
     restart: unless-stopped
-    command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
+    # OPS-17: o Redis tinha a porta aberta a toda a rede interna sem autenticação (sessões
+    # bloqueadas, throttler, barramento entre réplicas). Agora exige REDIS_PASSWORD.
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?defina REDIS_PASSWORD (openssl rand -hex 32)}
+    command: ["sh", "-c", "exec redis-server --save '' --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass \"$$REDIS_PASSWORD\""]
     networks:
       - curasphere-internal
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "redis-cli --no-auth-warning -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -250,6 +257,12 @@ services:
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-api:${CURASPHERE_VERSION:-local}
     # OPS-09: sem `container_name` — um nome fixo impede mais do que um contentor do serviço.
     restart: unless-stopped
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid"]
     # ─────────────────────────────────────────────────────────────────────────
     # OPS-03 + OPS-13 — convenção deste bloco:
     #   ${VAR:?...}  = falha, não opção. `docker compose up` RECUSA arrancar e
@@ -276,7 +289,7 @@ services:
       JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}
       ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS:?ALLOWED_ORIGINS em falta — obrigatório em produção (Joi)}
-      REDIS_URL:               redis://redis:6379
+      REDIS_URL:               redis://:${REDIS_PASSWORD}@redis:6379  # OPS-17: com autenticação
       NODE_ENV:                production
       PORT:                    3333
       SENTRY_DSN:              ${SENTRY_DSN:-}
@@ -456,6 +469,12 @@ services:
     # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-migrate:${CURASPHERE_VERSION:-local}
     restart: "no"
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid"]
     working_dir: /workspace/apps/api
     environment:
       DATABASE_URL: "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
@@ -511,6 +530,12 @@ services:
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-web:${CURASPHERE_VERSION:-local}
     # OPS-09: sem `container_name` (réplicas).
     restart: unless-stopped
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid", "/app/apps/web/.next/cache:size=128m,uid=1001,gid=1001"]
     environment:
       NODE_ENV: production
       # SEC-11: só a chave PÚBLICA — src/middleware.ts verifica a sessão (ES256) mas não a
@@ -569,6 +594,7 @@ services:
     image: nginx:1.30-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
     container_name: curasphere-nginx
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     ports:
       - "80:80"
       - "443:443"
@@ -617,6 +643,7 @@ services:
     container_name: curasphere-certbot
     profiles: ["acme"]
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     volumes:
       - certbot_conf:/etc/letsencrypt
       - certbot_www:/var/www/certbot
@@ -637,6 +664,7 @@ services:
     image: willfarrell/autoheal:1.2.0@sha256:31f580ef0279eaced5b38d631b08c474d70d8403c1c2fdd6ddcf2e879d5f3f7c
     container_name: curasphere-autoheal
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     network_mode: none
     environment:
       AUTOHEAL_CONTAINER_LABEL: autoheal
@@ -653,6 +681,7 @@ services:
     image: prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06
     container_name: curasphere-prometheus
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       # Opcional no compose (o perfil base não o exige); este contentor recusa arrancar sem ele.
       METRICS_TOKEN: ${METRICS_TOKEN:-}
@@ -675,6 +704,7 @@ services:
     image: prom/alertmanager:v0.34.2@sha256:39d8bb3966c694a124428a3a88fbcffd40bd069129ecd47c059f8a3f17c55f3b
     container_name: curasphere-alertmanager
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["--config.file=/etc/alertmanager/alertmanager.yml", "--storage.path=/alertmanager"]
     volumes:
       - ./monitoring/alertmanager:/etc/alertmanager:ro
@@ -687,6 +717,7 @@ services:
     image: grafana/grafana:13.3.0@sha256:488984b716c0862639f91a698adbe2862677a5a07bad42da5f03f3030883b205
     container_name: curasphere-grafana
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-}
       GF_USERS_ALLOW_SIGN_UP: "false"
@@ -712,6 +743,7 @@ services:
     image: prom/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
     container_name: curasphere-node-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command:
       - --path.rootfs=/host
       - --collector.textfile.directory=/metricas
@@ -727,6 +759,9 @@ services:
     image: prometheuscommunity/postgres-exporter:v0.20.1@sha256:ac5ec343104fae0e2d84a27bb8d69b38430a11910c5382cad85d478d2bab713e
     container_name: curasphere-postgres-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     environment:
       DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-enfermaria}?sslmode=disable"
     # PERF-15: as queries mais pesadas (pg_stat_statements) também no Prometheus/Grafana.
@@ -739,8 +774,12 @@ services:
     image: oliver006/redis_exporter:v1.97.0@sha256:f5f903fbe77571d455ede0453b084d6840bc62fc105efac001034421cab83b99
     container_name: curasphere-redis-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     environment:
       REDIS_ADDR: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     networks: [curasphere-internal]
     logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 
@@ -763,6 +802,9 @@ services:
     image: prom/blackbox-exporter:v0.29.1@sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13
     container_name: curasphere-blackbox
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     command: ["--config.file=/etc/blackbox/blackbox.yml"]
     volumes:
       - ./monitoring/blackbox:/etc/blackbox:ro
@@ -774,6 +816,7 @@ services:
     image: grafana/loki:3.6.20@sha256:be040ec94865dabe4821ce1c0f109452bd4b5acb566ae376672696eb43caedb7
     container_name: curasphere-loki
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["-config.file=/etc/loki/loki.yml"]
     volumes:
       - ./monitoring/loki/loki.yml:/etc/loki/loki.yml:ro
@@ -787,6 +830,7 @@ services:
     image: grafana/alloy:v1.21.3@sha256:8ab871206bd2d8f89277f53abffee5f452a293980788d52f85fa183a87a505a4
     container_name: curasphere-alloy
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["run", "/etc/alloy/config.alloy", "--storage.path=/var/lib/alloy/data"]
     volumes:
       - ./monitoring/alloy/config.alloy:/etc/alloy/config.alloy:ro

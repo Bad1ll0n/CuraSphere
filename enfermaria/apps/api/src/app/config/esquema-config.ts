@@ -68,12 +68,29 @@ export const esquemaConfiguracao = Joi.object({
       if (repetido) return helpers.message({ custom: `${nome} é igual a ${repetido} — cada segredo tem de ser próprio` });
       vistos.set(v, nome);
     }
+    // OPS-17: um Redis noutra máquina/contentor sem palavra-passe é uma porta aberta às sessões,
+    // ao throttler e ao barramento entre réplicas.
+    const redis = String(valores['REDIS_URL'] ?? '');
+    if (redisRemotoSemPassword(redis)) {
+      return helpers.message({ custom: 'REDIS_URL sem palavra-passe — use redis://:<REDIS_PASSWORD>@host:6379' });
+    }
     if (valores['HL7_API_TOKEN'] && !valores['HL7_ORIGENS_PERMITIDAS']) {
       return helpers.message({ custom: 'HL7_ORIGENS_PERMITIDAS é obrigatório com HL7_API_TOKEN — indique os IPs do motor de integração' });
     }
     return valores;
   })
   .unknown(true);
+
+/** Redis fora desta máquina e sem palavra-passe no URL. */
+export function redisRemotoSemPassword(url: string): boolean {
+  try {
+    const u = new URL(url);
+    const local = ['localhost', '127.0.0.1', '[::1]'].includes(u.hostname);
+    return !local && !u.password;
+  } catch {
+    return false;
+  }
+}
 
 /** Valida (para testes e para o arranque): devolve a mensagem de erro, ou null. */
 export function erroDeConfiguracao(env: Record<string, unknown>): string | null {

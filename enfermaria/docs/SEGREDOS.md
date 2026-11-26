@@ -48,6 +48,7 @@ está em `apps/api/src/carregar-segredos.ts`.
 | `QUIOSQUE_SECRET` | Trocar, reiniciar e gerar tokens novos para cada quiosque | Os quiosques param até receberem um token novo |
 | `METRICS_TOKEN`, `HL7_API_TOKEN` | Trocar na API e no consumidor (Prometheus, HIS) ao mesmo tempo | Falhas de recolha ou de mensagens HL7 durante a troca |
 | Password da BD | `ALTER ROLE … PASSWORD`, atualizar `DATABASE_URL` e reiniciar | Nenhum |
+| `REDIS_PASSWORD` | Trocar no `.env.prod` e recriar o Redis, a API e o exporter (`docker compose up -d redis api redis-exporter`) | As sessões bloqueadas e os contadores do throttler recomeçam (o Redis não persiste dados) |
 
 ### Rodar a `ENCRYPTION_KEY`
 

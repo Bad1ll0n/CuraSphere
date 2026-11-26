@@ -57,6 +57,15 @@ describe('configuração (ARQ-20)', () => {
   });
 });
 
+describe('Redis com autenticação (OPS-17)', () => {
+  it('em produção, um Redis remoto sem palavra-passe recusa o arranque; local ou com palavra-passe passa', () => {
+    expect(erroDeConfiguracao({ ...producao, REDIS_URL: 'redis://redis:6379' })).toMatch(/REDIS_URL sem palavra-passe/);
+    expect(erroDeConfiguracao({ ...producao, REDIS_URL: 'redis://:s3gr3d0@redis:6379' })).toBeNull();
+    expect(erroDeConfiguracao({ ...producao, REDIS_URL: 'redis://localhost:6379' })).toBeNull();
+    expect(erroDeConfiguracao({ ...base, REDIS_URL: 'redis://redis:6379' })).toBeNull(); // fora de produção, sem exigência
+  });
+});
+
 describe('segredos por ficheiro (OPS-20)', () => {
   it('<NOME>_FILE lê o valor do ficheiro (sem a quebra de linha final)', () => {
     const env: NodeJS.ProcessEnv = { ENCRYPTION_KEY_FILE: '/run/secrets/k', OUTRA_FILE: '/x' };
