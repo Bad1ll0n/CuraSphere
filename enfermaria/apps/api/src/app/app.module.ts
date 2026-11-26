@@ -42,6 +42,7 @@ import { AgendaFluxoModule } from './agenda-fluxo/agenda-fluxo.module';
 import { TriagemPortalModule } from './triagem-portal/triagem-portal.module';
 import { ObservabilidadeModule } from './observabilidade/observabilidade.module';
 import { FeatureFlagsModule } from './feature-flags/feature-flags.module';
+import { ModuloGuard } from './feature-flags/modulo.guard';
 import { Icd10Module } from './codificacao/icd10.module';
 import { OutcomesModule } from './outcomes/outcomes.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
@@ -141,6 +142,8 @@ import { CAMINHOS_REDACT, CENSURA } from './common/redact-log';
     { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerPorUtilizadorGuard },
+    // PROD-20: módulos opcionais desligados por instalação respondem 404.
+    { provide: APP_GUARD, useClass: ModuloGuard },
   ],
 })
 export class AppModule implements NestModule {

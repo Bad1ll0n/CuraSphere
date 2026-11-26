@@ -2,6 +2,7 @@ import { Injectable, Optional } from '@nestjs/common';
 import { BarramentoService } from '../redis/barramento.service';
 import { createHash } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
+import { PREFIXO_FLAG_MODULO, flagDoModulo } from '@org/shared';
 
 export interface FlagContext {
   userId: string;
@@ -60,8 +61,20 @@ export class FeatureFlagsService {
   async paraContexto(ctx: FlagContext): Promise<Record<string, boolean>> {
     const flags = await this.carregar();
     const out: Record<string, boolean> = {};
-    for (const key of flags.keys()) out[key] = await this.isEnabled(key, ctx);
+    for (const key of flags.keys()) {
+      out[key] = key.startsWith(PREFIXO_FLAG_MODULO) ? flags.get(key).enabled === true : await this.isEnabled(key, ctx);
+    }
     return out;
+  }
+
+  /**
+   * PROD-20 — um módulo opcional está ligado salvo se a flag `modulo.<id>` existir e estiver
+   * desligada. Ao contrário das outras flags, a ausência significa "ligado" (as instalações
+   * existentes não perdem nada) e não há rollout por utilizador: o módulo existe ou não existe.
+   */
+  async moduloLigado(id: string): Promise<boolean> {
+    const flag = (await this.carregar()).get(flagDoModulo(id));
+    return !flag || flag.enabled === true;
   }
 
   private static bucket(key: string, userId: string): number {

@@ -367,7 +367,9 @@
     "sessionExpired": "Sessão expirada. Por favor autentique-se novamente.",
     "forbiddenTitle": "Sem acesso a esta área",
     "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho.",
-    "forbiddenGoHome": "Ir para o início"
+    "forbiddenGoHome": "Ir para o início",
+    "moduleOffTitle": "Módulo desligado",
+    "moduleOffBody": "Este módulo está desligado nesta instalação. Fale com a equipa de TI se precisar dele."
   },
   "roles": {
     "medico": "Médico",
@@ -1545,6 +1547,44 @@
       "camas": "Ver o mapa de camas",
       "executivo": "Abrir o dashboard executivo",
       "qualidade": "Abrir a qualidade"
+    }
+  },
+  "modulos": {
+    "title": "Módulos opcionais",
+    "intro": "O núcleo é o registo clínico de enfermagem e a gestão do internamento. Estes módulos podem ser desligados quando o hospital já usa outro sistema para o mesmo fim. Desligado, sai do menu e a API responde como se não existisse. Nenhum dado é apagado.",
+    "on": "Ligado",
+    "off": "Desligado",
+    "toggle": "Ligar ou desligar {nome}",
+    "error": "Não foi possível alterar o módulo.",
+    "nome": {
+      "faturacao": "Faturação e tabela de atos",
+      "compras": "Fornecedores e encomendas",
+      "equipamentos": "Equipamentos e manutenção",
+      "ti": "Pedidos e incidentes de TI",
+      "rh": "RH: formações, avaliações, contratos e bem-estar",
+      "maternidade": "Maternidade",
+      "oncologia": "Oncologia",
+      "dialise": "Diálise",
+      "triagem-portal": "Triagem por IA no portal",
+      "population-health": "Saúde populacional",
+      "outcomes": "Outcomes clínicos",
+      "regras-clinicas": "Regras clínicas configuráveis",
+      "lista-espera": "Lista de espera de consultas"
+    },
+    "motivo": {
+      "faturacao": "No SNS, o internamento é financiado por GDH a partir da codificação no sistema do hospital.",
+      "compras": "As compras são feitas no ERP.",
+      "equipamentos": "A gestão de equipamentos é do sistema de manutenção.",
+      "ti": "O hospital tem o seu próprio helpdesk.",
+      "rh": "Ausências, férias e trocas de folga continuam, porque afetam a escala.",
+      "maternidade": "Especialidade em protótipo.",
+      "oncologia": "Especialidade em protótipo.",
+      "dialise": "Especialidade em protótipo.",
+      "triagem-portal": "Decisão clínica por IA, desligada por omissão.",
+      "population-health": "Sem ecrã na aplicação web.",
+      "outcomes": "Sem ecrã na aplicação web.",
+      "regras-clinicas": "Sem ecrã na aplicação web; as regras das escalas já geram tarefas.",
+      "lista-espera": "Consulta externa, fora do internamento."
     }
   }
 }

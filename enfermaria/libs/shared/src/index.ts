@@ -14,3 +14,4 @@ export * from './lib/turnos.js';
 export * from './lib/senhas.js';
 export * from './lib/identificacao.js';
 export * from './lib/dominios.js';
+export * from './lib/modulos.js';

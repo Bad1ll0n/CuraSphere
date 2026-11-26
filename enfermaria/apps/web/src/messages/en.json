@@ -367,7 +367,9 @@
     "sessionExpired": "Session expired. Please sign in again.",
     "forbiddenTitle": "No access to this area",
     "forbiddenBody": "Your profile is not allowed to view this. Redirecting to your workspace.",
-    "forbiddenGoHome": "Go to start page"
+    "forbiddenGoHome": "Go to start page",
+    "moduleOffTitle": "Module turned off",
+    "moduleOffBody": "This module is turned off in this installation. Contact the IT team if you need it."
   },
   "roles": {
     "medico": "Doctor",
@@ -1545,6 +1547,44 @@
       "camas": "See the bed map",
       "executivo": "Open the executive dashboard",
       "qualidade": "Open quality"
+    }
+  },
+  "modulos": {
+    "title": "Optional modules",
+    "intro": "The core is the nursing clinical record and inpatient management. These modules can be turned off when the hospital already uses another system for the same purpose. When off, it leaves the menu and the API responds as if it did not exist. No data is deleted.",
+    "on": "On",
+    "off": "Off",
+    "toggle": "Turn {nome} on or off",
+    "error": "Could not change the module.",
+    "nome": {
+      "faturacao": "Billing and procedure prices",
+      "compras": "Suppliers and orders",
+      "equipamentos": "Equipment and maintenance",
+      "ti": "IT requests and incidents",
+      "rh": "HR: training, appraisals, contracts and wellbeing",
+      "maternidade": "Maternity",
+      "oncologia": "Oncology",
+      "dialise": "Dialysis",
+      "triagem-portal": "AI triage in the patient portal",
+      "population-health": "Population health",
+      "outcomes": "Clinical outcomes",
+      "regras-clinicas": "Configurable clinical rules",
+      "lista-espera": "Outpatient waiting list"
+    },
+    "motivo": {
+      "faturacao": "In the NHS, inpatient care is funded by DRG from the coding in the hospital system.",
+      "compras": "Purchasing is done in the ERP.",
+      "equipamentos": "Equipment is managed in the maintenance system.",
+      "ti": "The hospital has its own helpdesk.",
+      "rh": "Absences, leave and shift swaps stay, because they affect the roster.",
+      "maternidade": "Prototype specialty.",
+      "oncologia": "Prototype specialty.",
+      "dialise": "Prototype specialty.",
+      "triagem-portal": "Clinical decision by AI, off by default.",
+      "population-health": "No screen in the web app.",
+      "outcomes": "No screen in the web app.",
+      "regras-clinicas": "No screen in the web app; the scale rules already create tasks.",
+      "lista-espera": "Outpatient care, outside inpatient management."
     }
   }
 }

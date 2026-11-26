@@ -31,3 +31,5 @@ Levantamento de 2026-11-24: controllers da API cujo prefixo nenhum ecrã da web 
 | `outcomes` | ~130 | Registo de resultados clínicos | integração |
 
 Para cada um: ligar a um ecrã (se fizer parte do núcleo de enfermagem) ou remover. Até essa decisão, ficam como estão: não há rota exposta que contorne as guardas (todos têm `@Roles` e passam pelo `AcessoDoenteInterceptor`).
+
+**Atualização (PROD-20):** `population-health`, `regras-clinicas`, `triagem-portal`, `lista-espera` e `outcomes` são agora **módulos opcionais**, que cada instalação pode desligar com a flag `modulo.<id>` (a API responde 404). `transferencias` fica no núcleo, porque é a saída do doente internado. Ver `AMBITO-PRODUTO.md`.

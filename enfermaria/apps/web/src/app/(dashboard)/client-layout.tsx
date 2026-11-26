@@ -16,6 +16,8 @@ import { useAlertaSonoro } from '@/lib/alerta-sonoro';
 import { SocketStatusBanner } from '@/components/socket-status-banner';
 import { SidebarNav } from './sidebar-nav';
 import { RouteGuard } from './route-guard';
+import { moduloDaRotaWeb } from '@org/shared';
+import { useModulosDesligados } from '@/lib/hooks/use-modulos';
 import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
 import { TourOverlay } from '@/components/tour-overlay';
@@ -34,6 +36,7 @@ import { NOVIDADE_MAIS_RECENTE } from '@/lib/novidades';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
+  const modulosDesligados = useModulosDesligados();
   const tCommon = useTranslations('common');
   const tLayout = useTranslations('layout');
   const tSessao = useTranslations('session');
@@ -131,7 +134,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 
-  const itemsVisiveis = filtrarMenus(utilizador);
+  // PROD-20: os módulos opcionais desligados nesta instalação saem do menu.
+  const itemsVisiveis = filtrarMenus(utilizador).filter((i) => {
+    const m = moduloDaRotaWeb(i.href);
+    return !m || !modulosDesligados.has(m.id);
+  });
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">

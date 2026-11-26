@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { ModulosOpcionaisSection } from '@/components/modulos-opcionais';
 
 interface SubRole { id: string; chave: string; label: string; roleChave: string; ordem: number; ativo: boolean; }
 interface Role { id: string; chave: string; label: string; categoria: string; ordem: number; ativo: boolean; subRoles: SubRole[]; }
@@ -318,6 +319,7 @@ export default function ConfiguracoesPage() {
 
       {/* Quiosque de Corredor */}
       <QuiosqueSection />
+      <ModulosOpcionaisSection />
 
       {/* Modal */}
       {modalAberto && (
