@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from './prisma/prisma.service';
 import { RedisService } from './redis/redis.service';
-import { AuditoriaInstaladaService } from './common/auditoria-instalada.service';
+import { AuditoriaInstaladaService } from './common/auditoria/auditoria-instalada.service';
 import { versaoDaAplicacao } from '../versao';
 
 type ComponentStatus = { status: 'up' | 'down' };

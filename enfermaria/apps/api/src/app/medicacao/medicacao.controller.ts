@@ -2,7 +2,7 @@ import { Controller, Get, Post, Patch, Body, Param, Query, Res, UseGuards, Reque
 import type { Response } from 'express';
 import { MedicacaoService } from './medicacao.service';
 import { DoenteService } from '../doentes/doentes.service';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';

@@ -1,11 +1,11 @@
-import '../common/dinheiro'; // ARQ-22: o dinheiro (Decimal) sai em JSON como número
+import '../common/infra/dinheiro'; // ARQ-22: o dinheiro (Decimal) sai em JSON como número
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { criarClienteComEncriptacao, delegatesDoCliente } from './encryption.middleware';
 import { RequestContextService } from './request-context.service';
-import { comRetentativas } from '../common/transacao';
+import { comRetentativas } from '../common/infra/transacao';
 
 const SLOW_QUERY_MS = 500;
 

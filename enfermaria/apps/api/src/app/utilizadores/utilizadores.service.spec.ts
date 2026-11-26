@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
-jest.mock('../common/password', () => ({
+jest.mock('../common/seguranca/password', () => ({
   hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
   verifyPassword: jest.fn(),
 }));
-import { hashPassword } from '../common/password';
+import { hashPassword } from '../common/seguranca/password';
 import { UtilizadoresService } from './utilizadores.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { Servico } from '../common/enums';
+import { Servico } from '../common/infra/enums';
 
 // Mock da transação Prisma para modo sequencial (array → Promise.all)
 // e para modo callback (função assíncrona)

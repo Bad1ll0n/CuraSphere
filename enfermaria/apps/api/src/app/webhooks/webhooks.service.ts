@@ -1,7 +1,7 @@
 import { Injectable, Logger, Optional } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
-import { assertUrlDestinoPublico, exigirSemRedireccionamento, SEM_REDIRECCIONAMENTOS } from '../common/ssrf-guard';
+import { assertUrlDestinoPublico, exigirSemRedireccionamento, SEM_REDIRECCIONAMENTOS } from '../common/seguranca/ssrf-guard';
 import { Hl7SaidaService } from '../hl7/hl7-saida.service';
 import { cifrarSegredo, decifrarSegredo } from '../prisma/encryption.middleware';
 

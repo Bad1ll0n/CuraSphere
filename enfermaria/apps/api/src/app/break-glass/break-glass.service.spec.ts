@@ -3,7 +3,7 @@ import { NotFoundException } from '@nestjs/common';
 import { BreakGlassService } from './break-glass.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { AuditService } from '../common/audit.service';
+import { AuditService } from '../common/auditoria/audit.service';
 
 const mockPrisma = {
   doente: {

@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import type { MessageEvent } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { sanitizeForPrompt } from './prompt-sanitizer';
-import { AI_MODELS } from '../common/ai-models';
-import { doentesComOposicaoIA, exigirTratamentoPermitido } from '../common/consentimento-tratamento';
-import { registarFalha } from '../common/falhas';
+import { AI_MODELS } from '../common/ia/ai-models';
+import { doentesComOposicaoIA, exigirTratamentoPermitido } from '../common/clinico/consentimento-tratamento';
+import { registarFalha } from '../common/infra/falhas';
 import { IaNucleoService, PSEUDONIMO_DOENTE, MARCADOR_NOME, textoDaResposta, extrairArrayJson } from './ia-nucleo.service';
 import {
   parseWithSchema,

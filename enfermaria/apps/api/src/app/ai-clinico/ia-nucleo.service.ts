@@ -3,8 +3,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
 import { GuidelinesService } from '../guidelines/guidelines.service';
 import { AiMetricsService } from './ai-metrics.service';
-import { exigirIaPermitida } from '../common/funcoes-ia';
-import { registarFalha, falhaTratada } from '../common/falhas';
+import { exigirIaPermitida } from '../common/ia/funcoes-ia';
+import { registarFalha, falhaTratada } from '../common/infra/falhas';
 
 /**
  * ARQ-05 — minimização de dados (RGPD art. 5.º, 1, c). O modelo não precisa do nome para
@@ -72,7 +72,7 @@ export class IaNucleoService {
   }
 
   async callAI(feature: string, params: Parameters<typeof this.client.messages.create>[0]) {
-    // PROD-19: decisão clínica por LLM só com activação explícita (ver common/funcoes-ia.ts).
+    // PROD-19: decisão clínica por LLM só com activação explícita (ver common/ia/funcoes-ia.ts).
     exigirIaPermitida(feature);
     const t0 = Date.now();
     let success = true;

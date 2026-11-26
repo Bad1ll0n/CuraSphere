@@ -1,6 +1,6 @@
 import { IsIn, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { FINALIDADES_TRATAMENTO } from '../common/consentimento-tratamento';
+import { FINALIDADES_TRATAMENTO } from '../common/clinico/consentimento-tratamento';
 
 export class RegistarConsentimentoTratamentoDto {
   @ApiProperty({ enum: Object.keys(FINALIDADES_TRATAMENTO) })

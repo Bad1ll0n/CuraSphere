@@ -1,4 +1,4 @@
-import { euros, multiplicarEuros, somarEuros, type ValorMonetario } from '../common/dinheiro';
+import { euros, multiplicarEuros, somarEuros, type ValorMonetario } from '../common/infra/dinheiro';
 import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';

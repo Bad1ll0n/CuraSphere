@@ -5,14 +5,14 @@ import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
-import { calcularNEWS2 } from '../common/news2.helper';
+import { calcularNEWS2 } from '../common/clinico/news2.helper';
 import { PreNotificacaoDto } from './dto/pre-notificacao.dto';
 import { ReTriagemDto } from './dto/re-triagem.dto';
 import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
 import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
 
 import { PedidosCamaService } from '../camas/pedidos-cama.service';
-import { turnoEmCurso } from '../common/turno-em-curso';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 const ORDEM_TRIAGEM: Record<string, number> = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 };
 
 const SLA_MINUTOS: Record<string, number> = {
@@ -451,7 +451,7 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
     return e;
   }
 
-  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
     const t = turnoEmCurso();
     return { tipoTurno: t.tipo, dataHoje: t.data.gte, dataFim: t.data.lte };

@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../common/audit.service';
+import { AuditService } from '../common/auditoria/audit.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 import { recolherDadosDoTitular } from './exportacao-titular';
 
 export const NOME_ANONIMIZADO = 'Titular anonimizado';

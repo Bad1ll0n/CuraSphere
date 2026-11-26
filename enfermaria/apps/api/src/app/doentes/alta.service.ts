@@ -5,9 +5,9 @@ import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { AiVigilanciaService } from '../ai-clinico/ai-vigilancia.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { episodioAtivo, fecharEpisodio } from '../episodios/episodios.core';
-import { temPapel } from '../common/roles.util';
+import { temPapel } from '../common/seguranca/roles.util';
 import type { AltaEstruturadaDto, NotaAltaEnfermagemDto } from './dto/alta-estruturada.dto';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 export type RequisitoAlta = 'reconciliacao' | 'nota_enfermagem' | 'plano';
 const REQUISITOS_VALIDOS: RequisitoAlta[] = ['reconciliacao', 'nota_enfermagem', 'plano'];

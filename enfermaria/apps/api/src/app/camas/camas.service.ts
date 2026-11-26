@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { RedisService } from '../redis/redis.service';
-import { EstadoCama } from '../common/enums';
+import { EstadoCama } from '../common/infra/enums';
 
 // PERF-07: as chaves eram fixas — um tenant recebia a lista de camas (com doentes) de outro.
 const KEY_LISTA = (tenant: string) => `camas:lista:${tenant}`;

@@ -3,9 +3,9 @@ import { createHash, randomBytes } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { MailerService } from '../mailer/mailer.service';
-import { hashPassword } from '../common/password';
+import { hashPassword } from '../common/seguranca/password';
 import { exigirPasswordForte } from '../auth/politica-password';
-import { escaparHtml } from '../common/escapar-html';
+import { escaparHtml } from '../common/seguranca/escapar-html';
 
 /** Validade do link de recuperação. */
 export const VALIDADE_RECUPERACAO_MS = 30 * 60 * 1000;

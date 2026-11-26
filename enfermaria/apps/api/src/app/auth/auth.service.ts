@@ -6,8 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { AnomalyDetectionService } from '../common/anomaly-detection.service';
-import { hashPassword, verifyPassword } from '../common/password';
+import { AnomalyDetectionService } from '../common/ia/anomaly-detection.service';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 import * as crypto from 'crypto';
 import {
   AUD_MFA_CHALLENGE, AUD_MFA_SETUP, AUD_PASSWORD_EXPIRADA, AUD_SOCKET, JWT_ISSUER,

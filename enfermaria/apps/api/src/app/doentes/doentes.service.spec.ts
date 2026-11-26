@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { AiVigilanciaService } from '../ai-clinico/ai-vigilancia.service';
-import { StorageService } from '../common/storage.service';
+import { StorageService } from '../common/infra/storage.service';
 import { ConfigService } from '@nestjs/config';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { WebhooksService } from '../webhooks/webhooks.service';

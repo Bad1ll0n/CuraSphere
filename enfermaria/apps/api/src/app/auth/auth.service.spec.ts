@@ -7,7 +7,7 @@ import { AuthService, hashRefreshToken } from './auth.service';
 import { decifrarSegredo } from '../prisma/encryption.middleware';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { AnomalyDetectionService } from '../common/anomaly-detection.service';
+import { AnomalyDetectionService } from '../common/ia/anomaly-detection.service';
 
 jest.mock('otplib', () => ({
   verify: jest.fn().mockResolvedValue({ valid: true, delta: 0 }),

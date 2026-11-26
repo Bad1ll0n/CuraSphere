@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { erroOrigens } from '../common/origens-permitidas';
+import { erroOrigens } from '../common/seguranca/origens-permitidas';
 
 /**
  * ARQ-20 — validação da configuração no arranque, completa e fechada em produção.

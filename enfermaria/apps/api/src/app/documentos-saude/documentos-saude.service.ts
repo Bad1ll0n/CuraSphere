@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, ForbiddenException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { StorageService } from '../common/storage.service';
+import { StorageService } from '../common/infra/storage.service';
 import { FhirService } from '../fhir/fhir.service';
-import { AuditService } from '../common/audit.service';
+import { AuditService } from '../common/auditoria/audit.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
 import { createHash, randomUUID } from 'crypto';
 

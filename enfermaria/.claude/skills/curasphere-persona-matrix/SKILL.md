@@ -31,7 +31,7 @@ Shared test password for every staff and portal account: **`Teste1234!`**
 | 16 | tecnico_saude | tae | 00016 | **Yes** |
 | 17 | tecnico_saude | tec_rad | 00017 | **Yes** |
 
-The 7 sub-role personas (11-17) exist because these specific sub-roles change real permissions/guards in the API (see `SUBROLES` in `apps/api/src/app/common/enums.ts`) — they're not just cosmetic labels. Test them separately from their base-role counterpart when the task is about permission boundaries; testing just the base role is enough when the task is about a feature all of that role's variants share.
+The 7 sub-role personas (11-17) exist because these specific sub-roles change real permissions/guards in the API (see `SUBROLES` in `apps/api/src/app/common/infra/enums.ts`) — they're not just cosmetic labels. Test them separately from their base-role counterpart when the task is about permission boundaries; testing just the base role is enough when the task is about a feature all of that role's variants share.
 
 ### Logging in as a staff persona
 

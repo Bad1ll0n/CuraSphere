@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { EventsGateway } from '../gateway/events.gateway';
 import { CriarSinalizacaoDto } from './dto/criar-sinalizacao.dto';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 @Injectable()
 export class SinalizacoesService {

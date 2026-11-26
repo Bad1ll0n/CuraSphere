@@ -3,12 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { StorageService } from '../common/storage.service';
-import { PdfService } from '../common/pdf.service';
-import { hashPassword, verifyPassword } from '../common/password';
+import { StorageService } from '../common/infra/storage.service';
+import { PdfService } from '../common/infra/pdf.service';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 import { AUD_PORTAL } from '../auth/token-audiences';
-import { configJitsi, dadosSala, tokenJitsi } from '../common/jitsi';
-import { exigirTratamentoPermitido } from '../common/consentimento-tratamento';
+import { configJitsi, dadosSala, tokenJitsi } from '../common/infra/jitsi';
+import { exigirTratamentoPermitido } from '../common/clinico/consentimento-tratamento';
 import { TEMAS_ENSINO } from '../planeamento-alta/planeamento-alta.regras';
 import { exigirPasswordForte } from '../auth/politica-password';
 

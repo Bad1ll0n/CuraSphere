@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { RequestContextService } from './request-context.service';
-import { idCorrelacaoDoPedido } from '../common/correlacao';
+import { idCorrelacaoDoPedido } from '../common/infra/correlacao';
 
 /**
  * Abre o RequestContext do pedido (de-onde: IP, user-agent, correlation-id) e envolve todo o

@@ -12,7 +12,7 @@ import { ModuleRef } from '@nestjs/core';
 import { VERIFICADOR_ACESSO_DOENTE, type VerificadorAcessoDoente } from '../doentes/acesso-doente.token';
 import { AUD_SOCKET, JWT_ISSUER, type TipoToken } from '../auth/token-audiences';
 import { chavesJwt } from '../auth/chaves-jwt';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 interface JwtPayload {
   sub: string;

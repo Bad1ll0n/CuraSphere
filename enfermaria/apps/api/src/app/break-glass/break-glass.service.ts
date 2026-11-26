@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable,
 import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { AuditService } from '../common/audit.service';
+import { AuditService } from '../common/auditoria/audit.service';
 
 @Injectable()
 export class BreakGlassService {

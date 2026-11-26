@@ -2,10 +2,10 @@ import { Injectable, Logger, NotFoundException, OnApplicationBootstrap, OnApplic
 import { BarramentoService } from '../redis/barramento.service';
 import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
-import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
+import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/infra/enums';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 @Injectable()
 export class TarefasService implements OnApplicationBootstrap, OnApplicationShutdown {
   private readonly logger = new Logger(TarefasService.name);

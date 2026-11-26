@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException,
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { IsString, MaxLength, IsOptional, IsEnum } from 'class-validator';
-import { assertUrlDestinoPublico } from '../common/ssrf-guard';
+import { assertUrlDestinoPublico } from '../common/seguranca/ssrf-guard';
 
 import { LeiturasMonitorService } from '../monitorizacao/leituras-monitor.service';
 import { construirBundleR4 } from './fhir-bundle';

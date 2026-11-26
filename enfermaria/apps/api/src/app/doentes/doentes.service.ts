@@ -5,21 +5,21 @@ import { PrismaService } from '../prisma/prisma.service';
 import { filtroNif, filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { StorageService } from '../common/storage.service';
-import { EstadoDoente } from '../common/enums';
+import { StorageService } from '../common/infra/storage.service';
+import { EstadoDoente } from '../common/infra/enums';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { BreakGlassService } from '../break-glass/break-glass.service';
-import { emitirTokenQuiosque } from '../common/quiosque.guard';
+import { emitirTokenQuiosque } from '../common/seguranca/quiosque.guard';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { PAPEIS_SEM_ACESSO_CLINICO, temAtribuicaoEmVigor } from './acesso-por-atribuicao';
-import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { ultimosSinaisVitais } from '../common/clinico/ultimos-registos';
 import { abrirEpisodio, ocuparCama } from '../episodios/episodios.core';
-import { celulaCsv } from '../common/csv';
-import { registarFalha } from '../common/falhas';
-import { filtroHorarioTurnoAtivo } from '../common/turno-em-curso';
+import { celulaCsv } from '../common/infra/csv';
+import { registarFalha } from '../common/infra/falhas';
+import { filtroHorarioTurnoAtivo } from '../common/clinico/turno-em-curso';
 import { minutosLimiteEdicao } from '@org/shared';
-import { minutosDoDiaClinico } from '../common/dia-clinico.helper';
+import { minutosDoDiaClinico } from '../common/clinico/dia-clinico.helper';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB

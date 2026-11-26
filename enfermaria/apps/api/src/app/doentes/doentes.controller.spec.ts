@@ -10,9 +10,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DoenteController } from './doentes.controller';
 import { DoenteService } from './doentes.service';
 import { ListagemDoentesService } from './listagem-doentes.service';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { CartaAltaService } from './carta-alta.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 
 const mockLeituras = { registar: jest.fn(), listarPorDoente: jest.fn() };
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';

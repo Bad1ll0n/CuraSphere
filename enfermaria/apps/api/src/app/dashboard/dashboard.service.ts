@@ -1,11 +1,11 @@
-import { euros, somarEuros } from '../common/dinheiro';
+import { euros, somarEuros } from '../common/infra/dinheiro';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
-import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/clinico/dia-clinico.helper';
+import { ultimosSinaisVitais } from '../common/clinico/ultimos-registos';
 import { RedisService } from '../redis/redis.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
-import { turnoEmCurso } from '../common/turno-em-curso';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 
 /** PERF-06: indicadores agregados — 30 s de frescura chega para painéis de gestão. */
 const TTL_DASHBOARD_S = Number(process.env['DASHBOARD_CACHE_S'] ?? 30);
@@ -42,7 +42,7 @@ export class DashboardService {
     return valor;
   }
 
-  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
     const agora = new Date();
     const t = turnoEmCurso(agora);

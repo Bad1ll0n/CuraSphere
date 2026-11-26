@@ -17,7 +17,7 @@ import { RedisService } from '../../redis/redis.service';
 import { CacheSamlRedis } from './saml-cache';
 import * as crypto from 'crypto';
 
-import { assertUrlDestinoPublico } from '../../common/ssrf-guard';
+import { assertUrlDestinoPublico } from '../../common/seguranca/ssrf-guard';
 class CriarProviderDto {
   @IsString() @IsIn(['saml', 'oidc']) tipo: string;
   @IsString() @MaxLength(100) nome: string;

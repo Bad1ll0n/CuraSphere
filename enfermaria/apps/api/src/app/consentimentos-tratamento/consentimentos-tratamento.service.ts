@@ -2,11 +2,11 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import {
   DecisaoTratamento, eFinalidade, FINALIDADES_TRATAMENTO, FinalidadeTratamento, tratamentoPermitido,
-} from '../common/consentimento-tratamento';
+} from '../common/clinico/consentimento-tratamento';
 
 export type OrigemDecisao = 'presencial' | 'portal';
 
-/** SEC-19 — registo, consulta e revogação das decisões do doente. Ver common/consentimento-tratamento.ts. */
+/** SEC-19 — registo, consulta e revogação das decisões do doente. Ver common/clinico/consentimento-tratamento.ts. */
 @Injectable()
 export class ConsentimentosTratamentoService {
   constructor(private readonly prisma: PrismaService) {}

@@ -249,7 +249,7 @@ const PUBLICOS_POR_DESENHO = [
   'auth/auth.controller.ts', // login, refresh: são a porta de entrada
   'portal-doente/portal-doente.controller.ts', // tem o seu próprio PortalJwtGuard
   'tickets/quiosque.controller.ts', // tem o seu próprio QuiosqueGuard
-  'common/csp-report.controller.ts', // recebe relatórios de CSP enviados pelo browser
+  'common/seguranca/csp-report.controller.ts', // recebe relatórios de CSP enviados pelo browser
   'triagem-portal/triagem-portal.controller.ts', // orientador de sintomas: sem PHI, sem estado, throttle apertado
 ];
 
@@ -278,7 +278,7 @@ describe('estrutura — autenticação', () => {
 const CORPO_CRU_POR_DESENHO = [
   'hl7/hl7.controller.ts', // recebe uma mensagem HL7 em texto
   'fhir/fhir.controller.ts', // recebe um recurso FHIR arbitrário
-  'common/csp-report.controller.ts', // o corpo é definido pelo browser, não por nós
+  'common/seguranca/csp-report.controller.ts', // o corpo é definido pelo browser, não por nós
   'auth/sso/sso.controller.ts', // callback SAML: o corpo vem do fornecedor de identidade
 ];
 
@@ -414,13 +414,13 @@ describe('estrutura — aleatoriedade', () => {
  * ------------------------------------------------------------------ */
 describe('estrutura — falhas tratadas', () => {
   // `.catch(() => null|undefined|{})` e `catch {}` vazios: a falha desaparece sem rasto. Usar
-  // `registarFalha('contexto')` (common/falhas.ts), que regista e conta. Ficam só estes, por
+  // `registarFalha('contexto')` (common/infra/falhas.ts), que regista e conta. Ficam só estes, por
   // desenho: limpeza de temporários, ficheiro inexistente = null, e o Redis opcional (a ligação
   // tem o seu próprio tratamento de erros e a cache degrada para a BD).
   const SILENCIO_POR_DESENHO: Record<string, number> = {
-    'common/storage.service.ts': 2, // unlink de temporário; readFile de ficheiro que não existe → null
+    'common/infra/storage.service.ts': 2, // unlink de temporário; readFile de ficheiro que não existe → null
     'comunicacao/comunicacao.controller.ts': 1, // unlink do temporário do upload
-    'common/throttler-redis.storage.ts': 2, // connect/quit do Redis opcional
+    'common/seguranca/throttler-redis.storage.ts': 2, // connect/quit do Redis opcional
     'redis/barramento.service.ts': 4, // connect/subscribe do Redis opcional (religa sozinho)
     'dashboard/dashboard.service.ts': 2, // cache em Redis: falhar = calcular na BD
   };
@@ -784,5 +784,29 @@ describe('estrutura — módulos sem consumidor (ARQ-16)', () => {
       .filter(Boolean);
     const semCliente = [...new Set(prefixos)].filter((p) => !cliente.includes(`'/${p}`) && !cliente.includes(`"/${p}`) && !cliente.includes('`/' + p) && !cliente.includes(`/v1/${p}`));
     expect(semCliente.filter((p) => !CONHECIDOS.includes(p)).sort()).toEqual([]);
+  });
+});
+
+// ARQ-19: o common/ era um saco de 95 ficheiros (cálculo clínico, segurança, auditoria, IA e
+// infraestrutura misturados). Agora cada um vive na subpasta do seu tema; na raiz só ficam as
+// guardas do repositório e os DTOs partilhados.
+describe('estrutura — common/ organizado por tema (ARQ-19)', () => {
+  const COMMON = join(RAIZ_APP, 'common');
+  const SUBPASTAS = ['auditoria', 'clinico', 'dto', 'ia', 'infra', 'seguranca'];
+
+  it('só as subpastas conhecidas e nenhum ficheiro solto além das guardas', () => {
+    const entradas = readdirSync(COMMON);
+    const pastas = entradas.filter((e) => statSync(join(COMMON, e)).isDirectory()).sort();
+    const soltos = entradas.filter((e) => !statSync(join(COMMON, e)).isDirectory() && !e.endsWith('.spec.ts'));
+    expect(pastas).toEqual(SUBPASTAS);
+    expect(soltos).toEqual([]);
+  });
+
+  it('as escalas clínicas e a escala de serviço não se confundem', () => {
+    const gestao = readFileSync(join(RAIZ_APP, 'gestao.module.ts'), 'utf8');
+    const clinico = readFileSync(join(RAIZ_APP, 'clinical.module.ts'), 'utf8');
+    expect(gestao).not.toContain('EscalasModule');
+    expect(clinico).toContain('EscalasModule');
+    expect(readdirSync(RAIZ_APP)).not.toContain('escalas-clinicas');
   });
 });

@@ -1,11 +1,11 @@
-import { euros, multiplicarEuros, somarEuros } from '../common/dinheiro';
+import { euros, multiplicarEuros, somarEuros } from '../common/infra/dinheiro';
 import { Injectable, Logger, NotFoundException, ConflictException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { gerarCodigoMarcacao } from './codigo-marcacao';
-import { configJitsi, dadosSala, novaSalaJitsi, tokenJitsi } from '../common/jitsi';
-import { registarFalha } from '../common/falhas';
+import { configJitsi, dadosSala, novaSalaJitsi, tokenJitsi } from '../common/infra/jitsi';
+import { registarFalha } from '../common/infra/falhas';
 
 /** ARQ-23: tecto de uma listagem de consultas (uma agenda de um dia ou de um doente cabe largamente). */
 export const LIMITE_LISTA_CONSULTAS = 500;

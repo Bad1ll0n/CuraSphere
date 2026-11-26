@@ -8,7 +8,7 @@ import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
 import { PortalRecuperacaoService } from './portal-recuperacao.service';
 import { RgpdService } from '../rgpd/rgpd.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
 import type { PedidoPortal } from '../auth/pedido-autenticado';

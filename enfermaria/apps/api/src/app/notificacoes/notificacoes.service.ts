@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { turnoEmCurso } from '../common/turno-em-curso';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 interface ExpoPushMessage {
   to: string;
   title: string;
@@ -185,7 +185,7 @@ export class NotificacoesService {
    * Turno em curso, pelo relógio. Duplica deliberadamente o helper homónimo de
    * `AlertasService`: esse serviço depende deste, e importá-lo aqui fecharia um ciclo.
    */
-  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
     const t = turnoEmCurso();
     return { tipoTurno: t.tipo, dataHoje: t.data.gte, dataFim: t.data.lte };

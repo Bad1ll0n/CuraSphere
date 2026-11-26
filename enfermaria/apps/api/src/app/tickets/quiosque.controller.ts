@@ -7,7 +7,7 @@ import { ConsultasService } from '../consultas/consultas.service';
 import { normalizarCodigoMarcacao } from '../consultas/codigo-marcacao';
 import { CriarMarcacaoQuiosqueDto } from './dto/criar-marcacao-quiosque.dto';
 import { TirarSenhaDto } from './dto/tirar-senha.dto';
-import { QuiosqueGuard } from '../common/quiosque.guard';
+import { QuiosqueGuard } from '../common/seguranca/quiosque.guard';
 import { filtroNif } from '../prisma/encryption.middleware';
 import { IdentificarQuiosqueDto } from './dto/identificar-quiosque.dto';
 import { doenteIdentificado, emitirIdentificacao, mesmaDataNascimento, nomeAbreviado } from './identificacao-quiosque';

@@ -37,7 +37,7 @@ const TOTP_SECRET_TESTE = 'EWA62CRGBGCMZVKZOEQ7GL2YIMOUSIBV'; // nosemgrep
 const ROLES_CLINICOS = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
 // Um utilizador por cada role da aplicação, mais os sub-roles privilegiados que
-// mudam guards/permissões reais na API (ver apps/api/src/app/common/enums.ts SUBROLES)
+// mudam guards/permissões reais na API (ver apps/api/src/app/common/infra/enums.ts SUBROLES)
 const UTILIZADORES = [
   // ── Roles NÃO clínicos — login directo (sem MFA obrigatório) ──────────────
   {

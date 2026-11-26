@@ -64,5 +64,5 @@ Depois disto, o deploy normal (`migrate deploy`) trata de tudo.
   ALTER TABLE tickets VALIDATE CONSTRAINT ck_tickets_tipo;
   ```
 
-- O dinheiro é `DECIMAL(12,2)`. A aritmética passa por `common/dinheiro.ts` (ao cêntimo), e o
+- O dinheiro é `DECIMAL(12,2)`. A aritmética passa por `common/infra/dinheiro.ts` (ao cêntimo), e o
   `Decimal` serializa em JSON como número, por isso o contrato da API não muda.

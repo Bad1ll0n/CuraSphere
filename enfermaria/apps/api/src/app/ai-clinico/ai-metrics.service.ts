@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 export interface AiMetricEntry {
   feature: string;

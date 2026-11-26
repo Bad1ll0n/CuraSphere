@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
 
-import { turnoEmCurso } from '../common/turno-em-curso';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 @Injectable()
 export class AlertasService {
   private readonly logger = new Logger(AlertasService.name);
@@ -281,7 +281,7 @@ export class AlertasService {
 
   // ─── helpers ──────────────────────────────────────────────────────────────
 
-  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/turno-em-curso.ts. */
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
     const t = turnoEmCurso();
     return { tipoTurno: t.tipo, dataHoje: t.data.gte, dataFim: t.data.lte };

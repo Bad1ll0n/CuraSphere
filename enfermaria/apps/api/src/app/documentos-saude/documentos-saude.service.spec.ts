@@ -9,9 +9,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { DocumentosSaudeService } from './documentos-saude.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { StorageService } from '../common/storage.service';
+import { StorageService } from '../common/infra/storage.service';
 import { FhirService } from '../fhir/fhir.service';
-import { AuditService } from '../common/audit.service';
+import { AuditService } from '../common/auditoria/audit.service';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },

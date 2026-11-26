@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { criarPemClient, PemClient } from './pem-client';
 import { EmitirReceitaDto } from './dto/emitir-receita.dto';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 @Injectable()
 export class SnsPemService {

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { turnoEmCurso } from '../common/turno-em-curso';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 @Injectable()
 export class AtribuicoesService {
   constructor(

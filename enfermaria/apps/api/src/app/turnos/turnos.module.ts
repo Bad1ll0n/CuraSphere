@@ -3,7 +3,7 @@ import { TurnosService } from './turnos.service';
 import { TurnosController } from './turnos.controller';
 import { TarefasModule } from '../tarefas/tarefas.module';
 import { PrismaModule } from '../prisma/prisma.module';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { NotificacoesModule } from '../notificacoes/notificacoes.module';
 import { GatewayModule } from '../gateway/gateway.module';
 

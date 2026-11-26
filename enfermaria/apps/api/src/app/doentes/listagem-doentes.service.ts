@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { visaoAdministrativa } from './visao-administrativa';
-import { filtroHorarioTurnoAtivo } from '../common/turno-em-curso';
+import { filtroHorarioTurnoAtivo } from '../common/clinico/turno-em-curso';
 
 /** Papéis que só veem, na lista, os doentes que lhes estão atribuídos no turno. */
 export const PAPEIS_LISTA_RESTRITA = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
@@ -78,5 +78,5 @@ export class ListagemDoentesService {
   }
 }
 
-/** UX-12: substituído por `turnoEmCurso` (common/turno-em-curso.ts), a regra única dos turnos. */
-export { turnoEmCurso as turnoActual } from '../common/turno-em-curso';
+/** UX-12: substituído por `turnoEmCurso` (common/clinico/turno-em-curso.ts), a regra única dos turnos. */
+export { turnoEmCurso as turnoActual } from '../common/clinico/turno-em-curso';

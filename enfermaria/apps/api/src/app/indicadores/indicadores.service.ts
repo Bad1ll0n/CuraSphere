@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { celulaCsv } from '../common/csv';
+import { celulaCsv } from '../common/infra/csv';
 import {
   DEFINICOES, DISPOSITIVOS_VIGIADOS, H48, diasInternamento, mediana, percentagem, por1000, reinternamentos, sobreposicao, turnosCompletos,
   type Definicao, type EpisodioBase,

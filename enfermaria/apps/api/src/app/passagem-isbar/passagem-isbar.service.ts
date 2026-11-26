@@ -2,8 +2,8 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { VigilanciaService } from '../vigilancia/vigilancia.service';
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { temPapel } from '../common/roles.util';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { temPapel } from '../common/seguranca/roles.util';
 import { turnoDaHora } from '@org/shared';
 
 export type Turno = 'manha' | 'tarde' | 'noite';

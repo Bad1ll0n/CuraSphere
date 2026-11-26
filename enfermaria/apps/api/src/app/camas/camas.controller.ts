@@ -4,7 +4,7 @@ import { CamasService } from './camas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { EstadoCama } from '../common/enums';
+import { EstadoCama } from '../common/infra/enums';
 import { CriarCamaDto } from './dto/criar-cama.dto';
 import { AtualizarEstadoCamaDto } from './dto/atualizar-estado-cama.dto';
 import { AtributosCamaDto } from './dto/pedido-cama.dto';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Registry, collectDefaultMetrics, Histogram, Counter } from 'prom-client';
-import { contadorFalhas } from '../common/falhas';
+import { contadorFalhas } from '../common/infra/falhas';
 
 @Injectable()
 export class MetricsService {
@@ -25,7 +25,7 @@ export class MetricsService {
       labelNames: ['method', 'route', 'status'],
       registers: [this.registry],
     });
-    // ARQ-07: falhas de passos acessórios (ver common/falhas.ts).
+    // ARQ-07: falhas de passos acessórios (ver common/infra/falhas.ts).
     this.registry.registerMetric(contadorFalhas);
   }
 }

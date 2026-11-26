@@ -11,9 +11,9 @@ import { ROLES_KEY } from '../auth/roles.decorator';
 import { Observable } from 'rxjs';
 import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
-import { AnomalyDetectionService } from '../common/anomaly-detection.service';
-import { idCorrelacaoDoPedido } from '../common/correlacao';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
+import { AnomalyDetectionService } from '../common/ia/anomaly-detection.service';
+import { idCorrelacaoDoPedido } from '../common/infra/correlacao';
 import {
   ACESSO_DOENTE_ISENTO,
   ACESSO_DOENTE_POR,

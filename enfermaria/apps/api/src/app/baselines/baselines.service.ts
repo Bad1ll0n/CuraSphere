@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 const PARAMETROS = ['pulso', 'pressaoSistolica', 'pressaoDiastolica', 'temperatura', 'saturacaoO2', 'frequenciaRespiratoria'] as const;
 type Param = typeof PARAMETROS[number];

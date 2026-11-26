@@ -9,7 +9,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { FeridasService } from './feridas.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { StorageService } from '../common/storage.service';
+import { StorageService } from '../common/infra/storage.service';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },

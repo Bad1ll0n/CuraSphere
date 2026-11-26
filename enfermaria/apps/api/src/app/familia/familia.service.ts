@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { gerarTokenFamilia, hashTokenFamilia } from './token-familia';
 import { IsEmail, IsString, MaxLength } from 'class-validator';
-import { exigirTratamentoPermitido, tratamentoPermitido } from '../common/consentimento-tratamento';
+import { exigirTratamentoPermitido, tratamentoPermitido } from '../common/clinico/consentimento-tratamento';
 
 export class CriarAcessoFamiliarDto {
   @IsString()

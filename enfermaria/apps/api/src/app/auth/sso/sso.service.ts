@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuthService } from '../auth.service';
-import { hashPassword } from '../../common/password';
+import { hashPassword } from '../../common/seguranca/password';
 import * as crypto from 'crypto';
 
 export interface SsoProfile {

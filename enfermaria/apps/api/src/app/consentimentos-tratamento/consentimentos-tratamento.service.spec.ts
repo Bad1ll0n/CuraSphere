@@ -1,6 +1,6 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { ConsentimentosTratamentoService } from './consentimentos-tratamento.service';
-import { doentesComOposicaoIA, exigirTratamentoPermitido, tratamentoPermitido } from '../common/consentimento-tratamento';
+import { doentesComOposicaoIA, exigirTratamentoPermitido, tratamentoPermitido } from '../common/clinico/consentimento-tratamento';
 
 /** Prisma em memória, só com o que o serviço usa. */
 function prismaFalso() {

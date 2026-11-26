@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TarefasService } from '../tarefas/tarefas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
-import { TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/infra/enums';
 import * as geolib from 'geolib';
 
 @Injectable()

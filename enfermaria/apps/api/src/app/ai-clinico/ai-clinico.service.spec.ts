@@ -47,7 +47,7 @@ const respostaEnfermeiro = JSON.stringify({
 });
 
 // PROD-19: estes testes cobrem as funções de decisão clínica quando ACTIVADAS; o fecho por
-// omissão está em common/ia-rgpd.spec.ts.
+// omissão está em common/ia/ia-rgpd.spec.ts.
 const iaDecisaoAntes = process.env['IA_DECISAO_CLINICA'];
 beforeAll(() => { process.env['IA_DECISAO_CLINICA'] = 'todas'; });
 afterAll(() => { process.env['IA_DECISAO_CLINICA'] = iaDecisaoAntes; });

@@ -12,7 +12,6 @@ import { AlergiasModule } from './alergias/alergias.module';
 import { ContactosModule } from './contactos/contactos.module';
 import { AlertasModule } from './alertas/alertas.module';
 import { NotasClinicasModule } from './notas-clinicas/notas-clinicas.module';
-import { EscalasClinicasModule } from './escalas-clinicas/escalas-clinicas.module';
 import { DispositivosInvasivosModule } from './dispositivos-invasivos/dispositivos-invasivos.module';
 import { AtosClinicosModule } from './atos-clinicos/atos-clinicos.module';
 import { BreakGlassModule } from './break-glass/break-glass.module';
@@ -21,7 +20,10 @@ import { EventosAdversosModule } from './eventos-adversos/eventos-adversos.modul
 import { IndicadoresModule } from './indicadores/indicadores.module';
 import { MedicacaoModule } from './medicacao/medicacao.module';
 import { FarmaciaModule } from './farmacia/farmacia.module';
-import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
+import { PendenciasModule } from './pendencias/pendencias.module';
+// ARQ-19: as escalas clínicas (Braden, Morse, NRS-2002…) estavam no GestaoModule, confundidas com a
+// escala de serviço (modelo `Escala`, em horarios/).
+import { EscalasModule } from './escalas/escalas.module';
 import { ExamesModule } from './exames/exames.module';
 import { ProtocolosModule } from './protocolos/protocolos.module';
 import { DietasModule } from './dietas/dietas.module';
@@ -63,10 +65,10 @@ const clinicalModules = [
   // Doente & Cama
   DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule, PediatriaModule,
   AlergiasModule, ContactosModule, AlertasModule, NotasClinicasModule,
-  EscalasClinicasModule, DispositivosInvasivosModule, AtosClinicosModule,
+  DispositivosInvasivosModule, AtosClinicosModule,
   BreakGlassModule, ConsentimentosModule, ConsentimentosTratamentoModule, VigilanciaModule, ProcessoEnfermagemModule, EventosAdversosModule, IndicadoresModule,
   // Terapêutica & Diagnóstico
-  MedicacaoModule, FarmaciaModule, ReconciliacaoModule, ExamesModule,
+  MedicacaoModule, FarmaciaModule, PendenciasModule, EscalasModule, ExamesModule,
   ProtocolosModule, DietasModule,
   // Serviços Especializados
   ConsultasModule, InterconsultasModule, UrgenciaModule, BlocoModule,

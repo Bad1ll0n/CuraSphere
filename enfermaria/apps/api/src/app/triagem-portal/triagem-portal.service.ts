@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
-import { AI_MODELS } from '../common/ai-models';
+import { AI_MODELS } from '../common/ia/ai-models';
 import { OrientarDto } from './dto/orientar.dto';
-import { iaPermitida } from '../common/funcoes-ia';
+import { iaPermitida } from '../common/ia/funcoes-ia';
 
 const DISCLAIMER =
   'Esta orientação é informativa e NÃO substitui uma avaliação médica. Em caso de dúvida ou agravamento, contacte o SNS 24 (808 24 24 24) ou dirija-se a um serviço de urgência. Perante sinais de emergência (dor no peito, dificuldade em respirar, perda de consciência), ligue 112.';

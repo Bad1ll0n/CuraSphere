@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { EventsGateway } from '../gateway/events.gateway';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 interface SinalVitalParams {
   frequenciaRespiratoria?: number | null;

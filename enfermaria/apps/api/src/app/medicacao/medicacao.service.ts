@@ -3,7 +3,7 @@ import { Injectable, Logger, NotFoundException, ConflictException, BadRequestExc
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
-import { AI_MODELS } from '../common/ai-models';
+import { AI_MODELS } from '../common/ia/ai-models';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
@@ -19,17 +19,17 @@ import { detetarConflitoAlergia, nomeReconhecido } from './alergias.helper';
 import { parsearFrequenciaHoras, tomasPlaneadas, classificarTomas, horaLocal, JANELA_ANTES_MS, JANELA_DEPOIS_MS } from './posologia';
 import { eAltoRisco } from './alto-risco';
 import { eSOS, frequenciaValida, parsearDose, tomasPorDia, verificarDoseMaxima } from './limites-dose';
-import { inicioDoDiaClinico } from '../common/dia-clinico.helper';
-import { verificarTotpAssinatura } from '../common/totp-assinatura';
+import { inicioDoDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { verificarTotpAssinatura } from '../common/seguranca/totp-assinatura';
 
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { ultimasAdministracoes } from '../common/ultimos-registos';
-import { iaPermitida } from '../common/funcoes-ia';
-import { tfgCkdEpi2021 } from '../common/antropometria';
-import { reavaliacaoDorAte } from '../common/vigilancia';
-import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/hora-do-ato';
-import { registarFalha } from '../common/falhas';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { ultimasAdministracoes } from '../common/clinico/ultimos-registos';
+import { iaPermitida } from '../common/ia/funcoes-ia';
+import { tfgCkdEpi2021 } from '../common/clinico/antropometria';
+import { reavaliacaoDorAte } from '../common/clinico/vigilancia';
+import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/clinico/hora-do-ato';
+import { registarFalha } from '../common/infra/falhas';
 import { assinarQR } from './qr-assinatura';
 import { verificarValidacaoFarmaceutica } from './politica-validacao';
 import { descontinuarMedicacao } from './descontinuacao';

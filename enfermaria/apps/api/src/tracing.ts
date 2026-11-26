@@ -16,7 +16,7 @@
  * omissão), por isso não compete com este.
  */
 import { versaoDaAplicacao } from './versao';
-import { sanitizarUrlParaLog } from './app/common/sanitizar-url-log';
+import { sanitizarUrlParaLog } from './app/common/seguranca/sanitizar-url-log';
 
 if (process.env['OTEL_EXPORTER_OTLP_ENDPOINT']) {
   try {

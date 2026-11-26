@@ -8,7 +8,7 @@ import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
 import { Hl7Service } from './hl7.service';
 import { confirmarEntrega, filaSaida } from './hl7-saida.service';
-import { OrigensPermitidas } from '../common/origens-permitidas';
+import { OrigensPermitidas } from '../common/seguranca/origens-permitidas';
 
 export class EntregaHl7Dto {
   /** Se a entrega ao HIS falhou, o motivo (a mensagem continua na fila). */

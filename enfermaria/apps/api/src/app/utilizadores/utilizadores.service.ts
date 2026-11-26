@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Servico } from '../common/enums';
-import { hashPassword } from '../common/password';
+import { Servico } from '../common/infra/enums';
+import { hashPassword } from '../common/seguranca/password';
 import { invalidarCacheSessao } from '../auth/sessao-cache';
 import { exigirPasswordForte } from '../auth/politica-password';
 

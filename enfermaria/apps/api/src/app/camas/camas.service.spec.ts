@@ -4,7 +4,7 @@ import { CamasService } from './camas.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
-import { EstadoCama } from '../common/enums';
+import { EstadoCama } from '../common/infra/enums';
 
 const mockPrisma = {
   cama: {

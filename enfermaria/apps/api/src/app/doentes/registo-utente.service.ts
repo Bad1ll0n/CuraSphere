@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, Injectable } from '@nestjs/comm
 import { nifValido, nomeProvisorio, numeroSnsValido, telefoneValido, PREFIXO_PROVISORIO } from '@org/shared';
 import { PrismaService } from '../prisma/prisma.service';
 import { filtroNif, filtroPesquisaNome } from '../prisma/encryption.middleware';
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { gerarNumeroProcesso } from './numero-processo';
 import type { RegistroRapidoDto } from './dto/registro-rapido.dto';
 

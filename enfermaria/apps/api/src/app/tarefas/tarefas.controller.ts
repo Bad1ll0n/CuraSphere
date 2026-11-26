@@ -5,7 +5,7 @@ import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { EstadoTarefa } from '../common/enums';
+import { EstadoTarefa } from '../common/infra/enums';
 import { CriarTarefaDto } from './dto/criar-tarefa.dto';
 import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
 import { EditarTarefaDto } from './dto/editar-tarefa.dto';

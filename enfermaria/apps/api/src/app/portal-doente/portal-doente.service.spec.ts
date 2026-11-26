@@ -1,5 +1,5 @@
 // pdfmake usa ESM — evitar import real do módulo
-jest.mock('../common/pdf.service', () => ({
+jest.mock('../common/infra/pdf.service', () => ({
   PdfService: jest.fn().mockImplementation(() => ({
     gerarSumarioAlta: jest.fn().mockResolvedValue(Buffer.from('pdf')),
   })),
@@ -11,16 +11,16 @@ import { JwtService } from '@nestjs/jwt';
 import { PortalDoenteService } from './portal-doente.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { StorageService } from '../common/storage.service';
-import { PdfService } from '../common/pdf.service';
+import { StorageService } from '../common/infra/storage.service';
+import { PdfService } from '../common/infra/pdf.service';
 
 // Evitar hashing real nos testes
-jest.mock('../common/password', () => ({
+jest.mock('../common/seguranca/password', () => ({
   hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
   verifyPassword: jest.fn(),
 }));
 
-import { hashPassword, verifyPassword } from '../common/password';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 
 const mockPrisma = {
   // SEC-19: consentimento do portal registado

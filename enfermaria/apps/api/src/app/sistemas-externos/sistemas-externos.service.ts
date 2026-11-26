@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { assertUrlDestinoPublico } from '../common/ssrf-guard';
+import { assertUrlDestinoPublico } from '../common/seguranca/ssrf-guard';
 
 @Injectable()
 export class SistemasExternosService {

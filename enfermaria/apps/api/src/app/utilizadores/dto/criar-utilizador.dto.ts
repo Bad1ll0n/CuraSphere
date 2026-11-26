@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, MinLength, MaxLength, IsEnum, IsOptional, IsInt, Min, IsIn } from 'class-validator';
-import { ROLES, Servico } from '../../common/enums';
+import { ROLES, Servico } from '../../common/infra/enums';
 
 export class CriarUtilizadorDto {
   @IsString()

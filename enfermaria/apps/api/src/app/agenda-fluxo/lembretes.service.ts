@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { MailerService } from '../mailer/mailer.service';
-import { escaparHtml } from '../common/escapar-html';
-import { registarFalha } from '../common/falhas';
+import { escaparHtml } from '../common/seguranca/escapar-html';
+import { registarFalha } from '../common/infra/falhas';
 
 @Injectable()
 export class LembretesService {

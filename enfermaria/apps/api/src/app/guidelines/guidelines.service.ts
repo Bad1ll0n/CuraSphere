@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { PrismaService } from '../prisma/prisma.service';
-import { AI_MODELS } from '../common/ai-models';
+import { AI_MODELS } from '../common/ia/ai-models';
 
 interface CriarGuidelineDto {
   titulo: string;

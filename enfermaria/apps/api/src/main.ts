@@ -10,7 +10,7 @@ import { join } from 'path';
 import { RedisIoAdapter } from './app/gateway/redis-io.adapter';
 import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
-import { problemaConfigJitsi } from './app/common/jitsi';
+import { problemaConfigJitsi } from './app/common/infra/jitsi';
 import { configurarApp } from './app/configurar-app';
 import { versaoDaAplicacao } from './versao';
 

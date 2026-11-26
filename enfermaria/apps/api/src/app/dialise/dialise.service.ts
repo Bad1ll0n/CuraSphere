@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
-import { ganhoInterdialitico, ufObjetivoMl, ganhoExcessivo } from '../common/dialise.helper';
+import { ganhoInterdialitico, ufObjetivoMl, ganhoExcessivo } from '../common/clinico/dialise.helper';
 import { RegistarSessaoDto } from './dto/registar-sessao.dto';
 
 @Injectable()

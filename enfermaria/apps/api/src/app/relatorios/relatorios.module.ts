@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RelatoriosService } from './relatorios.service';
 import { RelatoriosController } from './relatorios.controller';
-import { ExcelService } from '../common/excel.service';
+import { ExcelService } from '../common/infra/excel.service';
 
 @Module({
   controllers: [RelatoriosController],

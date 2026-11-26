@@ -2,8 +2,8 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
-import { AI_MODELS } from '../common/ai-models';
-import { iaPermitida } from '../common/funcoes-ia';
+import { AI_MODELS } from '../common/ia/ai-models';
+import { iaPermitida } from '../common/ia/funcoes-ia';
 
 const ANTIBIOTICOS_BROAD: string[] = [
   'meropenem', 'imipenem', 'ertapenem', 'doripenem',

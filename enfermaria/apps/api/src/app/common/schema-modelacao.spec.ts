@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { DOMINIOS, LETRA_SENHA, PRIORIDADES_SENHA, TIPOS_SENHA } from '@org/shared';
-import { euros, multiplicarEuros, somarEuros } from './dinheiro';
+import { euros, multiplicarEuros, somarEuros } from './infra/dinheiro';
 import { Prisma } from '../../generated/prisma';
 
 /**

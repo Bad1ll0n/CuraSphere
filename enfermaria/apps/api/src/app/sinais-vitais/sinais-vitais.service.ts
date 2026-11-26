@@ -11,10 +11,10 @@ import {
   NEWS2_LIMIAR_CRITICO,
   NEWS2_LIMIAR_ESCALADA,
   type News2Parametro,
-} from '../common/news2.helper';
-import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/pews.helper';
-import { ESCALAS_DOR, proximaAvaliacaoSinaisVitais } from '../common/vigilancia';
-import { eRegistoDiferido, resolverHoraDoAto } from '../common/hora-do-ato';
+} from '../common/clinico/news2.helper';
+import { calcularPEWS, idadeEmMeses, PEWS_IDADE_MAX_MESES } from '../common/clinico/pews.helper';
+import { ESCALAS_DOR, proximaAvaliacaoSinaisVitais } from '../common/clinico/vigilancia';
+import { eRegistoDiferido, resolverHoraDoAto } from '../common/clinico/hora-do-ato';
 import { avaliarCoerenciaVitais } from '@org/shared';
 
 const ROLES_PODEM_REGISTAR = [

@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { TurnosService } from './turnos.service';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/infra/enums';
 import { CheckInDto } from './dto/check-in.dto';
 import { NotaTurnoDto } from './dto/nota-turno.dto';
 import { CriarTurnoDto } from './dto/criar-turno.dto';

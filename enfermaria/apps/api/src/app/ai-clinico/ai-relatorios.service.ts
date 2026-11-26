@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { AI_MODELS } from '../common/ai-models';
-import { linhaCsv } from '../common/csv';
-import { registarFalha } from '../common/falhas';
+import { AI_MODELS } from '../common/ia/ai-models';
+import { linhaCsv } from '../common/infra/csv';
+import { registarFalha } from '../common/infra/falhas';
 import { IaNucleoService, textoDaResposta, extrairArrayJson } from './ia-nucleo.service';
 
 /** Filtro `criadoEm` entre duas datas (ISO), qualquer uma opcional. */

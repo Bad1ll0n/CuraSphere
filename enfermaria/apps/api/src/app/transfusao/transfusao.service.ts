@@ -5,7 +5,7 @@ import { CriarPedidoTransfusaoDto } from './dto/criar-pedido-transfusao.dto';
 import { AdicionarBolsaDto } from './dto/adicionar-bolsa.dto';
 import { RegistarTransfusaoDto } from './dto/registar-transfusao.dto';
 import { RegistarReacaoDto } from './dto/registar-reacao.dto';
-import { registarFalha } from '../common/falhas';
+import { registarFalha } from '../common/infra/falhas';
 
 // ── Compatibilidade ABO/Rh ────────────────────────────────────────────────────
 // Regras de compatibilidade DADOR → RECETOR. Núcleo de segurança da transfusão.

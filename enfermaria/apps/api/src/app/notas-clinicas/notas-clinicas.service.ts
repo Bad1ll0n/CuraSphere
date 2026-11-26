@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { verificarTotpAssinatura } from '../common/totp-assinatura';
+import { verificarTotpAssinatura } from '../common/seguranca/totp-assinatura';
 
 // `direcao` foi deliberadamente removido destas listas: é um papel de gestão, não clínico,
 // e não deve poder editar nem apagar a nota clínica de um médico. Continua a ter leitura
