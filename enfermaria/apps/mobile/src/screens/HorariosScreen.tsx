@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
+  View, Text, ScrollView, FlatList, TouchableOpacity, StyleSheet,
   Modal, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -339,12 +339,16 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             </View>
 
             <Text style={s.formLabel}>Profissionais</Text>
-            <ScrollView style={{ maxHeight: 220 }}>
-              {profissionais.map((p) => {
+            <FlatList // PERF-17: a equipa toda, virtualizada
+              style={{ maxHeight: 220 }}
+              data={profissionais}
+              keyExtractor={(p) => p.id}
+              initialNumToRender={12}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item: p }) => {
                 const ausente = modalDia ? isAusenteNoDia(p.id, modalDia) : false;
                 return (
                   <TouchableOpacity accessibilityRole="button"
-                    key={p.id}
                     style={[s.profRow, novoProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, novoProfs, setNovoProfs)}
                     activeOpacity={ausente ? 1 : 0.7}
@@ -356,8 +360,8 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                     {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : novoProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
+              }}
+            />
 
             {erroModal ? <Text style={s.erroTexto}>{erroModal}</Text> : null}
 
@@ -396,13 +400,17 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             </View>
 
             <Text style={s.formLabel}>Profissionais</Text>
-            <ScrollView style={{ maxHeight: 200 }}>
-              {profissionais.map((p) => {
+            <FlatList // PERF-17: a equipa toda, virtualizada
+              style={{ maxHeight: 200 }}
+              data={profissionais}
+              keyExtractor={(p) => p.id}
+              initialNumToRender={12}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item: p }) => {
                 const diaStr = turnoEditando ? new Date(turnoEditando.data).toISOString().split('T')[0] : null;
                 const ausente = diaStr ? isAusenteNoDia(p.id, diaStr) : false;
                 return (
                   <TouchableOpacity accessibilityRole="button"
-                    key={p.id}
                     style={[s.profRow, editProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, editProfs, setEditProfs)}
                     activeOpacity={ausente ? 1 : 0.7}
@@ -414,8 +422,8 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                     {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : editProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
+              }}
+            />
 
             {erroEdit ? <Text style={s.erroTexto}>{erroEdit}</Text> : null}
 

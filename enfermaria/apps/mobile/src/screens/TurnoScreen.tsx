@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
+  View, Text, FlatList, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -157,126 +157,132 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   );
 
   return (
-    <ScrollView
+    <FlatList // PERF-17: virtualizada (antes ScrollView + map)
       style={s.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
-    >
-      <View style={s.header}>
-        {onVoltar && (
-          <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
-            <Text style={s.voltarTexto}>‹  Voltar</Text>
-          </TouchableOpacity>
-        )}
-        <Text style={s.headerTitulo}>O Meu Turno</Text>
-        <Text style={s.headerSubtitulo}>
-          {erroCarga ? 'Lista por carregar' : doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
-        </Text>
-      </View>
+      data={erroCarga ? [] : doentes}
+      keyExtractor={(d) => d.id}
+      initialNumToRender={8}
+      windowSize={7}
+      ListHeaderComponent={(
+        <>
+          <View style={s.header}>
+            {onVoltar && (
+              <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
+                <Text style={s.voltarTexto}>‹  Voltar</Text>
+              </TouchableOpacity>
+            )}
+            <Text style={s.headerTitulo}>O Meu Turno</Text>
+            <Text style={s.headerSubtitulo}>
+              {erroCarga ? 'Lista por carregar' : doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
+            </Text>
+          </View>
 
-      {/* Acções de turno */}
-      <View style={s.accoesRow}>
-        <TouchableOpacity accessibilityRole="button"
-          style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
-          onPress={fazerCheckIn}
-          disabled={checkInFeito || checkInLoading}
-        >
-          {checkInLoading
-            ? <ActivityIndicator size="small" color="#fff" />
-            : <Text style={s.accaoBotaoTexto}>{checkInFeito ? '✓ Check-in feito' : '📍 Fazer Check-in'}</Text>
-          }
-        </TouchableOpacity>
+          {/* Acções de turno */}
+          <View style={s.accoesRow}>
+            <TouchableOpacity accessibilityRole="button"
+              style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
+              onPress={fazerCheckIn}
+              disabled={checkInFeito || checkInLoading}
+            >
+              {checkInLoading
+                ? <ActivityIndicator size="small" color="#fff" />
+                : <Text style={s.accaoBotaoTexto}>{checkInFeito ? '✓ Check-in feito' : '📍 Fazer Check-in'}</Text>
+              }
+            </TouchableOpacity>
 
-        <TouchableOpacity accessibilityRole="button"
-          style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
-          onPress={iniciarPassagem}
-          disabled={passagemLoading}
-        >
-          {passagemLoading
-            ? <ActivityIndicator size="small" color="#1e293b" />
-            : <Text style={[s.accaoBotaoTexto, { color: '#1e293b' }]}>🔄 Passar Turno</Text>
-          }
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity accessibilityRole="button"
+              style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
+              onPress={iniciarPassagem}
+              disabled={passagemLoading}
+            >
+              {passagemLoading
+                ? <ActivityIndicator size="small" color="#1e293b" />
+                : <Text style={[s.accaoBotaoTexto, { color: '#1e293b' }]}>🔄 Passar Turno</Text>
+              }
+            </TouchableOpacity>
+          </View>
 
-      {erroCarga ? (
-        <ErroCarregamento
-          texto="Isto não quer dizer que não tenha doentes atribuídos. Verifique a ligação e tente de novo."
-          onTentarNovamente={() => { setLoading(true); carregar(); }}
-        />
-      ) : doentes.length === 0 && (
-        <View style={s.centro}>
-          <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
-          <Text style={s.semTurnoSub}>Não tem doentes atribuídos no turno atual</Text>
-        </View>
-      )}
-
-      {doentes.map((d) => {
-        const tarefas = tarefasPorDoente[d.id] ?? [];
-        const aberto = doenteAberto === d.id;
-        return (
-          <TouchableOpacity accessibilityRole="button"
-            key={d.id}
-            style={s.cartao}
-            onPress={() => setDoenteAberto(aberto ? null : d.id)}
-            activeOpacity={0.8}
-          >
-            <View style={s.cartaoCabecalho}>
-              <View style={s.cartaoCabecalhoEsq}>
-                <Text style={s.doenteNome}>{d.nome}</Text>
-                <Text style={s.doenteInfo}>Cama {d.cama.quarto}/{d.cama.numero}</Text>
-                <Text style={s.doenteInfo} numberOfLines={1}>{d.diagnosticoPrincipal}</Text>
-              </View>
-              <View style={[s.estadoBadge, { backgroundColor: estadoDoenteCor[d.estado] + '20' }]}>
-                <Text style={[s.estadoTexto, { color: estadoDoenteCor[d.estado] }]}>
-                  {estadoDoenteLabel[d.estado]}
-                </Text>
-              </View>
+          {erroCarga ? (
+            <ErroCarregamento
+              texto="Isto não quer dizer que não tenha doentes atribuídos. Verifique a ligação e tente de novo."
+              onTentarNovamente={() => { setLoading(true); carregar(); }}
+            />
+          ) : doentes.length === 0 && (
+            <View style={s.centro}>
+              <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
+              <Text style={s.semTurnoSub}>Não tem doentes atribuídos no turno atual</Text>
             </View>
-
-            <View style={s.resumo}>
-              {tarefas.length > 0 ? (
-                <View style={s.badge}>
-                  <Text style={s.badgeTexto}>{tarefas.length} tarefa{tarefas.length !== 1 ? 's' : ''}</Text>
+          )}
+        </>
+      )}
+      renderItem={({ item: d }) => {
+          const tarefas = tarefasPorDoente[d.id] ?? [];
+          const aberto = doenteAberto === d.id;
+          return (
+            <TouchableOpacity accessibilityRole="button"
+              key={d.id}
+              style={s.cartao}
+              onPress={() => setDoenteAberto(aberto ? null : d.id)}
+              activeOpacity={0.8}
+            >
+              <View style={s.cartaoCabecalho}>
+                <View style={s.cartaoCabecalhoEsq}>
+                  <Text style={s.doenteNome}>{d.nome}</Text>
+                  <Text style={s.doenteInfo}>Cama {d.cama.quarto}/{d.cama.numero}</Text>
+                  <Text style={s.doenteInfo} numberOfLines={1}>{d.diagnosticoPrincipal}</Text>
                 </View>
-              ) : (
-                <View style={[s.badge, { backgroundColor: '#f0fdf4' }]}>
-                  <Text style={[s.badgeTexto, { color: '#16a34a' }]}>Sem tarefas</Text>
+                <View style={[s.estadoBadge, { backgroundColor: estadoDoenteCor[d.estado] + '20' }]}>
+                  <Text style={[s.estadoTexto, { color: estadoDoenteCor[d.estado] }]}>
+                    {estadoDoenteLabel[d.estado]}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.resumo}>
+                {tarefas.length > 0 ? (
+                  <View style={s.badge}>
+                    <Text style={s.badgeTexto}>{tarefas.length} tarefa{tarefas.length !== 1 ? 's' : ''}</Text>
+                  </View>
+                ) : (
+                  <View style={[s.badge, { backgroundColor: '#f0fdf4' }]}>
+                    <Text style={[s.badgeTexto, { color: '#16a34a' }]}>Sem tarefas</Text>
+                  </View>
+                )}
+              </View>
+
+              {aberto && tarefas.length > 0 && (
+                <View style={s.detalhes}>
+                  <Text style={s.secaoTitulo}>Tarefas Pendentes</Text>
+                  {tarefas.map((t) => {
+                    const podeConcluir =
+                      t.responsavel?.id === utilizador.id ||
+                      (t.grupoResponsavel === meuGrupoChave && !t.responsavel);
+                    return (
+                      <View key={t.id} style={s.tarefa}>
+                        <View style={[s.prioridadeDot, { backgroundColor: prioridadeCor[t.prioridade] ?? '#94a3b8' }]} />
+                        <View style={s.tarefaConteudo}>
+                          <Text style={s.tarefaTexto} numberOfLines={2}>{t.descricao}</Text>
+                          {t.responsavel ? (
+                            <Text style={s.tarefaMeta}>A cargo: {t.responsavel.nome}</Text>
+                          ) : t.grupoResponsavel ? (
+                            <Text style={s.tarefaMeta}>Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</Text>
+                          ) : null}
+                        </View>
+                        {podeConcluir && (
+                          <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
+                            <Text style={s.concluirTexto}>✓</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    );
+                  })}
                 </View>
               )}
-            </View>
-
-            {aberto && tarefas.length > 0 && (
-              <View style={s.detalhes}>
-                <Text style={s.secaoTitulo}>Tarefas Pendentes</Text>
-                {tarefas.map((t) => {
-                  const podeConcluir =
-                    t.responsavel?.id === utilizador.id ||
-                    (t.grupoResponsavel === meuGrupoChave && !t.responsavel);
-                  return (
-                    <View key={t.id} style={s.tarefa}>
-                      <View style={[s.prioridadeDot, { backgroundColor: prioridadeCor[t.prioridade] ?? '#94a3b8' }]} />
-                      <View style={s.tarefaConteudo}>
-                        <Text style={s.tarefaTexto} numberOfLines={2}>{t.descricao}</Text>
-                        {t.responsavel ? (
-                          <Text style={s.tarefaMeta}>A cargo: {t.responsavel.nome}</Text>
-                        ) : t.grupoResponsavel ? (
-                          <Text style={s.tarefaMeta}>Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</Text>
-                        ) : null}
-                      </View>
-                      {podeConcluir && (
-                        <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
-                          <Text style={s.concluirTexto}>✓</Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  );
-                })}
-              </View>
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
+            </TouchableOpacity>
+          );
+      }}
+    />
   );
 }
 

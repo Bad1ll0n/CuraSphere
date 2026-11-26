@@ -84,3 +84,24 @@ describe('estrutura mobile - erro de carga vs lista vazia', () => {
     expect(jaCorrigidos).toEqual([]);
   });
 });
+
+// PERF-17: as listas que crescem com o hospital (doentes, episódios, utilizadores, notificações,
+// MAR, a equipa nos seletores de turno) são virtualizadas. Uma ScrollView com .map() monta todas
+// as linhas de uma vez e engasga em telemóveis modestos.
+describe('PERF-17 — listas longas virtualizadas', () => {
+  it.each([
+    'DoentesScreen.tsx', 'MARScreen.tsx', 'NotificacoesScreen.tsx', 'UrgenciaScreen.tsx',
+    'TurnoScreen.tsx', 'UtilizadoresScreen.tsx', 'HorariosScreen.tsx',
+  ])('%s usa FlatList/SectionList', (f) => {
+    const src = readFileSync(join(__dirname, '..', 'screens', f), 'utf8');
+    expect(src).toMatch(/<(FlatList|SectionList)\b/);
+  });
+
+  it('a lista principal destes ecrãs não é uma ScrollView com refresh', () => {
+    const comScrollRefresh = ['UrgenciaScreen.tsx', 'TurnoScreen.tsx', 'UtilizadoresScreen.tsx'].filter((f) => {
+      const src = readFileSync(join(__dirname, '..', 'screens', f), 'utf8');
+      return /<ScrollView[^>]*refreshControl/.test(src);
+    });
+    expect(comScrollRefresh).toEqual([]);
+  });
+});

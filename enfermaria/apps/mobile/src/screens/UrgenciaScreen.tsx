@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, Modal,
+  View, Text, FlatList, TouchableOpacity, Modal,
   StyleSheet, ActivityIndicator, RefreshControl,
   TextInput, KeyboardAvoidingView, Platform, Alert,
 } from 'react-native';
@@ -38,6 +38,7 @@ const TRIAGEM = [
   { id: 'azul',     label: 'Não Urgente',   tempo: '≤ 4 h',     cor: '#2563eb', bg: '#eff6ff' },
 ];
 
+const ORDEM_TRIAGEM: Record<string, number> = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 };
 const triagemById: Record<string, typeof TRIAGEM[0]> = Object.fromEntries(TRIAGEM.map(t => [t.id, t]));
 
 const ESTADO_LABEL: Record<string, string> = {
@@ -120,6 +121,7 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
   const filtrados = filtro === 'ativos'
     ? episodios.filter(e => ESTADOS_ATIVOS.includes(e.estadoEpisodio))
     : episodios;
+  const ordenados = filtrados.slice().sort((a, b) => (ORDEM_TRIAGEM[a.triagem] ?? 5) - (ORDEM_TRIAGEM[b.triagem] ?? 5));
 
   // Contadores por cor (só activos)
   const ativos = episodios.filter(e => ESTADOS_ATIVOS.includes(e.estadoEpisodio));
@@ -197,79 +199,77 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
         ))}
       </View>
 
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}>
-        {erroCarga ? (
+      <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todos os episódios)
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
+        data={erroCarga ? [] : ordenados}
+        keyExtractor={(ep) => ep.id}
+        initialNumToRender={10}
+        windowSize={7}
+        ListEmptyComponent={erroCarga ? (
           <ErroCarregamento
             texto="Isto não quer dizer que não haja doentes na urgência. Verifique a ligação e tente de novo."
             onTentarNovamente={() => { setLoading(true); carregar(); }}
           />
-        ) : filtrados.length === 0 ? (
+        ) : (
           <View style={s.vazio}>
             <Ionicons name="medical-outline" size={40} color="#cbd5e1" />
             <Text style={s.vazioTexto}>Sem episódios{filtro === 'ativos' ? ' ativos' : ''}</Text>
           </View>
-        ) : (
-          filtrados
-            .slice()
-            .sort((a, b) => {
-              const ordemCor: Record<string, number> = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 };
-              return (ordemCor[a.triagem] ?? 5) - (ordemCor[b.triagem] ?? 5);
-            })
-            .map(ep => {
-              const t = triagemById[ep.triagem];
-              const estadoCor = ESTADO_COR[ep.estadoEpisodio] ?? '#94a3b8';
-              const estadoLabel = ESTADO_LABEL[ep.estadoEpisodio] ?? ep.estadoEpisodio;
-              const nomePaciente = ep.doente?.nome ?? ep.nomeTemporario ?? 'Doente desconhecido';
-              const temAcoes = PROXIMOS_ESTADOS[ep.estadoEpisodio]?.length > 0;
-              return (
-                <TouchableOpacity accessibilityRole="button"
-                  key={ep.id}
-                  style={[s.cartao, { borderLeftColor: t?.cor ?? '#94a3b8' }]}
-                  onPress={() => podeTriar && temAcoes ? setEpisodioSel(ep) : undefined}
-                  activeOpacity={podeTriar && temAcoes ? 0.7 : 1}
-                >
-                  <View style={s.cartaoTopo}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={s.nomePaciente}>{nomePaciente}</Text>
-                      {t && (
-                        <View style={s.triagemRow}>
-                          <View style={[s.dot, { backgroundColor: t.cor }]} />
-                          <Text style={[s.triagemLabel, { color: t.cor }]}>{t.label}</Text>
-                          <Text style={s.triagemTempo}>· {t.tempo}</Text>
-                        </View>
-                      )}
-                    </View>
-                    <View style={[s.estadoBadge, { backgroundColor: estadoCor + '22' }]}>
-                      <Text style={[s.estadoTexto, { color: estadoCor }]}>{estadoLabel}</Text>
-                    </View>
-                  </View>
-
-                  <Text style={s.queixa}>{ep.queixaPrincipal}</Text>
-
-                  <View style={s.rodape}>
-                    <View style={s.infoRow}>
-                      <Ionicons name="time-outline" size={13} color="#64748b" />
-                      <Text style={s.infoTexto}>{tempoEspera(ep.dataEntrada)}</Text>
-                    </View>
-                    {ep.medicoResponsavel && (
-                      <View style={s.infoRow}>
-                        <Ionicons name="person-outline" size={13} color="#64748b" />
-                        <Text style={s.infoTexto}>{ep.medicoResponsavel.nome}</Text>
-                      </View>
-                    )}
-                    {podeTriar && temAcoes && (
-                      <View style={s.infoRow}>
-                        <Ionicons name="chevron-forward-outline" size={13} color="#94a3b8" />
-                        <Text style={[s.infoTexto, { color: '#94a3b8' }]}>Ações</Text>
-                      </View>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })
         )}
-        <View style={{ height: 32 }} />
-      </ScrollView>
+        ListFooterComponent={<View style={{ height: 32 }} />}
+        renderItem={({ item: ep }) => {
+          const t = triagemById[ep.triagem];
+          const estadoCor = ESTADO_COR[ep.estadoEpisodio] ?? '#94a3b8';
+          const estadoLabel = ESTADO_LABEL[ep.estadoEpisodio] ?? ep.estadoEpisodio;
+          const nomePaciente = ep.doente?.nome ?? ep.nomeTemporario ?? 'Doente desconhecido';
+          const temAcoes = PROXIMOS_ESTADOS[ep.estadoEpisodio]?.length > 0;
+          return (
+            <TouchableOpacity accessibilityRole="button"
+              key={ep.id}
+              style={[s.cartao, { borderLeftColor: t?.cor ?? '#94a3b8' }]}
+              onPress={() => podeTriar && temAcoes ? setEpisodioSel(ep) : undefined}
+              activeOpacity={podeTriar && temAcoes ? 0.7 : 1}
+            >
+              <View style={s.cartaoTopo}>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.nomePaciente}>{nomePaciente}</Text>
+                  {t && (
+                    <View style={s.triagemRow}>
+                      <View style={[s.dot, { backgroundColor: t.cor }]} />
+                      <Text style={[s.triagemLabel, { color: t.cor }]}>{t.label}</Text>
+                      <Text style={s.triagemTempo}>· {t.tempo}</Text>
+                    </View>
+                  )}
+                </View>
+                <View style={[s.estadoBadge, { backgroundColor: estadoCor + '22' }]}>
+                  <Text style={[s.estadoTexto, { color: estadoCor }]}>{estadoLabel}</Text>
+                </View>
+              </View>
+
+              <Text style={s.queixa}>{ep.queixaPrincipal}</Text>
+
+              <View style={s.rodape}>
+                <View style={s.infoRow}>
+                  <Ionicons name="time-outline" size={13} color="#64748b" />
+                  <Text style={s.infoTexto}>{tempoEspera(ep.dataEntrada)}</Text>
+                </View>
+                {ep.medicoResponsavel && (
+                  <View style={s.infoRow}>
+                    <Ionicons name="person-outline" size={13} color="#64748b" />
+                    <Text style={s.infoTexto}>{ep.medicoResponsavel.nome}</Text>
+                  </View>
+                )}
+                {podeTriar && temAcoes && (
+                  <View style={s.infoRow}>
+                    <Ionicons name="chevron-forward-outline" size={13} color="#94a3b8" />
+                    <Text style={[s.infoTexto, { color: '#94a3b8' }]}>Ações</Text>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
 
       {/* Modal: Nova Entrada com Triagem Manchester */}
       <Modal visible={modalEntrada} animationType="slide" transparent>

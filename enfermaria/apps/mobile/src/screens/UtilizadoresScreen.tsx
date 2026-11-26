@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
+  View, Text, ScrollView, SectionList, TouchableOpacity, StyleSheet,
   Modal, TextInput, Alert, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -155,41 +155,47 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
       {loading ? (
         <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
       ) : (
-        <ScrollView
+        <SectionList // PERF-17: virtualizada e agrupada por papel (antes ScrollView + 2 maps)
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
-        >
-          {rolesComUtilizadores.map((role) => (
-            <View key={role} style={s.grupoBloco}>
+          sections={rolesComUtilizadores.map((role) => ({ role, data: porRole[role] }))}
+          keyExtractor={(u) => u.id}
+          initialNumToRender={15}
+          windowSize={7}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={({ section }) => (
+            <View style={[s.grupoBloco, s.grupoTopo]}>
               <View style={s.grupoCabecalho}>
-                <View style={[s.grupoDot, { backgroundColor: roleCor[role] ?? '#94a3b8' }]} />
-                <Text style={s.grupoTitulo}>{roleLabel[role]}</Text>
+                <View style={[s.grupoDot, { backgroundColor: roleCor[section.role] ?? '#94a3b8' }]} />
+                <Text style={s.grupoTitulo}>{roleLabel[section.role]}</Text>
                 <View style={s.grupoBadge}>
-                  <Text style={s.grupoBadgeTexto}>{porRole[role].length}</Text>
+                  <Text style={s.grupoBadgeTexto}>{section.data.length}</Text>
                 </View>
               </View>
-              {porRole[role].map((u) => (
-                <View key={u.id} style={s.utilizadorRow}>
-                  <View style={s.avatar}>
-                    <Text style={s.avatarTexto}>{u.nome.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase()}</Text>
-                  </View>
-                  <View style={s.utilizadorInfo}>
-                    <Text style={s.utilizadorNome}>{u.nome}</Text>
-                    <Text style={s.utilizadorNum}>Nº {u.numeroFuncionario}{u.equipa ? ` · Equipa ${u.equipa}` : ''}</Text>
-                  </View>
-                  <View style={s.utilizadorAcoes}>
-                    <TouchableOpacity accessibilityRole="button" style={s.editarBotao} onPress={() => abrirEditar(u)}>
-                      <Text style={s.editarTexto}>✏️</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity accessibilityRole="button" style={s.desativarBotao} onPress={() => desativar(u)}>
-                      <Text style={s.desativarTexto}>✕</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))}
             </View>
-          ))}
-          <View style={{ height: 32 }} />
-        </ScrollView>
+          )}
+          renderItem={({ item: u, index, section }) => (
+            <View style={[s.grupoLinha, index === section.data.length - 1 && s.grupoFundo]}>
+              <View style={s.utilizadorRow}>
+                <View style={s.avatar}>
+                  <Text style={s.avatarTexto}>{u.nome.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase()}</Text>
+                </View>
+                <View style={s.utilizadorInfo}>
+                  <Text style={s.utilizadorNome}>{u.nome}</Text>
+                  <Text style={s.utilizadorNum}>Nº {u.numeroFuncionario}{u.equipa ? ` · Equipa ${u.equipa}` : ''}</Text>
+                </View>
+                <View style={s.utilizadorAcoes}>
+                  <TouchableOpacity accessibilityRole="button" style={s.editarBotao} onPress={() => abrirEditar(u)}>
+                    <Text style={s.editarTexto}>✏️</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity accessibilityRole="button" style={s.desativarBotao} onPress={() => desativar(u)}>
+                    <Text style={s.desativarTexto}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
+          ListFooterComponent={<View style={{ height: 32 }} />}
+        />
       )}
 
       {/* Modal: Criar Utilizador */}
@@ -362,6 +368,10 @@ const s = StyleSheet.create({
   addBotao: { backgroundColor: '#2563eb', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10 },
   addTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
   grupoBloco: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
+  // PERF-17: o cartão do grupo é desenhado em partes (cabeçalho, linhas, fundo) pela SectionList.
+  grupoTopo: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 },
+  grupoLinha: { backgroundColor: '#fff', marginHorizontal: 16 },
+  grupoFundo: { borderBottomLeftRadius: 16, borderBottomRightRadius: 16, overflow: 'hidden', marginBottom: 0 },
   grupoCabecalho: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 14, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   grupoDot: { width: 10, height: 10, borderRadius: 5 },
   grupoTitulo: { flex: 1, fontSize: 14, fontWeight: '700', color: '#1e293b' },
