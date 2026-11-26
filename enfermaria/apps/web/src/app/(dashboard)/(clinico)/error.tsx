@@ -48,7 +48,6 @@ export default function ClinicoError({ error, reset }: { error: Error & { digest
         </Link>
         <Button variant="primary"
           onClick={reset}
-          
           style={{ padding: '9px 20px', minHeight: '44px' }}>
           Tentar novamente
         </Button>

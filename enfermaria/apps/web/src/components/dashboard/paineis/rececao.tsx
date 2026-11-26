@@ -145,7 +145,6 @@ export function DashboardRececao({ utilizador }: { utilizador: any }) {
             <Button variant="primary" fullWidth
               onClick={enviarLembretes}
               disabled={enviandoLembretes || consultasAmanha === 0}
-              
               style={{ padding: '10px' }}
             >
               {enviandoLembretes ? 'A enviar...' : 'Enviar Lembretes'}

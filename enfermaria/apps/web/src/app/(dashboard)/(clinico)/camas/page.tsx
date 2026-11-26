@@ -347,7 +347,6 @@ export default function CamasPagina() {
                 </Button>
                 <Button variant="primary" className="flex-1"
                   type="submit"
-                  
                   style={{ padding: '11px' }}
                 >
                   Criar Cama

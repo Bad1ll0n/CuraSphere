@@ -64,7 +64,6 @@ export function AiConsentModal({ onAceitar, onRecusar }: Props) {
           </button>
           <Button variant="primary" className="flex-1"
             onClick={aceitar}
-            
             style={{ padding: '10px' }}>
             Aceitar e Continuar
           </Button>

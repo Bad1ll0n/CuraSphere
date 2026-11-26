@@ -300,7 +300,6 @@ export default function DoenteAdminDetalhePage() {
             {!editando ? (
               <Button variant="primary" className="flex gap-2"
                 onClick={iniciarEdicao}
-                
                 style={{ padding: '9px 18px' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +311,6 @@ export default function DoenteAdminDetalhePage() {
               <div className="flex gap-2">
                 <Button variant="secondary"
                   onClick={cancelar}
-                  
                   style={{ padding: '9px 16px' }}
                 >
                   Cancelar
@@ -320,7 +318,6 @@ export default function DoenteAdminDetalhePage() {
                 <Button variant="primary"
                   onClick={guardar}
                   disabled={salvando}
-                  
                   style={{ padding: '9px 18px' }}
                 >
                   {salvando ? 'A guardar...' : 'Guardar'}
@@ -479,7 +476,6 @@ export default function DoenteAdminDetalhePage() {
           <Secao titulo="Consultas" action={
             <Button variant="primary" size="sm" className="flex gap-1.5"
               onClick={abrirModalAgendar}
-              
               style={{ padding: '6px 12px' }}
             >
               + Agendar Consulta
@@ -781,7 +777,6 @@ export default function DoenteAdminDetalhePage() {
                   <Button variant="primary" className="flex-1"
                     onClick={confirmarAgendamento}
                     disabled={agSalvando}
-                    
                     style={{ padding: '11px' }}
                   >
                     {agSalvando ? 'A agendar...' : 'Confirmar Marcação'}

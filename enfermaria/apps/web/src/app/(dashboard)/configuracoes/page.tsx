@@ -74,7 +74,6 @@ function QuiosqueSection() {
         <Button variant="primary" className="shrink-0"
           onClick={gerar}
           disabled={gerando || !servicoId.trim()}
-          
           style={{ padding: '10px 20px' }}
         >
           {gerando ? 'A gerar...' : 'Gerar link'}
@@ -220,7 +219,6 @@ export default function ConfiguracoesPage() {
         </div>
         <Button variant="primary" className="flex gap-2"
           onClick={abrirCriarRole}
-          
           style={{ padding: '10px 20px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -395,7 +393,6 @@ export default function ConfiguracoesPage() {
               <Button variant="primary" className="flex-1"
                 onClick={submeter}
                 disabled={salvando || !fLabel || ((isCriarRole || isCriarSub) && !fChave)}
-                
                 style={{ padding: '11px' }}
               >
                 {salvando ? 'A guardar...' : 'Guardar'}

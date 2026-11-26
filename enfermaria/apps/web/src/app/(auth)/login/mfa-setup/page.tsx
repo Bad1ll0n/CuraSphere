@@ -61,7 +61,6 @@ export default function MfaSetupPage() {
           <Button variant="primary" fullWidth
             type="submit"
             disabled={loading || code.length !== 6}
-            
           >
             {loading ? 'A ativar...' : 'Ativar e Continuar'}
           </Button>

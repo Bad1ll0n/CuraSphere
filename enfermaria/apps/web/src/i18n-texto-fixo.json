@@ -13,7 +13,7 @@
   "app/(dashboard)/(administrativo)/relatorios-financeiros/page.tsx": 10,
   "app/(dashboard)/(administrativo)/sala-espera/page.tsx": 34,
   "app/(dashboard)/(administrativo)/tabela-atos/page.tsx": 22,
-  "app/(dashboard)/(clinico)/atribuicoes/page.tsx": 13,
+  "app/(dashboard)/(clinico)/atribuicoes/page.tsx": 11,
   "app/(dashboard)/(clinico)/bloco/page.tsx": 31,
   "app/(dashboard)/(clinico)/camas/page.tsx": 31,
   "app/(dashboard)/(clinico)/camas/pedidos-cama-painel.tsx": 11,

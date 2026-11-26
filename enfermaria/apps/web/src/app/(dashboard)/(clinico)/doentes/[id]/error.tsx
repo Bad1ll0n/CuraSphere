@@ -31,7 +31,6 @@ export default function DoenteError({ error, reset }: { error: Error & { digest?
         </Button>
         <Button variant="primary"
           onClick={reset}
-          
           style={{ padding: '9px 20px' }}>
           Tentar novamente
         </Button>

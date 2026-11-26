@@ -252,7 +252,6 @@ export default function PerfilPage() {
                   <Button variant="primary" className="shrink-0"
                     onClick={ativarMfa}
                     disabled={loadingAtivar || codigoAtivacao.length !== 6}
-                    
                     style={{ padding: '12px 20px' }}
                   >
                     {loadingAtivar ? 'A verificar...' : 'Confirmar'}
@@ -375,7 +374,6 @@ export default function PerfilPage() {
               <Button variant="primary" size="sm" className="shrink-0"
                 onClick={adicionarPasskey}
                 disabled={loadingRegPasskey}
-                
                 style={{ padding: '10px 16px' }}
               >
                 {loadingRegPasskey ? 'A registar...' : 'Registar'}
@@ -434,7 +432,6 @@ export default function PerfilPage() {
             <Button variant="primary"
               type="submit"
               disabled={loadingPwd}
-              
               style={{ padding: '12px 24px', marginTop: '20px' }}
             >
               {loadingPwd ? 'A guardar...' : 'Alterar password'}

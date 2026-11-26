@@ -89,7 +89,6 @@ export function ConfirmModal({
           <Button variant="secondary"
             ref={cancelarRef}
             onClick={onCancelar}
-            
           >
             {labelCancelar}
           </Button>

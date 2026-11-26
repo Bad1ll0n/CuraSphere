@@ -97,7 +97,6 @@ export default function SistemasExternosPage() {
         </div>
         <Button variant="primary" className="flex gap-2"
           onClick={abrirCriar}
-          
           style={{ padding: '10px 18px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

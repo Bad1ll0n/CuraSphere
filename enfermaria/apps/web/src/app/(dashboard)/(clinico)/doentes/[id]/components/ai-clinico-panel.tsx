@@ -352,7 +352,6 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
               <div className="text-center" style={{ padding: '16px' }}>
                 <Button variant="primary"
                   onClick={analisar}
-                  
                   style={{ padding: '10px 24px' }}>
                   Analisar com IA
                 </Button>

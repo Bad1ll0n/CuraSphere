@@ -379,7 +379,6 @@ export default function PedidosTIPage() {
               <Button variant="primary" className="flex-1"
                 onClick={criarPedido}
                 disabled={criando}
-                
                 style={{ padding: '11px' }}
               >
                 {criando ? 'A enviar...' : 'Submeter Pedido'}

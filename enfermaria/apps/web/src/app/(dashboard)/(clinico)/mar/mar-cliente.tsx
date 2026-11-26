@@ -12,6 +12,7 @@ import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { EmptyState } from '@/components/empty-state';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 import { RegistoDiferido } from '@/components/registo-diferido';
@@ -232,15 +233,9 @@ export function MarCliente() {
           />
         </div>
       ) : Object.keys(porDoente).length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
-          <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-          </div>
-          <p className="text-slate-500 font-medium" style={{ marginBottom: '4px' }}>{t('emptyTitle')}</p>
-          <p className="text-slate-500 text-sm">{t('emptyBody')}</p>
-        </div>
+        // UX-10: sem medicação a mostrar não é um beco sem saída — diz onde ver as atribuições.
+        <EmptyState cartao icon="medication" title={t('emptyTitle')} description={t('emptyBody')}
+          acoes={[{ label: t('emptyActionAssignments'), href: '/atribuicoes' }, { label: t('emptyActionPatients'), href: '/doentes' }]} />
       ) : (
         <div className="flex flex-col gap-6">
           {doenteFiltro && (
@@ -367,7 +362,6 @@ export function MarCliente() {
                 style={{ padding: '11px' }}>{tc('cancel')}</Button>
               <Button variant="danger" className="flex-1" onClick={registarNaoAdmin}
                 disabled={registandoNaoAdmin || (motivoSelecionado === 'outro' && !motivoOutro.trim())}
-                
                 style={{ padding: '11px' }}>
                 {registandoNaoAdmin ? t('recording') : tc('confirm')}
               </Button>

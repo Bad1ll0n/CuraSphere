@@ -717,7 +717,9 @@
     "notValidatedTitle": "Prescrição por validar",
     "notValidatedLabel": "Porque é urgente dar a 1.ª dose",
     "notValidatedButton": "Administrar 1.ª dose",
-    "notValidatedPlaceholder": "Ex.: dor 9/10, farmácia sem turno até às 8h"
+    "notValidatedPlaceholder": "Ex.: dor 9/10, farmácia sem turno até às 8h",
+    "emptyActionAssignments": "Ver atribuições",
+    "emptyActionPatients": "Ver doentes do serviço"
   },
   "myShift": {
     "title": "O meu turno",
@@ -1586,5 +1588,14 @@
       "regras-clinicas": "Sem ecrã na aplicação web; as regras das escalas já geram tarefas.",
       "lista-espera": "Consulta externa, fora do internamento."
     }
+  },
+  "vazios": {
+    "noShiftsTitle": "Sem turnos hoje",
+    "noShiftsBody": "Ainda não há turnos para hoje neste serviço. Crie-os nos Horários; depois atribua os doentes aqui.",
+    "openSchedules": "Abrir horários",
+    "openMyShift": "Ir para O meu turno",
+    "noPatientsBody": "Se devia ter doentes, peça a atribuição à chefia de equipa ou veja a lista do serviço.",
+    "openAssignments": "Ver atribuições",
+    "openPatients": "Ver doentes do serviço"
   }
 }

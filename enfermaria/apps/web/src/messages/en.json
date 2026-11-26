@@ -717,7 +717,9 @@
     "notValidatedTitle": "Prescription not validated",
     "notValidatedLabel": "Why the first dose is urgent",
     "notValidatedButton": "Give first dose",
-    "notValidatedPlaceholder": "E.g. pain 9/10, pharmacy closed until 8am"
+    "notValidatedPlaceholder": "E.g. pain 9/10, pharmacy closed until 8am",
+    "emptyActionAssignments": "See assignments",
+    "emptyActionPatients": "See ward patients"
   },
   "myShift": {
     "title": "My shift",
@@ -1586,5 +1588,14 @@
       "regras-clinicas": "No screen in the web app; the scale rules already create tasks.",
       "lista-espera": "Outpatient care, outside inpatient management."
     }
+  },
+  "vazios": {
+    "noShiftsTitle": "No shifts today",
+    "noShiftsBody": "There are no shifts for today on this ward yet. Create them in Schedules; then assign patients here.",
+    "openSchedules": "Open schedules",
+    "openMyShift": "Go to My shift",
+    "noPatientsBody": "If you should have patients, ask the team lead for an assignment or see the ward list.",
+    "openAssignments": "See assignments",
+    "openPatients": "See ward patients"
   }
 }

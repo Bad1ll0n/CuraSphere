@@ -29,7 +29,6 @@ export default function DashboardError({ error, reset }: { error: Error & { dige
         </Link>
         <Button variant="primary"
           onClick={reset}
-          
           style={{ padding: '9px 20px' }}>
           Tentar novamente
         </Button>

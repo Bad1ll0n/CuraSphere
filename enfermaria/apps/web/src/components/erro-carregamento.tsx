@@ -49,7 +49,6 @@ export function ErroCarregamento({
         <Button variant="primary"
           type="button"
           onClick={onTentarNovamente}
-          
           style={{ padding: '8px 20px' }}
         >
           Tentar de novo

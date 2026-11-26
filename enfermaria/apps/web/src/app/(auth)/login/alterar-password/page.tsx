@@ -65,7 +65,6 @@ export default function AlterarPasswordExpiradaPage() {
           <Button variant="primary" fullWidth
             type="submit"
             disabled={loading || !novaPassword || !confirmar}
-            
           >
             {loading ? 'A alterar...' : 'Alterar Password'}
           </Button>

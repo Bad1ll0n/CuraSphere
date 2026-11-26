@@ -203,7 +203,6 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                 onClick={sincronizar}
                 disabled={sincronizando}
                 title="Sincronizar com sistemas externos"
-                
                 style={{ padding: '5px 10px' }}
               >
                 <svg className={`w-3 h-3 ${sincronizando ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -490,7 +489,6 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                 style={{ padding: '11px' }}>Cancelar</Button>
               <Button variant="primary" className="flex-1" onClick={submeterUpload}
                 disabled={enviando || !fileSeleccionado || !uploadForm.titulo.trim()}
-                
                 style={{ padding: '11px' }}>
                 {enviando ? 'A carregar...' : 'Carregar Documento'}
               </Button>

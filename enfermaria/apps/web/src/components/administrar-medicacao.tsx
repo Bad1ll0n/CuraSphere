@@ -170,7 +170,6 @@ export function AdministrarMedicacaoDialog({
         <div className="flex gap-3" style={{ marginTop: '4px' }}>
           <Button variant="secondary" className="flex-1"
             onClick={onCancelar}
-            
             style={{ padding: '11px', minHeight: '44px' }}>
             {tc('cancel')}
           </Button>

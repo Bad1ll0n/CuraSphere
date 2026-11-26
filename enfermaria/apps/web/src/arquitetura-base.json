@@ -1,7 +1,7 @@
 {
   "grandes": {
     "app/(dashboard)/(administrativo)/consultas/page.tsx": 746,
-    "app/(dashboard)/(administrativo)/doentes-admin/[id]/page.tsx": 798,
+    "app/(dashboard)/(administrativo)/doentes-admin/[id]/page.tsx": 793,
     "app/(dashboard)/(administrativo)/recepcao/page.tsx": 934,
     "app/(dashboard)/(clinico)/bloco/page.tsx": 744,
     "app/(dashboard)/(clinico)/doentes/[id]/components/feridas-panel.tsx": 834,
@@ -9,7 +9,7 @@
     "app/(dashboard)/(clinico)/doentes/[id]/page.tsx": 1451,
     "app/(dashboard)/(clinico)/iacs/page.tsx": 638,
     "app/(dashboard)/(clinico)/urgencia/page.tsx": 1132,
-    "app/(dashboard)/(gestao)/horarios/page.tsx": 1404,
+    "app/(dashboard)/(gestao)/horarios/page.tsx": 1401,
     "app/(dashboard)/(suporte)/farmacia/page.tsx": 891,
     "app/(dashboard)/nav-data.tsx": 805,
     "app/quiosque/page.tsx": 1012

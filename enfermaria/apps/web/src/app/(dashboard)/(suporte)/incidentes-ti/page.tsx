@@ -577,7 +577,6 @@ export default function IncidentesTIPage() {
                 <Button variant="primary" className="flex-1"
                   onClick={criarIncidente}
                   disabled={salvando || !titulo.trim() || !descricao.trim()}
-                  
                   style={{ padding: '11px' }}
                 >
                   {salvando ? 'A criar...' : 'Criar Incidente'}

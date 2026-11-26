@@ -286,7 +286,6 @@ export default function AuditoriaPagina() {
           <div className="flex items-center gap-3">
             <Button variant="primary"
               type="submit"
-              
               style={{ padding: '9px 20px' }}
             >
               Pesquisar
@@ -294,7 +293,6 @@ export default function AuditoriaPagina() {
             <Button variant="secondary"
               type="button"
               onClick={limparFiltros}
-              
               style={{ padding: '9px 20px' }}
             >
               Limpar
@@ -303,7 +301,6 @@ export default function AuditoriaPagina() {
               <Button variant="secondary" className="flex gap-2"
                 type="button"
                 onClick={exportarCSV}
-                
                 style={{ padding: '9px 20px' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

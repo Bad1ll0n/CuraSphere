@@ -315,7 +315,6 @@ export default function AdmitirDoentesPagina() {
           <Button variant="primary" className="flex-1"
             type="submit"
             disabled={loading}
-            
             style={{ padding: '13px' }}
           >
             {loading ? 'A admitir...' : 'Admitir Doente'}

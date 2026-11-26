@@ -172,7 +172,6 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
             </p>
             <Button variant="primary"
               onClick={verificar}
-              
               style={{ padding: '10px 24px' }}>
               Verificar Protocolos
             </Button>

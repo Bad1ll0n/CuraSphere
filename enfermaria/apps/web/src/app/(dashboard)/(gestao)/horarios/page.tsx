@@ -891,7 +891,6 @@ export default function HorariosPagina() {
               <Button variant="primary" className="flex-1"
                 onClick={submeterTurno}
                 disabled={salvando}
-                
                 style={{ padding: '11px' }}
               >
                 {salvando ? 'A guardar...' : 'Adicionar Turno'}
@@ -995,7 +994,6 @@ export default function HorariosPagina() {
               <Button variant="primary" className="flex-1"
                 onClick={guardarEdicaoTurno}
                 disabled={salvandoEdit}
-                
                 style={{ padding: '11px' }}>
                 {salvandoEdit ? 'A guardar...' : 'Guardar'}
               </Button>
@@ -1151,7 +1149,6 @@ export default function HorariosPagina() {
               <Button variant="primary" className="flex-1"
                 onClick={pedirTrocaFolga}
                 disabled={submittingTroca || !trocaDestId || !trocaDiaDest}
-                
                 style={{ padding: '11px' }}>
                 {submittingTroca ? 'A enviar...' : 'Enviar Pedido'}
               </Button>
