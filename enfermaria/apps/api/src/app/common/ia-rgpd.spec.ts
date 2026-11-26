@@ -12,7 +12,8 @@ const semComentarios = (f: string) =>
 // ARQ-05: o nome do doente nunca é interpolado num texto que segue para um LLM externo.
 describe('ARQ-05 — prompts sem identificação do doente', () => {
   it.each([
-    'ai-clinico/ai-clinico.service.ts', 'triagem-portal/triagem-portal.service.ts',
+    'ai-clinico/ai-clinico.service.ts', 'ai-clinico/ai-vigilancia.service.ts', 'ai-clinico/ai-relatorios.service.ts',
+    'ai-clinico/ia-nucleo.service.ts', 'triagem-portal/triagem-portal.service.ts',
     'stewardship/stewardship.service.ts', 'feridas/feridas.service.ts', 'guidelines/guidelines.service.ts',
   ])('%s não interpola nome, NIF nem n.º SNS em template strings', (f) => {
     const codigo = semComentarios(f);
@@ -60,7 +61,8 @@ describe('PROD-19 — registo de funções de IA', () => {
   });
 
   it('todas as chamadas callAI do serviço clínico usam funções registadas', () => {
-    const usadas = [...semComentarios('ai-clinico/ai-clinico.service.ts').matchAll(/callAI\('([a-z0-9_]+)'/g)].map((m) => m[1]);
+    const codigo = ['ai-clinico.service.ts', 'ai-vigilancia.service.ts', 'ai-relatorios.service.ts'].map((f) => semComentarios(`ai-clinico/${f}`)).join('\n');
+    const usadas = [...codigo.matchAll(/callAI\('([a-z0-9_]+)'/g)].map((m) => m[1]);
     expect(usadas.length).toBeGreaterThan(5);
     expect(usadas.filter((f) => !FUNCOES_IA[f])).toEqual([]);
   });

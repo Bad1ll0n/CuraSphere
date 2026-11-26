@@ -35,7 +35,7 @@ describe('AltaService', () => {
       followUpAgendado: { createMany: jest.fn() },
     };
     prisma = { ...tx, $transaction: jest.fn((fn: any) => fn(tx)) };
-    svc = new AltaService(prisma, notificacoes as any, ai as any, webhooks as any);
+    svc = new AltaService(prisma, notificacoes as any, ai as any, ai as any, webhooks as any);
   });
 
   const reconciliacaoCompleta = [{ medicacaoId: 'm1', decisao: 'manter' }, { medicacaoId: 'm2', decisao: 'suspender', notas: 'profilaxia só no internamento' }];

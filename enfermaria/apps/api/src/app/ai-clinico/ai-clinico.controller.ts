@@ -8,6 +8,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AiClinicoService } from './ai-clinico.service';
+import { AiVigilanciaService } from './ai-vigilancia.service';
+import { AiRelatoriosService } from './ai-relatorios.service';
 import {
   EpisodioTriagemDto, SumarizarTurnoDto, SumarizarTurnoServicoDto,
   ExecutarNlqDto, FeedbackDecisaoDto,
@@ -17,7 +19,11 @@ import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('ai-clinico')
 export class AiClinicoController {
-  constructor(private readonly service: AiClinicoService) {}
+  constructor(
+    private readonly service: AiClinicoService,
+    private readonly vigilancia: AiVigilanciaService,
+    private readonly relatorios: AiRelatoriosService,
+  ) {}
 
   @Post('triagem')
   @Roles('medico', 'enfermeiro')
@@ -52,7 +58,7 @@ export class AiClinicoController {
     @Query('tipo') tipo: string,
     @Res() res: Response,
   ) {
-    const csv = await this.service.relatorioAuditoria(from, to, tipo);
+    const csv = await this.relatorios.relatorioAuditoria(from, to, tipo);
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="auditoria-ia.csv"');
     res.send(csv);
@@ -61,13 +67,13 @@ export class AiClinicoController {
   @Get('insights')
   @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
   insightsRejeicao(@Query('from') from?: string, @Query('to') to?: string) {
-    return this.service.insightsRejeicao(from, to);
+    return this.relatorios.insightsRejeicao(from, to);
   }
 
   @Get('outcomes-correlation')
   @Roles('medico', 'direcao', 'qualidade', 'ti')
   correlacaoOutcomes(@Query('from') from?: string, @Query('to') to?: string) {
-    return this.service.correlacaoOutcomes(
+    return this.relatorios.correlacaoOutcomes(
       from ? new Date(from) : undefined,
       to ? new Date(to) : undefined,
     );
@@ -82,7 +88,7 @@ export class AiClinicoController {
   @Post(':doenteId/readmissao')
   @Roles('medico', 'chefe_enfermeiros', 'administrativo')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {
-    return this.service.calcularRiscoReadmissao(doenteId);
+    return this.vigilancia.calcularRiscoReadmissao(doenteId);
   }
 
   @Get(':doenteId/protocolo')
@@ -103,7 +109,7 @@ export class AiClinicoController {
     @Param('id') id: string,
     @Body() body: FeedbackDecisaoDto,
   ) {
-    return this.service.registarFeedback(id, body.aceite, body.overrideMotivo);
+    return this.relatorios.registarFeedback(id, body.aceite, body.overrideMotivo);
   }
 
   @Sse(':doenteId/stream')

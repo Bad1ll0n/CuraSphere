@@ -1,3 +1,5 @@
+import type { Prisma } from '../../generated/prisma';
+
 /**
  * PROD-21 — uma avaliação vale pelo que desencadeia.
  *
@@ -59,7 +61,7 @@ export function acoesDaEscala(tipo: string, pontuacao: number, risco?: string): 
 type ClienteTarefas = {
   tarefa: {
     findFirst: (a: { where: Record<string, unknown>; select: { id: true } }) => Promise<{ id: string } | null>;
-    create: (a: { data: Record<string, unknown>; select: { id: true; descricao: true } }) => Promise<{ id: string; descricao: string }>;
+    create: (a: { data: Prisma.TarefaUncheckedCreateInput; select: { id: true; descricao: true } }) => Promise<{ id: string; descricao: string }>;
   };
 };
 

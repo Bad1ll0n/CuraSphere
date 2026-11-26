@@ -4,6 +4,7 @@ import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
+import { AiVigilanciaService } from '../ai-clinico/ai-vigilancia.service';
 import { StorageService } from '../common/storage.service';
 import { ConfigService } from '@nestjs/config';
 import { TenantContextService } from '../prisma/tenant-context.service';
@@ -124,6 +125,7 @@ describe('DoenteService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: AiClinicoService, useValue: mockAiClinico },
+        { provide: AiVigilanciaService, useValue: mockAiClinico },
         { provide: StorageService, useValue: mockStorage },
         { provide: ConfigService, useValue: mockConfig },
         { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
