@@ -1,3 +1,4 @@
+import '../common/dinheiro'; // ARQ-22: o dinheiro (Decimal) sai em JSON como número
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';

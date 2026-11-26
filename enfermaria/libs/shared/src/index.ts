@@ -13,3 +13,4 @@ export * from './lib/news2.js';
 export * from './lib/turnos.js';
 export * from './lib/senhas.js';
 export * from './lib/identificacao.js';
+export * from './lib/dominios.js';

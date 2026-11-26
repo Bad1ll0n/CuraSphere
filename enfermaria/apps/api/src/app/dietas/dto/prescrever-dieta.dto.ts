@@ -1,4 +1,5 @@
-import { IsString, IsArray, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsArray, IsOptional, IsNotEmpty, IsIn } from 'class-validator';
+import { TIPOS_DIETA } from '@org/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PrescreverDietaDto {
@@ -7,9 +8,9 @@ export class PrescreverDietaDto {
   @IsNotEmpty()
   doenteId: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: TIPOS_DIETA })
   @IsString()
-  @IsNotEmpty()
+  @IsIn(TIPOS_DIETA) // ARQ-22: a BD tem um CHECK com os mesmos valores
   tipo: string;
 
   @ApiPropertyOptional({ type: [String] })

@@ -1,3 +1,4 @@
+import { euros, somarEuros } from '../common/dinheiro';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
@@ -234,7 +235,7 @@ export class DashboardService {
           _sum: { totalCobrado: true },
         }).then((r) => ({
           mes: data.toLocaleString('pt-PT', { month: 'short' }),
-          total: Math.round((r._sum.totalCobrado ?? 0) * 100) / 100,
+          total: euros(r._sum.totalCobrado),
         }));
       }),
     );
@@ -247,13 +248,13 @@ export class DashboardService {
       ? Math.round(doentesCama.reduce((acc, d) => acc + (agora.getTime() - d.dataAdmissao.getTime()) / (1000 * 60 * 60 * 24), 0) / doentesCama.length)
       : 0;
 
-    const totalMes = faturacaoMes.reduce((a, f) => a + f.totalCobrado, 0);
-    const pagoMes = faturacaoMes.filter(f => f.estado === 'paga').reduce((a, f) => a + f.totalCobrado, 0);
-    const pendenteMes = faturacaoMes.filter(f => f.estado === 'pendente').reduce((a, f) => a + f.totalCobrado, 0);
+    const totalMes = somarEuros(faturacaoMes.map((f) => f.totalCobrado));
+    const pagoMes = somarEuros(faturacaoMes.filter(f => f.estado === 'paga').map((f) => f.totalCobrado));
+    const pendenteMes = somarEuros(faturacaoMes.filter(f => f.estado === 'pendente').map((f) => f.totalCobrado));
     const porCobertura = { sns: 0, seguro: 0, particular: 0 };
     for (const f of faturacaoMes) {
       const k = (f.tipoCobertura ?? 'sns') as keyof typeof porCobertura;
-      if (k in porCobertura) porCobertura[k] += f.totalCobrado;
+      if (k in porCobertura) porCobertura[k] = somarEuros([porCobertura[k], f.totalCobrado]);
     }
 
     const countUrg = (estado: string) => (episodiosUrgenciaHoje as any[]).find(e => e.estado === estado)?._count?.id ?? 0;

@@ -707,7 +707,7 @@ describe('estrutura — tamanho dos ficheiros', () => {
  * de resultados de análises e de outcomes como `undefined`. Agora o pedido é tipado
  * (auth/pedido-autenticado.ts) e o número de `any` no código da API só pode descer.
  */
-const TECTO_ANY = 390; // era ~720 antes do ARQ-08; actualizar só para BAIXO, quando se remove `any`
+const TECTO_ANY = 389; // era ~720 antes do ARQ-08; actualizar só para BAIXO, quando se remove `any`
 
 describe('estrutura — segurança de tipos', () => {
   const codigo = ficheiros(RAIZ_APP, '.ts').filter((f) => !f.endsWith('.spec.ts') && !f.includes('generated'));

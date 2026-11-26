@@ -1,3 +1,4 @@
+import { euros, multiplicarEuros, somarEuros } from '../common/dinheiro';
 import { Injectable, Logger, NotFoundException, ConflictException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
@@ -217,20 +218,20 @@ export class ConsultasService {
         });
         if (atoBase) {
           itens.push({ descricao: atoBase.descricao, categoria: atoBase.categoria,
-            quantidade: 1, precoUnitario: atoBase.precoBase, total: atoBase.precoBase });
+            quantidade: 1, precoUnitario: euros(atoBase.precoBase), total: euros(atoBase.precoBase) });
         }
 
         for (const ac of (consulta as any).atosConsulta ?? []) {
           itens.push({ descricao: ac.ato.descricao, categoria: ac.ato.categoria,
-            quantidade: ac.quantidade, precoUnitario: ac.precoUnitario,
-            total: ac.quantidade * ac.precoUnitario });
+            quantidade: ac.quantidade, precoUnitario: euros(ac.precoUnitario),
+            total: multiplicarEuros(ac.precoUnitario, ac.quantidade) });
         }
 
         if (itens.length > 0) {
           await tx.itemFatura.createMany({
             data: itens.map((i) => ({ ...i, episodioFaturacaoId: episodio.id })),
           });
-          const soma = itens.reduce((s, i) => s + i.total, 0);
+          const soma = somarEuros(itens.map((i) => i.total));
           await tx.episodioFaturacao.update({
             where: { id: episodio.id },
             data: { totalBase: soma, totalCobrado: soma },
