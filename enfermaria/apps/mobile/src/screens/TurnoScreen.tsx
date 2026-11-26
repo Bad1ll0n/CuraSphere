@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert,
+  ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
@@ -9,6 +9,7 @@ import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Doente {
   id: string;
@@ -43,6 +44,7 @@ const grupoLabel: Record<string, string> = {
 interface Props { utilizador: Utilizador; onVoltar?: () => void }
 
 export default function TurnoScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [tarefasPorDoente, setTarefasPorDoente] = useState<Record<string, Tarefa[]>>({});
   const [loading, setLoading] = useState(true);
@@ -286,40 +288,40 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: '#1e293b', textAlign: 'center', marginBottom: 8 },
-  semTurnoSub: { fontSize: 15, color: '#64748b', textAlign: 'center', lineHeight: 22 },
+  semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: c.texto, textAlign: 'center', marginBottom: 8 },
+  semTurnoSub: { fontSize: 15, color: c.textoTenue, textAlign: 'center', lineHeight: 22 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSubtitulo: { fontSize: 14, color: '#94a3b8', marginTop: 2 },
+  headerSubtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   accoesRow: { flexDirection: 'row', gap: 10, margin: 16 },
   accaoBotao: { flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   accaoBotaoPrimario: { backgroundColor: '#2563eb' },
   accaoBotaoSucesso: { backgroundColor: '#16a34a' },
   accaoBotaoSecundario: { backgroundColor: '#e2e8f0' },
   accaoBotaoDisabled: { opacity: 0.6 },
-  accaoBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
+  accaoBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cartaoCabecalhoEsq: { flex: 1, marginRight: 12 },
-  doenteNome: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
-  doenteInfo: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  doenteNome: { fontSize: 16, fontWeight: '700', color: c.texto },
+  doenteInfo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
   resumo: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
   badge: { backgroundColor: '#fee2e2', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, color: '#dc2626', fontWeight: '500' },
-  detalhes: { marginTop: 14, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 14 },
-  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
-  tarefa: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f8fafc', gap: 10 },
+  badgeTexto: { fontSize: LETRA.corpo, color: '#dc2626', fontWeight: '500' },
+  detalhes: { marginTop: 14, borderTopWidth: 1, borderTopColor: c.borda, paddingTop: 14 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  tarefa: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: c.borda, gap: 10 },
   prioridadeDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   tarefaConteudo: { flex: 1 },
-  tarefaTexto: { fontSize: 14, color: '#334155' },
-  tarefaMeta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  tarefaTexto: { fontSize: LETRA.corpo, color: c.textoSecundario },
+  tarefaMeta: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   concluirBotao: { backgroundColor: '#dcfce7', width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 16 },
-});
+}));

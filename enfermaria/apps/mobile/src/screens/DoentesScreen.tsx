@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, FlatList, TouchableOpacity,
-  StyleSheet, TextInput, ActivityIndicator, RefreshControl,
+  TextInput, ActivityIndicator, RefreshControl,
   Modal, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import DoenteDetalheScreen from './DoenteDetalheScreen';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Doente {
   id: string;
@@ -28,6 +29,7 @@ const estadoLabel: Record<string, string> = {
 interface Props { utilizador: Utilizador }
 
 export default function DoentesScreen({ utilizador }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [todos, setTodos] = useState<Doente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -281,53 +283,53 @@ export default function DoentesScreen({ utilizador }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  topo: { padding: 16, paddingBottom: 8, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
+  topo: { padding: 16, paddingBottom: 8, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   topoLinha: { flexDirection: 'row', gap: 8, marginBottom: 10 },
-  pesquisa: { flex: 1, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, backgroundColor: '#f8fafc' },
+  pesquisa: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, backgroundColor: c.fundo },
   admitirBotao: { backgroundColor: '#2563eb', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, justifyContent: 'center' },
-  admitirTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  admitirTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
   filtros: { flexDirection: 'row', gap: 8 },
   filtro: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#e2e8f0', alignItems: 'center' },
   filtroAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   vazio: { padding: 40, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { flexDirection: 'row', backgroundColor: '#fff', marginHorizontal: 16, marginTop: 10, borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { flexDirection: 'row', backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 10, borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   estadoBar: { width: 5 },
   cartaoConteudo: { flex: 1, padding: 14 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  doenteNome: { fontSize: 16, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
+  doenteNome: { fontSize: 16, fontWeight: '700', color: c.texto, flex: 1, marginRight: 8 },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
-  diagnostico: { fontSize: 13, color: '#64748b', marginBottom: 4 },
-  cama: { fontSize: 13, color: '#94a3b8' },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  diagnostico: { fontSize: 13, color: c.textoTenue, marginBottom: 4 },
+  cama: { fontSize: 13, color: c.textoTenue },
   // Modal
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
-  camaSheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
+  camaSheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b', marginBottom: 12 },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  formLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 12, marginBottom: 6 },
-  formInput: { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 8, padding: 10, fontSize: 14, color: '#334155', backgroundColor: '#f8fafc' },
-  camaSelector: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 8, padding: 10, backgroundColor: '#f8fafc' },
-  camaSelectorTexto: { flex: 1, fontSize: 14, color: '#334155' },
-  camaArrow: { fontSize: 18, color: '#94a3b8' },
-  camaOpcao: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: '#f1f5f9', gap: 8 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, marginBottom: 12 },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  formLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario, marginTop: 12, marginBottom: 6 },
+  formInput: { borderWidth: 1, borderColor: c.borda, borderRadius: 8, padding: 10, fontSize: 14, color: c.textoSecundario, backgroundColor: c.fundo },
+  camaSelector: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: c.borda, borderRadius: 8, padding: 10, backgroundColor: c.fundo },
+  camaSelectorTexto: { flex: 1, fontSize: LETRA.corpo, color: c.textoSecundario },
+  camaArrow: { fontSize: 18, color: c.textoTenue },
+  camaOpcao: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: c.borda, gap: 8 },
   camaOpcaoAtiva: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
-  camaOpcaoTexto: { flex: 1, fontSize: 14, color: '#1e293b', fontWeight: '500' },
-  camaReservada: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic' },
+  camaOpcaoTexto: { flex: 1, fontSize: LETRA.corpo, color: c.texto, fontWeight: '500' },
+  camaReservada: { fontSize: 13, color: c.textoTenue, fontStyle: 'italic' },
   camaCheck: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
-  semCamas: { color: '#94a3b8', fontSize: 14, textAlign: 'center', padding: 20 },
-  erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
+  semCamas: { color: c.textoTenue, fontSize: 14, textAlign: 'center', padding: 20 },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 20 },
   cancelarBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarBtnTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarBtnTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
-  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-});
+  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
+}));
