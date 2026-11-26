@@ -7,6 +7,7 @@ import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '../../../components/language-switcher';
+import { Button } from '@/components/ui';
 
 const API_BASE = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
@@ -208,14 +209,14 @@ export default function LoginPage() {
 
                 {erro && <ErroBox mensagem={erro} />}
 
-                <button
+                <Button variant="primary" fullWidth className="active:scale-[0.98] shadow-blue-500/25"
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] disabled:opacity-60 text-white font-semibold py-3.5 rounded-lg transition-all shadow-lg shadow-blue-500/25 text-base"
+                  
                   style={{ marginTop: '36px' }}
                 >
                   {loading ? <Spinner label={t('signingIn')} /> : t('signIn')}
-                </button>
+                </Button>
               </form>
 
               {(passkeySuportada || ssoProviders.length > 0) && (
@@ -227,17 +228,17 @@ export default function LoginPage() {
                   </div>
                   <div className="space-y-2">
                     {passkeySuportada && (
-                      <button
+                      <Button variant="secondary" fullWidth className="flex gap-2.5 active:scale-[0.98]"
                         type="button"
                         onClick={handlePasskeyLogin}
                         disabled={loading}
-                        className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] disabled:opacity-60 text-slate-700 font-medium py-3 rounded-lg transition-all text-sm"
+                        
                       >
                         <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                         </svg>
                         Entrar com passkey
-                      </button>
+                      </Button>
                     )}
                     {ssoProviders.map((p: { id: string; nome: string; tipo: string }) => (
                       <a
@@ -288,14 +289,14 @@ export default function LoginPage() {
 
                 {erro && <ErroBox mensagem={erro} />}
 
-                <button
+                <Button variant="primary" fullWidth className="active:scale-[0.98] shadow-blue-500/25"
                   type="submit"
                   disabled={loading || codigoMfa.length !== 6}
-                  className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] disabled:opacity-60 text-white font-semibold py-3.5 rounded-lg transition-all shadow-lg shadow-blue-500/25 text-base"
+                  
                   style={{ marginTop: '36px' }}
                 >
                   {loading ? <Spinner label="A verificar..." /> : 'Verificar'}
-                </button>
+                </Button>
 
                 <button
                   type="button"

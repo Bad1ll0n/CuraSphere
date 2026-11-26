@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Sessao {
   id: string;
@@ -96,15 +97,15 @@ export default function EspecialidadesPage() {
           <h1 className="text-2xl font-bold text-slate-900">{titulo}</h1>
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>Gestão de sessões e evolução clínica</p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={() => setModal('nova')}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          
           style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Nova Sessão
-        </button>
+        </Button>
       </div>
 
       {/* KPI cards */}
@@ -164,12 +165,12 @@ export default function EspecialidadesPage() {
                         style={{ padding: '7px 14px' }}>
                         Registar
                       </button>
-                      <button
+                      <Button variant="secondary" size="sm"
                         onClick={() => mutCancelar.mutate(s.id)}
-                        className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                        
                         style={{ padding: '7px 12px' }}>
                         Cancelar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -250,16 +251,15 @@ export default function EspecialidadesPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModal(null)}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
-              <button
+              <Button variant="secondary" onClick={() => setModal(null)}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
+              <Button variant="primary"
                 onClick={() => mutCriar.mutate(form)}
                 disabled={!form.doenteId || !form.data || mutCriar.isPending}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '9px 20px' }}>
                 {mutCriar.isPending ? 'A agendar...' : 'Agendar Sessão'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -282,9 +282,8 @@ export default function EspecialidadesPage() {
                 style={{ padding: '10px 12px' }} />
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '20px' }}>
-              <button onClick={() => { setModal(null); setSessaoSel(null); }}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
+              <Button variant="secondary" onClick={() => { setModal(null); setSessaoSel(null); }}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
               <button
                 onClick={() => mutRealizar.mutate({ id: sessaoSel.id, evolucao: evolucaoText })}
                 disabled={!evolucaoText.trim() || mutRealizar.isPending}

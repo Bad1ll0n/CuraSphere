@@ -6,6 +6,7 @@ import { useToast } from '@/components/toast';
 import { DicomViewer } from '@/components/dicom-viewer';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -198,18 +199,18 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           )}
           <div className="flex items-center gap-2" style={{ marginLeft: 'auto' }}>
             {podeSincronizar && (
-              <button
+              <Button variant="secondary" size="sm" className="flex gap-1 hover:text-blue-600 hover:border-blue-300"
                 onClick={sincronizar}
                 disabled={sincronizando}
                 title="Sincronizar com sistemas externos"
-                className="flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg transition-colors disabled:opacity-50"
+                
                 style={{ padding: '5px 10px' }}
               >
                 <svg className={`w-3 h-3 ${sincronizando ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 {sincronizando ? 'A sincronizar...' : 'Sincronizar'}
-              </button>
+              </Button>
             )}
             {podeUpload && (
               <button aria-label={tA11y('uploadDocument')}
@@ -485,15 +486,14 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
               />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterUpload}
+              <Button variant="secondary" className="flex-1" onClick={() => { setModalUpload(false); setFileSeleccionado(null); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterUpload}
                 disabled={enviando || !fileSeleccionado || !uploadForm.titulo.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '11px' }}>
                 {enviando ? 'A carregar...' : 'Carregar Documento'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

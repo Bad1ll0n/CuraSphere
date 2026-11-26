@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { StatCard, SecaoTitulo, CardContainer, Vazio, DashboardHeader, TIPO_EXAME_LABELS, Spinner } from '../partilhado';
+import { Button } from '@/components/ui';
 
 export function DashboardImagiologia({ utilizador }: { utilizador: any }) {
   const qc = useQueryClient();
@@ -119,9 +120,8 @@ export function DashboardImagiologia({ utilizador }: { utilizador: any }) {
               rows={5} placeholder="Descreva os achados e resultado..." className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
               style={{ padding: '10px 14px', marginBottom: '20px' }} />
             <div className="flex gap-3">
-              <button onClick={() => setResultadoModal(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setResultadoModal(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => mutResultado.mutate({ id: resultadoModal.id, resultado: resultadoTexto })} disabled={mutResultado.isPending || !resultadoTexto.trim()}
                 className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl disabled:opacity-50"
                 style={{ padding: '11px' }}>

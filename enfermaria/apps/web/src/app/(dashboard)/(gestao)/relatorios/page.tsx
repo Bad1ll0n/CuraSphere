@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 const RELATORIOS = [
   {
@@ -153,12 +154,12 @@ export default function RelatoriosPage() {
             />
           </div>
           {relatorioAtivo && (
-            <button
+            <Button variant="primary" className="ml-2"
               onClick={() => refetch()}
-              className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700"
+              
             >
               Atualizar
-            </button>
+            </Button>
           )}
         </div>
 

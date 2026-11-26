@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
+import { Button } from '@/components/ui';
 
 type Tab = 'prescricoes' | 'interacoes' | 'reconciliacao';
 
@@ -128,11 +129,10 @@ export default function FarmaciaPage() {
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Prescrições, interações medicamentosas e reconciliação</p>
         </div>
         {tab === 'reconciliacao' && (
-          <button onClick={() => setModalRec(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          <Button variant="primary" onClick={() => setModalRec(true)}
             style={{ padding: '10px 20px' }}>
             + Nova Reconciliação
-          </button>
+          </Button>
         )}
       </div>
 
@@ -333,11 +333,11 @@ export default function FarmaciaPage() {
                 style={{ padding: '9px 12px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRec(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterReconciliacao} disabled={salvandoRec}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRec(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterReconciliacao} disabled={salvandoRec}
+                 style={{ padding: '11px' }}>
                 {salvandoRec ? 'A guardar...' : 'Criar Reconciliação'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

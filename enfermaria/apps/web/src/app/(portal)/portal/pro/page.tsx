@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { PortalAuthProvider, usePortalAuth } from '../../portal-auth-context';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Button } from '@/components/ui';
 
 const API = `${(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333').replace(/\/$/, '')}/v1`;
 
@@ -172,11 +173,10 @@ function PROContent() {
                 </div>
               )}
 
-              <button type="submit" disabled={submitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-60 transition-colors"
+              <Button variant="primary" fullWidth type="submit" disabled={submitting}
                 style={{ padding: '12px', marginTop: '24px' }}>
                 {submitting ? 'A guardar...' : 'Guardar Registo'}
-              </button>
+              </Button>
             </form>
           )}
         </div>

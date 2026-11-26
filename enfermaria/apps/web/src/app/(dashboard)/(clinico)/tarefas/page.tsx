@@ -8,6 +8,7 @@ import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import type { Tarefa as SharedTarefa } from '@org/shared';
 import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface TarefaDoente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
 interface Tarefa extends SharedTarefa {
@@ -228,23 +229,21 @@ export default function TarefasPage() {
         </div>
         <div className="flex items-center gap-3">
           {podeCriar && (
-            <button onClick={abrirModalNovaTarefa}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+            <Button variant="primary" className="flex gap-2" onClick={abrirModalNovaTarefa}
               style={{ padding: '9px 18px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Nova Tarefa
-            </button>
+            </Button>
           )}
-          <button onClick={carregar}
-            className="flex items-center gap-2 border border-slate-200 text-slate-500 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+          <Button variant="secondary" className="flex gap-2" onClick={carregar}
             style={{ padding: '9px 16px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             Atualizar
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -402,14 +401,12 @@ export default function TarefasPage() {
               </div>
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalNovaTarefa(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarTarefa} disabled={criando || !doenteSelId || !tDesc.trim()}
-                className="flex-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNovaTarefa(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-2" onClick={criarTarefa} disabled={criando || !doenteSelId || !tDesc.trim()}
                 style={{ padding: '11px 24px', flex: 2 }}>
                 {criando ? 'A criar...' : 'Criar Tarefa'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -462,14 +459,12 @@ export default function TarefasPage() {
                 style={{ padding: '8px 12px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalEditarTarefa(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={editarTarefa} disabled={editando || !eDesc.trim()}
-                className="flex-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalEditarTarefa(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-2" onClick={editarTarefa} disabled={editando || !eDesc.trim()}
                 style={{ padding: '11px 24px', flex: 2 }}>
                 {editando ? 'A guardar...' : 'Guardar Alterações'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -554,11 +549,10 @@ function TarefaCard({ tarefa, atualizando, podeCriar, onVerDoente, onToggleProgr
         {/* Acções */}
         <div className="flex items-center gap-2 shrink-0">
           {podeCriar && (
-            <button onClick={onEditar}
-              className="text-xs font-medium rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors disabled:opacity-40"
+            <Button variant="secondary" size="sm" onClick={onEditar}
               style={{ padding: '6px 10px' }}>
               ✏️
-            </button>
+            </Button>
           )}
           <button onClick={onToggleProgresso} disabled={atualizando}
             className={`text-xs font-medium rounded-lg border transition-colors shrink-0 disabled:opacity-40 ${

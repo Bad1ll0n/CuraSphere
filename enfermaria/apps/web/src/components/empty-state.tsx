@@ -1,3 +1,4 @@
+import { Button } from './ui/button';
 const ICONS: Record<string, React.ReactNode> = {
   patients: (
     <svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,12 +59,12 @@ export function EmptyState({ icon = 'generic', title, description, action }: Emp
         </p>
       )}
       {action && (
-        <button
+        <Button variant="primary"
           onClick={action.onClick}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
+          
           style={{ padding: '8px 20px' }}>
           {action.label}
-        </button>
+        </Button>
       )}
     </div>
   );

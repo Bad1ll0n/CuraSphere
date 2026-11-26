@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import { useToast } from '@/components/toast';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface DoenteRisco {
   id: string;
@@ -297,13 +298,13 @@ export default function RiscoClinicoPage() {
                       <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{a.mensagem}</p>
                     </div>
                     {!a.acusadoEm && (
-                      <button
+                      <Button variant="secondary" size="sm" className="whitespace-nowrap"
                         onClick={() => mutAcusar.mutate(a.id)}
                         disabled={mutAcusar.isPending}
-                        className="text-xs font-semibold text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 whitespace-nowrap"
+                        
                         style={{ padding: '4px 10px', flexShrink: 0 }}>
                         Acusar
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>

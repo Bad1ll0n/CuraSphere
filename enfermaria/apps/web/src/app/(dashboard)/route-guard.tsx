@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import { destinoPorOmissao, rotaPermitida } from './nav-data';
 import { moduloDaRotaWeb } from '@org/shared';
 import { useModulosDesligados } from '@/lib/hooks/use-modulos';
+import { Button } from '@/components/ui';
 
 /**
  * Camada 2 do controlo de acessos, montada uma única vez no layout do dashboard e por isso
@@ -59,10 +60,10 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
           {desligado ? t('moduleOffTitle') : t('forbiddenTitle')}
         </h1>
         <p className="text-sm text-slate-500">{desligado ? t('moduleOffBody') : t('forbiddenBody')}</p>
-        <button type="button" onClick={() => router.replace(destino)}
-          className="rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700" style={{ marginTop: '20px', padding: '8px 16px' }}>
+        <Button variant="primary" type="button" onClick={() => router.replace(destino)}
+           style={{ marginTop: '20px', padding: '8px 16px' }}>
           {t('forbiddenGoHome')}
-        </button>
+        </Button>
       </div>
     </div>
   );

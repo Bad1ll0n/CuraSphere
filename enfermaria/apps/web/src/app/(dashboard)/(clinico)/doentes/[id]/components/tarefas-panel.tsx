@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface Tarefa {
   id: string;
@@ -94,14 +95,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 }) {
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>Cancelar</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? 'A guardar...' : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }

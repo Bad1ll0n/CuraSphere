@@ -43,6 +43,7 @@ import { LosWidget } from './components/los-widget';
 import { FaixaIdentificacao } from '@/components/faixa-identificacao';
 import { PontuacaoAlerta } from '@/components/pontuacao-alerta';
 import { SemAcessoDoente, eSemAtribuicao } from '@/components/sem-acesso-doente';
+import { Button } from '@/components/ui';
 
 /** UX-29: secções da ficha (a ordem é a da enfermaria: primeiro o resumo, o administrativo no fim). */
 // UX-07: o rótulo vem de patientFile.tab.<id>.
@@ -543,11 +544,10 @@ export default function DoenteDetalhe() {
             )}
             {podeAlterarEstado && doente.ativo && (
               doente.emIsolamento ? (
-                <button onClick={() => toggleIsolamento(false)}
-                  className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                <Button variant="secondary" size="sm" onClick={() => toggleIsolamento(false)}
                   style={{ padding: '4px 10px' }}>
                   {tf('removeIsolation')}
-                </button>
+                </Button>
               ) : (
                 <button onClick={() => { setMotivoIsolamentoInput(''); setModalIsolamento(true); }}
                   className="text-xs font-semibold border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
@@ -575,21 +575,19 @@ export default function DoenteDetalhe() {
                 <div className="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold rounded-xl animate-pulse" style={{ padding: '10px 18px' }}>
                   🚨 A enviar... {sosCount}s
                 </div>
-                <button onClick={cancelarSOS}
-                  className="text-xs text-slate-500 hover:text-slate-700 border border-slate-200 rounded-xl transition-colors"
+                <Button variant="secondary" size="sm" onClick={cancelarSOS}
                   style={{ padding: '10px 14px' }}>
                   Cancelar
-                </button>
+                </Button>
               </div>
             ) : (
-              <button onClick={iniciarSOS}
-                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-xl transition-colors shadow-sm"
+              <Button variant="danger" className="gap-2" onClick={iniciarSOS}
                 style={{ padding: '10px 18px' }}>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 5a1 1 0 011 1v5a1 1 0 01-2 0V8a1 1 0 011-1zm0 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
                 </svg>
                 {tf('sos')}
-              </button>
+              </Button>
             )
           )}
 
@@ -617,11 +615,10 @@ export default function DoenteDetalhe() {
 
           {/* UX-13: 1–2 acções primárias à vista; as restantes num menu (antes ficavam fora do ecrã no tablet). */}
           <div className="relative">
-            <button onClick={() => setMaisAcoes((v) => !v)} aria-haspopup="menu" aria-expanded={maisAcoes}
-              className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-medium rounded-xl"
+            <Button variant="secondary" className="gap-2" onClick={() => setMaisAcoes((v) => !v)} aria-haspopup="menu" aria-expanded={maisAcoes}
               style={{ padding: '10px 16px' }}>
               {tf('moreActions')} <span aria-hidden="true">⋯</span>
-            </button>
+            </Button>
             {maisAcoes && (
               <div role="menu" tabIndex={-1} className="absolute right-0 top-full bg-white border border-slate-200 rounded-xl shadow-lg z-30 overflow-hidden"
                 style={{ marginTop: '6px', minWidth: '200px' }}
@@ -965,14 +962,14 @@ export default function DoenteDetalhe() {
                     </button>
                   ) : (
                     <div className="flex gap-2">
-                      <button onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
-                        className="text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors" style={{ padding: '4px 10px' }}>
+                      <Button variant="secondary" size="sm" onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
+                         style={{ padding: '4px 10px' }}>
                         {tc('cancel')}
-                      </button>
-                      <button onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
-                        className="text-xs text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors" style={{ padding: '4px 10px' }}>
+                      </Button>
+                      <Button variant="primary" size="sm" onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
+                         style={{ padding: '4px 10px' }}>
                         {salvandoFicha ? 'A guardar...' : 'Guardar'}
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -1096,14 +1093,12 @@ export default function DoenteDetalhe() {
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalEditarDoente(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterEdicaoDoente} disabled={salvandoEdicao}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalEditarDoente(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterEdicaoDoente} disabled={salvandoEdicao}
                 style={{ padding: '11px' }}>
                 {salvandoEdicao ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1125,7 +1120,7 @@ export default function DoenteDetalhe() {
                 placeholder="Ex: MRSA, Clostrídio, contacto suspeito COVID..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalIsolamento(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalIsolamento(false)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => toggleIsolamento(true)} disabled={!motivoIsolamentoInput.trim() || salvandoIsolamento}
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {salvandoIsolamento ? 'A guardar...' : 'Activar'}
@@ -1160,11 +1155,10 @@ export default function DoenteDetalhe() {
             </div>
 
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModalQR(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalQR(false)}
                 style={{ padding: '11px' }}>
                 Fechar
-              </button>
+              </Button>
               <button
                 onClick={() => {
                   const esc = (s: string) =>
@@ -1314,16 +1308,14 @@ export default function DoenteDetalhe() {
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => setModalAltaEstruturada(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAltaEstruturada(false)}
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button onClick={submeterAltaEstruturada} disabled={salvandoAlta || !altaResumo.trim() || (altaEmFalta.length > 0 && altaJustificacao.trim().length < 15)}
-                className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50 transition-colors"
+              </Button>
+              <Button variant="danger" className="flex-1" onClick={submeterAltaEstruturada} disabled={salvandoAlta || !altaResumo.trim() || (altaEmFalta.length > 0 && altaJustificacao.trim().length < 15)}
                 style={{ padding: '11px' }}>
                 {salvandoAlta ? 'A processar...' : 'Confirmar Alta'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1357,7 +1349,7 @@ export default function DoenteDetalhe() {
               </div>
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalSinalizar(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalSinalizar(false)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeterSinalizar} disabled={!motivoSinalizar.trim() || salvandoSinalizar}
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {salvandoSinalizar ? 'A guardar...' : 'Sinalizar'}
@@ -1407,11 +1399,10 @@ export default function DoenteDetalhe() {
                 <p className="text-xs text-amber-600 bg-amber-50 rounded-lg" style={{ padding: '8px 12px' }}>
                   Entregue estas credenciais ao doente por canal seguro (carta ou email pessoal).
                 </p>
-                <button onClick={() => setModalPortal(false)}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+                <Button variant="primary" fullWidth onClick={() => setModalPortal(false)}
                   style={{ padding: '11px', marginTop: '16px' }}>
                   Fechar
-                </button>
+                </Button>
               </div>
             ) : (
               <>
@@ -1431,10 +1422,9 @@ export default function DoenteDetalhe() {
                   <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>O doente poderá alterar a password após o primeiro acesso.</p>
                 </div>
                 <div className="flex gap-3">
-                  <button onClick={() => setModalPortal(false)}
-                    className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
-                    style={{ padding: '11px' }}>Cancelar</button>
-                  <button
+                  <Button variant="secondary" className="flex-1" onClick={() => setModalPortal(false)}
+                    style={{ padding: '11px' }}>Cancelar</Button>
+                  <Button variant="primary" className="flex-1"
                     disabled={criandoPortal || !portalEmail.trim() || portalSenha.length < 12}
                     onClick={async () => {
                       setCriandoPortal(true);
@@ -1445,10 +1435,10 @@ export default function DoenteDetalhe() {
                         toast.error(e?.response?.data?.message ?? 'Erro ao criar acesso');
                       } finally { setCriandoPortal(false); }
                     }}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
+                    
                     style={{ padding: '11px' }}>
                     {criandoPortal ? 'A criar...' : 'Criar Acesso'}
-                  </button>
+                  </Button>
                 </div>
               </>
             )}

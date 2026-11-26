@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 /**
  * PROD-02 / PROD-03 — internamentos do doente: o episódio em curso (serviço, cama, origem),
@@ -156,12 +157,12 @@ export function InternamentosPanel({ doenteId, utilizador, onAlterado }: {
             </div>
           )}
           <div className="flex gap-2 justify-end" style={{ marginTop: '12px' }}>
-            <button onClick={() => setATransferir(false)} className="text-xs font-semibold text-slate-600 border border-slate-200 bg-white rounded-lg" style={{ padding: '7px 14px' }}>Cancelar</button>
-            <button onClick={transferir}
+            <Button variant="secondary" size="sm" onClick={() => setATransferir(false)}  style={{ padding: '7px 14px' }}>Cancelar</Button>
+            <Button variant="primary" size="sm" onClick={transferir}
               disabled={aGuardar || !camaId || motivo.trim().length < 5 || (pedeJustificacao && justificacao.trim().length < 10)}
-              className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50" style={{ padding: '7px 14px' }}>
+               style={{ padding: '7px 14px' }}>
               {aGuardar ? 'A transferir...' : 'Transferir'}
-            </button>
+            </Button>
           </div>
         </div>
       )}

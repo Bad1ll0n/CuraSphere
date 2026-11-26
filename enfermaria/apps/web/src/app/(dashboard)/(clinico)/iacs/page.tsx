@@ -5,6 +5,7 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useAuth } from '@/lib/auth-context';
+import { Button } from '@/components/ui';
 
 interface DoenteIsolado {
   id: string; nome: string; emIsolamento: boolean;
@@ -256,11 +257,10 @@ export default function IacsPage() {
                       </div>
                     </div>
                     {podeEditar && (
-                      <button onClick={() => levantarIsolamento(d.id)}
-                        className="shrink-0 border border-slate-200 text-slate-600 text-xs font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                      <Button variant="secondary" size="sm" className="shrink-0" onClick={() => levantarIsolamento(d.id)}
                         style={{ padding: '8px 14px' }}>
                         Levantar isolamento
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -296,14 +296,13 @@ export default function IacsPage() {
                 style={{ padding: '9px 14px', width: '220px' }} />
             </div>
             {podeEditar && (
-              <button onClick={() => setModalCultura(true)}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors text-sm"
+              <Button variant="primary" className="flex gap-2" onClick={() => setModalCultura(true)}
                 style={{ padding: '10px 20px' }}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
                 Nova Cultura
-              </button>
+              </Button>
             )}
           </div>
 
@@ -370,14 +369,13 @@ export default function IacsPage() {
           <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
             <p className="text-sm text-slate-500">{surtos.filter(s => s.estado === 'activo').length} surtos activos · {surtos.length} total</p>
             {podeEditar && (
-              <button onClick={() => setModalSurto(true)}
-                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors text-sm"
+              <Button variant="danger" className="flex gap-2" onClick={() => setModalSurto(true)}
                 style={{ padding: '10px 20px' }}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
                 Registar Surto
-              </button>
+              </Button>
             )}
           </div>
 
@@ -425,11 +423,10 @@ export default function IacsPage() {
                         {s.observacoes && <p className="text-xs text-slate-500 italic" style={{ marginTop: '6px' }}>{s.observacoes}</p>}
                       </div>
                       {podeEditar && s.estado !== 'encerrado' && (
-                        <button onClick={() => { setEditSurto(s); setFormEditSurto({ estado: s.estado, numCasos: s.numCasos, observacoes: s.observacoes ?? '' }); }}
-                          className="shrink-0 border border-slate-200 text-slate-600 text-xs font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                        <Button variant="secondary" size="sm" className="shrink-0" onClick={() => { setEditSurto(s); setFormEditSurto({ estado: s.estado, numCasos: s.numCasos, observacoes: s.observacoes ?? '' }); }}
                           style={{ padding: '8px 14px' }}>
                           Atualizar
-                        </button>
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -458,7 +455,7 @@ export default function IacsPage() {
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
               style={{ padding: '10px 14px', marginBottom: '24px' }} />
             <div className="flex gap-3">
-              <button onClick={() => setModalIsolamento(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalIsolamento(null)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={confirmarIsolamento} disabled={salvando} className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {salvando ? 'A ativar...' : 'Ativar Isolamento'}
               </button>
@@ -504,10 +501,10 @@ export default function IacsPage() {
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalCultura(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={registarCultura} disabled={salvandoCultura || !formCultura.doenteId.trim()} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalCultura(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={registarCultura} disabled={salvandoCultura || !formCultura.doenteId.trim()}  style={{ padding: '11px' }}>
                 {salvandoCultura ? 'A registar...' : 'Registar Colheita'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -543,10 +540,10 @@ export default function IacsPage() {
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setEditCultura(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={guardarResultadoCultura} disabled={salvandoCultura} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setEditCultura(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={guardarResultadoCultura} disabled={salvandoCultura}  style={{ padding: '11px' }}>
                 {salvandoCultura ? 'A guardar...' : 'Guardar Resultado'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -588,11 +585,11 @@ export default function IacsPage() {
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalSurto(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={registarSurto} disabled={salvandoSurto || !formSurto.agente.trim() || !formSurto.servico.trim()}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalSurto(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={registarSurto} disabled={salvandoSurto || !formSurto.agente.trim() || !formSurto.servico.trim()}
+                 style={{ padding: '11px' }}>
                 {salvandoSurto ? 'A registar...' : 'Registar Surto'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -627,10 +624,10 @@ export default function IacsPage() {
                 rows={2} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setEditSurto(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={guardarSurto} disabled={salvandoSurto} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setEditSurto(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={guardarSurto} disabled={salvandoSurto}  style={{ padding: '11px' }}>
                 {salvandoSurto ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

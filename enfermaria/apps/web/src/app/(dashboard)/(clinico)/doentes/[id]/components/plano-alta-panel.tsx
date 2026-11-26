@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ContinuidadeCuidadosPanel } from './continuidade-cuidados-panel';
+import { Button } from '@/components/ui';
 
 interface PlanoAlta {
   id: string;
@@ -258,11 +259,10 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
 
           {podeEditar && (
-            <button onClick={guardar} disabled={salvando}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
+            <Button variant="primary" onClick={guardar} disabled={salvando}
               style={{ padding: '9px 20px' }}>
               {salvando ? 'A guardar...' : 'Guardar'}
-            </button>
+            </Button>
           )}
 
           {/* Readmission risk section */}

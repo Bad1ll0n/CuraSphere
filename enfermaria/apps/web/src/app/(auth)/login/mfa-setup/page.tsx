@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 export default function MfaSetupPage() {
   const router = useRouter();
@@ -57,13 +58,13 @@ export default function MfaSetupPage() {
             className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 text-center text-2xl tracking-widest focus:outline-none focus:border-blue-500"
           />
           {erro && <p className="text-red-400 text-sm">{erro}</p>}
-          <button
+          <Button variant="primary" fullWidth
             type="submit"
             disabled={loading || code.length !== 6}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg py-3 font-medium transition-colors"
+            
           >
             {loading ? 'A ativar...' : 'Ativar e Continuar'}
-          </button>
+          </Button>
         </form>
         <button
           type="button"

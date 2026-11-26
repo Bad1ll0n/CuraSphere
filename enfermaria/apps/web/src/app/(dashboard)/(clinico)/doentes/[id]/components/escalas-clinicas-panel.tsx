@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { avisarAcoesGeradas } from '@/lib/acoes-escala';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -416,9 +417,8 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
                   )}
 
                   <div className="flex gap-3">
-                    <button onClick={() => setModalEscalaClinica(false)}
-                      className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                      style={{ padding: '11px' }}>Cancelar</button>
+                    <Button variant="secondary" className="flex-1" onClick={() => setModalEscalaClinica(false)}
+                      style={{ padding: '11px' }}>Cancelar</Button>
                     <button onClick={submeterEscalaClinica} disabled={salvandoEscalaClinica || !preenchido}
                       className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                       style={{ padding: '11px' }}>

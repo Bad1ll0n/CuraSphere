@@ -1,6 +1,7 @@
 'use client';
 import { giveAiConsent } from '@/lib/ai-consent';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface Props {
   onAceitar: () => void;
@@ -61,12 +62,12 @@ export function AiConsentModal({ onAceitar, onRecusar }: Props) {
             style={{ padding: '10px' }}>
             Recusar
           </button>
-          <button
+          <Button variant="primary" className="flex-1"
             onClick={aceitar}
-            className="flex-1 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors"
+            
             style={{ padding: '10px' }}>
             Aceitar e Continuar
-          </button>
+          </Button>
         </div>
       </div>
     </div>

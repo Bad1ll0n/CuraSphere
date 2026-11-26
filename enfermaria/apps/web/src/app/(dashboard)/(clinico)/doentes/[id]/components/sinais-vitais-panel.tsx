@@ -12,6 +12,7 @@ import { pedirConfirmacao } from '@/components/motivo-remocao';
 import { avaliarCoerenciaVitais, calcularNEWS2Detalhado } from '@org/shared';
 import { CAMPO_NEWS2, News2Previsto, corPontosNews2 as cor, news2Intervalo } from './news2-previsto';
 import { LeiturasMonitorPanel } from './leituras-monitor-panel';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -94,14 +95,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
   const t = useTranslations('vitals');
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>{tc('cancel')}</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>{tc('cancel')}</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? t('saving') : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }

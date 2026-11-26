@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useAcaoPlano, useAvaliacaoInicial } from '@/lib/hooks';
+import { Button } from '@/components/ui';
 
 /** PROD-07 — secções da avaliação inicial de enfermagem (texto estruturado por secção). */
 export const SECOES_AVALIACAO = [
@@ -72,11 +73,11 @@ export function AvaliacaoInicialForm({ doenteId, onFechar }: { doenteId: string;
         {t('initial.markComplete')}
       </label>
       <div className="flex gap-2">
-        <button type="button" onClick={onFechar} className="border border-slate-200 text-slate-700 text-sm rounded-lg" style={{ padding: '8px 14px' }}>{tc('cancel')}</button>
-        <button type="button" onClick={submeter} disabled={guardar.isPending}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '8px 14px' }}>
+        <Button variant="secondary" type="button" onClick={onFechar}  style={{ padding: '8px 14px' }}>{tc('cancel')}</Button>
+        <Button variant="primary" type="button" onClick={submeter} disabled={guardar.isPending}
+           style={{ padding: '8px 14px' }}>
           {tc('save')}
-        </button>
+        </Button>
       </div>
     </div>
   );

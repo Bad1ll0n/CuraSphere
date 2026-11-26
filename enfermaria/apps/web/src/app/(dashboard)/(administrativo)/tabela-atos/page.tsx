@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface AtoClinico {
   id: string;
@@ -145,16 +146,16 @@ export default function TabelaAtosPage() {
             Preços predefinidos para consultas, exames e procedimentos
           </p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={abrirNovo}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          
           style={{ padding: '10px 18px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Novo Ato
-        </button>
+        </Button>
       </div>
 
       {/* Tabs */}
@@ -344,14 +345,12 @@ export default function TabelaAtosPage() {
             {erro && <p className="text-sm text-red-600" style={{ marginTop: '12px' }}>{erro}</p>}
 
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={guardar} disabled={salvando}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={guardar} disabled={salvando}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

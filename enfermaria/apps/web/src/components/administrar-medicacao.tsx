@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/ui/modal';
 import { FaixaAlergias, type AlergiaResumo } from '@/components/faixa-alergias';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
+import { Button } from '@/components/ui';
 
 export interface MedicacaoAAdministrar {
   medicacaoId: string;
@@ -167,12 +168,12 @@ export function AdministrarMedicacaoDialog({
         </fieldset>
 
         <div className="flex gap-3" style={{ marginTop: '4px' }}>
-          <button
+          <Button variant="secondary" className="flex-1"
             onClick={onCancelar}
-            className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50"
+            
             style={{ padding: '11px', minHeight: '44px' }}>
             {tc('cancel')}
-          </button>
+          </Button>
           <button
             onClick={confirmar}
             disabled={!pode}

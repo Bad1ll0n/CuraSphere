@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { SkeletonTable } from '@/components/skeleton';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { Button } from '@/components/ui';
 
 const SERVICOS_LISTA = ['Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
 
@@ -380,26 +381,26 @@ export default function DoentesPagina() {
               {tp('page', { pagina, total: totalPaginas, n: total })}
             </span>
             <div className="flex items-center gap-2">
-              <button
+              <Button variant="secondary" size="sm" className="flex gap-1"
                 onClick={() => setPagina((p) => Math.max(1, p - 1))}
                 disabled={pagina === 1}
-                className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '7px 12px' }}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 {tp('previous')}
-              </button>
-              <button
+              </Button>
+              <Button variant="secondary" size="sm" className="flex gap-1"
                 onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
                 disabled={pagina === totalPaginas}
-                className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '7px 12px' }}>
                 {tp('next')}
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
         )}

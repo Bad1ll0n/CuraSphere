@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { StatCard, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { Button } from '@/components/ui';
 
 export function DashboardRececao({ utilizador }: { utilizador: any }) {
   const [enviandoLembretes, setEnviandoLembretes] = useState(false);
@@ -141,14 +142,14 @@ export function DashboardRececao({ utilizador }: { utilizador: any }) {
                 {lembretesEnviados} lembrete{lembretesEnviados !== 1 ? 's' : ''} enviado{lembretesEnviados !== 1 ? 's' : ''}
               </div>
             )}
-            <button
+            <Button variant="primary" fullWidth
               onClick={enviarLembretes}
               disabled={enviandoLembretes || consultasAmanha === 0}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-40"
+              
               style={{ padding: '10px' }}
             >
               {enviandoLembretes ? 'A enviar...' : 'Enviar Lembretes'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

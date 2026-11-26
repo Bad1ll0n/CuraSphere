@@ -2,6 +2,7 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { visitaDoPapel } from '@/lib/onboarding';
+import { Button } from '@/components/ui';
 
 interface Props {
   role: string;
@@ -73,15 +74,15 @@ export function TourOverlay({ role, onConcluir }: Props) {
             {t('buttons.skip')}
           </button>
           {step > 0 && (
-            <button type="button" onClick={() => setStep((s) => s - 1)} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '8px 14px' }}>
+            <Button variant="secondary" type="button" onClick={() => setStep((s) => s - 1)}  style={{ padding: '8px 14px' }}>
               {t('buttons.prev')}
-            </button>
+            </Button>
           )}
           {/* eslint-disable-next-line jsx-a11y/no-autofocus -- o foco vai para a ação principal da visita */}
-          <button type="button" autoFocus onClick={() => (ultimo ? onConcluir() : setStep((s) => s + 1))}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl" style={{ padding: '8px 16px' }}>
+          <Button variant="primary" type="button" autoFocus onClick={() => (ultimo ? onConcluir() : setStep((s) => s + 1))}
+             style={{ padding: '8px 16px' }}>
             {ultimo ? t('buttons.start') : t('buttons.next')}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

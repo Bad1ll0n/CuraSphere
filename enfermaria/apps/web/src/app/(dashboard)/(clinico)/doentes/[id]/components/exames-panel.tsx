@@ -4,6 +4,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -151,11 +152,10 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
                       </button>
                     )}
                     {podeSolicitar && e.estado === 'solicitado' && (
-                      <button onClick={() => cancelarExame(e.id)}
-                        className="text-xs font-medium border border-slate-200 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+                      <Button variant="secondary" size="sm" onClick={() => cancelarExame(e.id)}
                         style={{ padding: '6px 12px' }}>
                         Cancelar
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -196,9 +196,8 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
               <label htmlFor="exameUrgente" className="text-sm font-medium text-red-600">Urgente</label>
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalExame(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalExame(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={solicitarExame} disabled={salvandoExame || !exameForm.descricao.trim()}
                 className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
@@ -227,9 +226,8 @@ export function ExamesPanel({ doenteId, utilizador }: Props) {
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado do exame..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setResultadoModal(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setResultadoModal(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={registarResultado} disabled={salvandoExame || !resultadoTexto.trim()}
                 className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Utilizador { id: string; nome: string; role: string; equipa?: string }
 interface HorarioTurno { id: string; tipo: string; data: string }
@@ -116,14 +117,13 @@ export default function TrocasPage() {
             Pede a um colega para cobrir o seu turno
           </p>
         </div>
-        <button onClick={abrirModal}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
+        <Button variant="primary" className="flex gap-2" onClick={abrirModal}
             style={{ padding: '11px 22px', fontSize: '14px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Pedir Cobertura
-          </button>
+          </Button>
       </div>
 
       {loading ? (
@@ -166,9 +166,8 @@ export default function TrocasPage() {
                     <button onClick={async () => { await api.patch(`/trocas/${p.id}/responder`, { aceitar: false }); carregar(); }}
                       className="border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium rounded-lg transition-colors"
                       style={{ padding: '6px 14px' }}>Recusar</button>
-                    <button onClick={async () => { await api.patch(`/trocas/${p.id}/responder`, { aceitar: true }); carregar(); }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors"
-                      style={{ padding: '6px 14px' }}>Aceitar</button>
+                    <Button variant="primary" size="sm" onClick={async () => { await api.patch(`/trocas/${p.id}/responder`, { aceitar: true }); carregar(); }}
+                      style={{ padding: '6px 14px' }}>Aceitar</Button>
                   </div>
                 </PedidoRow>
               ))}
@@ -181,9 +180,8 @@ export default function TrocasPage() {
                 meusEnviados.map((p) => (
                   <PedidoRow key={p.id} pedido={p} utilizadorId={utilizador?.id ?? ''}>
                     {p.estado === 'pendente_destinatario' && (
-                      <button onClick={async () => { await api.delete(`/trocas/${p.id}`); carregar(); }}
-                        className="border border-slate-200 text-slate-500 hover:bg-slate-50 text-xs font-medium rounded-lg transition-colors shrink-0"
-                        style={{ padding: '6px 14px' }}>Cancelar</button>
+                      <Button variant="secondary" size="sm" className="shrink-0" onClick={async () => { await api.delete(`/trocas/${p.id}`); carregar(); }}
+                        style={{ padding: '6px 14px' }}>Cancelar</Button>
                     )}
                   </PedidoRow>
                 ))
@@ -286,14 +284,12 @@ export default function TrocasPage() {
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => setModalAberto(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeter} disabled={!turnoSelecionado || !colegaSelecionado || salvando}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAberto(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeter} disabled={!turnoSelecionado || !colegaSelecionado || salvando}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A enviar...' : 'Enviar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

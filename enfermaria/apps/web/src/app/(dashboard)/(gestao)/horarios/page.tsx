@@ -6,6 +6,7 @@ import { HORAS_TURNO } from '@org/shared';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { DotacaoPanel } from './dotacao-panel';
+import { Button } from '@/components/ui';
 
 interface HorarioTurno {
   id: string;
@@ -480,13 +481,11 @@ export default function HorariosPagina() {
           <p className="text-slate-500 text-sm" style={{ marginBottom: '24px' }}>Ainda não foi criada uma escala para este mês</p>
           {isChefe && (
             <div className="flex gap-3">
-              <button onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
-                className="border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+              <Button variant="secondary" onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
                 style={{ padding: '10px 24px', fontSize: '14px' }}>
                 Criar Escala Vazia
-              </button>
-              <button onClick={gerarAutomatico} disabled={gerandoAuto}
-                className="bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors flex items-center gap-2"
+              </Button>
+              <Button variant="primary" className="flex gap-2" onClick={gerarAutomatico} disabled={gerandoAuto}
                 style={{ padding: '10px 24px', fontSize: '14px' }}>
                 {gerandoAuto ? (
                   <>
@@ -497,7 +496,7 @@ export default function HorariosPagina() {
                     A gerar...
                   </>
                 ) : 'Gerar Automaticamente'}
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -628,13 +627,13 @@ export default function HorariosPagina() {
                         {new Date(t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
                       </p>
                     </div>
-                    <button
+                    <Button variant="primary" size="sm"
                       onClick={() => aprovarTrocaFolga(t.id)}
                       disabled={respondendoTroca === t.id}
-                      className="text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+                      
                       style={{ padding: '5px 14px' }}>
                       {respondendoTroca === t.id ? '...' : 'Aprovar'}
-                    </button>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -695,12 +694,12 @@ export default function HorariosPagina() {
                           </>
                         )}
                         {euSouSolicitante && t.estado === 'pendente' && (
-                          <button
+                          <Button variant="secondary" size="sm"
                             onClick={() => cancelarTrocaFolga(t.id)}
-                            className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                            
                             style={{ padding: '4px 10px' }}>
                             Cancelar pedido
-                          </button>
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -882,21 +881,21 @@ export default function HorariosPagina() {
             )}
 
             <div className="flex gap-3">
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => { setModalDia(null); setNovoTurno({ tipo: 'manha', profissionaisIds: [] }); setErroModal(''); }}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={submeterTurno}
                 disabled={salvando}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                
                 style={{ padding: '11px' }}
               >
                 {salvando ? 'A guardar...' : 'Adicionar Turno'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -987,19 +986,19 @@ export default function HorariosPagina() {
                 style={{ padding: '11px 16px' }}>
                 Apagar
               </button>
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => setTurnoEditando(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={guardarEdicaoTurno}
                 disabled={salvandoEdit}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 {salvandoEdit ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1084,12 +1083,12 @@ export default function HorariosPagina() {
                 </div>
               )}
 
-              <button
+              <Button variant="secondary" fullWidth
                 onClick={() => setTurnoVendo(null)}
-                className="w-full border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Fechar
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -1143,19 +1142,19 @@ export default function HorariosPagina() {
             </div>
 
             <div className="flex gap-3">
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => { setModalTroca(null); setTrocaDestId(''); setTrocaDiaDest(''); setTrocaMotivo(''); }}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={pedirTrocaFolga}
                 disabled={submittingTroca || !trocaDestId || !trocaDiaDest}
-                className="flex-1 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 {submittingTroca ? 'A enviar...' : 'Enviar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1222,7 +1221,7 @@ export default function HorariosPagina() {
 
                 {/* Botão adicionar turno (chefe) */}
                 {isChefe && (
-                  <button
+                  <Button variant="primary" fullWidth
                     onClick={() => {
                       const existentes = turnosDia.map((t) => t.tipo);
                       const primeiroDisponivel = (['manha','tarde','noite'] as const).find((t) => !existentes.includes(t));
@@ -1231,10 +1230,10 @@ export default function HorariosPagina() {
                       setModalDia(diaSelecionado);
                     }}
                     disabled={turnosDia.length >= 3}
-                    className="w-full bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    
                     style={{ padding: '10px', marginBottom: '20px' }}>
                     {turnosDia.length >= 3 ? 'Todos os turnos preenchidos' : '+ Adicionar Turno'}
-                  </button>
+                  </Button>
                 )}
 
                 {/* Blocos de turno — só para profissionais com turnos rotativos */}
@@ -1329,13 +1328,13 @@ export default function HorariosPagina() {
                       <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '10px' }}>Folga</p>
                         {!f ? (
-                          <button
+                          <Button variant="secondary" fullWidth className="border-dashed hover:border-yellow-400 hover:text-yellow-700"
                             onClick={() => pedirFolga(diaSelecionado)}
                             disabled={pedindoFolga}
-                            className="w-full border border-dashed border-slate-300 text-slate-600 text-sm font-medium rounded-xl hover:border-yellow-400 hover:text-yellow-700 hover:bg-yellow-50 disabled:opacity-50 transition-colors"
+                            
                             style={{ padding: '10px' }}>
                             {pedindoFolga ? 'A enviar pedido...' : '+ Pedir folga neste dia'}
-                          </button>
+                          </Button>
                         ) : (
                           <button
                             onClick={() => { setModalTroca({ diaOrigem: diaSelecionado }); setDiaSelecionado(null); }}

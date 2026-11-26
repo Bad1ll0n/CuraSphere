@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useSocket, usePollingDeRecurso } from '@/lib/use-socket';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface Checklist {
   signInEm: string | null;
@@ -244,21 +245,19 @@ export default function BlocoPage() {
               style={{ padding: '9px 14px' }} />
           )}
           {vistaAtiva === 'calendario' && (
-            <button onClick={() => { setDataFiltro(hoje.toISOString().split('T')[0]); setCalMes(hoje.getMonth() + 1); setCalAno(hoje.getFullYear()); }}
-              className="border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+            <Button variant="secondary" onClick={() => { setDataFiltro(hoje.toISOString().split('T')[0]); setCalMes(hoje.getMonth() + 1); setCalAno(hoje.getFullYear()); }}
               style={{ padding: '9px 16px' }}>
               Hoje
-            </button>
+            </Button>
           )}
           {podeAgendar && (
-            <button onClick={() => setModal(true)}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            <Button variant="primary" className="flex gap-2" onClick={() => setModal(true)}
               style={{ padding: '10px 20px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Agendar Cirurgia
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -548,11 +547,10 @@ export default function BlocoPage() {
                             </button>
                           )}
                           {podeChecklist && c.estado !== 'cancelada' && (
-                            <button onClick={() => abrirChecklist(c)}
-                              className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                            <Button variant="secondary" size="sm" onClick={() => abrirChecklist(c)}
                               style={{ padding: '7px 14px' }}>
                               WHO Checklist
-                            </button>
+                            </Button>
                           )}
                           {c.estado === 'agendada' && (
                             <button onClick={() => avancarEstado(c.id, 'cancelada')}
@@ -613,14 +611,12 @@ export default function BlocoPage() {
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={agendar} disabled={salvando || !form.designacao.trim() || !form.dataHora || !form.doenteId.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={agendar} disabled={salvando || !form.designacao.trim() || !form.dataHora || !form.doenteId.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A agendar...' : 'Agendar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -642,9 +638,8 @@ export default function BlocoPage() {
                 style={{ padding: '10px 14px' }} placeholder="Descreva o resultado da cirurgia, intercorrências, estado do doente..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setDetalhe(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setDetalhe(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={guardarNotasPos} disabled={salvandoNotas}
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
@@ -733,14 +728,12 @@ export default function BlocoPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setChecklistFase(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Voltar</button>
-              <button onClick={submeterFase} disabled={enviando}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setChecklistFase(null)}
+                style={{ padding: '11px' }}>Voltar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterFase} disabled={enviando}
                 style={{ padding: '11px' }}>
                 {enviando ? 'A registar...' : 'Confirmar ' + WHO_FASES[checklistFase].label}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

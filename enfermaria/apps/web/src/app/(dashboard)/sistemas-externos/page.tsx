@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
+import { Button } from '@/components/ui';
 
 interface Sistema {
   id: string;
@@ -94,16 +95,16 @@ export default function SistemasExternosPage() {
           <h1 className="text-2xl font-bold text-slate-900">Conectores Externos</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Sistemas de saúde externos — FHIR R4, PACS, HL7</p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={abrirCriar}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+          
           style={{ padding: '10px 18px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Adicionar Conector
-        </button>
+        </Button>
       </div>
 
       {sistemas.length === 0 ? (
@@ -149,22 +150,22 @@ export default function SistemasExternosPage() {
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
                     {s.endpoint && (
-                      <button
+                      <Button variant="secondary" size="sm" className="hover:text-emerald-600"
                         onClick={() => testar(s.id)}
                         disabled={testando === s.id}
-                        className="text-xs text-slate-500 hover:text-emerald-600 border border-slate-200 rounded-lg transition-colors disabled:opacity-50"
+                        
                         style={{ padding: '5px 10px' }}
                       >
                         {testando === s.id ? 'A testar...' : 'Testar Ligação'}
-                      </button>
+                      </Button>
                     )}
-                    <button
+                    <Button variant="secondary" size="sm" className="hover:text-blue-600"
                       onClick={() => abrirEditar(s)}
-                      className="text-xs text-slate-500 hover:text-blue-600 border border-slate-200 rounded-lg transition-colors"
+                      
                       style={{ padding: '5px 10px' }}
                     >
                       Editar
-                    </button>
+                    </Button>
                     <button
                       onClick={() => remover(s.id)}
                       className="text-xs text-slate-500 hover:text-red-500 transition-colors"
@@ -235,14 +236,12 @@ export default function SistemasExternosPage() {
               <label htmlFor="ativo" className="text-sm text-slate-600">Sistema ativo</label>
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModal(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={salvar} disabled={salvando || !form.nome.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={salvar} disabled={salvando || !form.nome.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface Interconsulta {
   id: string;
@@ -104,16 +105,16 @@ export default function InterconsultasPage() {
           </p>
         </div>
         {eMedico && (
-          <button
+          <Button variant="primary" className="flex gap-2"
             onClick={() => setModalNova(true)}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
+            
             style={{ padding: '10px 18px' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Nova Interconsulta
-          </button>
+          </Button>
         )}
       </div>
 
@@ -199,14 +200,12 @@ export default function InterconsultasPage() {
               style={{ padding: '12px 14px', marginBottom: '20px' }}
             />
             <div className="flex gap-3">
-              <button onClick={() => setModalResposta(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => modalResposta && mutResponder.mutate({ id: modalResposta, resposta: textoResposta })} disabled={mutResponder.isPending || !textoResposta.trim()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalResposta(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={() => modalResposta && mutResponder.mutate({ id: modalResposta, resposta: textoResposta })} disabled={mutResponder.isPending || !textoResposta.trim()}
                 style={{ padding: '11px' }}>
                 {mutResponder.isPending ? 'A guardar...' : 'Enviar Resposta'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -255,14 +254,12 @@ export default function InterconsultasPage() {
             </label>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalNova(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutNova.mutate({ doenteId: novaDoenteId, body: { especialidadeAlvo: novaEspecialidade, motivo: novaMotivo, urgente: novaUrgente } })} disabled={mutNova.isPending || !novaDoenteId || !novaMotivo.trim()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNova(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={() => mutNova.mutate({ doenteId: novaDoenteId, body: { especialidadeAlvo: novaEspecialidade, motivo: novaMotivo, urgente: novaUrgente } })} disabled={mutNova.isPending || !novaDoenteId || !novaMotivo.trim()}
                 style={{ padding: '11px' }}>
                 {mutNova.isPending ? 'A enviar...' : 'Enviar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

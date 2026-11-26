@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Avaliacao {
   id: string;
@@ -103,14 +104,13 @@ export default function AvaliacoesPage() {
           <h1 className="text-2xl font-bold text-slate-900">Avaliações de Desempenho</h1>
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>Acompanhe e registe avaliações por período e colaborador</p>
         </div>
-        <button onClick={() => setModal(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+        <Button variant="primary" className="flex gap-2" onClick={() => setModal(true)}
           style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Nova Avaliação
-        </button>
+        </Button>
       </div>
 
       {/* Filtros */}
@@ -181,12 +181,10 @@ export default function AvaliacoesPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   {a.estado === 'rascunho' && (
                     <>
-                      <button onClick={() => setEditando(a)}
-                        className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                        style={{ padding: '6px 12px' }}>Editar</button>
-                      <button onClick={() => mutAtualizar.mutate({ id: a.id, dto: { estado: 'finalizada' } })}
-                        className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                        style={{ padding: '6px 12px' }}>Finalizar</button>
+                      <Button variant="secondary" size="sm" onClick={() => setEditando(a)}
+                        style={{ padding: '6px 12px' }}>Editar</Button>
+                      <Button variant="primary" size="sm" onClick={() => mutAtualizar.mutate({ id: a.id, dto: { estado: 'finalizada' } })}
+                        style={{ padding: '6px 12px' }}>Finalizar</Button>
                     </>
                   )}
                   {a.estado === 'finalizada' && (
@@ -266,15 +264,14 @@ export default function AvaliacoesPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModal(false)}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
-              <button onClick={() => mutCriar.mutate(form)}
+              <Button variant="secondary" onClick={() => setModal(false)}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
+              <Button variant="primary" onClick={() => mutCriar.mutate(form)}
                 disabled={!form.utilizadorId || mutCriar.isPending}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '9px 20px' }}>
                 {mutCriar.isPending ? 'A criar...' : 'Criar Avaliação'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -324,10 +321,9 @@ export default function AvaliacoesPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '24px' }}>
-              <button onClick={() => setEditando(null)}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
-              <button
+              <Button variant="secondary" onClick={() => setEditando(null)}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
+              <Button variant="primary"
                 onClick={() => mutAtualizar.mutate({ id: editando.id, dto: {
                   pontuacaoGeral: editando.pontuacaoGeral,
                   pontosFortes: editando.pontosFortes,
@@ -335,10 +331,10 @@ export default function AvaliacoesPage() {
                   observacoes: editando.observacoes,
                 }})}
                 disabled={mutAtualizar.isPending}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '9px 20px' }}>
                 {mutAtualizar.isPending ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

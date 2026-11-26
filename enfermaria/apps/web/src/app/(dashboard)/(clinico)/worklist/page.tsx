@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
-import { Modal } from '@/components/ui';
+import { Modal, Button } from '@/components/ui';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const TIPO_LABELS: Record<string, string> = {
@@ -129,14 +129,13 @@ export default function WorklistPage() {
             Exames pendentes e em progresso · {new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
-        <button onClick={carregar}
-          className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+        <Button variant="secondary" className="gap-2" onClick={carregar}
           style={{ padding: '10px 16px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           Atualizar
-        </button>
+        </Button>
       </div>
 
       {/* KPIs */}
@@ -315,9 +314,8 @@ export default function WorklistPage() {
               style={{ padding: '10px 14px' }} placeholder="Descreva os achados e resultado do exame..." />
           </div>
           <div className="flex gap-3">
-            <button onClick={() => setResultadoModal(null)}
-              className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-              style={{ padding: '11px' }}>Cancelar</button>
+            <Button variant="secondary" className="flex-1" onClick={() => setResultadoModal(null)}
+              style={{ padding: '11px' }}>Cancelar</Button>
             <button onClick={registarResultado} disabled={salvandoResultado || !resultadoTexto.trim()}
               className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
               style={{ padding: '11px' }}>
@@ -354,9 +352,8 @@ export default function WorklistPage() {
               style={{ padding: '10px 14px' }} placeholder="Impressão diagnóstica..." />
           </div>
           <div className="flex gap-3">
-            <button onClick={() => setLaudoModal(null)}
-              className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-              style={{ padding: '11px' }}>Cancelar</button>
+            <Button variant="secondary" className="flex-1" onClick={() => setLaudoModal(null)}
+              style={{ padding: '11px' }}>Cancelar</Button>
             <button onClick={() => guardarLaudo(false)} disabled={salvandoLaudo || !laudoAchados.trim() || !laudoConclusao.trim()}
               className="flex-1 border border-sky-200 text-sky-700 font-semibold rounded-xl hover:bg-sky-50 transition-colors disabled:opacity-50"
               style={{ padding: '11px' }}>

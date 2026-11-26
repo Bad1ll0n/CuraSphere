@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { ModulosOpcionaisSection } from '@/components/modulos-opcionais';
+import { Button } from '@/components/ui';
 
 interface SubRole { id: string; chave: string; label: string; roleChave: string; ordem: number; ativo: boolean; }
 interface Role { id: string; chave: string; label: string; categoria: string; ordem: number; ativo: boolean; subRoles: SubRole[]; }
@@ -70,14 +71,14 @@ function QuiosqueSection() {
             style={{ padding: '10px 14px' }}
           />
         </div>
-        <button
+        <Button variant="primary" className="shrink-0"
           onClick={gerar}
           disabled={gerando || !servicoId.trim()}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-50 shrink-0"
+          
           style={{ padding: '10px 20px' }}
         >
           {gerando ? 'A gerar...' : 'Gerar link'}
-        </button>
+        </Button>
       </div>
       {links.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -217,16 +218,16 @@ export default function ConfiguracoesPage() {
           <h1 className="text-2xl font-bold text-slate-900">Configurações</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Gestão de roles e sub-roles do sistema</p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={abrirCriarRole}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors"
+          
           style={{ padding: '10px 20px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Nova Role
-        </button>
+        </Button>
       </div>
 
       {/* Lista de Roles */}
@@ -388,17 +389,17 @@ export default function ConfiguracoesPage() {
             </div>
 
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={fecharModal} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={fecharModal}  style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={submeter}
                 disabled={salvando || !fLabel || ((isCriarRole || isCriarSub) && !fChave)}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '11px' }}
               >
                 {salvando ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

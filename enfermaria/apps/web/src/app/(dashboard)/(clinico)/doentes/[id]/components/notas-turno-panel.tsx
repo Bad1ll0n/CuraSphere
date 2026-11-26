@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface NotaTurno {
   id: string;
@@ -88,14 +89,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 }) {
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>Cancelar</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? 'A guardar...' : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -227,16 +226,14 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
                       style={{ padding: '10px 12px', marginBottom: '10px' }}
                     />
                     <div className="flex gap-2">
-                      <button onClick={() => guardarEdicaoNota(n.id)} disabled={salvandoNota || !notaEditTexto.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg disabled:opacity-50 transition-colors"
+                      <Button variant="primary" size="sm" onClick={() => guardarEdicaoNota(n.id)} disabled={salvandoNota || !notaEditTexto.trim()}
                         style={{ padding: '6px 14px' }}>
                         {salvandoNota ? 'A guardar...' : 'Guardar'}
-                      </button>
-                      <button onClick={() => setNotaEditandoId(null)}
-                        className="border border-slate-200 text-slate-500 hover:bg-slate-50 text-xs font-medium rounded-lg transition-colors"
+                      </Button>
+                      <Button variant="secondary" size="sm" onClick={() => setNotaEditandoId(null)}
                         style={{ padding: '6px 14px' }}>
                         Cancelar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ) : (

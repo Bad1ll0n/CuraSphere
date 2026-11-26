@@ -9,6 +9,7 @@ import { pedirTexto } from '@/components/motivo-remocao';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import { useAcaoPlano, useCatalogoCuidados, useConjuntosCuidados, usePlanoCuidados } from '@/lib/hooks';
 import { AvaliacaoInicialForm } from './avaliacao-inicial-form';
+import { Button } from '@/components/ui';
 
 /**
  * PROD-07 — processo de enfermagem na ficha: avaliação inicial, sugestões a partir das escalas,
@@ -140,7 +141,7 @@ export function PlanoCuidadosPanel({ doenteId, podeEditar }: { doenteId: string;
                     {podeEditar && (
                       <div className="flex gap-1.5">
                         <button type="button" onClick={() => registar(i)} className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg" style={{ padding: '6px 10px' }}>{t('interventions.record')}</button>
-                        <button type="button" onClick={() => naoRealizada(i)} className="text-xs font-semibold border border-slate-200 text-slate-700 rounded-lg" style={{ padding: '6px 10px' }}>{t('interventions.notDone')}</button>
+                        <Button variant="secondary" size="sm" type="button" onClick={() => naoRealizada(i)}  style={{ padding: '6px 10px' }}>{t('interventions.notDone')}</Button>
                       </div>
                     )}
                   </li>
@@ -202,8 +203,8 @@ function AdicionarAoPlano({ onConjunto, onDiagnostico }: {
             {conjuntos.map((c) => <option key={c.id} value={c.id}>{c.nome}{c.descricao ? ` — ${c.descricao}` : ''}</option>)}
           </select>
         </label>
-        <button type="button" disabled={!conjunto} onClick={() => { onConjunto(conjunto); setConjunto(''); }}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-40" style={{ padding: '8px 12px' }}>{t('add.applySet')}</button>
+        <Button variant="primary" type="button" disabled={!conjunto} onClick={() => { onConjunto(conjunto); setConjunto(''); }}
+           style={{ padding: '8px 12px' }}>{t('add.applySet')}</Button>
       </div>
       <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
         <label className="flex flex-col text-xs text-slate-600 gap-1">{t('add.diagnosis')}

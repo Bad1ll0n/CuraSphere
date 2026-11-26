@@ -6,6 +6,7 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { Button } from '@/components/ui';
 
 /**
  * UX-22 — passagem de turno ÚNICA, por doente, em ISBAR (Identificação, Situação,
@@ -127,14 +128,14 @@ function CartaoDoente({ linha, onAlterado }: { linha: Linha; onAlterado: () => v
           ))}
           {!fixa && (
             <div className="flex gap-2 justify-end">
-              <button onClick={() => guardar(false)} disabled={aGuardar}
-                className="text-sm font-semibold text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50" style={{ padding: '8px 14px' }}>
+              <Button variant="secondary" onClick={() => guardar(false)} disabled={aGuardar}
+                 style={{ padding: '8px 14px' }}>
                 Guardar rascunho
-              </button>
-              <button onClick={() => guardar(true)} disabled={aGuardar || !completo}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50" style={{ padding: '8px 14px' }}>
+              </Button>
+              <Button variant="primary" onClick={() => guardar(true)} disabled={aGuardar || !completo}
+                 style={{ padding: '8px 14px' }}>
                 {p?.estado === 'entregue' ? 'Atualizar entrega' : 'Entregar passagem'}
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -195,10 +196,10 @@ export default function PassagemTurnoPage() {
             <option value="">Os meus doentes</option>
             {servicos.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <button onClick={checkIn} disabled={aFazerCheckin}
-            className="text-sm font-semibold border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 disabled:opacity-50" style={{ padding: '8px 14px' }}>
+          <Button variant="secondary" onClick={checkIn} disabled={aFazerCheckin}
+             style={{ padding: '8px 14px' }}>
             Check-in no turno
-          </button>
+          </Button>
         </div>
       </div>
 

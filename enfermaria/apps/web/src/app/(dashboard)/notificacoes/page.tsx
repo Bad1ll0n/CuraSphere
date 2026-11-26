@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import type { Notificacao } from '@org/shared';
 import { useToast } from '@/components/toast';
 import { useNotificacoes, useMarcarLida, useMarcarTodasLidas } from '@/lib/hooks';
+import { Button } from '@/components/ui';
 
 const ORDEM = { critico: 0, aviso: 1, informativo: 2 } as const;
 const ESTILO: Record<string, string> = {
@@ -57,11 +58,11 @@ export default function NotificacoesPage() {
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>{data?.naoLidas ? t('unread', { n: data.naoLidas }) : t('allRead')}</p>
         </div>
         {(data?.naoLidas ?? 0) > 0 && (
-          <button onClick={() => mutTodasLidas.mutate(undefined, { onSuccess: () => toast.success(t('allMarked')), onError: () => toast.error(t('markError')) })}
+          <Button variant="secondary" onClick={() => mutTodasLidas.mutate(undefined, { onSuccess: () => toast.success(t('allMarked')), onError: () => toast.error(t('markError')) })}
             disabled={mutTodasLidas.isPending}
-            className="text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-xl disabled:opacity-50" style={{ padding: '8px 16px' }}>
+             style={{ padding: '8px 16px' }}>
             {t('markAll')}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -113,11 +114,11 @@ export default function NotificacoesPage() {
 
       {(data?.totalPaginas ?? 1) > 1 && (
         <div className="flex justify-center gap-2" style={{ marginTop: '24px' }}>
-          <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40" style={{ padding: '8px 16px' }}>{t('prev')}</button>
+          <Button variant="secondary" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
+             style={{ padding: '8px 16px' }}>{t('prev')}</Button>
           <span className="text-sm text-slate-500 flex items-center" style={{ padding: '8px 12px' }}>{page} / {data?.totalPaginas}</span>
-          <button onClick={() => setPage((p) => Math.min(data?.totalPaginas ?? 1, p + 1))} disabled={page === (data?.totalPaginas ?? 1)}
-            className="text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl disabled:opacity-40" style={{ padding: '8px 16px' }}>{t('next')}</button>
+          <Button variant="secondary" onClick={() => setPage((p) => Math.min(data?.totalPaginas ?? 1, p + 1))} disabled={page === (data?.totalPaginas ?? 1)}
+             style={{ padding: '8px 16px' }}>{t('next')}</Button>
         </div>
       )}
     </div>

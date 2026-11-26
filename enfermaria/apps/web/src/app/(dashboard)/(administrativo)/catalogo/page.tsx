@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface CatalogoItem {
   id: string;
@@ -159,9 +160,8 @@ export default function CatalogoPage() {
                     <td style={{ padding: '14px 20px' }}>
                       {canEdit && (
                         <div className="flex gap-2">
-                          <button onClick={() => abrirEditar(item)}
-                            className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg"
-                            style={{ padding: '5px 10px' }}>Editar</button>
+                          <Button variant="secondary" size="sm" onClick={() => abrirEditar(item)}
+                            style={{ padding: '5px 10px' }}>Editar</Button>
                           <button onClick={() => mutDesativar.mutate(item.id)}
                             className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg"
                             style={{ padding: '5px 10px' }}>Remover</button>
@@ -217,7 +217,7 @@ export default function CatalogoPage() {
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => { setModal(null); setEditItem(null); }} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => { setModal(null); setEditItem(null); }}  style={{ padding: '11px' }}>Cancelar</Button>
               <button
                 onClick={() => modal === 'criar' ? mutCriar.mutate(form) : mutEditar.mutate(form)}
                 disabled={(modal === 'criar' ? mutCriar.isPending : mutEditar.isPending) || !form.dci.trim()}

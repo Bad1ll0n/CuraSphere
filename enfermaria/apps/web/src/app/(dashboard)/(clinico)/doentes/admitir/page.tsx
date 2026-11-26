@@ -6,6 +6,7 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import type { Cama } from '@org/shared';
 import Icd10Autocomplete from '@/components/Icd10Autocomplete';
+import { Button } from '@/components/ui';
 
 export default function AdmitirDoentesPagina() {
   const router = useRouter();
@@ -295,11 +296,10 @@ export default function AdmitirDoentesPagina() {
             </svg>
             <span className="flex-1">{erro}</span>
             {reinternarId && (
-              <button type="button" onClick={reinternar} disabled={aReinternar || !form.diagnosticoPrincipal.trim()}
-                className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg disabled:opacity-50"
+              <Button variant="primary" size="sm" className="shrink-0" type="button" onClick={reinternar} disabled={aReinternar || !form.diagnosticoPrincipal.trim()}
                 style={{ padding: '8px 14px' }}>
                 {aReinternar ? 'A reinternar...' : 'Reinternar este doente'}
-              </button>
+              </Button>
             )}
           </div>
         )}
@@ -312,14 +312,14 @@ export default function AdmitirDoentesPagina() {
           >
             Cancelar
           </Link>
-          <button
+          <Button variant="primary" className="flex-1"
             type="submit"
             disabled={loading}
-            className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
+            
             style={{ padding: '13px' }}
           >
             {loading ? 'A admitir...' : 'Admitir Doente'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

@@ -10,6 +10,7 @@ import { AiFeedback } from '@/components/ai-feedback';
 import { RoleGuard } from '@/components/role-guard';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { Button } from '@/components/ui';
 
 const ROLES_CLINICOS_URGENCIA = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
@@ -373,14 +374,13 @@ function UrgenciaPageInner() {
             </button>
           )}
           {podeRegistar && (
-            <button onClick={() => setModal(true)}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors"
+            <Button variant="danger" className="flex gap-2" onClick={() => setModal(true)}
               style={{ padding: '10px 20px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Nova Entrada
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -610,11 +610,10 @@ function UrgenciaPageInner() {
                         </div>
                         <div className="flex flex-col gap-2 shrink-0">
                           {ep.estadoEpisodio === 'sala_espera' && (
-                            <button onClick={() => mutEstado.mutate({ id: ep.id, estado: 'em_atendimento' })}
-                              className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                            <Button variant="primary" size="sm" onClick={() => mutEstado.mutate({ id: ep.id, estado: 'em_atendimento' })}
                               style={{ padding: '7px 14px' }}>
                               Iniciar atendimento
-                            </button>
+                            </Button>
                           )}
                           {ep.estadoEpisodio === 'em_atendimento' && (
                             <button onClick={() => mutEstado.mutate({ id: ep.id, estado: 'alta_urgencia' })}
@@ -638,11 +637,10 @@ function UrgenciaPageInner() {
                             </button>
                           )}
                           {podeReTriar && ep.estadoEpisodio === 'sala_espera' && (
-                            <button onClick={() => { setModalReTriagem(ep.id); setReTriagemForm({ novaTriagem: ep.triagem, motivo: '' }); }}
-                              className="text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 rounded-lg transition-colors"
+                            <Button variant="secondary" size="sm" onClick={() => { setModalReTriagem(ep.id); setReTriagemForm({ novaTriagem: ep.triagem, motivo: '' }); }}
                               style={{ padding: '7px 14px' }}>
                               ↑ Re-triar
-                            </button>
+                            </Button>
                           )}
                         </div>
                       </div>
@@ -697,14 +695,12 @@ function UrgenciaPageInner() {
                 style={{ padding: '10px 14px' }} placeholder="Notas adicionais..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutEntrada.mutate(form)} disabled={mutEntrada.isPending || !form.queixaPrincipal.trim()}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={() => mutEntrada.mutate(form)} disabled={mutEntrada.isPending || !form.queixaPrincipal.trim()}
                 style={{ padding: '11px' }}>
                 {mutEntrada.isPending ? 'A registar...' : 'Registar Entrada'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -741,16 +737,15 @@ function UrgenciaPageInner() {
                 style={{ padding: '10px 14px' }} placeholder="Justifique a alteração da triagem..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalReTriagem(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button
+              <Button variant="secondary" className="flex-1" onClick={() => setModalReTriagem(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1"
                 onClick={() => mutReTriagem.mutate({ id: modalReTriagem, novaTriagem: reTriagemForm.novaTriagem, motivo: reTriagemForm.motivo })}
                 disabled={mutReTriagem.isPending || !reTriagemForm.motivo.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '11px' }}>
                 {mutReTriagem.isPending ? 'A guardar...' : 'Confirmar Re-triagem'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -778,9 +773,8 @@ function UrgenciaPageInner() {
               <span className="text-sm text-slate-700">Precisa de quarto de isolamento</span>
             </label>
             <div className="flex gap-3">
-              <button onClick={() => setModalInternar(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalInternar(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => mutInternar.mutate({ id: modalInternar })}
                 disabled={mutInternar.isPending || !servicoDestino.trim()}
                 className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
@@ -817,16 +811,15 @@ function UrgenciaPageInner() {
                 style={{ padding: '10px 14px' }} placeholder="Ex: Sala 3, Box 2, Reanimação..." maxLength={50} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalAtribuir(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAtribuir(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1"
                 onClick={() => mutAtribuirMedico.mutate({ id: modalAtribuir, medicoResponsavelId: medicoSelecionadoId, sala: salaInput })}
                 disabled={mutAtribuirMedico.isPending || !medicoSelecionadoId}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '11px' }}>
                 {mutAtribuirMedico.isPending ? 'A guardar...' : 'Confirmar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1085,17 +1078,15 @@ function UrgenciaPageInner() {
             {/* Footer */}
             <div className="flex gap-3 border-t border-slate-100 shrink-0" style={{ padding: '16px 28px' }}>
               {ambStep > 1 && (
-                <button onClick={() => setAmbStep(n => (n - 1) as 1 | 2 | 3)}
-                  className="border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+                <Button variant="secondary" onClick={() => setAmbStep(n => (n - 1) as 1 | 2 | 3)}
                   style={{ padding: '11px 20px' }}>
                   ← Anterior
-                </button>
+                </Button>
               )}
-              <button onClick={() => setModalAmb(false)}
-                className="border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+              <Button variant="secondary" onClick={() => setModalAmb(false)}
                 style={{ padding: '11px 16px' }}>
                 Cancelar
-              </button>
+              </Button>
               {ambStep < 3 ? (
                 <button onClick={() => setAmbStep(n => (n + 1) as 1 | 2 | 3)}
                   className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors text-sm"

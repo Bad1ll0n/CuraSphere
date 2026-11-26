@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { ACOES_FICHA } from '@/lib/paleta-comandos';
+import { Button } from '@/components/ui';
 
 interface Props {
   open: boolean;
@@ -72,12 +73,12 @@ export function KeyboardShortcutsModal({ open, onClose, onVisita, onPrimeirosPas
         </div>
         {(onVisita || onPrimeirosPassos || onNovidades) && (
           <div className="flex flex-wrap gap-2" style={{ marginTop: '16px' }}>
-            {onVisita && <button type="button" onClick={onVisita} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>{t('guidedTour')}</button>}
-            {onPrimeirosPassos && <button type="button" onClick={onPrimeirosPassos} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>{t('firstSteps')}</button>}
+            {onVisita && <Button variant="secondary" type="button" onClick={onVisita}  style={{ padding: '6px 12px' }}>{t('guidedTour')}</Button>}
+            {onPrimeirosPassos && <Button variant="secondary" type="button" onClick={onPrimeirosPassos}  style={{ padding: '6px 12px' }}>{t('firstSteps')}</Button>}
             {onNovidades && (
-              <button type="button" onClick={onNovidades} className="rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '6px 12px' }}>
+              <Button variant="secondary" type="button" onClick={onNovidades}  style={{ padding: '6px 12px' }}>
                 {t('whatsNew')}{novidadePorVer ? ` · ${t('newBadge')}` : ''}
-              </button>
+              </Button>
             )}
           </div>
         )}

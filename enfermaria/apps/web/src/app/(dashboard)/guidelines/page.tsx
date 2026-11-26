@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { useAuth } from '@/lib/auth-context';
+import { Button } from '@/components/ui';
 
 interface Guideline {
   id: string;
@@ -127,25 +128,25 @@ export default function GuidelinesPage() {
               ref={pdfInputRef}
               onChange={e => { const f = e.target.files?.[0]; if (f) uploadPdf(f); e.target.value = ''; }}
             />
-            <button
+            <Button variant="secondary" className="gap-2"
               onClick={() => pdfInputRef.current?.click()}
               disabled={uploadingPdf}
-              className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-all disabled:opacity-50"
+              
               style={{ padding: '10px 16px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
               {uploadingPdf ? 'A processar...' : 'Upload PDF'}
-            </button>
-            <button
+            </Button>
+            <Button variant="primary" className="gap-2"
               onClick={() => { setForm({ ...EMPTY_FORM }); setModal(true); }}
-              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm"
+              
               style={{ padding: '10px 18px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
               </svg>
               Nova Guideline
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -262,14 +263,12 @@ export default function GuidelinesPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={salvar} disabled={salvando || !form.titulo.trim() || !form.fonte.trim() || !form.conteudo.trim()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={salvar} disabled={salvando || !form.titulo.trim() || !form.fonte.trim() || !form.conteudo.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A guardar...' : 'Criar Guideline'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

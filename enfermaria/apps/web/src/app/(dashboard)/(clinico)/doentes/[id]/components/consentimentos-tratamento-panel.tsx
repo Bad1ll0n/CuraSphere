@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { Button } from '@/components/ui';
 
 /**
  * SEC-19 — consentimento e oposição do doente ao tratamento de dados que vai além do cuidado
@@ -104,10 +105,10 @@ export function ConsentimentosTratamentoPanel({ doenteId, utilizador }: { doente
               {podeRegistar && (
                 <div className="flex flex-wrap" style={{ gap: '8px', marginTop: '10px' }}>
                   {f.regime === 'consentimento' && f.decisao !== 'consentimento' && (
-                    <button disabled={aGuardar === f.finalidade} onClick={() => pedirConfirmacao(f, 'consentimento')}
-                      className="text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50" style={{ padding: '6px 12px' }}>
+                    <Button variant="primary" size="sm" disabled={aGuardar === f.finalidade} onClick={() => pedirConfirmacao(f, 'consentimento')}
+                       style={{ padding: '6px 12px' }}>
                       Registar consentimento
-                    </button>
+                    </Button>
                   )}
                   {f.decisao !== 'oposicao' && (
                     <button disabled={aGuardar === f.finalidade} onClick={() => pedirConfirmacao(f, 'oposicao')}

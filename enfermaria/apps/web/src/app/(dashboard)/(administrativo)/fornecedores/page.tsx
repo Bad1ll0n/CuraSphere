@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Fornecedor {
   id: string;
@@ -126,9 +127,8 @@ export default function FornecedoresPage() {
         {canEdit && (
           <div className="flex gap-2">
             {tab === 'encomendas' && (
-              <button onClick={() => setModalEncomenda(true)}
-                className="flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold rounded-xl transition-colors"
-                style={{ padding: '10px 18px' }}>Nova Encomenda</button>
+              <Button variant="secondary" className="flex gap-2" onClick={() => setModalEncomenda(true)}
+                style={{ padding: '10px 18px' }}>Nova Encomenda</Button>
             )}
             {tab === 'fornecedores' && (
               <button onClick={() => { setFormForn({ nome: '', nif: '', email: '', telefone: '', morada: '' }); setModalForn('criar'); }}
@@ -179,9 +179,8 @@ export default function FornecedoresPage() {
               </div>
               {canEdit && (
                 <div className="flex gap-2">
-                  <button onClick={() => abrirEditarForn(f)}
-                    className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg"
-                    style={{ padding: '7px 12px' }}>Editar</button>
+                  <Button variant="secondary" size="sm" onClick={() => abrirEditarForn(f)}
+                    style={{ padding: '7px 12px' }}>Editar</Button>
                   <button onClick={() => mutDesativarForn.mutate(f.id)}
                     className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg"
                     style={{ padding: '7px 12px' }}>Remover</button>
@@ -272,7 +271,7 @@ export default function FornecedoresPage() {
               ))}
             </div>
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => { setModalForn(null); setEditForn(null); }} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => { setModalForn(null); setEditForn(null); }}  style={{ padding: '11px' }}>Cancelar</Button>
               <button
                 onClick={() => modalForn === 'criar' ? mutCriarForn.mutate(formForn) : mutEditarForn.mutate(formForn)}
                 disabled={(modalForn === 'criar' ? mutCriarForn.isPending : mutEditarForn.isPending) || !formForn.nome.trim()}
@@ -339,7 +338,7 @@ export default function FornecedoresPage() {
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModalEncomenda(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalEncomenda(false)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => mutCriarEncomenda.mutate(formEnc)}
                 disabled={mutCriarEncomenda.isPending || !formEnc.fornecedorId || !formEnc.stockItemId}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
@@ -367,7 +366,7 @@ export default function FornecedoresPage() {
                 style={{ padding: '10px 14px' }} min={1} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalReceber(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalReceber(null)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => mutReceberEncomenda.mutate()} disabled={mutReceberEncomenda.isPending || qtdRecebida <= 0}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {mutReceberEncomenda.isPending ? 'A registar...' : 'Confirmar Receção'}

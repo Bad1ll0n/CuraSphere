@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -113,10 +114,10 @@ export function DialisePanel({ doenteId, utilizador }: Props) {
           <h3 className="text-base font-semibold text-slate-900">Diálise / Nefrologia</h3>
           {sessoes.length === 0 && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem sessões registadas.</p>}
         </div>
-        <button onClick={() => setMostrarForm((v) => !v)}
-          className="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
+        <Button variant="secondary" onClick={() => setMostrarForm((v) => !v)}
+          >
           {mostrarForm ? 'Cancelar' : 'Registar sessão'}
-        </button>
+        </Button>
       </div>
 
       {mostrarForm && (
@@ -148,10 +149,10 @@ export function DialisePanel({ doenteId, utilizador }: Props) {
             <input value={uf} onChange={(e) => setUf(e.target.value)} type="number" placeholder="Ultrafiltração (mL)"
               aria-label="Ultrafiltração em mL" className="border border-slate-200 rounded-lg px-3 py-2 text-sm" />
           </div>
-          <button onClick={registar} disabled={guardando}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors">
+          <Button variant="primary" onClick={registar} disabled={guardando}
+            >
             {guardando ? 'A guardar…' : 'Guardar sessão'}
-          </button>
+          </Button>
         </div>
       )}
 

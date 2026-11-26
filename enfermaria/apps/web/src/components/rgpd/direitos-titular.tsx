@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import { useToast } from '@/components/toast';
 import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface Retencao {
   politica: { anosProcessoClinico: number; diasDadosQuiosque: number; anonimizacaoAutomatica: boolean };
@@ -64,10 +65,10 @@ export function DireitosTitular() {
       <p className="text-xs text-slate-500" style={{ marginBottom: '8px' }}>{t('exportHint')}</p>
       <div className="flex flex-wrap items-start gap-2">
         <div style={{ flex: '1 1 320px' }}><SeletorDoente id="rgpd-doente" value={doenteId} onChange={(id) => setDoenteId(id)} /></div>
-        <button type="button" disabled={!doenteId || aExportar} onClick={exportar}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl disabled:opacity-50" style={{ padding: '10px 16px' }}>
+        <Button variant="primary" type="button" disabled={!doenteId || aExportar} onClick={exportar}
+           style={{ padding: '10px 16px' }}>
           {aExportar ? t('exporting') : t('export')}
-        </button>
+        </Button>
       </div>
 
       <h3 className="text-sm font-semibold text-slate-700" style={{ marginTop: '24px' }}>{t('retentionTitle')}</h3>
@@ -95,10 +96,10 @@ export function DireitosTitular() {
                 <input id={`motivo-${e.id}`} value={motivo} maxLength={500} onChange={(ev) => setMotivo(ev.target.value)} className="border border-slate-200 rounded-lg text-sm" style={{ padding: '8px' }} />
                 <p className="text-xs text-red-700">{t('irreversible')}</p>
                 <div className="flex gap-2">
-                  <button type="button" disabled={motivo.trim().length < 10 || anonimizar.isPending} onClick={() => anonimizar.mutate(e.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg disabled:opacity-50" style={{ padding: '6px 10px' }}>
+                  <Button variant="danger" size="sm" type="button" disabled={motivo.trim().length < 10 || anonimizar.isPending} onClick={() => anonimizar.mutate(e.id)}
+                     style={{ padding: '6px 10px' }}>
                     {t('confirmAnonymize')}
-                  </button>
+                  </Button>
                   <button type="button" onClick={() => setAAnonimizar(null)} className="border border-slate-200 text-xs rounded-lg" style={{ padding: '6px 10px' }}>{t('cancel')}</button>
                 </div>
               </div>

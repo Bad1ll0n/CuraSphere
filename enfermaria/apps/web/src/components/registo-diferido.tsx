@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-/** Igual ao limiar da API (common/hora-do-ato.ts): mais de 10 min entre o ato e o registo. */
+/** Igual ao limiar da API (common/clinico/hora-do-ato.ts): mais de 10 min entre o ato e o registo. */
 const LIMIAR_DIFERIDO_MS = 10 * 60_000;
 
 /**

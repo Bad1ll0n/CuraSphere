@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ApenasNotificar } from './apenas-notificar';
 import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface EventoAdverso {
   id: string;
@@ -129,14 +130,13 @@ export default function EventosAdversosPage() {
           </p>
         </div>
         {podeRegistar && (
-          <button onClick={() => setModalNovo(true)}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          <Button variant="danger" className="flex gap-2" onClick={() => setModalNovo(true)}
             style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Registar Evento
-          </button>
+          </Button>
         )}
       </div>
 
@@ -317,14 +317,12 @@ export default function EventosAdversosPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalNovo(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criar} disabled={mutCriar.isPending || !form.descricao.trim()}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNovo(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={criar} disabled={mutCriar.isPending || !form.descricao.trim()}
                 style={{ padding: '11px' }}>
                 {mutCriar.isPending ? 'A guardar...' : 'Registar Evento'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -358,14 +356,12 @@ export default function EventosAdversosPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalAcao(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={guardarAcao} disabled={mutAcao.isPending}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAcao(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={guardarAcao} disabled={mutAcao.isPending}
                 style={{ padding: '11px' }}>
                 {mutAcao.isPending ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

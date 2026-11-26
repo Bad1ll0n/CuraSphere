@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Acesso {
   id: string;
@@ -113,11 +114,11 @@ export default function AcessosEmergenciaPage() {
                   <textarea id={`nota-${a.id}`} rows={2} value={nota} maxLength={1000} onChange={(e) => setNota(e.target.value)}
                     className="border border-slate-200 rounded-lg text-sm" style={{ padding: '8px' }} />
                   <div className="flex gap-2">
-                    <button type="button" disabled={nota.trim().length < 10 || rever.isPending}
+                    <Button variant="danger" type="button" disabled={nota.trim().length < 10 || rever.isPending}
                       onClick={() => rever.mutate({ id: a.id, resultado: 'injustificado', nota })}
-                      className="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '8px 14px' }}>
+                       style={{ padding: '8px 14px' }}>
                       {t('confirmUnjustified')}
-                    </button>
+                    </Button>
                     <button type="button" onClick={() => { setAInjustificar(null); setNota(''); }} className="border border-slate-200 text-sm rounded-lg" style={{ padding: '8px 14px' }}>
                       {t('cancel')}
                     </button>

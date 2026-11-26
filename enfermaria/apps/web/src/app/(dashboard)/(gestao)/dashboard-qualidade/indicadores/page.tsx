@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import type { IndicadorEnfermagem, ResultadoIndicadores } from '@org/shared';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 const hoje = () => new Date().toISOString().slice(0, 10);
 const menos = (dias: number) => new Date(Date.now() - dias * 86_400_000).toISOString().slice(0, 10);
@@ -84,9 +85,9 @@ export default function IndicadoresPage() {
         <label className="text-xs text-slate-600 flex flex-col gap-1">{t('service')}
           <input className={campo} style={{ padding: '6px 8px' }} value={filtro.servico} maxLength={60} placeholder={t('allServices')} onChange={(e) => setFiltro({ ...filtro, servico: e.target.value })} />
         </label>
-        <button type="submit" className="bg-blue-600 text-white text-sm font-semibold rounded-lg" style={{ padding: '7px 14px' }}>{t('apply')}</button>
-        <button type="button" onClick={() => exportarCsv()} className="border border-slate-200 text-sm rounded-lg text-slate-700" style={{ padding: '7px 14px' }}>{t('exportCsv')}</button>
-        <button type="button" onClick={exportarNotifica} className="border border-slate-200 text-sm rounded-lg text-slate-700" style={{ padding: '7px 14px' }}>{t('exportNotifica')}</button>
+        <Button variant="primary" type="submit"  style={{ padding: '7px 14px' }}>{t('apply')}</Button>
+        <Button variant="secondary" type="button" onClick={() => exportarCsv()}  style={{ padding: '7px 14px' }}>{t('exportCsv')}</Button>
+        <Button variant="secondary" type="button" onClick={exportarNotifica}  style={{ padding: '7px 14px' }}>{t('exportNotifica')}</Button>
       </form>
 
       {resumo.isLoading ? <p className="text-sm text-slate-500">{t('loading')}</p>

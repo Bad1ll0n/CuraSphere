@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { Button } from '@/components/ui';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -85,13 +86,13 @@ export function ConfirmModal({
         <h2 id={titleId} className="text-lg font-semibold text-slate-900 mb-2">{titulo}</h2>
         <p id={descId} className="text-sm text-slate-600 mb-6">{mensagem}</p>
         <div className="flex justify-end gap-3">
-          <button
+          <Button variant="secondary"
             ref={cancelarRef}
             onClick={onCancelar}
-            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400"
+            
           >
             {labelCancelar}
-          </button>
+          </Button>
           <button
             ref={confirmarRef}
             onClick={onConfirmar}

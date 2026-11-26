@@ -33,6 +33,7 @@ import { NovidadesModal } from '@/components/novidades-modal';
 import { PrimeirosPassos } from '@/components/primeiros-passos';
 import { gravarOnboarding, lerOnboarding } from '@/lib/onboarding';
 import { NOVIDADE_MAIS_RECENTE } from '@/lib/novidades';
+import { Button } from '@/components/ui';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
@@ -218,16 +219,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <button type="button" data-tour="ajuda" onClick={() => setShortcutsOpen(true)} aria-label={tAjuda('help')} title={tAjuda('help')}
-            className="relative h-10 w-10 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:bg-slate-100">
+          <Button variant="secondary" className="relative h-10 w-10" type="button" data-tour="ajuda" onClick={() => setShortcutsOpen(true)} aria-label={tAjuda('help')} title={tAjuda('help')}
+            >
             ?{novidadePorVer && <span className="sr-only">{tAjuda('newBadge')}</span>}
             {novidadePorVer && <span aria-hidden="true" className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600" />}
-          </button>
-          <button type="button" data-tour="bloquear" onClick={sessao.bloquear} title={tSessao('lockHint')} aria-label={tSessao('lock')}
-            className="h-10 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2" style={{ padding: '0 12px' }}>
+          </Button>
+          <Button variant="secondary" className="h-10 flex gap-2" type="button" data-tour="bloquear" onClick={sessao.bloquear} title={tSessao('lockHint')} aria-label={tSessao('lock')}
+             style={{ padding: '0 12px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             <span className="hidden sm:inline">{tSessao('lock')}</span>
-          </button>
+          </Button>
           <NotificationBell />
           <LanguageSwitcher />
           <DarkModeToggle />

@@ -8,6 +8,7 @@ import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { FormField } from '@/components/form-field';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -443,13 +444,13 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                                 ref={el => { fileInputRefs.current[av.id] = el; }}
                                 onChange={e => { const f = e.target.files?.[0]; if (f) uploadFoto(av.id, f); e.target.value = ''; }}
                               />
-                              <button
+                              <Button variant="secondary" size="sm" className="hover:text-rose-600 hover:border-rose-300"
                                 onClick={() => fileInputRefs.current[av.id]?.click()}
                                 disabled={uploadingFoto === av.id}
-                                className="text-xs text-slate-500 hover:text-rose-600 border border-slate-200 hover:border-rose-300 rounded-lg transition-colors disabled:opacity-50"
+                                
                                 style={{ padding: '3px 10px' }}>
                                 {uploadingFoto === av.id ? 'A enviar...' : '+ Foto'}
-                              </button>
+                              </Button>
                             </>
                           )}
                         </div>
@@ -791,11 +792,10 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
             {/* Modal footer */}
             <div className="flex gap-3 border-t border-slate-100 shrink-0" style={{ padding: '16px 28px' }}>
-              <button onClick={() => setModalAberto(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAberto(false)}
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
+              </Button>
               <button onClick={submeter} disabled={guardando || !form.localizacao.trim()}
                 className="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
                 style={{ padding: '11px' }}>

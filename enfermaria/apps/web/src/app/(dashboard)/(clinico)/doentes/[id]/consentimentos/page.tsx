@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 const TIPOS: Record<string, string> = {
   cirurgia: 'Cirurgia',
@@ -117,15 +118,15 @@ export default function ConsentimentosPage() {
             <p className="text-slate-500 text-sm">Registo de consentimentos do doente</p>
           </div>
           {podeCriar && (
-            <button
+            <Button variant="primary" className="ml-auto flex gap-1.5"
               onClick={() => setModalCriar(true)}
-              className="ml-auto flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Novo Consentimento
-            </button>
+            </Button>
           )}
         </div>
 
@@ -235,13 +236,13 @@ export default function ConsentimentosPage() {
               >
                 Cancelar
               </button>
-              <button
+              <Button variant="primary" className="flex-1"
                 onClick={() => criarMutation.mutate({ doenteId, tipo, descricao })}
                 disabled={!descricao.trim() || criarMutation.isPending}
-                className="flex-1 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                
               >
                 {criarMutation.isPending ? 'A criar...' : 'Criar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -314,13 +315,13 @@ export default function ConsentimentosPage() {
               >
                 Cancelar
               </button>
-              <button
+              <Button variant="danger" className="flex-1"
                 onClick={() => recusarMutation.mutate({ id: modalRecusar, motivo: motivoRecusa })}
                 disabled={!motivoRecusa.trim() || recusarMutation.isPending}
-                className="flex-1 py-2 text-sm font-semibold bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                
               >
                 {recusarMutation.isPending ? 'A registar...' : 'Registar Recusa'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

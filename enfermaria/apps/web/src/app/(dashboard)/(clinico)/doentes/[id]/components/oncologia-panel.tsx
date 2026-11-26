@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -141,10 +142,10 @@ export function OncologiaPanel({ doenteId, utilizador }: Props) {
             <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem plano de quimioterapia ativo.</p>
           </div>
           {podeCriar(utilizador?.role) && (
-            <button onClick={() => setMostrarCriar((v) => !v)}
-              className="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
+            <Button variant="secondary" onClick={() => setMostrarCriar((v) => !v)}
+              >
               {mostrarCriar ? 'Cancelar' : 'Registar plano'}
-            </button>
+            </Button>
           )}
         </div>
         {mostrarCriar && (
@@ -304,10 +305,10 @@ function CriarPlanoForm(p: FormProps) {
       <button onClick={() => p.setFarmacos([...p.farmacos, { nome: '', mgPorM2: '', doseMaximaMg: '' }])}
         className="text-sm font-medium text-blue-600 hover:text-blue-700" style={{ marginBottom: '10px' }}>+ Adicionar fármaco</button>
       <div>
-        <button onClick={p.criarPlano} disabled={p.criando}
-          className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors">
+        <Button variant="primary" onClick={p.criarPlano} disabled={p.criando}
+          >
           {p.criando ? 'A criar…' : 'Criar plano'}
-        </button>
+        </Button>
       </div>
     </div>
   );

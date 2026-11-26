@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui';
 /**
  * F-08: o par do `EmptyState` para quando a lista NÃO chegou a ser lida.
  *
@@ -45,14 +46,14 @@ export function ErroCarregamento({
         {descricao}
       </p>
       {onTentarNovamente && (
-        <button
+        <Button variant="primary"
           type="button"
           onClick={onTentarNovamente}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
+          
           style={{ padding: '8px 20px' }}
         >
           Tentar de novo
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import api from '@/lib/api';
 import { AiFeedback } from '@/components/ai-feedback';
+import { Button } from '@/components/ui';
 
 interface Protocolo {
   nome: string;
@@ -169,12 +170,12 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
             <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>
               Verificar aderência aos protocolos clínicos ativos para este doente.
             </p>
-            <button
+            <Button variant="primary"
               onClick={verificar}
-              className="text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors"
+              
               style={{ padding: '10px 24px' }}>
               Verificar Protocolos
-            </button>
+            </Button>
           </div>
         </div>
       )}

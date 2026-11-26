@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Modal } from '@/components/ui/modal';
+import { Button } from '@/components/ui';
 
 const MAX = 500;
 
@@ -40,17 +41,17 @@ function DialogoMotivo({ titulo, descricao, rotulo, botao, minimo = 10, placehol
       />
       <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Mínimo {MIN} caracteres.</p>
       <div className="flex gap-3" style={{ marginTop: '16px' }}>
-        <button onClick={() => onFim(null)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '10px' }}>
+        <Button variant="secondary" className="flex-1" onClick={() => onFim(null)}  style={{ padding: '10px' }}>
           Cancelar
-        </button>
-        <button
+        </Button>
+        <Button variant="danger" className="flex-1"
           onClick={() => valido && onFim(motivo.trim())}
           disabled={!valido}
-          className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-40"
+          
           style={{ padding: '10px' }}
         >
           {botao}
-        </button>
+        </Button>
       </div>
     </Modal>
   );
@@ -81,12 +82,12 @@ function DialogoConfirmacao({ titulo, descricao, confirmar, cancelar, onFim }: O
     <Modal isOpen titulo={titulo} onClose={() => onFim(false)} maxWidth="460px">
       <p className="text-sm text-slate-700" role="alert">{descricao}</p>
       <div className="flex gap-3" style={{ marginTop: '16px' }}>
-        <button autoFocus onClick={() => onFim(false)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50" style={{ padding: '10px' }}>
+        <Button variant="secondary" className="flex-1" autoFocus onClick={() => onFim(false)}  style={{ padding: '10px' }}>
           {cancelar}
-        </button>
-        <button onClick={() => onFim(true)} className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700" style={{ padding: '10px' }}>
+        </Button>
+        <Button variant="danger" className="flex-1" onClick={() => onFim(true)}  style={{ padding: '10px' }}>
           {confirmar}
-        </button>
+        </Button>
       </div>
     </Modal>
   );

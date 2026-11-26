@@ -15,6 +15,7 @@ import { ErroCarregamento } from '@/components/erro-carregamento';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 import { RegistoDiferido } from '@/components/registo-diferido';
+import { Button } from '@/components/ui';
 
 // UX-07: o texto vem de mar.reason.<valor>.
 const MOTIVOS_NAO_ADMIN = ['recusou', 'contraindicacao', 'em_exame', 'indisponivel', 'outro'] as const;
@@ -205,12 +206,12 @@ export function MarCliente() {
           <h1 className="text-3xl font-bold text-slate-900">{t('title')}</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>{t('currentShift', { turno: turnoLabel })}</p>
         </div>
-        <button onClick={carregar} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
+        <Button variant="secondary" className="flex gap-2" onClick={carregar}  style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           {tc('refresh')}
-        </button>
+        </Button>
       </div>
 
       {loading ? (
@@ -362,15 +363,14 @@ export function MarCliente() {
               )}
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalNaoAdmin(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>{tc('cancel')}</button>
-              <button onClick={registarNaoAdmin}
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNaoAdmin(null)}
+                style={{ padding: '11px' }}>{tc('cancel')}</Button>
+              <Button variant="danger" className="flex-1" onClick={registarNaoAdmin}
                 disabled={registandoNaoAdmin || (motivoSelecionado === 'outro' && !motivoOutro.trim())}
-                className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                
                 style={{ padding: '11px' }}>
                 {registandoNaoAdmin ? t('recording') : tc('confirm')}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -459,9 +459,8 @@ export function MarCliente() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalId(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>{tc('cancel')}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalId(null)}
+                style={{ padding: '11px' }}>{tc('cancel')}</Button>
               <button
                 onClick={() => administrar()}
                 disabled={!todasMarcadas || !!administrando || leituraBloqueia(leitura)}

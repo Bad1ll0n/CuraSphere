@@ -9,6 +9,7 @@ import { useToast } from '@/components/toast';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { pedirTexto } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface Medicacao {
   id: string;
@@ -96,14 +97,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 }) {
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>Cancelar</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? 'A guardar...' : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -719,7 +718,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 style={{ padding: '10px 14px' }} placeholder="Justificação clínica, alergias conhecidas..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalPropor(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalPropor(false)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeterProposta} disabled={salvandoProposta === 'propor' || !propostaMedNome.trim() || !propostaMedDose.trim() || !propostaMedVia || !propostaMedFreq}
                 className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {salvandoProposta === 'propor' ? 'A enviar...' : 'Propor ao Médico'}
@@ -744,9 +743,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 style={{ padding: '10px 14px' }} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRejeitarProposta(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={rejeitarProposta} disabled={!motivoRejProposta.trim() || salvandoProposta === 'rejeitar'}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRejeitarProposta(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={rejeitarProposta} disabled={!motivoRejProposta.trim() || salvandoProposta === 'rejeitar'}
+                 style={{ padding: '11px' }}>Rejeitar</Button>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 /**
  * PROD-12 — nota de alta de enfermagem (continuidade de cuidados para os CSP/RNCCI):
@@ -101,10 +102,10 @@ export function NotaAltaEnfermagemPanel({ doenteId, utilizador }: { doenteId: st
           </div>
           {podeEditar && (
             <div className="flex justify-end" style={{ marginTop: '12px' }}>
-              <button onClick={guardar} disabled={aGuardar}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50" style={{ padding: '8px 16px' }}>
+              <Button variant="primary" onClick={guardar} disabled={aGuardar}
+                 style={{ padding: '8px 16px' }}>
                 {aGuardar ? 'A guardar...' : 'Guardar nota'}
-              </button>
+              </Button>
             </div>
           )}
         </div>

@@ -8,6 +8,7 @@ import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useSocket, emitSocket } from '@/lib/use-socket';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -270,9 +271,8 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
               </div>
             ))}
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeterNotaClinica} disabled={salvandoSoap || !soapForm.subjetivo.trim() || !soapForm.objetivo.trim() || !soapForm.avaliacao.trim() || !soapForm.plano.trim()}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>

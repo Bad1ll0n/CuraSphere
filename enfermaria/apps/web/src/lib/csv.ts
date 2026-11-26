@@ -7,7 +7,7 @@
  * aspas sempre que tem separador, aspas, quebra de linha ou espaços nas pontas. Números
  * (incluindo negativos) ficam como estão.
  *
- * Cópia da API (apps/api/src/app/common/csv.ts) — as duas têm de ficar iguais.
+ * Cópia da API (apps/api/src/app/common/infra/csv.ts) — as duas têm de ficar iguais.
  */
 const INICIO_PERIGOSO = /^[=+\-@\t\r]/;
 const NUMERO = /^-?\d+([.,]\d+)?$/;

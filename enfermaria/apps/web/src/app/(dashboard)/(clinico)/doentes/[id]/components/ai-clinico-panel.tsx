@@ -6,6 +6,7 @@ import { AiFeedback } from '@/components/ai-feedback';
 import { AiConsentModal } from '@/components/ai-consent-modal';
 import { hasAiConsent } from '@/lib/ai-consent';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -349,12 +350,12 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
             {/* Estado inicial: sem streaming e sem resposta */}
             {!streaming && !textoStream && !resposta && (
               <div className="text-center" style={{ padding: '16px' }}>
-                <button
+                <Button variant="primary"
                   onClick={analisar}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
+                  
                   style={{ padding: '10px 24px' }}>
                   Analisar com IA
-                </button>
+                </Button>
               </div>
             )}
 

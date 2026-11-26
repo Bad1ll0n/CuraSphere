@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import type { DotacaoTurno, ParametrosDotacao, RegistoDotacaoHistorico } from '@org/shared';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 const COR: Record<string, string> = {
   verde: 'bg-green-100 text-green-800', amarelo: 'bg-amber-100 text-amber-800', vermelho: 'bg-red-100 text-red-800', sem_doentes: 'bg-slate-100 text-slate-500',
@@ -169,10 +170,10 @@ function DetalheServico({ servico, podeEditar }: { servico: string; podeEditar: 
               <input className="border border-slate-200 rounded-lg text-sm w-32" value={p.competenciaObrigatoria ?? ''} maxLength={40} onChange={(e) => setRascunho({ ...p, competenciaObrigatoria: e.target.value || null })} />
             </label>
             {podeEditar && (
-              <button type="button" disabled={!rascunho || guardar.isPending} onClick={() => rascunho && guardar.mutate(rascunho)}
-                className="self-start bg-blue-600 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+              <Button variant="primary" className="self-start" type="button" disabled={!rascunho || guardar.isPending} onClick={() => rascunho && guardar.mutate(rascunho)}
+                 style={{ padding: '6px 12px' }}>
                 {t('save')}
-              </button>
+              </Button>
             )}
           </fieldset>
         </div>

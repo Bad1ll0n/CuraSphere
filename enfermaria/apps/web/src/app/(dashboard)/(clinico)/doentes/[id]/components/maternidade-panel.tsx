@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, ReferenceArea } from 'recharts';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -163,10 +164,10 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
             <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem gravidez ativa.</p>
           </div>
           {editavel && (
-            <button onClick={() => setMostrarCriar((v) => !v)}
-              className="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
+            <Button variant="secondary" onClick={() => setMostrarCriar((v) => !v)}
+              >
               {mostrarCriar ? 'Cancelar' : 'Registar gravidez'}
-            </button>
+            </Button>
           )}
         </div>
         {mostrarCriar && (
@@ -185,11 +186,10 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
               <input value={fatores} onChange={(e) => setFatores(e.target.value)} placeholder="Fatores de risco"
                 aria-label="Fatores de risco" className="border border-slate-200 rounded-lg px-3 py-2 text-sm" />
             </div>
-            <button onClick={criarGravidez} disabled={criando}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+            <Button variant="primary" onClick={criarGravidez} disabled={criando}
               style={{ marginTop: '10px' }}>
               {criando ? 'A registar…' : 'Registar gravidez'}
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -253,10 +253,10 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
             <input value={descida} onChange={(e) => setDescida(e.target.value)} type="number" placeholder="Descida (-3..+3)"
               aria-label="Descida da apresentação" className="border border-slate-200 rounded-lg px-3 py-2 text-sm" />
           </div>
-          <button onClick={adicionarPartograma}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+          <Button variant="primary" onClick={adicionarPartograma}
+            >
             Adicionar ao partograma
-          </button>
+          </Button>
         </div>
       )}
 
@@ -274,10 +274,10 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
           {mostrarParto ? (
             <PartoForm onSubmit={registarParto} onCancel={() => setMostrarParto(false)} />
           ) : (
-            <button onClick={() => setMostrarParto(true)}
-              className="px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
+            <Button variant="secondary" onClick={() => setMostrarParto(true)}
+              >
               Registar parto
-            </button>
+            </Button>
           )}
         </div>
       ) : null}
@@ -337,10 +337,10 @@ function PartoForm({ onSubmit, onCancel }: { onSubmit: (d: { tipo: string; apgar
           className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors">
           Confirmar parto
         </button>
-        <button onClick={onCancel}
-          className="px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-medium text-slate-700 transition-colors">
+        <Button variant="secondary" onClick={onCancel}
+          >
           Cancelar
-        </button>
+        </Button>
       </div>
     </div>
   );

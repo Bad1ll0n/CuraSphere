@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 /**
  * UX-21 — posto de trabalho partilhado.
@@ -90,13 +91,13 @@ export function AvisoInatividade({ segundos, onContinuar, onSair }: { segundos: 
           {t('idleBody', { tempo: `${mm}:${ss}` })}
         </p>
         <div className="flex justify-end gap-2" style={{ marginTop: '20px' }}>
-          <button type="button" onClick={onSair} className="rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50" style={{ padding: '8px 16px' }}>
+          <Button variant="secondary" type="button" onClick={onSair}  style={{ padding: '8px 16px' }}>
             {t('logoutNow')}
-          </button>
+          </Button>
           {/* eslint-disable-next-line jsx-a11y/no-autofocus -- a ação principal do aviso */}
-          <button type="button" autoFocus onClick={onContinuar} className="rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700" style={{ padding: '8px 16px' }}>
+          <Button variant="primary" type="button" autoFocus onClick={onContinuar}  style={{ padding: '8px 16px' }}>
             {t('continue')}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -148,10 +149,10 @@ export function EcraBloqueado({ nome, alertasCriticos, onDesbloqueado, onTrocarU
             className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 12px' }} />
         </label>
         {erro && <p role="alert" className="text-sm text-red-600" style={{ marginTop: '8px' }}>{erro}</p>}
-        <button type="submit" disabled={aEnviar || !password}
-          className="w-full rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50" style={{ padding: '10px', marginTop: '16px' }}>
+        <Button variant="primary" fullWidth type="submit" disabled={aEnviar || !password}
+           style={{ padding: '10px', marginTop: '16px' }}>
           {t('unlock')}
-        </button>
+        </Button>
         <button type="button" onClick={onTrocarUtilizador}
           className="w-full rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50" style={{ padding: '10px', marginTop: '8px' }}>
           {t('switchUser')}
