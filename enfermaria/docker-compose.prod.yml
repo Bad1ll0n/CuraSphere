@@ -672,7 +672,7 @@ services:
 
   loki:
     profiles: ["monitoring"]
-    image: grafana/loki:3.6.20@sha256:be040ec94865dabe4821ce1c0f109452bd4b5acb566ae376672696eb43caedb7
+    image: grafana/loki:3.7.10@sha256:b43c257ccfc925d4a50b8717cac61a3b51df8c48d01847936057e5c4075a24a7
     container_name: curasphere-loki
     restart: unless-stopped
     command: ["-config.file=/etc/loki/loki.yml"]
