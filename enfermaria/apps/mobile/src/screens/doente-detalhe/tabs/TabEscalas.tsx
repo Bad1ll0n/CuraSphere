@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface Props {
   escalas: { braden?: any; morse?: any };
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function TabEscalas({ escalas, onAvaliar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   return (
     <View style={s.secao}>
       <EscalaCard
@@ -62,18 +64,18 @@ function EscalaCard({ titulo, subtitulo, avaliacao, riscoMap, riscoTextMap, risc
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12 },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 12 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
-  titulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  titulo: { fontSize: 15, fontWeight: '700', color: c.texto },
+  subtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   avaliarBotao: { backgroundColor: '#2563eb', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20 },
-  avaliarTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  avaliarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
   resultado: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, fontWeight: '700' },
-  pontuacao: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
-  dataText: { fontSize: 13, color: '#94a3b8', marginLeft: 'auto' as any },
-  semDados: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic' },
-});
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
+  pontuacao: { fontSize: 16, fontWeight: '700', color: c.texto },
+  dataText: { fontSize: 13, color: c.textoTenue, marginLeft: 'auto' as any },
+  semDados: { fontSize: 13, color: c.textoTenue, fontStyle: 'italic' },
+}));

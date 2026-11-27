@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, RefreshControl, Alert,
+  View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
@@ -9,6 +8,7 @@ import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface WorklistItem {
@@ -26,6 +26,7 @@ const ESTADO_LABEL: Record<string, string> = { pendente: 'Pendente', em_curso: '
 const PRIORIDADE_COR: Record<string, string> = { urgente: '#dc2626', alta: '#f97316', media: '#3b82f6', baixa: '#64748b' };
 
 export default function WorklistScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [items, setItems] = useState<WorklistItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -125,31 +126,31 @@ export default function WorklistScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  filtrosScroll: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  filtrosScroll: { backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   filtrosRow: { flexDirection: 'row', gap: 8, padding: 12 },
-  filtroChip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, backgroundColor: '#f1f5f9' },
+  filtroChip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, backgroundColor: c.fundo },
   filtroChipAtivo: { backgroundColor: '#06b6d4' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   lista: { padding: 16, gap: 12 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 1 }, shadowRadius: 6, elevation: 1 },
+  card: { backgroundColor: c.superficie, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 1 }, shadowRadius: 6, elevation: 1 },
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 },
-  cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
-  cardDoente: { fontSize: 13, color: '#475569', marginTop: 2 },
-  cardObs: { fontSize: 13, color: '#64748b', marginBottom: 4 },
-  cardInfo: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
+  cardTipo: { fontSize: 14, fontWeight: '700', color: c.texto },
+  cardDoente: { fontSize: 13, color: c.textoSecundario, marginTop: 2 },
+  cardObs: { fontSize: 13, color: c.textoTenue, marginBottom: 4 },
+  cardInfo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '700' },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 8 },
   acaoBtn: { paddingHorizontal: 16, paddingVertical: 7, borderRadius: 8, backgroundColor: '#eff6ff' },
-  acaoTexto: { color: '#2563eb', fontWeight: '700', fontSize: 13 },
-  vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 32, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 14 },
-});
+  acaoTexto: { color: '#2563eb', fontWeight: '700', fontSize: LETRA.corpo },
+  vazio: { backgroundColor: c.superficie, borderRadius: 14, padding: 32, alignItems: 'center' },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo },
+}));

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Alert } from 'react-native';
 import { shared } from '../styles';
 import SelectPicker from '../../../components/SelectPicker';
 import api from '../../../lib/api';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface Props { visible: boolean; doenteId: string; onClose: () => void; onSaved: () => void }
 
 export default function ModalContactoEmergencia({ visible, doenteId, onClose, onSaved }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [nome, setNome] = useState('');
   const [relacao, setRelacao] = useState('outro');
   const [tel, setTel] = useState('');
@@ -59,9 +61,9 @@ export default function ModalContactoEmergencia({ visible, doenteId, onClose, on
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   checkRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12, marginTop: 8 },
   check: { width: 20, height: 20, borderRadius: 4, borderWidth: 2, borderColor: '#2563eb', alignItems: 'center', justifyContent: 'center' },
   checkMark: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  checkLabel: { fontSize: 14, color: '#1e293b' },
-});
+  checkLabel: { fontSize: LETRA.corpo, color: c.texto },
+}));

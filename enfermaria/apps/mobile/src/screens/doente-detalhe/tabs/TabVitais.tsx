@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { shared } from '../styles';
 import EmptyState from '../../../components/EmptyState';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface Props {
   sinaisVitais: any[];
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function TabVitais({ sinaisVitais, loadingVitais, podeRegistarVitais, onRegistar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   return (
     <View style={s.secao}>
       <View style={shared.secaoHeader}>
@@ -63,16 +65,16 @@ function VitalItem({ label, valor, unidade, cor }: { label: string; valor: any; 
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 10 },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 10 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  data: { fontSize: 13, fontWeight: '700', color: '#1e293b' },
-  autor: { fontSize: 13, color: '#94a3b8' },
+  data: { fontSize: 13, fontWeight: '700', color: c.texto },
+  autor: { fontSize: 13, color: c.textoTenue },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  vitalItem: { backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, minWidth: 80, alignItems: 'center', borderLeftWidth: 3 },
-  vitalLabel: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.4 },
+  vitalItem: { backgroundColor: c.fundo, borderRadius: 10, padding: 10, minWidth: 80, alignItems: 'center', borderLeftWidth: 3 },
+  vitalLabel: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.4 },
   vitalValor: { fontSize: 18, fontWeight: '800', marginTop: 2 },
-  vitalUnidade: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
-  nota: { fontSize: 13, color: '#64748b', marginTop: 8, fontStyle: 'italic' },
-});
+  vitalUnidade: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
+  nota: { fontSize: 13, color: c.textoTenue, marginTop: 8, fontStyle: 'italic' },
+}));

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { estilosTematicos } from '../lib/tema';
 
 interface Option<T> { value: T; label: string }
 interface Props<T> { options: Option<T>[]; value: T; onChange: (v: T) => void }
@@ -20,10 +21,10 @@ export default function SelectPicker<T extends string | number>({ options, value
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   option: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, backgroundColor: '#e2e8f0' },
   active: { backgroundColor: '#2563eb' },
-  text: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  text: { fontSize: 13, fontWeight: '600', color: c.textoTenue },
   textActive: { color: '#fff' },
-});
+}));

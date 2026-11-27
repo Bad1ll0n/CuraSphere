@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import { shared } from '../styles';
+import { estilosTematicos, useEsquema } from '../../../lib/tema';
 
 /**
  * Pede um texto obrigatório (motivo, justificação). O `Alert.prompt` do React Native só existe
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function ModalMotivo({ visible, titulo, descricao, rotulo, botao, minimo = 5, onCancelar, onConfirmar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [texto, setTexto] = useState('');
   useEffect(() => { if (visible) setTexto(''); }, [visible]);
   const valido = texto.trim().length >= minimo;
@@ -60,16 +62,16 @@ export default function ModalMotivo({ visible, titulo, descricao, rotulo, botao,
   );
 }
 
-const s = StyleSheet.create({
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, gap: 8 },
-  descricao: { fontSize: 15, color: '#334155' },
-  rotulo: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 4 },
-  input: { borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 12, padding: 12, minHeight: 80, fontSize: 15, textAlignVertical: 'top' },
-  ajuda: { fontSize: 13, color: '#64748b' },
+const s = estilosTematicos((c) => ({
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, gap: 8 },
+  descricao: { fontSize: 15, color: c.textoSecundario },
+  rotulo: { fontSize: 13, fontWeight: '600', color: c.textoSecundario, marginTop: 4 },
+  input: { borderWidth: 1, borderColor: c.borda, borderRadius: 12, padding: 12, minHeight: 80, fontSize: 15, textAlignVertical: 'top' },
+  ajuda: { fontSize: 13, color: c.textoTenue },
   botoes: { flexDirection: 'row', gap: 12, marginTop: 8 },
-  cancelar: { flex: 1, borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 12, padding: 14, alignItems: 'center' },
-  cancelarTexto: { fontSize: 15, color: '#334155', fontWeight: '500' },
+  cancelar: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 12, padding: 14, alignItems: 'center' },
+  cancelarTexto: { fontSize: 15, color: c.textoSecundario, fontWeight: '500' },
   confirmar: { flex: 1, backgroundColor: '#dc2626', borderRadius: 12, padding: 14, alignItems: 'center' },
   confirmarTexto: { fontSize: 15, color: '#fff', fontWeight: '600' },
   desativado: { opacity: 0.4 },
-});
+}));

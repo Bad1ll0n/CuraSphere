@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { turnoDaHora } from '@org/shared';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, ActivityIndicator, RefreshControl,
+  View, Text, ScrollView, TouchableOpacity, Modal, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
@@ -27,6 +27,7 @@ const grupoRoles: Record<string, string[]> = {
 };
 
 export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [turnos, setTurnos] = useState<any[]>([]);
   const [doentes, setDoentes] = useState<any[]>([]);
   const [turnoSelecionado, setTurnoSelecionado] = useState<any>(null);
@@ -248,42 +249,42 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  semTurnoTexto: { fontSize: 16, color: '#94a3b8', textAlign: 'center' },
-  turnoSelector: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
+  semTurnoTexto: { fontSize: 16, color: c.textoTenue, textAlign: 'center' },
+  turnoSelector: { flexDirection: 'row', backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   turnoTab: { flex: 1, paddingVertical: 12, alignItems: 'center', borderBottomWidth: 2, borderBottomColor: 'transparent' },
-  turnoTabTexto: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
-  turnoTabSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
-  turnoInfo: { backgroundColor: '#fff', padding: 14, marginHorizontal: 16, marginTop: 12, borderRadius: 12, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
+  turnoTabTexto: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
+  turnoTabSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  turnoInfo: { backgroundColor: c.superficie, padding: 14, marginHorizontal: 16, marginTop: 12, borderRadius: 12, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
   turnoInfoTipo: { fontSize: 15, fontWeight: '700' },
-  turnoInfoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  turnoInfoSub: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   avisoChefe: { backgroundColor: '#fffbeb', borderWidth: 1, borderColor: '#fde68a', borderRadius: 10, padding: 10, marginHorizontal: 16, marginTop: 8 },
-  avisoTexto: { fontSize: 13, color: '#92400e' },
-  doenteCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', marginHorizontal: 16, marginTop: 8, borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
+  avisoTexto: { fontSize: LETRA.corpo, color: '#92400e' },
+  doenteCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 8, borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
   doenteCardEsq: { flexDirection: 'row', flex: 1 },
   estadoBar: { width: 4 },
   doenteInfo: { flex: 1, padding: 12 },
-  doenteNome: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
-  doenteSub: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
-  doenteDiag: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  doenteNome: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto },
+  doenteSub: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
+  doenteDiag: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   atribInfo: { paddingRight: 14, alignItems: 'flex-end' },
-  atribNome: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
-  editarHint: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  atribNome: { fontSize: LETRA.corpo, fontWeight: '600', color: '#2563eb' },
+  editarHint: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b', marginBottom: 4 },
-  sheetSub: { fontSize: 13, color: '#64748b', marginBottom: 16 },
-  profRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, marginBottom: 4 },
+  sheetSub: { fontSize: 13, color: c.textoTenue, marginBottom: 16 },
+  profRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: c.borda },
   profRowAtivo: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
   profInfo: { flex: 1 },
-  profNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  profAtribs: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  profNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  profAtribs: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   profHistorico: { fontSize: 13, color: '#16a34a', fontWeight: '600', marginTop: 2 },
   check: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
-});
+}));

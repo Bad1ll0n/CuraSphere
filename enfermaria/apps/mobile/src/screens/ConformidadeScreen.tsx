@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, Platform,
+  ActivityIndicator, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface AuditEntry {
   id: string;
@@ -69,6 +70,7 @@ function fmtData(iso: string) {
 }
 
 export default function ConformidadeScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [abaAtual, setAbaAtual] = useState<TabKey>('checklist');
   const [loadingChecklist, setLoadingChecklist] = useState(true);
   const [loadingConformidade, setLoadingConformidade] = useState(true);
@@ -287,30 +289,30 @@ export default function ConformidadeScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16,
-    paddingBottom: 12, backgroundColor: '#fff',
-    borderBottomWidth: 1, borderBottomColor: '#e2e8f0',
+    paddingBottom: 12, backgroundColor: c.superficie,
+    borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   btnVoltar: {
-    width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9',
+    width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo,
     alignItems: 'center', justifyContent: 'center',
   },
-  headerTitulo: { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
   tabRow: {
-    flexDirection: 'row', backgroundColor: '#fff',
-    borderBottomWidth: 1, borderBottomColor: '#e2e8f0',
+    flexDirection: 'row', backgroundColor: c.superficie,
+    borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   tab: { flex: 1, paddingVertical: 12, alignItems: 'center' },
   tabAtiva: { borderBottomWidth: 2, borderBottomColor: '#0f172a' },
-  tabLabel: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
-  tabLabelAtiva: { color: '#0f172a', fontWeight: '700' },
+  tabLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
+  tabLabelAtiva: { color: c.texto, fontWeight: '700' },
 
   kpiChipsRow: { flexDirection: 'row', gap: 10 },
   kpiChip: {
@@ -318,51 +320,51 @@ const s = StyleSheet.create({
     borderRadius: 12, borderWidth: 1,
   },
   kpiChipNum: { fontSize: 24, fontWeight: '800' },
-  kpiChipLabel: { fontSize: 13, fontWeight: '600', marginTop: 2 },
+  kpiChipLabel: { fontSize: LETRA.corpo, fontWeight: '600', marginTop: 2 },
 
   categoriaSecao: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda,
   },
   categoriaTitulo: {
-    fontSize: 13, fontWeight: '800', color: '#94a3b8',
+    fontSize: LETRA.corpo, fontWeight: '800', color: c.textoTenue,
     textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10,
   },
   checkItem: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f1f5f9', gap: 10,
+    paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: c.borda, gap: 10,
   },
-  checkLabel: { flex: 1, fontSize: 13, color: '#334155', lineHeight: 18 },
+  checkLabel: { flex: 1, fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 18 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20, minWidth: 90, alignItems: 'center' },
-  estadoBadgeTexto: { fontSize: 13, fontWeight: '700' },
+  estadoBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
 
   kpiRow: { flexDirection: 'row', gap: 10 },
   kpiCard: {
-    flex: 1, backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center',
+    flex: 1, backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda, alignItems: 'center',
   },
-  kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4, textAlign: 'center' },
+  kpiNum: { fontSize: 28, fontWeight: '800', color: c.texto },
+  kpiLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4, textAlign: 'center' },
 
   entradaCard: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda,
   },
   altoRiscoCard: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda,
     borderLeftWidth: 4, borderLeftColor: '#dc2626',
   },
   entradaLinha: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
-  entradaAcao: { flex: 1, fontSize: 13, fontWeight: '600', color: '#1e293b' },
-  entradaData: { fontSize: 13, color: '#94a3b8' },
+  entradaAcao: { flex: 1, fontSize: 13, fontWeight: '600', color: c.texto },
+  entradaData: { fontSize: 13, color: c.textoTenue },
   entradaMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-  entradaMetaTexto: { fontSize: 13, color: '#64748b' },
-  entradaIp: { fontSize: 13, color: '#94a3b8' },
+  entradaMetaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  entradaIp: { fontSize: 13, color: c.textoTenue },
 
-  entidadeBadge: { backgroundColor: '#f1f5f9', borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2 },
-  entidadeBadgeTexto: { fontSize: 13, color: '#475569' },
+  entidadeBadge: { backgroundColor: c.fundo, borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2 },
+  entidadeBadgeTexto: { fontSize: LETRA.corpo, color: c.textoSecundario },
 
   vazioCentro: { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center' },
-});
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center' },
+}));

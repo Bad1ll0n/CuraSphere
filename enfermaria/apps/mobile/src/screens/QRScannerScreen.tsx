@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
 interface CertoVerificado {
@@ -44,6 +45,7 @@ function base64urlParaTexto(b64url: string): string {
 }
 
 export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, onAdministrar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   // MB-10: o botão de fechar estava em `top: 52` fixo. Num iPhone com notch o inset
   // superior chega a 59 — o botão ficava POR BAIXO da câmara, inalcançável, num ecrã de
   // uso clínico constante e do qual não havia outra forma de sair.
@@ -332,7 +334,7 @@ export default function QRScannerScreen({ onScan, onFechar, doenteIdEsperado, on
 const CANTO = 22;
 const BORDA = 3;
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   container: {
     flex: 1,
     backgroundColor: '#0a0f1e',
@@ -352,15 +354,15 @@ const s = StyleSheet.create({
   },
   titulo: { fontSize: 20, fontWeight: '800', color: '#fff', marginTop: 8 },
   subtitulo: {
-    fontSize: 13,
-    color: '#64748b',
+    fontSize: LETRA.corpo,
+    color: c.textoTenue,
     marginTop: 6,
     marginBottom: 24,
     textAlign: 'center',
     paddingHorizontal: 32,
   },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 },
-  textoInfo: { color: '#94a3b8', fontSize: 14, textAlign: 'center', marginTop: 8 },
+  textoInfo: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center', marginTop: 8 },
   cameraBox: {
     width: 260,
     height: 260,
@@ -386,8 +388,8 @@ const s = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 12,
   },
-  erroTexto: { color: '#fca5a5', fontSize: 13, fontWeight: '500' },
-  dica: { color: '#475569', fontSize: 13, marginTop: 20 },
+  erroTexto: { color: '#fca5a5', fontSize: LETRA.corpo, fontWeight: '500' },
+  dica: { color: c.textoSecundario, fontSize: 13, marginTop: 20 },
   // ── Resultado ────────────────────────────────────────────────────────────────
   resultadoScroll: { width: '100%', paddingHorizontal: 16 },
   bannerResultado: {
@@ -398,17 +400,17 @@ const s = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 16,
   },
-  bannerOk:   { backgroundColor: 'rgba(34,197,94,0.12)' },
+  bannerOk: { backgroundColor: 'rgba(34,197,94,0.12)' },
   bannerFalha: { backgroundColor: 'rgba(239,68,68,0.12)' },
-  bannerTexto: { color: '#86efac', fontSize: 14, fontWeight: '600', flex: 1 },
+  bannerTexto: { color: '#86efac', fontSize: LETRA.corpo, fontWeight: '600', flex: 1 },
   medCard: {
     backgroundColor: '#1e293b',
     borderRadius: 12,
     padding: 14,
     marginBottom: 12,
   },
-  medNome:    { color: '#f1f5f9', fontSize: 16, fontWeight: '700' },
-  medDetalhe: { color: '#64748b', fontSize: 13, marginTop: 4 },
+  medNome: { color: '#f1f5f9', fontSize: 16, fontWeight: '700' },
+  medDetalhe: { color: c.textoTenue, fontSize: 13, marginTop: 4 },
   certoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -422,18 +424,18 @@ const s = StyleSheet.create({
     paddingVertical: 10, paddingHorizontal: 8, minHeight: 44,
   },
   confirmarBtnFeito: { opacity: 0.9 },
-  confirmarTexto: { fontSize: 13, color: '#f59e0b', fontWeight: '600' },
-  certoOk:    { backgroundColor: 'rgba(34,197,94,0.08)' },
+  confirmarTexto: { fontSize: LETRA.corpo, color: '#f59e0b', fontWeight: '600' },
+  certoOk: { backgroundColor: 'rgba(34,197,94,0.08)' },
   certoFalha: { backgroundColor: 'rgba(239,68,68,0.08)' },
-  certoNome:  { color: '#e2e8f0', fontSize: 14, fontWeight: '600' },
-  certoMotivo: { color: '#94a3b8', fontSize: 13, marginTop: 2 },
+  certoNome: { color: '#e2e8f0', fontSize: LETRA.corpo, fontWeight: '600' },
+  certoMotivo: { color: c.textoTenue, fontSize: 13, marginTop: 2 },
   overrideBox: {
     backgroundColor: '#1e293b',
     borderRadius: 12,
     padding: 14,
     marginTop: 8,
   },
-  overrideTitulo: { color: '#f59e0b', fontSize: 13, fontWeight: '600', marginBottom: 8 },
+  overrideTitulo: { color: '#f59e0b', fontSize: LETRA.corpo, fontWeight: '600', marginBottom: 8 },
   overrideInput: {
     backgroundColor: '#0f172a',
     color: '#f1f5f9',
@@ -458,7 +460,7 @@ const s = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
   },
-  btnNovoText: { color: '#94a3b8', fontSize: 14, fontWeight: '600' },
+  btnNovoText: { color: c.textoTenue, fontSize: 14, fontWeight: '600' },
   btnAdministrar: {
     flex: 1,
     flexDirection: 'row',
@@ -471,4 +473,4 @@ const s = StyleSheet.create({
   },
   btnAdministrarText: { color: '#fff', fontSize: 14, fontWeight: '700' },
   btnDisabled: { opacity: 0.4 },
-});
+}));

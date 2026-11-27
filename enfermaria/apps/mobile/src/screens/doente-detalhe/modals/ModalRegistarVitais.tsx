@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView } from 'react-native';
 import { shared } from '../styles';
 import api from '../../../lib/api';
 import { useNetworkStatus } from '../../../lib/network';
 import { enqueue } from '../../../lib/mutation-queue';
 import { avaliarCoerenciaVitais } from '@org/shared';
+import { estilosTematicos, useEsquema } from '../../../lib/tema';
 
 interface Props { visible: boolean; doenteId: string; onClose: () => void; onSaved: () => void }
 
 export default function ModalRegistarVitais({ visible, doenteId, onClose, onSaved }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const isOnline = useNetworkStatus();
   const [pS, setPS] = useState('');
   const [pD, setPD] = useState('');
@@ -108,4 +110,4 @@ export default function ModalRegistarVitais({ visible, doenteId, onClose, onSave
   );
 }
 
-const s = StyleSheet.create({ row: { flexDirection: 'row', gap: 10 }, col: { flex: 1 } });
+const s = estilosTematicos((c) => ({ row: { flexDirection: 'row', gap: 10 }, col: { flex: 1 } }));

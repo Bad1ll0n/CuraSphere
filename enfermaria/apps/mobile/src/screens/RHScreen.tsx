@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Platform, Alert,
+  View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Platform, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +9,7 @@ import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Ausencia {
   id: string;
   tipo: string;
@@ -98,6 +98,7 @@ function diasParaExpirar(iso?: string): number | null {
 }
 
 export default function RHScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [tab, setTab] = useState<Tab>('dashboard');
   const [ausenciasSub, setAusenciasSub] = useState<AusenciasSub>('todas');
 
@@ -422,8 +423,8 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
 
   header: {
     flexDirection: 'row',
@@ -432,80 +433,80 @@ const s = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: Platform.OS === 'ios' ? 56 : 16,
     paddingBottom: 12,
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: c.borda,
   },
   btnVoltar: {
     width: 38,
     height: 38,
     borderRadius: 10,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: c.fundo,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerTitulo: { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
   tabRow: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: c.borda,
   },
   tab: { flex: 1, paddingVertical: 12, alignItems: 'center' },
   tabAtiva: { borderBottomWidth: 2, borderBottomColor: '#0f172a' },
-  tabLabel: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
-  tabLabelAtiva: { color: '#0f172a', fontWeight: '700' },
+  tabLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
+  tabLabelAtiva: { color: c.texto, fontWeight: '700' },
 
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   scrollContent: { padding: 16, gap: 10, paddingBottom: 40 },
 
   vazioWrap: { alignItems: 'center', paddingTop: 60, gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
 
   kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   kpiCard: {
     width: '47%',
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: c.borda,
     borderTopWidth: 3,
     gap: 4,
   },
   kpiValor: { fontSize: 28, fontWeight: '800' },
-  kpiLabel: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  kpiLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
 
   segmentRow: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: c.borda,
     gap: 8,
   },
   segmentBtn: {
     flex: 1,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: c.fundo,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'transparent',
   },
   segmentBtnAtivo: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  segmentLabel: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  segmentLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   segmentLabelAtivo: { color: '#fff' },
 
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: c.borda,
     gap: 6,
   },
   cardTopoRow: {
@@ -514,13 +515,13 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
   },
-  cardNome: { flex: 1, fontSize: 15, fontWeight: '700', color: '#0f172a' },
+  cardNome: { flex: 1, fontSize: 15, fontWeight: '700', color: c.texto },
   cardInfoRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   cardMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  cardMeta: { fontSize: 13, color: '#94a3b8' },
+  cardMeta: { fontSize: 13, color: c.textoTenue },
 
   badge: { paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, fontWeight: '700' },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
 
   acoesRow: { flexDirection: 'row', gap: 10, marginTop: 4 },
   btnAprovar: {
@@ -537,13 +538,13 @@ const s = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
   },
-  btnAcoesTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  btnAcoesTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
   btnDesativado: { opacity: 0.5 },
 
   comentarios: {
     fontSize: 13,
-    color: '#475569',
+    color: c.textoSecundario,
     lineHeight: 18,
     marginTop: 2,
   },
-});
+}));

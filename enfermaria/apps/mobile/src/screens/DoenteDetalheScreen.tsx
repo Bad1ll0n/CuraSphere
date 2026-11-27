@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { turnoDeEscalaEmCurso } from '@org/shared';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, Alert, ActivityIndicator, RefreshControl, Image,
+  Alert, ActivityIndicator, RefreshControl, Image,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -38,6 +38,7 @@ import ModalMotivo from './doente-detalhe/modals/ModalMotivo';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
 import { corpoAdministracao } from '../lib/administracao';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -54,6 +55,7 @@ interface Props {
 type Aba = 'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas' | 'feridas' | 'ia' | 'alertas';
 
 export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doente, setDoente] = useState<any>(null);
   // QA-14 (motivo de descontinuação) e QA-15 (justificação da 1.ª dose por validar).
   const [pedidoMotivo, setPedidoMotivo] = useState<null | { tipo: 'descontinuar' | 'primeiraDose'; id: string; corpo?: object }>(null);
@@ -447,8 +449,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
@@ -457,20 +459,20 @@ const s = StyleSheet.create({
   avatarPlaceholder: { backgroundColor: '#3b82f6', alignItems: 'center', justifyContent: 'center' },
   avatarInicial: { fontSize: 20, fontWeight: '700', color: '#fff' },
   avatarCamIcon: { fontSize: 13, marginTop: 2 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerInfo: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   headerNome: { fontSize: 20, fontWeight: '700', color: '#fff', flex: 1, marginRight: 12 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
-  headerSub: { fontSize: 13, color: '#64748b' },
-  abas: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0', maxHeight: 44 },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  headerSub: { fontSize: 13, color: c.textoTenue },
+  abas: { backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda, maxHeight: 44 },
   aba: { paddingVertical: 12, paddingHorizontal: 14, alignItems: 'center' },
   abaAtiva: { borderBottomWidth: 2, borderBottomColor: '#2563eb' },
-  abaTexto: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
+  abaTexto: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
   abaTextoAtivo: { color: '#2563eb', fontWeight: '700' },
   conteudo: { flex: 1 },
   bannerAlergia: { backgroundColor: '#fef2f2', borderBottomWidth: 1, borderBottomColor: '#fecaca', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlergiaTexto: { fontSize: 13, fontWeight: '700', color: '#dc2626' },
+  bannerAlergiaTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#dc2626' },
   bannerAlerta: { backgroundColor: '#fef9c3', borderBottomWidth: 1, borderBottomColor: '#fde047', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlertaTexto: { fontSize: 13, fontWeight: '700', color: '#92400e' },
-});
+  bannerAlertaTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#92400e' },
+}));

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, Switch, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { CINCO_CERTOS, todosConfirmados, type Certo } from '../lib/administracao';
+import { estilosTematicos } from '../lib/tema';
 
 export interface MedicacaoAConfirmar {
   id: string;
@@ -78,19 +79,19 @@ export default function ModalCincoCertos({ medicacao, doente, offline, onConfirm
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   overlay: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
-  folha: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, gap: 10 },
-  titulo: { fontSize: 17, fontWeight: '700', color: '#0f172a' },
-  ajuda: { fontSize: 13, color: '#475569' },
-  linha: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  certo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  detalhe: { fontSize: 13, color: '#475569' },
+  folha: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, gap: 10 },
+  titulo: { fontSize: 17, fontWeight: '700', color: c.texto },
+  ajuda: { fontSize: 13, color: c.textoSecundario },
+  linha: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: c.borda },
+  certo: { fontSize: 14, fontWeight: '600', color: c.texto },
+  detalhe: { fontSize: 13, color: c.textoSecundario },
   offline: { fontSize: 13, color: '#92400e', backgroundColor: '#fef3c7', padding: 8, borderRadius: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 6 },
-  cancelar: { flex: 1, borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
-  cancelarTexto: { color: '#334155', fontWeight: '600' },
+  cancelar: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
+  cancelarTexto: { color: c.textoSecundario, fontWeight: '600' },
   confirmar: { flex: 1, backgroundColor: '#2563eb', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   confirmarTexto: { color: '#fff', fontWeight: '700' },
   desativado: { opacity: 0.45 },
-});
+}));

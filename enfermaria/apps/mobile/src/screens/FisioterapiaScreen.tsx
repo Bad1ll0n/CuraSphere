@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface PlanoReabilitacao {
   id: string;
@@ -40,6 +41,7 @@ const evolucaoCor: Record<string, string> = {
 };
 
 export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [tab, setTab] = useState<'planos' | 'sessoes'>('planos');
   const [planos, setPlanos] = useState<PlanoReabilitacao[]>([]);
   const [sessoes, setSessoes] = useState<SessaoFisioterapia[]>([]);
@@ -181,29 +183,29 @@ export default function FisioterapiaScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
-  tabs: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
+  tabs: { flexDirection: 'row', backgroundColor: c.superficie, paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: c.borda },
+  tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center' },
   tabAtivo: { backgroundColor: '#2563eb' },
-  tabTexto: { fontSize: 14, fontWeight: '600', color: '#64748b' },
+  tabTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   tabTextoAtivo: { color: '#fff' },
   vazio: { padding: 40, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
-  cartaoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto, flex: 1, marginRight: 8 },
+  cartaoSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, fontWeight: '600', textTransform: 'capitalize' },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '600', textTransform: 'capitalize' },
   progressoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
   progressoBarra: { flex: 1, height: 6, backgroundColor: '#e2e8f0', borderRadius: 3, overflow: 'hidden' },
   progressoFill: { height: 6, backgroundColor: '#2563eb', borderRadius: 3 },
-  progressoTexto: { fontSize: 13, color: '#64748b', width: 40, textAlign: 'right' },
+  progressoTexto: { fontSize: LETRA.corpo, color: c.textoTenue, width: 40, textAlign: 'right' },
   verSessoes: { fontSize: 13, color: '#2563eb', marginTop: 8, fontWeight: '600' },
-});
+}));

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, Modal,
-  StyleSheet, ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl,
   TextInput, KeyboardAvoidingView, Platform, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import { Utilizador } from '../lib/auth';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 
 /** Handler explícito para toques que devem ser absorvidos sem efeito. */
@@ -83,6 +84,7 @@ function tempoEspera(dataEntrada: string) {
 }
 
 export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [episodios, setEpisodios] = useState<EpisodioUrgencia[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -395,60 +397,60 @@ export default function UrgenciaScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container:       { flex: 1, backgroundColor: '#f1f5f9' },
-  centro:          { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  header:          { backgroundColor: '#dc2626', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  voltarBtn:       { padding: 4 },
-  addBtn:          { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.25)', alignItems: 'center', justifyContent: 'center' },
-  headerTitulo:    { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub:       { fontSize: 13, color: '#fecaca', marginTop: 2 },
-  contadoresRow:   { flexDirection: 'row', backgroundColor: '#fff', paddingVertical: 12, paddingHorizontal: 12, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  contadorCard:    { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderWidth: 2, borderRadius: 10, paddingVertical: 6 },
-  contadorNum:     { fontSize: 17, fontWeight: '800' },
-  dot:             { width: 9, height: 9, borderRadius: 5 },
-  filtros:         { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  filtro:          { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
-  filtroAtivo:     { backgroundColor: '#dc2626' },
-  filtroTexto:     { fontSize: 13, fontWeight: '600', color: '#64748b' },
-  filtroTextoAtivo:{ color: '#fff' },
-  vazio:           { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto:      { color: '#94a3b8', fontSize: 15 },
-  cartao:          { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
-  cartaoTopo:      { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
-  nomePaciente:    { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  triagemRow:      { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 3 },
-  triagemLabel:    { fontSize: 13, fontWeight: '700' },
-  triagemTempo:    { fontSize: 13, color: '#94a3b8' },
-  estadoBadge:     { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto:     { fontSize: 13, fontWeight: '600' },
-  queixa:          { fontSize: 13, color: '#475569', marginBottom: 8 },
-  rodape:          { flexDirection: 'row', gap: 14, flexWrap: 'wrap' },
-  infoRow:         { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  infoTexto:       { fontSize: 13, color: '#64748b' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  header: { backgroundColor: '#dc2626', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  voltarBtn: { padding: 4 },
+  addBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.25)', alignItems: 'center', justifyContent: 'center' },
+  headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
+  headerSub: { fontSize: 13, color: '#fecaca', marginTop: 2 },
+  contadoresRow: { flexDirection: 'row', backgroundColor: c.superficie, paddingVertical: 12, paddingHorizontal: 12, gap: 8, borderBottomWidth: 1, borderBottomColor: c.borda },
+  contadorCard: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderWidth: 2, borderRadius: 10, paddingVertical: 6 },
+  contadorNum: { fontSize: 17, fontWeight: '800' },
+  dot: { width: 9, height: 9, borderRadius: 5 },
+  filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center' },
+  filtroAtivo: { backgroundColor: '#dc2626' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
+  filtroTextoAtivo: { color: '#fff' },
+  vazio: { padding: 60, alignItems: 'center', gap: 12 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao:          { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
+  nomePaciente: { fontSize: 15, fontWeight: '700', color: c.texto },
+  triagemRow: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 3 },
+  triagemLabel: { fontSize: LETRA.corpo, fontWeight: '700' },
+  triagemTempo: { fontSize: 13, color: c.textoTenue },
+  estadoBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  queixa: { fontSize: LETRA.corpo, color: c.textoSecundario, marginBottom: 8 },
+  rodape: { flexDirection: 'row', gap: 14, flexWrap: 'wrap' },
+  infoRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  infoTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
   // Modal
-  modalOverlay:    { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' },
-  modalSheet:      { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24 },
-  modalHandle:     { width: 40, height: 4, borderRadius: 2, backgroundColor: '#e2e8f0', alignSelf: 'center', marginBottom: 20 },
-  modalTitulo:     { fontSize: 18, fontWeight: '700', color: '#0f172a', marginBottom: 20 },
-  fieldLabel:      { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
-  fieldOpcional:   { fontSize: 13, fontWeight: '400', color: '#94a3b8', textTransform: 'none', letterSpacing: 0 },
-  input:           { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 12, padding: 12, fontSize: 14, color: '#1e293b', backgroundColor: '#f8fafc', marginBottom: 16 },
-  triagemGrid:     { gap: 8, marginBottom: 16 },
-  triagemBtn:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2, borderRadius: 12, padding: 12 },
-  triagemBtnLabel: { fontSize: 14, fontWeight: '700' },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' },
+  modalSheet: { backgroundColor: c.superficie, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24 },
+  modalHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: '#e2e8f0', alignSelf: 'center', marginBottom: 20 },
+  modalTitulo: { fontSize: 18, fontWeight: '700', color: c.texto, marginBottom: 20 },
+  fieldLabel: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  fieldOpcional: { fontSize: 13, fontWeight: '400', color: c.textoTenue, textTransform: 'none', letterSpacing: 0 },
+  input: { borderWidth: 1, borderColor: c.borda, borderRadius: 12, padding: 12, fontSize: 14, color: c.texto, backgroundColor: c.fundo, marginBottom: 16 },
+  triagemGrid: { gap: 8, marginBottom: 16 },
+  triagemBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2, borderRadius: 12, padding: 12 },
+  triagemBtnLabel: { fontSize: LETRA.corpo, fontWeight: '700' },
   triagemBtnTempo: { fontSize: 13, fontWeight: '600' },
-  modalBtns:       { flexDirection: 'row', gap: 10, marginTop: 4 },
-  btnCancelar:     { flex: 1, paddingVertical: 13, borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center' },
-  btnCancelarTexto:{ fontSize: 14, fontWeight: '600', color: '#64748b' },
-  btnConfirmar:    { flex: 2, paddingVertical: 13, borderRadius: 12, alignItems: 'center' },
-  btnConfirmarTexto:{ fontSize: 14, fontWeight: '700', color: '#fff' },
+  modalBtns: { flexDirection: 'row', gap: 10, marginTop: 4 },
+  btnCancelar: { flex: 1, paddingVertical: 13, borderRadius: 12, borderWidth: 1, borderColor: c.borda, alignItems: 'center' },
+  btnCancelarTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
+  btnConfirmar: { flex: 2, paddingVertical: 13, borderRadius: 12, alignItems: 'center' },
+  btnConfirmarTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#fff' },
   // Ações episódio
-  acaoHeader:      { borderLeftWidth: 4, paddingLeft: 12, marginBottom: 4 },
-  acaoNome:        { fontSize: 16, fontWeight: '700', color: '#0f172a' },
-  acaoQueixa:      { fontSize: 13, color: '#64748b', marginTop: 2 },
-  acaoEstado:      { fontSize: 13, color: '#64748b', fontWeight: '600' },
-  semAcoes:        { fontSize: 13, color: '#94a3b8', fontStyle: 'italic', textAlign: 'center', marginTop: 8 },
-  acaoBtn:         { flexDirection: 'row', alignItems: 'center', gap: 10, borderWidth: 1.5, borderRadius: 12, padding: 14, marginBottom: 8, backgroundColor: '#f8fafc' },
-  acaoBtnTexto:    { fontSize: 14, fontWeight: '700' },
-});
+  acaoHeader: { borderLeftWidth: 4, paddingLeft: 12, marginBottom: 4 },
+  acaoNome: { fontSize: 16, fontWeight: '700', color: c.texto },
+  acaoQueixa: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
+  acaoEstado: { fontSize: 13, color: c.textoTenue, fontWeight: '600' },
+  semAcoes: { fontSize: 13, color: c.textoTenue, fontStyle: 'italic', textAlign: 'center', marginTop: 8 },
+  acaoBtn: { flexDirection: 'row', alignItems: 'center', gap: 10, borderWidth: 1.5, borderRadius: 12, padding: 14, marginBottom: 8, backgroundColor: c.fundo },
+  acaoBtnTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
+}));

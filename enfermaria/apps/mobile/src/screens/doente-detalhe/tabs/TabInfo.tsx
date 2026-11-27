@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { shared } from '../styles';
 import EmptyState from '../../../components/EmptyState';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface Props {
   doente: any;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function TabInfo({ doente, alergias, contactos, podeEditarDoente, podeRegistarVitais, podeDarAlta, onEditarDoente, onAdicionarAlergia, onRemoverAlergia, onAdicionarContacto, onRemoverContacto, onDarAlta }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   return (
     <View style={s.secao}>
       {podeEditarDoente && (
@@ -160,24 +162,24 @@ function ProfissionaisAtribuidos({ atribuicoes }: { atribuicoes: any[] }) {
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
   alergiaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
   alergiaBadge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 8 },
-  alergiaBadgeTexto: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase' },
-  alergiaNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  alergiaTipo: { fontSize: 13, color: '#64748b' },
+  alergiaBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', textTransform: 'uppercase' },
+  alergiaNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  alergiaTipo: { fontSize: 13, color: c.textoTenue },
   contactoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
-  contactoNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  contactoMeta: { fontSize: 13, color: '#64748b', marginTop: 1 },
+  contactoNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  contactoMeta: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   contactoPrincipalBadge: { backgroundColor: '#eff6ff', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
-  contactoPrincipalTexto: { fontSize: 13, fontWeight: '700', color: '#2563eb' },
+  contactoPrincipalTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#2563eb' },
   grupoAtrib: { gap: 2 },
   grupoTag: { alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, marginBottom: 4 },
-  grupoTagTexto: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.4 },
+  grupoTagTexto: { fontSize: LETRA.corpo, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.4 },
   atribLinha: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 3 },
-  atribNome: { fontSize: 14, fontWeight: '600', color: '#1e293b', flex: 1 },
-  atribMeta: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  atribNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto, flex: 1 },
+  atribMeta: { fontSize: 13, color: c.textoTenue, fontWeight: '500' },
   altaBotao: { backgroundColor: '#dc2626', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginTop: 8, marginHorizontal: 16, marginBottom: 16 },
   altaBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
-});
+}));

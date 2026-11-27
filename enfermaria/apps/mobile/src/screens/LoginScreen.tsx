@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform,
   ActivityIndicator, ScrollView, Alert,
 } from 'react-native';
 import Svg, { Circle, Ellipse, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { ativarEntradaBiometrica, entrarComBiometria, login, logout, verificarMfa, type ResultadoLogin } from '../lib/auth';
 import { autenticarComBiometria, biometriaDisponivel, temSessaoBiometrica } from '../lib/biometric';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 const PAPEIS_CLINICOS = ['medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros'];
 
@@ -37,6 +38,7 @@ function LogoCuraSphere({ size = 72 }: { size?: number }) {
 }
 
 export default function LoginScreen({ onLogin }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [numeroFuncionario, setNumeroFuncionario] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -254,13 +256,13 @@ export default function LoginScreen({ onLogin }: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   root: { flex: 1, backgroundColor: '#0a0f1e' },
 
   // Topo
   topo: { alignItems: 'center', paddingTop: 64, paddingBottom: 40, gap: 8 },
   marca: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: -0.5, marginTop: 4 },
-  slogan: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  slogan: { fontSize: 13, color: c.textoTenue, fontWeight: '500' },
   badge: {
     flexDirection: 'row', alignItems: 'center', gap: 6,
     backgroundColor: 'rgba(59,130,246,0.12)', borderWidth: 1,
@@ -268,30 +270,30 @@ const s = StyleSheet.create({
     paddingHorizontal: 14, paddingVertical: 6, marginTop: 12,
   },
   badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#60a5fa' },
-  badgeTexto: { fontSize: 13, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
 
   // Formulário
   sheet: {
-    flex: 1, backgroundColor: '#fff',
+    flex: 1, backgroundColor: c.superficie,
     borderTopLeftRadius: 28, borderTopRightRadius: 28,
   },
   sheetContent: { padding: 28, paddingTop: 32, paddingBottom: 40 },
-  bemVindo: { fontSize: 22, fontWeight: '800', color: '#0f172a', marginBottom: 4 },
-  instrucao: { fontSize: 13, color: '#64748b', marginBottom: 28 },
+  bemVindo: { fontSize: 22, fontWeight: '800', color: c.texto, marginBottom: 4 },
+  instrucao: { fontSize: 13, color: c.textoTenue, marginBottom: 28 },
 
   campo: { marginBottom: 20 },
-  label: { fontSize: 13, fontWeight: '700', color: '#334155', marginBottom: 8 },
+  label: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, marginBottom: 8 },
   input: {
-    borderWidth: 1.5, borderColor: '#e2e8f0', borderRadius: 12,
+    borderWidth: 1.5, borderColor: c.borda, borderRadius: 12,
     paddingHorizontal: 16, paddingVertical: 14,
-    fontSize: 15, color: '#0f172a', backgroundColor: '#f8fafc',
+    fontSize: 15, color: c.texto, backgroundColor: c.fundo,
   },
 
   erroBox: {
     backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca',
     borderRadius: 10, padding: 12, marginBottom: 16,
   },
-  erroTexto: { color: '#dc2626', fontSize: 13, fontWeight: '500' },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, fontWeight: '500' },
 
   botao: {
     backgroundColor: '#2563eb', borderRadius: 14,
@@ -302,7 +304,7 @@ const s = StyleSheet.create({
   botaoDesativado: { backgroundColor: '#93c5fd', shadowOpacity: 0 },
   botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
 
-  rodape: { textAlign: 'center', fontSize: 13, color: '#94a3b8', marginTop: 24 },
+  rodape: { textAlign: 'center', fontSize: 13, color: c.textoTenue, marginTop: 24 },
 
   botaoBio: {
     marginTop: 12, borderWidth: 1.5, borderColor: '#2563eb',
@@ -318,7 +320,7 @@ const s = StyleSheet.create({
   bioOfertaDesc: { fontSize: 13, color: '#3b82f6', marginBottom: 14 },
   bioOfertaBotoes: { flexDirection: 'row', gap: 10 },
   bioNao: { flex: 1, borderWidth: 1, borderColor: '#93c5fd', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
-  bioNaoTexto: { color: '#3b82f6', fontSize: 13, fontWeight: '600' },
+  bioNaoTexto: { color: '#3b82f6', fontSize: LETRA.corpo, fontWeight: '600' },
   bioSim: { flex: 1, backgroundColor: '#2563eb', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
-  bioSimTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
-});
+  bioSimTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
+}));

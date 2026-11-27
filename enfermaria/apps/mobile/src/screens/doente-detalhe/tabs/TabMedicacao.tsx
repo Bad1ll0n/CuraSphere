@@ -4,6 +4,7 @@ import { CameraView, Camera } from 'expo-camera';
 import { shared } from '../styles';
 import EmptyState from '../../../components/EmptyState';
 import api from '../../../lib/api';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface Props {
   doenteId: string;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreveMed, podeRegistarMed, onHistorico, onPrescrever, onRegistar, onConcluir }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [scanAtivo, setScanAtivo] = useState(false);
   const [scanFeito, setScanFeito] = useState(false);
 
@@ -119,17 +121,17 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
   info: { flex: 1 },
-  nome: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
-  detalhe: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  nome: { fontSize: 15, fontWeight: '600', color: c.texto },
+  detalhe: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   botoes: { flexDirection: 'row', gap: 6, alignItems: 'center' },
   administrarBotao: { backgroundColor: '#dbeafe', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20 },
-  administrarTexto: { color: '#1d4ed8', fontWeight: '600', fontSize: 13 },
+  administrarTexto: { color: '#1d4ed8', fontWeight: '600', fontSize: LETRA.corpo },
   descontinuarBotao: { backgroundColor: '#fee2e2', width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  descontinuarTexto: { color: '#dc2626', fontWeight: '700', fontSize: 14 },
+  descontinuarTexto: { color: '#dc2626', fontWeight: '700', fontSize: LETRA.corpo },
   scanBotao: { backgroundColor: '#f0fdf4' },
   scanTexto: { fontSize: 16 },
   scanContainer: { flex: 1, backgroundColor: '#000' },
@@ -138,4 +140,4 @@ const s = StyleSheet.create({
   scanDica: { color: '#fff', fontSize: 13, marginTop: 20, textAlign: 'center', backgroundColor: 'rgba(0,0,0,0.5)', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
   fecharScan: { position: 'absolute', bottom: 48, alignSelf: 'center', backgroundColor: '#1e293b', paddingHorizontal: 32, paddingVertical: 14, borderRadius: 24 },
   fecharScanTexto: { color: '#fff', fontWeight: '600', fontSize: 15 },
-});
+}));

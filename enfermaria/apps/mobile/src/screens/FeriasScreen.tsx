@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, TextInput, ActivityIndicator, RefreshControl, Alert,
+  View, Text, ScrollView, TouchableOpacity, Modal, TextInput, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Ausencia {
@@ -34,6 +34,7 @@ const ESTADO_LABEL: Record<string, string> = { pendente: 'Pendente', aprovada: '
 const isChefe = (role: string) => ['chefe_enfermeiros', 'chefe_medicos', 'direcao', 'administrativo'].includes(role);
 
 export default function FeriasScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [saldo, setSaldo] = useState<SaldoFerias | null>(null);
   const [minhas, setMinhas] = useState<Ausencia[]>([]);
   const [paraAprovar, setParaAprovar] = useState<Ausencia[]>([]);
@@ -247,57 +248,57 @@ export default function FeriasScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   novoBotao: { backgroundColor: '#0ea5e9', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10 },
-  novoTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  saldoCard: { margin: 16, backgroundColor: '#fff', borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
-  saldoTitulo: { fontSize: 14, fontWeight: '700', color: '#1e293b', marginBottom: 12 },
+  novoTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  saldoCard: { margin: 16, backgroundColor: c.superficie, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
+  saldoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, marginBottom: 12 },
   saldoRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 12 },
   saldoItem: { alignItems: 'center' },
-  saldoNum: { fontSize: 28, fontWeight: '800', color: '#1e293b' },
-  saldoLabel: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  saldoNum: { fontSize: 28, fontWeight: '800', color: c.texto },
+  saldoLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   barraFundo: { height: 8, backgroundColor: '#e2e8f0', borderRadius: 4 },
   barraPreench: { height: 8, backgroundColor: '#dc2626', borderRadius: 4 },
   secao: { paddingHorizontal: 16, marginBottom: 8 },
-  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 8 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 1 }, shadowRadius: 6, elevation: 1 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 8 },
+  card: { backgroundColor: c.superficie, borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 1 }, shadowRadius: 6, elevation: 1 },
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  cardNome: { fontSize: 14, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
-  cardDatas: { fontSize: 13, color: '#64748b' },
-  cardObs: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
+  cardNome: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, marginBottom: 2 },
+  cardDatas: { fontSize: 13, color: c.textoTenue },
+  cardObs: { fontSize: 13, color: c.textoTenue, marginTop: 4 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '700' },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 10 },
   rejeitarBtn: { flex: 1, paddingVertical: 8, borderRadius: 8, backgroundColor: '#fef2f2', alignItems: 'center' },
-  rejeitarTexto: { color: '#dc2626', fontWeight: '700', fontSize: 13 },
+  rejeitarTexto: { color: '#dc2626', fontWeight: '700', fontSize: LETRA.corpo },
   aprovarBtn: { flex: 1, paddingVertical: 8, borderRadius: 8, backgroundColor: '#dcfce7', alignItems: 'center' },
-  aprovarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 13 },
+  aprovarTexto: { color: '#16a34a', fontWeight: '700', fontSize: LETRA.corpo },
   eliminarLink: { marginTop: 8 },
-  eliminarTexto: { fontSize: 13, color: '#dc2626', textDecorationLine: 'underline' },
-  vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 24, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 14 },
+  eliminarTexto: { fontSize: LETRA.corpo, color: '#dc2626', textDecorationLine: 'underline' },
+  vazio: { backgroundColor: c.superficie, borderRadius: 14, padding: 24, alignItems: 'center' },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetCab: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b' },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  formLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 12, marginBottom: 6 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  formLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario, marginTop: 12, marginBottom: 6 },
   chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: '#e2e8f0' },
   chipAtivo: { backgroundColor: '#2563eb' },
-  chipTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  chipTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   chipTextoAtivo: { color: '#fff' },
-  input: { backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, padding: 12, fontSize: 14, color: '#1e293b' },
-  erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
+  input: { backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda, borderRadius: 10, padding: 12, fontSize: 14, color: c.texto },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 16 },
   cancelarBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
-  submeterTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-});
+  submeterTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
+}));

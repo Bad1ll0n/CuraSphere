@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, StyleSheet, ActivityIndicator,
+  View, Text, ScrollView, ActivityIndicator,
   RefreshControl, TouchableOpacity,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 const TIPO_LABEL: Record<string, string> = {
   listagem_dados: 'Listagem de Dados',
@@ -49,6 +50,7 @@ interface Pedido {
 interface Props { utilizador: Utilizador }
 
 export default function PedidosTIScreen({ utilizador }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [todos, setTodos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -209,43 +211,43 @@ export default function PedidosTIScreen({ utilizador }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: c.fundo },
   header: { backgroundColor: '#0f172a', padding: 24, paddingTop: 20 },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 13, color: '#64748b', marginTop: 4 },
+  headerSub: { fontSize: 13, color: c.textoTenue, marginTop: 4 },
   headerStats: { flexDirection: 'row', alignItems: 'center', marginTop: 16, gap: 16 },
   stat: { alignItems: 'center' },
   statNum: { fontSize: 28, fontWeight: '800' },
-  statLabel: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  statLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   statDiv: { width: 1, height: 32, backgroundColor: '#1e293b' },
   filtrosRow: { marginTop: 12 },
   filtrosContent: { paddingHorizontal: 16, gap: 8, paddingBottom: 4 },
   filtroBotao: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#e2e8f0' },
   filtroBotaoAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   secao: { paddingHorizontal: 16, paddingTop: 12 },
-  cartao: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, marginBottom: 10, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  cartao: { flexDirection: 'row', backgroundColor: c.superficie, borderRadius: 14, marginBottom: 10, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   urgenteBarra: { width: 4 },
   cartaoCorpo: { flex: 1, padding: 14 },
   cabecalho: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  titulo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  tipoTexto: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  titulo: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  tipoTexto: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   urgenteBadge: { backgroundColor: '#fef2f2', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
-  urgenteTexto: { fontSize: 13, fontWeight: '700', color: '#ef4444' },
+  urgenteTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#ef4444' },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
-  metaTexto: { fontSize: 13, color: '#94a3b8', marginTop: 6 },
-  detalhe: { marginTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 12 },
-  descricao: { fontSize: 13, color: '#475569', lineHeight: 20, marginBottom: 10 },
-  responsavelTexto: { fontSize: 13, color: '#6366f1', fontWeight: '600', marginBottom: 10 },
-  acoesTotulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  metaTexto: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 6 },
+  detalhe: { marginTop: 12, borderTopWidth: 1, borderTopColor: c.borda, paddingTop: 12 },
+  descricao: { fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 20, marginBottom: 10 },
+  responsavelTexto: { fontSize: LETRA.corpo, color: '#6366f1', fontWeight: '600', marginBottom: 10 },
+  acoesTotulo: { fontSize: 13, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
   acoesRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  acaoBotao: { borderWidth: 1, borderColor: '#e2e8f0', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  acaoTexto: { fontSize: 13, color: '#64748b' },
+  acaoBotao: { borderWidth: 1, borderColor: c.borda, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
+  acaoTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 48 },
-  vazioTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b', textAlign: 'center' },
-  vazioSub: { fontSize: 14, color: '#94a3b8', textAlign: 'center', marginTop: 6 },
-});
+  vazioTitulo: { fontSize: 18, fontWeight: '700', color: c.texto, textAlign: 'center' },
+  vazioSub: { fontSize: 14, color: c.textoTenue, textAlign: 'center', marginTop: 6 },
+}));

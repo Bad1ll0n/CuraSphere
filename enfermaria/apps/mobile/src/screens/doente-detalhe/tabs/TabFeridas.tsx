@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Image, Alert,
+  View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../../lib/api';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 interface FotoFerida {
   id: string;
@@ -35,6 +35,7 @@ const TIPO_LABEL: Record<string, string> = {
 };
 
 export default function TabFeridas({ doenteId, podeRegistar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
@@ -179,18 +180,18 @@ export default function TabFeridas({ doenteId, podeRegistar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  emptyText: { fontSize: 14, color: '#64748b', fontWeight: '600', marginBottom: 4 },
-  emptySubText: { fontSize: 13, color: '#94a3b8', textAlign: 'center' },
-  card: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#e2e8f0' },
+  emptyText: { fontSize: 14, color: c.textoTenue, fontWeight: '600', marginBottom: 4 },
+  emptySubText: { fontSize: 13, color: c.textoTenue, textAlign: 'center' },
+  card: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: c.borda },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start' },
-  tipo: { fontSize: 13, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
-  localizacao: { fontSize: 13, color: '#475569', marginBottom: 2 },
-  meta: { fontSize: 13, color: '#94a3b8' },
+  tipo: { fontSize: 13, fontWeight: '700', color: c.texto, marginBottom: 2 },
+  localizacao: { fontSize: 13, color: c.textoSecundario, marginBottom: 2 },
+  meta: { fontSize: 13, color: c.textoTenue },
   fotoBotao: { backgroundColor: '#2563eb', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, minWidth: 70, alignItems: 'center', justifyContent: 'center' },
-  fotoBotaoTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
-  thumbnail: { width: 72, height: 72, borderRadius: 10, marginRight: 8, borderWidth: 1, borderColor: '#e2e8f0' },
+  fotoBotaoTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
+  thumbnail: { width: 72, height: 72, borderRadius: 10, marginRight: 8, borderWidth: 1, borderColor: c.borda },
   semFotos: { fontSize: 13, color: '#cbd5e1', fontStyle: 'italic', marginTop: 8 },
-});
+}));

@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Modal, TextInput, Alert, Platform,
+  ActivityIndicator, RefreshControl, Modal, TextInput, Alert, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -67,6 +68,7 @@ function tipoCfg(tipo: TipoDieta) {
 // ─── Screen ──────────────────────────────────────────────────────────────────
 
 export default function DietasScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [registos, setRegistos] = useState<RegistoDieta[]>([]);
   const [loading, setLoading]   = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -440,107 +442,107 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 
-const s = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: '#f1f5f9' },
-  centro:     { flex: 1, alignItems: 'center', justifyContent: 'center' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   // Header
-  header:      { backgroundColor: '#16a34a', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  voltarBtn:   { padding: 4 },
+  header: { backgroundColor: '#16a34a', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub:   { fontSize: 13, color: '#bbf7d0', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#bbf7d0', marginTop: 2 },
 
   // Stats bar
-  statsBar:       { flexDirection: 'row', backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  statItem:       { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  statDivider:    { width: 1, height: 20, backgroundColor: '#e2e8f0', marginHorizontal: 12 },
-  statTexto:      { fontSize: 13, color: '#64748b' },
-  statValor:      { fontWeight: '700', color: '#1e293b' },
+  statsBar: { flexDirection: 'row', backgroundColor: c.superficie, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: c.borda },
+  statItem: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  statDivider: { width: 1, height: 20, backgroundColor: '#e2e8f0', marginHorizontal: 12 },
+  statTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  statValor: { fontWeight: '700', color: c.texto },
   statTextoAviso: { color: '#d97706' },
   statValorAviso: { color: '#d97706' },
 
   // Section headers
-  seccaoHeader:      { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 20, paddingBottom: 6, gap: 6 },
-  seccaoTitulo:      { fontSize: 13, fontWeight: '700', color: '#16a34a', flex: 1 },
-  seccaoBadge:       { backgroundColor: '#dcfce7', borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2 },
-  seccaoBadgeTexto:  { fontSize: 13, fontWeight: '700', color: '#16a34a' },
-  seccaoBadgeAviso:  { backgroundColor: '#fef3c7' },
+  seccaoHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 20, paddingBottom: 6, gap: 6 },
+  seccaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: '#16a34a', flex: 1 },
+  seccaoBadge: { backgroundColor: '#dcfce7', borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2 },
+  seccaoBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#16a34a' },
+  seccaoBadgeAviso: { backgroundColor: '#fef3c7' },
   seccaoBadgeTextoAviso: { color: '#d97706' },
 
   // Cards
-  cartao:      { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
-  cartaoTopo:  { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
-  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
-  cartaoProc:  { fontSize: 13, color: '#94a3b8' },
-  tipoBadge:   { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  tipoTexto:   { fontSize: 13, fontWeight: '700' },
+  cartao:      { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
+  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto, marginBottom: 2 },
+  cartaoProc: { fontSize: 13, color: c.textoTenue },
+  tipoBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
+  tipoTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
 
   // Restrictions chips (display)
-  restricoesRow:   { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 6 },
-  restricaoBadge:  { backgroundColor: '#f1f5f9', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
-  restricaoTexto:  { fontSize: 13, color: '#475569', fontWeight: '500' },
+  restricoesRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 6 },
+  restricaoBadge: { backgroundColor: c.fundo, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
+  restricaoTexto: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
 
   // Sem dieta badge
   semDietaBadge: { backgroundColor: '#fef3c7', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  semDietaTexto: { fontSize: 13, fontWeight: '700', color: '#d97706' },
+  semDietaTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#d97706' },
 
   // Info row
-  infoRow:    { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
-  infoTexto:  { fontSize: 13, color: '#64748b', flex: 1 },
+  infoRow: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
+  infoTexto: { fontSize: LETRA.corpo, color: c.textoTenue, flex: 1 },
 
   // Card footer
-  cartaoRodape:  { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#f1f5f9' },
-  rodapeTexto:   { fontSize: 13, color: '#94a3b8' },
-  rodapeSep:     { fontSize: 13, color: '#cbd5e1', marginHorizontal: 2 },
+  cartaoRodape: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: c.borda },
+  rodapeTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  rodapeSep: { fontSize: 13, color: '#cbd5e1', marginHorizontal: 2 },
 
   // Empty state
-  vazio:      { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
+  vazio: { padding: 60, alignItems: 'center', gap: 12 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
 
   // FAB
   fab: { position: 'absolute', bottom: 28, right: 24, width: 56, height: 56, borderRadius: 28, backgroundColor: '#16a34a', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.2, shadowOffset: { width: 0, height: 4 }, shadowRadius: 8, elevation: 6 },
 
   // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
-  modalBox:     { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '92%', paddingBottom: Platform.OS === 'ios' ? 32 : 16 },
-  modalHeader:  { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  modalTitulo:  { flex: 1, fontSize: 17, fontWeight: '700', color: '#1e293b' },
-  modalFechar:  { padding: 4 },
+  modalBox: { backgroundColor: c.superficie, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '92%', paddingBottom: Platform.OS === 'ios' ? 32 : 16 },
+  modalHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: c.borda },
+  modalTitulo: { flex: 1, fontSize: 17, fontWeight: '700', color: c.texto },
+  modalFechar: { padding: 4 },
 
-  labelSeccao: { fontSize: 13, fontWeight: '700', color: '#475569', paddingHorizontal: 20, marginTop: 18, marginBottom: 8 },
+  labelSeccao: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, paddingHorizontal: 20, marginTop: 18, marginBottom: 8 },
 
   // Patient search
-  pesquisaBox:   { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, marginHorizontal: 20, paddingHorizontal: 12, paddingVertical: 8 },
-  pesquisaInput: { flex: 1, fontSize: 14, color: '#1e293b' },
-  doenteListaBox: { maxHeight: 200, marginHorizontal: 20, marginTop: 6, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, backgroundColor: '#f8fafc' },
-  doenteVazio:   { textAlign: 'center', color: '#94a3b8', fontSize: 13, paddingVertical: 20 },
-  doenteItem:    { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  pesquisaBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda, borderRadius: 10, marginHorizontal: 20, paddingHorizontal: 12, paddingVertical: 8 },
+  pesquisaInput: { flex: 1, fontSize: 14, color: c.texto },
+  doenteListaBox: { maxHeight: 200, marginHorizontal: 20, marginTop: 6, borderWidth: 1, borderColor: c.borda, borderRadius: 10, backgroundColor: c.fundo },
+  doenteVazio: { textAlign: 'center', color: c.textoTenue, fontSize: 13, paddingVertical: 20 },
+  doenteItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: c.borda },
   doenteItemSel: { backgroundColor: '#f0fdf4' },
-  doenteNome:    { fontSize: 14, color: '#1e293b', fontWeight: '500' },
+  doenteNome: { fontSize: LETRA.corpo, color: c.texto, fontWeight: '500' },
   doenteNomeSel: { color: '#16a34a', fontWeight: '700' },
-  doenteInfo:    { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  doenteInfo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 1 },
 
   // Diet type radio grid
-  tiposGrid:     { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 20 },
-  tipoOpcao:     { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10, borderWidth: 1.5, borderColor: '#e2e8f0', backgroundColor: '#f8fafc', minWidth: '44%', flex: 1 },
-  tipoRadio:     { width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: '#cbd5e1', alignItems: 'center', justifyContent: 'center' },
+  tiposGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 20 },
+  tipoOpcao: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10, borderWidth: 1.5, borderColor: c.borda, backgroundColor: c.fundo, minWidth: '44%', flex: 1 },
+  tipoRadio: { width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: c.borda, alignItems: 'center', justifyContent: 'center' },
   tipoRadioInner: { width: 9, height: 9, borderRadius: 5 },
-  tipoOpcaoTexto: { fontSize: 13, color: '#475569', fontWeight: '500', flex: 1 },
+  tipoOpcaoTexto: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500', flex: 1 },
 
   // Restriction chips (modal)
-  restricoesGrid:       { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 20 },
-  restricaoChip:        { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', borderWidth: 1.5, borderColor: '#e2e8f0' },
-  restricaoChipSel:     { backgroundColor: '#dcfce7', borderColor: '#16a34a' },
-  restricaoChipTexto:   { fontSize: 13, color: '#475569', fontWeight: '500' },
+  restricoesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 20 },
+  restricaoChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: c.fundo, borderWidth: 1.5, borderColor: c.borda },
+  restricaoChipSel: { backgroundColor: '#dcfce7', borderColor: '#16a34a' },
+  restricaoChipTexto: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
   restricaoChipTextoSel: { color: '#16a34a', fontWeight: '700' },
 
   // Observations
-  observacoesInput: { marginHorizontal: 20, backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, padding: 12, fontSize: 14, color: '#1e293b', minHeight: 80 },
+  observacoesInput: { marginHorizontal: 20, backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda, borderRadius: 10, padding: 12, fontSize: 14, color: c.texto, minHeight: 80 },
 
   // Modal actions
-  modalActions:     { flexDirection: 'row', gap: 12, paddingHorizontal: 20, paddingTop: 12 },
-  btnCancelar:      { flex: 1, paddingVertical: 14, borderRadius: 12, backgroundColor: '#f1f5f9', alignItems: 'center' },
-  btnCancelarTexto: { fontSize: 15, fontWeight: '700', color: '#64748b' },
-  btnGuardar:       { flex: 2, paddingVertical: 14, borderRadius: 12, backgroundColor: '#16a34a', alignItems: 'center' },
-  btnGuardarTexto:  { fontSize: 15, fontWeight: '700', color: '#fff' },
-});
+  modalActions: { flexDirection: 'row', gap: 12, paddingHorizontal: 20, paddingTop: 12 },
+  btnCancelar: { flex: 1, paddingVertical: 14, borderRadius: 12, backgroundColor: c.fundo, alignItems: 'center' },
+  btnCancelarTexto: { fontSize: 15, fontWeight: '700', color: c.textoTenue },
+  btnGuardar: { flex: 2, paddingVertical: 14, borderRadius: 12, backgroundColor: '#16a34a', alignItems: 'center' },
+  btnGuardarTexto: { fontSize: 15, fontWeight: '700', color: '#fff' },
+}));

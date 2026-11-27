@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, TextInput, Alert, ActivityIndicator, RefreshControl,
+  View, Text, ScrollView, TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const estadoCor: Record<string, string> = {
@@ -24,6 +24,7 @@ const estadoDoenteCor: Record<string, string> = {
 };
 
 export default function CamasScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [camas, setCamas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -210,51 +211,51 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  subtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   addBotao: { backgroundColor: '#2563eb', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10 },
-  addTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  legenda: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
+  addTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  legenda: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, padding: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   legendaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   legendaDot: { width: 8, height: 8, borderRadius: 4 },
-  legendaTexto: { fontSize: 13, color: '#64748b' },
+  legendaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
   quartoSecao: { padding: 16, paddingBottom: 8 },
-  quartoTitulo: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  quartoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
   camasGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   camaCard: { width: '47%', borderWidth: 1.5, borderRadius: 14, padding: 12 },
   camaCabecalho: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
   camaDot: { width: 8, height: 8, borderRadius: 4 },
-  camaNumero: { fontSize: 13, fontWeight: '700', color: '#334155' },
+  camaNumero: { fontSize: 13, fontWeight: '700', color: c.textoSecundario },
   camaEstadoBadge: { alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 20, marginBottom: 6 },
-  camaEstadoTexto: { fontSize: 13, fontWeight: '600' },
+  camaEstadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
   doenteMini: { marginTop: 4 },
-  doenteMiniNome: { fontSize: 13, fontWeight: '600', color: '#1e293b' },
+  doenteMiniNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
   doenteMiniEstado: { fontSize: 13, marginTop: 1 },
-  semDoente: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
-  editarTexto: { fontSize: 13, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
+  semDoente: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  editarTexto: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 6, fontStyle: 'italic' },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b', marginBottom: 16 },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  estadoOpcao: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  estadoOpcaoAtiva: { backgroundColor: '#f8fafc' },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, marginBottom: 16 },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  estadoOpcao: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: c.borda },
+  estadoOpcaoAtiva: { backgroundColor: c.fundo },
   estadoOpcaoDot: { width: 10, height: 10, borderRadius: 5 },
-  estadoOpcaoTexto: { flex: 1, fontSize: 15, color: '#1e293b', fontWeight: '500' },
+  estadoOpcaoTexto: { flex: 1, fontSize: 15, color: c.texto, fontWeight: '500' },
   checkmark: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
-  formLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 12, marginBottom: 6 },
-  formInput: { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 8, padding: 10, fontSize: 14, color: '#334155', backgroundColor: '#f8fafc' },
+  formLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario, marginTop: 12, marginBottom: 6 },
+  formInput: { borderWidth: 1, borderColor: c.borda, borderRadius: 8, padding: 10, fontSize: 14, color: c.textoSecundario, backgroundColor: c.fundo },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 20 },
   cancelar: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeter: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterDes: { backgroundColor: '#93c5fd' },
-  submeterTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-});
+  submeterTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
+}));

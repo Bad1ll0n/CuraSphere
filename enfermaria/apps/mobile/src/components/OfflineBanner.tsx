@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { useNetworkStatus } from '../lib/network';
+import { estilosTematicos } from '../lib/tema';
 
 export function OfflineBanner() {
   const isOnline = useNetworkStatus();
@@ -15,7 +16,7 @@ export function OfflineBanner() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = estilosTematicos((c) => ({
   banner: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -27,4 +28,4 @@ const styles = StyleSheet.create({
   },
   icon: { fontSize: 14 },
   text: { color: '#fff', fontSize: 13, fontWeight: '600' },
-});
+}));

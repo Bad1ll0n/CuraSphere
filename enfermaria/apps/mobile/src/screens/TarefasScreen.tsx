@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, RefreshControl, ActivityIndicator,
+  RefreshControl, ActivityIndicator,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Tarefa {
   id: string;
@@ -35,6 +36,7 @@ const grupoLabel: Record<string, string> = {
 const ordem: Record<string, number> = { urgente: 0, alta: 1, media: 2, baixa: 3 };
 
 export default function TarefasScreen() {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -159,30 +161,30 @@ export default function TarefasScreen() {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   filtros: { flexDirection: 'row', padding: 16, gap: 8 },
   filtro: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#e2e8f0', alignItems: 'center' },
   filtroAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   vazio: { padding: 40, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginBottom: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 },
   cartaoEsq: { flex: 1, marginRight: 8 },
-  doenteNome: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  doenteInfo: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  doenteNome: { fontSize: 15, fontWeight: '700', color: c.texto },
+  doenteInfo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   prioridadeBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  prioridadeTexto: { fontSize: 13, fontWeight: '600' },
-  tarefaDescricao: { fontSize: 14, color: '#334155', lineHeight: 20, marginBottom: 4 },
-  atribuidoTexto: { fontSize: 13, color: '#64748b', marginBottom: 8, fontStyle: 'italic' },
+  prioridadeTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  tarefaDescricao: { fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 20, marginBottom: 4 },
+  atribuidoTexto: { fontSize: LETRA.corpo, color: c.textoTenue, marginBottom: 8, fontStyle: 'italic' },
   cartaoRodape: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   tags: { flexDirection: 'row', gap: 6, flex: 1, flexWrap: 'wrap' },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  tagTexto: { fontSize: 13, fontWeight: '500' },
+  tagTexto: { fontSize: LETRA.corpo, fontWeight: '500' },
   prazo: { fontSize: 13, color: '#ef4444', fontWeight: '500' },
   concluirBotao: { backgroundColor: '#dcfce7', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20 },
-  concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 13 },
-});
+  concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: LETRA.corpo },
+}));

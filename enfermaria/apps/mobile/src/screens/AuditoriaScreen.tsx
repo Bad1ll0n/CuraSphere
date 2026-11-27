@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, StyleSheet, ActivityIndicator, RefreshControl, TouchableOpacity, TextInput,
+  View, Text, ScrollView, ActivityIndicator, RefreshControl, TouchableOpacity, TextInput,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface LogEntry {
   id: string;
@@ -26,6 +27,7 @@ interface Resposta {
 interface Props { utilizador: Utilizador; onVoltar?: () => void }
 
 export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [dados, setDados] = useState<Resposta | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -144,33 +146,33 @@ export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#0f172a', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
-  pesquisaWrap: { flexDirection: 'row', gap: 8, padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  pesquisa: { flex: 1, backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, fontSize: 14, color: '#1e293b' },
+  headerSub: { fontSize: 13, color: c.textoTenue, marginTop: 4 },
+  pesquisaWrap: { flexDirection: 'row', gap: 8, padding: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  pesquisa: { flex: 1, backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, fontSize: 14, color: c.texto },
   pesquisaBotao: { backgroundColor: '#2563eb', paddingHorizontal: 14, borderRadius: 10, justifyContent: 'center' },
-  pesquisaBotaoTexto: { color: '#fff', fontWeight: '600', fontSize: 13 },
-  listaCard: { margin: 12, backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  pesquisaBotaoTexto: { color: '#fff', fontWeight: '600', fontSize: LETRA.corpo },
+  listaCard: { margin: 12, backgroundColor: c.superficie, borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   logItem: { padding: 14 },
-  logItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  logItemBorder: { borderBottomWidth: 1, borderBottomColor: c.borda },
   logTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
-  logAcao: { fontSize: 13, fontWeight: '600', color: '#1e293b', flex: 1 },
-  logHora: { fontSize: 13, color: '#94a3b8' },
+  logAcao: { fontSize: 13, fontWeight: '600', color: c.texto, flex: 1 },
+  logHora: { fontSize: 13, color: c.textoTenue },
   logMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-  logMetaTexto: { fontSize: 13, color: '#64748b' },
-  logMetaTag: { fontSize: 13, backgroundColor: '#f1f5f9', color: '#475569', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
-  logIp: { fontSize: 13, color: '#94a3b8' },
+  logMetaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  logMetaTag: { fontSize: 13, backgroundColor: c.fundo, color: c.textoSecundario, paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
+  logIp: { fontSize: 13, color: c.textoTenue },
   semLogs: { padding: 24, alignItems: 'center' },
-  semLogsTexto: { color: '#94a3b8', fontSize: 14 },
+  semLogsTexto: { color: c.textoTenue, fontSize: LETRA.corpo },
   paginacao: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },
   pagBotao: { backgroundColor: '#2563eb', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10 },
   pagBotaoDesativ: { backgroundColor: '#e2e8f0' },
-  pagBotaoTexto: { color: '#fff', fontWeight: '600', fontSize: 13 },
-  pagInfo: { fontSize: 13, color: '#64748b' },
-});
+  pagBotaoTexto: { color: '#fff', fontWeight: '600', fontSize: LETRA.corpo },
+  pagInfo: { fontSize: LETRA.corpo, color: c.textoTenue },
+}));

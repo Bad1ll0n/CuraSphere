@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Platform,
+  ActivityIndicator, RefreshControl, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface DashExec {
   doentes: { internados: number; ambulatorio: number; pendenteCama: number; mediaInternamento: number };
@@ -28,6 +29,7 @@ function fmtEur(val: number) {
 }
 
 export default function DashboardExecutivoScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [dados, setDados] = useState<DashExec | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -233,40 +235,40 @@ export default function DashboardExecutivoScreen({ utilizador, onVoltar }: Props
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16,
-    paddingBottom: 12, backgroundColor: '#fff',
-    borderBottomWidth: 1, borderBottomColor: '#e2e8f0',
+    paddingBottom: 12, backgroundColor: c.superficie,
+    borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   btnVoltar: {
-    width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9',
+    width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo,
     alignItems: 'center', justifyContent: 'center',
   },
-  headerTitulo: { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
 
   secao: {
-    backgroundColor: '#fff', borderRadius: 14, padding: 16,
+    backgroundColor: c.superficie, borderRadius: 14, padding: 16,
     shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6, elevation: 2,
   },
-  secaoTitulo: { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 12 },
+  secaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto, marginBottom: 12 },
 
   kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   kpiCard: {
-    flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0', borderTopWidth: 3,
+    flex: 1, minWidth: '45%', backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda, borderTopWidth: 3,
   },
-  kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
-  kpiNumPeq: { fontSize: 18, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4 },
+  kpiNum: { fontSize: 28, fontWeight: '800', color: c.texto },
+  kpiNumPeq: { fontSize: 18, fontWeight: '800', color: c.texto },
+  kpiLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4 },
 
   barraFundo: {
     height: 16, flexDirection: 'row', borderRadius: 8, overflow: 'hidden',
@@ -277,19 +279,19 @@ const s = StyleSheet.create({
   legendaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 },
   legendaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   legendaPonto: { width: 10, height: 10, borderRadius: 5 },
-  legendaTexto: { fontSize: 13, color: '#64748b' },
+  legendaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
 
-  taxaOcupacao: { fontSize: 22, fontWeight: '800', color: '#0f172a', textAlign: 'center', marginTop: 4 },
+  taxaOcupacao: { fontSize: 22, fontWeight: '800', color: c.texto, textAlign: 'center', marginTop: 4 },
 
   coberturaRow: { flexDirection: 'row', gap: 8 },
-  coberturaItem: { flex: 1, backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, alignItems: 'center', borderWidth: 1, borderColor: '#e2e8f0' },
-  coberturaNome: { fontSize: 13, color: '#64748b', fontWeight: '600' },
-  coberturaPct: { fontSize: 16, fontWeight: '800', color: '#0f172a', marginTop: 2 },
+  coberturaItem: { flex: 1, backgroundColor: c.fundo, borderRadius: 10, padding: 10, alignItems: 'center', borderWidth: 1, borderColor: c.borda },
+  coberturaNome: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '600' },
+  coberturaPct: { fontSize: 16, fontWeight: '800', color: c.texto, marginTop: 2 },
 
   pessoalRow: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingVertical: 9, borderBottomWidth: 1, borderBottomColor: '#f1f5f9',
+    paddingVertical: 9, borderBottomWidth: 1, borderBottomColor: c.borda,
   },
-  pessoalRole: { fontSize: 14, color: '#334155' },
-  pessoalCount: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-});
+  pessoalRole: { fontSize: 14, color: c.textoSecundario },
+  pessoalCount: { fontSize: 15, fontWeight: '700', color: c.texto },
+}));

@@ -76,6 +76,13 @@ describe('UX-24 — cores à mão nos ecrãs só descem', () => {
     expect(piores).toEqual([]);
   });
 
+  it('nenhum ecrã ou componente cria estilos fora do tema (StyleSheet.create direto)', () => {
+    const fora = [...fontes(join(RAIZ, 'screens')), ...fontes(join(RAIZ, 'components')), join(RAIZ, 'screens', 'doente-detalhe', 'styles.ts')]
+      .filter((f) => /StyleSheet\.create\(/.test(readFileSync(f, 'utf8')))
+      .map((f) => relative(RAIZ, f));
+    expect(fora).toEqual([]);
+  });
+
   it('os ecrãs de cabeceira usam o tema', () => {
     for (const f of ['MARScreen.tsx', 'DoentesScreen.tsx', 'TurnoScreen.tsx', 'NotificacoesScreen.tsx']) {
       const src = readFileSync(join(RAIZ, 'screens', f), 'utf8');
