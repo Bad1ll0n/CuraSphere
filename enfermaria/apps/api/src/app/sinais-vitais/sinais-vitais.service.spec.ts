@@ -75,6 +75,45 @@ describe('SinaisVitaisService', () => {
 
   // ── criar() — NEWS2 = 0 (parâmetros normais) ─────────────────────────────
 
+    describe('PROD-16 — alertas de um registo diferido', () => {
+      beforeEach(() => {
+        mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
+        mockPrisma.sinalVital.create.mockImplementation(async ({ data }: any) => ({ id: 'sv1', ...data }));
+      });
+      const critico = { saturacaoO2: 85 };
+
+      it('diferido e já ultrapassado por um registo mais recente: grava, sem alertar nem avaliar sépsis', async () => {
+        mockPrisma.sinalVital.findFirst.mockResolvedValue({ id: 'mais-recente' });
+        await service.criar('d1', 'u1', 'enfermeiro', { ...critico, medidoEm: new Date(Date.now() - 3 * 3_600_000).toISOString() } as any);
+        expect(mockPrisma.sinalVital.create).toHaveBeenCalled();
+        expect(mockAlertas.criarAlerta).not.toHaveBeenCalled();
+        expect(mockSepsis.avaliar).not.toHaveBeenCalled();
+      });
+
+      it('diferido sem registo mais recente: alerta, a dizer a hora da medição', async () => {
+        mockPrisma.sinalVital.findFirst.mockResolvedValue(null);
+        await service.criar('d1', 'u1', 'enfermeiro', { ...critico, medidoEm: new Date(Date.now() - 2 * 3_600_000).toISOString() } as any);
+        expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'sinal_vital_critico', expect.stringMatching(/^\[Registo diferido — medido às \d\d:\d\d\] SpO/), 3);
+      });
+
+      it('a tempo: alerta sem prefixo e não procura registos mais recentes', async () => {
+        await service.criar('d1', 'u1', 'enfermeiro', { ...critico } as any);
+        expect(mockPrisma.sinalVital.findFirst).not.toHaveBeenCalled();
+        expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'sinal_vital_critico', expect.stringMatching(/^SpO/), 3);
+      });
+
+      it('recusa uma medição mais antiga do que a janela de registo diferido', async () => {
+        await expect(service.criar('d1', 'u1', 'enfermeiro', { pulso: 80, medidoEm: new Date(Date.now() - 13 * 3_600_000).toISOString() } as any))
+          .rejects.toThrow(/nota retrospetiva/);
+      });
+
+      it('validação de leitura de monitor: o enfermeiro é o autor, o dispositivo fica como origem', async () => {
+        await service.ingerirDeMonitor('d1', 'enf-1', { pulso: 80 }, 'disp-1');
+        const { data } = mockPrisma.sinalVital.create.mock.calls[0][0];
+        expect(data).toEqual(expect.objectContaining({ registadoPorId: 'enf-1', origem: 'monitor', dispositivoId: 'disp-1' }));
+      });
+    });
+
   describe('criar() — hora da medição (registo offline)', () => {
     beforeEach(() => {
       jest.clearAllMocks();

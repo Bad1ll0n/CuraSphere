@@ -28,6 +28,7 @@ import AuditoriaScreen from '../screens/AuditoriaScreen';
 import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { corpoAdministracao } from '../lib/administracao';
 // Os imports ES são içados: TODOS executam antes de qualquer instrução do corpo do
 // módulo. Ter esta chamada no meio da lista de imports não a tornava mais cedo — só
 // partia a regra `import/first` (22 erros de lint) e dava uma falsa ideia de
@@ -191,12 +192,11 @@ function App() {
            * justificação — era código inalcançável. A verificação existia e não estava
            * ligada a nada.
            */
-          onAdministrar={async (medicacaoId, qrPayload, justificacao) => {
+          onAdministrar={async (medicacaoId, qrPayload, justificacao, doenteId) => {
             try {
-              await api.post(`/medicacao/${medicacaoId}/administrar`, {
-                qrPayload,
-                observacoes: justificacao || undefined,
-              });
+              // `doenteId` é obrigatório no servidor (1.º certo): sem ele toda a administração pelo
+              // leitor dava 400. PROD-16: segue também a hora do ato.
+              await api.post(`/medicacao/${medicacaoId}/administrar`, corpoAdministracao(doenteId, { qrPayload, observacoes: justificacao || undefined }));
               setScannerAberto(false);
               Alert.alert(i18n.t('administer.recordedTitle'), i18n.t('administer.recordedBody'));
             } catch (e: any) {

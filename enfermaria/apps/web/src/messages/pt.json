@@ -332,7 +332,8 @@
     "news2Points": "(+2 pts NEWS2)",
     "notes": "Notas",
     "notesPlaceholder": "Observações...",
-    "news2Hint": "O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico."
+    "news2Hint": "O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.",
+    "fromMonitor": "monitor"
   },
   "ai": {
     "suggestions": "Sugestões IA",
@@ -981,5 +982,29 @@
     },
     "error": "Não foi possível guardar",
     "readOnly": "Só leitura — o plano de cuidados é registado pela enfermagem."
+  },
+  "monitorReadings": {
+    "title": "Leituras do monitor por validar",
+    "heading": "{n, plural, one {# leitura do monitor por validar} other {# leituras do monitor por validar}}",
+    "hint": "Confirme à cabeceira. Só as leituras validadas entram nos sinais vitais, no NEWS2 e nos alertas — em seu nome. Rejeite os artefactos (sensor solto, doente em movimento).",
+    "selectAll": "Selecionar todas",
+    "select": "Selecionar a leitura das {hora}",
+    "critical": "crítica",
+    "validate": "Validar ({n})",
+    "reject": "Rejeitar como artefacto",
+    "reasonLabel": "Motivo da rejeição",
+    "reasonPlaceholder": "Ex.: sensor de SpO₂ solto",
+    "confirmReject": "Confirmar rejeição",
+    "validated": "{n, plural, one {# leitura validada} other {# leituras validadas}}",
+    "rejected": "{n, plural, one {# leitura rejeitada} other {# leituras rejeitadas}}",
+    "partial": "{ok} validadas, {falhas} por validar: {motivo}",
+    "error": "Não foi possível guardar",
+    "loadError": "Não foi possível carregar as leituras do monitor por validar.",
+    "retry": "Tentar de novo",
+    "readOnly": "Só a enfermagem valida as leituras do monitor."
+  },
+  "deferredRecord": {
+    "badge": "registo diferido · {quando}",
+    "hint": "Registado no sistema em {quando}, depois do ato (à cabeceira sem rede). A hora mostrada é a do ato."
   }
 }

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { FhirService } from './fhir.service';
 import { FhirController } from './fhir.controller';
 import { PrismaModule } from '../prisma/prisma.module';
-import { SinaisVitaisModule } from '../sinais-vitais/sinais-vitais.module';
+import { MonitorizacaoModule } from '../monitorizacao/monitorizacao.module';
 
 @Module({
-  imports: [PrismaModule, SinaisVitaisModule],
+  imports: [PrismaModule, MonitorizacaoModule],
   controllers: [FhirController],
   providers: [FhirService],
   exports: [FhirService],
