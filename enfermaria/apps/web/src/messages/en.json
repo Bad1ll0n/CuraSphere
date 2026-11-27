@@ -1169,5 +1169,45 @@
     "save": "Save parameters",
     "saved": "Parameters saved",
     "categoriesValue": "I {I} · II {II} · III {III} · IV {IV}"
+  },
+  "indicators": {
+    "title": "Nursing-sensitive indicators",
+    "back": "← Quality",
+    "intro": "Nursing-sensitive indicators, with the definition (numerator, denominator, exclusions and version) shown. Click to see the patients counted.",
+    "from": "From",
+    "to": "To (exclusive)",
+    "service": "Service",
+    "allServices": "All",
+    "apply": "Calculate",
+    "exportCsv": "Export CSV",
+    "exportNotifica": "Export incidents to NOTIFICA",
+    "notificaExported": "{n, plural, one {# incident exported} other {# incidents exported}} (anonymous, ICPS)",
+    "exportError": "Could not export",
+    "loading": "Calculating indicators...",
+    "loadError": "Could not calculate the indicators.",
+    "retry": "Try again",
+    "empty": "No indicators for the period.",
+    "patientDays": "{n} patient-days in the period",
+    "col": {
+      "indicator": "Indicator",
+      "value": "Value",
+      "fraction": "Numerator / denominator",
+      "actions": "Actions"
+    },
+    "definition": "Definition (version {versao})",
+    "numerator": "Numerator:",
+    "denominator": "Denominator:",
+    "exclusions": "Exclusions:",
+    "minutes": "{n} min",
+    "showCases": "Show cases",
+    "showGaps": "Show gaps",
+    "hideCases": "Close",
+    "casesTitle": "Cases",
+    "noCases": "No cases in the period."
+  },
+  "qualityDashboard": {
+    "indicatorsTitle": "Nursing indicators",
+    "indicatorsBody": "Falls and pressure injuries per 1000 days, risk assessment within 24 h, pain per shift, device-associated infection, readmissions and ED-to-bed time.",
+    "open": "Open"
   }
 }

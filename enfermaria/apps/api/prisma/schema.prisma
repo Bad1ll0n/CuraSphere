@@ -2603,6 +2603,11 @@ model EventoAdverso {
   registadoPor   Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id], onDelete: SetNull)
   acaoCorretiva  String?
   estado         String      @default("aberto") // 'aberto' | 'em_investigacao' | 'encerrado'
+  // PROD-18: classe de incidente da OMS (ICPS) — ver eventos-adversos/icps.ts — e notificação
+  // anónima (sem autor guardado). `exportadoNotificaEm`: quando saiu no ficheiro para o NOTIFICA.
+  classeIcps          String?
+  anonimo             Boolean   @default(false)
+  exportadoNotificaEm DateTime?
   ocorridoEm     DateTime    @default(now())
   criadoEm       DateTime    @default(now())
   atualizadoEm   DateTime    @updatedAt
