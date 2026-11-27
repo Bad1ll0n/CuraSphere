@@ -4,19 +4,28 @@ import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Modal } from '@/components/ui/modal';
 
-const MIN = 10;
 const MAX = 500;
 
-function DialogoMotivo({ titulo, descricao, onFim }: { titulo: string; descricao?: string; onFim: (m: string | null) => void }) {
+interface OpcoesTexto {
+  titulo: string;
+  descricao: string;
+  rotulo: string;
+  botao: string;
+  minimo?: number;
+  placeholder?: string;
+}
+
+function DialogoMotivo({ titulo, descricao, rotulo, botao, minimo = 10, placeholder, onFim }: OpcoesTexto & { onFim: (m: string | null) => void }) {
+  const MIN = minimo;
   const [motivo, setMotivo] = useState('');
   const valido = motivo.trim().length >= MIN;
   return (
     <Modal isOpen titulo={titulo} onClose={() => onFim(null)} maxWidth="460px">
       <p className="text-sm text-slate-600" style={{ marginBottom: '12px' }}>
-        {descricao ?? 'O registo deixa de aparecer, mas fica no processo clínico com o seu nome, a hora e o motivo.'}
+        {descricao}
       </p>
       <label htmlFor="motivo-remocao" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
-        Motivo da remoção *
+        {rotulo} *
       </label>
       <textarea
         id="motivo-remocao"
@@ -25,7 +34,7 @@ function DialogoMotivo({ titulo, descricao, onFim }: { titulo: string; descricao
         maxLength={MAX}
         value={motivo}
         onChange={(e) => setMotivo(e.target.value)}
-        placeholder="Ex.: registado no doente errado"
+        placeholder={placeholder}
         className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
         style={{ padding: '10px 12px' }}
       />
@@ -40,7 +49,7 @@ function DialogoMotivo({ titulo, descricao, onFim }: { titulo: string; descricao
           className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-40"
           style={{ padding: '10px' }}
         >
-          Remover
+          {botao}
         </button>
       </div>
     </Modal>
@@ -56,6 +65,17 @@ function DialogoMotivo({ titulo, descricao, onFim }: { titulo: string; descricao
  *   await api.delete(url, { data: { motivo } });
  */
 export function pedirMotivoRemocao(titulo: string, descricao?: string): Promise<string | null> {
+  return pedirTexto({
+    titulo,
+    descricao: descricao ?? 'O registo deixa de aparecer, mas fica no processo clínico com o seu nome, a hora e o motivo.',
+    rotulo: 'Motivo da remoção',
+    botao: 'Remover',
+    placeholder: 'Ex.: registado no doente errado',
+  });
+}
+
+/** Pede um texto obrigatório (justificação, motivo…) num diálogo. Resolve com o texto ou `null`. */
+export function pedirTexto(opcoes: OpcoesTexto): Promise<string | null> {
   return new Promise((resolve) => {
     const host = document.createElement('div');
     document.body.appendChild(host);
@@ -64,6 +84,6 @@ export function pedirMotivoRemocao(titulo: string, descricao?: string): Promise<
       resolve(m);
       setTimeout(() => { root.unmount(); host.remove(); }, 0);
     };
-    root.render(<DialogoMotivo titulo={titulo} descricao={descricao} onFim={fim} />);
+    root.render(<DialogoMotivo {...opcoes} onFim={fim} />);
   });
 }

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty, IsBoolean, IsInt, Min, Max, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum ViaAdministracaoEnum {
@@ -55,4 +55,43 @@ export class PrescreverMedicacaoDto {
   @IsString()
   @IsOptional()
   observacoes?: string;
+
+  // A API recusava estes dois (whitelist): o override de alergia/interacção nunca funcionava.
+  @ApiPropertyOptional({ description: 'Prescrever apesar de alergia documentada (exige justificativaOverride)' })
+  @IsBoolean()
+  @IsOptional()
+  forcarApesarDeAlergia?: boolean;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  justificativaOverride?: string;
+
+  // QA-07: dose acima do máximo de adulto.
+  @ApiPropertyOptional({ description: 'Prescrever acima da dose máxima (exige justificativaDose)' })
+  @IsBoolean()
+  @IsOptional()
+  forcarDoseAcimaMaximo?: boolean;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  justificativaDose?: string;
+
+  // QA-08: SOS.
+  @ApiPropertyOptional({ description: 'SOS: intervalo mínimo entre tomas (horas). Obrigatório em SOS.' })
+  @IsInt()
+  @Min(1)
+  @Max(72)
+  @IsOptional()
+  intervaloMinimoH?: number;
+
+  @ApiPropertyOptional({ description: 'SOS: número máximo de tomas em 24 h.' })
+  @IsInt()
+  @Min(1)
+  @Max(24)
+  @IsOptional()
+  maxDosesDia?: number;
 }

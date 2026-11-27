@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsUUID, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsBoolean, MaxLength } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class AdministrarMedicacaoDto {
@@ -48,4 +48,12 @@ export class AdministrarMedicacaoDto {
   @IsString()
   @IsOptional()
   observacoes?: string;
+
+  @ApiPropertyOptional({
+    description: 'QA-08: porque se administra um SOS antes do intervalo mínimo ou acima do máximo diário.',
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(500)
+  justificacaoSOS?: string;
 }

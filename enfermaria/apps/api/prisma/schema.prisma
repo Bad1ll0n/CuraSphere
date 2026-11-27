@@ -662,6 +662,12 @@ model Medicacao {
   overrideAlergia     Boolean @default(false)
   overrideMotivo      String? @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
   overrideAlergenioId String?
+  // QA-07: dose acima do máximo de adulto só com justificação clínica (override registado).
+  overrideDose        Boolean @default(false)
+  overrideDoseMotivo  String? @db.VarChar(1000)
+  // QA-08: medicação SOS — intervalo mínimo entre tomas e número máximo de tomas em 24 h.
+  intervaloMinimoH    Int?
+  maxDosesDia         Int?
 
   doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Restrict)
@@ -707,6 +713,8 @@ model RegistoMedicacao {
   certosVerificados  Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
   naoAdministrada    Boolean   @default(false)
   motivoNaoAdmin     String?
+  // QA-08: SOS administrado antes do intervalo mínimo (ou acima do máximo diário) — porquê.
+  justificacaoSOS    String? @db.VarChar(500)
   deletedAt          DateTime?
 
   medicacaoId       String

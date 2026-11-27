@@ -13,6 +13,7 @@ import { AlertasService } from '../alertas/alertas.service';
 import { detetarConflitoAlergia, nomeReconhecido } from './alergias.helper';
 import { parsearFrequenciaHoras, tomasPlaneadas, classificarTomas, horaLocal, JANELA_ANTES_MS, JANELA_DEPOIS_MS } from './posologia';
 import { eAltoRisco } from './alto-risco';
+import { eSOS, frequenciaValida, parsearDose, tomasPorDia, verificarDoseMaxima } from './limites-dose';
 import { inicioDoDiaClinico } from '../common/dia-clinico.helper';
 import { verificarTotpAssinatura } from '../common/totp-assinatura';
 
@@ -148,7 +149,27 @@ export class MedicacaoService {
     prescritoPorId: string;
     forcarApesarDeAlergia?: boolean;
     justificativaOverride?: string;
+    forcarDoseAcimaMaximo?: boolean;
+    justificativaDose?: string;
+    intervaloMinimoH?: number;
+    maxDosesDia?: number;
   }) {
+    // QA-07/QA-08: plausibilidade antes de tudo (dose legível, frequência reconhecida, SOS
+    // com intervalo mínimo, dose dentro dos máximos de adulto ou override justificado).
+    const doseVerificada = this.verificarPlausibilidade(data);
+    const justificacaoDose = (data.justificativaDose ?? '').trim();
+    if (doseVerificada && !data.forcarDoseAcimaMaximo) {
+      throw new ConflictException(
+        `DOSE: ${doseVerificada.motivo}. Para prescrever mesmo assim, envie forcarDoseAcimaMaximo=true ` +
+        `com justificativaDose (mínimo ${MIN_JUSTIFICACAO_OVERRIDE} caracteres).`,
+      );
+    }
+    if (doseVerificada && justificacaoDose.length < MIN_JUSTIFICACAO_OVERRIDE) {
+      throw new BadRequestException(
+        `Prescrição acima da dose máxima exige justificação clínica com pelo menos ${MIN_JUSTIFICACAO_OVERRIDE} caracteres.`,
+      );
+    }
+
     // Verificação IA de interações antes da transação (não-bloqueante em caso de falha)
     const ativasPreCheck = await this.prisma.medicacao.findMany({
       where: { doenteId: data.doenteId, ativo: true, deletedAt: null },
@@ -191,13 +212,18 @@ export class MedicacaoService {
       });
       const interacoesDetectadas = verificarInteracao(data.nome, medicacoesAtivas.map((m) => m.nome));
 
-      const { forcarApesarDeAlergia: _, justificativaOverride: __, ...dadosMedicacao } = data;
+      const {
+        forcarApesarDeAlergia: _, justificativaOverride: __, forcarDoseAcimaMaximo: ___, justificativaDose: ____,
+        ...dadosMedicacao
+      } = data;
       // Só é override se havia mesmo alergia a ultrapassar — `forcar` sozinho não marca nada.
       const houveOverride = !!conflito && !!data.forcarApesarDeAlergia;
       const medicacao = await tx.medicacao.create({
         data: {
           ...dadosMedicacao,
           overrideAlergia: houveOverride,
+          overrideDose: !!doseVerificada,
+          ...(doseVerificada && { overrideDoseMotivo: `${justificacaoDose} [${doseVerificada.motivo}]`.slice(0, 1000) }),
           ...(houveOverride && {
             overrideMotivo: `${justificacao} [${conflito.correspondencia.motivo}]`.slice(0, 1000),
             overrideAlergenioId: conflito.alergia.id,
@@ -251,6 +277,27 @@ export class MedicacaoService {
     };
   }
 
+  /**
+   * QA-07/QA-08 — dose interpretável, frequência reconhecida, SOS com intervalo mínimo.
+   * Lança 400 no que é inválido; devolve o problema de dose máxima (ou `null`) para quem
+   * chama decidir entre recusar e aceitar com override justificado.
+   */
+  private verificarPlausibilidade(d: { nome: string; dose: string; frequencia: string; intervaloMinimoH?: number; maxDosesDia?: number }) {
+    const dose = parsearDose(d.dose);
+    if (!dose) {
+      throw new BadRequestException(`Dose "${d.dose}" não é legível — indique valor e unidade (ex.: "500 mg", "1 g", "1 comp", "10 UI").`);
+    }
+    if (!frequenciaValida(d.frequencia)) {
+      throw new BadRequestException(
+        `Frequência "${d.frequencia}" não reconhecida — use, por ex., "3x/dia", "8/8h", "SOS" ou "contínua".`,
+      );
+    }
+    if (eSOS(d.frequencia) && !d.intervaloMinimoH) {
+      throw new BadRequestException('Em SOS indique o intervalo mínimo entre tomas (intervaloMinimoH, em horas).');
+    }
+    return verificarDoseMaxima(d.nome, dose, eSOS(d.frequencia) ? (d.maxDosesDia ?? null) : tomasPorDia(d.frequencia));
+  }
+
   async verificarInteracoes(doenteId: string, nomeMed: string): Promise<Interacao[]> {
     const medicacoesAtivas = await this.prisma.medicacao.findMany({
       where: { doenteId, ativo: true, deletedAt: null },
@@ -279,7 +326,9 @@ export class MedicacaoService {
     via?: string;
     atestadoPeloEnfermeiro?: boolean;
     qrPayload?: string;
+    justificacaoSOS?: string;
   }) {
+    let sosForaDoLimite = false;
     if (!data.doenteId) {
       throw new BadRequestException(
         '5 certos: doenteId é obrigatório — confirme a identidade do doente antes de administrar',
@@ -356,6 +405,31 @@ export class MedicacaoService {
         }
       }
 
+      // QA-08: SOS sem intervalo mínimo nem máximo diário deixava registar 3 tomas em 9 s.
+      // Prescrições SOS antigas, sem intervalo definido, usam 1 h — o suficiente para
+      // apanhar o registo em duplicado ou dois enfermeiros no mesmo doente.
+      if (eSOS(medicacao.frequencia)) {
+        const intervaloMin = medicacao.intervaloMinimoH ?? 1;
+        const ultima = medicacao.registos[0]?.administradoEm;
+        const minutosDesde = ultima ? (Date.now() - ultima.getTime()) / 60_000 : null;
+        const problemas: string[] = [];
+        if (minutosDesde !== null && minutosDesde < intervaloMin * 60) {
+          problemas.push(`última toma há ${Math.round(minutosDesde)} min (intervalo mínimo ${intervaloMin} h)`);
+        }
+        if (medicacao.maxDosesDia) {
+          const em24h = await tx.registoMedicacao.count({
+            where: { medicacaoId: medicacao.id, naoAdministrada: false, administradoEm: { gte: new Date(Date.now() - 86_400_000) } },
+          });
+          if (em24h >= medicacao.maxDosesDia) problemas.push(`${em24h} tomas nas últimas 24 h (máximo ${medicacao.maxDosesDia})`);
+        }
+        if (problemas.length && (data.justificacaoSOS ?? '').trim().length < 10) {
+          throw new ConflictException(
+            `SOS: ${problemas.join('; ')}. Para administrar mesmo assim, indique justificacaoSOS (mínimo 10 caracteres).`,
+          );
+        }
+        sosForaDoLimite = problemas.length > 0;
+      }
+
       // Três estados, não dois. 'verificado' = o sistema comparou dois valores de origens
       // independentes (etiqueta lida vs. prescrição). 'atestado' = o enfermeiro percorreu
       // a lista e confirmou, sem o sistema ter comparado nada. 'nao_confirmado' = nem uma
@@ -384,6 +458,7 @@ export class MedicacaoService {
           doenteId: medicacao.doenteId,
           administradoPorId: data.administradoPorId,
           observacoes: data.observacoes,
+          ...(sosForaDoLimite && { justificacaoSOS: data.justificacaoSOS!.trim().slice(0, 500) }),
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
           certosVerificados: certos,
@@ -526,7 +601,14 @@ export class MedicacaoService {
     frequencia: string;
     prescritoPorId: string;
     observacoes?: string;
+    intervaloMinimoH?: number;
+    maxDosesDia?: number;
   }) {
+    // QA-07: uma proposta acima da dose máxima não segue — só o médico pode justificar o override.
+    const problemaDose = this.verificarPlausibilidade(data);
+    if (problemaDose) {
+      throw new ConflictException(`DOSE: ${problemaDose.motivo}. A proposta não pode exceder a dose máxima — fale com o médico.`);
+    }
     const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
     if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
