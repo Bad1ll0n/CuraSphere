@@ -1,5 +1,7 @@
 # ─── Stage 1: Store do pnpm a partir do lockfile ─────────────────────────────
-FROM node:26-alpine AS deps
+# OPS-15: imagem base fixada por digest (o Dependabot actualiza-o); uma tag flutuante
+# mudava o que se construía sem nenhuma alteração no repositório.
+FROM node:26-alpine@sha256:8996bb5821d62a8fd9bb27c1cb07462f3fdce6e47d640c6a881ead0b064ce216 AS deps
 WORKDIR /workspace
 
 # OPS-14: `pnpm@latest` torna a imagem irreprodutível — a mesma etiqueta de imagem
@@ -47,7 +49,7 @@ RUN pnpm exec nx run @org/shared:build --skip-nx-cache
 RUN cd apps/web && pnpm exec next build --webpack
 
 # ─── Stage 3: Produção ────────────────────────────────────────────────────────
-FROM node:26-alpine AS runner
+FROM node:26-alpine@sha256:8996bb5821d62a8fd9bb27c1cb07462f3fdce6e47d640c6a881ead0b064ce216 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

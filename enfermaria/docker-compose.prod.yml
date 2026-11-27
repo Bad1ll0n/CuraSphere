@@ -25,7 +25,7 @@ services:
           cpus: "1.5"
         reservations:
           memory: 512M
-    image: postgres:16-alpine
+    image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
     container_name: curasphere-db
     restart: unless-stopped
     environment:
@@ -66,7 +66,7 @@ services:
           cpus: "0.25"
         reservations:
           memory: 64M
-    image: postgres:16-alpine
+    image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
     container_name: curasphere-backup
     restart: unless-stopped
     environment:
@@ -131,7 +131,7 @@ services:
           cpus: "0.5"
         reservations:
           memory: 128M
-    image: redis:7-alpine
+    image: redis:7-alpine@sha256:c5d34a98396a4775e223c74e929162c35c5a2182901ba26b50ade939941ce14b
     container_name: curasphere-redis
     restart: unless-stopped
     command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru
@@ -170,7 +170,10 @@ services:
       dockerfile: apps/api/Dockerfile
     # OPS-07: nome de imagem fixo, para o deploy guardar a versão em serviço
     # (`curasphere-api:anterior`) e voltar a ela se a nova não ficar saudável.
-    image: curasphere-api:latest
+    # OPS-11: imagem versionada. Em produção vem do registry (release.yml), com
+    # CURASPHERE_IMAGE_PREFIX=ghcr.io/<dono>/curasphere e CURASPHERE_VERSION=vX.Y.Z; o
+    # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
+    image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-api:${CURASPHERE_VERSION:-local}
     container_name: curasphere-api
     restart: unless-stopped
     # ─────────────────────────────────────────────────────────────────────────
@@ -356,7 +359,10 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       target: builder
-    image: curasphere-migrate:latest
+    # OPS-11: imagem versionada. Em produção vem do registry (release.yml), com
+    # CURASPHERE_IMAGE_PREFIX=ghcr.io/<dono>/curasphere e CURASPHERE_VERSION=vX.Y.Z; o
+    # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
+    image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-migrate:${CURASPHERE_VERSION:-local}
     restart: "no"
     working_dir: /workspace/apps/api
     environment:
@@ -405,7 +411,10 @@ services:
         # NEXT_PUBLIC_*, fica cozido no bundle — tem de ser build-arg, não env.
         NEXT_PUBLIC_JITSI_SERVER:   ${NEXT_PUBLIC_JITSI_SERVER:?NEXT_PUBLIC_JITSI_SERVER em falta — a teleconsulta cairia no servidor público meet.jit.si}
     # OPS-07: ver a nota da imagem da API.
-    image: curasphere-web:latest
+    # OPS-11: imagem versionada. Em produção vem do registry (release.yml), com
+    # CURASPHERE_IMAGE_PREFIX=ghcr.io/<dono>/curasphere e CURASPHERE_VERSION=vX.Y.Z; o
+    # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
+    image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-web:${CURASPHERE_VERSION:-local}
     container_name: curasphere-web
     restart: unless-stopped
     environment:
@@ -456,7 +465,8 @@ services:
           cpus: "0.5"
         reservations:
           memory: 64M
-    image: nginx:1.27-alpine
+    # OPS-15: o ramo 1.27 do nginx deixou de ter suporte; 1.30 é o estável actual.
+    image: nginx:1.30-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
     container_name: curasphere-nginx
     restart: unless-stopped
     ports:

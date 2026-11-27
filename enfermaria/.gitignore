@@ -81,3 +81,5 @@ backups/
 
 # ARQ-10: cliente Prisma gerado — regenerado pelo target Nx `prisma-generate`
 apps/api/src/generated/
+.versao-em-servico
+deploys.log

@@ -207,10 +207,21 @@ async function main() {
   });
   console.log(`  ✓  Doente de teste: ${doenteTeste.nome} (${doenteTeste.numeroProcesso})`);
 
+  // SEC-19: o portal e a partilha com familiares exigem consentimento registado.
+  for (const finalidade of ['portal_doente', 'partilha_familiares']) {
+    const emVigor = await prisma.consentimentoTratamento.findFirst({ where: { doenteId: doenteTeste.id, finalidade, revogadoEm: null } });
+    if (!emVigor) {
+      await prisma.consentimentoTratamento.create({
+        data: { doenteId: doenteTeste.id, finalidade, decisao: 'consentimento', origem: 'presencial', registadoPorId: direcaoId, observacoes: 'Seed de teste' },
+      });
+    }
+  }
+  console.log('  ✓  Consentimentos do doente de teste (portal, partilha com familiares)');
+
   const PORTAL_EMAIL = 'doente.teste@curasphere.local';
   await prisma.portalDoente.upsert({
     where: { doenteId: doenteTeste.id },
-    update: { email: PORTAL_EMAIL, passwordHash: PASS_HASH },
+    update: { email: PORTAL_EMAIL, passwordHash: PASS_HASH, ativo: true },
     create: {
       doenteId: doenteTeste.id,
       email: PORTAL_EMAIL,

@@ -14,6 +14,7 @@
  */
 import { test, expect, request as pwRequest, APIRequestContext, APIResponse } from '@playwright/test';
 import { createHmac } from 'crypto';
+import { reservarJanelaTotp } from './helpers';
 
 const API = process.env['API_URL'] ?? 'http://localhost:3333';
 const PASS = process.env['TEST_PASSWORD'] ?? 'Teste1234!';
@@ -53,6 +54,7 @@ async function login(numeroFuncionario: string, clinico: boolean): Promise<Sessi
   if (clinico) {
     expect(loginBody.mfaPendente, `role clínica ${numeroFuncionario} deve exigir MFA`).toBeTruthy();
     const csrf = await cookie(ctx, 'csrf-token');
+    await reservarJanelaTotp(numeroFuncionario, (ms) => new Promise((ok) => setTimeout(ok, ms)));
     const v = await ctx.post('/v1/auth/mfa/verificar', {
       data: { mfaChallengeToken: loginBody.mfaChallengeToken, code: totp(TOTP_SECRET) },
       headers: csrf ? { 'x-csrf-token': csrf } : {},

@@ -1,0 +1,182 @@
+name: Release — CuraSphere
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-11 / OPS-15 — pipeline de release.
+#
+# Antes: as imagens eram construídas NO SERVIDOR DE PRODUÇÃO a partir do disco, sempre
+# como `:latest`, sem registry, sem tag, sem changelog, sem scan e sem assinatura. Não havia
+# como saber que código estava a correr nem voltar a uma versão concreta.
+#
+# Agora, uma tag `vX.Y.Z` num commit da `main` dispara:
+#   1. build das três imagens (api, migrate, web) a partir desse commit;
+#   2. Trivy à imagem — CRITICAL ou HIGH com correcção disponível REPROVAM a release;
+#   3. push para o GHCR com a versão e o SHA, com SBOM e proveniência SLSA anexados (BuildKit);
+#   4. assinatura keyless com cosign (identidade OIDC deste workflow), que o
+#      `scripts/deploy.sh` verifica antes de instalar;
+#   5. GitHub Release com notas geradas a partir dos PRs desde a tag anterior.
+# Deploy: `./scripts/deploy.sh vX.Y.Z` no servidor (ver docs/RELEASE.md).
+#
+# O web coze NEXT_PUBLIC_* no bundle no momento do build, por isso esses valores vêm das
+# variáveis do environment `producao` do repositório (Settings → Environments).
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  validar:
+    name: Validar a tag
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      prefixo: ${{ steps.p.outputs.prefixo }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      # Só se publica o que passou pela `main` (protegida: PR + check obrigatório).
+      - name: O commit da tag está na main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
+            || { echo "::error::A tag $GITHUB_REF_NAME aponta para um commit fora da main."; exit 1; }
+      - id: p
+        name: Prefixo das imagens (minúsculas, como o GHCR exige)
+        run: echo "prefixo=${REGISTRY}/$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')/curasphere" >> "$GITHUB_OUTPUT"
+
+  imagens:
+    name: Imagem ${{ matrix.app }}
+    needs: validar
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    environment: producao
+    permissions:
+      contents: read
+      packages: write
+      id-token: write   # cosign keyless (OIDC)
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - app: api
+            dockerfile: enfermaria/apps/api/Dockerfile
+            target: ''
+          - app: migrate
+            dockerfile: enfermaria/apps/api/Dockerfile
+            target: builder
+          - app: web
+            dockerfile: enfermaria/apps/web/Dockerfile
+            target: ''
+    env:
+      IMAGEM: ${{ needs.validar.outputs.prefixo }}-${{ matrix.app }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Variáveis de build do web
+        if: matrix.app == 'web'
+        env:
+          API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+          JITSI: ${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
+        run: |
+          [ -n "$API_URL" ] || { echo "::error::Falta a variável NEXT_PUBLIC_API_URL no environment 'producao'."; exit 1; }
+          [ -n "$JITSI" ] || { echo "::error::Falta a variável NEXT_PUBLIC_JITSI_SERVER no environment 'producao'."; exit 1; }
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.IMAGEM }}
+          # Nunca `latest`: o deploy instala sempre uma versão explícita.
+          flavor: latest=false
+          tags: |
+            type=semver,pattern=v{{version}}
+            type=sha,format=long
+
+      # 1. Build para o daemon local, para o scan acontecer ANTES de qualquer push.
+      - name: Build (local, para análise)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: enfermaria
+          file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          load: true
+          push: false
+          tags: ${{ env.IMAGEM }}:analise
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_JITSI_SERVER=${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}
+
+      # 2. OPS-15: scan da imagem (SO + node_modules empacotados), não só do repositório.
+      - name: Trivy — análise da imagem
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ env.IMAGEM }}:analise
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '1'
+          trivyignores: .trivyignore
+          format: table
+
+      # 3. Push com SBOM (SPDX) e proveniência SLSA como attestations no registry. Reutiliza
+      #    a cache do passo 1, por isso não reconstrói.
+      - id: push
+        name: Build e push (com SBOM e proveniência)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: enfermaria
+          file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          sbom: true
+          provenance: mode=max
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_JITSI_SERVER=${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+          cache-from: type=gha,scope=${{ matrix.app }}
+
+      # 4. Assinatura keyless: o certificado prova que a imagem saiu DESTE workflow, nesta tag.
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+      - name: Assinar a imagem (cosign)
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "${IMAGEM}@${DIGEST}"
+
+  publicar:
+    name: GitHub Release
+    needs: imagens
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Criar a release com notas geradas
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
+            --notes "Instalar: \`./scripts/deploy.sh $GITHUB_REF_NAME\` (ver enfermaria/docs/RELEASE.md)."

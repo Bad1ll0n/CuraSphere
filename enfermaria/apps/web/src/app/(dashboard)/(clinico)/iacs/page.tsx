@@ -251,7 +251,7 @@ export default function IacsPage() {
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${estadoCor[d.estado] ?? 'bg-slate-100 text-slate-600'}`}>{d.estado.replace('_', ' ')}</span>
                           <span className="text-xs bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full">ISOLAMENTO</span>
                         </div>
-                        <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Quarto {d.cama.quarto} · Cama {d.cama.numero} · {d.diagnosticoPrincipal}</p>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Quarto {(d.cama?.quarto ?? '—')} · Cama {(d.cama?.numero ?? '—')} · {d.diagnosticoPrincipal}</p>
                         {d.motivoIsolamento && <p className="text-sm text-orange-700 font-medium" style={{ marginTop: '8px' }}>{d.motivoIsolamento}</p>}
                       </div>
                     </div>

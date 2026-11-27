@@ -61,6 +61,9 @@ env:
   # na mesma major das imagens Docker de produção (apps/*/Dockerfile) — mudar as duas juntas.
   PNPM_VERSION: '10'
   NODE_VERSION: '26'
+  # OPS-14: runner FIXO em todos os jobs. Com `ubuntu-latest`, a imagem passou a 26.04 a
+  # 22/10, o Playwright deixou de instalar o Chromium e o E2E nocturno falhou todos os dias
+  # sem ninguém dar por isso. Mudar de versão passa a ser uma decisão num PR.
 
 jobs:
   # ═══════════════════════════════════════════════════════════════════════════
@@ -70,7 +73,7 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   verify:
     name: Verificação (types · unit · build)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     # Base descartável para o passo "Migrações batem certo com o schema" (ARQ-11).
     services:
@@ -209,7 +212,7 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   quality:
     name: Qualidade (lint · formato · types ui/mobile) — informativo
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     # Job inteiro não-bloqueante: aparece como check, nunca reprova o PR.
     continue-on-error: true
@@ -249,8 +252,10 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════════
   e2e:
     name: E2E Playwright (informativo)
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    # ~20 min: o anti-replay do TOTP obriga a esperar pela janela seguinte quando o mesmo
+    # utilizador MFA entra duas vezes seguidas (helpers.ts).
+    timeout-minutes: 60
     needs: verify
     if: |
       github.event_name == 'schedule' ||
@@ -304,9 +309,12 @@ jobs:
       - name: Instalar browsers Playwright
         run: pnpm exec playwright install chromium --with-deps
 
+      # QA-22: a base de serviço é nova a cada execução — `migrate deploy` chega (o `reset`
+      # pedia confirmação e, no Prisma 7, já não corre a seed). Sem seed não havia
+      # utilizadores, e TODOS os testes falhavam no login.
       - name: Migrar base de dados de teste
         working-directory: enfermaria/apps/api
-        run: pnpm exec prisma migrate reset --force
+        run: pnpm exec prisma migrate deploy
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
 
@@ -318,14 +326,29 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
 
-      - name: Build API
-        run: pnpm exec nx build @org/api
+      - name: Build API e Web
+        run: pnpm exec nx run-many -t build -p @org/api @org/web
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+          NODE_ENV: production
 
+      # Uma persona por papel (00001 direção … 00017), password Teste1234!, TOTP fixo de teste,
+      # doente de teste com portal e link de família (e os consentimentos que exigem).
+      - name: Seed de utilizadores de teste
+        working-directory: enfermaria/apps/api
+        run: pnpm exec ts-node src/prisma/seed-test-users.ts
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+
+      # QA-22: o alvo `@org/api:serve` arrancava a API em modo watch e o `@org/web:serve`
+      # NÃO EXISTE (o job morria aqui em silêncio, em background). Corre-se o que se
+      # construiu, como em produção. Os limites de login/MFA sobem porque a suite faz um
+      # login por teste a partir do mesmo IP — com o limite de produção (5 / 10 min) o
+      # sexto teste já recebia 429.
       - name: Arrancar API em background
-        run: pnpm exec nx serve @org/api &
+        run: nohup node --enable-source-maps apps/api/dist/main.js > api.log 2>&1 &
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
@@ -334,30 +357,31 @@ jobs:
           PORT: 3333
           NODE_ENV: test
           ALLOWED_ORIGINS: http://localhost:3000
+          LOGIN_THROTTLE_LIMIT: 1000
+          MFA_THROTTLE_LIMIT: 1000
 
+      # O middleware do Next verifica a assinatura do JWT: tem de ter o MESMO segredo da API.
       - name: Arrancar Web em background
-        run: pnpm exec nx serve @org/web &
+        run: nohup pnpm exec nx run @org/web:start > web.log 2>&1 &
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3333
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          PORT: 3000
 
       - name: Aguardar servidores (API + Web)
-        run: pnpm dlx wait-on http://localhost:3333/v1/health http://localhost:3000 --timeout 120000
-
-      - name: Seed de dados de teste
-        run: pnpm exec ts-node apps/web-e2e/fixtures/seed.ts
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
-          NEXT_PUBLIC_API_URL: http://localhost:3333
-          TEST_USER: '00001'
-          TEST_PASSWORD: Admin1234!
-        continue-on-error: true
+        run: pnpm dlx wait-on@8 http://localhost:3333/v1/health http://localhost:3000/login --timeout 180000
 
       - name: Correr testes Playwright
         run: pnpm exec playwright test --config=apps/web-e2e/playwright.config.ts
         env:
           BASE_URL: http://localhost:3000
-          TEST_USER: '00001'
-          TEST_PASSWORD: Admin1234!
+          API_URL: http://localhost:3333
+
+      - name: Logs dos servidores (em caso de falha)
+        if: failure()
+        run: |
+          echo "── API ──"; tail -n 200 api.log || true
+          echo "── Web ──"; tail -n 100 web.log || true
 
       - name: Publicar relatório Playwright
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -374,3 +398,38 @@ jobs:
           name: playwright-test-results
           path: enfermaria/apps/web-e2e/test-results/
           retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # OPS-14 — o E2E nocturno falhou 99 de 100 vezes e ninguém soube. Uma falha
+  # agendada abre (ou comenta) uma issue com a etiqueta `e2e-nocturno`, que notifica
+  # quem segue o repositório; a issue fecha-se sozinha na primeira noite verde.
+  # ═══════════════════════════════════════════════════════════════════════════
+  alerta-e2e:
+    name: Alerta do E2E nocturno
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    needs: [verify, e2e]
+    if: always() && github.event_name == 'schedule'
+    permissions:
+      issues: write
+    steps:
+      - name: Abrir, comentar ou fechar a issue de alerta
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RESULTADO: ${{ needs.e2e.result }}
+          VERIFY: ${{ needs.verify.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create e2e-nocturno --color B60205 --description "Falha do E2E nocturno" 2>/dev/null || true
+          aberta=$(gh issue list --label e2e-nocturno --state open --json number --jq '.[0].number')
+          if [ "$RESULTADO" = "success" ]; then
+            [ -n "$aberta" ] && gh issue close "$aberta" --comment "Voltou a verde: $RUN_URL"
+            exit 0
+          fi
+          msg="E2E nocturno: **${RESULTADO}** (verify: ${VERIFY}) em $(date -u +%F). Execução: $RUN_URL"
+          if [ -n "$aberta" ]; then
+            gh issue comment "$aberta" --body "$msg"
+          else
+            gh issue create --title "E2E nocturno a falhar" --label e2e-nocturno --body "$msg"
+          fi

@@ -9,6 +9,7 @@
  */
 import { test, expect, request as pwRequest, APIRequestContext } from '@playwright/test';
 import { createHmac } from 'crypto';
+import { reservarJanelaTotp } from './helpers';
 
 const API = process.env['API_URL'] ?? 'http://localhost:3333';
 const PASS = process.env['TEST_PASSWORD'] ?? 'Teste1234!';
@@ -37,13 +38,19 @@ async function login(num: string, clinico: boolean): Promise<{ ctx: APIRequestCo
   expect(r.ok(), `login ${num}: ${r.status()}`).toBeTruthy();
   let body = await r.json();
   if (clinico) {
-    const v = await ctx.post('/v1/auth/mfa/verificar', {
+    const csrfAtual = await csrf(ctx);
+    const verificar = () => ctx.post('/v1/auth/mfa/verificar', {
       data: { mfaChallengeToken: body.mfaChallengeToken, code: totp(TOTP_SECRET) },
-      headers: { 'x-csrf-token': (await csrf(ctx)) ?? '' },
+      headers: { 'x-csrf-token': csrfAtual ?? '' },
     });
+    await reservarJanelaTotp(num, (ms) => new Promise((ok) => setTimeout(ok, ms)));
+    const v = await verificar();
     expect(v.ok(), `mfa ${num}: ${v.status()}`).toBeTruthy();
     body = await v.json();
   }
+  // QA-22: as escritas exigem o token CSRF (cookie + cabeçalho), que só o GET /csrf-token
+  // emite. Sem isto o break-glass recebia 403 "CSRF token em falta".
+  await ctx.get('/v1/csrf-token');
   return { ctx, user: body.utilizador };
 }
 async function post(ctx: APIRequestContext, url: string, data: any) {
@@ -64,7 +71,7 @@ test.describe('Módulos de especialidade — wiring E2E', () => {
     expect(doenteId, 'seed precisa de ≥1 doente').toBeTruthy();
     // break-glass cobre os endpoints por-doente (maternidade/oncologia/diálise) desta sessão
     const bg = await post(medico.ctx, '/v1/break-glass', { doenteId, motivo: MOTIVO_BG });
-    expect([200, 201]).toContain(bg.status());
+    expect([200, 201], `break-glass: ${bg.status()} ${await bg.text()}`).toContain(bg.status());
   });
   test.afterAll(async () => { await medico?.ctx.dispose(); });
 

@@ -1,67 +1,30 @@
 import { test, expect } from '@playwright/test';
-import { loginAs } from './helpers';
+import { loginAs, prepararDoenteClinico } from './helpers';
 
-const DOENTE_URL = '/doentes';
-
+// QA-22/QA-23: entrava como direção (sem acesso a /doentes), procurava "o primeiro doente" na
+// lista e, não o encontrando, fazia `test.skip()` — passava sem testar nada. Agora abre um doente
+// real (break-glass do médico) e afirma o que o painel mostra.
 test.describe('Notas Clínicas', () => {
+  test.describe.configure({ mode: 'serial' });
+  let doenteId: string;
+
   test.beforeEach(async ({ page }) => {
-    await loginAs(page);
+    await loginAs(page, '00012'); // médico (cardiologista) — distinto dos outros specs
+    doenteId ??= await prepararDoenteClinico(page);
+    await page.goto(`/doentes/${doenteId}`);
+    await page.waitForLoadState('networkidle');
   });
 
-  test('secção de notas clínicas existe na ficha do doente', async ({ page }) => {
-    await page.goto(DOENTE_URL);
-    await page.waitForLoadState('networkidle');
-    const primeiroDoente = page.getByRole('link', { name: /ver|detalhe|ficha/i }).or(
-      page.locator('tbody tr').first().getByRole('link'),
-    ).first();
-    if ((await primeiroDoente.count()) === 0) { test.skip(); return; }
-    await primeiroDoente.click();
-    await page.waitForLoadState('networkidle');
-    await expect(page.getByText(/notas? clínicas?|notas? de evolução/i).first()).toBeVisible({ timeout: 10000 });
+  test('a ficha do doente mostra o painel de notas SOAP', async ({ page }) => {
+    await expect(page.getByText('Notas Clínicas SOAP')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/erro ao carregar doente/i)).not.toBeVisible();
   });
 
-  test('botão criar nota clínica está acessível', async ({ page }) => {
-    await page.goto(DOENTE_URL);
-    await page.waitForLoadState('networkidle');
-    const primeiroDoente = page.getByRole('link', { name: /ver|detalhe|ficha/i }).or(
-      page.locator('tbody tr').first().getByRole('link'),
-    ).first();
-    if ((await primeiroDoente.count()) === 0) { test.skip(); return; }
-    await primeiroDoente.click();
-    await page.waitForLoadState('networkidle');
-    const btnCriar = page.getByRole('button', { name: /nova nota|criar nota|adicionar nota/i }).first();
-    if ((await btnCriar.count()) > 0) {
-      await expect(btnCriar).toBeVisible({ timeout: 8000 });
-    }
-  });
-
-  test('lista de notas clínicas renderiza sem erros', async ({ page }) => {
-    await page.goto(DOENTE_URL);
-    await page.waitForLoadState('networkidle');
-    const primeiroDoente = page.getByRole('link', { name: /ver|detalhe|ficha/i }).or(
-      page.locator('tbody tr').first().getByRole('link'),
-    ).first();
-    if ((await primeiroDoente.count()) === 0) { test.skip(); return; }
-    await primeiroDoente.click();
-    await page.waitForLoadState('networkidle');
-    await expect(page.getByText(/500|erro/i)).not.toBeVisible();
-  });
-
-  test('criar nota abre modal/formulário', async ({ page }) => {
-    await page.goto(DOENTE_URL);
-    await page.waitForLoadState('networkidle');
-    const primeiroDoente = page.getByRole('link', { name: /ver|detalhe|ficha/i }).or(
-      page.locator('tbody tr').first().getByRole('link'),
-    ).first();
-    if ((await primeiroDoente.count()) === 0) { test.skip(); return; }
-    await primeiroDoente.click();
-    await page.waitForLoadState('networkidle');
-    const btnCriar = page.getByRole('button', { name: /nova nota|criar nota/i }).first();
-    if ((await btnCriar.count()) === 0) { test.skip(); return; }
-    await btnCriar.click();
-    const formNota = page.getByRole('dialog').or(page.locator('textarea').first());
-    if ((await formNota.count()) > 0) {
-      await expect(formNota.first()).toBeVisible({ timeout: 5000 });
-    }
+  test('o médico pode criar uma nota: o botão abre o formulário SOAP', async ({ page }) => {
+    const criar = page.getByRole('button', { name: 'Adicionar nota clínica SOAP' });
+    await expect(criar).toBeVisible({ timeout: 10000 });
+    await criar.click();
+    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('dialog').locator('textarea').first()).toBeVisible();
   });
 });

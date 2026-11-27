@@ -286,7 +286,7 @@ export default function AtribuicoesPage() {
                                 </span>
                               </td>
                               <td className="text-slate-500 text-sm" style={{ padding: '14px 16px' }}>
-                                Q{d.cama.quarto} · C{d.cama.numero}
+                                Q{(d.cama?.quarto ?? '—')} · C{(d.cama?.numero ?? '—')}
                               </td>
                               <td style={{ padding: '14px 16px' }}>
                                 {souChefe ? (

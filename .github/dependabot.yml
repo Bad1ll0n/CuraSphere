@@ -36,6 +36,16 @@ updates:
       - dependencies
       - docker
 
+  # OPS-15: as imagens do compose de produção (postgres, redis, nginx) estão fixadas por
+  # digest; sem isto ninguém as actualizava.
+  - package-ecosystem: docker-compose
+    directory: /enfermaria
+    schedule:
+      interval: monthly
+    labels:
+      - dependencies
+      - docker
+
   # Os workflows vivem em `.github/workflows/` na RAIZ do git (foram movidos de
   # `enfermaria/.github/`, onde o Actions nunca os lia). O Dependabot procura
   # workflows em `<directory>/.github/workflows` e não recorre a árvore, por isso
