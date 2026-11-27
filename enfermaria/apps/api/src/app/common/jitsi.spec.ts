@@ -43,6 +43,16 @@ describe('SEC-16 — Jitsi', () => {
     expect(tokenJitsi(cfg, 'cs-x', { nome: 'M', moderador: true })).toBeUndefined();
   });
 
+  it('servidor próprio sem credenciais fora de produção: salas sem token; URL inválido é um problema', () => {
+    env({ NODE_ENV: 'development', JITSI_SERVER: 'https://video.hospital.test///' });
+    const cfg = configJitsi();
+    expect(cfg).toEqual({ servidor: 'https://video.hospital.test', host: 'video.hospital.test', appId: undefined, segredo: undefined });
+    expect(tokenJitsi(cfg, 'cs-x', { nome: 'M', moderador: false })).toBeUndefined();
+    expect(dadosSala(cfg, 'cs-x', undefined)).toEqual({ videoRoomId: 'cs-x', servidor: 'https://video.hospital.test', jwt: null, roomUrl: 'https://video.hospital.test/cs-x' });
+    env({ NODE_ENV: 'production', JITSI_SERVER: 'não é um url', JITSI_APP_ID: 'a', JITSI_APP_SECRET: 's' });
+    expect(problemaConfigJitsi()).toMatch(/inválido/);
+  });
+
   it('token limitado à sala, com moderador só para o médico', () => {
     env({ NODE_ENV: 'production', JITSI_SERVER: 'https://video.hospital.pt/', JITSI_APP_ID: 'curasphere', JITSI_APP_SECRET: 'segredo-de-teste' });
     expect(problemaConfigJitsi()).toBeNull();

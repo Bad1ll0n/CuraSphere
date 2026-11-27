@@ -84,3 +84,6 @@ apps/api/src/generated/
 .versao-em-servico
 deploys.log
 monitoring/alertmanager/segredos/
+# Anexos gravados pela API em desenvolvimento e nos testes E2E (dados de doentes fictícios).
+apps/api/uploads/*
+!apps/api/uploads/documentos_test.pdf

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res, Header, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res, Header, UseInterceptors, UploadedFile, ForbiddenException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
@@ -23,6 +23,7 @@ import { NotaDoenteDto } from './dto/nota-doente.dto';
 import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
 import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
+import { idCorrelacaoDoPedido } from '../common/correlacao';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -76,7 +77,7 @@ export class DoenteController {
     this.leituras.registar({
       utilizadorId: req.user.sub, utilizadorNome: req.user.nome ?? null, utilizadorRole: req.user.role ?? null,
       entidadeTipo: 'doentes', entidadeId: null, rota: 'GET /doentes/export (todos os doentes)',
-      ip: req.ip ?? null, correlationId: (req.headers?.['x-correlation-id'] as string) ?? null, resultado: 'concedido',
+      ip: req.ip ?? null, correlationId: idCorrelacaoDoPedido(req), resultado: 'concedido',
     });
     const csv = await this.doenteService.exportarCsv();
     res.send(csv);
@@ -104,14 +105,40 @@ export class DoenteController {
     // uma vez concedido, assertAcessoDoente reconhece o acesso em todos os restantes endpoints deste doente.
     const motivoHeader = req.headers['x-break-glass-reason'];
     const motivoBreakGlass = motivoHeader ? decodeURIComponent(motivoHeader) : undefined;
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, motivoBreakGlass);
+    await this.verificarERegistarLeitura(req, id, motivoBreakGlass);
     return this.doenteService.buscarPorId(id);
+  }
+
+  /**
+   * SEC-09: a FICHA do doente (`:id`, não `:doenteId`) fica fora do interceptor global — e era a
+   * leitura mais importante de todas a não deixar rasto (encontrado pelo teste de integração,
+   * QA-20). Regista-se aqui, concedida ou negada.
+   */
+  private async verificarERegistarLeitura(req: any, doenteId: string, motivoBreakGlass?: string) {
+    const entrada = (resultado: 'concedido' | 'negado') => this.leituras.registar({
+      utilizadorId: req.user.sub ?? null,
+      utilizadorNome: req.user.nome ?? null,
+      utilizadorRole: req.user.role ?? null,
+      entidadeTipo: 'doentes',
+      entidadeId: doenteId,
+      rota: `${req.method} ${String(req.originalUrl ?? req.url ?? '').split('?')[0]}`,
+      ip: req.ip ?? null,
+      correlationId: idCorrelacaoDoPedido(req),
+      resultado,
+    });
+    try {
+      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, motivoBreakGlass);
+    } catch (e) {
+      if (e instanceof ForbiddenException) entrada('negado');
+      throw e;
+    }
+    entrada('concedido');
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/historico')
   async historico(@Param('id') id: string, @Request() req: any) {
-    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    await this.verificarERegistarLeitura(req, id);
     return this.doenteService.historico(id);
   }
 

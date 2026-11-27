@@ -22,6 +22,9 @@ async function main() {
   // 1) Função de auditoria (idempotente: CREATE OR REPLACE).
   await pool.query(readFileSync(join(dir, '..', 'prisma', 'audit-triggers.sql'), 'utf8'));
 
+  // 1b) O próprio trilho é imutável para TODOS os papéis, superuser incluído (WORM).
+  await pool.query(readFileSync(join(dir, '..', 'prisma', 'audit-imutavel.sql'), 'utf8'));
+
   // 2) Tabelas base do schema public (exclui vistas e a deny-list).
   const { rows } = await pool.query(
     "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name",
@@ -41,6 +44,7 @@ async function main() {
   const total = (await pool.query("SELECT count(*) FROM information_schema.triggers WHERE trigger_name='curasphere_audit'")).rows[0].count;
   console.log(`Triggers de auditoria aplicados a ${aplicadas} tabelas (deny-list: ${[...DENY].join(', ')}).`);
   console.log(`Total de triggers curasphere_audit na BD: ${total}`);
+  console.log('Trilho de auditoria imutável (audit_logs, audit_checkpoints): UPDATE/DELETE/TRUNCATE recusados.');
   await pool.end();
 }
 main().catch((e) => { console.error(e); process.exit(1); });

@@ -19,9 +19,14 @@ export async function initCsrf(): Promise<void> {
 
 const STATEFUL_METHODS = new Set(['post', 'put', 'patch', 'delete']);
 
-api.interceptors.request.use((config) => {
-  if (STATEFUL_METHODS.has(config.method ?? '') && csrfToken) {
-    config.headers['X-CSRF-Token'] = csrfToken;
+// O token CSRF era obtido só pelo layout do dashboard: numa página fora dele aberta por link ou
+// recarregada (teleconsulta, impressão, quiosque…), as escritas saíam sem token e davam 403 — o
+// "Terminar" da teleconsulta falhava em silêncio e a chamada ficava aberta (encontrado pelo E2E,
+// QA-23). Agora o primeiro pedido com escrita obtém-no, em qualquer página.
+api.interceptors.request.use(async (config) => {
+  if (STATEFUL_METHODS.has(config.method ?? '')) {
+    if (!csrfToken) await initCsrf();
+    if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken;
   }
   return config;
 });

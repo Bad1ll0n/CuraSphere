@@ -12,6 +12,7 @@ import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import { AnomalyDetectionService } from '../common/anomaly-detection.service';
+import { idCorrelacaoDoPedido } from '../common/correlacao';
 import {
   ACESSO_DOENTE_ISENTO,
   ACESSO_DOENTE_POR,
@@ -73,7 +74,7 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
         entidadeId: doenteId,
         rota,
         ip: req.ip ?? null,
-        correlationId: (req.headers?.['x-correlation-id'] as string) ?? null,
+        correlationId: idCorrelacaoDoPedido(req), // OPS-07: nunca o cabeçalho cru
         resultado,
       });
       if (resultado === 'concedido' && utilizador.sub && utilizador.tipo !== 'portal') {

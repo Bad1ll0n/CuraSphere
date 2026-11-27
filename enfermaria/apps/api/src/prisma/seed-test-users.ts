@@ -163,7 +163,12 @@ async function main() {
 
   // ── 1. Apagar todos os utilizadores (CASCADE elimina registos dependentes) ─
   console.log('► Apagar utilizadores existentes...');
-  await prisma.$executeRawUnsafe('TRUNCATE TABLE "utilizadores" CASCADE');
+  // O CASCADE chega ao audit_logs, que é imutável (prisma/audit-imutavel.sql). Só uma
+  // transacção que se declare de retenção autorizada o pode limpar — isto é seed de TESTE.
+  await prisma.$transaction([
+    prisma.$executeRawUnsafe(`SELECT set_config('curasphere.retencao_autorizada', 'sim', true)`),
+    prisma.$executeRawUnsafe('TRUNCATE TABLE "utilizadores" CASCADE'),
+  ]);
   console.log('  ✓ Utilizadores e dados dependentes eliminados.\n');
 
   // ── 2. Criar os utilizadores de teste ──────────────────────────────────────

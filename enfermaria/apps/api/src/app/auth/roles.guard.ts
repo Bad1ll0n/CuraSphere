@@ -35,8 +35,9 @@ export class RolesGuard implements CanActivate {
     // únicas strings de sub-papel usadas em @Roles() em toda a API são de liderança, pelo que
     // esta alteração não concede acesso indevido a nenhum outro sub-papel.
     // NOTA: @SubRoles() continua a ser um filtro AND estrito sobre user.subRole (mais restritivo).
-    const roleOk    = !requiredRoles    || requiredRoles.includes(user.role) || (user.subRole && requiredRoles.includes(user.subRole));
-    const subRoleOk = !requiredSubRoles || (user.subRole && requiredSubRoles.includes(user.subRole));
+    // Sempre booleano (antes devolvia `null` sem sub-papel — recusava, mas por acaso).
+    const roleOk    = !requiredRoles    || requiredRoles.includes(user.role) || (!!user.subRole && requiredRoles.includes(user.subRole));
+    const subRoleOk = !requiredSubRoles || (!!user.subRole && requiredSubRoles.includes(user.subRole));
 
     return roleOk && subRoleOk;
   }

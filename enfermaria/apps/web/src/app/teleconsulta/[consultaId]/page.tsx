@@ -84,7 +84,10 @@ export default function TeleconsultaPage() {
       if (utilizador?.role === 'medico') {
         await api.post(`/consultas/${consultaId}/video/terminar`);
       }
-    } catch { /* vazio */ }
+    } catch (e: any) {
+      // Antes: erro engolido — a chamada ficava aberta no servidor sem ninguém saber.
+      window.alert(`A chamada não foi encerrada no servidor: ${e?.response?.data?.message ?? 'erro de rede'}. Tente de novo a partir das consultas.`);
+    }
     apiRef.current?.dispose();
     router.push('/consultas');
   };
