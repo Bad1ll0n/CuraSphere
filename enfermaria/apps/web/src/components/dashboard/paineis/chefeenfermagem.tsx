@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend, BarChart, Bar } from 'recharts';
+import { AltasProteladasCard } from './altas-proteladas';
 import { estadoCor, estadoLabel, StatCard, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
 
 export function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
@@ -95,6 +96,8 @@ export function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
               </div>
             )}
           </CardContainer>
+
+          <AltasProteladasCard />
         </div>
       </div>
     </>
