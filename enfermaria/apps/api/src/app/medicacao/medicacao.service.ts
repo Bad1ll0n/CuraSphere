@@ -1,3 +1,4 @@
+import type { EtiquetaUnidose, LinhaMar, ResultadoLeitura, VerificacaoLeitura } from '@org/shared';
 import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
@@ -576,8 +577,8 @@ export class MedicacaoService {
    * pulseira (processo e data de nascimento) e embalagem/unidose (etiqueta assinada da
    * farmácia, GS1 com GTIN/lote/validade, ou código CHNM) → mesma substância e dentro da validade.
    */
-  async verificarLeitura(medicacaoId: string, doenteId: string | undefined, codigos: { pulseira?: string; medicamento?: string }) {
-    type Resultado = { ok: boolean; motivo: string; origem?: string; lote?: string | null; validade?: Date | null };
+  async verificarLeitura(medicacaoId: string, doenteId: string | undefined, codigos: { pulseira?: string; medicamento?: string }): Promise<VerificacaoLeitura<Date>> {
+    type Resultado = ResultadoLeitura<Date>;
     const med = await this.prisma.medicacao.findUnique({
       where: { id: medicacaoId },
       select: { id: true, doenteId: true, nome: true, dci: true, dose: true, via: true, catalogoId: true },
@@ -680,7 +681,7 @@ export class MedicacaoService {
     });
   }
 
-  async mar(utilizadorId: string) {
+  async mar(utilizadorId: string): Promise<LinhaMar<Date>[]> {
     const agora = new Date();
     const min = agora.getHours() * 60 + agora.getMinutes();
     let tipo: string;
@@ -1080,7 +1081,7 @@ export class MedicacaoService {
    * Formato: `<base64url(json)>.<hmac>`.
    */
   /** UX-08: dados para imprimir a etiqueta de unidose (QR assinado + texto legível). */
-  async dadosEtiqueta(medicacaoId: string) {
+  async dadosEtiqueta(medicacaoId: string): Promise<EtiquetaUnidose> {
     const m = await this.prisma.medicacao.findUnique({
       where: { id: medicacaoId },
       select: { id: true, doenteId: true, nome: true, dose: true, via: true, frequencia: true, doente: { select: { nome: true, numeroProcesso: true } } },

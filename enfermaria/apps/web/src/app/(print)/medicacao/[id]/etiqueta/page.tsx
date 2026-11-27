@@ -1,19 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import QRCode from 'react-qr-code';
-import api from '@/lib/api';
-
-interface Etiqueta {
-  qrPayload: string;
-  nome: string;
-  dose: string;
-  via: string;
-  frequencia: string;
-  doente: { nome: string; numeroProcesso: string };
-  emitidoEm: string;
-}
+import { useEtiquetaUnidose } from '@/lib/hooks';
 
 /**
  * UX-08 — etiqueta de unidose. O QR é assinado pelo servidor (não é JSON do cliente);
@@ -21,14 +11,13 @@ interface Etiqueta {
  */
 export default function EtiquetaUnidosePage() {
   const { id } = useParams<{ id: string }>();
-  const [e, setE] = useState<Etiqueta | null>(null);
-  const [erro, setErro] = useState<string | null>(null);
-
+  const { data: e, error } = useEtiquetaUnidose(id);
+  const erro = error ? ((error as any)?.response?.data?.message ?? 'Não foi possível gerar a etiqueta.') : null;
   useEffect(() => {
-    api.get(`/medicacao/${id}/etiqueta`)
-      .then((r) => { setE(r.data); setTimeout(() => window.print(), 600); })
-      .catch((x) => setErro(x?.response?.data?.message ?? 'Não foi possível gerar a etiqueta.'));
-  }, [id]);
+    if (!e) return undefined;
+    const t = setTimeout(() => window.print(), 600);
+    return () => clearTimeout(t);
+  }, [e]);
 
   if (erro) return <p role="alert" style={{ padding: 24, color: '#b91c1c' }}>{erro}</p>;
   if (!e) return <p style={{ padding: 24 }}>A gerar a etiqueta…</p>;

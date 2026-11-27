@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import api from '@/lib/api';
+import { useMeuTurno } from '@/lib/hooks';
+import type { LinhaMeuTurno } from '@org/shared';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import { useModosTurno, type ModoNoturno } from '@/lib/modos-turno';
 
@@ -13,17 +13,7 @@ import { useModosTurno, type ModoNoturno } from '@/lib/modos-turno';
  * toque para a ficha ou para o MAR. Antes era preciso juntar 5 ecrãs (MAR, Timeline, Tarefas,
  * Doentes, Passagem).
  */
-interface Linha {
-  doente: {
-    id: string; nome: string; numeroProcesso: string; idade: number | null; estado: string;
-    cama?: { numero: string; quarto: string; servico?: string | null } | null;
-    isolamento: boolean; naoReanimar: boolean; alergias: string[] | null;
-  };
-  medicacao: { devidas: number; emAtraso: number };
-  observacoesEmAtraso: { tipo: string; motivo: string; atrasoMinutos: number }[];
-  news2: { valor: number | null; em: string; tendencia: 'sobe' | 'desce' | 'igual' | null } | null;
-  tarefas: { pendentes: number; urgentes: number };
-}
+type Linha = LinhaMeuTurno; // ARQ-12: contrato partilhado com a api
 
 function Chip({ tom, children, rotulo }: { tom: 'vermelho' | 'ambar' | 'azul' | 'cinza'; children: React.ReactNode; rotulo?: string }) {
   const cores = {
@@ -38,22 +28,11 @@ function Chip({ tom, children, rotulo }: { tom: 'vermelho' | 'ambar' | 'azul' | 
 export default function MeuTurnoPage() {
   const t = useTranslations('myShift');
   const tc = useTranslations('common');
-  const [linhas, setLinhas] = useState<Linha[] | null>(null);
-  const [erro, setErro] = useState(false);
+  // ARQ-13: react-query (atualiza a cada minuto e quando se administra no MAR).
+  const { data, isError: erro, refetch } = useMeuTurno();
+  const linhas: Linha[] | null = data ? data.doentes : null;
+  const carregar = () => { void refetch(); };
   const { cabeceira, setCabeceira, noturno, setNoturno } = useModosTurno();
-
-  const carregar = useCallback(async () => {
-    try {
-      const r = await api.get('/resumo/meu-turno');
-      setLinhas(r.data?.doentes ?? []);
-      setErro(false);
-    } catch { setErro(true); }
-  }, []);
-  useEffect(() => {
-    carregar();
-    const t = setInterval(carregar, 60_000);
-    return () => clearInterval(t);
-  }, [carregar]);
 
   const totais = (linhas ?? []).reduce((a, l) => ({
     med: a.med + l.medicacao.devidas + l.medicacao.emAtraso,

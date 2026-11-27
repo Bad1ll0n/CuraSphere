@@ -631,3 +631,37 @@ describe('estrutura — cascatas no schema (ARQ-03)', () => {
     expect(infratores).toEqual([]);
   });
 });
+
+/**
+ * ARQ-14 — ficheiros gigantes. Nenhum ficheiro novo passa de LIMITE_LINHAS; os que já
+ * passavam estão aqui e não podem crescer. Partir um serviço obriga a baixar o número (ou
+ * a tirá-lo da lista) — a lista só encolhe.
+ */
+describe('estrutura — tamanho dos ficheiros', () => {
+  const LIMITE_LINHAS = 800;
+  const GRANDES: Record<string, number> = {
+    'ai-clinico/ai-clinico.service.ts': 1358,
+    'medicacao/medicacao.service.ts': 1331,
+    'doentes/doentes.service.ts': 1243,
+  };
+  const actuais = Object.fromEntries(
+    ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .map((f) => [relative(RAIZ_APP, f).replace(/\\/g, '/'), readFileSync(f, 'utf8').split('\n').length] as const)
+      .filter(([, n]) => n > LIMITE_LINHAS),
+  );
+
+  it(`nenhum ficheiro novo passa de ${LIMITE_LINHAS} linhas e os grandes não crescem`, () => {
+    const piores = Object.entries(actuais)
+      .filter(([f, n]) => n > (GRANDES[f] ?? LIMITE_LINHAS))
+      .map(([f, n]) => `${f}: ${GRANDES[f] ?? LIMITE_LINHAS} → ${n}`);
+    expect(piores).toEqual([]);
+  });
+
+  it('a lista só encolhe (atualize-a quando um ficheiro diminui)', () => {
+    const desceu = Object.entries(GRANDES)
+      .filter(([f, n]) => (actuais[f] ?? 0) < n)
+      .map(([f, n]) => `${f}: ${n} → ${actuais[f] ?? `≤${LIMITE_LINHAS}`}`);
+    expect(desceu).toEqual([]);
+  });
+});

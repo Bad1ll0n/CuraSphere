@@ -6,3 +6,4 @@ export * from './lib/types/turno.types.js';
 export * from './lib/types/horario.types.js';
 export * from './lib/types/alerta.types.js';
 export * from './lib/types/notificacao.types.js';
+export * from './lib/contratos/clinico.js';
