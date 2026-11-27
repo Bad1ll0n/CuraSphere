@@ -64,7 +64,7 @@
     "app/(dashboard)/(clinico)/fisioterapia/page.tsx": 1,
     "app/(dashboard)/(clinico)/iacs/page.tsx": 3,
     "app/(dashboard)/(clinico)/interconsultas/page.tsx": 1,
-    "app/(dashboard)/(clinico)/passagem-turno/page.tsx": 3,
+    "app/(dashboard)/(clinico)/passagem-turno/passagem-cliente.tsx": 2,
     "app/(dashboard)/(clinico)/turno/medicacoes/page.tsx": 1,
     "app/(dashboard)/(clinico)/worklist/page.tsx": 2,
     "app/(dashboard)/(gestao)/auditoria/page.tsx": 2,
