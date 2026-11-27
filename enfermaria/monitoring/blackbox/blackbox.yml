@@ -1,0 +1,20 @@
+# OPS-05 — sondas HTTP(S).
+modules:
+  http_2xx:
+    prober: http
+    timeout: 10s
+    http:
+      method: GET
+      valid_status_codes: [200]
+      follow_redirects: false
+
+  # Endereço público: exige TLS válido; a validade do certificado sai em
+  # probe_ssl_earliest_cert_expiry (alerta CertificadoAExpirar).
+  https_2xx:
+    prober: http
+    timeout: 10s
+    http:
+      method: GET
+      valid_status_codes: [200]
+      fail_if_not_ssl: true
+      preferred_ip_protocol: ip4

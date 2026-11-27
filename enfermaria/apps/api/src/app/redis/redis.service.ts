@@ -32,6 +32,16 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     await this.client.quit();
   }
 
+  /** OPS-06: verificação de saúde sem escrever nada (antes o health fazia SET a cada chamada). */
+  async ping(): Promise<boolean> {
+    if (!this.connected) return false;
+    try {
+      return (await this.client.ping()) === 'PONG';
+    } catch {
+      return false;
+    }
+  }
+
   async get<T>(key: string): Promise<T | null> {
     if (!this.connected) return null;
     try {

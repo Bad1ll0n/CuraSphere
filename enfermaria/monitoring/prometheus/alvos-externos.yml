@@ -1,0 +1,6 @@
+# OPS-05 — endereço público do CuraSphere, sondado por fora (TLS, DNS, nginx) e com a validade
+# do certificado. Substituir pelo domínio real do hospital (o mesmo `server_name` do nginx).
+- targets:
+    - https://curasphere.hospital.pt/login
+  labels:
+    servico: web-publico

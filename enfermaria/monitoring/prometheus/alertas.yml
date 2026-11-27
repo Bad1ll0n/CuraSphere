@@ -1,0 +1,157 @@
+# OPS-05 — alertas mínimos. Num hospital, a primeira pessoa a saber que a API caiu não pode ser
+# um enfermeiro no turno da noite. `severidade: critico` acorda alguém (ver alertmanager.yml).
+groups:
+  - name: disponibilidade
+    rules:
+      - alert: ApiNaoPronta
+        expr: probe_success{job="blackbox-interno", instance=~".*api.*"} == 0
+        for: 2m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "A API não está pronta há 2 min (BD, migrações ou trilho de auditoria)."
+          accao: "docker compose ps; docker logs curasphere-api --tail 100; curl /v1/health/ready"
+
+      - alert: WebEmBaixo
+        expr: probe_success{job="blackbox-interno", instance=~".*web.*"} == 0
+        for: 2m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "O servidor web não responde há 2 min."
+
+      - alert: SitePublicoEmBaixo
+        expr: probe_success{job="blackbox-externo"} == 0
+        for: 2m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "{{ $labels.instance }} não responde por fora há 2 min (DNS, TLS ou nginx)."
+
+      - alert: AlvoSemMetricas
+        expr: up == 0
+        for: 5m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O Prometheus não consegue recolher {{ $labels.job }} ({{ $labels.instance }})."
+
+      - alert: PostgresEmBaixo
+        expr: pg_up == 0
+        for: 1m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "O PostgreSQL não responde ao exporter."
+
+      - alert: RedisEmBaixo
+        expr: redis_up == 0
+        for: 5m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O Redis está em baixo: a API funciona degradada (sem cache nem broadcast entre instâncias)."
+
+      - alert: ContentorReiniciado
+        expr: changes(container_start_time_seconds{name=~"curasphere-.*"}[15m]) > 0
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "{{ $labels.name }} reiniciou nos últimos 15 min (autoheal, OOM ou crash)."
+
+  - name: desempenho
+    rules:
+      - alert: TaxaDeErros5xx
+        expr: |
+          sum(rate(http_requests_total{job="api", status=~"5.."}[5m]))
+            / clamp_min(sum(rate(http_requests_total{job="api"}[5m])), 1e-9) > 0.02
+        for: 5m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Mais de 2 % dos pedidos à API acabam em erro 5xx."
+
+      - alert: LatenciaP95Alta
+        expr: |
+          histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job="api"}[5m]))) > 1
+        for: 10m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O p95 da API está acima de 1 s há 10 min."
+
+      - alert: EventLoopBloqueado
+        expr: nodejs_eventloop_lag_p99_seconds{job="api"} > 0.5
+        for: 5m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O event loop da API tem atrasos p99 acima de 500 ms."
+
+  - name: capacidade
+    rules:
+      - alert: DiscoQuaseCheio
+        expr: |
+          (1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"}
+             / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}) > 0.8
+        for: 10m
+        labels: { severidade: critico }
+        annotations:
+          resumo: "{{ $labels.mountpoint }} acima de 80 %. Disco cheio = BD parada."
+
+      - alert: LigacoesPostgresAltas
+        expr: sum(pg_stat_activity_count) / max(pg_settings_max_connections) > 0.8
+        for: 5m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "Mais de 80 % das ligações do PostgreSQL em uso."
+
+      - alert: MemoriaDoHostAlta
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.9
+        for: 10m
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "Menos de 10 % de memória disponível no host."
+
+  - name: backups-e-certificados
+    rules:
+      # Métrica escrita pelo scripts/backup-all.sh no fim de cada cópia bem-sucedida
+      # (textfile collector do node-exporter).
+      - alert: BackupAtrasado
+        expr: time() - curasphere_backup_ultimo_sucesso_timestamp_segundos > 26 * 3600
+        labels: { severidade: critico }
+        annotations:
+          resumo: "O último backup bem-sucedido tem mais de 26 h."
+          accao: "docker logs curasphere-backup --tail 100 (ver DR-RUNBOOK.md)"
+
+      - alert: BackupNuncaRegistado
+        expr: absent(curasphere_backup_ultimo_sucesso_timestamp_segundos)
+        for: 26h
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Não há registo de nenhum backup bem-sucedido há 26 h."
+
+      - alert: BackupSemCopiaExterna
+        expr: curasphere_backup_copia_externa == 0
+        for: 1h
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O último backup ficou só neste host (BACKUP_REMOTE não definido)."
+
+      # OPS-02 — PITR. Métricas escritas pelo scripts/arquivar-wal.sh (archive_command do
+      # PostgreSQL) e pelo scripts/enviar-wal.sh (cópia cifrada para fora do host).
+      # O PostgreSQL força a troca de segmento a cada 5 min (archive_timeout).
+      - alert: WalNaoArquivado
+        expr: time() - curasphere_wal_ultimo_arquivo_timestamp_segundos > 20 * 60
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Há mais de 20 min sem arquivar WAL: o restauro para um instante (PITR) deixou de estar garantido."
+          accao: "docker logs curasphere-db --tail 50 | grep -i archive"
+
+      - alert: WalSemCopiaExterna
+        expr: time() - curasphere_wal_ultimo_envio_externo_timestamp_segundos > 30 * 60
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Há mais de 30 min sem enviar WAL para fora do host: perder o host perde os últimos registos."
+
+      - alert: BaseBackupAtrasado
+        expr: time() - curasphere_basebackup_ultimo_sucesso_timestamp_segundos > 8 * 86400
+        labels: { severidade: critico }
+        annotations:
+          resumo: "O último base backup (ponto de partida do PITR) tem mais de 8 dias."
+
+      - alert: CertificadoAExpirar
+        expr: probe_ssl_earliest_cert_expiry - time() < 14 * 86400
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "O certificado de {{ $labels.instance }} expira em menos de 14 dias."

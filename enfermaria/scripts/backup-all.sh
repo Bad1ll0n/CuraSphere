@@ -123,6 +123,13 @@ log "[4/4] Retenção local (>${RETENCAO_DIAS} dias)..."
 find "$BACKUP_DIR" -name 'uploads_*.tar.gz*' ! -name '*.parcial' -mtime +"$RETENCAO_DIAS" -delete
 find "$BACKUP_DIR" -name 'backup_*.sql.gz*'  ! -name '*.parcial' -mtime +"$RETENCAO_DIAS" -delete
 
+# OPS-05: métricas para o alerta "backup atrasado" (textfile collector do node-exporter).
+. "$SCRIPT_DIR/metricas-textfile.sh"
+metrica_escrever curasphere_backup curasphere_backup_ultimo_sucesso_timestamp_segundos "$(date +%s)" \
+  "Momento da última rotina de backup (BD + uploads) concluída com sucesso."
+metrica_escrever curasphere_backup_remoto curasphere_backup_copia_externa "$([ -n "${BACKUP_REMOTE:-}" ] && echo 1 || echo 0)" \
+  "1 se o último backup foi copiado para fora do host."
+
 log "=== Rotina concluída ==="
 log "Conteúdo actual de $BACKUP_DIR:"
 ls -lh "$BACKUP_DIR" 2>/dev/null | tail -n +2 || log "  (vazio)"

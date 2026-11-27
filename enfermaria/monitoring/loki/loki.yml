@@ -1,0 +1,61 @@
+# OPS-07 — Loki: logs centralizados, fora dos contentores. Antes, os logs viviam no json-file de
+# cada contentor e desapareciam a cada deploy (o `up -d` recria api/web) — precisamente os que
+# explicariam porque é que o deploy foi revertido.
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  log_level: warn
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /loki
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+
+schema_config:
+  configs:
+    - from: 2026-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+# Retenção controlada (logs operacionais de um sistema com dados de saúde): 30 dias.
+limits_config:
+  retention_period: 720h
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  ingestion_rate_mb: 8
+  ingestion_burst_size_mb: 16
+
+compactor:
+  working_directory: /loki/compactor
+  retention_enabled: true
+  delete_request_store: filesystem
+  compaction_interval: 10m
+  retention_delete_delay: 2h
+
+# Alertas a partir de logs (o que não tem métrica): ver regras/curasphere.yml.
+ruler:
+  storage:
+    type: local
+    local:
+      directory: /etc/loki/regras
+  rule_path: /loki/ruler-tmp
+  alertmanager_url: http://alertmanager:9093
+  enable_api: true
+  ring:
+    kvstore:
+      store: inmemory
+
+analytics:
+  reporting_enabled: false

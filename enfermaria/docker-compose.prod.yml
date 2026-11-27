@@ -32,9 +32,28 @@ services:
       POSTGRES_DB:       ${DB_NAME:-enfermaria}
       POSTGRES_USER:     ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    # OPS-02 — PITR: cada segmento de WAL é arquivado (scripts/arquivar-wal.sh) assim que fecha,
+    # e no máximo a cada 5 min (archive_timeout). Com o base backup semanal (scripts/basebackup.sh)
+    # repõe-se a base para qualquer instante: RPO de minutos em vez de 24 h. Restauro:
+    # scripts/restaurar-pitr.sh; ensaio automático: scripts/ensaio-pitr.sh (DR-RUNBOOK.md §7).
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        mkdir -p /wal-arquivo /metricas && chown postgres:postgres /wal-arquivo /metricas
+        exec docker-entrypoint.sh postgres \
+          -c hba_file=/etc/postgresql/pg_hba.conf \
+          -c wal_level=replica \
+          -c archive_mode=on \
+          -c archive_timeout=300 \
+          -c 'archive_command=/scripts/arquivar-wal.sh %p %f' \
+          -c max_wal_senders=3
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # OPS-01: o Postgres já não monta ./backups — não precisa, e montava-o em leitura-escrita.
+      - wal_arquivo:/wal-arquivo
+      - metricas_textfile:/metricas
+      - ./scripts:/scripts:ro
+      - ./postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
     networks:
       - curasphere-internal
     healthcheck:
@@ -78,6 +97,8 @@ services:
       # que não é este volume. Sem isto, a cópia diária podia ficar dentro do contentor e
       # desaparecer com ele, com o log (esse sim em /backups) a dizer que tinha corrido bem.
       BACKUP_DIR:        /backups
+      METRICAS_DIR:      /metricas
+      WAL_ARQUIVO_DIR:   /wal-arquivo
       # ─── OPS-01 — cifra e cópia fora do host ─────────────────────────────
       # Sem BACKUP_AGE_RECIPIENT nem BACKUP_ENCRYPTION_KEY a rotina FALHA em vez de
       # escrever dados de saúde em claro (ver scripts/backup-cifra.sh).
@@ -85,6 +106,7 @@ services:
       BACKUP_ENCRYPTION_KEY: ${BACKUP_ENCRYPTION_KEY:-}
       BACKUP_REMOTE:         ${BACKUP_REMOTE:-}
       RETENCAO_DIAS:         ${RETENCAO_DIAS:-30}
+      WAL_RETENCAO_DIAS:     ${WAL_RETENCAO_DIAS:-8}
       RCLONE_CONFIG:         /config/rclone/rclone.conf
     volumes:
       - ./backups:/backups
@@ -97,15 +119,25 @@ services:
       # ─── OPS-01 — os uploads TÊM de entrar no backup ───────────────────────
       # Só-leitura: o contentor de backup nunca escreve no registo clínico.
       - api_uploads:/uploads-src:ro
+      # OPS-02: o WAL arquivado (lido para o enviar cifrado para fora do host) e as métricas
+      # para o node-exporter (idade do último backup, do último WAL, do base backup).
+      - wal_arquivo:/wal-arquivo
+      - metricas_textfile:/metricas
     networks:
       - curasphere-internal
     depends_on:
       postgres:
         condition: service_healthy
+    # 02:00 — dump lógico diário (recurso independente do PITR); */5 — WAL para fora do host;
+    # domingo 03:00 — base backup físico (ponto de partida do PITR).
     entrypoint: >
       sh -c "
         apk add --no-cache openssl tar age rclone >/dev/null 2>&1 || true;
-        echo '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1' | crontab -;
+        printf '%s\n'
+          '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1'
+          '*/5 * * * * /scripts/enviar-wal.sh >> /backups/wal.log 2>&1'
+          '0 3 * * 0 /scripts/basebackup.sh >> /backups/basebackup.log 2>&1'
+          | crontab -;
         crond -f
       "
 
@@ -334,12 +366,17 @@ services:
         condition: service_healthy
     networks:
       - curasphere-internal
+    # OPS-06: liveness (sem I/O). A prontidão (BD, migrações, auditoria) é verificada pelo
+    # deploy.sh e pela sonda do Prometheus em /v1/health/ready — se fosse o healthcheck, uma BD
+    # em baixo faria o autoheal reiniciar em ciclo uma API que está bem.
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3333/v1/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3333/v1/health/live"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+    labels:
+      autoheal: "true"
 
   # ── Schema e triggers de auditoria (OPS-03) ────────────────────────────────
   # Execução única, corrida pelo `deploy.sh` antes de substituir a API:
@@ -438,10 +475,13 @@ services:
     networks:
       - curasphere-internal
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
+    labels:
+      autoheal: "true"
 
   # ── Nginx (reverse proxy + SSL) ────────────────────────────────────────────
   nginx:
@@ -475,17 +515,186 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
-      - nginx_logs:/var/log/nginx
+      # OPS-07: sem volume de logs — o nginx escreve para stdout/stderr (a imagem oficial liga
+      # access.log/error.log a eles), com rotação pelo json-file e recolha pelo Alloy/Loki.
     depends_on:
       - api
       - web
     networks:
       - curasphere-internal
+    # OPS-06: `nginx -t` só validava a sintaxe; isto confirma que o nginx responde.
     healthcheck:
-      test: ["CMD", "nginx", "-t"]
-      interval: 60s
-      timeout: 10s
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
       retries: 3
+    labels:
+      autoheal: "true"
+
+  # ── Autoheal (OPS-06) ──────────────────────────────────────────────────────
+  # O Docker sem orquestrador NÃO reinicia contentores unhealthy (`restart` só reage à saída
+  # do processo): uma API com o event loop pendurado ficava unhealthy a receber tráfego. Este
+  # serviço reinicia os contentores com a etiqueta `autoheal=true` (api, web, nginx).
+  # Tem acesso ao socket do Docker — por isso é o único serviço com ele em produção, sem rede.
+  autoheal:
+    image: willfarrell/autoheal:1.2.0@sha256:31f580ef0279eaced5b38d631b08c474d70d8403c1c2fdd6ddcf2e879d5f3f7c
+    container_name: curasphere-autoheal
+    restart: unless-stopped
+    network_mode: none
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+      AUTOHEAL_INTERVAL: 15
+      AUTOHEAL_START_PERIOD: 120
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  # ══ Monitorização (OPS-05/07) — `docker compose --profile monitoring up -d` ═══
+  # Grafana só em 127.0.0.1:3001 (túnel SSH ou VPN); nada disto é exposto ao público.
+  prometheus:
+    profiles: ["monitoring"]
+    image: prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06
+    container_name: curasphere-prometheus
+    restart: unless-stopped
+    environment:
+      # Opcional no compose (o perfil base não o exige); este contentor recusa arrancar sem ele.
+      METRICS_TOKEN: ${METRICS_TOKEN:-}
+    # O token de scrape da API fica num ficheiro dentro do contentor, nunca no repositório.
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        [ -n "$$METRICS_TOKEN" ] || { echo "METRICS_TOKEN em falta no .env.prod (openssl rand -hex 32)"; exit 1; }
+        printf '%s' "$$METRICS_TOKEN" > /tmp/metrics_token
+        exec /bin/prometheus --config.file=/etc/prometheus/prometheus.yml \
+          --storage.tsdb.path=/prometheus --storage.tsdb.retention.time=30d
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "3" } }
+
+  alertmanager:
+    profiles: ["monitoring"]
+    image: prom/alertmanager:v0.34.2@sha256:39d8bb3966c694a124428a3a88fbcffd40bd069129ecd47c059f8a3f17c55f3b
+    container_name: curasphere-alertmanager
+    restart: unless-stopped
+    command: ["--config.file=/etc/alertmanager/alertmanager.yml", "--storage.path=/alertmanager"]
+    volumes:
+      - ./monitoring/alertmanager:/etc/alertmanager:ro
+      - alertmanager_data:/alertmanager
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "3" } }
+
+  grafana:
+    profiles: ["monitoring"]
+    image: grafana/grafana:13.3.0@sha256:488984b716c0862639f91a698adbe2862677a5a07bad42da5f03f3030883b205
+    container_name: curasphere-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_SERVER_ROOT_URL: http://127.0.0.1:3001
+    # Sem password definida o Grafana usaria admin/admin: recusa arrancar.
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        [ -n "$$GF_SECURITY_ADMIN_PASSWORD" ] || { echo "GRAFANA_ADMIN_PASSWORD em falta no .env.prod"; exit 1; }
+        exec /run.sh
+    ports:
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "20m", max-file: "3" } }
+
+  node-exporter:
+    profiles: ["monitoring"]
+    image: prom/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
+    container_name: curasphere-node-exporter
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+      - --collector.textfile.directory=/metricas
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+      - metricas_textfile:/metricas:ro
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  postgres-exporter:
+    profiles: ["monitoring"]
+    image: prometheuscommunity/postgres-exporter:v0.20.1@sha256:ac5ec343104fae0e2d84a27bb8d69b38430a11910c5382cad85d478d2bab713e
+    container_name: curasphere-postgres-exporter
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-enfermaria}?sslmode=disable"
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  redis-exporter:
+    profiles: ["monitoring"]
+    image: oliver006/redis_exporter:v1.97.0@sha256:f5f903fbe77571d455ede0453b084d6840bc62fc105efac001034421cab83b99
+    container_name: curasphere-redis-exporter
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: redis://redis:6379
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  cadvisor:
+    profiles: ["monitoring"]
+    image: gcr.io/cadvisor/cadvisor:v0.55.1@sha256:3de2bd5203120b866d74a9b283b2ffb8ec382fbf9dc321814700c6ea6f44ec57
+    container_name: curasphere-cadvisor
+    restart: unless-stopped
+    command: ["--docker_only=true", "--housekeeping_interval=30s", "--disable_metrics=percpu,sched,tcp,udp,process,hugetlb,referenced_memory"]
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  blackbox:
+    profiles: ["monitoring"]
+    image: prom/blackbox-exporter:v0.29.1@sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13
+    container_name: curasphere-blackbox
+    restart: unless-stopped
+    command: ["--config.file=/etc/blackbox/blackbox.yml"]
+    volumes:
+      - ./monitoring/blackbox:/etc/blackbox:ro
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  loki:
+    profiles: ["monitoring"]
+    image: grafana/loki:3.6.20@sha256:be040ec94865dabe4821ce1c0f109452bd4b5acb566ae376672696eb43caedb7
+    container_name: curasphere-loki
+    restart: unless-stopped
+    command: ["-config.file=/etc/loki/loki.yml"]
+    volumes:
+      - ./monitoring/loki/loki.yml:/etc/loki/loki.yml:ro
+      - ./monitoring/loki/regras:/etc/loki/regras:ro
+      - loki_data:/loki
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  alloy:
+    profiles: ["monitoring"]
+    image: grafana/alloy:v1.21.3@sha256:8ab871206bd2d8f89277f53abffee5f452a293980788d52f85fa183a87a505a4
+    container_name: curasphere-alloy
+    restart: unless-stopped
+    command: ["run", "/etc/alloy/config.alloy", "--storage.path=/var/lib/alloy/data"]
+    volumes:
+      - ./monitoring/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - alloy_data:/var/lib/alloy/data
+    networks: [curasphere-internal]
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 
 networks:
   curasphere-internal:
@@ -493,7 +702,15 @@ networks:
 
 volumes:
   postgres_data:
-  nginx_logs:
+  # OPS-02: WAL arquivado (PITR). Copiado cifrado para fora do host a cada 5 min.
+  wal_arquivo:
+  # OPS-05: métricas escritas pelos scripts de backup/WAL, lidas pelo node-exporter.
+  metricas_textfile:
+  prometheus_data:
+  alertmanager_data:
+  grafana_data:
+  loki_data:
+  alloy_data:
   # ─── OPS-01 — REGISTO CLÍNICO ───────────────────────────────────────────────
   # Anexos de mensagens, DICOM, fotografias de doentes e PDFs de carta de alta.
   # Sobrevive a `docker compose down` (que só remove contentores e redes).

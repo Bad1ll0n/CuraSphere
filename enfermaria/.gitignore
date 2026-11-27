@@ -83,3 +83,4 @@ backups/
 apps/api/src/generated/
 .versao-em-servico
 deploys.log
+monitoring/alertmanager/segredos/
