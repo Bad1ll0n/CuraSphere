@@ -34,6 +34,7 @@ const mockPrisma = {
   medicacao: { findMany: jest.fn() },
   planoAlta: { findFirst: jest.fn() },
   sinalVital: { findMany: jest.fn() },
+  consulta: { findFirst: jest.fn() },
 };
 
 const mockJwt = { sign: jest.fn().mockReturnValue('jwt-token-simulado') };
@@ -165,6 +166,27 @@ describe('PortalDoenteService', () => {
       mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', nome: 'Ana', estado: 'internado' });
       const resultado = await service.me('d1');
       expect(resultado.nome).toBe('Ana');
+    });
+  });
+
+  // UX-28: o cartão "próxima consulta" do portal.
+  describe('proximaConsulta()', () => {
+    it('procura só consultas agendadas e futuras deste doente, a mais próxima primeiro', async () => {
+      mockPrisma.portalDoente.findUnique.mockResolvedValue({ id: 'p1', doenteId: 'd1' });
+      mockPrisma.consulta.findFirst.mockResolvedValue({ id: 'c1', especialidade: 'Cardiologia' });
+      expect(await service.proximaConsulta('p1')).toEqual({ id: 'c1', especialidade: 'Cardiologia' });
+      const args = mockPrisma.consulta.findFirst.mock.calls[0][0];
+      expect(args.where).toMatchObject({ doenteId: 'd1', estado: 'agendada', dataHora: { gte: expect.any(Date) } });
+      expect(args.orderBy).toEqual({ dataHora: 'asc' });
+      expect(args.select).not.toHaveProperty('notas'); // só o necessário para lá estar
+    });
+
+    it('sem consulta → null; sem sessão de portal → 401', async () => {
+      mockPrisma.portalDoente.findUnique.mockResolvedValue({ id: 'p1', doenteId: 'd1' });
+      mockPrisma.consulta.findFirst.mockResolvedValue(null);
+      expect(await service.proximaConsulta('p1')).toBeNull();
+      mockPrisma.portalDoente.findUnique.mockResolvedValue(null);
+      await expect(service.proximaConsulta('x')).rejects.toThrow(/Unauthorized/);
     });
   });
 

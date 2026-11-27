@@ -1517,7 +1517,43 @@
     "noMedicationBody": "Aparece aqui a medicação prescrita durante o internamento ou na alta. Se toma medicação que não está aqui, diga à sua equipa.",
     "contactTeam": "Contactar a equipa",
     "noQuestionnaires": "A sua equipa ainda não lhe atribuiu questionários. Quando o fizer, aparecem aqui.",
-    "back": "Voltar"
+    "back": "Voltar",
+    "title": "Portal do Doente",
+    "largeText": "Letra grande",
+    "logout": "Terminar sessão",
+    "nextAppointment": "Próxima consulta",
+    "videoCall": "Teleconsulta",
+    "inPerson": "Presencial",
+    "card": {
+      "documents": {
+        "title": "Os meus documentos",
+        "desc": "Relatórios e exames clínicos"
+      },
+      "medication": {
+        "title": "Medicação ativa",
+        "desc": "Os seus medicamentos prescritos"
+      },
+      "dischargePlan": {
+        "title": "Plano de alta",
+        "desc": "Critérios e data estimada de alta"
+      },
+      "howIFeel": {
+        "title": "Como me sinto",
+        "desc": "Registe sintomas e bem-estar"
+      },
+      "contact": {
+        "title": "Contactar a equipa",
+        "desc": "Enviar uma mensagem à equipa"
+      },
+      "consents": {
+        "title": "Os meus consentimentos",
+        "desc": "Partilha com familiares e uso de IA"
+      },
+      "myData": {
+        "title": "Os meus dados",
+        "desc": "Exportar os dados clínicos (RGPD)"
+      }
+    }
   },
   "patientRegistration": {
     "unknownTitle": "Utente não identificado",

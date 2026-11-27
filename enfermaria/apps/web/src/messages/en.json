@@ -1517,7 +1517,43 @@
     "noMedicationBody": "Medication prescribed during your stay or at discharge appears here. If you take medication that is not listed, tell your team.",
     "contactTeam": "Contact the team",
     "noQuestionnaires": "Your team has not assigned you any questionnaires yet. They will appear here.",
-    "back": "Back"
+    "back": "Back",
+    "title": "Patient Portal",
+    "largeText": "Large text",
+    "logout": "Sign out",
+    "nextAppointment": "Next appointment",
+    "videoCall": "Video call",
+    "inPerson": "In person",
+    "card": {
+      "documents": {
+        "title": "My documents",
+        "desc": "Clinical reports and test results"
+      },
+      "medication": {
+        "title": "Current medication",
+        "desc": "Your prescribed medicines"
+      },
+      "dischargePlan": {
+        "title": "Discharge plan",
+        "desc": "Criteria and expected discharge date"
+      },
+      "howIFeel": {
+        "title": "How I feel",
+        "desc": "Record symptoms and wellbeing"
+      },
+      "contact": {
+        "title": "Contact the team",
+        "desc": "Send a message to the team"
+      },
+      "consents": {
+        "title": "My consents",
+        "desc": "Sharing with family and use of AI"
+      },
+      "myData": {
+        "title": "My data",
+        "desc": "Export your clinical data (GDPR)"
+      }
+    }
   },
   "patientRegistration": {
     "unknownTitle": "Unidentified patient",
