@@ -65,7 +65,7 @@ export class UtilizadoresService {
     const where = { ativo: true, ...whereRole };
     const skip = (page - 1) * limit;
 
-    const [data, total] = await this.prisma.$transaction([
+    const [data, total] = await Promise.all([ // PERF-19
       this.prisma.utilizador.findMany({
         where,
         select: {

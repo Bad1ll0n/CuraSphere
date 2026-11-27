@@ -29,7 +29,16 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   private readonly encClient: any;
 
   constructor(private readonly reqCtx: RequestContextService) {
-    const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
+    // PERF-01: o `pg` ignora `connection_limit`/`pool_timeout` (eram do motor Rust antigo do
+    // Prisma) — o pool real era de 10 e a espera por uma ligação livre era INFINITA. Agora:
+    // tamanho configurável, falha rápida quando o pool está esgotado, e um tecto por query.
+    const pool = new Pool({
+      connectionString: process.env['DATABASE_URL'],
+      max: Number(process.env['DB_POOL_MAX'] ?? 20),
+      connectionTimeoutMillis: Number(process.env['DB_POOL_TIMEOUT_MS'] ?? 10_000),
+      idleTimeoutMillis: 30_000,
+      statement_timeout: Number(process.env['DB_STATEMENT_TIMEOUT_MS'] ?? 15_000),
+    });
     const adapter = new PrismaPg(pool);
     super({ adapter, log: [{ emit: 'event', level: 'query' }] });
     (this as any).$on('query', (e: { duration: number; query: string }) => {
