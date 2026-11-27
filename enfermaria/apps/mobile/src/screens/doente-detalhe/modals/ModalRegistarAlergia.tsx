@@ -32,7 +32,7 @@ export default function ModalRegistarAlergia({ visible, doenteId, onClose, onSav
         <View style={shared.modalSheet}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Registar Alergia</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           <Text style={shared.formLabel}>Agente alérgeno *</Text>
           <TextInput style={shared.formInput} value={alergenio} onChangeText={setAlergenio} placeholder="Ex: Penicilina, Ibuprofeno..." />
@@ -43,8 +43,8 @@ export default function ModalRegistarAlergia({ visible, doenteId, onClose, onSav
           <Text style={shared.formLabel}>Notas</Text>
           <TextInput style={shared.formInput} value={notas} onChangeText={setNotas} placeholder="Observações..." />
           <View style={shared.modalBotoes}>
-            <TouchableOpacity style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
-            <TouchableOpacity style={[shared.submeterBotao, (!alergenio.trim() || salvando) && shared.submeterDesativado]} onPress={submeter} disabled={!alergenio.trim() || salvando}>
+            <TouchableOpacity accessibilityRole="button" style={shared.cancelarBotao} onPress={onClose}><Text style={shared.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" style={[shared.submeterBotao, (!alergenio.trim() || salvando) && shared.submeterDesativado]} onPress={submeter} disabled={!alergenio.trim() || salvando}>
               <Text style={shared.submeterTexto}>{salvando ? 'A guardar...' : 'Registar'}</Text>
             </TouchableOpacity>
           </View>

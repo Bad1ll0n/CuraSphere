@@ -113,7 +113,7 @@ export default function PedidosTIScreen({ utilizador }: Props) {
       {/* Filtros */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtrosRow} contentContainerStyle={s.filtrosContent}>
         {(['todos', 'pendente', 'em_curso', 'concluido'] as const).map(f => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={f}
             style={[s.filtroBotao, filtro === f && s.filtroBotaoAtivo]}
             onPress={() => setFiltro(f)}
@@ -136,7 +136,7 @@ export default function PedidosTIScreen({ utilizador }: Props) {
           {visiveis.map(pedido => {
             const aberto = expandido === pedido.id;
             return (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={pedido.id}
                 style={s.cartao}
                 onPress={() => setExpandido(aberto ? null : pedido.id)}
@@ -178,7 +178,7 @@ export default function PedidosTIScreen({ utilizador }: Props) {
                           <Text style={s.acoesTotulo}>Alterar estado</Text>
                           <View style={s.acoesRow}>
                             {ESTADOS_ACAO.map(e => (
-                              <TouchableOpacity
+                              <TouchableOpacity accessibilityRole="button"
                                 key={e}
                                 style={[
                                   s.acaoBotao,
@@ -214,17 +214,17 @@ const s = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' },
   header: { backgroundColor: '#0f172a', padding: 24, paddingTop: 20 },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#64748b', marginTop: 4 },
+  headerSub: { fontSize: 13, color: '#64748b', marginTop: 4 },
   headerStats: { flexDirection: 'row', alignItems: 'center', marginTop: 16, gap: 16 },
   stat: { alignItems: 'center' },
   statNum: { fontSize: 28, fontWeight: '800' },
-  statLabel: { fontSize: 11, color: '#64748b', marginTop: 2 },
+  statLabel: { fontSize: 13, color: '#64748b', marginTop: 2 },
   statDiv: { width: 1, height: 32, backgroundColor: '#1e293b' },
   filtrosRow: { marginTop: 12 },
   filtrosContent: { paddingHorizontal: 16, gap: 8, paddingBottom: 4 },
   filtroBotao: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#e2e8f0' },
   filtroBotaoAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 12, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
   filtroTextoAtivo: { color: '#fff' },
   secao: { paddingHorizontal: 16, paddingTop: 12 },
   cartao: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, marginBottom: 10, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
@@ -232,19 +232,19 @@ const s = StyleSheet.create({
   cartaoCorpo: { flex: 1, padding: 14 },
   cabecalho: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   titulo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  tipoTexto: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  tipoTexto: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   urgenteBadge: { backgroundColor: '#fef2f2', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
-  urgenteTexto: { fontSize: 10, fontWeight: '700', color: '#ef4444' },
+  urgenteTexto: { fontSize: 13, fontWeight: '700', color: '#ef4444' },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '600' },
-  metaTexto: { fontSize: 12, color: '#94a3b8', marginTop: 6 },
+  estadoTexto: { fontSize: 13, fontWeight: '600' },
+  metaTexto: { fontSize: 13, color: '#94a3b8', marginTop: 6 },
   detalhe: { marginTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 12 },
   descricao: { fontSize: 13, color: '#475569', lineHeight: 20, marginBottom: 10 },
-  responsavelTexto: { fontSize: 12, color: '#6366f1', fontWeight: '600', marginBottom: 10 },
-  acoesTotulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  responsavelTexto: { fontSize: 13, color: '#6366f1', fontWeight: '600', marginBottom: 10 },
+  acoesTotulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
   acoesRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   acaoBotao: { borderWidth: 1, borderColor: '#e2e8f0', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  acaoTexto: { fontSize: 12, color: '#64748b' },
+  acaoTexto: { fontSize: 13, color: '#64748b' },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 48 },
   vazioTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b', textAlign: 'center' },
   vazioSub: { fontSize: 14, color: '#94a3b8', textAlign: 'center', marginTop: 6 },

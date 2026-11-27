@@ -140,7 +140,7 @@ export default function DashboardScreen({ utilizador }: Props) {
                 <Text style={s.doenteSub}>Cama {d.cama.quarto}/{d.cama.numero}</Text>
               </View>
               <View style={[s.estadoBadge, { backgroundColor: estadoCor[d.estado] + '18' }]}>
-                <Text style={{ color: estadoCor[d.estado], fontSize: 11, fontWeight: '700' }}>{estadoLabel[d.estado]}</Text>
+                <Text style={{ color: estadoCor[d.estado], fontSize: 13, fontWeight: '700' }}>{estadoLabel[d.estado]}</Text>
               </View>
             </View>
           ))
@@ -171,7 +171,7 @@ export default function DashboardScreen({ utilizador }: Props) {
                 <Text style={s.doenteSub} numberOfLines={1}>{d.diagnosticoPrincipal}</Text>
               </View>
               <View style={[s.estadoBadge, { backgroundColor: estadoCor[d.estado] + '18' }]}>
-                <Text style={{ color: estadoCor[d.estado], fontSize: 11, fontWeight: '700' }}>{estadoLabel[d.estado]}</Text>
+                <Text style={{ color: estadoCor[d.estado], fontSize: 13, fontWeight: '700' }}>{estadoLabel[d.estado]}</Text>
               </View>
             </View>
           ))
@@ -192,7 +192,7 @@ const s = StyleSheet.create({
     paddingBottom: 10,
   },
   saudacao: { fontSize: 22, fontWeight: '800', color: '#0f172a', letterSpacing: -0.5, marginTop: 2 },
-  data: { fontSize: 12, color: '#2563eb', fontWeight: '600', textTransform: 'capitalize', letterSpacing: 0.2 },
+  data: { fontSize: 13, color: '#2563eb', fontWeight: '600', textTransform: 'capitalize', letterSpacing: 0.2 },
   // Stats
   statsRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 8, marginTop: 4, marginBottom: 2 },
   statCard: {
@@ -201,7 +201,7 @@ const s = StyleSheet.create({
   },
   statIconBox: { width: 30, height: 30, borderRadius: 9, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
   statValor: { fontSize: 18, fontWeight: '800' },
-  statLabel: { fontSize: 9, color: '#94a3b8', marginTop: 1, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.3 },
+  statLabel: { fontSize: 13, color: '#94a3b8', marginTop: 1, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.3 },
 
   // Cards
   card: {
@@ -221,7 +221,7 @@ const s = StyleSheet.create({
   badgePill: { backgroundColor: '#f1f5f9', paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
   badgePillRed: { backgroundColor: '#fef2f2' },
   badgePillBlue: { backgroundColor: '#eff6ff' },
-  badgeNum: { fontSize: 12, fontWeight: '700', color: '#94a3b8' },
+  badgeNum: { fontSize: 13, fontWeight: '700', color: '#94a3b8' },
 
   // Estado rows
   estadoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
@@ -236,7 +236,7 @@ const s = StyleSheet.create({
   iniciais: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   iniciaisTexto: { fontSize: 13, fontWeight: '800' },
   doenteNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  doenteSub: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
+  doenteSub: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
 
   // Vazio

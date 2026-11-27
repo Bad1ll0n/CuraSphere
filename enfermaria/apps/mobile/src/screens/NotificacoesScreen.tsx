@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface Notificacao {
   id: string;
@@ -79,7 +80,7 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={s.headerMid}>
@@ -91,7 +92,7 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
           )}
         </View>
         {naoLidas > 0 && (
-          <TouchableOpacity onPress={marcarTodasLidas} disabled={marcandoTodas} style={s.todosBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={marcarTodasLidas} disabled={marcandoTodas} style={s.todosBotao}>
             {marcandoTodas
               ? <ActivityIndicator size="small" color="#fff" />
               : <Text style={s.todosTexto}>Ler todas</Text>
@@ -115,7 +116,7 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
               <Text style={s.vazioTexto}>Sem notificações</Text>
             </View>
           ) : notificacoes.map((n) => (
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               key={n.id}
               style={[s.card, !n.lida && s.cardNaoLido]}
               onPress={() => { if (!n.lida) marcarLida(n.id); }}
@@ -161,9 +162,9 @@ const s = StyleSheet.create({
     backgroundColor: '#ef4444', borderRadius: 12,
     minWidth: 22, height: 22, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
   },
-  badgeHeaderText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  badgeHeaderText: { color: '#fff', fontSize: 13, fontWeight: '700' },
   todosBotao: { paddingHorizontal: 10, paddingVertical: 6, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10 },
-  todosTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  todosTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   lista: { flex: 1 },
   vazio: { alignItems: 'center', justifyContent: 'center', paddingVertical: 80, gap: 12 },
@@ -185,11 +186,11 @@ const s = StyleSheet.create({
   cardTopo: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
   cardTitulo: { flex: 1, fontSize: 14, fontWeight: '500', color: '#475569' },
   cardTituloNaoLido: { color: '#1e293b', fontWeight: '700' },
-  cardData: { fontSize: 11, color: '#94a3b8' },
+  cardData: { fontSize: 13, color: '#94a3b8' },
   cardCorpo: { fontSize: 13, color: '#64748b', marginTop: 4, lineHeight: 18 },
   tagNaoLida: {
     marginTop: 8, alignSelf: 'flex-start',
     backgroundColor: '#e0e7ff', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2,
   },
-  tagNaoLidaText: { fontSize: 10, fontWeight: '700', color: '#6366f1' },
+  tagNaoLidaText: { fontSize: 13, fontWeight: '700', color: '#6366f1' },
 });

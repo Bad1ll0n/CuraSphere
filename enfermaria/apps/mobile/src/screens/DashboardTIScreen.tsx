@@ -49,7 +49,7 @@ function CartaoClicavel({
   titulo, valor, cor, icone, onPress,
 }: { titulo: string; valor: string | number; cor: string; icone: keyof typeof Ionicons.glyphMap; onPress: () => void }) {
   return (
-    <TouchableOpacity style={[s.cartao, { borderLeftColor: cor }]} onPress={onPress} activeOpacity={0.75}>
+    <TouchableOpacity accessibilityRole="button" style={[s.cartao, { borderLeftColor: cor }]} onPress={onPress} activeOpacity={0.75}>
       <View style={s.cartaoCabecalho}>
         <View style={[s.cartaoIconBox, { backgroundColor: cor + '20' }]}>
           <Ionicons name={icone} size={18} color={cor} />
@@ -87,7 +87,7 @@ function ListaFiltrada({ filtro, onVoltar }: { filtro: FiltroAtivo; onVoltar: ()
     <View style={{ flex: 1, backgroundColor: '#f1f5f9' }}>
       {/* Header */}
       <View style={[s.header, { paddingBottom: 20 }]}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Dashboard</Text>
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Incidentes — {filtro.label}</Text>
@@ -191,7 +191,7 @@ export default function DashboardTIScreen({ utilizador, onVoltar }: Props) {
       {/* Cabeçalho */}
       <View style={s.header}>
         {onVoltar && (
-          <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
             <Text style={s.voltarTexto}>‹  Voltar</Text>
           </TouchableOpacity>
         )}
@@ -330,28 +330,28 @@ const s = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' },
   header: { backgroundColor: '#0f172a', padding: 24, paddingTop: 20 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   filtroTag: { alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 12, marginTop: 10 },
-  filtroTagTexto: { fontSize: 12, fontWeight: '700' },
+  filtroTagTexto: { fontSize: 13, fontWeight: '700' },
   secao: { paddingHorizontal: 16, paddingTop: 20 },
-  secaoTitulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 },
+  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 },
   grelha: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   cartao: { flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 14, padding: 14, borderLeftWidth: 3, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   cartaoIconBox: { width: 32, height: 32, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
-  cartaoTitulo: { fontSize: 11, fontWeight: '600', color: '#64748b', flex: 1 },
+  cartaoTitulo: { fontSize: 13, fontWeight: '600', color: '#64748b', flex: 1 },
   cartaoValor: { fontSize: 22, fontWeight: '700' },
   listaCard: { backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   listaItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, gap: 10 },
   listaItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   listaTexto: { fontSize: 13, color: '#1e293b', flex: 1 },
-  listaMeta: { fontSize: 11, color: '#94a3b8', marginTop: 2 },
-  listaData: { fontSize: 10, color: '#cbd5e1', marginTop: 1 },
-  listaHora: { fontSize: 11, color: '#94a3b8' },
+  listaMeta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  listaData: { fontSize: 13, color: '#cbd5e1', marginTop: 1 },
+  listaHora: { fontSize: 13, color: '#94a3b8' },
   badge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
-  badgeTexto: { fontSize: 11, fontWeight: '700' },
+  badgeTexto: { fontSize: 13, fontWeight: '700' },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 48, gap: 12 },
   vazioTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b', textAlign: 'center' },
   vazioSub: { fontSize: 14, color: '#94a3b8', textAlign: 'center' },

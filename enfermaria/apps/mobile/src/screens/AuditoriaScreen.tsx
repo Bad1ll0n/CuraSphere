@@ -58,7 +58,7 @@ export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
       {/* Cabeçalho */}
       <View style={s.header}>
         {onVoltar && (
-          <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+          <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
             <Text style={s.voltarTexto}>‹  Voltar</Text>
           </TouchableOpacity>
         )}
@@ -77,7 +77,7 @@ export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
           onSubmitEditing={() => carregar(1)}
           returnKeyType="search"
         />
-        <TouchableOpacity style={s.pesquisaBotao} onPress={() => carregar(1)}>
+        <TouchableOpacity accessibilityRole="button" style={s.pesquisaBotao} onPress={() => carregar(1)}>
           <Text style={s.pesquisaBotaoTexto}>Filtrar</Text>
         </TouchableOpacity>
       </View>
@@ -119,7 +119,7 @@ export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
           {/* Paginação */}
           {dados && dados.totalPaginas > 1 && (
             <View style={s.paginacao}>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.pagBotao, pagina <= 1 && s.pagBotaoDesativ]}
                 onPress={() => carregar(pagina - 1)}
                 disabled={pagina <= 1}
@@ -127,7 +127,7 @@ export default function AuditoriaScreen({ utilizador, onVoltar }: Props) {
                 <Text style={s.pagBotaoTexto}>‹ Anterior</Text>
               </TouchableOpacity>
               <Text style={s.pagInfo}>{pagina} / {dados.totalPaginas}</Text>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.pagBotao, pagina >= dados.totalPaginas && s.pagBotaoDesativ]}
                 onPress={() => carregar(pagina + 1)}
                 disabled={pagina >= dados.totalPaginas}
@@ -149,7 +149,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#0f172a', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   pesquisaWrap: { flexDirection: 'row', gap: 8, padding: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
@@ -161,11 +161,11 @@ const s = StyleSheet.create({
   logItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   logTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
   logAcao: { fontSize: 13, fontWeight: '600', color: '#1e293b', flex: 1 },
-  logHora: { fontSize: 11, color: '#94a3b8' },
+  logHora: { fontSize: 13, color: '#94a3b8' },
   logMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-  logMetaTexto: { fontSize: 12, color: '#64748b' },
-  logMetaTag: { fontSize: 11, backgroundColor: '#f1f5f9', color: '#475569', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
-  logIp: { fontSize: 11, color: '#94a3b8' },
+  logMetaTexto: { fontSize: 13, color: '#64748b' },
+  logMetaTag: { fontSize: 13, backgroundColor: '#f1f5f9', color: '#475569', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
+  logIp: { fontSize: 13, color: '#94a3b8' },
   semLogs: { padding: 24, alignItems: 'center' },
   semLogsTexto: { color: '#94a3b8', fontSize: 14 },
   paginacao: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },

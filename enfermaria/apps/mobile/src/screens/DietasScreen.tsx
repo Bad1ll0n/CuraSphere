@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -173,7 +174,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -309,7 +310,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
 
       {/* FAB */}
       {podePrescrever && (
-        <TouchableOpacity style={s.fab} onPress={abrirModal}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.add')} style={s.fab} onPress={abrirModal}>
           <Ionicons name="add" size={28} color="#fff" />
         </TouchableOpacity>
       )}
@@ -321,7 +322,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
             {/* Modal Header */}
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo}>Prescrever Dieta</Text>
-              <TouchableOpacity onPress={fecharModal} style={s.modalFechar}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={fecharModal} style={s.modalFechar}>
                 <Ionicons name="close" size={22} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -347,7 +348,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
                   {doentesFiltrados.length === 0 ? (
                     <Text style={s.doenteVazio}>Nenhum doente encontrado</Text>
                   ) : doentesFiltrados.map(d => (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={d.id}
                       style={[s.doenteItem, doenteId === d.id && s.doenteItemSel]}
                       onPress={() => setDoenteId(d.id)}
@@ -372,7 +373,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
               <Text style={s.labelSeccao}>Tipo de Dieta *</Text>
               <View style={s.tiposGrid}>
                 {TIPOS_DIETA.map(t => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={t.valor}
                     style={[s.tipoOpcao, tipoSel === t.valor && { backgroundColor: t.cor + '22', borderColor: t.cor }]}
                     onPress={() => setTipoSel(t.valor)}
@@ -391,7 +392,7 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
                 {RESTRICOES.map(r => {
                   const sel = restricoesSel.includes(r.valor);
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={r.valor}
                       style={[s.restricaoChip, sel && s.restricaoChipSel]}
                       onPress={() => toggleRestricao(r.valor)}
@@ -420,10 +421,10 @@ export default function DietasScreen({ utilizador, onVoltar }: Props) {
 
             {/* Modal Actions */}
             <View style={s.modalActions}>
-              <TouchableOpacity style={s.btnCancelar} onPress={fecharModal} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnCancelar} onPress={fecharModal} disabled={salvando}>
                 <Text style={s.btnCancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={s.btnGuardar} onPress={salvar} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnGuardar} onPress={salvar} disabled={salvando}>
                 {salvando
                   ? <ActivityIndicator size="small" color="#fff" />
                   : <Text style={s.btnGuardarTexto}>Guardar</Text>
@@ -447,7 +448,7 @@ const s = StyleSheet.create({
   header:      { backgroundColor: '#16a34a', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn:   { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub:   { fontSize: 11, color: '#bbf7d0', marginTop: 2 },
+  headerSub:   { fontSize: 13, color: '#bbf7d0', marginTop: 2 },
 
   // Stats bar
   statsBar:       { flexDirection: 'row', backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
@@ -462,7 +463,7 @@ const s = StyleSheet.create({
   seccaoHeader:      { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 20, paddingBottom: 6, gap: 6 },
   seccaoTitulo:      { fontSize: 13, fontWeight: '700', color: '#16a34a', flex: 1 },
   seccaoBadge:       { backgroundColor: '#dcfce7', borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2 },
-  seccaoBadgeTexto:  { fontSize: 11, fontWeight: '700', color: '#16a34a' },
+  seccaoBadgeTexto:  { fontSize: 13, fontWeight: '700', color: '#16a34a' },
   seccaoBadgeAviso:  { backgroundColor: '#fef3c7' },
   seccaoBadgeTextoAviso: { color: '#d97706' },
 
@@ -470,18 +471,18 @@ const s = StyleSheet.create({
   cartao:      { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 10, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoTopo:  { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 },
   cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', marginBottom: 2 },
-  cartaoProc:  { fontSize: 12, color: '#94a3b8' },
+  cartaoProc:  { fontSize: 13, color: '#94a3b8' },
   tipoBadge:   { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  tipoTexto:   { fontSize: 12, fontWeight: '700' },
+  tipoTexto:   { fontSize: 13, fontWeight: '700' },
 
   // Restrictions chips (display)
   restricoesRow:   { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 6 },
   restricaoBadge:  { backgroundColor: '#f1f5f9', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
-  restricaoTexto:  { fontSize: 11, color: '#475569', fontWeight: '500' },
+  restricaoTexto:  { fontSize: 13, color: '#475569', fontWeight: '500' },
 
   // Sem dieta badge
   semDietaBadge: { backgroundColor: '#fef3c7', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  semDietaTexto: { fontSize: 12, fontWeight: '700', color: '#d97706' },
+  semDietaTexto: { fontSize: 13, fontWeight: '700', color: '#d97706' },
 
   // Info row
   infoRow:    { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
@@ -489,8 +490,8 @@ const s = StyleSheet.create({
 
   // Card footer
   cartaoRodape:  { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#f1f5f9' },
-  rodapeTexto:   { fontSize: 11, color: '#94a3b8' },
-  rodapeSep:     { fontSize: 11, color: '#cbd5e1', marginHorizontal: 2 },
+  rodapeTexto:   { fontSize: 13, color: '#94a3b8' },
+  rodapeSep:     { fontSize: 13, color: '#cbd5e1', marginHorizontal: 2 },
 
   // Empty state
   vazio:      { padding: 60, alignItems: 'center', gap: 12 },
@@ -517,7 +518,7 @@ const s = StyleSheet.create({
   doenteItemSel: { backgroundColor: '#f0fdf4' },
   doenteNome:    { fontSize: 14, color: '#1e293b', fontWeight: '500' },
   doenteNomeSel: { color: '#16a34a', fontWeight: '700' },
-  doenteInfo:    { fontSize: 11, color: '#94a3b8', marginTop: 1 },
+  doenteInfo:    { fontSize: 13, color: '#94a3b8', marginTop: 1 },
 
   // Diet type radio grid
   tiposGrid:     { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 20 },

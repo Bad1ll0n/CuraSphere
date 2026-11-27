@@ -98,12 +98,12 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <Text style={s.titulo}>{titulo}</Text>
-          <TouchableOpacity style={s.novoBotao} onPress={() => setModal('nova')}>
+          <TouchableOpacity accessibilityRole="button" style={s.novoBotao} onPress={() => setModal('nova')}>
             <Text style={s.novoTexto}>+ Nova</Text>
           </TouchableOpacity>
         </View>
@@ -117,7 +117,7 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
             {sessoes.length === 0 ? (
               <View style={s.vazio}><Text style={s.vazioTexto}>{erroCarga || 'Sem sessões registadas'}</Text></View>
             ) : sessoes.map(s2 => (
-              <TouchableOpacity key={s2.id} style={s.card} activeOpacity={0.7}
+              <TouchableOpacity accessibilityRole="button" key={s2.id} style={s.card} activeOpacity={0.7}
                 onPress={() => { if (s2.estado === 'agendada') { setSessaoSel(s2); setEvolucaoTexto(s2.evolucao ?? ''); setModal('evolucao'); } }}>
                 <View style={s.cardTopo}>
                   <View style={{ flex: 1 }}>
@@ -150,13 +150,13 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
           <ScrollView style={[s.sheet, { maxHeight: '85%' }]}>
             <View style={s.sheetCab}>
               <Text style={s.sheetTitulo}>Nova Sessão</Text>
-              <TouchableOpacity onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>Doente</Text>
             <ScrollView style={{ maxHeight: 120, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10 }}>
               {doentes.map(d => (
-                <TouchableOpacity key={d.id} style={[s.listItem, form.doenteId === d.id && s.listItemAtivo]} onPress={() => setForm(f => ({ ...f, doenteId: d.id }))}>
+                <TouchableOpacity accessibilityRole="button" key={d.id} style={[s.listItem, form.doenteId === d.id && s.listItemAtivo]} onPress={() => setForm(f => ({ ...f, doenteId: d.id }))}>
                   <Text style={[s.listItemTexto, form.doenteId === d.id && { color: '#14b8a6' }]}>{d.nome}</Text>
                 </TouchableOpacity>
               ))}
@@ -174,10 +174,10 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModal(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModal(null)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeterNova} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeterNova} disabled={salvando}>
                 <Text style={s.submeterTexto}>{salvando ? 'A criar...' : 'Criar'}</Text>
               </TouchableOpacity>
             </View>
@@ -192,17 +192,17 @@ export default function EspecialidadesScreen({ utilizador, onVoltar }: Props) {
           <View style={[s.sheet, { maxHeight: '65%' }]}>
             <View style={s.sheetCab}>
               <Text style={s.sheetTitulo}>Registar Evolução</Text>
-              <TouchableOpacity onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModal(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
             {sessaoSel && <Text style={s.sessaoInfo}>{sessaoSel.doente?.nome} · {fmt(sessaoSel.data)}</Text>}
             <Text style={s.formLabel}>Evolução clínica</Text>
             <TextInput style={[s.input, { height: 120 }]} value={evolucaoTexto} onChangeText={setEvolucaoTexto} placeholder="Descreva a evolução da sessão..." placeholderTextColor="#94a3b8" multiline />
             {erro ? <Text style={s.erroTexto}>{erro}</Text> : null}
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModal(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModal(null)}>
                 <Text style={s.cancelarTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeterEvolucao} disabled={salvando}>
+              <TouchableOpacity accessibilityRole="button" style={[s.submeterBtn, salvando && { opacity: 0.6 }]} onPress={submeterEvolucao} disabled={salvando}>
                 <Text style={s.submeterTexto}>{salvando ? 'A guardar...' : 'Guardar'}</Text>
               </TouchableOpacity>
             </View>
@@ -218,7 +218,7 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   novoBotao: { backgroundColor: '#14b8a6', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10 },
@@ -228,14 +228,14 @@ const s = StyleSheet.create({
   cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 },
   cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
   cardDoente: { fontSize: 13, color: '#475569', marginTop: 2 },
-  cardData: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  cardData: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   cardDesc: { fontSize: 13, color: '#64748b', marginBottom: 4 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 11, fontWeight: '700' },
+  estadoTexto: { fontSize: 13, fontWeight: '700' },
   evolucaoBox: { marginTop: 8, backgroundColor: '#f0fdf4', borderRadius: 8, padding: 10, borderLeftWidth: 3, borderLeftColor: '#14b8a6' },
-  evolucaoLabel: { fontSize: 11, fontWeight: '700', color: '#14b8a6', marginBottom: 2 },
+  evolucaoLabel: { fontSize: 13, fontWeight: '700', color: '#14b8a6', marginBottom: 2 },
   evolucaoTexto: { fontSize: 13, color: '#475569' },
-  editarHint: { fontSize: 11, color: '#94a3b8', marginTop: 6, textAlign: 'right' },
+  editarHint: { fontSize: 13, color: '#94a3b8', marginTop: 6, textAlign: 'right' },
   vazio: { backgroundColor: '#fff', borderRadius: 14, padding: 32, alignItems: 'center' },
   vazioTexto: { color: '#94a3b8', fontSize: 14 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },

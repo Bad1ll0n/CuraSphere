@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface EventoAdverso {
   id: string;
@@ -234,7 +235,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -261,7 +262,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
 
       {/* Filtros */}
       <View style={s.filtrosRow}>
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.filtroPill, filtroTipo && s.filtroPillAtivo]}
           onPress={() => ciclarFiltro(filtroTipo, setFiltroTipo, TIPOS)}
         >
@@ -275,7 +276,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.filtroPill, filtroGravidade && s.filtroPillAtivo]}
           onPress={() => ciclarFiltro(filtroGravidade, setFiltroGravidade, GRAVIDADES)}
         >
@@ -289,7 +290,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           style={[s.filtroPill, filtroEstado && s.filtroPillAtivo]}
           onPress={() => ciclarFiltro(filtroEstado, setFiltroEstado, [...ESTADOS])}
         >
@@ -318,7 +319,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           const grav = GRAVIDADE_COR[ev.gravidade] ?? { bg: '#f1f5f9', text: '#64748b', label: ev.gravidade };
           const est = ESTADO_COR[ev.estado] ?? { bg: '#f1f5f9', text: '#64748b', label: ev.estado };
           return (
-            <TouchableOpacity key={ev.id} style={[s.cartao, { borderLeftColor: grav.text }]} onPress={() => abrirDetalhe(ev)} activeOpacity={0.85}>
+            <TouchableOpacity accessibilityRole="button" key={ev.id} style={[s.cartao, { borderLeftColor: grav.text }]} onPress={() => abrirDetalhe(ev)} activeOpacity={0.85}>
               {/* Linha badges */}
               <View style={s.cartaoBadges}>
                 <View style={[s.badge, { backgroundColor: grav.bg }]}>
@@ -362,7 +363,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
 
       {/* FAB */}
       {podeRegistar && (
-        <TouchableOpacity style={s.fab} onPress={abrirModalNovo}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.add')} style={s.fab} onPress={abrirModalNovo}>
           <Ionicons name="add" size={28} color="#fff" />
         </TouchableOpacity>
       )}
@@ -373,7 +374,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           <View style={s.modalSheet}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo}>Detalhes do Evento</Text>
-              <TouchableOpacity onPress={() => setEventoSel(null)}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setEventoSel(null)}>
                 <Ionicons name="close" size={24} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -444,7 +445,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                             const cfg = ESTADO_COR[est2];
                             const ativo = detailEstado === est2;
                             return (
-                              <TouchableOpacity
+                              <TouchableOpacity accessibilityRole="button"
                                 key={est2}
                                 style={[s.estadoBtn, ativo && { backgroundColor: cfg.bg, borderColor: cfg.text }]}
                                 onPress={() => setDetailEstado(est2)}
@@ -457,7 +458,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                           })}
                         </View>
 
-                        <TouchableOpacity
+                        <TouchableOpacity accessibilityRole="button"
                           style={[s.btnGuardar, salvando && s.btnGuardarDis]}
                           onPress={guardarDetalhe}
                           disabled={salvando}
@@ -480,7 +481,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           <View style={s.modalSheet}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo}>Novo Evento Adverso</Text>
-              <TouchableOpacity onPress={() => setModalNovo(false)}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setModalNovo(false)}>
                 <Ionicons name="close" size={24} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -490,7 +491,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
               <Text style={s.labelCampo}>Tipo <Text style={{ color: '#dc2626' }}>*</Text></Text>
               <View style={s.opcoesBotoesGrid}>
                 {TIPOS.map(t => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={t}
                     style={[s.opcaoBtn, novoTipo === t && s.opcaoBtnAtivo]}
                     onPress={() => setNovoTipo(t)}
@@ -509,7 +510,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                   const cfg = GRAVIDADE_COR[g];
                   const ativo = novoGravidade === g;
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={g}
                       style={[s.opcaoBtn, ativo && { backgroundColor: cfg.bg, borderColor: cfg.text }]}
                       onPress={() => setNovoGravidade(g)}
@@ -549,11 +550,11 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                 <Text style={s.doenteNomeTexto} numberOfLines={1}>
                   {novoDoenteNome || 'Nenhum doente selecionado'}
                 </Text>
-                <TouchableOpacity style={s.btnSelDoente} onPress={abrirPickerDoentes}>
+                <TouchableOpacity accessibilityRole="button" style={s.btnSelDoente} onPress={abrirPickerDoentes}>
                   <Text style={s.btnSelDoenteTexto}>{novoDoenteId ? 'Alterar' : 'Selecionar'}</Text>
                 </TouchableOpacity>
                 {novoDoenteId ? (
-                  <TouchableOpacity onPress={() => { setNovoDoenteId(''); setNovoDoenteNome(''); }} style={{ paddingLeft: 6 }}>
+                  <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => { setNovoDoenteId(''); setNovoDoenteNome(''); }} style={{ paddingLeft: 6 }}>
                     <Ionicons name="close-circle" size={18} color="#94a3b8" />
                   </TouchableOpacity>
                 ) : null}
@@ -580,7 +581,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                 textAlignVertical="top"
               />
 
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnGuardar, { marginTop: 24 }, criando && s.btnGuardarDis]}
                 onPress={criarEvento}
                 disabled={criando}
@@ -598,7 +599,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
           <View style={[s.modalSheet, { maxHeight: '70%' }]}>
             <View style={s.modalHeader}>
               <Text style={s.modalTitulo}>Selecionar Doente</Text>
-              <TouchableOpacity onPress={() => setModalDoentes(false)}>
+              <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setModalDoentes(false)}>
                 <Ionicons name="close" size={24} color="#64748b" />
               </TouchableOpacity>
             </View>
@@ -622,7 +623,7 @@ export default function EventosAdversosScreen({ utilizador, onVoltar }: Props) {
                     <Text style={s.vazioTexto}>Nenhum doente encontrado</Text>
                   </View>
                 ) : doentesVisiveis.map(d => (
-                  <TouchableOpacity key={d.id} style={s.doenteItem} onPress={() => selecionarDoente(d)}>
+                  <TouchableOpacity accessibilityRole="button" key={d.id} style={s.doenteItem} onPress={() => selecionarDoente(d)}>
                     <View style={s.doenteItemIcone}>
                       <Ionicons name="person" size={18} color="#dc2626" />
                     </View>
@@ -651,7 +652,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#dc2626', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 11, color: '#fecaca', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#fecaca', marginTop: 2 },
 
   // KPI
   kpiRow: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9', paddingVertical: 12, paddingHorizontal: 16, gap: 12 },
@@ -661,7 +662,7 @@ const s = StyleSheet.create({
   kpiValor: { fontSize: 22, fontWeight: '800', color: '#1e293b' },
   kpiValorAmbar: { color: '#d97706' },
   kpiValorVermelho: { color: '#dc2626' },
-  kpiLabel: { fontSize: 11, color: '#94a3b8', marginTop: 2, fontWeight: '500' },
+  kpiLabel: { fontSize: 13, color: '#94a3b8', marginTop: 2, fontWeight: '500' },
   kpiLabelAmbar: { color: '#d97706' },
   kpiLabelVermelho: { color: '#dc2626' },
 
@@ -669,7 +670,7 @@ const s = StyleSheet.create({
   filtrosRow: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 12, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   filtroPill: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, backgroundColor: '#f1f5f9', borderRadius: 20, paddingVertical: 7, paddingHorizontal: 10, borderWidth: 1, borderColor: 'transparent' },
   filtroPillAtivo: { backgroundColor: '#fef2f2', borderColor: '#dc2626' },
-  filtroPillTexto: { fontSize: 12, fontWeight: '600', color: '#94a3b8' },
+  filtroPillTexto: { fontSize: 13, fontWeight: '600', color: '#94a3b8' },
   filtroPillTextoAtivo: { color: '#dc2626' },
 
   // Lista
@@ -678,11 +679,11 @@ const s = StyleSheet.create({
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   badge: { paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 11, fontWeight: '700' },
+  badgeTexto: { fontSize: 13, fontWeight: '700' },
   cartaoDescricao: { fontSize: 14, color: '#334155', marginTop: 8, lineHeight: 20 },
   cartaoMeta: { marginTop: 8, gap: 3 },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  infoTexto: { fontSize: 12, color: '#94a3b8' },
+  infoTexto: { fontSize: 13, color: '#94a3b8' },
 
   // FAB
   fab: { position: 'absolute', bottom: 28, right: 24, width: 56, height: 56, borderRadius: 28, backgroundColor: '#dc2626', alignItems: 'center', justifyContent: 'center', shadowColor: '#dc2626', shadowOpacity: 0.4, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10, elevation: 8 },
@@ -694,7 +695,7 @@ const s = StyleSheet.create({
   modalTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b' },
 
   // Detalhe
-  detalheSecTitulo: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginTop: 16, marginBottom: 4 },
+  detalheSecTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginTop: 16, marginBottom: 4 },
   detalheTexto: { fontSize: 14, color: '#334155', lineHeight: 21 },
   gerirBox: { marginTop: 24, padding: 16, backgroundColor: '#f8fafc', borderRadius: 14, borderWidth: 1, borderColor: '#e2e8f0' },
   gerirTitulo: { fontSize: 13, fontWeight: '700', color: '#1e293b', marginBottom: 12 },
@@ -702,10 +703,10 @@ const s = StyleSheet.create({
   // Estado botões
   estadoBotoesRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginTop: 6 },
   estadoBtn: { flex: 1, minWidth: 90, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 10, backgroundColor: '#f1f5f9', borderWidth: 1.5, borderColor: '#e2e8f0', alignItems: 'center' },
-  estadoBtnTexto: { fontSize: 12, color: '#64748b', fontWeight: '600' },
+  estadoBtnTexto: { fontSize: 13, color: '#64748b', fontWeight: '600' },
 
   // Formulário
-  labelCampo: { fontSize: 12, fontWeight: '700', color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 },
+  labelCampo: { fontSize: 13, fontWeight: '700', color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 },
   input: { backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, color: '#1e293b' },
   inputMulti: { minHeight: 80, paddingTop: 10 },
   inputSearch: { backgroundColor: '#f1f5f9', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, color: '#1e293b' },
@@ -721,13 +722,13 @@ const s = StyleSheet.create({
   doenteRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8 },
   doenteNomeTexto: { flex: 1, fontSize: 13, color: '#64748b' },
   btnSelDoente: { backgroundColor: '#dc2626', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6 },
-  btnSelDoenteTexto: { fontSize: 12, fontWeight: '700', color: '#fff' },
+  btnSelDoenteTexto: { fontSize: 13, fontWeight: '700', color: '#fff' },
 
   // Doente list item
   doenteItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: '#f1f5f9', gap: 12 },
   doenteItemIcone: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#fef2f2', alignItems: 'center', justifyContent: 'center' },
   doenteItemNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  doenteItemProc: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  doenteItemProc: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
 
   // Guardar
   btnGuardar: { backgroundColor: '#dc2626', paddingVertical: 14, borderRadius: 12, alignItems: 'center' },

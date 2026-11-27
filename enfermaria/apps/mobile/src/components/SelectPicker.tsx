@@ -8,7 +8,7 @@ export default function SelectPicker<T extends string | number>({ options, value
   return (
     <View style={s.row}>
       {options.map((o) => (
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           key={String(o.value)}
           style={[s.option, value === o.value && s.active]}
           onPress={() => onChange(o.value)}

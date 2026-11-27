@@ -201,15 +201,15 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <Text style={s.titulo}>Horários</Text>
           <View style={s.mesNav}>
-            <TouchableOpacity onPress={prevMes} style={s.mesBtn}><Text style={s.mesBtnTexto}>‹</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={prevMes} style={s.mesBtn}><Text style={s.mesBtnTexto}>‹</Text></TouchableOpacity>
             <Text style={s.mesTexto}>{meses[mes - 1]} {ano}</Text>
-            <TouchableOpacity onPress={nextMes} style={s.mesBtn}><Text style={s.mesBtnTexto}>›</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={nextMes} style={s.mesBtn}><Text style={s.mesBtnTexto}>›</Text></TouchableOpacity>
           </View>
         </View>
       </View>
@@ -220,7 +220,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
         <View style={s.centro}>
           <Text style={s.semEscalaTitulo}>Sem escala para {meses[mes - 1]} {ano}</Text>
           {isChefe && (
-            <TouchableOpacity style={s.criarEscalaBtn} onPress={criarEscala}>
+            <TouchableOpacity accessibilityRole="button" style={s.criarEscalaBtn} onPress={criarEscala}>
               <Text style={s.criarEscalaTexto}>Criar Escala</Text>
             </TouchableOpacity>
           )}
@@ -250,7 +250,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                   const temTurno = turnos.length > 0;
                   const tipos = [...new Set(turnos.map((t: any) => t.tipo))] as string[];
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={str}
                       style={[s.cel, isSelec && s.celSelec]}
                       onPress={() => setDiaSelec(n === diaSelec ? null : n)}
@@ -287,7 +287,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                 <View style={s.detalheHeader}>
                   <Text style={s.detalheTitulo}>{label}</Text>
                   {isChefe && (
-                    <TouchableOpacity style={s.addDiaBotao} onPress={() => abrirModalDia(str)}>
+                    <TouchableOpacity accessibilityRole="button" style={s.addDiaBotao} onPress={() => abrirModalDia(str)}>
                       <Text style={s.addDiaTexto}>+</Text>
                     </TouchableOpacity>
                   )}
@@ -295,7 +295,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                 {turnos.length === 0 ? (
                   <Text style={s.vazioTexto}>Sem turnos</Text>
                 ) : turnos.map((t: any) => (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={t.id}
                     style={[s.turnoCard, { borderLeftColor: tipoCor[t.tipo] }]}
                     onPress={() => isChefe ? abrirEditar(t) : null}
@@ -326,13 +326,13 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
           <View style={[s.sheet, { maxHeight: '85%' }]}>
             <View style={s.sheetCabecalho}>
               <Text style={s.sheetTitulo}>Novo Turno · {modalDia ? new Date(modalDia + 'T12:00:00').toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' }) : ''}</Text>
-              <TouchableOpacity onPress={() => setModalDia(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setModalDia(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>Tipo</Text>
             <View style={s.seletorRow}>
               {(['manha', 'tarde', 'noite'] as const).map((t) => (
-                <TouchableOpacity key={t} style={[s.seletorOpcao, novoTipo === t && s.seletorAtivo]} onPress={() => setNovoTipo(t)}>
+                <TouchableOpacity accessibilityRole="button" key={t} style={[s.seletorOpcao, novoTipo === t && s.seletorAtivo]} onPress={() => setNovoTipo(t)}>
                   <Text style={[s.seletorTexto, novoTipo === t && s.seletorTextoAtivo]}>{tipoLabel[t]}</Text>
                 </TouchableOpacity>
               ))}
@@ -343,7 +343,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
               {profissionais.map((p) => {
                 const ausente = modalDia ? isAusenteNoDia(p.id, modalDia) : false;
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={p.id}
                     style={[s.profRow, novoProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, novoProfs, setNovoProfs)}
@@ -362,10 +362,10 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             {erroModal ? <Text style={s.erroTexto}>{erroModal}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={s.cancelarBtn} onPress={() => setModalDia(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.cancelarBtn} onPress={() => setModalDia(null)}>
                 <Text style={s.cancelarBtnTexto}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.submeterBtn, (novoProfs.length === 0 || salvando) && s.submeterBtnDes]}
                 onPress={submeterTurno}
                 disabled={novoProfs.length === 0 || salvando}
@@ -383,13 +383,13 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
           <View style={[s.sheet, { maxHeight: '85%' }]}>
             <View style={s.sheetCabecalho}>
               <Text style={s.sheetTitulo}>Editar Turno</Text>
-              <TouchableOpacity onPress={() => setTurnoEditando(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" onPress={() => setTurnoEditando(null)}><Text style={s.fechar}>✕</Text></TouchableOpacity>
             </View>
 
             <Text style={s.formLabel}>Tipo</Text>
             <View style={s.seletorRow}>
               {(['manha', 'tarde', 'noite'] as const).map((t) => (
-                <TouchableOpacity key={t} style={[s.seletorOpcao, editTipo === t && s.seletorAtivo]} onPress={() => setEditTipo(t)}>
+                <TouchableOpacity accessibilityRole="button" key={t} style={[s.seletorOpcao, editTipo === t && s.seletorAtivo]} onPress={() => setEditTipo(t)}>
                   <Text style={[s.seletorTexto, editTipo === t && s.seletorTextoAtivo]}>{tipoLabel[t]}</Text>
                 </TouchableOpacity>
               ))}
@@ -401,7 +401,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                 const diaStr = turnoEditando ? new Date(turnoEditando.data).toISOString().split('T')[0] : null;
                 const ausente = diaStr ? isAusenteNoDia(p.id, diaStr) : false;
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     key={p.id}
                     style={[s.profRow, editProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, editProfs, setEditProfs)}
@@ -420,10 +420,10 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             {erroEdit ? <Text style={s.erroTexto}>{erroEdit}</Text> : null}
 
             <View style={s.botoes}>
-              <TouchableOpacity style={[s.cancelarBtn, { backgroundColor: '#fef2f2' }]} onPress={apagarTurno}>
+              <TouchableOpacity accessibilityRole="button" style={[s.cancelarBtn, { backgroundColor: '#fef2f2' }]} onPress={apagarTurno}>
                 <Text style={[s.cancelarBtnTexto, { color: '#dc2626' }]}>Apagar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.submeterBtn, (editProfs.length === 0 || salvandoEdit) && s.submeterBtnDes]}
                 onPress={guardarEdicao}
                 disabled={editProfs.length === 0 || salvandoEdit}
@@ -452,7 +452,7 @@ const s = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 10,
   },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   mesNav: { flexDirection: 'row', alignItems: 'center', gap: 8 },
@@ -465,7 +465,7 @@ const s = StyleSheet.create({
   // Calendário
   cal: { backgroundColor: '#fff', margin: 16, borderRadius: 16, padding: 12, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   calRow: { flexDirection: 'row' },
-  calDiaSemana: { flex: 1, textAlign: 'center', fontSize: 11, fontWeight: '700', color: '#94a3b8', paddingBottom: 8 },
+  calDiaSemana: { flex: 1, textAlign: 'center', fontSize: 13, fontWeight: '700', color: '#94a3b8', paddingBottom: 8 },
   cel: { flex: 1, alignItems: 'center', paddingVertical: 6, borderRadius: 8 },
   celSelec: { backgroundColor: '#eff6ff' },
   celNum: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
@@ -485,7 +485,7 @@ const s = StyleSheet.create({
   profsList: { fontSize: 13, color: '#64748b' },
   editarTexto: { fontSize: 14 },
   turnoPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  turnoPillTexto: { fontSize: 12, fontWeight: '600' },
+  turnoPillTexto: { fontSize: 13, fontWeight: '600' },
   vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center', paddingVertical: 12 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
@@ -502,7 +502,7 @@ const s = StyleSheet.create({
   profRowAtivo: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
   profInfo: { flex: 1 },
   profNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  profRole: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
+  profRole: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
   check: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
   erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 16 },
@@ -511,7 +511,7 @@ const s = StyleSheet.create({
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
   submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-  feriasBadge: { fontSize: 8, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 3, paddingVertical: 1, borderRadius: 4, marginTop: 2 },
+  feriasBadge: { fontSize: 13, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 3, paddingVertical: 1, borderRadius: 4, marginTop: 2 },
   profRowAusente: { opacity: 0.5 },
-  ausenteLabel: { fontSize: 10, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
+  ausenteLabel: { fontSize: 13, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
 });

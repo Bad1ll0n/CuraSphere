@@ -15,6 +15,7 @@ import type { LinhaMar } from '@org/shared';
 import { administradaHoje } from '../lib/mar';
 import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
 import { corpoAdministracao } from '../lib/administracao';
+import i18n from '../lib/i18n';
 
 /**
  * ARQ-12: a forma vem do contrato partilhado com a api. Antes este ecrã lia
@@ -83,7 +84,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
       <ModalCincoCertos medicacao={aConfirmar} doente={{ nome: aConfirmar?.doente.nome ?? '' }}
         onConfirmar={administrar} onCancelar={() => setAConfirmar(null)} />
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -97,7 +98,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
           { key: 'pendentes', label: t('mar.filterPending') },
           { key: 'todas', label: t('mar.filterAll') },
         ] as const).map(f => (
-          <TouchableOpacity key={f.key} style={[s.filtro, filtro === f.key && s.filtroAtivo]} onPress={() => setFiltro(f.key)}>
+          <TouchableOpacity accessibilityRole="button" key={f.key} style={[s.filtro, filtro === f.key && s.filtroAtivo]} onPress={() => setFiltro(f.key)}>
             <Text style={[s.filtroTexto, filtro === f.key && s.filtroTextoAtivo]}>{f.label}</Text>
           </TouchableOpacity>
         ))}
@@ -150,7 +151,7 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
 
 
                 {!m.administradoHoje && (
-                  <TouchableOpacity
+                  <TouchableOpacity accessibilityRole="button"
                     style={s.btnAdministrar}
                     onPress={() => setAConfirmar(m)}
                   >
@@ -174,7 +175,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#bfdbfe', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
   filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
   filtroAtivo: { backgroundColor: '#2563eb' },
@@ -187,11 +188,11 @@ const s = StyleSheet.create({
   cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
   medicamentoNome: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
   doenteNome: { fontSize: 13, color: '#475569', marginTop: 2 },
-  cama: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
+  cama: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
   tags: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: 4 },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  tagTexto: { fontSize: 11, fontWeight: '600', color: '#475569' },
-  horarios: { fontSize: 12, color: '#64748b', marginTop: 4 },
+  tagTexto: { fontSize: 13, fontWeight: '600', color: '#475569' },
+  horarios: { fontSize: 13, color: '#64748b', marginTop: 4 },
   btnAdministrar: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#dbeafe', paddingVertical: 8, borderRadius: 10, justifyContent: 'center', marginTop: 10 },
   btnAdministrarTexto: { color: '#1d4ed8', fontWeight: '700', fontSize: 14 },
 });

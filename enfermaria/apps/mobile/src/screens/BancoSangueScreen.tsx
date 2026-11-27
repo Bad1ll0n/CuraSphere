@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
@@ -53,7 +54,7 @@ export default function BancoSangueScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onVoltar} style={styles.voltar}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={styles.voltar}>
           <Ionicons name="chevron-back" size={24} color="#0f172a" />
         </TouchableOpacity>
         <Text style={styles.titulo}>Banco de Sangue</Text>
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   grupoZero: { color: '#cbd5e1' },
   bolsaCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', padding: 14, marginBottom: 8 },
   bolsaNum: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  bolsaSub: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  bolsaSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
   grupoTag: { backgroundColor: '#fee2e2', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, marginRight: 10 },
   grupoTagText: { color: '#b91c1c', fontWeight: '700', fontSize: 13 },
   estadoPonto: { width: 10, height: 10, borderRadius: 5 },

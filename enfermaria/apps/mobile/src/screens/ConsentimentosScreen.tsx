@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -198,12 +199,12 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Consentimentos</Text>
         {doenteSelec && podeCriar ? (
-          <TouchableOpacity style={s.btnNovo} onPress={() => { setNovoTipo('cirurgia'); setNovaDesc(''); setModalCriar(true); }} activeOpacity={0.8}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.add')} style={s.btnNovo} onPress={() => { setNovoTipo('cirurgia'); setNovaDesc(''); setModalCriar(true); }} activeOpacity={0.8}>
             <Ionicons name="add" size={20} color="#fff" />
           </TouchableOpacity>
         ) : (
@@ -222,7 +223,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
                 {doenteSelec.numeroCama && <Text style={s.doenteSub}>Cama {doenteSelec.numeroCama}</Text>}
               </View>
             </View>
-            <TouchableOpacity onPress={() => { setDoenteSelec(null); setConsentimentos([]); }} style={s.btnMudar}>
+            <TouchableOpacity accessibilityRole="button" onPress={() => { setDoenteSelec(null); setConsentimentos([]); }} style={s.btnMudar}>
               <Text style={s.btnMudarLabel}>Mudar</Text>
             </TouchableOpacity>
           </View>
@@ -242,7 +243,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
             {doentes.length > 0 && (
               <View style={s.doentesLista}>
                 {doentes.map((d) => (
-                  <TouchableOpacity key={d.id} style={s.doenteItem} onPress={() => seleccionarDoente(d)} activeOpacity={0.7}>
+                  <TouchableOpacity accessibilityRole="button" key={d.id} style={s.doenteItem} onPress={() => seleccionarDoente(d)} activeOpacity={0.7}>
                     <Text style={s.doenteItemNome}>{d.nome}</Text>
                     {d.numeroCama && <Text style={s.doenteItemSub}>Cama {d.numeroCama}</Text>}
                   </TouchableOpacity>
@@ -270,7 +271,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
           <Text style={s.emptyTitulo}>Sem consentimentos</Text>
           <Text style={s.emptySub}>Nenhum consentimento registado para este doente.</Text>
           {podeCriar && (
-            <TouchableOpacity style={s.btnNovoCentro} onPress={() => { setNovoTipo('cirurgia'); setNovaDesc(''); setModalCriar(true); }} activeOpacity={0.8}>
+            <TouchableOpacity accessibilityRole="button" style={s.btnNovoCentro} onPress={() => { setNovoTipo('cirurgia'); setNovaDesc(''); setModalCriar(true); }} activeOpacity={0.8}>
               <Text style={s.btnNovoCentroLabel}>Criar Primeiro Consentimento</Text>
             </TouchableOpacity>
           )}
@@ -313,7 +314,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
 
                 {pendente && podeAssinar && (
                   <View style={s.cardAcoes}>
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       style={s.btnAssinar}
                       onPress={() => { setConfirmacaoAssinar(false); setModalAssinar(c); }}
                       activeOpacity={0.8}
@@ -321,7 +322,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
                       <Ionicons name="checkmark-circle-outline" size={15} color="#fff" />
                       <Text style={s.btnAssinarLabel}>Assinar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       style={s.btnRecusar}
                       onPress={() => { setMotivoRecusa(''); setModalRecusar(c); }}
                       activeOpacity={0.8}
@@ -342,7 +343,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
         <View style={s.modal}>
           <View style={s.modalHeader}>
             <Text style={s.modalTitulo}>Novo Consentimento</Text>
-            <TouchableOpacity onPress={() => setModalCriar(false)} style={s.modalFechar}>
+            <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.close')} onPress={() => setModalCriar(false)} style={s.modalFechar}>
               <Ionicons name="close" size={22} color="#64748b" />
             </TouchableOpacity>
           </View>
@@ -358,7 +359,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
             <Text style={s.campoLabel}>Tipo de Consentimento</Text>
             <View style={s.gradeOpcoes}>
               {Object.entries(TIPOS).map(([key, label]) => (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={key}
                   style={[s.opcaoBtn, novoTipo === key && s.opcaoBtnAtivo]}
                   onPress={() => setNovoTipo(key)}
@@ -380,7 +381,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
               textAlignVertical="top"
             />
 
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[s.btnPrimario, (!novaDesc.trim() || criando) && s.btnDesativado]}
               onPress={criarConsentimento}
               disabled={!novaDesc.trim() || criando}
@@ -411,7 +412,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
               Confirme que o doente foi devidamente informado sobre o procedimento e que assinou o documento de consentimento na presença do profissional de saúde.
             </Text>
 
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={s.confirmacaoRow}
               onPress={() => setConfirmacaoAssinar((v) => !v)}
               activeOpacity={0.8}
@@ -428,10 +429,10 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
             </TouchableOpacity>
 
             <View style={s.sheetBotoes}>
-              <TouchableOpacity style={s.btnSecundario} onPress={() => { setModalAssinar(null); setConfirmacaoAssinar(false); }}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnSecundario} onPress={() => { setModalAssinar(null); setConfirmacaoAssinar(false); }}>
                 <Text style={s.btnSecundarioLabel}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnVerde, { flex: 1 }, (!confirmacaoAssinar || assinando) && s.btnDesativado]}
                 onPress={assinarConsentimento}
                 disabled={!confirmacaoAssinar || assinando}
@@ -470,10 +471,10 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
             />
 
             <View style={s.sheetBotoes}>
-              <TouchableOpacity style={s.btnSecundario} onPress={() => setModalRecusar(null)}>
+              <TouchableOpacity accessibilityRole="button" style={s.btnSecundario} onPress={() => setModalRecusar(null)}>
                 <Text style={s.btnSecundarioLabel}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 style={[s.btnVermelho, { flex: 1 }, (!motivoRecusa.trim() || recusando) && s.btnDesativado]}
                 onPress={recusarConsentimento}
                 disabled={!motivoRecusa.trim() || recusando}
@@ -507,16 +508,16 @@ const s = StyleSheet.create({
   doenteSelecCard:  { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   doenteSelecInfo:  { flexDirection: 'row', alignItems: 'center', flex: 1 },
   doenteNome:       { fontSize: 14, fontWeight: '700', color: '#0f172a' },
-  doenteSub:        { fontSize: 12, color: '#64748b', marginTop: 1 },
+  doenteSub:        { fontSize: 13, color: '#64748b', marginTop: 1 },
   btnMudar:         { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0' },
-  btnMudarLabel:    { fontSize: 12, color: '#475569', fontWeight: '600' },
+  btnMudarLabel:    { fontSize: 13, color: '#475569', fontWeight: '600' },
 
   pesquisaBox:      { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f1f5f9', borderRadius: 10, paddingHorizontal: 12, gap: 8 },
   pesquisaInput:    { flex: 1, height: 40, fontSize: 14, color: '#0f172a' },
   doentesLista:     { backgroundColor: '#fff', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, marginTop: 4, overflow: 'hidden' },
   doenteItem:       { paddingHorizontal: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   doenteItemNome:   { fontSize: 14, fontWeight: '600', color: '#0f172a' },
-  doenteItemSub:    { fontSize: 12, color: '#64748b', marginTop: 1 },
+  doenteItemSub:    { fontSize: 13, color: '#64748b', marginTop: 1 },
 
   lista:            { padding: 16, gap: 10, paddingBottom: 32 },
   centro:           { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
@@ -530,9 +531,9 @@ const s = StyleSheet.create({
   cardTipo:         { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 4 },
   cardDesc:         { fontSize: 13, color: '#475569', lineHeight: 18 },
   estadoBadge:      { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20, alignSelf: 'flex-start' },
-  estadoLabel:      { fontSize: 11, fontWeight: '700' },
+  estadoLabel:      { fontSize: 13, fontWeight: '700' },
   cardMeta:         { marginTop: 10, gap: 2 },
-  metaTexto:        { fontSize: 11, color: '#94a3b8' },
+  metaTexto:        { fontSize: 13, color: '#94a3b8' },
   cardAcoes:        { flexDirection: 'row', gap: 8, marginTop: 12 },
   btnAssinar:       { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, backgroundColor: '#059669', borderRadius: 8, paddingVertical: 10 },
   btnAssinarLabel:  { color: '#fff', fontSize: 13, fontWeight: '700' },

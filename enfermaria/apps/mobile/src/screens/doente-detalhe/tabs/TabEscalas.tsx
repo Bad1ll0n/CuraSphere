@@ -43,7 +43,7 @@ function EscalaCard({ titulo, subtitulo, avaliacao, riscoMap, riscoTextMap, risc
           <Text style={s.titulo}>{titulo}</Text>
           <Text style={s.subtitulo}>{subtitulo}</Text>
         </View>
-        <TouchableOpacity style={s.avaliarBotao} onPress={onAvaliar}>
+        <TouchableOpacity accessibilityRole="button" style={s.avaliarBotao} onPress={onAvaliar}>
           <Text style={s.avaliarTexto}>+ Avaliar</Text>
         </TouchableOpacity>
       </View>
@@ -67,13 +67,13 @@ const s = StyleSheet.create({
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
   titulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  subtitulo: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   avaliarBotao: { backgroundColor: '#2563eb', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20 },
   avaliarTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
   resultado: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  badgeTexto: { fontSize: 12, fontWeight: '700' },
+  badgeTexto: { fontSize: 13, fontWeight: '700' },
   pontuacao: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
-  dataText: { fontSize: 12, color: '#94a3b8', marginLeft: 'auto' as any },
+  dataText: { fontSize: 13, color: '#94a3b8', marginLeft: 'auto' as any },
   semDados: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic' },
 });

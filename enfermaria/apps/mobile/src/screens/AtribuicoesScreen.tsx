@@ -114,7 +114,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
     <View style={s.container}>
       {/* Header */}
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+        <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <Text style={s.titulo}>Atribuições de Turno</Text>
@@ -129,7 +129,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
           {/* Selector de turno */}
           <View style={s.turnoSelector}>
             {turnosDisponiveis.map((t) => (
-              <TouchableOpacity
+              <TouchableOpacity accessibilityRole="button"
                 key={t.id}
                 style={[s.turnoTab, turnoSelecionado?.id === t.id && { borderBottomColor: tipoCor[t.tipo], borderBottomWidth: 2 }]}
                 onPress={() => setTurnoSelecionado(t)}
@@ -169,7 +169,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
                 {doentes.map((d) => {
                   const atrib = atribuicaoDe(d.id);
                   return (
-                    <TouchableOpacity
+                    <TouchableOpacity accessibilityRole="button"
                       key={d.id}
                       style={s.doenteCard}
                       onPress={() => {
@@ -213,7 +213,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
 
       {/* Modal: Atribuir profissional */}
       <Modal visible={!!modalDoente} transparent animationType="slide" onRequestClose={() => setModalDoente(null)}>
-        <TouchableOpacity style={s.overlay} activeOpacity={1} onPress={() => setModalDoente(null)}>
+        <TouchableOpacity accessibilityRole="button" style={s.overlay} activeOpacity={1} onPress={() => setModalDoente(null)}>
           <View onStartShouldSetResponder={() => true} style={s.sheet}>
             <Text style={s.sheetTitulo}>Atribuir · {modalDoente?.nome}</Text>
             <Text style={s.sheetSub}>Selecione o profissional responsável</Text>
@@ -222,7 +222,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
               const selecionado = atual?.utilizadorId === p.utilizador.id;
               const count = historico[`${p.utilizador.id}|${modalDoente?.id}`] ?? 0;
               return (
-                <TouchableOpacity
+                <TouchableOpacity accessibilityRole="button"
                   key={p.utilizador.id}
                   style={[s.profRow, selecionado && s.profRowAtivo]}
                   onPress={() => !salvando && atribuir(modalDoente.id, p.utilizador.id)}
@@ -253,13 +253,13 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   semTurnoTexto: { fontSize: 16, color: '#94a3b8', textAlign: 'center' },
   turnoSelector: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   turnoTab: { flex: 1, paddingVertical: 12, alignItems: 'center', borderBottomWidth: 2, borderBottomColor: 'transparent' },
   turnoTabTexto: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
-  turnoTabSub: { fontSize: 11, color: '#94a3b8', marginTop: 2 },
+  turnoTabSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   turnoInfo: { backgroundColor: '#fff', padding: 14, marginHorizontal: 16, marginTop: 12, borderRadius: 12, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
   turnoInfoTipo: { fontSize: 15, fontWeight: '700' },
   turnoInfoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
@@ -270,11 +270,11 @@ const s = StyleSheet.create({
   estadoBar: { width: 4 },
   doenteInfo: { flex: 1, padding: 12 },
   doenteNome: { fontSize: 14, fontWeight: '700', color: '#1e293b' },
-  doenteSub: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
-  doenteDiag: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  doenteSub: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  doenteDiag: { fontSize: 13, color: '#64748b', marginTop: 2 },
   atribInfo: { paddingRight: 14, alignItems: 'flex-end' },
   atribNome: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
-  editarHint: { fontSize: 11, color: '#94a3b8', marginTop: 2 },
+  editarHint: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b', marginBottom: 4 },
@@ -283,7 +283,7 @@ const s = StyleSheet.create({
   profRowAtivo: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
   profInfo: { flex: 1 },
   profNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  profAtribs: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
-  profHistorico: { fontSize: 11, color: '#16a34a', fontWeight: '600', marginTop: 2 },
+  profAtribs: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  profHistorico: { fontSize: 13, color: '#16a34a', fontWeight: '600', marginTop: 2 },
   check: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
 });

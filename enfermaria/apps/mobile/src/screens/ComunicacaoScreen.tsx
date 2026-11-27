@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import i18n from '../lib/i18n';
 
 interface Mensagem {
   id: string;
@@ -94,7 +95,7 @@ export default function ComunicacaoScreen({ utilizador, onVoltar }: Props) {
     return (
       <KeyboardAvoidingView style={s.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={s.header}>
-          <TouchableOpacity onPress={() => setMostrarFormulario(false)} style={s.voltarBtn}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={() => setMostrarFormulario(false)} style={s.voltarBtn}>
             <Ionicons name="arrow-back" size={22} color="#fff" />
           </TouchableOpacity>
           <Text style={s.headerTitulo}>Nova Mensagem</Text>
@@ -119,7 +120,7 @@ export default function ComunicacaoScreen({ utilizador, onVoltar }: Props) {
             numberOfLines={5}
             textAlignVertical="top"
           />
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.btnEnviar, enviando && { opacity: 0.6 }]}
             onPress={enviarMensagem}
             disabled={enviando}
@@ -138,7 +139,7 @@ export default function ComunicacaoScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.voltarBtn}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.voltarBtn}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -146,7 +147,7 @@ export default function ComunicacaoScreen({ utilizador, onVoltar }: Props) {
           {naoLidas > 0 && <Text style={s.headerSub}>{naoLidas} mensagem(ns) não lida(s)</Text>}
         </View>
         {tab === 'mensagens' && (
-          <TouchableOpacity onPress={() => setMostrarFormulario(true)} style={s.novaBtn}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.new')} onPress={() => setMostrarFormulario(true)} style={s.novaBtn}>
             <Ionicons name="create-outline" size={22} color="#fff" />
           </TouchableOpacity>
         )}
@@ -157,7 +158,7 @@ export default function ComunicacaoScreen({ utilizador, onVoltar }: Props) {
           { key: 'mensagens', label: 'Mensagens' },
           { key: 'anuncios', label: 'Anúncios' },
         ] as const).map(t => (
-          <TouchableOpacity key={t.key} style={[s.tab, tab === t.key && s.tabAtivo]} onPress={() => setTab(t.key)}>
+          <TouchableOpacity accessibilityRole="button" key={t.key} style={[s.tab, tab === t.key && s.tabAtivo]} onPress={() => setTab(t.key)}>
             <Text style={[s.tabTexto, tab === t.key && s.tabTextoAtivo]}>{t.label}</Text>
             {t.key === 'mensagens' && naoLidas > 0 && (
               <View style={s.badge}><Text style={s.badgeTexto}>{naoLidas}</Text></View>
@@ -216,7 +217,7 @@ const s = StyleSheet.create({
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  headerSub: { fontSize: 12, color: '#bfdbfe', marginTop: 2 },
+  headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
   novaBtn: { padding: 4 },
   tabs: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 },
@@ -224,7 +225,7 @@ const s = StyleSheet.create({
   tabTexto: { fontSize: 14, fontWeight: '600', color: '#64748b' },
   tabTextoAtivo: { color: '#fff' },
   badge: { backgroundColor: '#ef4444', borderRadius: 10, paddingHorizontal: 6, paddingVertical: 1 },
-  badgeTexto: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  badgeTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
   vazio: { padding: 40, alignItems: 'center' },
   vazioTexto: { color: '#94a3b8', fontSize: 15 },
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 10, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 1 },
@@ -234,15 +235,15 @@ const s = StyleSheet.create({
   avatarMiniTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
   msgCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   msgRemetente: { fontSize: 14, color: '#1e293b' },
-  msgTempo: { fontSize: 12, color: '#94a3b8' },
+  msgTempo: { fontSize: 13, color: '#94a3b8' },
   msgAssunto: { fontSize: 14, color: '#334155', marginTop: 2 },
   msgPreview: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#2563eb' },
   anuncioTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   anuncioTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1 },
-  anuncioTempo: { fontSize: 12, color: '#94a3b8' },
+  anuncioTempo: { fontSize: 13, color: '#94a3b8' },
   anuncioConteudo: { fontSize: 14, color: '#475569', lineHeight: 20 },
-  anuncioAutor: { fontSize: 12, color: '#94a3b8', marginTop: 8, fontStyle: 'italic' },
+  anuncioAutor: { fontSize: 13, color: '#94a3b8', marginTop: 8, fontStyle: 'italic' },
   form: { padding: 16 },
   label: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 6, marginTop: 12 },
   input: { backgroundColor: '#fff', borderRadius: 10, padding: 12, fontSize: 15, color: '#1e293b', borderWidth: 1, borderColor: '#e2e8f0' },

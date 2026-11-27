@@ -9,6 +9,7 @@ import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import i18n from '../lib/i18n';
 interface Ausencia {
   id: string;
   tipo: string;
@@ -173,7 +174,7 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <TouchableOpacity onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel={i18n.t('a11y.back')} onPress={onVoltar} style={s.btnVoltar} activeOpacity={0.7}>
           <Ionicons name="arrow-back" size={22} color="#0f172a" />
         </TouchableOpacity>
         <Text style={s.headerTitulo}>Recursos Humanos</Text>
@@ -182,7 +183,7 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
 
       <View style={s.tabRow}>
         {TABS.map((t) => (
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             key={t.key}
             style={[s.tab, tab === t.key && s.tabAtiva]}
             onPress={() => setTab(t.key)}
@@ -235,13 +236,13 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
       ) : tab === 'ausencias' ? (
         <>
           <View style={s.segmentRow}>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[s.segmentBtn, ausenciasSub === 'todas' && s.segmentBtnAtivo]}
               onPress={() => setAusenciasSub('todas')}
             >
               <Text style={[s.segmentLabel, ausenciasSub === 'todas' && s.segmentLabelAtivo]}>Todas</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[s.segmentBtn, ausenciasSub === 'para_aprovar' && s.segmentBtnAtivo]}
               onPress={() => setAusenciasSub('para_aprovar')}
             >
@@ -293,7 +294,7 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
 
                   {ausenciasSub === 'para_aprovar' && (
                     <View style={s.acoesRow}>
-                      <TouchableOpacity
+                      <TouchableOpacity accessibilityRole="button"
                         style={[s.btnAprovar, aprovando === a.id && s.btnDesativado]}
                         onPress={() => aprovar(a.id)}
                         disabled={aprovando === a.id || rejeitando === a.id}
@@ -305,7 +306,7 @@ export default function RHScreen({ utilizador, onVoltar }: Props) {
                           <Text style={s.btnAcoesTexto}>Aprovar</Text>
                         )}
                       </TouchableOpacity>
-                      <TouchableOpacity
+                      <TouchableOpacity accessibilityRole="button"
                         style={[s.btnRejeitar, rejeitando === a.id && s.btnDesativado]}
                         onPress={() => rejeitar(a.id)}
                         disabled={aprovando === a.id || rejeitando === a.id}
@@ -453,7 +454,7 @@ const s = StyleSheet.create({
   },
   tab: { flex: 1, paddingVertical: 12, alignItems: 'center' },
   tabAtiva: { borderBottomWidth: 2, borderBottomColor: '#0f172a' },
-  tabLabel: { fontSize: 12, color: '#94a3b8', fontWeight: '500' },
+  tabLabel: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
   tabLabelAtiva: { color: '#0f172a', fontWeight: '700' },
 
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
@@ -475,7 +476,7 @@ const s = StyleSheet.create({
     gap: 4,
   },
   kpiValor: { fontSize: 28, fontWeight: '800' },
-  kpiLabel: { fontSize: 12, color: '#64748b', fontWeight: '500' },
+  kpiLabel: { fontSize: 13, color: '#64748b', fontWeight: '500' },
 
   segmentRow: {
     flexDirection: 'row',
@@ -516,10 +517,10 @@ const s = StyleSheet.create({
   cardNome: { flex: 1, fontSize: 15, fontWeight: '700', color: '#0f172a' },
   cardInfoRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   cardMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  cardMeta: { fontSize: 12, color: '#94a3b8' },
+  cardMeta: { fontSize: 13, color: '#94a3b8' },
 
   badge: { paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 11, fontWeight: '700' },
+  badgeTexto: { fontSize: 13, fontWeight: '700' },
 
   acoesRow: { flexDirection: 'row', gap: 10, marginTop: 4 },
   btnAprovar: {

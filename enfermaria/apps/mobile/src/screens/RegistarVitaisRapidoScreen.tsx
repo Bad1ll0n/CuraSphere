@@ -124,7 +124,7 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
           const score = d.ultimoNews2;
           const cor = news2Cor(score);
           return (
-            <TouchableOpacity key={d.id} style={estilos.card} activeOpacity={0.75} onPress={() => abrirModal(d)}>
+            <TouchableOpacity accessibilityRole="button" key={d.id} style={estilos.card} activeOpacity={0.75} onPress={() => abrirModal(d)}>
               <View style={[estilos.news2Badge, { backgroundColor: cor + '22', borderColor: cor + '55' }]}>
                 <Text style={[estilos.news2Score, { color: cor }]}>{score ?? (d.erroVitais ? '?' : '—')}</Text>
                 <Text style={[estilos.news2Label, { color: cor }]}>{news2Label(score)}</Text>
@@ -190,11 +190,11 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
   },
   news2Score: { fontSize: 22, fontWeight: '800', lineHeight: 26 },
-  news2Label: { fontSize: 10, fontWeight: '600' },
+  news2Label: { fontSize: 13, fontWeight: '600' },
   cardInfo: { flex: 1, minWidth: 0 },
   nomePaciente: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-  camaText: { fontSize: 12, color: '#64748b', marginTop: 2 },
-  ultimoText: { fontSize: 11, color: '#94a3b8', marginTop: 2 },
+  camaText: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  ultimoText: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
   btnRegistar: {
     backgroundColor: '#2563eb',
     borderRadius: 10,

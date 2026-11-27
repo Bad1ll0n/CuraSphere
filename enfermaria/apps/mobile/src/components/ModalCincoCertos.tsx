@@ -60,10 +60,10 @@ export default function ModalCincoCertos({ medicacao, doente, offline, onConfirm
           ))}
           {offline && <Text style={s.offline}>{t('administer.fiveRights.offline')}</Text>}
           <View style={s.botoes}>
-            <TouchableOpacity style={s.cancelar} onPress={onCancelar}>
+            <TouchableOpacity accessibilityRole="button" style={s.cancelar} onPress={onCancelar}>
               <Text style={s.cancelarTexto}>{t('common.cancel')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            <TouchableOpacity accessibilityRole="button"
               style={[s.confirmar, !pronto && s.desativado]}
               disabled={!pronto}
               accessibilityState={{ disabled: !pronto }}
@@ -86,7 +86,7 @@ const s = StyleSheet.create({
   linha: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   certo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
   detalhe: { fontSize: 13, color: '#475569' },
-  offline: { fontSize: 12, color: '#92400e', backgroundColor: '#fef3c7', padding: 8, borderRadius: 8 },
+  offline: { fontSize: 13, color: '#92400e', backgroundColor: '#fef3c7', padding: 8, borderRadius: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 6 },
   cancelar: { flex: 1, borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   cancelarTexto: { color: '#334155', fontWeight: '600' },

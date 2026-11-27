@@ -13,7 +13,7 @@ export default function ModalHistoricoTarefas({ visible, tarefas, loading, onClo
         <View style={[shared.modalSheet, shared.modalSheetTall]}>
           <View style={shared.sheetCabecalho}>
             <Text style={shared.sheetTitulo}>Tarefas Concluídas</Text>
-            <TouchableOpacity onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
+            <TouchableOpacity accessibilityRole="button" onPress={onClose}><Text style={shared.fecharTexto}>✕</Text></TouchableOpacity>
           </View>
           {loading ? (
             <ActivityIndicator color="#2563eb" style={{ padding: 20 }} />

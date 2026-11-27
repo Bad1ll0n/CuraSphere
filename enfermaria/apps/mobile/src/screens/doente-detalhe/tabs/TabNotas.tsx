@@ -66,12 +66,12 @@ export default function TabNotas({ notas, nota, setNota, gravandoNota, onGravar,
               numberOfLines={3}
             />
             {Voice && (
-              <TouchableOpacity style={[s.micBtn, gravandoVoz && s.micBtnAtivo]} onPress={alternarVoz}>
+              <TouchableOpacity accessibilityRole="button" style={[s.micBtn, gravandoVoz && s.micBtnAtivo]} onPress={alternarVoz}>
                 <Text style={s.micIcon}>{gravandoVoz ? '⏹' : '🎙'}</Text>
               </TouchableOpacity>
             )}
           </View>
-          <TouchableOpacity
+          <TouchableOpacity accessibilityRole="button"
             style={[s.botao, !nota.trim() && s.botaoDesativado]}
             onPress={onGravar}
             disabled={gravandoNota || !nota.trim()}>
@@ -106,6 +106,6 @@ const s = StyleSheet.create({
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8 },
   cabecalho: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
   autor: { fontSize: 13, fontWeight: '600', color: '#475569' },
-  data: { fontSize: 12, color: '#94a3b8' },
+  data: { fontSize: 13, color: '#94a3b8' },
   texto: { fontSize: 14, color: '#334155', lineHeight: 20 },
 });
