@@ -47,7 +47,7 @@ export function TourOverlay({ role, onConcluir }: Props) {
 
         <div className="flex items-center gap-3">
           <button onClick={onConcluir}
-            className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-sm text-slate-500 hover:text-slate-600 transition-colors"
             style={{ marginRight: 'auto' }}>
             {t('buttons.skip')}
           </button>

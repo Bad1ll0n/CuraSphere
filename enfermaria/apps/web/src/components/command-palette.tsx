@@ -137,7 +137,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             {isNLQ ? (
               <span className="text-sm shrink-0" title="Modo pesquisa IA">🧠</span>
             ) : (
-              <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             )}
@@ -153,13 +153,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 Modo IA
               </span>
             )}
-            <kbd className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 text-xs text-slate-400 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+            <kbd className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 text-xs text-slate-500 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
               Esc
             </kbd>
           </div>
 
           <Command.List className="max-h-80 overflow-y-auto p-2">
-            <Command.Empty className="py-8 text-center text-sm text-slate-400">
+            <Command.Empty className="py-8 text-center text-sm text-slate-500">
               {isSearching ? 'A pesquisar...' : 'Sem resultados.'}
             </Command.Empty>
 
@@ -176,7 +176,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                       {d.nome.charAt(0)}
                     </span>
                     <span className="flex-1 font-medium truncate">{d.nome}</span>
-                    <span className="text-xs text-slate-400 shrink-0">
+                    <span className="text-xs text-slate-500 shrink-0">
                       {d.cama ? `Cama ${d.cama.numero}` : d.numeroProcesso}
                     </span>
                   </Command.Item>
@@ -197,7 +197,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                       {d.nome.charAt(0)}
                     </span>
                     <span className="flex-1 font-medium truncate">{d.nome}</span>
-                    <span className="text-xs text-slate-400 shrink-0">
+                    <span className="text-xs text-slate-500 shrink-0">
                       {d.cama ? `Cama ${d.cama.numero}` : d.numeroProcesso}
                     </span>
                   </Command.Item>
@@ -242,7 +242,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             )}
           </Command.List>
 
-          <div className="border-t border-slate-100 dark:border-slate-800 px-4 py-2 flex items-center gap-4 text-xs text-slate-400">
+          <div className="border-t border-slate-100 dark:border-slate-800 px-4 py-2 flex items-center gap-4 text-xs text-slate-500">
             <span><kbd className="font-mono">↑↓</kbd> navegar</span>
             <span><kbd className="font-mono">Enter</kbd> abrir</span>
             <span><kbd className="font-mono">Esc</kbd> fechar</span>

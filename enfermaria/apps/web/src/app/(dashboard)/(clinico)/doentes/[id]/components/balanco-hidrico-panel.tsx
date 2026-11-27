@@ -71,7 +71,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="bh-modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -228,7 +228,7 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
       {loading ? (
         <p className="text-sm text-slate-500 text-center py-4">A carregar...</p>
       ) : registos.length === 0 ? (
-        <p className="text-sm text-slate-400 text-center py-6">Sem registos para este dia</p>
+        <p className="text-sm text-slate-500 text-center py-6">Sem registos para este dia</p>
       ) : (
         <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid #e2e8f0', marginBottom: '20px' }}>
           <table className="w-full text-sm">

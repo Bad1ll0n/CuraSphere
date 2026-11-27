@@ -138,7 +138,7 @@ function calcIdade(dataNascimento: string) {
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</span>
+      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
       <span className="text-sm font-medium text-slate-800">{value}</span>
     </div>
   );
@@ -417,7 +417,7 @@ export default function DoenteDetalhe() {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '120px' }}>
+    <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '120px' }}>
       <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -427,7 +427,7 @@ export default function DoenteDetalhe() {
   );
 
   if (!doente) return (
-    <div className="text-center text-slate-400 text-sm" style={{ paddingTop: '120px' }}>Doente não encontrado</div>
+    <div className="text-center text-slate-500 text-sm" style={{ paddingTop: '120px' }}>Doente não encontrado</div>
   );
 
   return (
@@ -492,7 +492,7 @@ export default function DoenteDetalhe() {
               )}
             </div>
           </div>
-          <p className="text-slate-400 text-sm font-mono">{doente.numeroProcesso}</p>
+          <p className="text-slate-500 text-sm font-mono">{doente.numeroProcesso}</p>
           {/* UX-02: alergias no cabeçalho — antes só no 10.º painel, dois ecrãs abaixo. */}
           <div style={{ marginTop: '8px' }}>
             <FaixaAlergiasDoente doenteId={id!} />
@@ -668,7 +668,7 @@ export default function DoenteDetalhe() {
             </div>
             {['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '') && (
               <button onClick={abrirEditarDoente}
-                className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                 style={{ padding: '4px 8px' }}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -693,7 +693,7 @@ export default function DoenteDetalhe() {
           <div className="flex flex-col gap-4">
             <InfoRow label="Cama" value={`Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}`} />
             <div className="flex flex-col gap-1">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Enfermeiros Atribuídos</span>
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Enfermeiros Atribuídos</span>
               {(() => {
                 const ordemTurno: Record<string, number> = { manha: 0, tarde: 1, noite: 2 };
                 const mapa = new Map<string, typeof doente.atribuicoesHorario[0]>();
@@ -723,7 +723,7 @@ export default function DoenteDetalhe() {
                       </div>
                     ))}
                   </div>
-                ) : <span className="text-sm text-slate-400">Nenhum atribuído</span>;
+                ) : <span className="text-sm text-slate-500">Nenhum atribuído</span>;
               })()}
             </div>
           </div>
@@ -752,7 +752,7 @@ export default function DoenteDetalhe() {
               </a>
               {!editandoFicha ? (
                 <button onClick={() => setEditandoFicha(true)}
-                  className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   style={{ padding: '4px 8px' }}>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -815,7 +815,7 @@ export default function DoenteDetalhe() {
                 { label: 'Tipo Cobertura', value: ficheiroPessoal?.tipoCobertura },
               ].map(({ label, value }) => (
                 <div key={label}>
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide block" style={{ marginBottom: '2px' }}>{label}</span>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block" style={{ marginBottom: '2px' }}>{label}</span>
                   <span className="text-sm text-slate-700">{value || '—'}</span>
                 </div>
               ))}
@@ -944,7 +944,7 @@ export default function DoenteDetalhe() {
           <div {...dlgEditar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Editar Dados Clínicos</h2>
-              <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarDoente(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
@@ -978,7 +978,7 @@ export default function DoenteDetalhe() {
           <div {...dlgIsolamento.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
-              <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalIsolamento(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fpage-3" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
@@ -1005,7 +1005,7 @@ export default function DoenteDetalhe() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h3 className="text-lg font-bold text-slate-900">QR Code do Doente</h3>
               <button onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -1017,8 +1017,8 @@ export default function DoenteDetalhe() {
               </div>
               <div className="text-center">
                 <p className="font-bold text-slate-900" style={{ fontSize: '15px' }}>{doente.nome}</p>
-                <p className="text-slate-400 font-mono text-xs" style={{ marginTop: '4px' }}>{doente.numeroProcesso}</p>
-                <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>Cama {doente.cama.quarto}/{doente.cama.numero}</p>
+                <p className="text-slate-600 font-mono text-sm" style={{ marginTop: '4px' }}>{doente.numeroProcesso}</p>
+                <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>Cama {doente.cama.quarto}/{doente.cama.numero}</p>
               </div>
             </div>
 
@@ -1066,7 +1066,7 @@ export default function DoenteDetalhe() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Dar Alta — {doente.nome}</h2>
               <button onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
 
@@ -1134,7 +1134,7 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-500 font-normal text-xs">(opcional)</span></label>
               <textarea id="fpage-6"
                 value={altaPrescricao}
                 onChange={(e) => setAltaPrescricao(e.target.value)}
@@ -1146,7 +1146,7 @@ export default function DoenteDetalhe() {
             </div>
 
             <div style={{ marginBottom: '28px' }}>
-              <label htmlFor="fpage-7" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <label htmlFor="fpage-7" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-500 font-normal text-xs">(opcional)</span></label>
               <input id="fpage-7"
                 value={altaMedicoFamilia}
                 onChange={(e) => setAltaMedicoFamilia(e.target.value)}
@@ -1178,7 +1178,7 @@ export default function DoenteDetalhe() {
           <div {...dlgSinalizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">⚠ Sinalizar como Preocupante</h2>
-              <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalSinalizar(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-8" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -1226,10 +1226,10 @@ export default function DoenteDetalhe() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Portal do Doente</h2>
-                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Criar ou actualizar acesso para {doente.nome}</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Criar ou actualizar acesso para {doente.nome}</p>
               </div>
               <button onClick={() => setModalPortal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -1271,7 +1271,7 @@ export default function DoenteDetalhe() {
                     placeholder="Mínimo 8 caracteres"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                     style={{ padding: '10px 14px' }} />
-                  <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>O doente poderá alterar a password após o primeiro acesso.</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>O doente poderá alterar a password após o primeiro acesso.</p>
                 </div>
                 <div className="flex gap-3">
                   <button onClick={() => setModalPortal(false)}

@@ -72,7 +72,7 @@ export default function AdmitirDoentesPagina() {
       <div style={{ marginBottom: '32px' }}>
         <Link
           href="/doentes"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-600 transition-colors"
           style={{ marginBottom: '16px', display: 'inline-flex' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ export default function AdmitirDoentesPagina() {
             </div>
             <div>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Número de Processo</span>
-              <div className="w-full bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-400 flex items-center gap-2" style={{ padding: '11px 16px' }}>
+              <div className="w-full bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-500 flex items-center gap-2" style={{ padding: '11px 16px' }}>
                 <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -157,7 +157,7 @@ export default function AdmitirDoentesPagina() {
           </div>
           <div>
             <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>
-              Código ICD-10 <span className="text-slate-400 normal-case font-normal">(opcional)</span>
+              Código ICD-10 <span className="text-slate-500 normal-case font-normal">(opcional)</span>
             </span>
             <Icd10Autocomplete
               value={form.icd10Code}
@@ -177,7 +177,7 @@ export default function AdmitirDoentesPagina() {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-slate-700">Dados Administrativos</h2>
-              <p className="text-xs text-slate-400" style={{ marginTop: '1px' }}>Opcional — pode ser preenchido depois em "Dados Administrativos" na ficha do doente</p>
+              <p className="text-xs text-slate-500" style={{ marginTop: '1px' }}>Opcional — pode ser preenchido depois em "Dados Administrativos" na ficha do doente</p>
             </div>
           </div>
 

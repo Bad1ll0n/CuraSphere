@@ -49,26 +49,26 @@ function AgendaConfig({ agenda, onChange }: { agenda: AgendaDia[]; onChange: (a:
   return (
     <div>
       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
-        Agenda de Consultas <span className="font-normal normal-case text-slate-400">(slots de 30 min)</span>
+        Agenda de Consultas <span className="font-normal normal-case text-slate-500">(slots de 30 min)</span>
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {DIAS_SEMANA.map((dia, i) => (
           <div key={i} className="flex items-center gap-3" style={{ padding: '8px 12px', borderRadius: '10px', background: agenda[i].ativo ? '#f0f9ff' : '#f8fafc', border: `1px solid ${agenda[i].ativo ? '#bae6fd' : '#e2e8f0'}` }}>
             <input type="checkbox" checked={agenda[i].ativo} onChange={e => update(i, { ativo: e.target.checked })}
               style={{ width: 16, height: 16, accentColor: '#2563eb', cursor: 'pointer', flexShrink: 0 }} />
-            <span className={`text-xs font-semibold w-7 ${agenda[i].ativo ? 'text-blue-700' : 'text-slate-400'}`}>{dia}</span>
+            <span className={`text-xs font-semibold w-7 ${agenda[i].ativo ? 'text-blue-700' : 'text-slate-500'}`}>{dia}</span>
             {agenda[i].ativo ? (
               <>
                 <input type="time" value={agenda[i].horaInicio} onChange={e => update(i, { horaInicio: e.target.value })}
                   className="border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white"
                   style={{ padding: '4px 8px' }} />
-                <span className="text-slate-400 text-xs">até</span>
+                <span className="text-slate-500 text-xs">até</span>
                 <input type="time" value={agenda[i].horaFim} onChange={e => update(i, { horaFim: e.target.value })}
                   className="border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white"
                   style={{ padding: '4px 8px' }} />
               </>
             ) : (
-              <span className="text-xs text-slate-400 italic">Sem consultas</span>
+              <span className="text-xs text-slate-500 italic">Sem consultas</span>
             )}
           </div>
         ))}
@@ -243,7 +243,7 @@ export default function UtilizadoresPagina() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '60px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -252,7 +252,7 @@ export default function UtilizadoresPagina() {
         </div>
       ) : rolesComUtilizadores.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
-          <p className="text-slate-400 text-sm">Sem utilizadores registados</p>
+          <p className="text-slate-500 text-sm">Sem utilizadores registados</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -279,9 +279,9 @@ export default function UtilizadoresPagina() {
                       <div>
                         <p className="text-sm font-semibold text-slate-800">{u.nome}</p>
                         <div className="flex items-center gap-2 flex-wrap" style={{ marginTop: '3px' }}>
-                          <span className="text-xs text-slate-400">Nº {u.numeroFuncionario}</span>
+                          <span className="text-xs text-slate-500">Nº {u.numeroFuncionario}</span>
                           {u.equipa && <span className="text-xs font-semibold badge-pad py-0.5 rounded-full bg-slate-100 text-slate-600">Equipa {u.equipa}</span>}
-                          {u.ordemExperiencia && <span className="text-xs text-slate-400">#{u.ordemExperiencia} experiência</span>}
+                          {u.ordemExperiencia && <span className="text-xs text-slate-500">#{u.ordemExperiencia} experiência</span>}
                           <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${roleCor[roleObj.chave]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
                             {roleObj.label}
                           </span>
@@ -299,8 +299,8 @@ export default function UtilizadoresPagina() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => abrirEditar(u)} className="text-xs font-medium text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" style={{ padding: '6px 12px' }}>Editar</button>
-                      <button onClick={() => desativar(u.id)} className="text-xs font-medium text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" style={{ padding: '6px 12px' }}>Desativar</button>
+                      <button onClick={() => abrirEditar(u)} className="text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" style={{ padding: '6px 12px' }}>Editar</button>
+                      <button onClick={() => desativar(u.id)} className="text-xs font-medium text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" style={{ padding: '6px 12px' }}>Desativar</button>
                     </div>
                   </div>
                 ))}
@@ -316,7 +316,7 @@ export default function UtilizadoresPagina() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-y-auto" style={{ padding: '32px', maxHeight: '90vh' }}>
             <div style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Editar Utilizador</h2>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Nº {editando.numeroFuncionario}</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Nº {editando.numeroFuncionario}</p>
             </div>
             <form onSubmit={guardarEdicao}>
               <div style={{ marginBottom: '20px' }}>
@@ -366,7 +366,7 @@ export default function UtilizadoresPagina() {
                 </select>
               </div>
               <div style={{ marginBottom: '16px' }}>
-                <label htmlFor="fpage-5" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
+                <label htmlFor="fpage-5" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-500 font-normal">(1 = mais experiente)</span></label>
                 <input id="fpage-5" type="number" min="1" value={formEdit.ordemExperiencia} onChange={(e) => setFormEdit((f) => ({ ...f, ordemExperiencia: e.target.value }))}
                   placeholder="Ex: 1" className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition" style={{ padding: '10px 14px' }} />
               </div>
@@ -388,7 +388,7 @@ export default function UtilizadoresPagina() {
                   placeholder="Nome da equipa (ex: A, Alfa, Turno 1...)"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />
-                <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>Deixe em branco para remover da equipa</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>Deixe em branco para remover da equipa</p>
               </div>
               {formEdit.role === 'medico' && (
                 <div style={{ marginBottom: '28px' }}>
@@ -462,7 +462,7 @@ export default function UtilizadoresPagina() {
                 </div>
               )}
               <div style={{ marginBottom: '28px' }}>
-                <label htmlFor="fpage-13" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
+                <label htmlFor="fpage-13" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-500 font-normal">(1 = mais experiente)</span></label>
                 <input id="fpage-13" type="number" min="1" value={form.ordemExperiencia} onChange={(e) => setForm((f) => ({ ...f, ordemExperiencia: e.target.value }))}
                   placeholder="Ex: 1"
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"

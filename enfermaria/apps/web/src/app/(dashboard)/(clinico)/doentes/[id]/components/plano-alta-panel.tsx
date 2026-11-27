@@ -200,7 +200,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
             </div>
           </div>
         </div>
-        <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-4 h-4 text-slate-500 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -322,7 +322,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                 </div>
               );
             })() : (
-              <p className="text-xs text-slate-400 italic">Não calculado. Clique em "Calcular IA" para avaliar o risco pós-alta.</p>
+              <p className="text-xs text-slate-500 italic">Não calculado. Clique em "Calcular IA" para avaliar o risco pós-alta.</p>
             )}
           </div>
 
@@ -337,7 +337,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                   </span>
                 )}
                 {sumario?.cartaAlta && (
-                  <button onClick={() => setCartaAberta(v => !v)} className="text-xs text-slate-400 hover:text-slate-600">
+                  <button onClick={() => setCartaAberta(v => !v)} className="text-xs text-slate-500 hover:text-slate-600">
                     {cartaAberta ? '▲ Ocultar' : '▼ Ver'}
                   </button>
                 )}
@@ -417,7 +417,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
               </p>
             )}
             {!sumario?.cartaAlta && (
-              <p className="text-xs text-slate-400 italic" style={{ marginTop: '6px' }}>Não gerada. Clique em "Gerar carta IA" para criar automaticamente.</p>
+              <p className="text-xs text-slate-500 italic" style={{ marginTop: '6px' }}>Não gerada. Clique em "Gerar carta IA" para criar automaticamente.</p>
             )}
           </div>
         </div>
@@ -434,7 +434,7 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
                   <p className={`text-xs font-semibold ${fu.concluido ? 'text-green-700' : 'text-slate-700'}`}>
                     {fu.tipo === '7_dias' ? '7 dias pós-alta' : fu.tipo === '30_dias' ? '30 dias pós-alta' : fu.especialidade ?? fu.tipo}
                   </p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     {new Date(fu.dataAgendada).toLocaleDateString('pt-PT')} · {fu.responsavel?.nome ?? '—'}
                   </p>
                 </div>

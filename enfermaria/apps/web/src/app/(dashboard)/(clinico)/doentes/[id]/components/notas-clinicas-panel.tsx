@@ -168,7 +168,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {notasClincias.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
             {podeCriarNotaClinica ? 'Sem notas SOAP — clica em + para adicionar' : 'Sem notas clínicas registadas'}
           </p>
         ) : (
@@ -179,10 +179,10 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-slate-500">{n.autor?.nome}</span>
                     <span className="text-slate-300 text-xs">·</span>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       {new Date(n.criadaEm).toLocaleDateString('pt-PT')} {new Date(n.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                     </span>
-                    {n.editadaEm && <span className="text-xs text-slate-400 italic">(editada)</span>}
+                    {n.editadaEm && <span className="text-xs text-slate-500 italic">(editada)</span>}
                   </div>
                   {podeCriarNotaClinica && n.autor?.id === utilizador?.id && (
                     <div className="flex items-center gap-2">
@@ -198,9 +198,9 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
                             setNotaSoapEditandoId(n.id);
                             setModalNotaClinica(true);
                           }}
-                            className="text-xs text-slate-400 hover:text-emerald-600 transition-colors" style={{ padding: '4px 8px' }}>Editar</button>
+                            className="text-xs text-slate-500 hover:text-emerald-600 transition-colors" style={{ padding: '4px 8px' }}>Editar</button>
                           <button onClick={() => apagarNotaClinica(n.id)}
-                            className="text-xs text-slate-400 hover:text-red-500 transition-colors" style={{ padding: '4px 8px' }}>Apagar</button>
+                            className="text-xs text-slate-500 hover:text-red-500 transition-colors" style={{ padding: '4px 8px' }}>Apagar</button>
                         </div>
                       )}
                     </div>
@@ -232,7 +232,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
               <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
             {[

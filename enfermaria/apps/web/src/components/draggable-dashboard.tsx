@@ -141,7 +141,7 @@ export function DraggableDashboard({ widgets, cols = 12, rowHeight = 120 }: Drag
             const vis = isVisible(w.id, saved);
             return (
               <button key={w.id} onClick={() => toggleWidget(w.id)}
-                className={`text-xs font-semibold rounded-lg border transition-colors ${vis ? 'bg-white text-slate-700 border-slate-300' : 'bg-slate-200 text-slate-400 border-slate-200 line-through'}`}
+                className={`text-xs font-semibold rounded-lg border transition-colors ${vis ? 'bg-white text-slate-700 border-slate-300' : 'bg-slate-200 text-slate-500 border-slate-200 line-through'}`}
                 style={{ padding: '4px 10px' }}>
                 {w.label}
               </button>

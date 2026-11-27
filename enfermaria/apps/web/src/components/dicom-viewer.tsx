@@ -136,12 +136,12 @@ export function DicomViewer({ url, titulo, onClose }: Props) {
         style={{ backgroundColor: 'rgba(15,15,15,0.92)', padding: '10px 16px' }}
       >
         <div className="flex items-center gap-2">
-          <span className="text-slate-400 text-xs font-mono uppercase tracking-wide">DICOM</span>
+          <span className="text-slate-500 text-xs font-mono uppercase tracking-wide">DICOM</span>
           <span className="text-white text-sm font-medium">{titulo}</span>
         </div>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-white transition-colors text-xl leading-none"
+          className="text-slate-500 hover:text-white transition-colors text-xl leading-none"
           aria-label="Fechar viewer"
         >
           ✕
@@ -184,7 +184,7 @@ export function DicomViewer({ url, titulo, onClose }: Props) {
           style={{ backgroundColor: 'rgba(15,15,15,0.92)', padding: '10px 20px' }}
         >
           <div className="flex items-center gap-3 flex-1">
-            <span className="text-slate-400 text-xs font-mono w-6 shrink-0">WC</span>
+            <span className="text-slate-500 text-xs font-mono w-6 shrink-0">WC</span>
             <input
               type="range" min={-2048} max={4096} step={1} value={wc}
               onChange={e => handleWcChange(parseInt(e.target.value))}
@@ -193,7 +193,7 @@ export function DicomViewer({ url, titulo, onClose }: Props) {
             <span className="text-slate-300 text-xs font-mono w-14 text-right shrink-0">{Math.round(wc)}</span>
           </div>
           <div className="flex items-center gap-3 flex-1">
-            <span className="text-slate-400 text-xs font-mono w-6 shrink-0">WW</span>
+            <span className="text-slate-500 text-xs font-mono w-6 shrink-0">WW</span>
             <input
               type="range" min={1} max={8192} step={1} value={ww}
               onChange={e => handleWwChange(parseInt(e.target.value))}

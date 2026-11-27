@@ -150,7 +150,7 @@ export default function InterconsultasPage() {
       {/* Conteúdo */}
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -164,7 +164,7 @@ export default function InterconsultasPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                 </svg>
               </div>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500">
                 {aba === 'recebidas' ? 'Sem interconsultas pendentes para responder' : 'Ainda não enviou interconsultas'}
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function InterconsultasPage() {
           <div {...dlgResposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Responder à Interconsulta</h2>
-              <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalResposta(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
             <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
               Resposta / Parecer Clínico
@@ -225,7 +225,7 @@ export default function InterconsultasPage() {
           <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Interconsulta</h2>
-              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNova(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
@@ -318,7 +318,7 @@ function InterconsultaCard({
 
           {/* Doente */}
           <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
-            <svg className="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             <Link href={`/doentes/${ic.doente.id}`}
@@ -326,7 +326,7 @@ function InterconsultaCard({
               {ic.doente.nome}
             </Link>
             {ic.doente.cama && (
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500">
                 · Cama {ic.doente.cama.numero} {ic.doente.cama.quarto && `(${ic.doente.cama.quarto})`}
               </span>
             )}
@@ -336,7 +336,7 @@ function InterconsultaCard({
           <p className="text-sm text-slate-600" style={{ marginBottom: '6px' }}>{ic.motivo}</p>
 
           {/* Meta */}
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             {modo === 'recebidas' ? `Pedido por ${ic.requisitante?.nome}` : `Para: ${ic.especialidadeAlvo}`}
             {' · '}
             {new Date(ic.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' })}

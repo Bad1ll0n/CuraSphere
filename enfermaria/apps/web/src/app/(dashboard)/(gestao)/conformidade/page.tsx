@@ -132,7 +132,7 @@ export default function ConformidadePage() {
       {/* KPIs */}
       {isLoading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -169,7 +169,7 @@ export default function ConformidadePage() {
                     <div key={d.dia} className="flex flex-col items-center flex-1 gap-1">
                       <span className="text-xs text-slate-600 font-semibold">{d.total}</span>
                       <div className="w-full bg-blue-500 rounded-t-md" style={{ height: `${(d.total / max) * 56}px`, minHeight: '4px' }} />
-                      <span className="text-xs text-slate-400">{d.dia.slice(5)}</span>
+                      <span className="text-xs text-slate-500">{d.dia.slice(5)}</span>
                     </div>
                   ));
                 })()}
@@ -199,14 +199,14 @@ export default function ConformidadePage() {
                 <p className="text-sm font-semibold text-slate-700">Acessos a Dados de Doentes — últimos 30 dias</p>
               </div>
               {!data || data.acessosDoentes.length === 0 ? (
-                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px' }}>Sem registos</p>
+                <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>Sem registos</p>
               ) : (
                 <div className="divide-y divide-slate-50">
                   {data.acessosDoentes.map(a => (
                     <div key={a.id} className="flex items-center gap-4" style={{ padding: '12px 20px' }}>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-800">{a.utilizador?.nome ?? 'Sistema'}</p>
-                        <p className="text-xs text-slate-400">{ROLE_LABEL[a.utilizador?.role ?? ''] ?? a.utilizador?.role} · {a.acao}</p>
+                        <p className="text-xs text-slate-500">{ROLE_LABEL[a.utilizador?.role ?? ''] ?? a.utilizador?.role} · {a.acao}</p>
                       </div>
                       <div className="text-right shrink-0">
                         <p className="text-xs text-slate-500">{new Date(a.createdAt).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
@@ -226,7 +226,7 @@ export default function ConformidadePage() {
                 <p className="text-sm font-semibold text-red-700">Ações de Alto Risco — últimos 30 dias</p>
               </div>
               {!data || data.acoesAltoRisco.length === 0 ? (
-                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px' }}>Sem registos de alto risco</p>
+                <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>Sem registos de alto risco</p>
               ) : (
                 <div className="divide-y divide-red-50">
                   {data.acoesAltoRisco.map(a => (
@@ -234,7 +234,7 @@ export default function ConformidadePage() {
                       <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 border border-red-200 badge-pad py-0.5 rounded-md">{a.acao}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-800">{a.utilizador?.nome ?? 'Sistema'}</p>
-                        <p className="text-xs text-slate-400">{ROLE_LABEL[a.utilizador?.role ?? ''] ?? a.utilizador?.role}</p>
+                        <p className="text-xs text-slate-500">{ROLE_LABEL[a.utilizador?.role ?? ''] ?? a.utilizador?.role}</p>
                       </div>
                       <div className="text-right shrink-0">
                         <p className="text-xs text-slate-500">{new Date(a.createdAt).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
@@ -252,7 +252,7 @@ export default function ConformidadePage() {
             <div className="flex flex-col gap-3">
               {['RGPD', 'DGS', 'ACSS', 'SNS'].map(cat => (
                 <div key={cat} className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>{cat}</p>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '12px' }}>{cat}</p>
                   <div className="flex flex-col gap-2">
                     {CHECKLIST.filter(c => c.categoria === cat).map(c => {
                       const estado = checkStates[c.id] ?? 'verificar';
@@ -262,7 +262,7 @@ export default function ConformidadePage() {
                           <div className="flex-1 min-w-0">
                             <p className="text-sm text-slate-700">{c.label}</p>
                             {itemData?.atualizadoEm && (
-                              <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                              <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                                 Actualizado {new Date(itemData.atualizadoEm).toLocaleDateString('pt-PT')}
                               </p>
                             )}

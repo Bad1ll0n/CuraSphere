@@ -39,7 +39,7 @@ function ConsultaRow({ c }: { c: Consulta }) {
         <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
           {ESTADO_LABEL[c.estado] ?? c.estado}
         </span>
-        <span className="text-xs text-slate-400 font-mono">{c.codigo}</span>
+        <span className="text-xs text-slate-500 font-mono">{c.codigo}</span>
       </div>
       <div className="text-xs text-slate-500">
         {c.especialidade}{c.medico?.nome ? ` · ${c.medico.nome}` : ''}
@@ -86,12 +86,12 @@ export function ConsultasPanel({ doenteId, utilizador }: Props) {
       </div>
 
       {consultas.length === 0 ? (
-        <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem consultas registadas</p>
+        <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem consultas registadas</p>
       ) : (
         <div className="flex flex-col gap-4">
           {proximas.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Próximas</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Próximas</p>
               <div className="flex flex-col gap-2">
                 {proximas.map(c => <ConsultaRow key={c.id} c={c} />)}
               </div>
@@ -99,7 +99,7 @@ export function ConsultasPanel({ doenteId, utilizador }: Props) {
           )}
           {historico.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Histórico</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Histórico</p>
               <div className="flex flex-col gap-2">
                 {historico.map(c => <ConsultaRow key={c.id} c={c} />)}
               </div>

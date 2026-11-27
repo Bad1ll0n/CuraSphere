@@ -129,7 +129,7 @@ export default function DashboardExecutivo() {
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>
             Visão integrada do hospital em tempo real
             {lastUpdate && (
-              <span className="text-slate-400"> · Atualizado às {lastUpdate.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span className="text-slate-500"> · Atualizado às {lastUpdate.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
             )}
           </p>
         </div>
@@ -146,7 +146,7 @@ export default function DashboardExecutivo() {
             </svg>
             Exportar CSV
           </a>
-          <button onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-400 hover:text-slate-700 transition-colors" title="Atualizar">
+          <button onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-500 hover:text-slate-700 transition-colors" title="Atualizar">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -159,7 +159,7 @@ export default function DashboardExecutivo() {
           {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
         </div>
       ) : !dados ? (
-        <p className="text-sm text-slate-400">Erro ao carregar dados.</p>
+        <p className="text-sm text-slate-500">Erro ao carregar dados.</p>
       ) : (
         <div className="flex flex-col gap-6">
 
@@ -275,7 +275,7 @@ export default function DashboardExecutivo() {
                   <BigStat label="Alta Dada" value={dados.urgenciaHoje.alta} cor="green" />
                 </div>
               ) : (
-                <p className="text-sm text-slate-400">Sem dados de urgência.</p>
+                <p className="text-sm text-slate-500">Sem dados de urgência.</p>
               )}
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function DashboardExecutivo() {
                   <BigStat label="Canceladas" value={dados.cirurgiasMes.canceladas} cor={dados.cirurgiasMes.canceladas > 0 ? 'red' : 'slate'} />
                 </div>
               ) : (
-                <p className="text-sm text-slate-400">Sem dados de cirurgias.</p>
+                <p className="text-sm text-slate-500">Sem dados de cirurgias.</p>
               )}
             </div>
 
@@ -301,13 +301,13 @@ export default function DashboardExecutivo() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
                   <span className="text-sm text-slate-600">Trocas de Turno Pendentes</span>
-                  <span className={`text-sm font-bold ${dados.trocasPendentes > 0 ? 'text-amber-600' : 'text-slate-400'}`}>
+                  <span className={`text-sm font-bold ${dados.trocasPendentes > 0 ? 'text-amber-600' : 'text-slate-500'}`}>
                     {dados.trocasPendentes}
                   </span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
                   <span className="text-sm text-slate-600">Ausências Activas</span>
-                  <span className={`text-sm font-bold ${(dados.ausenciasAtivas ?? 0) > 0 ? 'text-red-600' : 'text-slate-400'}`}>
+                  <span className={`text-sm font-bold ${(dados.ausenciasAtivas ?? 0) > 0 ? 'text-red-600' : 'text-slate-500'}`}>
                     {dados.ausenciasAtivas ?? 0}
                   </span>
                 </div>

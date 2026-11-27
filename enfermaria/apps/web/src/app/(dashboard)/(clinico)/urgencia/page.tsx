@@ -436,8 +436,8 @@ function UrgenciaPageInner() {
                       <div>
                         <p className="font-semibold text-slate-900 text-sm">
                           {ep.doente?.nome ?? ep.nomeTemporario ?? 'Doente desconhecido'}
-                          {ep.idadeAproximada && <span className="text-slate-400 font-normal"> · {ep.idadeAproximada}A</span>}
-                          {ep.sexo && ep.sexo !== 'desconhecido' && <span className="text-slate-400 font-normal"> {ep.sexo === 'masculino' ? '♂' : '♀'}</span>}
+                          {ep.idadeAproximada && <span className="text-slate-500 font-normal"> · {ep.idadeAproximada}A</span>}
+                          {ep.sexo && ep.sexo !== 'desconhecido' && <span className="text-slate-500 font-normal"> {ep.sexo === 'masculino' ? '♂' : '♀'}</span>}
                         </p>
                         <p className="text-slate-500 text-xs">{ep.queixaPrincipal}</p>
                         {ep.condicaoPrevia && <p className="text-amber-700 text-xs font-medium" style={{ marginTop: '2px' }}>{ep.condicaoPrevia}</p>}
@@ -472,7 +472,7 @@ function UrgenciaPageInner() {
                         <p className={`text-lg font-bold ${eta <= 0 ? 'text-red-600 animate-pulse' : 'text-amber-600'}`}>
                           {formatEta(eta)}
                         </p>
-                        <p className="text-xs text-slate-400">ETA</p>
+                        <p className="text-xs text-slate-500">ETA</p>
                       </div>
                       {ep.news2Triagem != null && (
                         <span className={`text-xs font-bold rounded-lg ${ep.news2Triagem >= 7 ? 'bg-red-100 text-red-700' : ep.news2Triagem >= 5 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`} style={{ padding: '4px 8px' }}>
@@ -496,7 +496,7 @@ function UrgenciaPageInner() {
       {/* Lista por cor */}
       {isLoading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <div className="flex items-center gap-3 text-slate-400">
+          <div className="flex items-center gap-3 text-slate-500">
             <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -522,7 +522,7 @@ function UrgenciaPageInner() {
             </svg>
           </div>
           <p className="text-slate-700 font-semibold text-lg">Urgência sem doentes em espera</p>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Não existem episódios activos de urgência.</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Não existem episódios activos de urgência.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -569,7 +569,7 @@ function UrgenciaPageInner() {
                                 {ep.especialidadeActivada.toUpperCase()} ✓
                               </span>
                             )}
-                            <span className="text-xs text-slate-400 ml-auto shrink-0">⏱ {tempoEspera(ep.dataEntrada)}</span>
+                            <span className="text-xs text-slate-500 ml-auto shrink-0">⏱ {tempoEspera(ep.dataEntrada)}</span>
                           </div>
                           <p className="text-slate-600 text-sm" style={{ marginBottom: '8px' }}>{ep.queixaPrincipal}</p>
                           <div className="flex items-center gap-2 flex-wrap">
@@ -579,10 +579,10 @@ function UrgenciaPageInner() {
                             {ep.salaAtendimento && (
                               <span className="text-xs font-medium text-indigo-600 bg-indigo-50 rounded-full badge-pad py-1">📍 {ep.salaAtendimento}</span>
                             )}
-                            {ep.triadoPor && <span className="text-xs text-slate-400">Triado por {ep.triadoPor.nome}</span>}
+                            {ep.triadoPor && <span className="text-xs text-slate-500">Triado por {ep.triadoPor.nome}</span>}
                             {ep.medicoResponsavel && <span className="text-xs text-blue-600 font-medium">👨‍⚕️ {ep.medicoResponsavel.nome}</span>}
                             {ep.corAnterior && (
-                              <span className="text-xs text-slate-400">Re-triado de {ep.corAnterior}</span>
+                              <span className="text-xs text-slate-500">Re-triado de {ep.corAnterior}</span>
                             )}
                           </div>
                         </div>
@@ -632,7 +632,7 @@ function UrgenciaPageInner() {
           <div {...dlgNova.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Entrada — Urgência</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Queixa Principal *</label>
@@ -687,7 +687,7 @@ function UrgenciaPageInner() {
           <div {...dlgReTriagem.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Re-triagem</h2>
-              <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalReTriagem(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nova Triagem *</span>
@@ -733,7 +733,7 @@ function UrgenciaPageInner() {
           <div {...dlgAtribuir.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Atribuir Médico Responsável</h2>
-              <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAtribuir(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
@@ -775,7 +775,7 @@ function UrgenciaPageInner() {
             {/* Header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">🚑 Pré-notificação de Ambulância</h2>
-              <button aria-label="Fechar" onClick={() => setModalAmb(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalAmb(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {/* Step indicators */}
             <div className="flex border-b border-slate-100 shrink-0" style={{ padding: '0 28px', marginTop: '16px' }}>
@@ -785,7 +785,7 @@ function UrgenciaPageInner() {
                 { n: 3, label: 'INEM en route' },
               ].map(({ n, label }) => (
                 <button key={n} onClick={() => setAmbStep(n as 1 | 2 | 3)}
-                  className={`text-sm font-medium pb-3 border-b-2 transition-colors ${ambStep === n ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                  className={`text-sm font-medium pb-3 border-b-2 transition-colors ${ambStep === n ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-500 hover:text-slate-600'}`}
                   style={{ marginRight: '24px' }}>
                   <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold mr-1.5 ${ambStep === n ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{n}</span>
                   {label}
@@ -986,7 +986,7 @@ function UrgenciaPageInner() {
                         { key: 'vitalsFR', label: 'FR', placeholder: '16' },
                       ].map(({ key, label, placeholder }) => (
                         <div key={key}>
-                          <span className="block text-xs font-semibold text-slate-400 text-center" style={{ marginBottom: '4px' }}>{label}</span>
+                          <span className="block text-xs font-semibold text-slate-500 text-center" style={{ marginBottom: '4px' }}>{label}</span>
                           <input aria-label={label} type="number" value={(formAmb as any)[key]}
                             onChange={e => setFormAmb(f => ({ ...f, [key]: e.target.value }))}
                             className="w-full border border-slate-200 rounded-xl text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition"

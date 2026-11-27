@@ -96,14 +96,14 @@ function PROContent() {
           {!templateSel ? (
             <div>
               <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Seleccione um questionário:</p>
-              {templates.length === 0 && <p className="text-slate-400 text-sm">Sem questionários disponíveis.</p>}
+              {templates.length === 0 && <p className="text-slate-500 text-sm">Sem questionários disponíveis.</p>}
               <div className="space-y-3">
                 {templates.map(t => (
                   <button key={t.id} onClick={() => { setTemplateSel(t); setRespostas({}); }}
                     className="w-full text-left bg-white border border-slate-200 rounded-2xl hover:border-blue-300 hover:shadow-sm transition-all"
                     style={{ padding: '16px 20px' }}>
                     <p className="font-semibold text-slate-800">{t.nome}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>{t.campos.length} perguntas</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{t.campos.length} perguntas</p>
                   </button>
                 ))}
               </div>
@@ -111,7 +111,7 @@ function PROContent() {
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
-                <button type="button" onClick={() => setTemplateSel(null)} className="text-slate-400 hover:text-slate-600">←</button>
+                <button type="button" onClick={() => setTemplateSel(null)} className="text-slate-500 hover:text-slate-600">←</button>
                 <h2 className="font-bold text-slate-800">{templateSel.nome}</h2>
               </div>
 
@@ -127,7 +127,7 @@ function PROContent() {
                           onChange={e => setRespostas(r => ({ ...r, [campo.id]: parseInt(e.target.value) }))}
                           className="w-full accent-blue-600"
                         />
-                        <div className="flex justify-between text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                        <div className="flex justify-between text-xs text-slate-500" style={{ marginTop: '4px' }}>
                           <span>{campo.min ?? 0}</span>
                           <span className="font-bold text-blue-600 text-base">{(respostas[campo.id] as number) ?? Math.floor(((campo.max ?? 10) + (campo.min ?? 0)) / 2)}</span>
                           <span>{campo.max ?? 10}</span>
@@ -179,13 +179,13 @@ function PROContent() {
 
       {tab === 'historico' && (
         <div>
-          {historico.length === 0 && <p className="text-slate-400 text-sm">Sem registos anteriores.</p>}
+          {historico.length === 0 && <p className="text-slate-500 text-sm">Sem registos anteriores.</p>}
           <div className="space-y-4">
             {historico.map(r => (
               <div key={r.id} className="bg-white border border-slate-100 rounded-2xl" style={{ padding: '16px 20px' }}>
                 <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>
                   <span className="font-semibold text-slate-800">{r.template.nome}</span>
-                  <span className="text-xs text-slate-400">{new Date(r.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                  <span className="text-xs text-slate-500">{new Date(r.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
                 <div className="space-y-2">
                   {r.template.campos.map(campo => {
@@ -196,7 +196,7 @@ function PROContent() {
                         <span className="text-slate-600">{campo.label}</span>
                         <span className="font-semibold text-slate-800">
                           {campo.tipo === 'bool' ? (valor ? 'Sim' : 'Não') : String(valor)}
-                          {campo.tipo === 'scale' && <span className="text-slate-400 font-normal">/{campo.max ?? 10}</span>}
+                          {campo.tipo === 'scale' && <span className="text-slate-500 font-normal">/{campo.max ?? 10}</span>}
                         </span>
                       </div>
                     );

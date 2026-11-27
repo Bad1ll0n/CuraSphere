@@ -50,7 +50,7 @@ export default function NotificacoesPage() {
 
       {isLoading ? (
         <div className="flex justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -63,7 +63,7 @@ export default function NotificacoesPage() {
             </svg>
           </div>
           <p className="text-slate-700 font-semibold">Sem notificações</p>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>
             {filtro === 'nao_lidas' ? 'Todas as notificações foram lidas.' : 'Não há notificações de momento.'}
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function NotificacoesPage() {
                 <div className={`w-6 h-6 rounded-full shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold ${
                   isEscalacao ? 'bg-red-100 text-red-600' :
                   isWatchdog ? 'bg-violet-100 text-violet-600' :
-                  n.lida ? 'bg-slate-100 text-slate-400' : 'bg-blue-100 text-blue-600'
+                  n.lida ? 'bg-slate-100 text-slate-500' : 'bg-blue-100 text-blue-600'
                 }`}>
                   {isEscalacao ? '⬆' : isWatchdog ? '🧠' : n.lida ? '' : '·'}
                 </div>
@@ -105,7 +105,7 @@ export default function NotificacoesPage() {
                     )}
                   </div>
                   <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>{n.corpo}</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}</p>
                 </div>
                 {!n.lida && (
                   <span className={`shrink-0 text-xs font-semibold rounded-full ${

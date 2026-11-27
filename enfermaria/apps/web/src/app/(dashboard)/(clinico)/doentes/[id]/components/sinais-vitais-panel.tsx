@@ -74,7 +74,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -206,7 +206,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           )}
         </div>
         {sinaisVitais.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>Sem registos de sinais vitais</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>Sem registos de sinais vitais</p>
         ) : (
           <>
             {/* Gráfico */}
@@ -281,7 +281,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                         <p className={`text-xs font-semibold ${scores.qSOFA.risco === 'alto' ? 'text-red-700' : scores.qSOFA.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
                           {scores.qSOFA.risco === 'alto' ? '⚠ Suspeita sépsis' : scores.qSOFA.risco === 'moderado' ? 'Monitorizar' : 'Baixo risco'}
                         </p>
-                        <p className="text-xs text-slate-400">FR · PAS · Consciência</p>
+                        <p className="text-xs text-slate-500">FR · PAS · Consciência</p>
                       </div>
                     </div>
                   )}
@@ -297,7 +297,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                         <p className={`text-xs font-semibold ${scores.curb65.risco === 'alto' ? 'text-red-700' : scores.curb65.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
                           {scores.curb65.risco === 'alto' ? 'Considerar UCI' : scores.curb65.risco === 'moderado' ? 'Internamento' : 'Ambulatório'}
                         </p>
-                        <p className="text-xs text-slate-400">Pneumonia (sem Ureia)</p>
+                        <p className="text-xs text-slate-500">Pneumonia (sem Ureia)</p>
                       </div>
                     </div>
                   )}
@@ -330,7 +330,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                            scores.sofa.gravidade === 'grave' ? '⚠ Grave — UCI' :
                            scores.sofa.gravidade === 'moderado' ? 'Moderado' : 'Leve'}
                         </p>
-                        <p className="text-xs text-slate-400">{scores.sofa.componentesDisponiveis}/6 componentes</p>
+                        <p className="text-xs text-slate-500">{scores.sofa.componentesDisponiveis}/6 componentes</p>
                       </div>
                     </div>
                   )}
@@ -374,7 +374,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                             </span>
                           ) : '—'}
                         </td>
-                        <td className="py-2.5 text-slate-400 text-xs">{sv.registadoPor?.nome}</td>
+                        <td className="py-2.5 text-slate-500 text-xs">{sv.registadoPor?.nome}</td>
                       </tr>
                     );
                   })}
@@ -409,7 +409,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 </span>
               )}
             </div>
-            <svg className={`w-4 h-4 text-slate-400 transition-transform ${baselineAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-4 h-4 text-slate-500 transition-transform ${baselineAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
@@ -510,7 +510,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
               <span className="text-sm font-medium text-slate-700">O₂ Suplementar em uso</span>
-              <span className="text-xs text-slate-400">(+2 pts NEWS2)</span>
+              <span className="text-xs text-slate-500">(+2 pts NEWS2)</span>
             </label>
           </div>
           <div style={{ marginBottom: '14px' }}>

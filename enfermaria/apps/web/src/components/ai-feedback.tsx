@@ -17,7 +17,7 @@ export function AiFeedback({ decisaoId, className = '' }: Props) {
   if (!decisaoId) return null;
   if (estado === 'enviado') {
     return (
-      <p className={`text-xs text-slate-400 italic ${className}`}>Feedback registado. Obrigado.</p>
+      <p className={`text-xs text-slate-500 italic ${className}`}>Feedback registado. Obrigado.</p>
     );
   }
 
@@ -39,7 +39,7 @@ export function AiFeedback({ decisaoId, className = '' }: Props) {
     <div className={`flex flex-col gap-2 ${className}`}>
       {estado === 'idle' && (
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400">Esta sugestão foi útil?</span>
+          <span className="text-xs text-slate-500">Esta sugestão foi útil?</span>
           <button
             onClick={() => enviar(true)}
             disabled={enviando}

@@ -166,7 +166,7 @@ export default function PerfilPage() {
               { label: 'Serviço', valor: utilizador.servico },
             ].map(f => (
               <div key={f.label} className="bg-slate-50 rounded-xl" style={{ padding: '12px 14px' }}>
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">{f.label}</p>
+                <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">{f.label}</p>
                 <p className="text-sm font-semibold text-slate-700 mt-1">{f.valor}</p>
               </div>
             ))}
@@ -184,7 +184,7 @@ export default function PerfilPage() {
           <div className="flex items-start justify-between gap-4" style={{ marginBottom: mensagem ? '20px' : '0' }}>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${mfaAtivo ? 'bg-emerald-50' : 'bg-slate-100'}`}>
-                <svg className={`w-5 h-5 ${mfaAtivo ? 'text-emerald-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 ${mfaAtivo ? 'text-emerald-500' : 'text-slate-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
@@ -259,7 +259,7 @@ export default function PerfilPage() {
                 </div>
                 <button
                   onClick={() => { setQrCode(null); setSecret(''); setCodigoAtivacao(''); }}
-                  className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-xs text-slate-500 hover:text-slate-600 transition-colors"
                   style={{ marginTop: '12px' }}
                 >
                   Cancelar
@@ -297,7 +297,7 @@ export default function PerfilPage() {
                 </div>
                 <button
                   onClick={() => { setConfirmarDesativar(false); setCodigoDesativacao(''); }}
-                  className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-xs text-slate-500 hover:text-slate-600 transition-colors"
                   style={{ marginTop: '12px' }}
                 >
                   Cancelar
@@ -339,7 +339,7 @@ export default function PerfilPage() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{pk.nome}</p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         {pk.deviceType === 'multiDevice' ? 'Sincronizada' : 'Dispositivo único'}{pk.backedUp ? ' · Cópia de segurança' : ''}
                         {pk.ultimoUsoEm ? ` · Último uso: ${new Date(pk.ultimoUsoEm).toLocaleDateString('pt-PT')}` : ''}
                       </p>
@@ -356,7 +356,7 @@ export default function PerfilPage() {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-400" style={{ marginBottom: '16px' }}>Nenhuma passkey registada.</p>
+            <p className="text-sm text-slate-500" style={{ marginBottom: '16px' }}>Nenhuma passkey registada.</p>
           )}
 
           {/* Adicionar nova passkey */}

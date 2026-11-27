@@ -151,9 +151,9 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
         </div>
 
         {loading ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>A carregar...</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>A carregar...</p>
         ) : pedidos.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem pedidos de transfusão</p>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem pedidos de transfusão</p>
         ) : (
           <div className="flex flex-col gap-3">
             {pedidos.map((p) => (
@@ -166,8 +166,8 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
                       {p.urgencia !== 'rotina' && <span className={`text-xs font-semibold badge-pad py-0.5 rounded-full ${URGENCIA_COR[p.urgencia]}`}>{p.urgencia}</span>}
                     </div>
                     <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{p.numeroUnidades} unidade(s){p.grupoABO ? ` · grupo ${p.grupoABO}${p.rhD === 'negativo' ? '-' : p.rhD === 'positivo' ? '+' : ''}` : ''}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{p.indicacao}</p>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {p.prescritoPor?.nome}</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{p.indicacao}</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Prescrito por {p.prescritoPor?.nome}</p>
                     {p.registos?.map((r: any) => (
                       <div key={r.id} className="bg-green-50 rounded-lg" style={{ padding: '8px 10px', marginTop: '6px' }}>
                         <p className="text-xs font-semibold text-green-700">Transfundida — unidade {r.bolsa?.numeroUnidade} ({r.bolsa?.grupoABO}{r.bolsa?.rhD === 'negativo' ? '-' : '+'})</p>
@@ -262,7 +262,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
                     <input type="radio" name="bolsa" checked={bolsaSel === b.id} onChange={() => setBolsaSel(b.id)} className="accent-red-600" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-800">Unidade {b.numeroUnidade} · {b.grupoABO}{b.rhD === 'negativo' ? '-' : '+'}</p>
-                      <p className="text-xs text-slate-400">Validade {new Date(b.dataValidade).toLocaleDateString('pt-PT')}{b.compat?.motivo ? ` · ${b.compat.motivo}` : ''}</p>
+                      <p className="text-xs text-slate-500">Validade {new Date(b.dataValidade).toLocaleDateString('pt-PT')}{b.compat?.motivo ? ` · ${b.compat.motivo}` : ''}</p>
                     </div>
                   </label>
                 ))}

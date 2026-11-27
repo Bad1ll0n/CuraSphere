@@ -151,7 +151,7 @@ export default function PassagemTurnoPage() {
             <div className="bg-white border border-slate-100 rounded-2xl flex items-center justify-between" style={{ padding: '16px 20px', marginBottom: '16px' }}>
               <div>
                 <p className="text-sm font-semibold text-slate-700">Enriquecer com Inteligência Artificial</p>
-                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Gera uma narrativa de turno e destaca os doentes mais críticos para a equipa seguinte.</p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Gera uma narrativa de turno e destaca os doentes mais críticos para a equipa seguinte.</p>
               </div>
               <button
                 onClick={gerarSumarioAI}
@@ -182,7 +182,7 @@ export default function PassagemTurnoPage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h2 className="text-base font-bold text-slate-900">Rascunho gerado — reveja e edite antes de confirmar</h2>
               <button onClick={() => { setRelatorio(null); setAiSumario(null); }}
-                className="text-xs text-slate-400 hover:text-slate-600 border border-slate-200 rounded-lg"
+                className="text-xs text-slate-500 hover:text-slate-600 border border-slate-200 rounded-lg"
                 style={{ padding: '5px 10px' }}>
                 Recomeçar
               </button>

@@ -91,7 +91,7 @@ export default function CatalogoPage() {
 
       {isLoading ? (
         <div className="flex justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
@@ -121,7 +121,7 @@ export default function CatalogoPage() {
                       <span className="text-xs bg-emerald-50 text-emerald-700 badge-pad py-1 rounded-full font-medium">{item.classeTerap}</span>
                     </td>
                     <td className="text-slate-500" style={{ padding: '14px 20px' }}>{item.concentracao || '—'}</td>
-                    <td className="text-slate-400 font-mono text-xs" style={{ padding: '14px 20px' }}>{item.codigoATC || '—'}</td>
+                    <td className="text-slate-500 font-mono text-xs" style={{ padding: '14px 20px' }}>{item.codigoATC || '—'}</td>
                     <td style={{ padding: '14px 20px' }}>
                       {canEdit && (
                         <div className="flex gap-2">
@@ -148,7 +148,7 @@ export default function CatalogoPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">{modal === 'criar' ? 'Adicionar Medicamento' : 'Editar Medicamento'}</h2>
-              <button aria-label="Fechar" onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => { setModal(null); setEditItem(null); }} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div className="grid gap-4">
               {[

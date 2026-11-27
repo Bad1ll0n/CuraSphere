@@ -148,7 +148,7 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
         <h3 className="text-base font-semibold text-slate-900">Maternidade / Obstetrícia</h3>
-        <div className="text-sm text-slate-400" style={{ marginTop: '8px' }}>A carregar…</div>
+        <div className="text-sm text-slate-500" style={{ marginTop: '8px' }}>A carregar…</div>
       </div>
     );
   }
@@ -160,7 +160,7 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-semibold text-slate-900">Maternidade / Obstetrícia</h3>
-            <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Sem gravidez ativa.</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Sem gravidez ativa.</p>
           </div>
           {editavel && (
             <button onClick={() => setMostrarCriar((v) => !v)}
@@ -221,7 +221,7 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
           Partograma — dilatação (cm) e FC fetal (bpm). Zona segura FC fetal: 110–160.
         </div>
         {serie.length === 0 ? (
-          <div className="text-sm text-slate-400">Sem registos. Adicione o primeiro ponto abaixo.</div>
+          <div className="text-sm text-slate-500">Sem registos. Adicione o primeiro ponto abaixo.</div>
         ) : (
           <div style={{ height: '200px' }}>
             <ResponsiveContainer width="100%" height="100%">
@@ -282,7 +282,7 @@ export function MaternidadePanel({ doenteId, utilizador }: Props) {
         </div>
       ) : null}
 
-      <p className="text-xs text-slate-400" style={{ marginTop: '12px' }}>
+      <p className="text-xs text-slate-500" style={{ marginTop: '12px' }}>
         Apoio à decisão — a FC fetal fora de 110–160 bpm gera alerta clínico automático.
       </p>
     </div>

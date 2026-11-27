@@ -63,7 +63,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-slate-700">Verificação de Protocolos</span>
-            <span className="text-xs text-slate-400 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full px-2 py-0.5 font-medium">IA</span>
+            <span className="text-xs text-slate-500 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full px-2 py-0.5 font-medium">IA</span>
             {nViolados > 0 && (
               <span className="text-xs font-bold bg-red-100 text-red-700 border border-red-200 rounded-full px-2 py-0.5">
                 {nViolados} violado{nViolados !== 1 ? 's' : ''}
@@ -88,7 +88,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
           ) : (
-            <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-4 h-4 text-slate-500 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           )}
@@ -166,7 +166,7 @@ export function ProtocoloPanel({ doenteId, utilizador }: { doenteId: string; uti
       {aberto && !resultado && !loading && (
         <div style={{ padding: '0 24px 24px' }}>
           <div className="text-center py-6">
-            <p className="text-sm text-slate-400" style={{ marginBottom: '12px' }}>
+            <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>
               Verificar aderência aos protocolos clínicos activos para este doente.
             </p>
             <button

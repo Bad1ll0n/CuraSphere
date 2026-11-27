@@ -53,7 +53,7 @@ export function EmptyState({ icon = 'generic', title, description, action }: Emp
         {title}
       </p>
       {description && (
-        <p className="text-slate-400 text-xs leading-relaxed" style={{ maxWidth: '280px', marginBottom: action ? '20px' : '0' }}>
+        <p className="text-slate-500 text-xs leading-relaxed" style={{ maxWidth: '280px', marginBottom: action ? '20px' : '0' }}>
           {description}
         </p>
       )}

@@ -157,7 +157,7 @@ export default function DietasPage() {
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="font-semibold text-slate-800 text-sm">{d.doente?.nome}</p>
-                        <p className="text-xs text-slate-400 mt-0.5">
+                        <p className="text-xs text-slate-500 mt-0.5">
                           {d.doente?.internamentoAtual?.cama
                             ? `Quarto ${d.doente.internamentoAtual.cama.quarto} · Cama ${d.doente.internamentoAtual.cama.numero}`
                             : 'Localização desconhecida'}
@@ -182,7 +182,7 @@ export default function DietasPage() {
                       <p className="text-xs text-slate-500 italic">"{d.observacoes}"</p>
                     )}
 
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p className="text-xs text-slate-500 mt-2">
                       Prescrita por {d.criadaPor?.nome ?? '—'} · {new Date(d.criadaEm).toLocaleDateString('pt-PT')}
                     </p>
                   </div>

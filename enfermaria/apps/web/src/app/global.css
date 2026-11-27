@@ -4,11 +4,27 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* UX-05: os tokens semânticos (abaixo) passam a ser cores do Tailwind — `bg-surface`,
+   `bg-page`, `text-main`, `text-muted`, `text-soft`, `border-borda`… — e respondem ao modo
+   escuro e ao alto contraste sem overrides `!important`. Preferir estas classes a hex fixo
+   e às classes slate/gray (que dependem do mapa de overrides mais abaixo). */
+@theme inline {
+  --color-page: var(--bg-page);
+  --color-surface: var(--bg-card);
+  --color-surface-2: var(--bg-surface-2);
+  --color-campo: var(--bg-input);
+  --color-main: var(--text-main);
+  --color-muted: var(--text-muted);
+  --color-soft: var(--text-soft);
+  --color-dim: var(--text-dim);
+  --color-borda: var(--border);
 }
+
+/* UX-04: aqui havia `* { box-sizing; margin: 0; padding: 0 }` FORA de camada. No Tailwind 4
+   os utilitários vivem em `@layer utilities`, e uma regra sem camada ganha sempre: 32 de 38
+   elementos com `p-*`/`px-*`/`py-*` ficavam com padding 0 (inputs do login colados, paleta de
+   comandos sem margens…) — e a "convenção" de usar `style` inline nasceu daqui. O preflight
+   do Tailwind já faz este reset, dentro de `@layer base`, onde os utilitários o sobrepõem. */
 
 /* ── Theme CSS variables (tokens semânticos) ───────────────
    Fonte de verdade das cores da app. Preferir estes tokens a hex fixo em
@@ -43,9 +59,9 @@ html.dark {
   --bg-tab-active: #334155;
   --text-main:     #f8fafc;
   --text-hi:       #f8fafc;
-  --text-muted:    #94a3b8;
-  --text-soft:     #94a3b8;
-  --text-dim:      #64748b;
+  --text-muted:    #cbd5e1;
+  --text-soft:     #a8b5c7;   /* ≥ 7:1 sobre --bg-card */
+  --text-dim:      #94a3b8;   /* ≥ 5,7:1 — antes #64748b (3:1, abaixo do AA) */
   --border:        #334155;
   --accent:        #818cf8;
   --success:       #4ade80;
@@ -132,10 +148,12 @@ html.dark .text-slate-800 { color: #e2e8f0 !important; }
 html.dark .text-gray-800  { color: #e2e8f0 !important; }
 html.dark .text-slate-700 { color: #cbd5e1 !important; }
 html.dark .text-gray-700  { color: #cbd5e1 !important; }
-html.dark .text-slate-600 { color: #94a3b8 !important; }
-html.dark .text-gray-600  { color: #94a3b8 !important; }
-html.dark .text-slate-500 { color: #64748b !important; }
-html.dark .text-gray-500  { color: #64748b !important; }
+/* UX-05: a hierarquia estava invertida (slate-500 ficava MAIS escuro que slate-400, a 3:1 —
+   abaixo do AA). Agora quanto mais forte a classe, mais claro o texto, e todas ≥ 5,7:1. */
+html.dark .text-slate-600 { color: #b6c2d1 !important; }
+html.dark .text-gray-600  { color: #b6c2d1 !important; }
+html.dark .text-slate-500 { color: #a3b0c2 !important; }
+html.dark .text-gray-500  { color: #a3b0c2 !important; }
 html.dark .text-slate-400 { color: #94a3b8 !important; }
 html.dark .text-gray-400  { color: #94a3b8 !important; }
 
@@ -155,7 +173,7 @@ html.dark input, html.dark select, html.dark textarea {
   color: #e2e8f0 !important;
   border-color: #334155 !important;
 }
-html.dark input::placeholder, html.dark textarea::placeholder { color: #475569 !important; }
+html.dark input::placeholder, html.dark textarea::placeholder { color: #8291a7 !important; }
 
 /* Shadows */
 html.dark .shadow-sm  { box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important; }

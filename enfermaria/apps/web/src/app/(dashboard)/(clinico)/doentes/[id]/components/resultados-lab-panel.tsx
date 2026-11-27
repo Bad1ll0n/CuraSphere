@@ -123,7 +123,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-slate-700">Resultados Analíticos</span>
             {resumo && resumo.totalResultados > 0 && (
-              <span className="text-xs text-slate-400 font-medium bg-slate-50 rounded-full px-2 py-0.5">
+              <span className="text-xs text-slate-500 font-medium bg-slate-50 rounded-full px-2 py-0.5">
                 {resumo.totalResultados}
               </span>
             )}
@@ -134,7 +134,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
             )}
           </div>
         </div>
-        <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-4 h-4 text-slate-500 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -180,7 +180,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
           )}
 
           {loading ? (
-            <div className="flex items-center justify-center gap-2 text-slate-400 text-sm py-8">
+            <div className="flex items-center justify-center gap-2 text-slate-500 text-sm py-8">
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -188,17 +188,17 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
               A carregar...
             </div>
           ) : resultados.length === 0 ? (
-            <p className="text-sm text-slate-400 text-center py-6">Sem resultados analíticos registados.</p>
+            <p className="text-sm text-slate-500 text-center py-6">Sem resultados analíticos registados.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-100">
-                    <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide py-2 pr-4">Parâmetro</th>
-                    <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wide py-2 pr-4">Valor</th>
-                    <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide py-2 pr-4">Referência</th>
-                    <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide py-2 pr-4">Painel</th>
-                    <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide py-2">Data</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide py-2 pr-4">Parâmetro</th>
+                    <th className="text-right text-xs font-semibold text-slate-500 uppercase tracking-wide py-2 pr-4">Valor</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide py-2 pr-4">Referência</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide py-2 pr-4">Painel</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide py-2">Data</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -209,9 +209,9 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
                         {r.parametro}
                       </td>
                       <td className={`py-2.5 pr-4 text-right font-mono font-semibold ${r.critico ? 'text-red-600' : r.alterado ? 'text-amber-600' : 'text-slate-700'}`}>
-                        {r.valor} <span className="text-slate-400 font-normal text-xs">{r.unidade}</span>
+                        {r.valor} <span className="text-slate-500 font-normal text-xs">{r.unidade}</span>
                       </td>
-                      <td className="py-2.5 pr-4 text-xs text-slate-400 font-mono">
+                      <td className="py-2.5 pr-4 text-xs text-slate-500 font-mono">
                         {r.refMin != null && r.refMax != null ? `${r.refMin}–${r.refMax}` : '—'}
                       </td>
                       <td className="py-2.5 pr-4">
@@ -221,7 +221,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
                           </span>
                         ) : '—'}
                       </td>
-                      <td className="py-2.5 text-xs text-slate-400">
+                      <td className="py-2.5 text-xs text-slate-500">
                         {new Date(r.registadoEm).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
                       </td>
                     </tr>
@@ -239,7 +239,7 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
           <div {...dlgNovoResultado.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado Analítico</h2>
-              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovo(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>

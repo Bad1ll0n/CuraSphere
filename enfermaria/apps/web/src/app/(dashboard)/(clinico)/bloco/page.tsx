@@ -314,7 +314,7 @@ export default function BlocoPage() {
                 </svg>
               </button>
               {loadingCal && (
-                <svg className="animate-spin w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
@@ -333,7 +333,7 @@ export default function BlocoPage() {
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="grid grid-cols-7 border-b border-slate-100">
                 {diasSemana.map(d => (
-                  <div key={d} className="text-center text-xs text-slate-400 font-semibold uppercase tracking-wide" style={{ padding: '12px 0' }}>{d}</div>
+                  <div key={d} className="text-center text-xs text-slate-500 font-semibold uppercase tracking-wide" style={{ padding: '12px 0' }}>{d}</div>
                 ))}
               </div>
               <div className="grid grid-cols-7">
@@ -382,7 +382,7 @@ export default function BlocoPage() {
                               );
                             })}
                             {total > 3 && (
-                              <span className="text-[9px] text-slate-400 font-medium" style={{ paddingLeft: '4px' }}>+{total - 3} mais</span>
+                              <span className="text-[9px] text-slate-500 font-medium" style={{ paddingLeft: '4px' }}>+{total - 3} mais</span>
                             )}
                           </div>
                         </>
@@ -401,7 +401,7 @@ export default function BlocoPage() {
                   <span className="text-xs text-slate-500 capitalize">{estado.replace('_', ' ')}</span>
                 </div>
               ))}
-              <span className="text-xs text-slate-400 ml-auto">Clique num dia para ver a agenda desse dia</span>
+              <span className="text-xs text-slate-500 ml-auto">Clique num dia para ver a agenda desse dia</span>
             </div>
           </div>
         );
@@ -411,7 +411,7 @@ export default function BlocoPage() {
       {vistaAtiva === 'salas' && (
         loadingSalas && statusSalas.length === 0 ? (
           <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-            <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -419,7 +419,7 @@ export default function BlocoPage() {
         ) : statusSalas.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '80px 40px' }}>
             <p className="text-slate-700 font-semibold text-lg">Sem salas registadas</p>
-            <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Nenhuma cirurgia foi agendada ainda. Agende a primeira cirurgia para ver as salas.</p>
+            <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Nenhuma cirurgia foi agendada ainda. Agende a primeira cirurgia para ver as salas.</p>
           </div>
         ) : (
           <div>
@@ -450,7 +450,7 @@ export default function BlocoPage() {
                     </div>
 
                     {sala.status === 'livre' && (
-                      <p className="text-sm text-slate-400">Sem cirurgias agendadas para hoje.</p>
+                      <p className="text-sm text-slate-500">Sem cirurgias agendadas para hoje.</p>
                     )}
 
                     {sala.status === 'em_uso' && c && (
@@ -458,7 +458,7 @@ export default function BlocoPage() {
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Em curso</p>
                         <p className="font-semibold text-slate-900 text-sm">{c.designacao}</p>
                         <p className="text-slate-600 text-sm" style={{ marginTop: '2px' }}>{c.doente?.nome}</p>
-                        <p className="text-slate-400 text-xs" style={{ marginTop: '4px' }}>
+                        <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>
                           Início: {horaInicio} · {c.cirurgiao?.nome}
                         </p>
                         <div className="flex items-center gap-2" style={{ marginTop: '10px' }}>
@@ -476,7 +476,7 @@ export default function BlocoPage() {
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Próxima cirurgia</p>
                         <p className="font-semibold text-slate-900 text-sm">{p.designacao}</p>
                         <p className="text-slate-600 text-sm" style={{ marginTop: '2px' }}>{p.doente?.nome}</p>
-                        <p className="text-slate-400 text-xs" style={{ marginTop: '4px' }}>
+                        <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>
                           {horaProx} · {p.duracaoPrevista}min · {p.cirurgiao?.nome}
                         </p>
                       </div>
@@ -492,7 +492,7 @@ export default function BlocoPage() {
       {/* Agenda */}
       {vistaAtiva === 'agenda' && loading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -500,7 +500,7 @@ export default function BlocoPage() {
       ) : vistaAtiva === 'agenda' && cirurgias.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '80px 40px' }}>
           <p className="text-slate-700 font-semibold text-lg">Sem cirurgias para este dia</p>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Nenhuma cirurgia programada para {new Date(dataFiltro + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}.</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Nenhuma cirurgia programada para {new Date(dataFiltro + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}.</p>
         </div>
       ) : vistaAtiva === 'agenda' ? (
         <div className="space-y-6">
@@ -521,15 +521,15 @@ export default function BlocoPage() {
                         <div className="flex items-start gap-4 flex-1 min-w-0">
                           <div className="text-center shrink-0" style={{ minWidth: '48px' }}>
                             <p className="text-lg font-bold text-slate-900">{hora}</p>
-                            <p className="text-xs text-slate-400">{c.duracaoPrevista}min</p>
+                            <p className="text-xs text-slate-500">{c.duracaoPrevista}min</p>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-slate-900 text-sm">{c.designacao}</p>
                             <p className="text-slate-500 text-sm" style={{ marginTop: '2px' }}>{c.doente?.nome}</p>
                             <div className="flex items-center gap-2 flex-wrap" style={{ marginTop: '8px' }}>
                               <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
-                              <span className="text-xs text-slate-400">Cirurgião: {c.cirurgiao?.nome}</span>
-                              {c.anestesista && <span className="text-xs text-slate-400">Anestesista: {c.anestesista.nome}</span>}
+                              <span className="text-xs text-slate-500">Cirurgião: {c.cirurgiao?.nome}</span>
+                              {c.anestesista && <span className="text-xs text-slate-500">Anestesista: {c.anestesista.nome}</span>}
                               {cl && (
                                 <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${fasesDone === 3 ? 'bg-green-50 text-green-700' : fasesDone > 0 ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
                                   WHO {fasesDone}/3
@@ -584,7 +584,7 @@ export default function BlocoPage() {
           <div {...dlgAgendar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Agendar Cirurgia</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'Designação *', key: 'designacao', type: 'text', placeholder: 'Ex: Colecistectomia laparoscópica' },
@@ -638,7 +638,7 @@ export default function BlocoPage() {
           <div {...dlgDetalhe.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Concluir Cirurgia</h2>
-              <button aria-label="Fechar" onClick={() => setDetalhe(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{detalhe.designacao} — {detalhe.doente?.nome}</p>
             <div style={{ marginBottom: '24px' }}>
@@ -670,7 +670,7 @@ export default function BlocoPage() {
                 <h2 className="text-lg font-bold text-slate-900">WHO Surgical Safety Checklist</h2>
                 <p className="text-sm text-slate-500">{checklistCirurgia.designacao} — {checklistCirurgia.doente?.nome}</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setChecklistCirurgia(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistCirurgia(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ marginTop: '24px' }}>
@@ -686,7 +686,7 @@ export default function BlocoPage() {
                         <p className={`font-semibold text-sm ${corText}`}>{cfg.label}</p>
                         <p className="text-xs text-slate-500">{cfg.sublabel}</p>
                         {feito && (
-                          <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                          <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
                             ✓ {new Date(feito).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                             {por ? ` por ${por.nome}` : ''}
                           </p>
@@ -701,7 +701,7 @@ export default function BlocoPage() {
                           Preencher
                         </button>
                       ) : (
-                        <span className="text-xs text-slate-400">Pendente</span>
+                        <span className="text-xs text-slate-500">Pendente</span>
                       )}
                     </div>
                   </div>
@@ -721,7 +721,7 @@ export default function BlocoPage() {
                 <h2 className="text-lg font-bold text-slate-900">WHO — {WHO_FASES[checklistFase].label}</h2>
                 <p className="text-sm text-slate-500">{WHO_FASES[checklistFase].sublabel}</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setChecklistFase(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
+              <button aria-label="Fechar" onClick={() => setChecklistFase(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold" style={{ marginLeft: '16px' }}>✕</button>
             </div>
 
             <div className="flex flex-col gap-3" style={{ margin: '20px 0 24px' }}>

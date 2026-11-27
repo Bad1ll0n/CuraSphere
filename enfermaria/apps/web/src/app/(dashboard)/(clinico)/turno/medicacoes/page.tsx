@@ -191,7 +191,7 @@ export default function TimelineMedicacoesPage() {
       </div>
 
       {loading && !timeline && (
-        <div className="flex items-center justify-center gap-2 text-slate-400" style={{ paddingTop: '80px' }}>
+        <div className="flex items-center justify-center gap-2 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -228,7 +228,7 @@ export default function TimelineMedicacoesPage() {
                       {Array.from({ length: Math.min(meds.length, 5) }).map((_, i) => (
                         <div key={i} className="w-1 h-2 rounded-sm bg-violet-400" />
                       ))}
-                      {meds.length > 5 && <span className="text-xs text-slate-400">+{meds.length - 5}</span>}
+                      {meds.length > 5 && <span className="text-xs text-slate-500">+{meds.length - 5}</span>}
                     </div>
                   )}
                 </div>
@@ -240,8 +240,9 @@ export default function TimelineMedicacoesPage() {
           {timeline.doentes.map(d => (
             <div key={d.id} className="grid border-b border-slate-50 hover:bg-slate-50/50 transition-colors" style={{ gridTemplateColumns: `160px repeat(${horas.length}, 1fr)` }}>
               <div className="border-r border-slate-100" style={{ padding: '10px 16px' }}>
-                <div className="text-xs font-semibold text-slate-800 truncate" title={d.nome}>{d.nome}</div>
-                <div className="text-xs text-slate-400">
+                {/* UX-06: identificação do doente legível à cabeceira (≥ 14 px, contraste AA). */}
+                <div className="text-sm font-semibold text-slate-800 truncate" title={d.nome}>{d.nome}</div>
+                <div className="text-sm text-slate-600">
                   Cama {d.cama ?? '—'}{d.numeroProcesso ? ` · ${d.numeroProcesso}` : ''}
                 </div>
                 {(d.alergias?.length ?? 0) > 0 && (
@@ -278,7 +279,7 @@ export default function TimelineMedicacoesPage() {
           ))}
 
           {timeline.doentes.length === 0 && (
-            <div className="text-center text-slate-400 text-sm" style={{ padding: '48px' }}>
+            <div className="text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
               Sem doentes activos neste serviço
             </div>
           )}
@@ -297,7 +298,7 @@ export default function TimelineMedicacoesPage() {
           <div className="w-3 h-3 rounded ring-2 ring-red-500" />
           <span className="text-xs text-slate-500">⚠️ Alto risco</span>
         </div>
-        <span className="text-xs text-slate-400 ml-auto">Click no bloco → confirmar administração</span>
+        <span className="text-xs text-slate-500 ml-auto">Click no bloco → confirmar administração</span>
       </div>
 
       {/* UX-01: o mesmo diálogo de administração do MAR e da ficha. */}

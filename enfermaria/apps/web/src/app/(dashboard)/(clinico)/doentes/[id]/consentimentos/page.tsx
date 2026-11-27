@@ -104,7 +104,7 @@ export default function ConsentimentosPage() {
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => router.back()}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-slate-500 hover:text-slate-600 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -154,7 +154,7 @@ export default function ConsentimentosPage() {
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-400 space-y-0.5">
+                  <div className="text-xs text-slate-500 space-y-0.5">
                     <p>Criado por {c.criadoPor?.nome ?? '—'} em {new Date(c.criadoEm).toLocaleString('pt-PT')}</p>
                     {c.assinadoDoenteEm && (
                       <p className="text-green-600">

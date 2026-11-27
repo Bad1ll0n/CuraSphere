@@ -44,7 +44,7 @@ export function ModalAlterarPassword({ onClose }: Props) {
         <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
           <h2 id="modal-pwd-titulo" className="text-lg font-bold text-slate-900">Alterar Password</h2>
           <button onClick={fechar} aria-label="Fechar"
-            className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
         </div>
         {sucesso ? (
           <>

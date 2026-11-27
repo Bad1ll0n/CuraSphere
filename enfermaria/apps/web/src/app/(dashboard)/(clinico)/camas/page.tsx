@@ -160,7 +160,7 @@ export default function CamasPagina() {
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-3 text-slate-400" style={{ paddingTop: '60px', justifyContent: 'center' }}>
+        <div className="flex items-center gap-3 text-slate-500" style={{ paddingTop: '60px', justifyContent: 'center' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -177,7 +177,7 @@ export default function CamasPagina() {
         </div>
       ) : camas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
-          <p className="text-slate-400 text-sm">Sem camas registadas</p>
+          <p className="text-slate-500 text-sm">Sem camas registadas</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
@@ -186,7 +186,7 @@ export default function CamasPagina() {
               <div className="flex items-center gap-3" style={{ marginBottom: '16px' }}>
                 <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Quarto {quarto}</h2>
                 <div className="flex-1 h-px bg-slate-200" />
-                <span className="text-xs text-slate-400">{camas.filter((c) => c.quarto === quarto).length} camas</span>
+                <span className="text-xs text-slate-500">{camas.filter((c) => c.quarto === quarto).length} camas</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {camas.filter((c) => c.quarto === quarto).map((cama) => (
@@ -207,7 +207,7 @@ export default function CamasPagina() {
                         <p className={`text-xs font-medium ${estadoDoenteCor[cama.doente.estado]}`} style={{ marginTop: '2px' }}>
                           {estadoDoenteLabel[cama.doente.estado]}
                         </p>
-                        <p className="text-xs text-slate-400 truncate" style={{ marginTop: '2px' }}>{cama.doente.diagnosticoPrincipal}</p>
+                        <p className="text-xs text-slate-500 truncate" style={{ marginTop: '2px' }}>{cama.doente.diagnosticoPrincipal}</p>
                         <button
                           onClick={() => setQrCama(cama)}
                           title="Gerar QR do doente"
@@ -221,7 +221,7 @@ export default function CamasPagina() {
                         </button>
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>Sem doente</p>
+                      <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>Sem doente</p>
                     )}
 
                     {podeGerir && cama.estado !== 'ocupada' && (
@@ -299,10 +299,10 @@ export default function CamasPagina() {
           <div {...dlgQr.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', textAlign: 'center', maxWidth: '320px', width: '100%', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">QR — Doente</h2>
-              <button aria-label="Fechar" onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setQrCama(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{qrCama.doente.nome}</p>
-            <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>
+            <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>
             {/* QR gerado com API pública */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -312,7 +312,7 @@ export default function CamasPagina() {
               height={200}
               style={{ margin: '0 auto 16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
             />
-            <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Aponta a câmara da app mobile para aceder à ficha do doente</p>
+            <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Aponta a câmara da app mobile para aceder à ficha do doente</p>
             <button
               onClick={() => window.print()}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"

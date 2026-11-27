@@ -64,7 +64,7 @@ function KpiCard({ titulo, valor, sub, cor, icone }: { titulo: string; valor: st
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${cor}`}>{icone}</div>
       </div>
       <p className="text-3xl font-bold text-slate-900" style={{ marginBottom: '4px' }}>{valor}</p>
-      {sub && <p className="text-xs text-slate-400">{sub}</p>}
+      {sub && <p className="text-xs text-slate-500">{sub}</p>}
     </div>
   );
 }
@@ -103,7 +103,7 @@ export default function DashboardQualidade() {
   if (loading) {
     return (
       <div style={{ padding: '40px 48px' }}>
-        <div className="flex items-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>
+        <div className="flex items-center gap-3 text-slate-500" style={{ paddingTop: '60px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -180,9 +180,9 @@ export default function DashboardQualidade() {
         {/* IACS por Motivo */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
           <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>IACS — Por Agente</h2>
-          <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Doentes em isolamento activo</p>
+          <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Doentes em isolamento activo</p>
           {dados.iacs.porMotivo.length === 0 ? (
-            <p className="text-sm text-slate-400 text-center" style={{ paddingTop: '20px' }}>Sem isolamentos activos</p>
+            <p className="text-sm text-slate-500 text-center" style={{ paddingTop: '20px' }}>Sem isolamentos activos</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {dados.iacs.porMotivo.map(({ motivo, total }) => (
@@ -203,11 +203,11 @@ export default function DashboardQualidade() {
         {/* Tendência IACS 7 dias */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
           <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>Tendência IACS</h2>
-          <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Isolamentos activos por dia (7 dias)</p>
+          <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Isolamentos activos por dia (7 dias)</p>
           <div className="flex items-end gap-2" style={{ height: '80px' }}>
             {dados.iacs.tendencia.map(({ data, total }) => (
               <div key={data} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-xs text-slate-400 font-medium">{total}</span>
+                <span className="text-xs text-slate-500 font-medium">{total}</span>
                 <div className="w-full rounded-t-sm bg-red-200 transition-all" style={{ height: `${Math.max(4, (total / maxTendencia) * 64)}px` }} />
                 <span className="text-xs text-slate-300">{new Date(data).getDate()}</span>
               </div>
@@ -218,7 +218,7 @@ export default function DashboardQualidade() {
         {/* Ocupação + Estado clínico */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
           <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>Ocupação & Estado</h2>
-          <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Capacidade e doentes críticos</p>
+          <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Capacidade e doentes críticos</p>
 
           {/* Barra de ocupação */}
           <div style={{ marginBottom: '20px' }}>
@@ -232,7 +232,7 @@ export default function DashboardQualidade() {
                 style={{ width: `${dados.doentes.ocupacao.taxa}%` }}
               />
             </div>
-            <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>{dados.doentes.ocupacao.ocupadas} de {dados.doentes.ocupacao.total} camas</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>{dados.doentes.ocupacao.ocupadas} de {dados.doentes.ocupacao.total} camas</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -269,14 +269,14 @@ export default function DashboardQualidade() {
           <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
             <div>
               <h2 className="text-base font-semibold text-slate-800">Alertas Clínicos Não Lidos</h2>
-              <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Ordenados por mais recentes</p>
+              <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Ordenados por mais recentes</p>
             </div>
             {dados.alertas.naoLidos > 0 && (
               <span className="text-xs font-bold text-white bg-red-500 rounded-full badge-pad py-0.5">{dados.alertas.naoLidos}</span>
             )}
           </div>
           {dados.alertas.recentes.length === 0 ? (
-            <div className="text-center text-slate-400 text-sm" style={{ padding: '24px 0' }}>
+            <div className="text-center text-slate-500 text-sm" style={{ padding: '24px 0' }}>
               Sem alertas activos
             </div>
           ) : (
@@ -289,7 +289,7 @@ export default function DashboardQualidade() {
                     <div className="flex items-center gap-2" style={{ marginBottom: '2px' }}>
                       <span className="text-xs font-semibold text-slate-600 capitalize">{alerta.tipo}</span>
                       <span className="text-xs text-slate-300">·</span>
-                      <span className="text-xs text-slate-400 truncate">{alerta.doente.nome}</span>
+                      <span className="text-xs text-slate-500 truncate">{alerta.doente.nome}</span>
                     </div>
                     <p className="text-xs text-slate-500 truncate">{alerta.mensagem}</p>
                   </div>
@@ -308,9 +308,9 @@ export default function DashboardQualidade() {
           {/* Avaliações por tipo */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
             <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>Avaliações de Risco</h2>
-            <p className="text-xs text-slate-400" style={{ marginBottom: '16px' }}>Últimos 7 dias · {dados.riscos.altoRisco7Dias} de alto/crítico</p>
+            <p className="text-xs text-slate-500" style={{ marginBottom: '16px' }}>Últimos 7 dias · {dados.riscos.altoRisco7Dias} de alto/crítico</p>
             {dados.riscos.porTipo.length === 0 ? (
-              <p className="text-sm text-slate-400">Sem avaliações recentes</p>
+              <p className="text-sm text-slate-500">Sem avaliações recentes</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {dados.riscos.porTipo.map(({ tipo, total }) => (
@@ -331,7 +331,7 @@ export default function DashboardQualidade() {
           {/* Taxa de completitude da alta */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
             <h2 className="text-base font-semibold text-slate-800" style={{ marginBottom: '4px' }}>Completitude de Alta</h2>
-            <p className="text-xs text-slate-400" style={{ marginBottom: '16px' }}>Sumários de alta registados nos últimos 30 dias</p>
+            <p className="text-xs text-slate-500" style={{ marginBottom: '16px' }}>Sumários de alta registados nos últimos 30 dias</p>
             <div className="flex items-center gap-4">
               <div className="relative w-16 h-16 shrink-0">
                 <svg viewBox="0 0 36 36" className="w-16 h-16 -rotate-90">
@@ -349,8 +349,8 @@ export default function DashboardQualidade() {
                 </div>
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-800">{dados.alta.comSumario}<span className="text-base font-normal text-slate-400"> / {dados.alta.altas30Dias}</span></p>
-                <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>altas com sumário completo</p>
+                <p className="text-2xl font-bold text-slate-800">{dados.alta.comSumario}<span className="text-base font-normal text-slate-500"> / {dados.alta.altas30Dias}</span></p>
+                <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>altas com sumário completo</p>
                 {dados.alta.taxaComplitude < 80 && (
                   <p className="text-xs text-rose-500 font-medium" style={{ marginTop: '6px' }}>Abaixo do objectivo (80%)</p>
                 )}
@@ -372,7 +372,7 @@ export default function DashboardQualidade() {
                 </div>
                 <div>
                   <h2 className="text-base font-semibold text-slate-800">Eventos Adversos</h2>
-                  <p className="text-xs text-slate-400">Últimos 30 dias</p>
+                  <p className="text-xs text-slate-500">Últimos 30 dias</p>
                 </div>
               </div>
               <a href="/eventos-adversos" className="text-xs font-medium text-indigo-600 hover:text-indigo-800">Ver todos →</a>
@@ -383,7 +383,7 @@ export default function DashboardQualidade() {
                 { label: 'Registados (30d)', value: eventosIndicadores.total30d, cor: 'text-slate-800' },
                 { label: 'Em Aberto', value: eventosIndicadores.abertos, cor: eventosIndicadores.abertos > 0 ? 'text-amber-600' : 'text-slate-800' },
                 { label: 'Este Mês', value: eventosIndicadores.totalMes, cor: 'text-slate-800' },
-                { label: 'Mês Anterior', value: eventosIndicadores.totalMesPassado, cor: 'text-slate-400' },
+                { label: 'Mês Anterior', value: eventosIndicadores.totalMesPassado, cor: 'text-slate-500' },
               ].map(s => (
                 <div key={s.label} className="bg-slate-50 rounded-xl" style={{ padding: '14px 16px' }}>
                   <p className={`text-2xl font-bold ${s.cor}`}>{s.value}</p>
@@ -409,7 +409,7 @@ export default function DashboardQualidade() {
                       </div>
                     );
                   })}
-                  {eventosIndicadores.porTipo.length === 0 && <p className="text-xs text-slate-400">Sem dados</p>}
+                  {eventosIndicadores.porTipo.length === 0 && <p className="text-xs text-slate-500">Sem dados</p>}
                 </div>
               </div>
               <div>
@@ -431,7 +431,7 @@ export default function DashboardQualidade() {
                       </div>
                     );
                   })}
-                  {eventosIndicadores.porGravidade.length === 0 && <p className="text-xs text-slate-400">Sem dados</p>}
+                  {eventosIndicadores.porGravidade.length === 0 && <p className="text-xs text-slate-500">Sem dados</p>}
                 </div>
               </div>
             </div>

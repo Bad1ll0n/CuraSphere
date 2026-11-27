@@ -218,7 +218,7 @@ export default function MarPage() {
 
       {loading ? (
         <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar MAR"
-          className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+          className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
           <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -236,12 +236,12 @@ export default function MarPage() {
       ) : Object.keys(porDoente).length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
           <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
           <p className="text-slate-500 font-medium" style={{ marginBottom: '4px' }}>Sem medicações para este turno</p>
-          <p className="text-slate-400 text-sm">Não tens doentes atribuídos com medicações ativas</p>
+          <p className="text-slate-500 text-sm">Não tens doentes atribuídos com medicações ativas</p>
         </div>
       ) : (
         <div className="flex flex-col gap-6">
@@ -255,9 +255,9 @@ export default function MarPage() {
                   <Link href={`/doentes/${doente.id}`} className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
                     {doente.nome}
                   </Link>
-                  <p className="text-xs text-slate-400">Quarto {doente.cama.quarto} · Cama {doente.cama.numero}</p>
+                  <p className="text-xs text-slate-500">Quarto {doente.cama.quarto} · Cama {doente.cama.numero}</p>
                 </div>
-                <span className="ml-auto text-xs text-slate-400">{meds.length} medicação{meds.length !== 1 ? 'ões' : ''}</span>
+                <span className="ml-auto text-xs text-slate-500">{meds.length} medicação{meds.length !== 1 ? 'ões' : ''}</span>
               </div>
               <div className="divide-y divide-slate-50">
                 {meds.map((m) => {
@@ -271,7 +271,7 @@ export default function MarPage() {
                           <span className="text-xs text-slate-500">{m.dose}</span>
                           <span className={`text-xs font-medium rounded-md badge-pad py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
                           {validacao && (
-                            <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-400'}`}>
+                            <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-500'}`}>
                               {validacao === 'aprovada' ? '✓ Validada' : '✗ Rejeitada'}
                             </span>
                           )}
@@ -280,7 +280,7 @@ export default function MarPage() {
                           )}
                         </div>
                         <div className="flex items-center gap-3" style={{ marginTop: '4px' }}>
-                          <span className="text-xs text-slate-400">{m.frequencia}</span>
+                          <span className="text-xs text-slate-500">{m.frequencia}</span>
                           {/* QA-08: num SOS, quando foi a última toma (o intervalo mínimo é verificado na API). */}
                           {/^sos/i.test(m.frequencia) && (() => {
                             const ultima = m.registos.find((r) => !r.naoAdministrada);
@@ -293,7 +293,7 @@ export default function MarPage() {
                             );
                           })()}
                           {ultimaAdmin && (
-                            <span className={`text-xs ${ultimaAdmin.naoAdministrada ? 'text-red-400' : 'text-slate-400'}`}>
+                            <span className={`text-xs ${ultimaAdmin.naoAdministrada ? 'text-red-400' : 'text-slate-500'}`}>
                               {ultimaAdmin.naoAdministrada
                                 ? `✗ Não administrada (${ultimaAdmin.motivoNaoAdmin}) · ${ultimaAdmin.administradoPor.nome}`
                                 : `Última: ${new Date(ultimaAdmin.administradoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} por ${ultimaAdmin.administradoPor.nome}`}
@@ -333,7 +333,7 @@ export default function MarPage() {
           <div {...dlgNaoAdmin.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-base font-bold text-slate-900">Não administrada — Registar motivo</h2>
-              <button aria-label="Fechar" onClick={() => setModalNaoAdmin(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNaoAdmin(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>
               {medicacoes.find(m => m.id === modalNaoAdmin)?.nome} · {medicacoes.find(m => m.id === modalNaoAdmin)?.doente.nome}

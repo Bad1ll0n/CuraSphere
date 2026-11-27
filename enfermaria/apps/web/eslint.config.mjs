@@ -9,6 +9,18 @@ export default [
   ...baseConfig,
   jsxA11y.flatConfigs.recommended,
   {
+    // UX-05: uma cor hex em `style` nunca muda no modo escuro (havia 384). Aviso — não
+    // bloqueia — até a dívida estar paga; usar `var(--bg-card)`, `var(--text-main)`… ou as
+    // classes de tokens (`bg-surface`, `text-main`, `border-borda`).
+    files: ['**/*.tsx'],
+    rules: {
+      'no-restricted-syntax': ['warn', {
+        selector: "JSXAttribute[name.name='style'] Property > Literal[value=/^#[0-9a-fA-F]{3,8}$/]",
+        message: 'UX-05: cor hex inline não responde ao modo escuro — usar tokens (var(--bg-card), var(--text-main)…).',
+      }],
+    },
+  },
+  {
     files: ['**/*.tsx'],
     // Regras de a11y cuja correção altera COMPORTAMENTO de UI (teclado em <div onClick>,
     // autofocus) em ~40 sítios — decisão de equipa: `warn` (ficam registadas/visíveis, não

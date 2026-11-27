@@ -284,7 +284,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
           </div>
           <div>
             <h2 className="text-base font-semibold text-slate-800">Feridas e Curativos</h2>
-            <p className="text-xs text-slate-400">{avaliacoes.length} avaliação{avaliacoes.length !== 1 ? 'ões' : ''} registada{avaliacoes.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-slate-500">{avaliacoes.length} avaliação{avaliacoes.length !== 1 ? 'ões' : ''} registada{avaliacoes.length !== 1 ? 's' : ''}</p>
           </div>
         </div>
         {podeRegistar && (
@@ -302,7 +302,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
       {/* Lista */}
       <div style={{ padding: '16px 24px' }}>
         {loading ? (
-          <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '32px' }}>
+          <div className="flex items-center justify-center gap-2 text-slate-500" style={{ padding: '32px' }}>
             <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -317,7 +317,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
               </svg>
             </div>
             <p className="text-sm font-medium text-slate-500">Sem avaliações de feridas</p>
-            <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Registe a primeira avaliação de ferida</p>
+            <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Registe a primeira avaliação de ferida</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -354,15 +354,15 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                               ⚠️ Atenção
                             </span>
                           )}
-                          <span className="text-xs text-slate-400 font-mono">{estatoLabel(av.estadoCicatrizacao)}</span>
+                          <span className="text-xs text-slate-500 font-mono">{estatoLabel(av.estadoCicatrizacao)}</span>
                         </div>
                         <p className="text-sm text-slate-700 font-medium truncate" style={{ marginTop: '2px' }}>{av.localizacao}</p>
-                        {area && <p className="text-xs text-slate-400" style={{ marginTop: '1px' }}>{area}</p>}
+                        {area && <p className="text-xs text-slate-500" style={{ marginTop: '1px' }}>{area}</p>}
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0" style={{ marginLeft: '12px' }}>
                       <div className="text-right">
-                        <p className="text-xs text-slate-400">{new Date(av.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                        <p className="text-xs text-slate-500">{new Date(av.criadaEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
                         <p className="text-xs text-slate-300">{av.registadoPor.nome.split(' ')[0]}</p>
                       </div>
                       <svg className={`w-4 h-4 text-slate-300 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,13 +376,13 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                       <div className="grid grid-cols-3 gap-4" style={{ marginBottom: alerta || av.notas || av.pensoAplicado ? '16px' : '0' }}>
                         {av.leito && (
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Leito</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Leito</p>
                             <p className="text-sm text-slate-700">{LEITO_OPTIONS.find(l => l.value === av.leito)?.label ?? av.leito}</p>
                           </div>
                         )}
                         {av.exsudadoVolume && (
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Exsudado</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Exsudado</p>
                             <p className="text-sm text-slate-700">
                               {EXSUDADO_VOLUME.find(e => e.value === av.exsudadoVolume)?.label}
                               {av.exsudadoTipo && ` · ${EXSUDADO_TIPO.find(e => e.value === av.exsudadoTipo)?.label}`}
@@ -391,30 +391,30 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                         )}
                         {av.periferia && (
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Periferia</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Periferia</p>
                             <p className="text-sm text-slate-700">{PERIFERIA_OPTIONS.find(p => p.value === av.periferia)?.label ?? av.periferia}</p>
                           </div>
                         )}
                         {av.dor !== undefined && av.dor !== null && (
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Dor (NRS)</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Dor (NRS)</p>
                             <div className="flex items-center gap-1.5">
                               <span className={`text-sm font-bold ${av.dor >= 7 ? 'text-red-600' : av.dor >= 4 ? 'text-orange-500' : 'text-green-600'}`}>{av.dor}/10</span>
                             </div>
                           </div>
                         )}
                         <div>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Odor</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Odor</p>
                           <p className={`text-sm font-medium ${av.odor ? 'text-amber-600' : 'text-slate-500'}`}>{av.odor ? 'Presente' : 'Ausente'}</p>
                         </div>
                       </div>
 
                       {av.pensoAplicado && (
                         <div style={{ marginBottom: '12px' }}>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Penso Aplicado</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Penso Aplicado</p>
                           <p className="text-sm text-slate-700">{av.pensoAplicado}</p>
                           {av.proximaTroca && (
-                            <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                            <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                               Próxima troca: {new Date(av.proximaTroca).toLocaleDateString('pt-PT')}
                             </p>
                           )}
@@ -423,7 +423,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                       {av.notas && (
                         <div className="bg-slate-50 rounded-xl" style={{ padding: '12px', marginBottom: '12px' }}>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</p>
                           <p className="text-sm text-slate-600 whitespace-pre-wrap">{av.notas}</p>
                         </div>
                       )}
@@ -431,7 +431,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                       {/* Fotografias */}
                       <div style={{ marginTop: '12px' }}>
                         <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Fotografias</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Fotografias</p>
                           {podeRegistar && (
                             <>
                               <input
@@ -481,7 +481,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                                     )}
                                   </div>
                                   <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                                    <p className="text-xs text-slate-400">{new Date(foto.criadaEm).toLocaleDateString('pt-PT')}</p>
+                                    <p className="text-xs text-slate-500">{new Date(foto.criadaEm).toLocaleDateString('pt-PT')}</p>
                                     {podeAnalisar && (
                                       <button
                                         onClick={() => analisarFotoIA(av.id, foto.id)}
@@ -528,7 +528,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                                     {foto.analiseIA.recomendacao && (
                                       <p className="text-xs text-slate-700" style={{ marginBottom: '6px' }}>{foto.analiseIA.recomendacao}</p>
                                     )}
-                                    <p className="text-xs text-slate-400 italic">
+                                    <p className="text-xs text-slate-500 italic">
                                       Análise de apoio clínico. Não substitui avaliação presencial.
                                       {foto.analiseIA.analisadaEm && ` · ${new Date(foto.analiseIA.analisadaEm).toLocaleDateString('pt-PT')}`}
                                     </p>
@@ -587,7 +587,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Avaliação de Ferida</h2>
               <button onClick={() => setModalAberto(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -602,7 +602,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                 { key: 'notas', label: 'Notas' },
               ] as const).map((tab) => (
                 <button key={tab.key} onClick={() => setSecaoAtiva(tab.key)}
-                  className={`text-sm font-medium pb-3 border-b-2 transition-colors ${secaoAtiva === tab.key ? 'border-rose-500 text-rose-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                  className={`text-sm font-medium pb-3 border-b-2 transition-colors ${secaoAtiva === tab.key ? 'border-rose-500 text-rose-600' : 'border-transparent text-slate-500 hover:text-slate-600'}`}
                   style={{ marginRight: '24px' }}>
                   {tab.label}
                 </button>
@@ -665,7 +665,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                           style={{ padding: '10px 10px' }} />
                       ))}
                     </div>
-                    <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Comprimento × Largura × Profundidade</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>Comprimento × Largura × Profundidade</p>
                   </div>
                 </div>
               )}
@@ -784,7 +784,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                     placeholder="Observações sobre a evolução, procedimentos realizados, intercorrências..."
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition resize-none"
                     style={{ padding: '10px 14px' }} />
-                  <p className="text-xs text-slate-400 text-right" style={{ marginTop: '4px' }}>{form.notas.length}/2000</p>
+                  <p className="text-xs text-slate-500 text-right" style={{ marginTop: '4px' }}>{form.notas.length}/2000</p>
                 </div>
               )}
             </div>

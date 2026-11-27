@@ -22,7 +22,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
               )}
               {isLast || !item.href ? (
                 <span
-                  className={isLast ? 'text-slate-900 font-medium' : 'text-slate-400'}
+                  className={isLast ? 'text-slate-900 font-medium' : 'text-slate-500'}
                   aria-current={isLast ? 'page' : undefined}
                 >
                   {item.label}
@@ -30,7 +30,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
               ) : (
                 <Link
                   href={item.href}
-                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-slate-500 hover:text-slate-600 transition-colors"
                 >
                   {item.label}
                 </Link>

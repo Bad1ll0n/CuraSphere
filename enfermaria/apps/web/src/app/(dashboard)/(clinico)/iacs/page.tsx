@@ -223,7 +223,7 @@ export default function IacsPage() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+            <div className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
               <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -232,7 +232,7 @@ export default function IacsPage() {
           ) : isolados.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-100 flex flex-col items-center text-center" style={{ padding: '80px' }}>
               <p className="text-slate-700 font-semibold">Nenhum doente em isolamento</p>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Sem casos IACS activos de momento</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Sem casos IACS activos de momento</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -251,7 +251,7 @@ export default function IacsPage() {
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${estadoCor[d.estado] ?? 'bg-slate-100 text-slate-600'}`}>{d.estado.replace('_', ' ')}</span>
                           <span className="text-xs bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full">ISOLAMENTO</span>
                         </div>
-                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Quarto {d.cama.quarto} · Cama {d.cama.numero} · {d.diagnosticoPrincipal}</p>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Quarto {d.cama.quarto} · Cama {d.cama.numero} · {d.diagnosticoPrincipal}</p>
                         {d.motivoIsolamento && <p className="text-sm text-orange-700 font-medium" style={{ marginTop: '8px' }}>{d.motivoIsolamento}</p>}
                       </div>
                     </div>
@@ -268,7 +268,7 @@ export default function IacsPage() {
             </div>
           )}
           <div style={{ marginTop: '24px' }}>
-            <p className="text-xs text-slate-400 text-center">
+            <p className="text-xs text-slate-500 text-center">
               Para colocar um doente em isolamento, aceda à sua{' '}
               <Link href="/doentes" className="text-blue-500 hover:underline">ficha individual</Link> e utilize a opção "Isolamento IACS".
             </p>
@@ -309,7 +309,7 @@ export default function IacsPage() {
 
           {loadingCulturas ? (
             <div className="flex items-center justify-center" style={{ padding: '60px' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
@@ -317,7 +317,7 @@ export default function IacsPage() {
           ) : culturasFiltradas.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-100 text-center" style={{ padding: '60px' }}>
               <p className="text-slate-600 font-semibold">Sem culturas registadas</p>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Registe a primeira colheita microbiológica.</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Registe a primeira colheita microbiológica.</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -330,10 +330,10 @@ export default function IacsPage() {
                         <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '6px' }}>
                           <Link href={`/doentes/${c.doente.id}`} className="font-semibold text-slate-900 hover:text-blue-600 text-sm">{c.doente.nome}</Link>
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${res.bg} ${res.text}`}>{res.label}</span>
-                          <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{TIPO_AMOSTRA_LABELS[c.tipoAmostra] ?? c.tipoAmostra}</span>
+                          <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">{TIPO_AMOSTRA_LABELS[c.tipoAmostra] ?? c.tipoAmostra}</span>
                         </div>
                         {c.agente && <p className="text-sm font-semibold text-red-700" style={{ marginBottom: '2px' }}>Agente: {c.agente}</p>}
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-slate-500">
                           Colheita: {new Date(c.dataColheita).toLocaleDateString('pt-PT')} · Registado por {c.registadoPor.nome}
                           {c.servico && ` · ${c.servico}`}
                         </p>
@@ -383,7 +383,7 @@ export default function IacsPage() {
 
           {loadingSurtos ? (
             <div className="flex items-center justify-center" style={{ padding: '60px' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
@@ -391,7 +391,7 @@ export default function IacsPage() {
           ) : surtos.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-100 text-center" style={{ padding: '60px' }}>
               <p className="text-slate-600 font-semibold">Sem surtos registados</p>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Nenhum episódio de surto IACS registado.</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Nenhum episódio de surto IACS registado.</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -473,7 +473,7 @@ export default function IacsPage() {
           <div {...dlgCultura.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Colheita Microbiológica</h2>
-              <button aria-label="Fechar" onClick={() => setModalCultura(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalCultura(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'ID do Doente *', key: 'doenteId', type: 'text', placeholder: 'UUID do doente' },
@@ -519,7 +519,7 @@ export default function IacsPage() {
           <div {...dlgEditCultura.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button aria-label="Fechar" onClick={() => setEditCultura(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setEditCultura(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editCultura.doente.nome} · {TIPO_AMOSTRA_LABELS[editCultura.tipoAmostra] ?? editCultura.tipoAmostra}</p>
             <div style={{ marginBottom: '14px' }}>
@@ -558,7 +558,7 @@ export default function IacsPage() {
           <div {...dlgSurto.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Surto IACS</h2>
-              <button aria-label="Fechar" onClick={() => setModalSurto(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalSurto(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'Agente *', key: 'agente', placeholder: 'Ex: MRSA, Clostridioides difficile...' },
@@ -604,7 +604,7 @@ export default function IacsPage() {
           <div {...dlgEditSurto.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
               <h2 className="text-lg font-bold text-slate-900">Actualizar Surto</h2>
-              <button aria-label="Fechar" onClick={() => setEditSurto(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setEditSurto(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-500" style={{ marginBottom: '20px' }}>{editSurto.agente} · {editSurto.servico}</p>
             <div style={{ marginBottom: '14px' }}>

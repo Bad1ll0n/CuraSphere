@@ -33,7 +33,7 @@ interface AlertaGlobal {
 }
 
 function news2Badge(score: number | null) {
-  if (score === null) return <span className="text-xs text-slate-400">—</span>;
+  if (score === null) return <span className="text-xs text-slate-500">—</span>;
   if (score < 3)  return <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">{score}</span>;
   if (score < 5)  return <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">{score}</span>;
   if (score < 7)  return <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-200">{score}</span>;
@@ -72,7 +72,7 @@ function StatCard({ label, value, sub, cor }: { label: string; value: string | n
     <div className="bg-white border border-slate-200 rounded-2xl" style={{ padding: '20px 24px' }}>
       <p className="text-sm text-slate-500">{label}</p>
       <p className={`text-3xl font-bold mt-1 ${cor ?? 'text-slate-900'}`}>{value}</p>
-      {sub && <p className="text-xs text-slate-400 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-slate-500 mt-1">{sub}</p>}
     </div>
   );
 }
@@ -171,13 +171,13 @@ export default function RiscoClinicoPage() {
 
           {loadingD ? (
             <div className="flex justify-center" style={{ padding: '48px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             </div>
           ) : doentesOrdenados.length === 0 ? (
-            <div className="text-center text-slate-400 text-sm" style={{ padding: '48px 0' }}>Sem doentes internados</div>
+            <div className="text-center text-slate-500 text-sm" style={{ padding: '48px 0' }}>Sem doentes internados</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -215,7 +215,7 @@ export default function RiscoClinicoPage() {
                       <td style={{ padding: '12px' }} className="text-slate-600 max-w-xs truncate">
                         {d.diagnosticoPrincipal ?? '—'}
                       </td>
-                      <td style={{ padding: '12px' }} className="text-slate-400 text-xs whitespace-nowrap">
+                      <td style={{ padding: '12px' }} className="text-slate-500 text-xs whitespace-nowrap">
                         {d.ultimoSinalEm ? tempoDecorrido(d.ultimoSinalEm) : '—'}
                       </td>
                       <td style={{ padding: '12px' }}>
@@ -245,13 +245,13 @@ export default function RiscoClinicoPage() {
 
           {loadingA ? (
             <div className="flex justify-center" style={{ padding: '48px 0' }}>
-              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             </div>
           ) : alertas.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-slate-400" style={{ padding: '48px 20px' }}>
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-500" style={{ padding: '48px 20px' }}>
               <svg className="w-10 h-10 text-slate-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -273,7 +273,7 @@ export default function RiscoClinicoPage() {
                         }`}>
                           {tipoAlertaLabel[a.tipo] ?? a.tipo}
                         </span>
-                        <span className="text-xs text-slate-400">{tempoDecorrido(a.criadoEm)}</span>
+                        <span className="text-xs text-slate-500">{tempoDecorrido(a.criadoEm)}</span>
                         {a.acusadoPor && (
                           <span className="text-xs text-emerald-600">✓ {a.acusadoPor.nome}</span>
                         )}
@@ -283,7 +283,7 @@ export default function RiscoClinicoPage() {
                           className="text-sm font-medium text-slate-900 hover:text-blue-600 truncate block">
                           {a.doente.nome}
                           {a.doente.cama && (
-                            <span className="text-slate-400 font-normal text-xs ml-1.5">
+                            <span className="text-slate-500 font-normal text-xs ml-1.5">
                               Q{a.doente.cama.quarto} C{a.doente.cama.numero}
                             </span>
                           )}

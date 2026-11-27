@@ -60,7 +60,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -212,7 +212,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
             <BtnAdd label="Registar alergia" onClick={() => { setAlergenio(''); setAlergiaNotas(''); setModalAlergia(true); }} />
           </div>
           {alergias.length === 0 ? (
-            <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem alergias registadas</p>
+            <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem alergias registadas</p>
           ) : (
             <div className="flex flex-col gap-2">
               {alergias.map((a: any) => (
@@ -220,7 +220,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
                   <span className={`text-xs font-bold badge-pad py-0.5 rounded-full ${sevCor[a.severidade] ?? 'bg-slate-100 text-slate-600'}`}>{a.severidade}</span>
                   <div className="flex-1">
                     <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
-                    <span className="text-xs text-slate-400 ml-2">{a.tipo}</span>
+                    <span className="text-xs text-slate-500 ml-2">{a.tipo}</span>
                   </div>
                   {podeRemoverAlergia && (
                     <button onClick={() => removerAlergia(a.id, a.alergenio)} aria-label={`Remover alergia ${a.alergenio}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
@@ -243,7 +243,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
             <BtnAdd label="Adicionar contacto de emergência" onClick={() => { setCtNome(''); setCtTel(''); setCtRelacao('cônjuge'); setCtPrincipal(false); setModalContacto(true); }} />
           </div>
           {contactos.length === 0 ? (
-            <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem contactos registados</p>
+            <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem contactos registados</p>
           ) : (
             <div className="flex flex-col gap-2">
               {contactos.map((c: any) => (
@@ -253,7 +253,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
                       <span className="text-sm font-semibold text-slate-800">{c.nome}</span>
                       {c.principal && <span className="text-xs bg-blue-100 text-blue-700 font-bold badge-pad py-0.5 rounded">Principal</span>}
                     </div>
-                    <span className="text-xs text-slate-400">{c.relacao} · {c.telefone}</span>
+                    <span className="text-xs text-slate-500">{c.relacao} · {c.telefone}</span>
                   </div>
                   <button onClick={() => removerContacto(c.id, c.nome)} aria-label={`Remover contacto ${c.nome}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
                 </div>

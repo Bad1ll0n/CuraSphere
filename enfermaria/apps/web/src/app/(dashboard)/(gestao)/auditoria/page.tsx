@@ -311,7 +311,7 @@ export default function AuditoriaPagina() {
               </button>
             )}
             {total > 0 && (
-              <span className="text-xs text-slate-400" style={{ marginLeft: '8px' }}>
+              <span className="text-xs text-slate-500" style={{ marginLeft: '8px' }}>
                 {total} registo{total !== 1 ? 's' : ''} encontrado{total !== 1 ? 's' : ''}
               </span>
             )}
@@ -322,7 +322,7 @@ export default function AuditoriaPagina() {
       {/* Tabela */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '60px' }}>
+          <div className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '60px' }}>
             <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -330,7 +330,7 @@ export default function AuditoriaPagina() {
             <span className="text-sm">A carregar...</span>
           </div>
         ) : logs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-slate-400" style={{ padding: '80px' }}>
+          <div className="flex flex-col items-center justify-center text-slate-500" style={{ padding: '80px' }}>
             <svg className="w-12 h-12" style={{ marginBottom: '16px', opacity: 0.4 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -340,7 +340,7 @@ export default function AuditoriaPagina() {
           <>
             {/* Cabeçalho da tabela */}
             <div
-              className="grid text-xs font-semibold uppercase tracking-wide text-slate-400 border-b border-slate-100"
+              className="grid text-xs font-semibold uppercase tracking-wide text-slate-500 border-b border-slate-100"
               style={{ gridTemplateColumns: '180px 1fr 200px 120px 140px', padding: '12px 24px' }}
             >
               <span>Data/Hora</span>
@@ -368,14 +368,14 @@ export default function AuditoriaPagina() {
                 <div>
                   <BadgeAcao acao={log.acao} />
                   {log.detalhes && (
-                    <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>{log.detalhes}</p>
+                    <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{log.detalhes}</p>
                   )}
                 </div>
 
                 {/* Utilizador */}
                 <div>
                   <p className="text-sm font-medium text-slate-700">{autorNome(log)}</p>
-                  <p className="text-xs text-slate-400">{autorRoleLabel(log)}</p>
+                  <p className="text-xs text-slate-500">{autorRoleLabel(log)}</p>
                 </div>
 
                 {/* Entidade */}
@@ -384,7 +384,7 @@ export default function AuditoriaPagina() {
                     <>
                       <span className="text-xs font-semibold text-slate-600">{log.entidadeTipo}</span>
                       {log.entidadeId && (
-                        <p className="text-[10px] text-slate-400 font-mono" style={{ marginTop: '2px' }}>
+                        <p className="text-[10px] text-slate-500 font-mono" style={{ marginTop: '2px' }}>
                           {log.entidadeId.slice(0, 8)}…
                         </p>
                       )}
@@ -395,7 +395,7 @@ export default function AuditoriaPagina() {
                 </div>
 
                 {/* IP */}
-                <span className="text-xs font-mono text-slate-400">{log.ip ?? '—'}</span>
+                <span className="text-xs font-mono text-slate-500">{log.ip ?? '—'}</span>
               </div>
             ))}
           </>
@@ -405,7 +405,7 @@ export default function AuditoriaPagina() {
       {/* Paginação */}
       {totalPaginas > 1 && (
         <div className="flex items-center justify-between" style={{ marginTop: '20px' }}>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             Página {pagina} de {totalPaginas}
           </p>
           <div className="flex gap-2">

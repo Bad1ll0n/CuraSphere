@@ -110,7 +110,7 @@ export default function SistemasExternosPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
           <p className="text-slate-500 text-sm">Sem conectores externos configurados</p>
-          <p className="text-slate-400 text-xs" style={{ marginTop: '4px' }}>Adiciona um sistema para integrar documentos FHIR ou DICOM</p>
+          <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>Adiciona um sistema para integrar documentos FHIR ou DICOM</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -127,13 +127,13 @@ export default function SistemasExternosPage() {
                         <span className="text-xs font-medium text-indigo-600 bg-indigo-50 rounded-full px-2 py-0.5">
                           {TIPO_LABELS[s.tipo] ?? s.tipo}
                         </span>
-                        {!s.ativo && <span className="text-xs text-slate-400 bg-slate-100 rounded-full px-2 py-0.5">Inactivo</span>}
+                        {!s.ativo && <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">Inactivo</span>}
                       </div>
                       {s.endpoint && (
-                        <p className="text-xs text-slate-400 font-mono" style={{ marginTop: '4px' }}>{s.endpoint}</p>
+                        <p className="text-xs text-slate-500 font-mono" style={{ marginTop: '4px' }}>{s.endpoint}</p>
                       )}
                       {s.ultimaSincronizacao && (
-                        <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
                           Última sync: {new Date(s.ultimaSincronizacao).toLocaleString('pt-PT')}
                         </p>
                       )}
@@ -165,7 +165,7 @@ export default function SistemasExternosPage() {
                     </button>
                     <button
                       onClick={() => remover(s.id)}
-                      className="text-xs text-slate-400 hover:text-red-500 transition-colors"
+                      className="text-xs text-slate-500 hover:text-red-500 transition-colors"
                       style={{ padding: '5px 8px' }}
                     >
                       ✕
@@ -185,7 +185,7 @@ export default function SistemasExternosPage() {
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{modal === 'novo' ? 'Novo Conector' : 'Editar Conector'}</h2>
               <button onClick={() => setModal(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
 

@@ -836,7 +836,7 @@ export const servicoLabel: Record<string, string> = {
 export const roleColor: Record<string, string> = {
   medico:         'bg-violet-500/15 text-violet-400',
   enfermeiro:     'bg-teal-500/15 text-teal-400',
-  auxiliar:       'bg-slate-500/15 text-slate-400',
+  auxiliar:       'bg-slate-500/15 text-slate-500',
   tecnico_saude:  'bg-sky-500/15 text-sky-400',
   farmaceutico:   'bg-emerald-500/15 text-emerald-400',
   administrativo: 'bg-pink-500/15 text-pink-400',

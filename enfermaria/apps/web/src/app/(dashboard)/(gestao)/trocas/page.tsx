@@ -127,7 +127,7 @@ export default function TrocasPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+        <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -200,12 +200,12 @@ export default function TrocasPage() {
           {pedidos.length === 0 && (
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
               <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-                <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
               </div>
               <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem pedidos</p>
-              <p className="text-slate-400 text-sm">Clica em "Pedir Cobertura" para pedir a um colega que faça o teu turno</p>
+              <p className="text-slate-500 text-sm">Clica em "Pedir Cobertura" para pedir a um colega que faça o teu turno</p>
             </div>
           )}
         </div>
@@ -217,7 +217,7 @@ export default function TrocasPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Pedir Cobertura de Turno</h2>
-              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Escolhe o turno e o colega que queres que te cubra</p>
+              <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Escolhe o turno e o colega que queres que te cubra</p>
             </div>
 
             {/* Passo 1 */}
@@ -226,7 +226,7 @@ export default function TrocasPage() {
                 1. O teu turno
               </span>
               {meusTurnos.length === 0 ? (
-                <p className="text-sm text-slate-400">Sem turnos futuros disponíveis</p>
+                <p className="text-sm text-slate-500">Sem turnos futuros disponíveis</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {meusTurnos.map((t) => (
@@ -250,7 +250,7 @@ export default function TrocasPage() {
                   2. Quem te vai cobrir
                 </span>
                 {colegas.length === 0 ? (
-                  <p className="text-sm text-slate-400">Sem colegas disponíveis</p>
+                  <p className="text-sm text-slate-500">Sem colegas disponíveis</p>
                 ) : (
                   <div className="border border-slate-200 rounded-xl overflow-hidden" style={{ maxHeight: '240px', overflowY: 'auto' }}>
                     {colegas.map((c, i) => (
@@ -261,7 +261,7 @@ export default function TrocasPage() {
                         style={{ padding: '12px 16px', borderBottom: i < colegas.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
                         <div>
                           <p className="text-sm font-medium text-slate-800">{c.nome}</p>
-                          {c.equipa && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Equipa {c.equipa}</p>}
+                          {c.equipa && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Equipa {c.equipa}</p>}
                         </div>
                         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
                           colegaSelecionado?.id === c.id ? 'bg-blue-600 border-blue-600' : 'border-slate-300'
@@ -316,7 +316,7 @@ function Section({ titulo, count, cor, children }: { titulo: string; count: numb
 }
 
 function Empty({ texto }: { texto: string }) {
-  return <p className="text-sm text-slate-400 text-center" style={{ padding: '28px' }}>{texto}</p>;
+  return <p className="text-sm text-slate-500 text-center" style={{ padding: '28px' }}>{texto}</p>;
 }
 
 function PedidoRow({ pedido, utilizadorId, children }: { pedido: Pedido; utilizadorId: string; children?: React.ReactNode }) {
@@ -333,7 +333,7 @@ function PedidoRow({ pedido, utilizadorId, children }: { pedido: Pedido; utiliza
               : <><span className="font-medium">{pedido.solicitante.nome}</span> pediu-te cobertura</>
             }
           </p>
-          <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+          <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
             {new Date(pedido.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}
           </p>
         </div>

@@ -79,7 +79,7 @@ function StatCard({ label, value, sub, color = 'bg-blue-600' }: { label: string;
       </div>
       <p className="text-slate-500 text-sm">{label}</p>
       <p className="text-3xl font-bold text-slate-900" style={{ marginTop: '4px' }}>{value}</p>
-      {sub && <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>{sub}</p>}
+      {sub && <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{sub}</p>}
     </div>
   );
 }
@@ -92,7 +92,7 @@ function EmBreve({ titulo, descricao }: { titulo: string; descricao?: string }) 
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <p className="font-semibold text-slate-500 text-sm">{titulo}</p>
-      {descricao && <p className="text-slate-400 text-xs" style={{ marginTop: '6px' }}>{descricao}</p>}
+      {descricao && <p className="text-slate-500 text-xs" style={{ marginTop: '6px' }}>{descricao}</p>}
       <span className="inline-block text-[10px] font-semibold badge-pad py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>{tCommon('comingSoon')}</span>
     </div>
   );
@@ -119,7 +119,7 @@ function CardHeader({ title, count, countColor = 'bg-slate-100 text-slate-500' }
 
 function Vazio({ msg = 'Sem dados para mostrar' }: { msg?: string }) {
   return (
-    <div className="flex items-center justify-center text-slate-400 text-sm" style={{ padding: '40px 24px' }}>{msg}</div>
+    <div className="flex items-center justify-center text-slate-500 text-sm" style={{ padding: '40px 24px' }}>{msg}</div>
   );
 }
 
@@ -140,7 +140,7 @@ function DashboardHeader({ utilizador }: { utilizador: { nome: string; role: str
   return (
     <div className="flex items-start justify-between" style={{ marginBottom: '36px' }}>
       <div>
-        <p className="text-sm text-slate-400 capitalize" style={{ marginBottom: '4px' }}>{hoje}</p>
+        <p className="text-sm text-slate-500 capitalize" style={{ marginBottom: '4px' }}>{hoje}</p>
         <h1 className="text-3xl font-bold text-slate-900">{saudacaoStr}, {primeiro} 👋</h1>
         <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
           <span className="text-xs font-medium badge-pad py-1 rounded-full bg-blue-100 text-blue-700">{rl}</span>
@@ -254,7 +254,7 @@ function MedicoNEWS2Widget({ news2Data }: { news2Data: any }) {
           </div>
         ))}
       </div>
-      <p className="text-xs text-slate-400 text-right" style={{ marginTop: '10px' }}>{news2Data.totalAtivos} doentes activos</p>
+      <p className="text-xs text-slate-500 text-right" style={{ marginTop: '10px' }}>{news2Data.totalAtivos} doentes activos</p>
     </div>
   );
 }
@@ -270,7 +270,7 @@ function MedicoAcuidadeWidget({ news2Data }: { news2Data: any }) {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm h-full" style={{ padding: '20px 24px' }}>
       <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Acuidade dos Doentes</p>
       {acuidadePieData.length === 0 ? (
-        <div className="flex items-center justify-center text-slate-400 text-sm" style={{ height: '120px' }}>Sem dados</div>
+        <div className="flex items-center justify-center text-slate-500 text-sm" style={{ height: '120px' }}>Sem dados</div>
       ) : (
         <div className="flex items-center gap-4">
           <ResponsiveContainer width={120} height={120}>
@@ -286,7 +286,7 @@ function MedicoAcuidadeWidget({ news2Data }: { news2Data: any }) {
               <div key={d.name} className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
                 <span className="text-sm text-slate-700 font-medium">{d.value}</span>
-                <span className="text-xs text-slate-400">{d.name}</span>
+                <span className="text-xs text-slate-500">{d.name}</span>
               </div>
             ))}
           </div>
@@ -309,11 +309,11 @@ function MedicoDoentesWidget({ doentes }: { doentes: any[] }) {
                   <div className={`w-2 h-2 rounded-full shrink-0 ${estadoCor[d.estado]?.dot ?? 'bg-slate-300'}`} />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-slate-800 truncate">{d.nome}</p>
-                    <p className="text-xs text-slate-400 truncate">{d.diagnosticoPrincipal}</p>
+                    <p className="text-xs text-slate-500 truncate">{d.diagnosticoPrincipal}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xs text-slate-400">Cama {d.cama?.numero}</span>
+                  <span className="text-xs text-slate-500">Cama {d.cama?.numero}</span>
                   <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
                 </div>
               </div>
@@ -354,11 +354,11 @@ function MedicoInterconsultasWidget({ interconsultas }: { interconsultas: any[] 
               <div className="flex items-center justify-between hover:bg-slate-50 transition-colors" style={{ padding: '10px 24px', borderBottom: i < Math.min(interconsultas.length, 6) - 1 ? '1px solid #f8fafc' : 'none' }}>
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-slate-800 truncate">{ic.doente?.nome}</p>
-                  <p className="text-xs text-slate-400 truncate">{ic.motivo}</p>
+                  <p className="text-xs text-slate-500 truncate">{ic.motivo}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0 ml-2">
                   {ic.urgente && <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700">Urgente</span>}
-                  <span className="text-xs text-slate-400">Cama {ic.doente?.cama?.numero}</span>
+                  <span className="text-xs text-slate-500">Cama {ic.doente?.cama?.numero}</span>
                 </div>
               </div>
             </Link>
@@ -380,7 +380,7 @@ function MedicoExamesWidget({ exames }: { exames: any[] }) {
               <div className="flex items-center justify-between hover:bg-slate-50 transition-colors" style={{ padding: '10px 24px', borderBottom: i < Math.min(exames.length, 6) - 1 ? '1px solid #f8fafc' : 'none' }}>
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-slate-800 truncate">{ex.doente?.nome}</p>
-                  <p className="text-xs text-slate-400 truncate">{ex.tipo}</p>
+                  <p className="text-xs text-slate-500 truncate">{ex.tipo}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0 ml-2">
                   {ex.urgente && <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700">Urgente</span>}
@@ -487,7 +487,7 @@ function DashboardBloco({ utilizador }: { utilizador: any }) {
                 <div>
                   <p className="font-semibold text-slate-900">{c.designacao}</p>
                   <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>{c.doente?.nome ?? 'Doente'} · Sala {c.sala}</p>
-                  <p className="text-sm text-slate-400" style={{ marginTop: '2px' }}>
+                  <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>
                     {new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {c.duracaoPrevista}min previstos
                   </p>
                 </div>
@@ -579,7 +579,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
                     {e.doente?.nome} · Processo {e.doente?.numeroProcesso}
                     {e.doente?.cama && ` · Cama ${e.doente.cama.numero}`}
                   </p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>
                     Solicitado por {e.solicitadoPor?.nome} · {new Date(e.criadoEm).toLocaleDateString('pt-PT')} {new Date(e.criadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
@@ -620,11 +620,11 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
-              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setResultadoModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-sm text-slate-600 bg-slate-50 rounded-xl" style={{ padding: '10px 14px', marginBottom: '20px' }}>
               <strong>{TIPO_EXAME_LABELS[resultadoModal.tipo]}</strong> — {resultadoModal.descricao}<br />
-              <span className="text-slate-400">{resultadoModal.doente?.nome}</span>
+              <span className="text-slate-500">{resultadoModal.doente?.nome}</span>
             </p>
             <textarea value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
               rows={5} placeholder="Descreva os achados e resultado..." className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
@@ -741,7 +741,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                       <div className={`w-2 h-2 rounded-full shrink-0 ${estadoCor[d.estado]?.dot ?? 'bg-slate-300'}`} />
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-slate-800 truncate">{d.nome}</p>
-                        <p className="text-xs text-slate-400">Cama {d.cama?.numero} · Quarto {d.cama?.quarto}</p>
+                        <p className="text-xs text-slate-500">Cama {d.cama?.numero} · Quarto {d.cama?.quarto}</p>
                       </div>
                     </div>
                     <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
@@ -761,7 +761,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                   <div key={t.id} className="flex items-center justify-between" style={{ padding: '10px 24px', borderBottom: i < Math.min(urgentes.length, 5) - 1 ? '1px solid #f8fafc' : 'none' }}>
                     <div className="min-w-0">
                       <p className="text-sm text-slate-700 truncate">{t.descricao}</p>
-                      <p className="text-xs text-slate-400">{t.doente?.nome ?? ''}</p>
+                      <p className="text-xs text-slate-500">{t.doente?.nome ?? ''}</p>
                     </div>
                     <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[t.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{t.prioridade}</span>
                   </div>
@@ -782,7 +782,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                       <div className={`flex items-center justify-between hover:bg-slate-50 transition-colors ${temAlerta ? 'border-l-2 border-red-400' : ''}`} style={{ padding: '10px 16px', borderBottom: i < workload.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                         <div className="min-w-0">
                           <p className="text-sm font-medium text-slate-800 truncate">{w.doente.nome}</p>
-                          <p className="text-xs text-slate-400">Cama {w.doente.cama ?? '—'} · {w.doente.quarto ?? '—'}</p>
+                          <p className="text-xs text-slate-500">Cama {w.doente.cama ?? '—'} · {w.doente.quarto ?? '—'}</p>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0 ml-2">
                           {w.medicacoesPendentes > 0 && <span className="text-xs bg-red-100 text-red-700 badge-pad py-0.5 rounded-full font-medium">💊 {w.medicacoesPendentes}</span>}
@@ -938,7 +938,7 @@ function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
                 <div key={s.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < sessoes.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                   <div>
                     <p className="text-sm font-medium text-slate-800">{s.doente?.nome ?? '—'}</p>
-                    <p className="text-xs text-slate-400">{new Date(s.data).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {s.duracao}min · {s.descricao}</p>
+                    <p className="text-xs text-slate-500">{new Date(s.data).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {s.duracao}min · {s.descricao}</p>
                   </div>
                   <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${s.estado === 'realizada' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
                     {s.estado === 'realizada' ? 'Realizada' : 'Agendada'}
@@ -1001,7 +1001,7 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
                 <div key={a.id ?? i} className="flex items-center justify-between" style={{ padding: '10px 24px', borderBottom: i < stockMinimo.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                   <div>
                     <p className="text-sm font-medium text-slate-800">{a.nome}</p>
-                    <p className="text-xs text-slate-400">{a.quantidade} {a.unidade} · mín: {a.quantidadeMinima}</p>
+                    <p className="text-xs text-slate-500">{a.quantidade} {a.unidade} · mín: {a.quantidadeMinima}</p>
                   </div>
                   <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700 shrink-0">Baixo</span>
                 </div>
@@ -1018,7 +1018,7 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
                 {pedidos.slice(0, 4).map((p: any, i: number) => (
                   <div key={p.id} className="flex items-center justify-between" style={{ padding: '10px 24px', borderBottom: i < pedidos.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                     <p className="text-sm text-slate-700 truncate">{p.stockItem?.nome ?? '—'} × {p.quantidade}</p>
-                    <span className="text-xs text-slate-400 shrink-0 ml-2">{p.servico}</span>
+                    <span className="text-xs text-slate-500 shrink-0 ml-2">{p.servico}</span>
                   </div>
                 ))}
               </div>
@@ -1107,7 +1107,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
                 <div key={c.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < consultas.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                   <div>
                     <p className="text-sm font-medium text-slate-800">{c.nomeDoente ?? c.doente?.nome ?? 'Doente'}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       {new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {c.especialidade} · {c.medico?.nome?.split(' ')[0] ?? 'Médico'}
                     </p>
                   </div>
@@ -1129,7 +1129,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
                   <p className="text-sm font-semibold text-slate-800">Sala de Espera</p>
                 </div>
-                <span className="text-xs text-slate-400">Tempo real</span>
+                <span className="text-xs text-slate-500">Tempo real</span>
               </div>
               {salaStats ? (
                 <div className="grid grid-cols-2 gap-3">
@@ -1146,7 +1146,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center justify-center text-slate-400 text-sm" style={{ padding: '20px 0' }}>A carregar...</div>
+                <div className="flex items-center justify-center text-slate-500 text-sm" style={{ padding: '20px 0' }}>A carregar...</div>
               )}
             </div>
           </Link>
@@ -1157,7 +1157,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
               <p className="text-sm font-semibold text-slate-800">Confirmação Automática</p>
               <span className="text-xs font-medium badge-pad py-0.5 rounded-full bg-blue-50 text-blue-600">{consultasAmanha} amanhã</span>
             </div>
-            <p className="text-xs text-slate-400" style={{ marginBottom: '14px' }}>
+            <p className="text-xs text-slate-500" style={{ marginBottom: '14px' }}>
               Envia um lembrete interno a todos os médicos com consultas marcadas para amanhã.
             </p>
             {lembretesEnviados !== null && (
@@ -1217,7 +1217,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
                 <div key={p.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < pendentesOrdenados.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                   <div>
                     <p className="text-sm font-medium text-slate-800 truncate">{p.descricao}</p>
-                    <p className="text-xs text-slate-400">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
+                    <p className="text-xs text-slate-500">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
                   </div>
                   <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[p.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{p.prioridade}</span>
                 </div>
@@ -1234,7 +1234,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
                 <div key={p.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < emCurso.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                   <div>
                     <p className="text-sm font-medium text-slate-800">{p.descricao}</p>
-                    <p className="text-xs text-slate-400">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
+                    <p className="text-xs text-slate-500">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
                   </div>
                   <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Em curso</span>
                 </div>
@@ -1425,7 +1425,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
               <span className="font-semibold text-red-600">{pessoal?.trocas30d?.recusado ?? 0}</span>
             </div>
             <div style={{ marginTop: '8px', borderTop: '1px solid #f1f5f9', paddingTop: '8px' }}>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold" style={{ marginBottom: '6px' }}>Por Role</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold" style={{ marginBottom: '6px' }}>Por Role</p>
               {pessoal?.utilizadoresPorRole && Object.entries(pessoal.utilizadoresPorRole).slice(0, 6).map(([role, total]: [string, any]) => (
                 <div key={role} className="flex justify-between text-xs" style={{ padding: '2px 0' }}>
                   <span className="text-slate-500 capitalize">{role}</span>
@@ -1509,7 +1509,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
               <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>
                 {outcomes?.readmissoes30d ?? 0} readmissões registadas
               </p>
-              <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+              <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
                 Benchmark: &lt;15% (WHO)
               </p>
             </div>
@@ -1553,10 +1553,10 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
                   <p className="text-2xl font-bold" style={{ color: (correlacaoAI.taxaOutcomeNegativoAceite ?? 0) > 20 ? '#ef4444' : '#10b981' }}>
                     {correlacaoAI.taxaOutcomeNegativoAceite ?? 0}%
                   </p>
-                  <p className="text-xs text-slate-400">{correlacaoAI.aceitesComOutcomeNegativo ?? 0} casos nos últimos 30 dias</p>
+                  <p className="text-xs text-slate-500">{correlacaoAI.aceitesComOutcomeNegativo ?? 0} casos nos últimos 30 dias</p>
                 </div>
               )}
-              <p className="text-xs text-slate-400">Permite avaliar impacto clínico das sugestões IA aceites vs rejeitadas</p>
+              <p className="text-xs text-slate-500">Permite avaliar impacto clínico das sugestões IA aceites vs rejeitadas</p>
             </div>
           </CardContainer>
         </div>
@@ -1616,13 +1616,13 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
           {criticos.length === 0 ? (
             <div className="flex flex-col items-center justify-center" style={{ padding: '36px 24px' }}>
               <svg className="w-8 h-8 text-emerald-400" style={{ marginBottom: '10px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-              <p className="text-slate-400 text-sm">Sem doentes críticos</p>
+              <p className="text-slate-500 text-sm">Sem doentes críticos</p>
             </div>
           ) : criticos.map((d: any, i: number) => (
             <div key={d.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < criticos.length - 1 ? '1px solid #f8fafc' : 'none' }}>
               <div className="min-w-0">
                 <p className="font-medium text-slate-800 text-sm truncate">{d.nome}</p>
-                <p className="text-slate-400 text-xs">Cama {d.cama?.numero}</p>
+                <p className="text-slate-500 text-xs">Cama {d.cama?.numero}</p>
               </div>
               <span className={`shrink-0 text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
             </div>
@@ -1635,7 +1635,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
             <div key={d.id} className="flex items-center justify-between" style={{ padding: '12px 24px', borderBottom: i < altasHoje.length - 1 ? '1px solid #f8fafc' : 'none' }}>
               <div className="min-w-0">
                 <p className="font-medium text-slate-800 text-sm truncate">{d.nome}</p>
-                <p className="text-slate-400 text-xs truncate">{d.diagnosticoPrincipal}</p>
+                <p className="text-slate-500 text-xs truncate">{d.diagnosticoPrincipal}</p>
               </div>
               <span className={`shrink-0 text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
             </div>
@@ -1682,7 +1682,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
             <CardContainer>
               <CardHeader title="Carga por Enfermeiro — Turno Atual" />
               <div style={{ padding: '16px 24px' }}>
-                {analytics.cargaEnfermeiros?.length === 0 ? <div className="flex items-center justify-center h-40 text-slate-400 text-sm">Sem atribuições no turno atual</div> : (
+                {analytics.cargaEnfermeiros?.length === 0 ? <div className="flex items-center justify-center h-40 text-slate-500 text-sm">Sem atribuições no turno atual</div> : (
                   <ResponsiveContainer width="100%" height={180}>
                     <BarChart data={analytics.cargaEnfermeiros} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
@@ -1706,13 +1706,13 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
           <thead>
             <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
               {['Doente', 'Cama', 'Diagnóstico', 'Estado', 'Alta Prevista'].map((h) => (
-                <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '12px 24px' }}>{h}</th>
+                <th key={h} className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 24px' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {doentes.length === 0 ? (
-              <tr><td colSpan={5} className="text-center text-slate-400 text-sm" style={{ padding: '48px' }}>Sem doentes internados</td></tr>
+              <tr><td colSpan={5} className="text-center text-slate-500 text-sm" style={{ padding: '48px' }}>Sem doentes internados</td></tr>
             ) : doentes.map((d: any, i: number) => (
               <tr key={d.id} className="hover:bg-slate-50 transition-colors" style={{ borderBottom: i < doentes.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                 <td style={{ padding: '14px 24px' }}><div className="flex items-center gap-3"><div className={`w-2 h-2 rounded-full shrink-0 ${estadoCor[d.estado]?.dot ?? 'bg-slate-300'}`} /><span className="font-medium text-slate-900">{d.nome}</span></div></td>
@@ -1733,7 +1733,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
 
 function Spinner() {
   return (
-    <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+    <div className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
       <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />

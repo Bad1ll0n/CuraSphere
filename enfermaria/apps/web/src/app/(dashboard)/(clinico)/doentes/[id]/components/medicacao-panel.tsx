@@ -77,7 +77,7 @@ function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => v
           <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
           <button onClick={onClose} aria-label="Fechar modal"
             className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -368,7 +368,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           </div>
         </div>
         {medicacoes.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
+          <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
             {podePrescreveMed ? 'Sem medicação ativa — clica em + para prescrever' : 'Sem medicação ativa'}
           </p>
         ) : (
@@ -380,9 +380,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                   <div className="flex items-start justify-between" style={{ padding: '12px 14px' }}>
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
-                      <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                      <p className="text-sm font-medium text-slate-600" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
                       {m.prescritoPor && (
-                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
                       )}
                       {sw && (
                         <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full" style={{ padding: '2px 8px', marginTop: '6px' }}>
@@ -398,14 +398,14 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                         onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
                         title="Gerar QR para verificação 5 Certos"
                         className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
-                        <svg className="w-3 h-3 text-slate-400 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 text-slate-500 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                         </svg>
                       </button>
                       {podePrescreveMed && (
                         <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
                           className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors">
-                          <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 text-slate-500 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -458,7 +458,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <div key={p.id} className="flex items-start justify-between bg-violet-50 border border-violet-100 rounded-xl" style={{ padding: '10px 12px' }}>
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{p.nome}</p>
-                    <p className="text-xs text-slate-400">{p.dose} · {p.via} · {p.frequencia}</p>
+                    <p className="text-xs text-slate-500">{p.dose} · {p.via} · {p.frequencia}</p>
                     {p.prescritoPor && <p className="text-xs text-violet-600" style={{ marginTop: '2px' }}>Proposto por {p.prescritoPor.nome}</p>}
                   </div>
                   <div className="flex gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
@@ -629,7 +629,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
                 <p className="text-xs text-violet-600 font-medium" style={{ marginTop: '2px' }}>Aguardará aprovação do médico responsável</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fmedicaca-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
@@ -684,7 +684,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div {...dlgRejeitarProposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
-              <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fmedicaca-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -707,20 +707,20 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div {...dlgHistoricoMed.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <h2 className="text-xl font-bold text-slate-900">Histórico de Medicação</h2>
               </div>
               <button onClick={() => setModalHistoricoMed(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             <div style={{ overflowY: 'auto', flex: 1 }}>
               {loadingHistoricoMed ? (
-                <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '40px 0' }}>
+                <div className="flex items-center justify-center gap-2 text-slate-500" style={{ padding: '40px 0' }}>
                   <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -728,29 +728,29 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                   <span className="text-sm">A carregar...</span>
                 </div>
               ) : medHistorico.length === 0 ? (
-                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px 0' }}>Sem medicações concluídas</p>
+                <p className="text-sm text-slate-500 text-center" style={{ padding: '40px 0' }}>Sem medicações concluídas</p>
               ) : (
                 <div className="flex flex-col gap-3">
                   {medHistorico.map((m) => (
                     <div key={m.id} className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '12px 14px' }}>
-                      <svg className="w-4 h-4 text-slate-400 shrink-0" style={{ marginTop: '2px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-slate-500 shrink-0" style={{ marginTop: '2px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-700">{m.nome}</p>
-                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                        <p className="text-sm font-medium text-slate-600" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
-                          <span className="text-xs text-slate-400">Início: {new Date(m.iniciadoEm).toLocaleDateString('pt-PT')}</span>
+                          <span className="text-xs text-slate-500">Início: {new Date(m.iniciadoEm).toLocaleDateString('pt-PT')}</span>
                           {m.terminadoEm && (
                             <>
                               <span className="text-slate-300 text-xs">·</span>
-                              <span className="text-xs text-slate-400">Fim: {new Date(m.terminadoEm).toLocaleDateString('pt-PT')}</span>
+                              <span className="text-xs text-slate-500">Fim: {new Date(m.terminadoEm).toLocaleDateString('pt-PT')}</span>
                             </>
                           )}
                           {m.prescritoPor && (
                             <>
                               <span className="text-slate-300 text-xs">·</span>
-                              <span className="text-xs text-slate-400">Por {m.prescritoPor.nome}</span>
+                              <span className="text-xs text-slate-500">Por {m.prescritoPor.nome}</span>
                             </>
                           )}
                         </div>
@@ -782,7 +782,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h3 className="text-base font-bold text-slate-900">QR — 5 Certos</h3>
               <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -794,8 +794,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               />
             </div>
             <p className="text-sm font-semibold text-slate-800 text-center" style={{ marginBottom: '4px' }}>{qrMed.nome}</p>
-            <p className="text-xs text-slate-400 text-center">{qrMed.dose} · {qrMed.via}</p>
-            <p className="text-xs text-slate-400 text-center" style={{ marginTop: '12px' }}>
+            <p className="text-xs text-slate-500 text-center">{qrMed.dose} · {qrMed.via}</p>
+            <p className="text-xs text-slate-500 text-center" style={{ marginTop: '12px' }}>
               Scan com o telemóvel para verificar os 5 Certos antes de administrar
             </p>
           </div>

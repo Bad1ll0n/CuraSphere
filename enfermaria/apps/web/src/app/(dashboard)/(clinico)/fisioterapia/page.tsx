@@ -95,7 +95,7 @@ export default function FisioterapiaPage() {
 
       {loading ? (
         <div className="flex items-center justify-center" style={{ padding: '80px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -103,7 +103,7 @@ export default function FisioterapiaPage() {
       ) : filtradas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '80px 40px' }}>
           <p className="text-slate-700 font-semibold text-lg">Sem sessões para este dia</p>
-          <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Nenhuma sessão agendada para {new Date(dataFiltro + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}.</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Nenhuma sessão agendada para {new Date(dataFiltro + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}.</p>
         </div>
       ) : (
         <div className="grid gap-3">
@@ -115,7 +115,7 @@ export default function FisioterapiaPage() {
                 <div className="flex items-start gap-4 flex-1 min-w-0">
                   <div className="text-center shrink-0" style={{ minWidth: '48px' }}>
                     <p className="text-lg font-bold text-slate-900">{hora}</p>
-                    <p className="text-xs text-slate-400">{s.duracao}min</p>
+                    <p className="text-xs text-slate-500">{s.duracao}min</p>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-slate-900 text-sm">{s.doente?.nome}</p>
@@ -145,7 +145,7 @@ export default function FisioterapiaPage() {
           <div {...dlgNovaSessao.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Sessão</h2>
-              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModal(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             {[
               { label: 'ID do Doente *', key: 'doenteId', type: 'text', placeholder: 'UUID do doente' },
@@ -190,7 +190,7 @@ export default function FisioterapiaPage() {
           <div {...dlgRealizar.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Sessão Realizada</h2>
-              <button aria-label="Fechar" onClick={() => setRealizarModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setRealizarModal(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>{realizarModal.doente?.nome} — {realizarModal.descricao}</p>
             <div style={{ marginBottom: '24px' }}>

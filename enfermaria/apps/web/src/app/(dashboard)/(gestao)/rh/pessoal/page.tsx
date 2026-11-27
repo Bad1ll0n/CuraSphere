@@ -112,7 +112,7 @@ export default function PessoalPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center" style={{ padding: '60px 0' }}>
-          <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -139,18 +139,18 @@ export default function PessoalPage() {
                   <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                     <td style={{ padding: '14px 20px 14px 32px' }}>
                       <p className="font-medium text-slate-800">{p.nome}</p>
-                      {p.chefe && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Chefe: {p.chefe.nome}</p>}
+                      {p.chefe && <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Chefe: {p.chefe.nome}</p>}
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       <p className="text-slate-700">{ROLE_LABEL[p.role] ?? p.role}</p>
-                      {p.subRole && <p className="text-xs text-slate-400">{p.subRole}</p>}
+                      {p.subRole && <p className="text-xs text-slate-500">{p.subRole}</p>}
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       {p.dadosContratuais ? (
                         <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${VINCULO_COR[p.dadosContratuais.tipoVinculo] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
                           {VINCULO_LABEL[p.dadosContratuais.tipoVinculo] ?? p.dadosContratuais.tipoVinculo}
                         </span>
-                      ) : <span className="text-xs text-slate-400">—</span>}
+                      ) : <span className="text-xs text-slate-500">—</span>}
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       {p.dadosContratuais?.dataFimPrevista ? (
@@ -158,7 +158,7 @@ export default function PessoalPage() {
                           {new Date(p.dadosContratuais.dataFimPrevista).toLocaleDateString('pt-PT')}
                           {aExpirar && ' ⚠'}
                         </span>
-                      ) : <span className="text-xs text-slate-400">Indefinido</span>}
+                      ) : <span className="text-xs text-slate-500">Indefinido</span>}
                     </td>
                     <td style={{ padding: '14px 16px', minWidth: '120px' }}>
                       <div className="flex items-center gap-2">
@@ -181,7 +181,7 @@ export default function PessoalPage() {
             </tbody>
           </table>
           {filtrado.length === 0 && (
-            <p className="text-sm text-slate-400 text-center" style={{ padding: '40px' }}>Sem colaboradores</p>
+            <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>Sem colaboradores</p>
           )}
         </div>
       )}

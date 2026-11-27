@@ -257,7 +257,7 @@ export default function TarefasPage() {
 
       {/* Filtros */}
       <div className="flex flex-wrap items-center gap-3 bg-white border border-slate-100 rounded-2xl shadow-sm" style={{ padding: '14px 20px', marginBottom: '24px' }}>
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Filtrar:</span>
+        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Filtrar:</span>
         <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)}
           className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           style={{ padding: '6px 12px' }}>
@@ -284,18 +284,18 @@ export default function TarefasPage() {
         </select>
         {(filtroEstado || filtroPrioridade || filtroGrupo) && (
           <button onClick={() => { setFiltroEstado(''); setFiltroPrioridade(''); setFiltroGrupo(''); }}
-            className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+            className="text-xs text-slate-500 hover:text-slate-600 transition-colors">
             Limpar
           </button>
         )}
         {(filtroEstado || filtroPrioridade || filtroGrupo) && (
-          <span className="text-xs text-slate-400 ml-auto">{filtradas.length} de {tarefas.length} tarefas</span>
+          <span className="text-xs text-slate-500 ml-auto">{filtradas.length} de {tarefas.length} tarefas</span>
         )}
       </div>
 
       {loading ? (
         <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar tarefas"
-          className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+          className="flex items-center justify-center gap-3 text-slate-500" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -312,7 +312,7 @@ export default function TarefasPage() {
           <p className="text-slate-700 font-semibold" style={{ marginBottom: '6px' }}>
             {tarefas.length === 0 ? 'Sem tarefas pendentes' : 'Sem tarefas com estes filtros'}
           </p>
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-500 text-sm">
             {tarefas.length === 0 ? 'Sem tarefas pendentes para os teus doentes neste turno' : 'Tenta ajustar os filtros'}
           </p>
         </div>
@@ -325,7 +325,7 @@ export default function TarefasPage() {
                 <div className="flex items-center gap-3" style={{ marginBottom: '12px' }}>
                   <span className={`w-2.5 h-2.5 rounded-full ${cfg.dot}`} />
                   <span className={`text-sm font-bold ${cfg.cor}`}>{cfg.label}</span>
-                  <span className="text-xs text-slate-400 font-medium">{itens.length} tarefa{itens.length !== 1 ? 's' : ''}</span>
+                  <span className="text-xs text-slate-500 font-medium">{itens.length} tarefa{itens.length !== 1 ? 's' : ''}</span>
                   <div className="flex-1 h-px bg-slate-100" />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -354,7 +354,7 @@ export default function TarefasPage() {
           <div {...dlgNovaTarefa.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
-              <button aria-label="Fechar" onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalNovaTarefa(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
@@ -369,7 +369,7 @@ export default function TarefasPage() {
                       className="w-full text-left text-sm hover:bg-slate-50 transition-colors"
                       style={{ padding: '10px 14px', borderBottom: '1px solid #f1f5f9' }}>
                       <span className="font-medium text-slate-800">{d.nome}</span>
-                      <span className="text-slate-400 text-xs" style={{ marginLeft: '8px' }}>Q{d.cama.quarto}/C{d.cama.numero}</span>
+                      <span className="text-slate-500 text-xs" style={{ marginLeft: '8px' }}>Q{d.cama.quarto}/C{d.cama.numero}</span>
                     </button>
                   ))}
                 </div>
@@ -446,7 +446,7 @@ export default function TarefasPage() {
                 <h2 className="text-lg font-bold text-slate-900">Editar Tarefa</h2>
                 <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{modalEditarTarefa.doente.nome}</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label="Fechar" onClick={() => setModalEditarTarefa(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-6" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
@@ -547,19 +547,19 @@ function TarefaCard({ tarefa, atualizando, podeCriar, onVerDoente, onToggleProgr
               </span>
             </button>
             <span className="text-slate-200 text-xs">·</span>
-            <span className="text-xs text-slate-400">Q{tarefa.doente.cama.quarto} · C{tarefa.doente.cama.numero}</span>
+            <span className="text-xs text-slate-500">Q{tarefa.doente.cama.quarto} · C{tarefa.doente.cama.numero}</span>
             <span className="text-slate-200 text-xs">·</span>
-            <span className="text-xs text-slate-400">{tarefa.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
+            <span className="text-xs text-slate-500">{tarefa.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
             {tarefa.grupoResponsavel && (
               <>
                 <span className="text-slate-200 text-xs">·</span>
-                <span className="text-xs text-slate-400 capitalize">{tarefa.grupoResponsavel}</span>
+                <span className="text-xs text-slate-500 capitalize">{tarefa.grupoResponsavel}</span>
               </>
             )}
             {tarefa.criadoPor && (
               <>
                 <span className="text-slate-200 text-xs">·</span>
-                <span className="text-xs text-slate-400">Por {tarefa.criadoPor.nome} às {new Date(tarefa.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
+                <span className="text-xs text-slate-500">Por {tarefa.criadoPor.nome} às {new Date(tarefa.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
               </>
             )}
             {prazoDate && (
