@@ -373,7 +373,7 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
                   {isOpen && (
                     <div className="border-t border-slate-100" style={{ padding: '16px' }}>
-                      <div className="grid grid-cols-3 gap-4" style={{ marginBottom: alerta || av.notas || av.pensoAplicado ? '16px' : '0' }}>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: alerta || av.notas || av.pensoAplicado ? '16px' : '0' }}>
                         {av.leito && (
                           <div>
                             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>Leito</p>

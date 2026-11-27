@@ -11,6 +11,19 @@ export const ROLES_QUALIDADE  = ['qualidade'];
 export const ROLES_DIRECAO    = ['direcao'];
 export const ROLES_CLINICO    = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA];
 
+/**
+ * UX-09 — ordem por frequência de uso, por papel (o resto segue a ordem desta lista). Antes
+ * cada grupo era ordenado alfabeticamente: o 1.º item de "Trabalho" do enfermeiro era "Banco de
+ * Sangue" e o MAR o 8.º; em inglês a ordem mudava.
+ */
+export const ORDEM_POR_PAPEL: Record<string, string[]> = {
+  enfermeiro: ['/meu-turno', '/mar', '/doentes', '/tarefas', '/passagem-turno', '/atribuicoes', '/camas', '/dashboard'],
+  auxiliar: ['/meu-turno', '/tarefas', '/camas', '/doentes', '/dashboard'],
+  medico: ['/meu-turno', '/doentes', '/worklist', '/interconsultas', '/passagem-turno', '/dashboard'],
+  farmaceutico: ['/farmacia', '/farmacia-clinica', '/catalogo', '/dashboard'],
+  administrativo: ['/recepcao', '/doentes-admin', '/camas', '/dashboard'],
+};
+
 export const navItems = [
   // ── Grupo A: Dashboards ──────────────────────────────────────────────
   {
@@ -145,6 +158,20 @@ export const navItems = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+      </svg>
+    ),
+  },
+  {
+    // UX-30: a casa do turno — destino por omissão da enfermagem.
+    href: '/meu-turno',
+    label: 'O meu turno',
+    servicos: null,
+    roles: [...ROLES_ENFERMAGEM, ...ROLES_MEDICO],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     ),
   },
@@ -543,7 +570,7 @@ export const navItems = [
     servicos: null,
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
-    grupo: 'C',
+    grupo: 'B', // UX-09: trabalho clínico, não "Pessoal"
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -556,7 +583,7 @@ export const navItems = [
     servicos: null,
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
-    grupo: 'C',
+    grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -567,7 +594,8 @@ export const navItems = [
     href: '/turno/medicacoes',
     label: 'Timeline Medicação',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_FARMACIA],
+    // O auxiliar não administra medicação e a API (GET /medicacao/timeline) recusa-o: o menu tem de dizer o mesmo.
+    roles: [...ROLES_MEDICO, 'enfermeiro', ...ROLES_FARMACIA],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
@@ -766,6 +794,16 @@ export function rotaPermitida(pathname: string, u: UtilizadorNav): boolean {
  */
 export function destinoPorOmissao(u: UtilizadorNav): string {
   return filtrarMenus(u)[0]?.href ?? '/perfil';
+}
+
+/**
+ * UX-30 — onde cada papel começa depois do login: a enfermagem (fora das chefias) começa no
+ * seu turno; os outros na página inicial.
+ */
+export function destinoInicial(u: UtilizadorNav & { subRole?: string | null }): string {
+  const chefia = !!u.subRole && /^chefe_|supervisor/.test(u.subRole);
+  if ((u.role === 'enfermeiro' || u.role === 'auxiliar') && !chefia && filtrarMenus(u).some((m) => m.href === '/meu-turno')) return '/meu-turno';
+  return '/';
 }
 
 export const roleLabel: Record<string, string> = {

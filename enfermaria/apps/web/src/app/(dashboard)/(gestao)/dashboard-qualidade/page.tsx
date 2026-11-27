@@ -175,7 +175,7 @@ export default function DashboardQualidade() {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-6" style={{ marginBottom: '28px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" style={{ marginBottom: '28px' }}>
 
         {/* IACS por Motivo */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
@@ -378,7 +378,7 @@ export default function DashboardQualidade() {
               <a href="/eventos-adversos" className="text-xs font-medium text-indigo-600 hover:text-indigo-800">Ver todos →</a>
             </div>
 
-            <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '20px' }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '20px' }}>
               {[
                 { label: 'Registados (30d)', value: eventosIndicadores.total30d, cor: 'text-slate-800' },
                 { label: 'Em Aberto', value: eventosIndicadores.abertos, cor: eventosIndicadores.abertos > 0 ? 'text-amber-600' : 'text-slate-800' },

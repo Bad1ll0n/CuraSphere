@@ -118,7 +118,7 @@ export default function LoginPage() {
             <p className="text-slate-500 text-sm leading-relaxed mb-10">
               Passagens de turno, tarefas, medicação e doentes — tudo centralizado e acessível em segundos.
             </p>
-            <div className="grid grid-cols-3 gap-3" style={{ marginTop: '24px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" style={{ marginTop: '24px' }}>
               {[{ value: '100%', label: 'Digital' }, { value: '0', label: 'Papel' }, { value: '24/7', label: 'Disponível' }].map((s) => (
                 <div key={s.label} className="bg-white/5 border border-white/8 rounded-2xl px-4 py-4 flex flex-col items-center justify-center text-center">
                   <p className="text-xl font-bold text-white">{s.value}</p>

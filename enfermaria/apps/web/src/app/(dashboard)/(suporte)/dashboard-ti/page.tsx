@@ -185,7 +185,7 @@ function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados:
     security_officer: (
       <div className="bg-red-50 border border-red-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
         <p className="text-xs font-bold text-red-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel Cibersegurança</p>
-        <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '14px' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '14px' }}>
           <div className="bg-white rounded-xl border border-red-100" style={{ padding: '14px 18px' }}>
             <p className="text-xs text-slate-500">Incidentes de Segurança</p>
             <p className="text-2xl font-bold text-red-600">{incSeg}</p>
@@ -218,7 +218,7 @@ function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados:
     database_admin: (
       <div className="bg-blue-50 border border-blue-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
         <p className="text-xs font-bold text-blue-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel Base de Dados</p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border border-blue-100" style={{ padding: '14px 18px' }}>
             <p className="text-xs text-slate-500">Incidentes BD</p>
             <p className="text-2xl font-bold text-blue-600">{incDb}</p>
@@ -237,7 +237,7 @@ function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados:
     his_erp: (
       <div className="bg-purple-50 border border-purple-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
         <p className="text-xs font-bold text-purple-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel HIS/ERP</p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border border-purple-100" style={{ padding: '14px 18px' }}>
             <p className="text-xs text-slate-500">Incidentes HIS/ERP</p>
             <p className="text-2xl font-bold text-purple-600">{incErp}</p>
@@ -256,7 +256,7 @@ function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados:
     dados_clinicos: (
       <div className="bg-teal-50 border border-teal-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
         <p className="text-xs font-bold text-teal-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel BI / Dados Clínicos</p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border border-teal-100" style={{ padding: '14px 18px' }}>
             <p className="text-xs text-slate-500">Incidentes Dados</p>
             <p className="text-2xl font-bold text-teal-600">{incDados}</p>
@@ -336,7 +336,7 @@ export default function DashboardTIPage() {
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>
               Incidentes TI · clique para filtrar
             </h2>
-            <div className="grid grid-cols-4 gap-4" style={{ marginBottom: filtroAtivo ? '20px' : '0' }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: filtroAtivo ? '20px' : '0' }}>
               <IncidenteCard
                 label="Abertos" value={dados.incidentes.abertos} cor="text-red-600"
                 bordaCor="ring-red-400" ativo={filtroAtivo === 'abertos'}
@@ -432,7 +432,7 @@ export default function DashboardTIPage() {
           {/* ── Utilizadores ── */}
           <section>
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Utilizadores do Sistema</h2>
-            <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '16px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '16px' }}>
               {[
                 { label: 'Utilizadores Ativos', value: dados.utilizadores.total, cor: 'text-blue-600' },
                 { label: 'Sessões Mobile', value: dados.utilizadores.sessoesMobile, cor: 'text-violet-600' },
@@ -446,7 +446,7 @@ export default function DashboardTIPage() {
             </div>
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '14px' }}>Distribuição por Função</p>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {dados.utilizadores.porRole.sort((a, b) => b.total - a.total).map(r => (
                   <div key={r.role} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
                     <span className="text-sm text-slate-700">{ROLE_LABELS[r.role] ?? r.role}</span>

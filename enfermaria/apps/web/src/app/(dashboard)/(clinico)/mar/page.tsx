@@ -86,6 +86,9 @@ function getCertasValues(med: Medicacao | undefined): string[] {
 export default function MarPage() {
   const toast = useToast();
   const [medicacoes, setMedicacoes] = useState<Medicacao[]>([]);
+  // UX-30: "Administrar" a partir de "O meu turno" abre o MAR já filtrado no doente.
+  const [doenteFiltro, setDoenteFiltro] = useState<string | null>(null);
+  useEffect(() => { setDoenteFiltro(new URLSearchParams(window.location.search).get('doente')); }, []);
   const [loading, setLoading] = useState(true);
   const [erroCarga, setErroCarga] = useState(false);
   const [administrando, setAdministrando] = useState<string | null>(null);
@@ -187,7 +190,7 @@ export default function MarPage() {
     } finally { setAdministrando(null); }
   };
 
-  const porDoente = medicacoes.reduce<Record<string, { doente: Medicacao['doente']; meds: Medicacao[] }>>((acc, m) => {
+  const porDoente = medicacoes.filter((m) => !doenteFiltro || m.doente.id === doenteFiltro).reduce<Record<string, { doente: Medicacao['doente']; meds: Medicacao[] }>>((acc, m) => {
     const did = m.doente.id;
     if (!acc[did]) acc[did] = { doente: m.doente, meds: [] };
     acc[did].meds.push(m);
@@ -245,6 +248,12 @@ export default function MarPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-6">
+          {doenteFiltro && (
+            <button type="button" onClick={() => { setDoenteFiltro(null); window.history.replaceState(null, '', '/mar'); }}
+              className="self-start text-sm font-semibold text-blue-700 hover:underline">
+              ← Ver todos os meus doentes
+            </button>
+          )}
           {Object.values(porDoente).map(({ doente, meds }) => (
             <div key={doente.id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '16px 24px' }}>

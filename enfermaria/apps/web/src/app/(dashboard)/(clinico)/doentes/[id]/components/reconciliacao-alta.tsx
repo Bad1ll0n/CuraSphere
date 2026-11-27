@@ -77,7 +77,7 @@ export function ReconciliacaoAlta({ requisitos, decisoes, setDecisoes, novas, se
       )}
 
       {novas.map((n, i) => (
-        <div key={i} className="grid grid-cols-4 gap-2" style={{ marginBottom: '6px' }}>
+        <div key={i} className="grid grid-cols-2 sm:grid-cols-4 gap-2" style={{ marginBottom: '6px' }}>
           {(['nome', 'dose', 'via', 'frequencia'] as const).map((campo) => (
             <input key={campo} aria-label={`Medicamento novo ${i + 1}: ${campo}`} placeholder={campo === 'nome' ? 'Medicamento novo' : campo}
               value={n[campo]} className={input} style={{ padding: '4px 6px' }}

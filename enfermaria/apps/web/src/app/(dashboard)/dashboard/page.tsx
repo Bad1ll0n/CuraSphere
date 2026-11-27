@@ -227,7 +227,7 @@ function SOSBannerGlobal() {
 
 function MedicoStatsWidget({ doentes, criticos, tarefas, urgentes }: { doentes: any[]; criticos: any[]; tarefas: any[]; urgentes: any[] }) {
   return (
-    <div className="grid grid-cols-4 gap-5 h-full content-start">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 h-full content-start">
       <StatCard label="Doentes Internados" value={doentes.length} color="bg-violet-600" />
       <StatCard label="Estado Crítico/Grave" value={criticos.length} color={criticos.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
       <StatCard label="Tarefas Pendentes" value={tarefas.length} color="bg-amber-500" />
@@ -241,7 +241,7 @@ function MedicoNEWS2Widget({ news2Data }: { news2Data: any }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm h-full" style={{ padding: '20px 24px' }}>
       <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '16px' }}>NEWS2 — Distribuição Agora</p>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
           { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
@@ -470,7 +470,7 @@ function DashboardBloco({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Cirurgias Hoje" value={cirurgias.length} color="bg-red-600" />
         <StatCard label="Em Curso" value={cirurgias.filter((c: any) => c.estado === 'em_curso').length} color="bg-orange-500" />
         <StatCard label="Concluídas" value={cirurgias.filter((c: any) => c.estado === 'concluida').length} color="bg-emerald-500" />
@@ -549,7 +549,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Exames Pendentes" value={worklist.length} color="bg-sky-500" sub={`${emProgresso} em progresso`} />
         <StatCard label="Urgentes" value={urgentes} color={urgentes > 0 ? 'bg-red-500' : 'bg-slate-400'} />
         <StatCard label="Relatórios Emitidos Hoje" value={0} color="bg-slate-400" sub={tCommon('comingSoon')} />
@@ -691,7 +691,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
     <>
       <DashboardHeader utilizador={utilizador} />
       <SOSBannerGlobal />
-      <div className={`grid grid-cols-4 gap-5`} style={{ marginBottom: '32px' }}>
+      <div className={`grid grid-cols-2 sm:grid-cols-4 gap-5`} style={{ marginBottom: '32px' }}>
         <StatCard label="Doentes Atribuídos" value={doentes.length} color="bg-teal-600" />
         <StatCard label="Tarefas Pendentes" value={tarefas.length} color="bg-amber-500" />
         <StatCard label="Tarefas Urgentes" value={urgentes.length} color={urgentes.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
@@ -705,7 +705,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
       {news2Data && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '24px' }}>
           <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '14px' }}>NEWS2 — Distribuição Actual ({news2Data.totalAtivos} doentes activos)</p>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
               { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
@@ -842,7 +842,7 @@ function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Camas Ocupadas" value={ocupacao?.ocupadas ?? 0} sub={`de ${ocupacao?.total ?? 0} total · ${ocupacao?.total ? Math.round((ocupacao.ocupadas / ocupacao.total) * 100) : 0}%`} color="bg-slate-700" />
         <StatCard label="Camas Livres" value={ocupacao?.livres ?? 0} color="bg-emerald-500" />
         <StatCard label="Doentes Críticos" value={criticos.length} color={criticos.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
@@ -927,7 +927,7 @@ function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Sessões Hoje" value={sessoes.length} color="bg-lime-600" />
         <StatCard label="Realizadas" value={realizadas.length} color="bg-emerald-500" />
         <StatCard label="Agendadas" value={agendadas.length} color="bg-blue-500" />
@@ -990,7 +990,7 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Alertas de Stock" value={stockMinimo.length} color={stockMinimo.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
         <StatCard label="Pedidos Pendentes" value={pedidos.length} color={pedidos.length > 0 ? 'bg-amber-500' : 'bg-slate-400'} />
         <StatCard label="A Expirar (30 dias)" value={aExpirar.length} color={aExpirar.length > 0 ? 'bg-orange-500' : 'bg-emerald-500'} />
@@ -1095,7 +1095,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Consultas Hoje" value={consultas.length} color="bg-pink-600" />
         <StatCard label="Realizadas" value={realizadas.length} color="bg-emerald-500" />
         <StatCard label="Agendadas" value={agendadas.length} color="bg-blue-500" />
@@ -1206,7 +1206,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Pedidos Pendentes" value={pendentes.length} color={pendentes.length > 0 ? 'bg-amber-500' : 'bg-slate-400'} />
         <StatCard label="Em Curso" value={emCurso.length} color={emCurso.length > 0 ? 'bg-blue-600' : 'bg-slate-400'} />
         <StatCard label="Concluídos Hoje" value={concluidosHoje.length} color="bg-emerald-500" />
@@ -1266,7 +1266,7 @@ function DashboardTI({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Utilizadores Ativos" value={utilizadores.filter((u: any) => u.ativo).length} color="bg-cyan-600" />
         <StatCard label="Sessões Abertas" value="—" color="bg-slate-400" sub={tCommon('availableSoon')} />
         <StatCard label="Alertas de Segurança" value={0} color="bg-emerald-500" />
@@ -1309,7 +1309,7 @@ function DashboardQualidade({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Não Conformidades" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
         <StatCard label="Auditorias Pendentes" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
         <StatCard label="IACS Ativos" value="—" color="bg-slate-400" sub={tCommon('comingSoon')} />
@@ -1375,7 +1375,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
       <DashboardHeader utilizador={utilizador} />
 
       {/* KPI Cards — Linha 1 */}
-      <div className="grid grid-cols-5 gap-4" style={{ marginBottom: '28px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4" style={{ marginBottom: '28px' }}>
         <StatCard label="Ocupação de Camas" value={`${pct}%`} sub={`${kpis?.camas?.ocupadas ?? 0}/${kpis?.camas?.total ?? 0} camas`} color={pct > 90 ? 'bg-red-500' : pct > 75 ? 'bg-amber-500' : 'bg-emerald-500'} />
         <StatCard label="Internados" value={kpis?.doentes?.internados ?? 0} sub={`Avg ${kpis?.doentes?.mediaInternamento ?? 0}d internamento`} color="bg-slate-700" />
         <StatCard label="Faturação Mês (Paga)" value={`€${((kpis?.faturacao?.pagoMes ?? 0) / 1000).toFixed(1)}k`} sub={`Pendente: €${((kpis?.faturacao?.pendenteMes ?? 0) / 1000).toFixed(1)}k`} color="bg-emerald-600" />
@@ -1383,7 +1383,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
         <StatCard label="Trocas Turno Pendentes" value={kpis?.trocasPendentes ?? 0} color={(kpis?.trocasPendentes ?? 0) > 5 ? 'bg-amber-500' : 'bg-slate-500'} />
       </div>
 
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '24px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '24px' }}>
 
         {/* Faturação por cobertura */}
         <CardContainer>
@@ -1503,7 +1503,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
       {/* Patient Outcomes Tracking */}
       <div style={{ marginTop: '24px' }}>
         <SecaoTitulo>Outcomes Clínicos — Inteligência IA</SecaoTitulo>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <CardContainer>
             <CardHeader title="Readmissões 30 dias" />
             <div style={{ padding: '24px' }}>
@@ -1608,13 +1608,13 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
         {statCards.map(({ key, label, color }) => (
           <StatCard key={key} label={label} value={ocupacaoMap[key]} color={color} sub={key === 'ocupadas' && ocupacao?.total ? `${Math.round((ocupacao.ocupadas / ocupacao.total) * 100)}% de ocupação` : undefined} />
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
         <CardContainer>
           <CardHeader title="Doentes Críticos" count={criticos.length} countColor={criticos.length > 0 ? 'bg-red-100 text-red-700' : undefined} />
           {criticos.length === 0 ? (

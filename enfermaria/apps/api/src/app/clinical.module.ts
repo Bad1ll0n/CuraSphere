@@ -41,6 +41,7 @@ import { SepsisModule } from './sepsis/sepsis.module';
 import { BaselinesModule } from './baselines/baselines.module';
 import { ReconciliacaoMedicacaoModule } from './reconciliacao-medicacao/reconciliacao-medicacao.module';
 import { PassagemIsbarModule } from './passagem-isbar/passagem-isbar.module';
+import { ResumoDoenteModule } from './resumo-doente/resumo-doente.module';
 import { PlanoAltaModule } from './plano-alta/plano-alta.module';
 import { FamiliaModule } from './familia/familia.module';
 import { FhirModule } from './fhir/fhir.module';
@@ -74,7 +75,7 @@ const clinicalModules = [
   BalancoHidricoModule, FeridasModule, TransfusaoModule, MonitorizacaoModule, SnsPemModule,
   // Session 49 — Inteligência Clínica
   SinalizacoesModule, SepsisModule, BaselinesModule, ReconciliacaoMedicacaoModule,
-  PassagemIsbarModule, PlanoAltaModule, FamiliaModule, FhirModule,
+  PassagemIsbarModule, ResumoDoenteModule, PlanoAltaModule, FamiliaModule, FhirModule,
   // Session 50
   AiClinicoModule,
   // Session 52

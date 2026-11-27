@@ -209,7 +209,7 @@ export default function IncidentesTIPage() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
         {[
           { label: 'Abertos',     value: counts.abertos,    cor: 'text-red-600',    bg: 'bg-red-50',    borda: 'border-red-200',    filtro: 'aberto' },
           { label: 'Em Análise',  value: counts.emAnalise,  cor: 'text-amber-600',  bg: 'bg-amber-50',  borda: 'border-amber-200',  filtro: 'em_analise' },
@@ -330,7 +330,7 @@ export default function IncidentesTIPage() {
                 {/* Detalhe expandido */}
                 {aberto && (
                   <div className="border-t border-slate-100" style={{ padding: '20px 24px', backgroundColor: 'var(--bg-page)' }}>
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                       {/* Descrição completa + Notas */}
                       <div className="col-span-2">
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição</p>
@@ -505,7 +505,7 @@ export default function IncidentesTIPage() {
               {/* Prioridade selector visual */}
               <div style={{ marginBottom: '18px' }}>
                 <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</span>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {PRIORIDADES.map(p => (
                     <button
                       key={p.value}

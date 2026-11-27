@@ -710,7 +710,7 @@ export default function DoenteAdminDetalhePage() {
                       ) : agSlots.length === 0 ? (
                         <p className="text-sm text-slate-500 text-center" style={{ padding: '12px 0' }}>Sem horários disponíveis neste dia</p>
                       ) : (
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                           {agSlots.map((s: any) => {
                             const hora = new Date(s.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
                             const sel = agSlot === s.dataHora;

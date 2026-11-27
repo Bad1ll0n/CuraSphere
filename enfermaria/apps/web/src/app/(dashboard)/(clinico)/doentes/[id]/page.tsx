@@ -41,7 +41,19 @@ import { ResultadosLabPanel } from './components/resultados-lab-panel';
 import { ProtocoloPanel } from './components/protocolo-panel';
 import { DocumentosSaudePanel } from './components/documentos-saude-panel';
 import { LosWidget } from './components/los-widget';
-import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
+import { FaixaIdentificacao } from '@/components/faixa-identificacao';
+
+/** UX-29: secções da ficha (a ordem é a da enfermaria: primeiro o resumo, o administrativo no fim). */
+const SEPARADORES_FICHA = [
+  { id: 'resumo', label: 'Resumo' },
+  { id: 'medicacao', label: 'Medicação' },
+  { id: 'vitais', label: 'Vitais e escalas' },
+  { id: 'notas', label: 'Notas' },
+  { id: 'exames', label: 'Exames e documentos' },
+  { id: 'alta', label: 'Plano de alta' },
+  { id: 'especialidades', label: 'Especialidades' },
+  { id: 'administrativo', label: 'Administrativo' },
+];
 
 interface Doente {
   id: string;
@@ -170,6 +182,17 @@ export default function DoenteDetalhe() {
 
   // Modals kept in page
   const [modalQR, setModalQR] = useState(false);
+  // UX-29: separador activo (fica no endereço: #vitais, #medicacao…).
+  const [separador, setSeparador] = useState<string>('resumo');
+  useEffect(() => {
+    const h = window.location.hash.replace('#', '');
+    if (SEPARADORES_FICHA.some((x) => x.id === h)) setSeparador(h);
+  }, []);
+  const escolherSeparador = (sid: string) => {
+    setSeparador(sid);
+    window.history.replaceState(null, '', `#${sid}`);
+  };
+  const [maisAcoes, setMaisAcoes] = useState(false);
   const [modalEditarDoente, setModalEditarDoente] = useState(false);
   const [editDiagnostico, setEditDiagnostico] = useState('');
   const [editAltaPrevista, setEditAltaPrevista] = useState('');
@@ -475,19 +498,24 @@ export default function DoenteDetalhe() {
   );
 
   return (
-    <div style={{ padding: '40px 48px', maxWidth: '1100px', margin: '0 auto' }}>
+    <div className="px-4 md:px-8 lg:px-12" style={{ paddingTop: '24px', paddingBottom: '40px', maxWidth: '1100px', margin: '0 auto' }}>
 
       {/* Breadcrumb */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '16px' }}>
         <Breadcrumb items={[
           { label: 'Doentes', href: '/doentes' },
           { label: doente.nome },
         ]} />
       </div>
 
+      {/* UX-29: identificação sempre visível (alergias, DNR, isolamento, risco de queda, NEWS2). */}
+      <div style={{ marginBottom: '20px' }}>
+        <FaixaIdentificacao doenteId={id!} podeRegistarDnr={utilizador?.role === 'medico'} />
+      </div>
+
       {/* Header */}
-      <div className="flex items-start justify-between" style={{ marginBottom: '28px' }}>
-        <div className="flex items-start gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4" style={{ marginBottom: '28px' }}>
+        <div className="flex items-start gap-4 min-w-0">
           {/* Avatar do doente */}
           {(doente as any).fotoUrl
             ? <img src={(doente as any).fotoUrl} alt={`Foto de ${doente.nome}`} className="w-14 h-14 rounded-full object-cover border-2 border-slate-200 shrink-0 mt-0.5" />
@@ -496,8 +524,8 @@ export default function DoenteDetalhe() {
               </div>
           }
         <div>
-          <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
-            <h1 className="text-2xl font-bold text-slate-900">{doente.nome}</h1>
+          <div className="flex flex-wrap items-center gap-3" style={{ marginBottom: '6px' }}>
+            <h1 className="text-xl md:text-2xl font-bold text-slate-900 break-words">{doente.nome}</h1>
             {riscoScore && (
               <span className={`text-xs font-bold rounded-lg border px-2 py-0.5 ${
                 riscoScore.banda === 'vermelho' ? 'bg-red-100 text-red-700 border-red-200' :
@@ -537,10 +565,7 @@ export default function DoenteDetalhe() {
             </div>
           </div>
           <p className="text-slate-500 text-sm font-mono">{doente.numeroProcesso}</p>
-          {/* UX-02: alergias no cabeçalho — antes só no 10.º painel, dois ecrãs abaixo. */}
-          <div style={{ marginTop: '8px' }}>
-            <FaixaAlergiasDoente doenteId={id!} />
-          </div>
+          {/* UX-02: as alergias estão na faixa de identificação (UX-29), sempre visível. */}
           <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
             <LosWidget doenteId={id!} utilizador={utilizador} />
             {doente.emIsolamento && (
@@ -567,7 +592,7 @@ export default function DoenteDetalhe() {
         </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Botão SOS */}
           {podeAcionarSOS && doente.ativo && (
             sosEnviado ? (
@@ -600,23 +625,6 @@ export default function DoenteDetalhe() {
             )
           )}
 
-          <button
-            onClick={() => window.open(`/doentes/${id}/print`, '_blank')}
-            className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-xl transition-all"
-            style={{ padding: '10px 16px' }}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            PDF
-          </button>
-          <button onClick={() => setModalQR(true)}
-            className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 text-sm font-medium rounded-xl transition-all"
-            style={{ padding: '10px 16px' }}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 3.5V16M4 4h4v4H4V4zm12 0h4v4h-4V4zm-12 12h4v4H4v-4z" />
-            </svg>
-            QR Code
-          </button>
           {/* Sinalizar como Preocupante */}
           {podeSinalizar && doente.ativo && (
             sinalizacaoAtiva ? (
@@ -639,23 +647,40 @@ export default function DoenteDetalhe() {
             )
           )}
 
-          {podeDarAlta && doente.ativo && (
-            <button onClick={abrirModalAlta}
-              className="border border-slate-200 text-slate-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50 text-sm font-medium rounded-xl transition-all"
-              style={{ padding: '10px 20px' }}>
-              Dar Alta
-            </button>
-          )}
-          {podeCriarPortal && (
-            <button onClick={() => { setPortalEmail(''); setPortalSenha(''); setPortalCriado(false); setModalPortal(true); }}
-              className="inline-flex items-center gap-2 border border-blue-200 text-blue-700 hover:bg-blue-50 text-sm font-medium rounded-xl transition-all"
+          {/* UX-13: 1–2 acções primárias à vista; as restantes num menu (antes ficavam fora do ecrã no tablet). */}
+          <div className="relative">
+            <button onClick={() => setMaisAcoes((v) => !v)} aria-haspopup="menu" aria-expanded={maisAcoes}
+              className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-medium rounded-xl"
               style={{ padding: '10px 16px' }}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              Portal
+              Mais ações <span aria-hidden="true">⋯</span>
             </button>
-          )}
+            {maisAcoes && (
+              <div role="menu" tabIndex={-1} className="absolute right-0 top-full bg-white border border-slate-200 rounded-xl shadow-lg z-30 overflow-hidden"
+                style={{ marginTop: '6px', minWidth: '200px' }}
+                onKeyDown={(e) => { if (e.key === 'Escape') setMaisAcoes(false); }}>
+                <button role="menuitem" onClick={() => { setMaisAcoes(false); window.open(`/doentes/${id}/print`, '_blank'); }}
+                  className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
+                  PDF da ficha
+                </button>
+                <button role="menuitem" onClick={() => { setMaisAcoes(false); setModalQR(true); }}
+                  className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
+                  QR Code
+                </button>
+                {podeCriarPortal && (
+                  <button role="menuitem" onClick={() => { setMaisAcoes(false); setPortalEmail(''); setPortalSenha(''); setPortalCriado(false); setModalPortal(true); }}
+                    className="w-full text-left text-sm text-slate-700 hover:bg-slate-50" style={{ padding: '10px 14px' }}>
+                    Portal do doente
+                  </button>
+                )}
+                {podeDarAlta && doente.ativo && (
+                  <button role="menuitem" onClick={() => { setMaisAcoes(false); abrirModalAlta(); }}
+                    className="w-full text-left text-sm text-red-700 hover:bg-red-50 border-t border-slate-100" style={{ padding: '10px 14px' }}>
+                    Dar Alta
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -664,334 +689,378 @@ export default function DoenteDetalhe() {
         <SepsisPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
-      {/* Análise de Apoio Clínico IA */}
-      <PanelErrorBoundary name="AI Clínico">
-        <AiClinicoPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Verificação de Protocolos IA */}
-      <PanelErrorBoundary name="Protocolos">
-        <ProtocoloPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Dossier Universal de Saúde */}
-      <PanelErrorBoundary name="Documentos de Saúde">
-        <DocumentosSaudePanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Info grid */}
-      <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '24px' }}>
-
-        {/* Dados pessoais */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
-          <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
-            <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-            <span className="text-sm font-semibold text-slate-700">Dados Pessoais</span>
-          </div>
-          <div className="flex flex-col gap-4">
-            <InfoRow label="Data de Nascimento" value={`${new Date(doente.dataNascimento).toLocaleDateString('pt-PT')} (${calcIdade(doente.dataNascimento)} anos)`} />
-            <InfoRow label="Admissão" value={new Date(doente.dataAdmissao).toLocaleDateString('pt-PT')} />
-            <InfoRow label="Alta Prevista" value={doente.dataAltaPrevista ? new Date(doente.dataAltaPrevista).toLocaleDateString('pt-PT') : '—'} />
-          </div>
-        </div>
-
-        {/* Clínico */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
-          <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
-            </div>
-            {['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '') && (
-              <button onClick={abrirEditarDoente}
-                className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                style={{ padding: '4px 8px' }}>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-                Editar
-              </button>
-            )}
-          </div>
-          <InfoRow label="Diagnóstico Principal" value={doente.diagnosticoPrincipal} />
-        </div>
-
-        {/* Internamento */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
-          <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
-            <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-              </svg>
-            </div>
-            <span className="text-sm font-semibold text-slate-700">Internamento</span>
-          </div>
-          <div className="flex flex-col gap-4">
-            <InfoRow label="Cama" value={doente.cama ? `Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}` : 'Sem cama atribuída'} />
-            <div className="flex flex-col gap-1">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Enfermeiros Atribuídos</span>
-              {(() => {
-                const ordemTurno: Record<string, number> = { manha: 0, tarde: 1, noite: 2 };
-                const mapa = new Map<string, typeof doente.atribuicoesHorario[0]>();
-                for (const a of doente.atribuicoesHorario) {
-                  const existente = mapa.get(a.utilizador.id);
-                  if (!existente) { mapa.set(a.utilizador.id, a); continue; }
-                  const dataA = new Date(a.horarioTurno.data).getTime();
-                  const dataE = new Date(existente.horarioTurno.data).getTime();
-                  if (dataA > dataE || (dataA === dataE && ordemTurno[a.horarioTurno.tipo] > ordemTurno[existente.horarioTurno.tipo])) {
-                    mapa.set(a.utilizador.id, a);
-                  }
-                }
-                const unicos = Array.from(mapa.values());
-                return unicos.length > 0 ? (
-                  <div className="flex flex-col gap-1.5">
-                    {unicos.map((a) => (
-                      <div key={a.utilizador.id} className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-slate-800">{a.utilizador.nome}</span>
-                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${
-                          a.horarioTurno.tipo === 'manha' ? 'bg-amber-50 text-amber-700' :
-                          a.horarioTurno.tipo === 'tarde' ? 'bg-orange-50 text-orange-700' :
-                          'bg-indigo-50 text-indigo-700'
-                        }`}>
-                          {a.horarioTurno.tipo === 'manha' ? 'Manhã' : a.horarioTurno.tipo === 'tarde' ? 'Tarde' : 'Noite'}
-                          {' · '}{new Date(a.horarioTurno.data).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : <span className="text-sm text-slate-500">Nenhum atribuído</span>;
-              })()}
-            </div>
-          </div>
-        </div>
+      {/* UX-29: separadores — antes eram 27 painéis numa coluna de 5 000 px, a começar pela IA. */}
+      <div role="tablist" aria-label="Secções da ficha" className="separadores-ficha flex gap-1 overflow-x-auto border-b border-slate-200" style={{ marginBottom: '20px' }}>
+        {SEPARADORES_FICHA.map((sep) => (
+          <button key={sep.id} role="tab" id={`tab-${sep.id}`} aria-selected={separador === sep.id} aria-controls={`painel-${sep.id}`}
+            onClick={() => escolherSeparador(sep.id)}
+            className={`whitespace-nowrap text-sm font-semibold border-b-2 transition-colors ${separador === sep.id ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
+            style={{ padding: '10px 14px', marginBottom: '-1px' }}>
+            {sep.label}
+          </button>
+        ))}
       </div>
 
-      {/* Dados Administrativos */}
-      {eAdmin && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
-          <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-pink-50 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <span className="text-sm font-semibold text-slate-700">Dados Administrativos</span>
-              <span className="text-xs text-slate-300 bg-slate-100 badge-pad py-0.5 rounded-full font-medium">Confidencial</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <a href={`/faturacao`} className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                Ver Faturação
-              </a>
-              {!editandoFicha ? (
-                <button onClick={() => setEditandoFicha(true)}
-                  className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  style={{ padding: '4px 8px' }}>
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+      {separador === 'resumo' && (
+        <div role="tabpanel" id="painel-resumo" aria-labelledby="tab-resumo">
+          {/* Info grid */}
+          <div className="grid gap-5" style={{ marginBottom: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+
+            {/* Dados pessoais */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+                <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  Editar
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
-                    className="text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors" style={{ padding: '4px 10px' }}>
-                    Cancelar
-                  </button>
-                  <button onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
-                    className="text-xs text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors" style={{ padding: '4px 10px' }}>
-                    {salvandoFicha ? 'A guardar...' : 'Guardar'}
-                  </button>
                 </div>
-              )}
+                <span className="text-sm font-semibold text-slate-700">Dados Pessoais</span>
+              </div>
+              <div className="flex flex-col gap-4">
+                <InfoRow label="Data de Nascimento" value={`${new Date(doente.dataNascimento).toLocaleDateString('pt-PT')} (${calcIdade(doente.dataNascimento)} anos)`} />
+                <InfoRow label="Admissão" value={new Date(doente.dataAdmissao).toLocaleDateString('pt-PT')} />
+                <InfoRow label="Alta Prevista" value={doente.dataAltaPrevista ? new Date(doente.dataAltaPrevista).toLocaleDateString('pt-PT') : '—'} />
+              </div>
+            </div>
+
+            {/* Clínico */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                    <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
+                </div>
+                {['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '') && (
+                  <button onClick={abrirEditarDoente}
+                    className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    style={{ padding: '4px 8px' }}>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    Editar
+                  </button>
+                )}
+              </div>
+              <InfoRow label="Diagnóstico Principal" value={doente.diagnosticoPrincipal} />
+            </div>
+
+            {/* Internamento */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+                <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                  </svg>
+                </div>
+                <span className="text-sm font-semibold text-slate-700">Internamento</span>
+              </div>
+              <div className="flex flex-col gap-4">
+                <InfoRow label="Cama" value={doente.cama ? `Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}` : 'Sem cama atribuída'} />
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Enfermeiros Atribuídos</span>
+                  {(() => {
+                    const ordemTurno: Record<string, number> = { manha: 0, tarde: 1, noite: 2 };
+                    const mapa = new Map<string, typeof doente.atribuicoesHorario[0]>();
+                    for (const a of doente.atribuicoesHorario) {
+                      const existente = mapa.get(a.utilizador.id);
+                      if (!existente) { mapa.set(a.utilizador.id, a); continue; }
+                      const dataA = new Date(a.horarioTurno.data).getTime();
+                      const dataE = new Date(existente.horarioTurno.data).getTime();
+                      if (dataA > dataE || (dataA === dataE && ordemTurno[a.horarioTurno.tipo] > ordemTurno[existente.horarioTurno.tipo])) {
+                        mapa.set(a.utilizador.id, a);
+                      }
+                    }
+                    const unicos = Array.from(mapa.values());
+                    return unicos.length > 0 ? (
+                      <div className="flex flex-col gap-1.5">
+                        {unicos.map((a) => (
+                          <div key={a.utilizador.id} className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-slate-800">{a.utilizador.nome}</span>
+                            <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${
+                              a.horarioTurno.tipo === 'manha' ? 'bg-amber-50 text-amber-700' :
+                              a.horarioTurno.tipo === 'tarde' ? 'bg-orange-50 text-orange-700' :
+                              'bg-indigo-50 text-indigo-700'
+                            }`}>
+                              {a.horarioTurno.tipo === 'manha' ? 'Manhã' : a.horarioTurno.tipo === 'tarde' ? 'Tarde' : 'Noite'}
+                              {' · '}{new Date(a.horarioTurno.data).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : <span className="text-sm text-slate-500">Nenhum atribuído</span>;
+                  })()}
+                </div>
+              </div>
             </div>
           </div>
 
-          {editandoFicha ? (
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { key: 'nif', label: 'NIF', placeholder: '123456789' },
-                { key: 'numeroSNS', label: 'Nº SNS / Beneficiário', placeholder: '123456789' },
-                { key: 'telefone', label: 'Telefone', placeholder: '+351 912 345 678' },
-                { key: 'email', label: 'Email', placeholder: 'doente@email.com' },
-                { key: 'morada', label: 'Morada', placeholder: 'Rua Exemplo, 12' },
-                { key: 'codigoPostal', label: 'Código Postal', placeholder: '1000-001' },
-                { key: 'localidade', label: 'Localidade', placeholder: 'Lisboa' },
-                { key: 'entidadeSeguradora', label: 'Seguradora', placeholder: 'Médis, Multicare...' },
-                { key: 'numeroApolice', label: 'Nº Apólice', placeholder: '' },
-                { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
-              ].map(({ key, label, placeholder }) => (
-                <div key={key}>
-                  <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
-                  <input aria-label={label}
-                    value={(fichaForm as any)[key] ?? ''}
-                    onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
-                    placeholder={placeholder}
-                    className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                    style={{ padding: '8px 12px' }}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 gap-x-8 gap-y-4">
-              {[
-                { label: 'NIF', value: ficheiroPessoal?.nif },
-                { label: 'Nº SNS / Beneficiário', value: ficheiroPessoal?.numeroSNS },
-                { label: 'Telefone', value: ficheiroPessoal?.telefone },
-                { label: 'Email', value: ficheiroPessoal?.email },
-                { label: 'Morada', value: ficheiroPessoal?.morada },
-                { label: 'Código Postal', value: ficheiroPessoal?.codigoPostal },
-                { label: 'Localidade', value: ficheiroPessoal?.localidade },
-                { label: 'Seguradora', value: ficheiroPessoal?.entidadeSeguradora },
-                { label: 'Nº Apólice', value: ficheiroPessoal?.numeroApolice },
-                { label: 'Tipo Cobertura', value: ficheiroPessoal?.tipoCobertura },
-              ].map(({ label, value }) => (
-                <div key={label}>
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block" style={{ marginBottom: '2px' }}>{label}</span>
-                  <span className="text-sm text-slate-700">{value || '—'}</span>
-                </div>
-              ))}
-            </div>
+          {/* PROD-02/PROD-03: internamentos, transferência, alergias de trás por rever */}
+          <PanelErrorBoundary name="Internamentos">
+            <InternamentosPanel doenteId={id!} utilizador={utilizador} onAlterado={carregar} />
+          </PanelErrorBoundary>
+
+          {/* Problemas Clínicos */}
+          <PanelErrorBoundary name="Problemas Clínicos">
+            <ProblemasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          <PanelErrorBoundary name="Tarefas">
+            <TarefasPanel doenteId={id!} utilizador={utilizador} tarefas={doente.tarefas} emTurno={emTurno} onRefresh={carregar} />
+          </PanelErrorBoundary>
+
+          {/* Análise de Apoio Clínico IA */}
+          <PanelErrorBoundary name="AI Clínico">
+            <AiClinicoPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Verificação de Protocolos IA */}
+          <PanelErrorBoundary name="Protocolos">
+            <ProtocoloPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
+
+      {separador === 'medicacao' && (
+        <div role="tabpanel" id="painel-medicacao" aria-labelledby="tab-medicacao">
+          <PanelErrorBoundary name="Medicação">
+            <MedicacaoPanel doenteId={id!} utilizador={utilizador} medicacoes={doente.medicacoes} onRefresh={carregar} />
+          </PanelErrorBoundary>
+
+          {/* Alergias + Contactos de Emergência */}
+          <PanelErrorBoundary name="Alergias e Contactos">
+            <AlergiasContactosPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Sangue e Transfusão */}
+          <PanelErrorBoundary name="Sangue e Transfusão">
+            <TransfusaoPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
+
+      {separador === 'vitais' && (
+        <div role="tabpanel" id="painel-vitais" aria-labelledby="tab-vitais">
+          {/* Sinais Vitais */}
+          <PanelErrorBoundary name="Sinais Vitais">
+            <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Escalas de Risco */}
+          <PanelErrorBoundary name="Escalas de Risco">
+            <RiscoEscalasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Escalas Clínicas Especializadas */}
+          <PanelErrorBoundary name="Escalas Clínicas">
+            <EscalasClinicasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Balanço Hídrico */}
+          <PanelErrorBoundary name="Balanço Hídrico">
+            <BalancoHidricoPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Feridas e Curativos */}
+          <PanelErrorBoundary name="Feridas e Curativos">
+            <FeridasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Dispositivos Invasivos */}
+          <PanelErrorBoundary name="Dispositivos Invasivos">
+            <DispositivosPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+
+          {/* Pediatria — só para doentes < 16 anos (PEWS + calculadora de dose por peso) */}
+          {doente.dataNascimento && calcIdade(doente.dataNascimento) < 16 && (
+            <PanelErrorBoundary name="Pediatria">
+              <PediatriaPanel doenteId={id!} utilizador={utilizador} />
+            </PanelErrorBoundary>
           )}
         </div>
       )}
 
-      {/* Medicação + Tarefas */}
-      <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
-        <PanelErrorBoundary name="Medicação">
-          <MedicacaoPanel doenteId={id!} utilizador={utilizador} medicacoes={doente.medicacoes} onRefresh={carregar} />
-        </PanelErrorBoundary>
-        <PanelErrorBoundary name="Tarefas">
-          <TarefasPanel doenteId={id!} utilizador={utilizador} tarefas={doente.tarefas} emTurno={emTurno} onRefresh={carregar} />
-        </PanelErrorBoundary>
-      </div>
+      {separador === 'notas' && (
+        <div role="tabpanel" id="painel-notas" aria-labelledby="tab-notas">
+          {/* Notas Clínicas SOAP */}
+          <PanelErrorBoundary name="Notas Clínicas">
+            <NotasClinicasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Notas de turno */}
-      <PanelErrorBoundary name="Notas de Turno">
-        <NotasTurnoPanel doenteId={id!} utilizador={utilizador} notas={doente.notasTurno} emTurno={emTurno} onRefresh={carregar} />
-      </PanelErrorBoundary>
+          {/* Notas de turno */}
+          <PanelErrorBoundary name="Notas de Turno">
+            <NotasTurnoPanel doenteId={id!} utilizador={utilizador} notas={doente.notasTurno} emTurno={emTurno} onRefresh={carregar} />
+          </PanelErrorBoundary>
 
-      {/* PROD-02/PROD-03: internamentos, transferência, alergias de trás por rever */}
-      <PanelErrorBoundary name="Internamentos">
-        <InternamentosPanel doenteId={id!} utilizador={utilizador} onAlterado={carregar} />
-      </PanelErrorBoundary>
-
-      {/* Alergias + Contactos de Emergência */}
-      <PanelErrorBoundary name="Alergias e Contactos">
-        <AlergiasContactosPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Sinais Vitais */}
-      <PanelErrorBoundary name="Sinais Vitais">
-        <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Pediatria — só para doentes < 16 anos (PEWS + calculadora de dose por peso) */}
-      {doente.dataNascimento && calcIdade(doente.dataNascimento) < 16 && (
-        <PanelErrorBoundary name="Pediatria">
-          <PediatriaPanel doenteId={id!} utilizador={utilizador} />
-        </PanelErrorBoundary>
+          {/* Interconsultas */}
+          <PanelErrorBoundary name="Interconsultas">
+            <InterconsultasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
       )}
 
-      {/* Balanço Hídrico */}
-      <PanelErrorBoundary name="Balanço Hídrico">
-        <BalancoHidricoPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+      {separador === 'exames' && (
+        <div role="tabpanel" id="painel-exames" aria-labelledby="tab-exames">
+          {/* Resultados Analíticos (Lab) */}
+          <PanelErrorBoundary name="Resultados Analíticos">
+            <ResultadosLabPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Feridas e Curativos */}
-      <PanelErrorBoundary name="Feridas e Curativos">
-        <FeridasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          {/* Exames Complementares */}
+          <PanelErrorBoundary name="Exames Complementares">
+            <ExamesPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Sangue e Transfusão */}
-      <PanelErrorBoundary name="Sangue e Transfusão">
-        <TransfusaoPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          {/* Dossier Universal de Saúde */}
+          <PanelErrorBoundary name="Documentos de Saúde">
+            <DocumentosSaudePanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
 
-      {/* Maternidade / Obstetrícia — auto-fino se não houver gravidez ativa */}
-      <PanelErrorBoundary name="Maternidade">
-        <MaternidadePanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+      {separador === 'alta' && (
+        <div role="tabpanel" id="painel-alta" aria-labelledby="tab-alta">
+          {/* Plano de Alta */}
+          <PanelErrorBoundary name="Plano de Alta">
+            <PlanoAltaPanel doenteId={id!} utilizador={utilizador} />
+            <NotaAltaEnfermagemPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
 
-      {/* Oncologia / Quimioterapia — auto-fino/oculto se não houver plano ativo */}
-      <PanelErrorBoundary name="Oncologia">
-        <OncologiaPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+      {separador === 'especialidades' && (
+        <div role="tabpanel" id="painel-especialidades" aria-labelledby="tab-especialidades">
+          <p className="text-sm text-slate-500" style={{ marginBottom: '12px' }}>Só aparecem os registos de especialidade aplicáveis a este doente.</p>
+          {/* Maternidade / Obstetrícia — auto-fino se não houver gravidez ativa */}
+          <PanelErrorBoundary name="Maternidade">
+            <MaternidadePanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Diálise / Nefrologia — sessões de hemodiálise + ganho interdialítico */}
-      <PanelErrorBoundary name="Diálise">
-        <DialisePanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          {/* Oncologia / Quimioterapia — auto-fino/oculto se não houver plano ativo */}
+          <PanelErrorBoundary name="Oncologia">
+            <OncologiaPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Plano de Alta */}
-      <PanelErrorBoundary name="Plano de Alta">
-        <PlanoAltaPanel doenteId={id!} utilizador={utilizador} />
-        <NotaAltaEnfermagemPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          {/* Diálise / Nefrologia — sessões de hemodiálise + ganho interdialítico */}
+          <PanelErrorBoundary name="Diálise">
+            <DialisePanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
 
-      {/* Escalas de Risco */}
-      <PanelErrorBoundary name="Escalas de Risco">
-        <RiscoEscalasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+      {separador === 'administrativo' && (
+        <div role="tabpanel" id="painel-administrativo" aria-labelledby="tab-administrativo">
+          {/* Dados Administrativos */}
+          {eAdmin && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-pink-50 flex items-center justify-center shrink-0">
+                    <svg className="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-semibold text-slate-700">Dados Administrativos</span>
+                  <span className="text-xs text-slate-300 bg-slate-100 badge-pad py-0.5 rounded-full font-medium">Confidencial</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a href={`/faturacao`} className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    Ver Faturação
+                  </a>
+                  {!editandoFicha ? (
+                    <button onClick={() => setEditandoFicha(true)}
+                      className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      style={{ padding: '4px 8px' }}>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                      Editar
+                    </button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <button onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
+                        className="text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors" style={{ padding: '4px 10px' }}>
+                        Cancelar
+                      </button>
+                      <button onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
+                        className="text-xs text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors" style={{ padding: '4px 10px' }}>
+                        {salvandoFicha ? 'A guardar...' : 'Guardar'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-      {/* Resultados Analíticos (Lab) */}
-      <PanelErrorBoundary name="Resultados Analíticos">
-        <ResultadosLabPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+              {editandoFicha ? (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {[
+                    { key: 'nif', label: 'NIF', placeholder: '123456789' },
+                    { key: 'numeroSNS', label: 'Nº SNS / Beneficiário', placeholder: '123456789' },
+                    { key: 'telefone', label: 'Telefone', placeholder: '+351 912 345 678' },
+                    { key: 'email', label: 'Email', placeholder: 'doente@email.com' },
+                    { key: 'morada', label: 'Morada', placeholder: 'Rua Exemplo, 12' },
+                    { key: 'codigoPostal', label: 'Código Postal', placeholder: '1000-001' },
+                    { key: 'localidade', label: 'Localidade', placeholder: 'Lisboa' },
+                    { key: 'entidadeSeguradora', label: 'Seguradora', placeholder: 'Médis, Multicare...' },
+                    { key: 'numeroApolice', label: 'Nº Apólice', placeholder: '' },
+                    { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
+                  ].map(({ key, label, placeholder }) => (
+                    <div key={key}>
+                      <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</span>
+                      <input aria-label={label}
+                        value={(fichaForm as any)[key] ?? ''}
+                        onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
+                        placeholder={placeholder}
+                        className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                        style={{ padding: '8px 12px' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-4">
+                  {[
+                    { label: 'NIF', value: ficheiroPessoal?.nif },
+                    { label: 'Nº SNS / Beneficiário', value: ficheiroPessoal?.numeroSNS },
+                    { label: 'Telefone', value: ficheiroPessoal?.telefone },
+                    { label: 'Email', value: ficheiroPessoal?.email },
+                    { label: 'Morada', value: ficheiroPessoal?.morada },
+                    { label: 'Código Postal', value: ficheiroPessoal?.codigoPostal },
+                    { label: 'Localidade', value: ficheiroPessoal?.localidade },
+                    { label: 'Seguradora', value: ficheiroPessoal?.entidadeSeguradora },
+                    { label: 'Nº Apólice', value: ficheiroPessoal?.numeroApolice },
+                    { label: 'Tipo Cobertura', value: ficheiroPessoal?.tipoCobertura },
+                  ].map(({ label, value }) => (
+                    <div key={label}>
+                      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block" style={{ marginBottom: '2px' }}>{label}</span>
+                      <span className="text-sm text-slate-700">{value || '—'}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
-      {/* Exames Complementares */}
-      <PanelErrorBoundary name="Exames Complementares">
-        <ExamesPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          {/* SEC-19: consentimento/oposição ao tratamento de dados */}
+          <PanelErrorBoundary name="Consentimentos (RGPD)">
+            <ConsentimentosTratamentoPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Notas Clínicas SOAP */}
-      <PanelErrorBoundary name="Notas Clínicas">
-        <NotasClinicasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          <PanelErrorBoundary name="Consultas">
+            <ConsultasPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
 
-      {/* Escalas Clínicas Especializadas */}
-      <PanelErrorBoundary name="Escalas Clínicas">
-        <EscalasClinicasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Interconsultas */}
-      <PanelErrorBoundary name="Interconsultas">
-        <InterconsultasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Problemas Clínicos */}
-      <PanelErrorBoundary name="Problemas Clínicos">
-        <ProblemasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* Dispositivos Invasivos */}
-      <PanelErrorBoundary name="Dispositivos Invasivos">
-        <DispositivosPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      {/* SEC-19: consentimento/oposição ao tratamento de dados */}
-      <PanelErrorBoundary name="Consentimentos (RGPD)">
-        <ConsentimentosTratamentoPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-
-      <PanelErrorBoundary name="Consultas">
-        <ConsultasPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
-      <PanelErrorBoundary name="Faturação">
-        <FaturacaoPanel doenteId={id!} utilizador={utilizador} />
-      </PanelErrorBoundary>
+          <PanelErrorBoundary name="Faturação">
+            <FaturacaoPanel doenteId={id!} utilizador={utilizador} />
+          </PanelErrorBoundary>
+        </div>
+      )}
 
       {/* Modal Editar Doente */}
       {modalEditarDoente && (

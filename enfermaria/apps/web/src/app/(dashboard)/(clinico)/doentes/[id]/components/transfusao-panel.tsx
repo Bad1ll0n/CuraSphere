@@ -205,7 +205,7 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
                   {Object.entries(COMPONENTES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label htmlFor="ftransfus-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Unidades *</label>
                   <input id="ftransfus-1" type="number" min={1} max={20} value={form.numeroUnidades} onChange={e => setForm(f => ({ ...f, numeroUnidades: Number(e.target.value) }))} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50" style={{ padding: '10px 14px' }} />

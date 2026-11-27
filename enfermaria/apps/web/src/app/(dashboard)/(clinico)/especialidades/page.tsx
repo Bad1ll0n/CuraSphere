@@ -108,7 +108,7 @@ export default function EspecialidadesPage() {
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '28px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '28px' }}>
         <div className="bg-blue-50 border border-blue-100 rounded-2xl" style={{ padding: '18px 20px' }}>
           <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide">Sessões Agendadas</p>
           <p className="text-2xl font-bold text-blue-700" style={{ marginTop: '4px' }}>{agendadas.length}</p>

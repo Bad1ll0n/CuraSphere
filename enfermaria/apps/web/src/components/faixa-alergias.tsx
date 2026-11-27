@@ -19,10 +19,13 @@ export function FaixaAlergias({
   alergias,
   erro = false,
   compacta = false,
+  avaliacao,
 }: {
   alergias: AlergiaResumo[] | null | undefined;
   erro?: boolean;
   compacta?: boolean;
+  /** PROD-06: estado da avaliação ('sem_alergias_conhecidas' é afirmado; lista vazia sem avaliação não). */
+  avaliacao?: string | null;
 }) {
   const pad = compacta ? '4px 10px' : '8px 12px';
 
@@ -40,10 +43,17 @@ export function FaixaAlergias({
       </div>
     );
   }
+  if (alergias.length === 0 && avaliacao === 'sem_alergias_conhecidas') {
+    return (
+      <div role="status" className="rounded-lg border border-green-300 bg-green-50 text-xs font-semibold text-green-800" style={{ padding: pad }}>
+        ✓ Sem alergias conhecidas (avaliado)
+      </div>
+    );
+  }
   if (alergias.length === 0) {
     return (
       <div role="status" className="rounded-lg border border-amber-300 bg-amber-50 text-xs font-semibold text-amber-900" style={{ padding: pad }}>
-        ⚠️ Sem alergias registadas — confirme com o doente se não foram avaliadas.
+        ⚠️ Alergias não avaliadas — pergunte ao doente/família antes de prescrever ou administrar.
       </div>
     );
   }
@@ -62,6 +72,7 @@ export function FaixaAlergias({
 /** A mesma faixa, que carrega as alergias do doente. */
 export function FaixaAlergiasDoente({ doenteId, compacta }: { doenteId: string; compacta?: boolean }) {
   const [alergias, setAlergias] = useState<AlergiaResumo[] | null>(null);
+  const [avaliacao, setAvaliacao] = useState<string | null>(null);
   const [erro, setErro] = useState(false);
   useEffect(() => {
     let ativo = true;
@@ -70,7 +81,10 @@ export function FaixaAlergiasDoente({ doenteId, compacta }: { doenteId: string; 
     api.get(`/alergias/${doenteId}`)
       .then((r) => { if (ativo) setAlergias(Array.isArray(r.data) ? r.data : []); })
       .catch(() => { if (ativo) setErro(true); });
+    api.get(`/alergias/${doenteId}/avaliacao`)
+      .then((r) => { if (ativo) setAvaliacao(r.data?.estado ?? null); })
+      .catch(() => { /* sem estado: mantém o aviso conservador */ });
     return () => { ativo = false; };
   }, [doenteId]);
-  return <FaixaAlergias alergias={alergias} erro={erro} compacta={compacta} />;
+  return <FaixaAlergias alergias={alergias} erro={erro} compacta={compacta} avaliacao={avaliacao} />;
 }

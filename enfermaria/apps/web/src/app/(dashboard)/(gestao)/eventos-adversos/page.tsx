@@ -144,7 +144,7 @@ export default function EventosAdversosPage() {
       </div>
 
       {/* KPIs rápidos */}
-      <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '24px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '24px' }}>
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '16px 20px' }}>
           <p className="text-2xl font-bold text-slate-800">{eventos.length}</p>
           <p className="text-xs font-medium text-slate-500" style={{ marginTop: '3px' }}>Total (filtro atual)</p>

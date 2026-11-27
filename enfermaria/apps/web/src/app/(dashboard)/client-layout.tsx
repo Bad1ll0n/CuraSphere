@@ -24,6 +24,7 @@ import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal';
 import { NotificationBell } from '@/components/notification-bell';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useTranslations } from 'next-intl';
+import { aplicarModos } from '@/lib/modos-turno';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
@@ -33,6 +34,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
 
   const [sidebarAberta, setSidebarAberta] = useState(false);
+
+  // UX-30: modos cabeceira/noturno (preferência do posto); o noturno automático acompanha a hora.
+  useEffect(() => {
+    aplicarModos();
+    const t = setInterval(aplicarModos, 60_000);
+    return () => clearInterval(t);
+  }, []);
   const [modalPwd, setModalPwd] = useState(false);
   const [modalConfig, setModalConfig] = useState(false);
   const [mostrarTour, setMostrarTour] = useState(false);
@@ -171,23 +179,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       />
 
       <main id="main-content" className="flex-1 overflow-auto" tabIndex={-1}>
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        {/* UX-14: barra no fluxo da página (antes eram controlos `fixed` que tapavam a data, o
+            título das Notificações e o seletor de idioma em telemóvel e a 977 px). */}
+        <div className="barra-topo sticky top-0 z-30 flex items-center justify-end gap-2 bg-slate-50/95 backdrop-blur border-b border-slate-100"
+          style={{ padding: '8px 16px', minHeight: '56px' }}>
+          <button
+            className="botao-menu md:hidden mr-auto w-10 h-10 bg-[#0f172a] text-white rounded-xl flex items-center justify-center shadow-lg"
+            aria-label={tLayout('openMenu')}
+            aria-expanded={sidebarAberta}
+            aria-controls="sidebar-nav"
+            onClick={() => setSidebarAberta((v) => !v)}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <NotificationBell />
           <LanguageSwitcher />
           <DarkModeToggle />
         </div>
-
-        <button
-          className="md:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-[#0f172a] text-white rounded-xl flex items-center justify-center shadow-lg"
-          aria-label={tLayout('openMenu')}
-          aria-expanded={sidebarAberta}
-          aria-controls="sidebar-nav"
-          onClick={() => setSidebarAberta((v) => !v)}
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
         <ToastProvider>
           <SocketStatusBanner estado={estadoTempoReal} onReconectar={reconectarTempoReal} />
           {passwordAviso.ativo && (

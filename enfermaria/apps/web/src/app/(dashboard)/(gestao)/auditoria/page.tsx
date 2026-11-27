@@ -201,7 +201,7 @@ export default function AuditoriaPagina() {
       <form onSubmit={aplicarFiltros}>
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
           <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '16px' }}>Filtros</p>
-          <div className="grid grid-cols-5 gap-4" style={{ marginBottom: '16px' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4" style={{ marginBottom: '16px' }}>
             {/* Utilizador */}
             <div>
               <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>

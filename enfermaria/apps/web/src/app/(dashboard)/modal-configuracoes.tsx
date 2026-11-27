@@ -37,7 +37,7 @@ export function ModalConfiguracoes({ onClose, onAlterarPassword }: Props) {
         </div>
 
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Tema</p>
-        <div className="grid grid-cols-3 gap-3" style={{ marginBottom: '28px' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" style={{ marginBottom: '28px' }}>
           {OPCOES.map(({ tema: op, label, ariaKey, caminho }) => {
             const activo = tema === op;
             return (

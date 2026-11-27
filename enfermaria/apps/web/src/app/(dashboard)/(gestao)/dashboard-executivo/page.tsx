@@ -166,7 +166,7 @@ export default function DashboardExecutivo() {
           {/* ── Doentes & Camas ── */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '20px' }}>Internamento & Ocupação</h2>
-            <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
               <BigStat label="Internados" value={dados.doentes.internados} cor="indigo" />
               <BigStat label="Ambulatório" value={dados.doentes.ambulatorio} cor="blue" />
               <BigStat label="Aguardam Cama" value={dados.doentes.pendenteCama} cor="amber" />
@@ -217,7 +217,7 @@ export default function DashboardExecutivo() {
           {/* ── Faturação ── */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '20px' }}>Faturação — Mês Atual</h2>
-            <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '20px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '20px' }}>
               <BigStat label="Total Faturado" value={fmt(dados.faturacao.totalMes)} cor="indigo" />
               <BigStat label="Recebido" value={fmt(dados.faturacao.pagoMes)} cor="green" />
               <BigStat label="Pendente de Cobrança" value={fmt(dados.faturacao.pendenteMes)} cor={dados.faturacao.pendenteMes > 0 ? 'amber' : 'slate'} />
@@ -258,7 +258,7 @@ export default function DashboardExecutivo() {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '16px' }}>Consultas Hoje</h2>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <BigStat label="Agendadas" value={dados.consultasHoje.total} cor="slate" />
                 <BigStat label="Faltas" value={dados.consultasHoje.faltaram} cor={dados.consultasHoje.faltaram > 3 ? 'red' : 'slate'} />
                 <BigStat label="Taxa No-show" value={`${dados.consultasHoje.taxaNoShow}%`} cor={dados.consultasHoje.taxaNoShow > 20 ? 'amber' : 'green'} />

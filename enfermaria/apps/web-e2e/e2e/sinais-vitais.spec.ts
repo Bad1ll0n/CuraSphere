@@ -9,7 +9,7 @@ test.describe('Sinais Vitais e Scores de Risco', () => {
     await loginAs(page, '00002');
     const doenteId = await prepararDoenteClinico(page);
 
-    await page.goto(`/doentes/${doenteId}`);
+    await page.goto(`/doentes/${doenteId}#vitais`); // UX-29: separador 'Vitais e escalas'
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
 
