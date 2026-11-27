@@ -56,6 +56,21 @@ export default function LoginPage() {
     if (mfaPendente) mfaInputRef.current?.focus();
   }, [mfaPendente]);
 
+  // SEC-05: o SSO sem 2.º fator no fornecedor devolve aqui o desafio TOTP no fragmento do URL
+  // (#mfa=…, que não vai a servidores nem a logs) — pede-se o código como no login por password.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const desafio = new URLSearchParams(window.location.hash.slice(1)).get('mfa');
+    if (desafio) {
+      setMfaChallengeToken(desafio);
+      setMfaPendente(true);
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    const erroSso = new URLSearchParams(window.location.search).get('erro');
+    if (erroSso === 'sso_mfa') setErro(t('ssoMfa'));
+    else if (erroSso === 'sso_failed') setErro(t('ssoFailed'));
+  }, [t]);
+
   const handleSubmitCredenciais = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');

@@ -75,6 +75,10 @@ model Utilizador {
   // é daqui que sai o pessoal da escala do serviço — e as competências que contam na escala.
   unidade                 String?
   competencias            String[]  @default([]) // ex.: 'SAV', 'UCI', 'triagem'
+  // SEC-05: a identidade SSO é do PAR (fornecedor, subject). Só o subject (`sso:<sub>`) deixava
+  // dois fornecedores com o mesmo `sub` entrarem na mesma conta.
+  ssoProviderId           String?
+  ssoSubject              String?
   ordemExperiencia        Int? // definida pela chefe de enfermeiros
   equipa                  String? // ex: "A", "B", "C"
   ativo                   Boolean   @default(true)
@@ -234,6 +238,7 @@ model Utilizador {
   @@index([tenantId, role, ativo])
   @@index([role, ativo])
   @@index([servico])
+  @@unique([ssoProviderId, ssoSubject])
   @@map("utilizadores")
 }
 

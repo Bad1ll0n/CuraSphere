@@ -65,7 +65,9 @@
       "usePassword": "Use password"
     },
     "passwordExpired": "Your password has expired. Please change it.",
-    "welcome": "Welcome back"
+    "welcome": "Welcome back",
+    "ssoMfa": "The identity provider did not confirm a second factor and your account has no MFA enabled. Enable MFA at the provider or contact IT.",
+    "ssoFailed": "Could not sign in with the identity provider."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1209,5 +1211,9 @@
     "indicatorsTitle": "Nursing indicators",
     "indicatorsBody": "Falls and pressure injuries per 1000 days, risk assessment within 24 h, pain per shift, device-associated infection, readmissions and ED-to-bed time.",
     "open": "Open"
+  },
+  "adverseEvents": {
+    "reportOnlyTitle": "Incident reporting",
+    "reportOnlyBody": "Use “Record event” to report (it can be anonymous). The list and follow-up of incidents belong to risk management."
   }
 }

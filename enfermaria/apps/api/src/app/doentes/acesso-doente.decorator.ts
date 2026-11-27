@@ -31,3 +31,12 @@ export const AcessoDoentePor = (modelo: string, parametro = 'id', campo = 'doent
  * revisão de código.
  */
 export const AcessoDoenteIsento = (motivo: string) => SetMetadata(ACESSO_DOENTE_ISENTO, motivo);
+
+export const ACESSO_ADMINISTRATIVO = 'acessoAdministrativo';
+
+/**
+ * QA-11: a rota só toca em dados ADMINISTRATIVOS do doente (identificação, cama, transferência,
+ * contactos, ficha pessoal). O papel `administrativo` acede-lhe sem atribuição; em todas as
+ * outras — dados clínicos — precisa de break-glass, como qualquer profissional sem atribuição.
+ */
+export const DadosAdministrativos = () => SetMetadata(ACESSO_ADMINISTRATIVO, true);

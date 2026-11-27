@@ -164,14 +164,14 @@ export class DoenteService {
   /**
    * Verifica se o utilizador tem direito a aceder ao doente.
    * Permissões:
-   *   - direcao, qualidade, ti, chefe_turno, chefe_enfermeiros, chefe_medicos, administrativo, farmaceutico → acesso total (oversight)
+   *   - direcao, qualidade, chefe_turno/enfermeiros/medicos, farmaceutico → total; administrativo → só `@DadosAdministrativos`; ti → nenhum (QA-11)
    *   - medico, enfermeiro, auxiliar, tecnico_saude, operacional → só doentes a quem estão atribuídos
    *     (via Atribuicao OU AtribuicaoHorarioTurno alguma vez)
    * Esta verificação fecha o vector IDOR principal (PHI cross-patient leak).
    */
-  async assertAcessoDoente(utilizadorId: string, role: string, doenteId: string, motivoBreakGlass?: string): Promise<void> {
-    const rolesOversight = ['direcao', 'qualidade', 'ti', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'administrativo', 'farmaceutico'];
-    if (rolesOversight.includes(role)) return;
+  async assertAcessoDoente(utilizadorId: string, role: string, doenteId: string, motivoBreakGlass?: string, dadosAdministrativos = false): Promise<void> {
+    const rolesOversight = ['direcao', 'qualidade', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'farmaceutico']; // QA-11: sem `ti`/`administrativo`
+    if (rolesOversight.includes(role) || (dadosAdministrativos && role === 'administrativo')) return;
 
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);

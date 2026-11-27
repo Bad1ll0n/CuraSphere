@@ -7,6 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ROLES_KEY } from '../auth/roles.decorator';
 import { Observable } from 'rxjs';
 import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -16,6 +17,7 @@ import { idCorrelacaoDoPedido } from '../common/correlacao';
 import {
   ACESSO_DOENTE_ISENTO,
   ACESSO_DOENTE_POR,
+  ACESSO_ADMINISTRATIVO,
   AcessoDoentePorMeta,
 } from './acesso-doente.decorator';
 
@@ -142,9 +144,16 @@ export class AcessoDoenteInterceptor implements NestInterceptor {
       throw new ForbiddenException('Sessão incompleta — conclua a autenticação');
     }
 
+    // QA-11: o `administrativo` passa sem atribuição nas rotas de dados administrativos — as
+    // marcadas com @DadosAdministrativos e as que o nomeiam explicitamente em @Roles (foram
+    // desenhadas para ele: admissão, camas, consultas, faturação). As rotas clínicas abertas a
+    // qualquer profissional (alergias, medicação, sinais vitais…) não o nomeiam: break-glass.
+    const papeisDaRota = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [context.getHandler(), context.getClass()]) ?? [];
+    const administrativa = !!this.reflector.getAllAndOverride<boolean>(ACESSO_ADMINISTRATIVO, [context.getHandler(), context.getClass()])
+      || papeisDaRota.includes('administrativo');
     try {
       for (const doenteId of new Set(unicos)) {
-        await this.doentes.assertAcessoDoente(utilizador.sub, utilizador.role, doenteId);
+        await this.doentes.assertAcessoDoente(utilizador.sub, utilizador.role, doenteId, undefined, administrativa);
       }
     } catch (e) {
       this.registarLeitura(req, utilizador, unicos, 'negado');

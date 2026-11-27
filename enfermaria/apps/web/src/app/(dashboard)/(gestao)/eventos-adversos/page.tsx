@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { ApenasNotificar } from './apenas-notificar';
 
 interface EventoAdverso {
   id: string;
@@ -68,7 +69,8 @@ export default function EventosAdversosPage() {
 
   const role = utilizador?.role ?? '';
   const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'qualidade'].includes(role);
-  const podeGerir = ['qualidade', 'direcao', 'medico'].includes(role);
+  // A lista (incidentes de todos os doentes) é da gestão de risco — igual à regra da API.
+  const podeGerir = ['qualidade', 'direcao'].includes(role) || ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno'].includes(utilizador?.subRole ?? '');
 
   const { data: eventos = [], isLoading: loading } = useQuery<EventoAdverso[]>({
     queryKey: ['eventos-adversos', filtroTipo, filtroGravidade, filtroEstado],
@@ -80,6 +82,7 @@ export default function EventosAdversosPage() {
       return api.get(`/eventos-adversos?${params.toString()}`).then(r => r.data).catch(() => []);
     },
     staleTime: 30_000,
+    enabled: podeGerir,
   });
 
   const { data: doentesLista = [] } = useQuery<{ id: string; nome: string }[]>({
@@ -143,6 +146,7 @@ export default function EventosAdversosPage() {
         )}
       </div>
 
+      {!podeGerir ? <ApenasNotificar /> : (<>
       {/* KPIs rápidos */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: '24px' }}>
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '16px 20px' }}>
@@ -248,6 +252,7 @@ export default function EventosAdversosPage() {
           ))}
         </div>
       )}
+      </>)}
 
       {/* Modal: Registar Evento */}
       {modalNovo && (
