@@ -25,7 +25,7 @@ services:
           cpus: "1.5"
         reservations:
           memory: 512M
-    image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
+    image: postgres:19-alpine@sha256:cac45fb483caee3668946088a1c0532db89d5285c28dbfeac889b4068296e06f
     container_name: curasphere-db
     restart: unless-stopped
     security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
