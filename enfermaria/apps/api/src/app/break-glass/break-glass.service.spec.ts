@@ -225,6 +225,32 @@ describe('BreakGlassService', () => {
     });
   });
 
+  describe('rever() — casos-limite (SEC-14)', () => {
+    it('um acesso inexistente dá 404', async () => {
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue(null);
+      await expect(service.rever('nao-existe', 'chefe', 'justificado')).rejects.toThrow(NotFoundException);
+    });
+
+    it('a falha do aviso à qualidade não desfaz a revisão', async () => {
+      mockPrisma.breakGlassAccess.findUnique.mockResolvedValue({ id: 'bg2', utilizadorId: 'autor', doenteId: 'd1', revistoEm: null });
+      mockPrisma.breakGlassAccess.updateMany.mockResolvedValue({ count: 1 });
+      mockNotificacoes.enviarParaRole.mockRejectedValueOnce(new Error('push em baixo'));
+      await expect(service.rever('bg2', 'chefe', 'injustificado', 'Sem qualquer situação de emergência')).resolves.toBeDefined();
+      await new Promise((r) => setImmediate(r)); // o catch do aviso corre sem rejeição por tratar
+    });
+  });
+
+  describe('porRever()', () => {
+    it('lista só os acessos por rever, o mais antigo primeiro, com quem acedeu e o doente', async () => {
+      mockPrisma.breakGlassAccess.findMany.mockResolvedValue([{ id: 'bg1' }]);
+      expect(await service.porRever()).toEqual([{ id: 'bg1' }]);
+      const args = mockPrisma.breakGlassAccess.findMany.mock.calls[0][0];
+      expect(args.where).toEqual({ revistoEm: null });
+      expect(args.orderBy).toEqual({ criadoEm: 'asc' });
+      expect(Object.keys(args.include)).toEqual(['utilizador', 'doente']);
+    });
+  });
+
   describe('escalarPorRever()', () => {
     it('escala uma vez os acessos sem revisão há mais de 72 h, para a direção e a qualidade', async () => {
       mockPrisma.tryBecomeLeader.mockResolvedValue(true);
