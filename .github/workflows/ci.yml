@@ -208,6 +208,8 @@ jobs:
           NEXT_PUBLIC_WEB_URL: https://exemplo.pt
           NEXT_PUBLIC_JITSI_SERVER: https://jitsi.exemplo.pt
           JITSI_SERVER: https://jitsi.exemplo.pt
+          JITSI_APP_ID: ci
+          JITSI_APP_SECRET: ci-placeholder
           SPMS_API_URL: https://api.exemplo.pt
           SNS_PEM_MODE: sandbox
           ANTHROPIC_API_KEY: placeholder

@@ -1,0 +1,18 @@
+# OPS-21 — valores comuns a staging e produção. Ajustar à rede real do hospital.
+admin_utilizador: opscurasphere
+# Quem pode fazer SSH (bastion / VPN de administração). Nunca 0.0.0.0/0.
+ssh_redes_admin:
+  - 10.10.0.0/24
+# Quem pode chegar ao nginx (LAN e VPN do hospital) — tem de coincidir com a allowlist do
+# nginx/nginx.conf. O portal do doente, se for exposto, entra por um proxy próprio.
+https_redes_permitidas:
+  - 192.168.0.0/16
+  - 10.0.0.0/8
+fuso_horario: Europe/Lisbon
+servidores_ntp:
+  - ntp02.oal.ul.pt
+  - ntp04.oal.ul.pt
+curasphere_dir: /opt/curasphere
+curasphere_repo: https://github.com/Bad1ll0n/CuraSphere.git
+# Versão a instalar (tag). Vazio = só provisiona o host; o deploy faz-se com deploy.sh.
+curasphere_versao: ""

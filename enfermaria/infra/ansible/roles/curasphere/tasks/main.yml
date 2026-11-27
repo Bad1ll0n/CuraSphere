@@ -1,0 +1,47 @@
+---
+# OPS-21 — a aplicação: código numa versão concreta, .env do ambiente (do vault, 0600) e o
+# deploy feito pelo mesmo scripts/deploy.sh que se usa à mão.
+- name: Directório da aplicação
+  ansible.builtin.file:
+    path: "{{ curasphere_dir }}"
+    state: directory
+    owner: "{{ admin_utilizador }}"
+    group: docker
+    mode: "0750"
+
+- name: Código na versão pedida
+  ansible.builtin.git:
+    repo: "{{ curasphere_repo }}"
+    dest: "{{ curasphere_dir }}"
+    version: "{{ curasphere_versao }}"
+    force: false
+  become: true
+  become_user: "{{ admin_utilizador }}"
+  when: curasphere_versao | length > 0
+
+- name: .env do ambiente (só a partir do vault)
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ curasphere_dir }}/enfermaria/{{ curasphere_env_ficheiro }}"
+    owner: "{{ admin_utilizador }}"
+    group: docker
+    mode: "0600"
+  no_log: true
+  when: curasphere_env | length > 0
+
+- name: Administrador no grupo docker (o deploy corre sem sudo)
+  ansible.builtin.user:
+    name: "{{ admin_utilizador }}"
+    groups: [docker]
+    append: true
+
+- name: Deploy da versão (rolamento sem paragem)
+  ansible.builtin.command:
+    cmd: ./scripts/deploy.sh {{ curasphere_versao }}
+    chdir: "{{ curasphere_dir }}/enfermaria"
+  environment:
+    ENV_FILE: "{{ curasphere_env_ficheiro }}"
+  become: true
+  become_user: "{{ admin_utilizador }}"
+  when: curasphere_versao | length > 0 and curasphere_env | length > 0
+  changed_when: true

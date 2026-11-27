@@ -1,0 +1,12 @@
+## Gerido pelo Ansible (OPS-21)
+-w /etc/passwd -p wa -k contas
+-w /etc/shadow -p wa -k contas
+-w /etc/group -p wa -k contas
+-w /etc/sudoers -p wa -k sudo
+-w /etc/sudoers.d/ -p wa -k sudo
+-w /etc/ssh/sshd_config -p wa -k ssh
+-w /etc/ssh/sshd_config.d/ -p wa -k ssh
+-w /etc/docker/ -p wa -k docker
+-w /usr/bin/docker -p x -k docker
+-w {{ curasphere_dir }}/enfermaria/{{ curasphere_env_ficheiro | default('.env.prod') }} -p rwa -k curasphere-segredos
+-w {{ curasphere_dir }}/enfermaria/docker-compose.prod.yml -p wa -k curasphere-config

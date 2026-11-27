@@ -1,0 +1,58 @@
+---
+# Pacotes, hora certa (os registos clínicos e a auditoria dependem dela) e actualizações de
+# segurança automáticas.
+- name: Pacotes base
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - git
+      - chrony
+      - unattended-upgrades
+      - apt-listchanges
+      - auditd
+      - fail2ban
+      - ufw
+      - rsync
+      - age
+      - openssl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Fuso horário
+  community.general.timezone:
+    name: "{{ fuso_horario }}"
+
+- name: Chrony com servidores NTP de referência
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reiniciar chrony
+
+- name: Actualizações de segurança automáticas
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+
+- name: Actualizações automáticas só de segurança e sem reboot automático
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/52curasphere-unattended
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      // OPS-21: o reboot de um servidor clínico é decidido por uma pessoa, fora do turno.
+      Unattended-Upgrade::Automatic-Reboot "false";
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      Unattended-Upgrade::Mail "root";

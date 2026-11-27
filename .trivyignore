@@ -15,3 +15,10 @@ CVE-2025-71330
 # Corre no dispositivo a ler deep links: o pior caso é a app do próprio utilizador
 # encravar com um link malformado. (GHSA-qr28-fpjm-wq7f)
 CVE-2026-118664
+
+# picomatch <=4.0.7 — ReDoS em extglobs repetidos. O GitHub RETIROU o aviso ("Withdrawn
+# Advisory", sem versão corrigida: a 4.0.7 é a mais recente), mas a base do pnpm audit ainda o
+# reporta. Quem o usa é tooling de build (Expo/Metro, jest, tinyglobby) com padrões do próprio
+# repositório, nunca input de utilizadores. Rever quando a base do audit refletir a retirada.
+# (GHSA-fc5q-39xc-vjpf)
+CVE-2026-112366

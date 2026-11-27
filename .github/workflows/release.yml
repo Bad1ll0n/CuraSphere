@@ -20,9 +20,12 @@ name: Release — CuraSphere
 # variáveis do environment `producao` do repositório (Settings → Environments).
 # ─────────────────────────────────────────────────────────────────────────────
 
+# OPS-21: `vX.Y.Z-rc.N` é uma release candidate — construída com as variáveis do environment
+# `staging`, publicada como pré-release e instalada em staging pelo workflow "Staging". A tag
+# final `vX.Y.Z` (no mesmo commit, depois de validado em staging) vai para produção.
 on:
   push:
-    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+    tags: ['v[0-9]+.[0-9]+.[0-9]+', 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+']
 
 permissions:
   contents: read
@@ -60,7 +63,8 @@ jobs:
     needs: validar
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    environment: producao
+    # O web coze os NEXT_PUBLIC_* do ambiente no bundle: rc → staging, final → producao.
+    environment: ${{ contains(github.ref_name, '-rc.') && 'staging' || 'producao' }}
     permissions:
       contents: read
       packages: write
@@ -89,8 +93,8 @@ jobs:
           API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
           JITSI: ${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
         run: |
-          [ -n "$API_URL" ] || { echo "::error::Falta a variável NEXT_PUBLIC_API_URL no environment 'producao'."; exit 1; }
-          [ -n "$JITSI" ] || { echo "::error::Falta a variável NEXT_PUBLIC_JITSI_SERVER no environment 'producao'."; exit 1; }
+          [ -n "$API_URL" ] || { echo "::error::Falta a variável NEXT_PUBLIC_API_URL no environment deste deploy (staging/producao)."; exit 1; }
+          [ -n "$JITSI" ] || { echo "::error::Falta a variável NEXT_PUBLIC_JITSI_SERVER no environment deste deploy (staging/producao)."; exit 1; }
 
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
@@ -178,5 +182,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
+          PRE=""; case "$GITHUB_REF_NAME" in *-rc.*) PRE="--prerelease" ;; esac
+          # shellcheck disable=SC2086
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes $PRE \
             --notes "Instalar: \`./scripts/deploy.sh $GITHUB_REF_NAME\` (ver enfermaria/docs/RELEASE.md)."

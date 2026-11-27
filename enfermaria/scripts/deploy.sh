@@ -32,17 +32,28 @@
 
 set -eu
 
-ENV_FILE=".env.prod"
+# OPS-21: o mesmo script instala staging (ENV_FILE=.env.staging) e produção.
+ENV_FILE="${ENV_FILE:-.env.prod}"
 COMPOSE_FILE="docker-compose.prod.yml"
 FICHEIRO_VERSAO=".versao-em-servico"
 
 VERSAO="${1:-}"
 case "$VERSAO" in
-  v[0-9]*.[0-9]*.[0-9]*|local) ;;
+  v[0-9]*.[0-9]*.[0-9]*|v[0-9]*.[0-9]*.[0-9]*-rc.[0-9]*|local) ;;
   *)
-    echo "Uso: $0 <vX.Y.Z | local>"
+    echo "Uso: [ENV_FILE=.env.staging] $0 <vX.Y.Z | vX.Y.Z-rc.N | local>"
     echo "  A versão é a tag publicada pelo workflow de release (ver docs/RELEASE.md)."
     exit 1 ;;
+esac
+
+# OPS-21: uma release candidate só vai para staging; produção recebe a tag final.
+case "$VERSAO" in
+  *-rc.*)
+    if [ "$ENV_FILE" = ".env.prod" ] && [ "${FORCAR_RC:-0}" != "1" ]; then
+      echo "ERRO: $VERSAO é uma release candidate — instala-se em staging (ENV_FILE=.env.staging)."
+      echo "      Para produção, use a tag final (sem -rc). FORCAR_RC=1 só num incidente documentado."
+      exit 1
+    fi ;;
 esac
 
 if [ ! -f "$ENV_FILE" ]; then
@@ -85,7 +96,7 @@ esperar_bd() {
 pronto_url() {
   case "$1" in
     api) echo "http://localhost:3333/v1/health/ready" ;;
-    web) echo "http://localhost:3000/api/health" ;;
+    web) echo "http://127.0.0.1:3000/api/health" ;;  # IPv4 (o Next escuta em 0.0.0.0)
   esac
 }
 
