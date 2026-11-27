@@ -28,6 +28,7 @@ const mockNotificacoes = {
 
 const mockGateway = {
   emitirSOS: jest.fn(),
+  emitirAlertaRespondido: jest.fn(),
   estaOnline: jest.fn().mockResolvedValue(false),
 };
 
@@ -143,7 +144,7 @@ describe('AlertasService', () => {
 
     it('emite SOS via WebSocket', async () => {
       await service.acionarSOS('d1', 'u1');
-      expect(mockGateway.emitirSOS).toHaveBeenCalledWith('d1', 'João Silva', expect.stringContaining('A'), 'u1');
+      expect(mockGateway.emitirSOS).toHaveBeenCalledWith('d1', 'João Silva', expect.stringContaining('A'), 'u1', expect.anything());
     });
 
     it('notifica médicos atribuídos ao doente quando presentes', async () => {

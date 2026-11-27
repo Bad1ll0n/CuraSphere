@@ -66,8 +66,12 @@ test.describe('Jornadas clínicas', () => {
     await adm.dispose();
 
     await loginAs(page, '00013');
-    page.once('dialog', (d) => d.accept('Emergência: paragem cardíaca, médico de serviço sem atribuição'));
     await page.goto(`/doentes/${doenteId}`);
+    // UX-10 / ARQ-28: já não há `window.prompt` — o ecrã de acesso abre o modal de emergência.
+    await page.getByRole('button', { name: 'Acesso de emergência' }).click();
+    const dialogo = page.getByRole('dialog', { name: 'Acesso de emergência (break-glass)' });
+    await dialogo.getByLabel('Justificação').fill('Paragem cardíaca, médico de serviço sem atribuição');
+    await dialogo.getByRole('button', { name: 'Aceder agora' }).click();
     await expect(page.getByText(nome).first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/erro ao carregar doente/i)).not.toBeVisible();
   });

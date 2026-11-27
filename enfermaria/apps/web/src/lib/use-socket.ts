@@ -162,6 +162,7 @@ type SocketEvent =
   | 'urgencia:ambulancia'
   | 'urgencia:sla-excedido'
   | 'sos:alerta'
+  | 'alerta:respondido'
   | 'alerta:novo'
   | 'doente:estado'
   | 'bloco:update'

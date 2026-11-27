@@ -40,6 +40,8 @@ import { ProtocoloPanel } from './components/protocolo-panel';
 import { DocumentosSaudePanel } from './components/documentos-saude-panel';
 import { LosWidget } from './components/los-widget';
 import { FaixaIdentificacao } from '@/components/faixa-identificacao';
+import { PontuacaoAlerta } from '@/components/pontuacao-alerta';
+import { SemAcessoDoente, eSemAtribuicao } from '@/components/sem-acesso-doente';
 
 /** UX-29: secções da ficha (a ordem é a da enfermaria: primeiro o resumo, o administrativo no fim). */
 // UX-07: o rótulo vem de patientFile.tab.<id>.
@@ -145,7 +147,7 @@ export default function DoenteDetalhe() {
   const router = useRouter();
   const { utilizador } = useAuth();
   const [doente, setDoente] = useState<Doente | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); const [semAcesso, setSemAcesso] = useState(false); // UX-10
   const [alterandoEstado, setAlterandoEstado] = useState(false);
   const [salvandoAlta, setSalvandoAlta] = useState(false);
   const [modalIsolamento, setModalIsolamento] = useState(false);
@@ -241,7 +243,6 @@ export default function DoenteDetalhe() {
   const podeImprimirPulseira = ['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '');
 
   // Score de risco
-  const [riscoScore, setRiscoScore] = useState<{ score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] } | null>(null);
 
   // SOS
   const [sosConfirmando, setSosConfirmando] = useState(false);
@@ -291,7 +292,7 @@ export default function DoenteDetalhe() {
   const carregar = useCallback(() => {
     setLoading(true);
     api.get(`/doentes/${id}`)
-      .then((r) => { setDoente(r.data); })
+      .then((r) => { setDoente(r.data); setSemAcesso(false); }).catch((e) => setSemAcesso(eSemAtribuicao(e)))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -325,7 +326,6 @@ export default function DoenteDetalhe() {
 
   useEffect(() => {
     Promise.all([carregar(), verificarTurnoAtivo(), carregarFicheiroPessoal(), carregarSinalizacao()]);
-    api.get(`/baselines/${id}/risco`).then(r => setRiscoScore(r.data)).catch(() => null);
   }, [id]);
 
   const submeterSinalizar = async () => {
@@ -469,9 +469,8 @@ export default function DoenteDetalhe() {
     </div>
   );
 
-  if (!doente) return (
-    <div className="text-center text-slate-500 text-sm" style={{ paddingTop: '120px' }}>{tf('notFound')}</div>
-  );
+  if (!doente) return semAcesso ? <SemAcessoDoente doenteId={id!} onConcedido={carregar} />
+    : <div className="text-center text-slate-500 text-sm" style={{ paddingTop: '120px' }}>{tf('notFound')}</div>;
 
   return (
     <div className="px-4 md:px-8 lg:px-12" style={{ paddingTop: '24px', paddingBottom: '40px', maxWidth: '1100px', margin: '0 auto' }}>
@@ -502,15 +501,8 @@ export default function DoenteDetalhe() {
         <div>
           <div className="flex flex-wrap items-center gap-3" style={{ marginBottom: '6px' }}>
             <h1 className="text-xl md:text-2xl font-bold text-slate-900 break-words">{doente.nome}</h1>
-            {riscoScore && (
-              <span className={`text-xs font-bold rounded-lg border px-2 py-0.5 ${
-                riscoScore.banda === 'vermelho' ? 'bg-red-100 text-red-700 border-red-200' :
-                riscoScore.banda === 'ambar' ? 'bg-amber-100 text-amber-700 border-amber-200' :
-                'bg-green-100 text-green-700 border-green-200'
-              }`} title={riscoScore.factores.join(' · ')}>
-                Risco {riscoScore.score}
-              </span>
-            )}
+            {/* UX-03: uma só pontuação de alerta, com origem e hora (era "Risco 0" das baselines com NEWS2 11). */}
+            <PontuacaoAlerta doenteId={id!} estado={doente.estado} />
             <div className="relative">
               <button
                 onClick={() => podeAlterarEstado && setAlterandoEstado((v) => !v)}

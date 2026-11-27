@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AtribuicoesService } from './atribuicoes.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
+
+const mockNotificacoes = { enviarParaUtilizadores: jest.fn().mockResolvedValue(undefined) };
 
 const mockPrisma = {
   horarioTurno: {
@@ -32,6 +35,7 @@ describe('AtribuicoesService', () => {
       providers: [
         AtribuicoesService,
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: NotificacoesService, useValue: mockNotificacoes },
       ],
     }).compile();
 
@@ -95,6 +99,20 @@ describe('AtribuicoesService', () => {
       const resultado = await service.turnosDoDia();
 
       expect(resultado).toHaveLength(1);
+    });
+  });
+
+  describe('pedirAtribuicao() — UX-10', () => {
+    it('avisa a chefia ativa, sem devolver dados do doente a quem pede', async () => {
+      (mockPrisma as any).doente = { findUnique: jest.fn().mockResolvedValue({ id: 'd1', nome: 'Maria', cama: { numero: '12' } }) };
+      (mockPrisma as any).utilizador = {
+        ...(mockPrisma as any).utilizador,
+        findUnique: jest.fn().mockResolvedValue({ nome: 'Enf. Rui' }),
+        findMany: jest.fn().mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]),
+      };
+      const r = await service.pedirAtribuicao('d1', 'u1', 'Doente do meu quarto');
+      expect(r).toEqual({ enviado: true, destinatarios: 2 });
+      expect(mockNotificacoes.enviarParaUtilizadores).toHaveBeenCalledWith(['c1', 'c2'], 'Pedido de atribuição', expect.stringMatching(/Enf\. Rui pede para ser atribuído a Maria \(cama 12\)/), expect.objectContaining({ doenteId: 'd1', nivel: 'aviso' }));
     });
   });
 });

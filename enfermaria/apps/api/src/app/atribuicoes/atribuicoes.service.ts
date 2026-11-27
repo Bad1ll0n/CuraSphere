@@ -2,9 +2,33 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 @Injectable()
 export class AtribuicoesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
+
+  /**
+   * UX-10 — "Pedir atribuição": quem abre a ficha de um doente a que não está atribuído pede à
+   * chefia (chefe de enfermagem / chefe de turno ativos) que o atribua. Não devolve nada do doente
+   * a quem pede — só confirma que o pedido seguiu, e a quantos.
+   */
+  async pedirAtribuicao(doenteId: string, utilizadorId: string, nota?: string) {
+    const [doente, quem] = await Promise.all([
+      this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true, nome: true, cama: { select: { numero: true } } } }),
+      this.prisma.utilizador.findUnique({ where: { id: utilizadorId }, select: { nome: true } }),
+    ]);
+    if (!doente) throw new NotFoundException('Doente não encontrado');
+    const chefes = await this.prisma.utilizador.findMany({
+      where: { ativo: true, OR: [{ subRole: { in: ['chefe_enfermeiros', 'chefe_turno'] } }, { role: { in: ['chefe_enfermeiros', 'chefe_turno'] } }] },
+      select: { id: true },
+    });
+    const corpo = `${quem?.nome ?? 'Um profissional'} pede para ser atribuído a ${doente.nome}${doente.cama ? ` (cama ${doente.cama.numero})` : ''}.${nota ? ` Nota: ${nota.slice(0, 300)}` : ''}`;
+    await this.notificacoes.enviarParaUtilizadores(chefes.map((c) => c.id), 'Pedido de atribuição', corpo, { doenteId, tipo: 'pedido_atribuicao', nivel: 'aviso' });
+    return { enviado: chefes.length > 0, destinatarios: chefes.length };
+  }
 
   // Retorna o turno ativo agora (ou do dia de hoje pelo tipo)
   async turnoAtivo() {

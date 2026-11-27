@@ -1215,5 +1215,87 @@
   "adverseEvents": {
     "reportOnlyTitle": "Notificação de incidentes",
     "reportOnlyBody": "Use «Registar evento» para notificar (pode ser anónimo). A lista e o seguimento dos incidentes são da gestão de risco."
+  },
+  "notifications": {
+    "bell": "Notificações",
+    "bellUnread": "Notificações ({count} não lidas)",
+    "panel": "Painel de notificações",
+    "title": "Notificações",
+    "silence": "Silenciar 5 min",
+    "silenced": "Silenciado",
+    "markAll": "Marcar todas lidas",
+    "empty": "Sem notificações",
+    "critical": "Crítico",
+    "warning": "Aviso",
+    "openFile": "abrir ficha",
+    "seeAll": "Ver todas",
+    "unread": "{n, plural, one {# não lida} other {# não lidas}}",
+    "allRead": "Todas lidas",
+    "allMarked": "Todas marcadas como lidas",
+    "markError": "Não foi possível marcar como lidas",
+    "filterAll": "Todas",
+    "filterUnread": "Não lidas",
+    "loading": "A carregar...",
+    "loadError": "Não foi possível carregar as notificações.",
+    "retry": "Tentar de novo",
+    "emptyUnread": "Todas as notificações foram lidas.",
+    "emptyAll": "Não há notificações de momento.",
+    "groupPatient": "{n} sobre o mesmo doente",
+    "groupGeneral": "Gerais",
+    "new": "Nova",
+    "prev": "← Anterior",
+    "next": "Seguinte →"
+  },
+  "criticalAlerts": {
+    "sos": "SOS",
+    "sepsis": "Alerta de sépsis",
+    "by": "Por {nome}",
+    "responded": "{nome} respondeu",
+    "someone": "Alguém da equipa",
+    "openFile": "Ver ficha",
+    "respond": "Eu respondo",
+    "close": "Fechar {rotulo} — {identificacao}"
+  },
+  "news2Distribution": {
+    "baixo": "Baixo",
+    "medio": "Médio",
+    "alto": "Alto",
+    "semRegisto": "Sem registo",
+    "linkLabel": "NEWS2 {banda}: {n} doentes — ver a lista",
+    "active": "{n} doentes ativos",
+    "unavailable": "Dados NEWS2 indisponíveis",
+    "titleNow": "NEWS2 — distribuição agora",
+    "titleCurrent": "NEWS2 — distribuição atual ({n} doentes ativos)"
+  },
+  "alertScore": {
+    "news2": "NEWS2 {valor} · {hora} · {ha}",
+    "agoMin": "há {n} min",
+    "agoH": "há {n} h",
+    "noNews2": "Sem NEWS2 registado",
+    "sepsis": "Sépsis ativa",
+    "reassess": "Estado \"Estável\" com alerta ativo — reavaliar"
+  },
+  "noAccess": {
+    "title": "Não está atribuído a este doente",
+    "body": "Para ver o processo, peça à chefia que o atribua ou, numa situação urgente, use o acesso de emergência (fica registado e é revisto).",
+    "requestAssignment": "Pedir atribuição",
+    "emergency": "Acesso de emergência",
+    "emergencyTitle": "Acesso de emergência (break-glass)",
+    "emergencyHint": "O acesso fica registado com o motivo e é revisto pela gestão.",
+    "reasonType": "Motivo",
+    "justification": "Justificação",
+    "minChars": "{n} / 20 caracteres no mínimo",
+    "cancel": "Cancelar",
+    "confirmEmergency": "Aceder agora",
+    "requestSent": "Pedido enviado à chefia ({n})",
+    "requestNoManager": "Não há chefia ativa para receber o pedido — contacte-a diretamente.",
+    "error": "Não foi possível concluir o pedido",
+    "reason": {
+      "emergencia": "Emergência clínica",
+      "chamado": "Chamado para ajudar",
+      "cobertura": "A cobrir um colega",
+      "transferencia": "Transferência / receção do doente",
+      "outro": "Outro"
+    }
   }
 }

@@ -6,6 +6,8 @@ import api from '@/lib/api';
 import { Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { DraggableDashboard, WidgetDef } from '@/components/draggable-dashboard';
 import { estadoCor, estadoLabel, prioridadeCor, StatCard, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
+import { DistribuicaoNews2 } from '../distribuicao-news2';
+import { useTranslations } from 'next-intl';
 
 function MedicoStatsWidget({ doentes, criticos, tarefas, urgentes }: { doentes: any[]; criticos: any[]; tarefas: any[]; urgentes: any[] }) {
   return (
@@ -19,27 +21,9 @@ function MedicoStatsWidget({ doentes, criticos, tarefas, urgentes }: { doentes: 
 }
 
 function MedicoNEWS2Widget({ news2Data }: { news2Data: any }) {
-  if (!news2Data) return <Vazio msg="Dados NEWS2 indisponíveis" />;
-  return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm h-full" style={{ padding: '20px 24px' }}>
-      <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '16px' }}>NEWS2 — Distribuição Agora</p>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
-          { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
-          { label: 'Alto', value: news2Data.news2?.alto ?? 0, badge: 'bg-red-100 text-red-700', sub: '≥7' },
-          { label: 'Sem Registo', value: news2Data.news2?.semRegisto ?? 0, badge: 'bg-slate-100 text-slate-500', sub: '—' },
-        ].map(({ label, value, badge, sub }) => (
-          <div key={label} className={`rounded-xl text-center ${badge}`} style={{ padding: '14px 8px' }}>
-            <p className="text-2xl font-black">{value}</p>
-            <p className="text-xs font-semibold" style={{ marginTop: '2px' }}>{label}</p>
-            <p className="text-xs opacity-70">{sub}</p>
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-slate-500 text-right" style={{ marginTop: '10px' }}>{news2Data.totalAtivos} doentes activos</p>
-    </div>
-  );
+  const t = useTranslations('news2Distribution');
+  if (!news2Data) return <Vazio msg={t('unavailable')} />;
+  return <DistribuicaoNews2 dados={news2Data} destino="/risco-clinico" titulo={t('titleNow')} />;
 }
 
 function MedicoAcuidadeWidget({ news2Data }: { news2Data: any }) {

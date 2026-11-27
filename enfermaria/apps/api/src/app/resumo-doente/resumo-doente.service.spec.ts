@@ -58,4 +58,14 @@ describe('ResumoDoenteService', () => {
     prisma.atribuicaoDoente.findMany.mockResolvedValue([]);
     expect(await svc.meuTurno('enf-1')).toEqual({ doentes: [] });
   });
+
+  it('UX-03: a faixa diz se há sépsis por resolver', async () => {
+    prisma.doente.findUnique.mockResolvedValueOnce({
+      id: 'd1', nome: 'X', numeroProcesso: 'P', dataNascimento: null, sexo: null, estado: 'estavel', pesoReferenciaKg: null,
+      emIsolamento: false, motivoIsolamento: null, avaliacaoAlergias: null, decisaoNaoReanimar: false, decisaoNaoReanimarEm: null,
+      cama: null, alergias: [], sinaisVitais: [{ news2: 8, data: new Date() }], avaliacoesRisco: [], sinalizacoes: [], alertasSepsis: [{ id: 's1' }],
+    });
+    const f = await svc.faixa('d1');
+    expect(f).toMatchObject({ sepsisAtiva: true, news2: { valor: 8 } });
+  });
 });

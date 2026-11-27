@@ -62,7 +62,7 @@ export class AlertasService {
    *
    * @param severidade 1 informativo · 2 baixo · 3 alto · 4 crítico
    */
-  async criarAlerta(doenteId: string, tipo: string, mensagem: string, severidade = 1): Promise<void> {
+  async criarAlerta(doenteId: string, tipo: string, mensagem: string, severidade = 1): Promise<string | null> {
     const recente = await this.prisma.alertaClinico.findFirst({
       where: {
         doenteId,
@@ -75,13 +75,15 @@ export class AlertasService {
     });
 
     // Repetição do mesmo quadro sem agravamento → não duplica (e também não apaga nada).
-    if (recente && severidade <= recente.severidade) return;
+    if (recente && severidade <= recente.severidade) return recente.id;
 
-    await this.prisma.alertaClinico.create({
+    const criado = await this.prisma.alertaClinico.create({
       data: { doenteId, tipo, mensagem, severidade, urgencia: severidade >= 4 },
+      select: { id: true },
     });
-    this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem)
+    this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem, { tipo, severidade })
       .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+    return criado.id;
   }
 
   async getDoenteIdByAlertaId(id: string): Promise<string> {
@@ -256,17 +258,25 @@ export class AlertasService {
       (alerta.doente as any)?.nome ?? 'Doente',
       quarto,
       acionadoPorId,
+      alerta.id,
     );
 
     return alerta;
   }
 
+  /**
+   * "Eu respondo" — UX-11: quem acusa um alerta crítico fica registado, e a equipa vê-o em tempo
+   * real (o banner dos outros passa a dizer quem respondeu, em vez de desaparecer ao fim de 30 s
+   * sem ninguém saber se alguém foi).
+   */
   async acusar(id: string, utilizadorId: string) {
-    return this.prisma.alertaClinico.update({
+    const r = await this.prisma.alertaClinico.update({
       where: { id },
       data: { acusadoPorId: utilizadorId, acusadoEm: new Date(), lido: true },
       include: { acusadoPor: { select: { id: true, nome: true } } },
     });
+    this.gateway.emitirAlertaRespondido({ alertaId: r.id, doenteId: r.doenteId, porNome: r.acusadoPor?.nome ?? null });
+    return r;
   }
 
   // ─── helpers ──────────────────────────────────────────────────────────────

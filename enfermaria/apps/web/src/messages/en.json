@@ -1215,5 +1215,87 @@
   "adverseEvents": {
     "reportOnlyTitle": "Incident reporting",
     "reportOnlyBody": "Use “Record event” to report (it can be anonymous). The list and follow-up of incidents belong to risk management."
+  },
+  "notifications": {
+    "bell": "Notifications",
+    "bellUnread": "Notifications ({count} unread)",
+    "panel": "Notifications panel",
+    "title": "Notifications",
+    "silence": "Silence 5 min",
+    "silenced": "Silenced",
+    "markAll": "Mark all as read",
+    "empty": "No notifications",
+    "critical": "Critical",
+    "warning": "Warning",
+    "openFile": "open file",
+    "seeAll": "See all",
+    "unread": "{n, plural, one {# unread} other {# unread}}",
+    "allRead": "All read",
+    "allMarked": "All marked as read",
+    "markError": "Could not mark as read",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "loading": "Loading...",
+    "loadError": "Could not load notifications.",
+    "retry": "Try again",
+    "emptyUnread": "All notifications have been read.",
+    "emptyAll": "There are no notifications right now.",
+    "groupPatient": "{n} about the same patient",
+    "groupGeneral": "General",
+    "new": "New",
+    "prev": "← Previous",
+    "next": "Next →"
+  },
+  "criticalAlerts": {
+    "sos": "SOS",
+    "sepsis": "Sepsis alert",
+    "by": "By {nome}",
+    "responded": "{nome} is responding",
+    "someone": "A team member",
+    "openFile": "Open file",
+    "respond": "I'm responding",
+    "close": "Close {rotulo} — {identificacao}"
+  },
+  "news2Distribution": {
+    "baixo": "Low",
+    "medio": "Medium",
+    "alto": "High",
+    "semRegisto": "No record",
+    "linkLabel": "NEWS2 {banda}: {n} patients — see the list",
+    "active": "{n} active patients",
+    "unavailable": "NEWS2 data unavailable",
+    "titleNow": "NEWS2 — current distribution",
+    "titleCurrent": "NEWS2 — current distribution ({n} active patients)"
+  },
+  "alertScore": {
+    "news2": "NEWS2 {valor} · {hora} · {ha}",
+    "agoMin": "{n} min ago",
+    "agoH": "{n} h ago",
+    "noNews2": "No NEWS2 recorded",
+    "sepsis": "Active sepsis",
+    "reassess": "\"Stable\" status with an active alert — reassess"
+  },
+  "noAccess": {
+    "title": "You are not assigned to this patient",
+    "body": "To see the record, ask the nurse in charge to assign you or, if urgent, use emergency access (it is logged and reviewed).",
+    "requestAssignment": "Request assignment",
+    "emergency": "Emergency access",
+    "emergencyTitle": "Emergency access (break-glass)",
+    "emergencyHint": "Access is logged with the reason and reviewed by management.",
+    "reasonType": "Reason",
+    "justification": "Justification",
+    "minChars": "{n} / 20 characters minimum",
+    "cancel": "Cancel",
+    "confirmEmergency": "Access now",
+    "requestSent": "Request sent to the nurse in charge ({n})",
+    "requestNoManager": "No active nurse in charge to receive the request — contact them directly.",
+    "error": "Could not complete the request",
+    "reason": {
+      "emergencia": "Clinical emergency",
+      "chamado": "Called to help",
+      "cobertura": "Covering for a colleague",
+      "transferencia": "Patient transfer / reception",
+      "outro": "Other"
+    }
   }
 }
