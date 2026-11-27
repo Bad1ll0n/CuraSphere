@@ -1,8 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from './api';
 
+/** Formato antigo: a fila inteira num só JSON (migrado na primeira leitura). */
 const QUEUE_KEY = 'curasphere:mutation_queue';
+/** PERF-18: um índice pequeno (só ids, por ordem) e uma chave por operação. */
+const KEY_INDICE = 'curasphere:mq:indice';
+const keyOp = (id: string) => `curasphere:mq:op:${id}`;
+const KEY_CORROMPIDA = 'curasphere:mq:corrompida';
 const MAX_TENTATIVAS = 3;
+/**
+ * PERF-18: limites. Um turno de 12 h com rede a falhar não chega perto de 300 atos; uma
+ * administração ou um registo de vitais tem poucas centenas de bytes. O que passar disto é
+ * erro (o ecrã diz que NÃO ficou guardado) — não é uma fila que cresce até a app ficar lenta
+ * ou o armazenamento recusar a escrita a meio.
+ */
+export const MAX_OPERACOES = 300;
+export const MAX_BYTES_OPERACAO = 64 * 1024;
 
 export interface QueuedOp {
   id: string;
@@ -80,8 +93,7 @@ export async function definirDonoDaFila(utilizadorId: string | null): Promise<vo
   // app foi actualizada — e a alternativa, deixá-las sem dono, era nunca as enviar.
   await emExclusao(async () => {
     const fila = await lerFilaCrua();
-    if (!fila.some((o) => !o.dono)) return;
-    await escreverFila(fila.map((o) => (o.dono ? o : { ...o, dono: utilizadorId })));
+    for (const o of fila) if (!o.dono) await escreverOp({ ...o, dono: utilizadorId });
   });
 }
 
@@ -96,20 +108,60 @@ function novoId(): string {
   return `${Date.now().toString(36)}-${r()}${r()}`;
 }
 
-async function lerFilaCrua(): Promise<QueuedOp[]> {
+/**
+ * PERF-18: a fila era um único JSON reescrito por inteiro a cada enfileirar, a cada flush e a
+ * cada mudança de sessão — com a fila a crescer, cada ato à cabeceira reescrevia todos os outros
+ * (e um erro a meio de uma escrita grande podia perdê-los a todos). Agora cada operação tem a sua
+ * chave e o índice só guarda ids: enfileirar escreve uma operação e o índice; o flush apaga só as
+ * que saíram e reescreve só as que mudaram.
+ */
+async function lerIndice(): Promise<string[]> {
   try {
-    const raw = await AsyncStorage.getItem(QUEUE_KEY);
-    const lista = raw ? JSON.parse(raw) : [];
-    return Array.isArray(lista) ? lista : [];
+    const raw = await AsyncStorage.getItem(KEY_INDICE);
+    const ids = raw ? JSON.parse(raw) : [];
+    return Array.isArray(ids) ? ids.filter((x) => typeof x === 'string') : [];
   } catch {
-    // Fila corrompida: não se pode inventar conteúdo clínico, mas também não se pode
-    // deixar a app presa a lê-la para sempre. Trata-se como vazia e segue.
     return [];
   }
 }
 
-async function escreverFila(ops: QueuedOp[]): Promise<void> {
-  await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(ops));
+const escreverIndice = (ids: string[]) => AsyncStorage.setItem(KEY_INDICE, JSON.stringify(ids));
+const escreverOp = (op: QueuedOp) => AsyncStorage.setItem(keyOp(op.id), JSON.stringify(op));
+
+/** Migra o formato antigo (uma só chave) para uma chave por operação. Corre sob o mútex. */
+async function migrarFormatoAntigo(): Promise<void> {
+  const raw = await AsyncStorage.getItem(QUEUE_KEY);
+  if (raw == null) return;
+  let antigas: QueuedOp[] = [];
+  try {
+    const lista = JSON.parse(raw);
+    antigas = Array.isArray(lista) ? lista.filter((o) => o && typeof o.id === 'string') : [];
+  } catch {
+    // Fila corrompida: não se inventa conteúdo clínico, mas guarda-se o que lá estava para
+    // análise em vez de o apagar — e a app segue.
+    await AsyncStorage.setItem(KEY_CORROMPIDA, raw);
+  }
+  const indice = await lerIndice();
+  for (const op of antigas) if (!indice.includes(op.id)) { await escreverOp(op); indice.push(op.id); }
+  await escreverIndice(indice);
+  await AsyncStorage.removeItem(QUEUE_KEY);
+}
+
+async function lerFilaCrua(): Promise<QueuedOp[]> {
+  await migrarFormatoAntigo();
+  const ids = await lerIndice();
+  const ops = await Promise.all(ids.map(async (id) => {
+    try {
+      const raw = await AsyncStorage.getItem(keyOp(id));
+      return raw ? (JSON.parse(raw) as QueuedOp) : null;
+    } catch {
+      return null;
+    }
+  }));
+  const validas = ops.filter((o): o is QueuedOp => !!o && typeof o.id === 'string');
+  // Entradas do índice sem operação (escrita interrompida) saem do índice.
+  if (validas.length !== ids.length) await escreverIndice(validas.map((o) => o.id));
+  return validas;
 }
 
 export async function enqueue(op: Omit<QueuedOp, 'id' | 'timestamp' | 'dono'>): Promise<void> {
@@ -117,10 +169,19 @@ export async function enqueue(op: Omit<QueuedOp, 'id' | 'timestamp' | 'dono'>): 
   // NÃO ficou guardado — em vez de o guardar para seguir em nome de outra pessoa.
   const dono = donoActual;
   if (!dono) throw new Error('Sem sessão activa: o registo não pode ficar na fila offline');
+  const nova: QueuedOp = { ...op, id: novoId(), timestamp: Date.now(), tentativas: 0, dono };
+  if (JSON.stringify(nova).length > MAX_BYTES_OPERACAO) {
+    throw new Error('Registo demasiado grande para guardar sem rede — tente de novo com ligação.');
+  }
   await emExclusao(async () => {
-    const queue = await lerFilaCrua();
-    queue.push({ ...op, id: novoId(), timestamp: Date.now(), tentativas: 0, dono });
-    await escreverFila(queue);
+    const indice = (await lerFilaCrua()).map((o) => o.id);
+    if (indice.length >= MAX_OPERACOES) {
+      throw new Error(`Fila offline cheia (${MAX_OPERACOES} registos por enviar) — o registo NÃO ficou guardado. Procure rede para sincronizar.`);
+    }
+    // A operação primeiro, o índice depois: uma escrita interrompida deixa no máximo uma
+    // operação órfã (ignorada), nunca um índice a apontar para nada.
+    await escreverOp(nova);
+    await escreverIndice([...indice, nova.id]);
   });
 }
 
@@ -227,10 +288,13 @@ export async function flushMutationQueue(): Promise<{
     // operação enfileirada enquanto isto corria continua lá.
     await emExclusao(async () => {
       const actual = await lerFilaCrua();
-      const restantes = actual
-        .filter((o) => !concluidas.has(o.id) && !descartadas.has(o.id))
-        .map((o) => (avaliadas.has(o.id) ? { ...o, tentativas: (o.tentativas ?? 0) + 1 } : o));
-      await escreverFila(restantes);
+      const sair = (o: QueuedOp) => concluidas.has(o.id) || descartadas.has(o.id);
+      // O índice primeiro (sem as que saíram), depois as chaves: o pior caso é uma chave órfã.
+      await escreverIndice(actual.filter((o) => !sair(o)).map((o) => o.id));
+      for (const o of actual) {
+        if (sair(o)) await AsyncStorage.removeItem(keyOp(o.id));
+        else if (avaliadas.has(o.id)) await escreverOp({ ...o, tentativas: (o.tentativas ?? 0) + 1 });
+      }
     });
 
     return { sucesso, falha, descartadas: descartadas.size };
@@ -245,6 +309,8 @@ export async function flushMutationQueue(): Promise<{
 
 export async function clearQueue(): Promise<void> {
   await emExclusao(async () => {
+    for (const id of await lerIndice()) await AsyncStorage.removeItem(keyOp(id));
+    await AsyncStorage.removeItem(KEY_INDICE);
     await AsyncStorage.removeItem(QUEUE_KEY);
   });
 }
