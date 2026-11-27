@@ -6,6 +6,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
+import { AcessoLeituraService } from '../common/acesso-leitura.service';
 import {
   PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
   SubmeterProDto, CriarTemplateProDto,
@@ -20,7 +21,10 @@ const PORTAL_COOKIE_MAX_AGE = 8 * 60 * 60 * 1000;
 
 @Controller('portal')
 export class PortalDoenteController {
-  constructor(private readonly service: PortalDoenteService) {}
+  constructor(
+    private readonly service: PortalDoenteService,
+    private readonly leituras: AcessoLeituraService,
+  ) {}
 
   // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
   // 15 min) feito no serviço — o throttle trava um IP a martelar muitas contas, o
@@ -105,6 +109,13 @@ export class PortalDoenteController {
   async exportarPdf(@Request() req: any, @Res() res: Response) {
     const buffer = await this.service.exportarDados(req.user.doenteId);
     res.send(buffer);
+  }
+
+  // SEC-09 / art. 15.º RGPD: o titular vê quem consultou o seu processo.
+  @Get('acessos')
+  @UseGuards(PortalJwtGuard)
+  acessos(@Request() req: any) {
+    return this.leituras.listarPorDoente(req.user.doenteId, { paraTitular: true, limite: 100 });
   }
 
   @Get('exportar/json')

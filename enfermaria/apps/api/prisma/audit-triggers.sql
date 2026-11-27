@@ -1,5 +1,5 @@
 -- Auditoria por triggers (append-only, tamper-evident por hash-de-conteúdo).
--- Idempotente: pode ser re-aplicado após cada `prisma db push`.
+-- Idempotente: re-aplicado pelo serviço `migrate` depois de cada `prisma migrate deploy`.
 -- Requisitos: Postgres >= 13 (gen_random_uuid nativo) e >= 11 (sha256 nativo). SEM pgcrypto.
 --
 -- O "quem" vem de GUCs transaction-local definidos pelo PrismaService no início de cada
@@ -22,18 +22,28 @@ DECLARE
   v_now  timestamptz := now();
   v_hash text;
   v_payload text;
+  -- ARQ-02: colunas que NUNCA vão para o trilho (segredos e credenciais). O resto dos valores
+  -- anteriores fica guardado — os dados pessoais já estão cifrados na própria linha (enc:…).
+  v_sensiveis text[] := ARRAY['passwordHash','mfaSecret','mfaSecretPendente','token','tokenHash',
+                              'credentialPublicKey','secret','apiKey'];
 BEGIN
   IF TG_OP = 'INSERT' THEN
     v_new := to_jsonb(NEW); v_acao := 'criar'; v_ent := v_new->>'id';
   ELSIF TG_OP = 'UPDATE' THEN
     v_new := to_jsonb(NEW); v_old := to_jsonb(OLD); v_acao := 'atualizar'; v_ent := v_new->>'id';
-    -- Guarda só os NOMES das colunas alteradas — nunca os valores (não duplica PII).
-    SELECT jsonb_build_object('alterou', coalesce(jsonb_agg(n.key ORDER BY n.key), '[]'::jsonb))::text
+    -- ARQ-02: nomes das colunas alteradas E o valor anterior de cada uma (menos as sensíveis).
+    -- Antes só os nomes — uma alergia ou uma dose alterada não tinha como ser reconstituída.
+    SELECT jsonb_build_object(
+             'alterou', coalesce(jsonb_agg(n.key ORDER BY n.key), '[]'::jsonb),
+             'antes', coalesce(jsonb_object_agg(n.key, v_old -> n.key) FILTER (WHERE NOT n.key = ANY(v_sensiveis)), '{}'::jsonb)
+           )::text
       INTO v_det
       FROM jsonb_each(v_new) n
       WHERE n.value IS DISTINCT FROM (v_old -> n.key);
   ELSE -- DELETE
     v_old := to_jsonb(OLD); v_acao := 'eliminar'; v_ent := v_old->>'id';
+    -- ARQ-02: o registo apagado fica no trilho (antes guardava-se só o id e o conteúdo perdia-se).
+    v_det := jsonb_build_object('registo', v_old - v_sensiveis)::text;
   END IF;
 
   -- Hash-de-conteúdo da própria entrada (tamper-evidence por-linha, independente, sem ordem/lock).

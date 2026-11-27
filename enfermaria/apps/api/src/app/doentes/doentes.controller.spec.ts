@@ -11,6 +11,9 @@ import { DoenteController } from './doentes.controller';
 import { DoenteService } from './doentes.service';
 import { PdfService } from '../common/pdf.service';
 import { CartaAltaService } from './carta-alta.service';
+import { AcessoLeituraService } from '../common/acesso-leitura.service';
+
+const mockLeituras = { registar: jest.fn(), listarPorDoente: jest.fn() };
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 
@@ -55,6 +58,7 @@ describe('DoenteController', () => {
       providers: [
         { provide: DoenteService, useValue: mockDoenteService },
         { provide: PdfService, useValue: mockPdfService },
+        { provide: AcessoLeituraService, useValue: mockLeituras },
         { provide: CartaAltaService, useValue: { rever: jest.fn(), assinar: jest.fn(), garantirAssinada: jest.fn() } },
       ],
     })
@@ -142,9 +146,11 @@ describe('DoenteController', () => {
       const mockRes = { send: jest.fn() };
       mockDoenteService.exportarCsv.mockResolvedValue('Nome,NIF\nJoão,123');
 
-      await controller.exportarCsv(mockRes as any);
+      await controller.exportarCsv(mockRes as any, { user: { sub: 'u1', role: 'direcao' }, headers: {} } as any);
 
       expect(mockDoenteService.exportarCsv).toHaveBeenCalled();
+      // SEC-09: exportar todos os doentes fica no trilho de acessos.
+      expect(mockLeituras.registar).toHaveBeenCalledWith(expect.objectContaining({ utilizadorId: 'u1', entidadeTipo: 'doentes', entidadeId: null }));
       expect(mockRes.send).toHaveBeenCalledWith('Nome,NIF\nJoão,123');
     });
   });

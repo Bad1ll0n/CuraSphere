@@ -8,6 +8,21 @@ import { comRetentativas } from '../common/transacao';
 
 const SLOW_QUERY_MS = 500;
 
+/** Operações dos delegates que escrevem (ARQ-02: todas atribuídas ao utilizador do pedido). */
+const OPERACOES_ESCRITA = new Set([
+  'create', 'createMany', 'createManyAndReturn', 'update', 'updateMany', 'updateManyAndReturn',
+  'upsert', 'delete', 'deleteMany',
+]);
+
+/** GUCs transaction-local lidos pelos triggers de auditoria (`set_config(..., true)`). */
+const SQL_CONTEXTO =
+  "SELECT set_config('curasphere.user_id',$1,true), set_config('curasphere.user_nome',$2,true), " +
+  "set_config('curasphere.user_role',$3,true), set_config('curasphere.ip',$4,true), set_config('curasphere.correlation',$5,true)";
+
+function valoresContexto(ctx: { userId: string | null; nome: string | null; role: string | null; ip: string | null; correlationId: string | null }) {
+  return [ctx.userId ?? '', ctx.nome ?? '', ctx.role ?? '', ctx.ip ?? '', ctx.correlationId ?? ''];
+}
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger('SlowQuery');
@@ -41,6 +56,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     // (ver doentes.service admitir/darAlta). Encaminhar `$transaction` para o cliente estendido
     // faz o `tx` da callback ser encriptado — fecha essa fuga e torna a auditoria por triggers
     // (que precisa de transações) segura para PII.
+    const encClient = this.encClient;
     const encTx = this.encClient.$transaction.bind(this.encClient);
     const reqCtxRef = this.reqCtx;
     // AUDITORIA: na forma de callback, injeta o contexto do pedido (quem/de-onde) como GUCs
@@ -52,10 +68,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         const executar = () => encTx(async (tx: any) => {
           const ctx = reqCtxRef.get();
           if (ctx?.userId) {
-            await tx.$executeRawUnsafe(
-              "SELECT set_config('curasphere.user_id',$1,true), set_config('curasphere.user_nome',$2,true), set_config('curasphere.user_role',$3,true), set_config('curasphere.ip',$4,true), set_config('curasphere.correlation',$5,true)",
-              ctx.userId, ctx.nome ?? '', ctx.role ?? '', ctx.ip ?? '', ctx.correlationId ?? '',
-            );
+            await tx.$queryRawUnsafe(SQL_CONTEXTO, ...valoresContexto(ctx));
           }
           return arg(tx);
         }, opts);
@@ -67,17 +80,47 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           ? comRetentativas(executar, { rotulo: 'transacção Serializable' })
           : executar();
       }
-      return encTx(arg, opts); // forma de array — passa-se tal e qual
+      // Forma de array: ARQ-02 — com utilizador no contexto, a primeira instrução do lote
+      // define os GUCs (`set_config(..., true)` vale até ao fim da transacção), e as escritas
+      // do lote ficam atribuídas. O resultado dessa instrução é retirado da resposta.
+      const ctx = reqCtxRef.get();
+      if (Array.isArray(arg) && ctx?.userId) {
+        const definir = encClient.$queryRawUnsafe(SQL_CONTEXTO, ...valoresContexto(ctx));
+        return encTx([definir, ...arg], opts).then((r: unknown[]) => r.slice(1));
+      }
+      return encTx(arg, opts);
     };
-  }
 
-  /**
-   * Escrita única atribuída: envolve uma operação de escrita numa transação que define o
-   * contexto (quem/de-onde) para os triggers de auditoria. Usar em escritas fora de transação
-   * que precisem de atribuição (as compostas já a têm via $transaction). `fn` recebe o `tx`.
-   */
-  escritaAuditada<T>(fn: (tx: any) => Promise<T>): Promise<T> {
-    return (this as any).$transaction(fn);
+    // ARQ-02 — escritas directas (fora de `$transaction`) também atribuídas.
+    // Antes, só as escritas dentro de `$transaction` levavam o "quem" para os triggers de
+    // auditoria: as ~300 escritas directas (`this.prisma.alergia.create(...)`, notas, exames,
+    // eventos adversos…) ficavam registadas sem utilizador. Cada operação de escrita de cada
+    // delegate passa a devolver um PrismaPromise que, ao ser executado sozinho, corre numa
+    // transacção curta com o contexto; dentro de uma transacção em array (`requestTransaction`)
+    // comporta-se como o original — aí o contexto já vem da instrução inicial do lote.
+    const self = this as any;
+    for (const nome of delegatesDoCliente(this)) {
+      const delegate = self[nome];
+      if (!delegate) continue;
+      self[nome] = new Proxy(delegate, {
+        get(alvo, prop, receptor) {
+          const original = Reflect.get(alvo, prop, receptor);
+          if (typeof prop !== 'string' || !OPERACOES_ESCRITA.has(prop) || typeof original !== 'function') return original;
+          return (args: unknown) => {
+            const promessa = original.call(alvo, args);
+            if (!reqCtxRef.get()?.userId) return promessa; // sem pedido autenticado: igual
+            const correr = () => self.$transaction((tx: any) => tx[nome][prop](args));
+            return {
+              then: (ok: any, falha: any) => correr().then(ok, falha),
+              catch: (falha: any) => correr().catch(falha),
+              finally: (fim: any) => correr().finally(fim),
+              requestTransaction: (t: unknown) => promessa.requestTransaction(t),
+              [Symbol.toStringTag]: 'PrismaPromise',
+            };
+          };
+        },
+      });
+    }
   }
 
   /**

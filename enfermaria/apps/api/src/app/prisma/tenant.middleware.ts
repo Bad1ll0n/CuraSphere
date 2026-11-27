@@ -2,33 +2,19 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { TenantContextService } from './tenant-context.service';
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const decoded = Buffer.from(parts[1], 'base64url').toString('utf8');
-    return JSON.parse(decoded);
-  } catch {
-    return null;
-  }
-}
-
+/**
+ * Abre o contexto de tenant do pedido com o tenant por omissão.
+ *
+ * SEC-07: o tenant deixou de vir do `Authorization: Bearer` descodificado SEM verificação —
+ * um token `alg:none` com outro `tenantId` mudava os filtros de um pedido autenticado por
+ * cookie (verificado: `total=1` → `total=0`). O `ContextoPedidoInterceptor` define-o depois da
+ * autenticação, a partir de `req.user`.
+ */
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
   constructor(private readonly tenantContext: TenantContextService) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-
-    let tenantId = 'default';
-    if (token) {
-      const payload = decodeJwtPayload(token);
-      if (payload && typeof payload['tenantId'] === 'string') {
-        tenantId = payload['tenantId'];
-      }
-    }
-
-    this.tenantContext.runWithTenant(tenantId, () => next());
+  use(_req: Request, _res: Response, next: NextFunction) {
+    this.tenantContext.runWithTenant('default', () => next());
   }
 }

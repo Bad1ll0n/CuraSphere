@@ -2,39 +2,26 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { RequestContextService } from './request-context.service';
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    return JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
-  } catch {
-    return null;
-  }
-}
-
 /**
- * Popula o RequestContext (quem/de-onde) a partir do JWT (sub/nome/role já vêm no payload) e do
- * pedido (IP, user-agent, correlation-id). Corre em middleware — antes dos guards — mas descodifica
- * o próprio token, tal como o TenantMiddleware já faz. Envolve todo o pedido no ALS para o contexto
- * estar disponível durante as escritas na BD.
+ * Abre o RequestContext do pedido (de-onde: IP, user-agent, correlation-id) e envolve todo o
+ * pedido no ALS, para o contexto estar disponível durante as escritas na BD.
+ *
+ * SEC-07: o "quem" NÃO é lido aqui. Este middleware corre antes da autenticação e lia o
+ * `Authorization: Bearer` sem verificar a assinatura — bastava um token forjado para assinar
+ * escritas em nome de outra pessoa. O utilizador é preenchido pelo `ContextoPedidoInterceptor`,
+ * depois dos guards, a partir de `req.user`.
  */
 @Injectable()
 export class RequestContextMiddleware implements NestMiddleware {
   constructor(private readonly ctx: RequestContextService) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
-    const auth = req.headers['authorization'];
-    const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
-    const payload = token ? decodeJwtPayload(token) : null;
-
-    // SEC-08: o primeiro X-Forwarded-For é o que o CLIENTE escreveu (o nginx acrescenta).
-    // Com `trust proxy` (main.ts), `req.ip` já é o IP real, resolvido pelos proxies de confiança.
-    const ip = req.ip || null;
+  use(req: Request, _res: Response, next: NextFunction) {
+    // SEC-08: com `trust proxy` (main.ts), `req.ip` já é o IP real, resolvido pelos proxies de confiança.
     this.ctx.run({
-      userId: (payload?.['sub'] as string) ?? null,
-      nome: (payload?.['nome'] as string) ?? null,
-      role: (payload?.['role'] as string) ?? null,
-      ip,
+      userId: null,
+      nome: null,
+      role: null,
+      ip: req.ip || null,
       userAgent: (req.headers['user-agent'] as string) ?? null,
       correlationId: (req.headers['x-correlation-id'] as string) ?? null,
     }, () => next());

@@ -120,11 +120,25 @@ reverter o código, redeploy do build anterior. Os dados de `audit_logs` mantêm
 
 ---
 
-## 5. Decisão de desenho a conhecer
+## 5. Atribuição das escritas (ARQ-02, SEC-07)
 
-A atribuição de **escritas de campo único** (fora de `$transaction`) é, por opção, **opt-in**
-via `PrismaService.escritaAuditada(fn)` — **não** há auto-wrap de todas as escritas (mexer nisso
-arriscava a interação encriptação↔transação↔delegates e a fuga de PII). As **ações clínicas
-críticas** (prescrever, administrar, admitir, alta, transfusão, break-glass, acesso a ficha) são
-**compostas → já atribuídas**. Escritas de campo único são **registadas** (completude) como
-`system`. Fechar esta lacuna é um trabalho dedicado e cuidadoso, não um passo de deploy.
+**Todas** as escritas feitas num pedido autenticado são atribuídas ao utilizador:
+
+- dentro de `$transaction(async tx => …)`: os GUCs são definidos no início da transacção;
+- em `$transaction([...])` (array): a primeira instrução do lote define os GUCs;
+- escritas directas (`this.prisma.x.create/update/delete…`): o `PrismaService` corre-as numa
+  transacção curta com o contexto (proxy sobre os delegates).
+
+O "quem" vem só da sessão verificada (`req.user`, preenchido pelo `ContextoPedidoInterceptor`
+depois dos guards) — nunca do cabeçalho `Authorization` por verificar.
+
+Sem utilizador (crons, scripts, SQL directo) a escrita fica registada com `utilizadorId` nulo.
+Em UPDATE, o trilho guarda os nomes das colunas alteradas **e o valor anterior** de cada uma; em
+DELETE, o registo apagado inteiro — em ambos menos as colunas sensíveis (hashes, segredos MFA,
+tokens). Os dados pessoais desses valores já estão cifrados na própria linha.
+
+## 6. Verificação contínua (QA-13)
+
+A API verifica no arranque a função `curasphere_fn_audit` e os triggers das tabelas clínicas
+obrigatórias: em produção **recusa arrancar** sem eles; noutros ambientes regista um erro.
+O `GET /v1/health` reporta `audit: up/down` (crítico em produção).

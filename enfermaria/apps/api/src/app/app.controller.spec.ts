@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
 import { RedisService } from './redis/redis.service';
+import { AuditoriaInstaladaService } from './common/auditoria-instalada.service';
 
 const mockPrisma = { $queryRaw: jest.fn(), $connect: jest.fn(), $disconnect: jest.fn() };
 const mockRedis = { set: jest.fn(), get: jest.fn() };
@@ -19,6 +20,7 @@ describe('AppController', () => {
         AppService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: RedisService, useValue: mockRedis },
+        { provide: AuditoriaInstaladaService, useValue: { verificar: jest.fn().mockResolvedValue({ funcao: true, tabelasSemTrigger: [] }) } },
       ],
     }).compile();
   });
