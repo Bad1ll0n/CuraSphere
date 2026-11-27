@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
@@ -10,13 +11,8 @@ import { ErroCarregamento } from '@/components/erro-carregamento';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 
-const MOTIVOS_NAO_ADMIN = [
-  { value: 'recusou', label: 'Recusou tomar' },
-  { value: 'contraindicacao', label: 'Contraindicação' },
-  { value: 'em_exame', label: 'Em exame / procedimento' },
-  { value: 'indisponivel', label: 'Medicamento indisponível' },
-  { value: 'outro', label: 'Outro' },
-];
+// UX-07: o texto vem de mar.reason.<valor>.
+const MOTIVOS_NAO_ADMIN = ['recusou', 'contraindicacao', 'em_exame', 'indisponivel', 'outro'] as const;
 
 interface Registo {
   id: string;
@@ -56,15 +52,9 @@ const validacaoCor: Record<string, string> = {
   rejeitada: 'text-red-500',
 };
 
-const CERTAS_LABELS = [
-  'Doente certo',
-  'Medicamento certo',
-  'Dose certa',
-  'Hora certa',
-  'Via certa',
-];
+type T = ReturnType<typeof useTranslations<'mar'>>;
 
-function getCertasValues(med: Medicacao | undefined): string[] {
+function getCertasValues(med: Medicacao | undefined, t: T): string[] {
   if (!med) return ['', '', '', '', ''];
   const agora = new Date();
   const horaAtual = agora.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
@@ -73,10 +63,10 @@ function getCertasValues(med: Medicacao | undefined): string[] {
     ? Math.round((agora.getTime() - new Date(ultimaAdmin.administradoEm).getTime()) / 60000)
     : null;
   const horaObs = tempoDesdeUltima != null
-    ? `${horaAtual} · Última: há ${tempoDesdeUltima} min`
+    ? t('lastMinAgo', { hora: horaAtual, min: tempoDesdeUltima })
     : horaAtual;
   return [
-    `${med.doente.nome} · Cama ${(med.doente.cama?.numero ?? '—')} (Quarto ${(med.doente.cama?.quarto ?? '—')})`,
+    t('patientBedRoom', { nome: med.doente.nome, cama: med.doente.cama?.numero ?? '—', quarto: med.doente.cama?.quarto ?? '—' }),
     `${med.nome}`,
     `${med.dose}`,
     horaObs,
@@ -86,6 +76,8 @@ function getCertasValues(med: Medicacao | undefined): string[] {
 
 export default function MarPage() {
   const toast = useToast();
+  const t = useTranslations('mar');
+  const tc = useTranslations('common');
   const [medicacoes, setMedicacoes] = useState<Medicacao[]>([]);
   // UX-30: "Administrar" a partir de "O meu turno" abre o MAR já filtrado no doente.
   const [doenteFiltro, setDoenteFiltro] = useState<string | null>(null);
@@ -105,12 +97,12 @@ export default function MarPage() {
   const dlgNaoAdmin = useDialogoAcessivel({
     aberto: !!modalNaoAdmin,
     onFechar: () => setModalNaoAdmin(null),
-    titulo: 'Não administrada — registar motivo',
+    titulo: t('notGivenTitle'),
   });
   const dlg5Certas = useDialogoAcessivel({
     aberto: !!modalId,
     onFechar: () => setModalId(null),
-    titulo: 'Verificação das 5 Corretas',
+    titulo: t('fiveRightsTitle'),
   });
 
   // F-08: sem `catch`, uma falha de rede terminava no estado vazio — "Sem medicações para
@@ -153,13 +145,13 @@ export default function MarPage() {
     setRegistandoNaoAdmin(true);
     try {
       await api.post(`/medicacao/${modalNaoAdmin}/nao-administrar`, { motivo });
-      toast.success('Não-administração registada');
+      toast.success(t('notGivenRecorded'));
       setModalNaoAdmin(null);
       setMotivoSelecionado('recusou');
       setMotivoOutro('');
       carregar();
     } catch (e: any) {
-      toast.error(e?.response?.data?.message ?? 'Erro ao registar');
+      toast.error(e?.response?.data?.message ?? t('recordError'));
     } finally { setRegistandoNaoAdmin(false); }
   };
 
@@ -178,7 +170,7 @@ export default function MarPage() {
         ...camposLeitura(leitura),
         ...(justificacaoSOS ? { justificacaoSOS } : {}),
       });
-      toast.success('Medicação administrada');
+      toast.success(t('administered'));
       setModalId(null);
       setObs('');
       setCertas([false, false, false, false, false]);
@@ -188,15 +180,15 @@ export default function MarPage() {
         const sos = e?.response?.status === 409 && /^SOS:/.test(e?.response?.data?.message ?? '');
         if (sos) {
           const justificacao = await pedirTexto({
-            titulo: 'SOS fora do intervalo',
+            titulo: t('sosTitle'),
             descricao: e.response.data.message,
-            rotulo: 'Porque se administra agora',
-            botao: 'Administrar com justificação',
-            placeholder: 'Ex.: dor 8/10 persistente, médico contactado',
+            rotulo: t('sosLabel'),
+            botao: t('sosButton'),
+            placeholder: t('sosPlaceholder'),
           });
           if (justificacao) { setTimeout(() => void administrar(justificacao), 0); return; }
         }
-        toast.error(e?.response?.data?.message ?? 'Erro ao administrar medicação');
+        toast.error(e?.response?.data?.message ?? t('administerError'));
     } finally { setAdministrando(null); }
   };
 
@@ -208,41 +200,40 @@ export default function MarPage() {
   }, {});
 
   const horaAtual = new Date().getHours();
-  const turnoLabel = horaAtual >= 8 && horaAtual < 16 ? 'Manhã (08:00–16:00)'
-    : horaAtual >= 16 && horaAtual < 23 ? 'Tarde (16:00–23:00)' : 'Noite (23:00–08:00)';
+  const turnoLabel = t(horaAtual >= 8 && horaAtual < 16 ? 'shift.morning' : horaAtual >= 16 && horaAtual < 23 ? 'shift.afternoon' : 'shift.night');
 
   const modalMed = medicacoes.find((m) => m.id === modalId);
-  const certasValues = getCertasValues(modalMed);
+  const certasValues = getCertasValues(modalMed, t);
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: '1280px', margin: '0 auto' }}>
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">MAR — Registo de Administração</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Turno atual: {turnoLabel}</p>
+          <h1 className="text-3xl font-bold text-slate-900">{t('title')}</h1>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>{t('currentShift', { turno: turnoLabel })}</p>
         </div>
         <button onClick={carregar} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          Atualizar
+          {tc('refresh')}
         </button>
       </div>
 
       {loading ? (
-        <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar MAR"
+        <div role="status" aria-live="polite" aria-busy="true" aria-label={t('loading')}
           className="flex items-center justify-center gap-3 text-slate-500" style={{ padding: '80px' }}>
           <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          <span className="text-sm">A carregar MAR...</span>
+          <span className="text-sm">{t('loading')}</span>
         </div>
       ) : erroCarga ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
           <ErroCarregamento
-            titulo="Não foi possível carregar o MAR"
-            descricao="Isto não quer dizer que não haja medicações por administrar neste turno. Verifique a ligação e tente de novo antes de dar a ronda por concluída."
+            titulo={t('loadErrorTitle')}
+            descricao={t('loadErrorBody')}
             onTentarNovamente={carregar}
           />
         </div>
@@ -253,15 +244,15 @@ export default function MarPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p className="text-slate-500 font-medium" style={{ marginBottom: '4px' }}>Sem medicações para este turno</p>
-          <p className="text-slate-500 text-sm">Não tens doentes atribuídos com medicações ativas</p>
+          <p className="text-slate-500 font-medium" style={{ marginBottom: '4px' }}>{t('emptyTitle')}</p>
+          <p className="text-slate-500 text-sm">{t('emptyBody')}</p>
         </div>
       ) : (
         <div className="flex flex-col gap-6">
           {doenteFiltro && (
             <button type="button" onClick={() => { setDoenteFiltro(null); window.history.replaceState(null, '', '/mar'); }}
               className="self-start text-sm font-semibold text-blue-700 hover:underline">
-              ← Ver todos os meus doentes
+              {t('showAllPatients')}
             </button>
           )}
           {Object.values(porDoente).map(({ doente, meds }) => (
@@ -274,9 +265,9 @@ export default function MarPage() {
                   <Link href={`/doentes/${doente.id}`} className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
                     {doente.nome}
                   </Link>
-                  <p className="text-xs text-slate-500">Quarto {(doente.cama?.quarto ?? '—')} · Cama {(doente.cama?.numero ?? '—')}</p>
+                  <p className="text-xs text-slate-500">{t('roomBed', { quarto: doente.cama?.quarto ?? '—', cama: doente.cama?.numero ?? '—' })}</p>
                 </div>
-                <span className="ml-auto text-xs text-slate-500">{meds.length} medicação{meds.length !== 1 ? 'ões' : ''}</span>
+                <span className="ml-auto text-xs text-slate-500">{t('medCount', { n: meds.length })}</span>
               </div>
               <div className="divide-y divide-slate-50">
                 {meds.map((m) => {
@@ -291,7 +282,7 @@ export default function MarPage() {
                           <span className={`text-xs font-medium rounded-md badge-pad py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
                           {validacao && (
                             <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-500'}`}>
-                              {validacao === 'aprovada' ? '✓ Validada' : '✗ Rejeitada'}
+                              {validacao === 'aprovada' ? t('validated') : t('rejected')}
                             </span>
                           )}
                           {ultimaAdmin?.verificacao5Certas && (
@@ -303,19 +294,19 @@ export default function MarPage() {
                           {/* QA-08: num SOS, quando foi a última toma (o intervalo mínimo é verificado na API). */}
                           {/^sos/i.test(m.frequencia) && (() => {
                             const ultima = m.registos.find((r) => !r.naoAdministrada);
-                            if (!ultima) return <span className="text-xs text-slate-500">· sem tomas</span>;
+                            if (!ultima) return <span className="text-xs text-slate-500">{t('noDosesYet')}</span>;
                             const min = Math.round((Date.now() - new Date(ultima.administradoEm).getTime()) / 60000);
                             return (
                               <span className={`text-xs font-semibold ${min < 60 ? 'text-red-600' : 'text-slate-600'}`}>
-                                · última toma há {min < 60 ? `${min} min` : `${Math.floor(min / 60)} h ${min % 60} min`}
+                                {t('lastDoseAgo', { tempo: min < 60 ? `${min} min` : `${Math.floor(min / 60)} h ${min % 60} min` })}
                               </span>
                             );
                           })()}
                           {ultimaAdmin && (
                             <span className={`text-xs ${ultimaAdmin.naoAdministrada ? 'text-red-400' : 'text-slate-500'}`}>
                               {ultimaAdmin.naoAdministrada
-                                ? `✗ Não administrada (${ultimaAdmin.motivoNaoAdmin}) · ${ultimaAdmin.administradoPor.nome}`
-                                : `Última: ${new Date(ultimaAdmin.administradoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} por ${ultimaAdmin.administradoPor.nome}`}
+                                ? t('notGivenBy', { motivo: ultimaAdmin.motivoNaoAdmin ?? '', nome: ultimaAdmin.administradoPor.nome })
+                                : t('lastBy', { hora: new Date(ultimaAdmin.administradoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }), nome: ultimaAdmin.administradoPor.nome })}
                             </span>
                           )}
                         </div>
@@ -326,14 +317,14 @@ export default function MarPage() {
                           disabled={validacao === 'rejeitada'}
                           className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                           style={{ padding: '7px 14px' }}>
-                          Administrar
+                          {t('administer')}
                         </button>
                         <button
                           onClick={() => { setModalNaoAdmin(m.id); setMotivoSelecionado('recusou'); setMotivoOutro(''); }}
                           disabled={validacao === 'rejeitada'}
                           className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                           style={{ padding: '7px 14px' }}>
-                          Não administrada
+                          {t('notGiven')}
                         </button>
                       </div>
                     </div>
@@ -351,25 +342,25 @@ export default function MarPage() {
              onClick={(e) => e.target === e.currentTarget && setModalNaoAdmin(null)}>
           <div {...dlgNaoAdmin.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
-              <h2 className="text-base font-bold text-slate-900">Não administrada — Registar motivo</h2>
-              <button aria-label="Fechar" onClick={() => setModalNaoAdmin(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <h2 className="text-base font-bold text-slate-900">{t('notGivenTitle')}</h2>
+              <button aria-label={tc('close')} onClick={() => setModalNaoAdmin(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>
               {medicacoes.find(m => m.id === modalNaoAdmin)?.nome} · {medicacoes.find(m => m.id === modalNaoAdmin)?.doente.nome}
             </p>
             <div className="flex flex-col gap-2" style={{ marginBottom: '20px' }}>
-              {MOTIVOS_NAO_ADMIN.map(op => (
-                <label key={op.value}
-                  className={`flex items-center gap-3 rounded-xl border cursor-pointer transition-colors ${motivoSelecionado === op.value ? 'border-red-300 bg-red-50' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
+              {MOTIVOS_NAO_ADMIN.map(valor => (
+                <label key={valor}
+                  className={`flex items-center gap-3 rounded-xl border cursor-pointer transition-colors ${motivoSelecionado === valor ? 'border-red-300 bg-red-50' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
                   style={{ padding: '10px 14px' }}>
-                  <input type="radio" name="motivo" value={op.value} checked={motivoSelecionado === op.value}
-                    onChange={() => setMotivoSelecionado(op.value)} className="accent-red-600" />
-                  <span className="text-sm font-medium text-slate-700">{op.label}</span>
+                  <input type="radio" name="motivo" value={valor} checked={motivoSelecionado === valor}
+                    onChange={() => setMotivoSelecionado(valor)} className="accent-red-600" />
+                  <span className="text-sm font-medium text-slate-700">{t(`reason.${valor}`)}</span>
                 </label>
               ))}
               {motivoSelecionado === 'outro' && (
                 <input value={motivoOutro} onChange={e => setMotivoOutro(e.target.value)}
-                  placeholder="Descreva o motivo..."
+                  placeholder={t('describeReason')}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500"
                   style={{ padding: '10px 14px', marginTop: '4px' }} />
               )}
@@ -377,12 +368,12 @@ export default function MarPage() {
             <div className="flex gap-3">
               <button onClick={() => setModalNaoAdmin(null)}
                 className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+                style={{ padding: '11px' }}>{tc('cancel')}</button>
               <button onClick={registarNaoAdmin}
                 disabled={registandoNaoAdmin || (motivoSelecionado === 'outro' && !motivoOutro.trim())}
                 className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 style={{ padding: '11px' }}>
-                {registandoNaoAdmin ? 'A registar...' : 'Confirmar'}
+                {registandoNaoAdmin ? t('recording') : tc('confirm')}
               </button>
             </div>
           </div>
@@ -403,14 +394,14 @@ export default function MarPage() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-base font-bold text-slate-900">Verificação das 5 Corretas</h2>
+                <h2 className="text-base font-bold text-slate-900">{t('fiveRightsTitle')}</h2>
                 <p className="text-xs text-slate-500">{modalMed?.nome} · {modalMed?.doente.nome}</p>
               </div>
             </div>
 
             {/* Aviso */}
             <div className="rounded-xl text-xs font-medium text-amber-700 bg-amber-50 border border-amber-100" style={{ padding: '10px 14px', marginBottom: '20px', marginTop: '12px' }}>
-              Confirme cada item antes de administrar. Todos os 5 devem estar verificados.
+              {t('fiveRightsHint')}
             </div>
 
             {/* UX-02: alergias visíveis no acto de administrar */}
@@ -429,7 +420,7 @@ export default function MarPage() {
 
             {/* Checklist */}
             <div className="flex flex-col gap-3" style={{ marginBottom: '20px' }}>
-              {CERTAS_LABELS.map((label, i) => (
+              {[0, 1, 2, 3, 4].map((i) => (
                 // eslint-disable-next-line jsx-a11y/label-has-associated-control -- checkbox envolvido pela label (associação implícita)
                 <label
                   key={i}
@@ -443,7 +434,7 @@ export default function MarPage() {
                     className="mt-0.5 w-4 h-4 accent-emerald-600 shrink-0"
                   />
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>{label}</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '2px' }}>{t(`right.${i}`)}</p>
                     <p className={`text-sm font-medium truncate ${certas[i] ? 'text-emerald-700' : 'text-slate-700'}`}>{certasValues[i]}</p>
                   </div>
                 </label>
@@ -452,12 +443,12 @@ export default function MarPage() {
 
             {/* Observações */}
             <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
-              Observações (opcional)
+              {t('notesOptional')}
             </span>
             <textarea
               value={obs}
               onChange={(e) => setObs(e.target.value)}
-              placeholder="Ex: Administrado com alimento, doente com dificuldade..."
+              placeholder={t('notesPlaceholder')}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
               style={{ padding: '10px 14px', marginBottom: '20px' }}
               rows={2}
@@ -474,13 +465,13 @@ export default function MarPage() {
             <div className="flex gap-3">
               <button onClick={() => setModalId(null)}
                 className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+                style={{ padding: '11px' }}>{tc('cancel')}</button>
               <button
                 onClick={() => administrar()}
                 disabled={!todasMarcadas || !!administrando || leituraBloqueia(leitura)}
                 className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 style={{ padding: '11px' }}>
-                {administrando ? 'A registar...' : todasMarcadas ? 'Confirmar Administração' : `Faltam ${5 - certas.filter(Boolean).length} item${5 - certas.filter(Boolean).length !== 1 ? 's' : ''}`}
+                {administrando ? t('recording') : todasMarcadas ? t('confirmAdministration') : t('itemsLeft', { n: 5 - certas.filter(Boolean).length })}
               </button>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { ErroCarregamento } from '@/components/erro-carregamento';
 
 const COMPONENTES: Record<string, string> = {
   concentrado_eritrocitos: 'Concentrado Eritrocitário',
@@ -37,6 +38,8 @@ export default function BancoSanguePage() {
 
   const [bolsas, setBolsas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  // Uma falha de rede não pode aparecer como "não há unidades" num banco de sangue.
+  const [erroCarga, setErroCarga] = useState(false);
   const [filtroComp, setFiltroComp] = useState('');
   const [filtroGrupo, setFiltroGrupo] = useState('');
   const [modal, setModal] = useState(false);
@@ -47,10 +50,11 @@ export default function BancoSanguePage() {
 
   const carregar = useCallback(() => {
     setLoading(true);
+    setErroCarga(false);
     const params = new URLSearchParams();
     if (filtroComp) params.set('componente', filtroComp);
     if (filtroGrupo) params.set('grupoABO', filtroGrupo);
-    api.get(`/transfusao/banco?${params}`).then(r => setBolsas(r.data ?? [])).catch(() => setBolsas([])).finally(() => setLoading(false));
+    api.get(`/transfusao/banco?${params}`).then(r => setBolsas(r.data ?? [])).catch(() => { setBolsas([]); setErroCarga(true); }).finally(() => setLoading(false));
   }, [filtroComp, filtroGrupo]);
   useEffect(() => { carregar(); }, [carregar]);
 
@@ -105,6 +109,10 @@ export default function BancoSanguePage() {
 
       {loading ? (
         <p className="text-sm text-slate-500 text-center" style={{ padding: '40px' }}>{tc('loading')}</p>
+      ) : erroCarga ? (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <ErroCarregamento titulo={t('loadErrorTitle')} descricao={t('loadErrorBody')} onTentarNovamente={carregar} />
+        </div>
       ) : bolsas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center" style={{ padding: '48px' }}>
           <p className="text-sm text-slate-500">{t('empty')}</p>

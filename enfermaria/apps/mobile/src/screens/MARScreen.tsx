@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
@@ -31,6 +32,7 @@ const viaCor: Record<string, string> = {
 };
 
 export default function MARScreen({ utilizador, onVoltar }: Props) {
+  const { t } = useTranslation();
   const [medicacoes, setMedicacoes] = useState<MedicacaoMAR[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,18 +68,18 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
         await carregar();
       } catch (e: any) {
         registarFalhaSilenciosa('MARScreen.administrar', e);
-        const motivo = e?.response?.data?.message ?? 'Não foi possível registar a administração.';
-        Alert.alert('Administração NÃO registada', `${motivo}
+        const motivo = e?.response?.data?.message ?? t('mar.recordFallback');
+        Alert.alert(t('administer.notRecordedTitle'), `${motivo}
 
-Confirma no processo do doente antes de repetir.`);
+${t('administer.checkRecord')}`);
       }
     };
     if (Platform.OS === 'web') {
-      if ((window as any).confirm(`Confirmar administração de ${nome}?`)) acao();
+      if ((window as any).confirm(t('administer.confirmOf', { nome }))) acao();
     } else {
-      Alert.alert('Administrar', `Confirmar administração de ${nome}?`, [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: acao },
+      Alert.alert(t('administer.title'), t('administer.confirmOf', { nome }), [
+        { text: t('common.cancel'), style: 'cancel' },
+        { text: t('common.confirm'), onPress: acao },
       ]);
     }
   };
@@ -97,15 +99,15 @@ Confirma no processo do doente antes de repetir.`);
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={s.headerTitulo}>MAR — Medicação</Text>
-          <Text style={s.headerSub}>{erroCarga ? 'MAR por carregar' : `${pendentes} administração(ões) pendente(s)`}</Text>
+          <Text style={s.headerTitulo}>{t('mar.title')}</Text>
+          <Text style={s.headerSub}>{erroCarga ? t('mar.notLoaded') : t('mar.pending', { count: pendentes })}</Text>
         </View>
       </View>
 
       <View style={s.filtros}>
         {([
-          { key: 'pendentes', label: 'Pendentes' },
-          { key: 'todas', label: 'Todas' },
+          { key: 'pendentes', label: t('mar.filterPending') },
+          { key: 'todas', label: t('mar.filterAll') },
         ] as const).map(f => (
           <TouchableOpacity key={f.key} style={[s.filtro, filtro === f.key && s.filtroAtivo]} onPress={() => setFiltro(f.key)}>
             <Text style={[s.filtroTexto, filtro === f.key && s.filtroTextoAtivo]}>{f.label}</Text>
@@ -117,7 +119,7 @@ Confirma no processo do doente antes de repetir.`);
         {erroCarga
           ? (
             <ErroCarregamento
-              texto="Isto não quer dizer que as medicações estejam administradas. Verifique a ligação e tente de novo antes de dar a ronda por concluída."
+              texto={t('mar.loadError')}
               onTentarNovamente={() => { setLoading(true); carregar(); }}
             />
           )
@@ -125,7 +127,7 @@ Confirma no processo do doente antes de repetir.`);
           ? (
             <View style={s.vazio}>
               <Ionicons name="checkmark-circle-outline" size={48} color="#22c55e" />
-              <Text style={s.vazioTexto}>Todas as medicações administradas</Text>
+              <Text style={s.vazioTexto}>{t('mar.allGiven')}</Text>
             </View>
           )
           : filtradas.map(m => {
@@ -137,7 +139,7 @@ Confirma no processo do doente antes de repetir.`);
                     <Text style={s.medicamentoNome}>{m.medicamentoNome}</Text>
                     <Text style={s.doenteNome}>{m.doente.nome}</Text>
                     {m.doente.cama && (
-                      <Text style={s.cama}>Cama {m.doente.cama.quarto}/{m.doente.cama.numero}</Text>
+                      <Text style={s.cama}>{t('mar.bed', { cama: `${m.doente.cama.quarto}/${m.doente.cama.numero}` })}</Text>
                     )}
                   </View>
                   {m.administradoHoje
@@ -159,7 +161,7 @@ Confirma no processo do doente antes de repetir.`);
                 </View>
 
                 {m.horarios && m.horarios.length > 0 && (
-                  <Text style={s.horarios}>Horários: {m.horarios.join(' · ')}</Text>
+                  <Text style={s.horarios}>{t('mar.times', { lista: m.horarios.join(' · ') })}</Text>
                 )}
 
                 {!m.administradoHoje && (
@@ -168,7 +170,7 @@ Confirma no processo do doente antes de repetir.`);
                     onPress={() => administrar(m.id, m.medicamentoNome, m.doente.id)}
                   >
                     <Ionicons name="medical-outline" size={15} color="#1d4ed8" />
-                    <Text style={s.btnAdministrarTexto}>Administrar</Text>
+                    <Text style={s.btnAdministrarTexto}>{t('mar.administer')}</Text>
                   </TouchableOpacity>
                 )}
               </View>
