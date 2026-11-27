@@ -13,7 +13,7 @@ module.exports = {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   // QA-25: nenhum teste unitário sai para a rede.
-  setupFiles: ['<rootDir>/test/sem-rede.ts'],
+  setupFiles: ['<rootDir>/test/chave-de-teste.ts', '<rootDir>/test/sem-rede.ts'],
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
