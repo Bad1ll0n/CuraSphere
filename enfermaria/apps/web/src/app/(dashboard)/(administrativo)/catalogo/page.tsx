@@ -38,6 +38,21 @@ export default function CatalogoPage() {
     staleTime: 60_000,
   });
 
+  // PROD-05: de onde vem o catálogo (INFARMED, amostra de arranque ou local).
+  const { data: fonte } = useQuery<{ total: number; apenasAmostra: boolean; fontes: { fonte: string; versao: string | null; itens: number }[] }>({
+    queryKey: ['catalogo-fonte'],
+    queryFn: () => api.get('/catalogo/fonte').then(r => r.data),
+    staleTime: 60_000,
+  });
+  const mutAmostra = useMutation({
+    mutationFn: () => api.post('/catalogo/importar-amostra', {}),
+    onSuccess: (r: any) => {
+      toast.success(`Amostra carregada: ${r.data.criados} novos, ${r.data.atualizados} actualizados`);
+      qc.invalidateQueries({ queryKey: ['catalogo'] }); qc.invalidateQueries({ queryKey: ['catalogo-fonte'] });
+    },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao carregar a amostra'),
+  });
+
   const resetForm = () => setForm({ dci: '', nomeMarca: '', formaFarmaceutica: 'comprimido', classeTerap: 'analgésico', unidade: 'mg', concentracao: '', codigoATC: '' });
 
   const mutCriar = useMutation({
@@ -66,10 +81,29 @@ export default function CatalogoPage() {
 
   return (
     <div style={{ padding: '32px 40px' }}>
+      {fonte && (fonte.total === 0 || fonte.apenasAmostra) && (
+        <div role="status" className="rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-3 flex-wrap" style={{ padding: '12px 16px', marginBottom: '20px' }}>
+          <p className="text-sm text-amber-800 flex-1">
+            {fonte.total === 0 ? 'O catálogo está vazio.' : 'O catálogo só tem a amostra de arranque.'} Importe o ficheiro do INFARMED
+            (<code>src/prisma/importar-catalogo.ts</code>) para prescrever a partir do catálogo nacional.
+          </p>
+          {utilizador?.role === 'farmaceutico' && fonte.total === 0 && (
+            <button onClick={() => mutAmostra.mutate()} disabled={mutAmostra.isPending}
+              className="text-xs font-semibold bg-white border border-amber-300 text-amber-800 rounded-lg hover:bg-amber-100" style={{ padding: '6px 12px' }}>
+              Carregar amostra
+            </button>
+          )}
+        </div>
+      )}
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Catálogo de Medicamentos</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Lista padronizada por DCI, forma farmacêutica e classe terapêutica</p>
+          {fonte && (
+            <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>
+              {fonte.total} medicamentos · {fonte.fontes.map((f) => `${f.fonte === 'infarmed' ? 'INFARMED' : f.fonte}${f.versao ? ` ${f.versao}` : ''} (${f.itens})`).join(' · ') || 'vazio'}
+            </p>
+          )}
         </div>
         {canEdit && (
           <button onClick={() => { resetForm(); setModal('criar'); }}

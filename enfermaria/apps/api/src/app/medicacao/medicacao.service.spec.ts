@@ -8,6 +8,7 @@ import { StewardshipService } from '../stewardship/stewardship.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
+import { CatalogoService } from '../catalogo/catalogo.service';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -42,6 +43,12 @@ const mockRedis = {
   expire: jest.fn().mockResolvedValue(1),
 };
 
+// PROD-05: catálogo com algumas DCIs (o resolvedor real é testado em catalogo-nacional.spec).
+const mockCatalogo = {
+  resolver: jest.fn(),
+  dcis: jest.fn(),
+};
+
 const mockStewardship = {
   registarSeAntibiotico: jest.fn().mockResolvedValue(undefined),
 };
@@ -52,6 +59,8 @@ describe('MedicacaoService', () => {
   beforeEach(async () => {
     jest.resetAllMocks();
     mockStewardship.registarSeAntibiotico.mockResolvedValue(undefined);
+    mockCatalogo.resolver.mockResolvedValue(null);
+    mockCatalogo.dcis.mockResolvedValue(['Paracetamol', 'Amoxicilina', 'Varfarina', 'Ácido acetilsalicílico', 'Omeprazol']);
     mockNotificacoes.enviarParaUtilizador.mockResolvedValue(undefined);
     mockNotificacoes.enviarParaUtilizadores.mockResolvedValue(undefined);
     mockNotificacoes.notificarRole.mockResolvedValue(undefined);
@@ -78,6 +87,7 @@ describe('MedicacaoService', () => {
         { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
         { provide: WebhooksService, useValue: { dispatcharEvento: jest.fn().mockResolvedValue(undefined) } },
         { provide: AlertasService, useValue: mockAlertas },
+        { provide: CatalogoService, useValue: mockCatalogo },
       ],
     }).compile();
 
@@ -208,10 +218,51 @@ describe('MedicacaoService', () => {
         id: 'med-2', nome: 'Aspirina 100mg', prescritoPor: {},
       });
 
-      const resultado = await service.prescrever({ ...dadosBase, nome: 'Aspirina 100mg' });
+      // PROD-05: interacção grave da base determinística bloqueia; só passa com justificação.
+      await expect(service.prescrever({ ...dadosBase, nome: 'Aspirina 100mg' })).rejects.toThrow(/INTERACAO: .*warfarina.*aspirina.*fonte:/i);
+      await expect(service.prescrever({ ...dadosBase, nome: 'Aspirina 100mg', forcarInteracao: true, justificativaInteracao: 'curta' }))
+        .rejects.toThrow(BadRequestException);
 
-      expect(resultado.avisoInteracoes.length).toBeGreaterThan(0);
+      const resultado = await service.prescrever({
+        ...dadosBase, nome: 'Aspirina 100mg', forcarInteracao: true,
+        justificativaInteracao: 'Síndrome coronária aguda — benefício supera o risco, INR vigiado diariamente',
+      });
       expect(resultado.avisoInteracoes[0]).toMatchObject({ severidade: 'grave' });
+      expect(resultado.fonteInteracoes).toMatchObject({ pares: expect.any(Number) });
+      expect(mockPrisma.medicacao.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ overrideInteracao: true, overrideInteracaoMotivo: expect.stringContaining('warfarina+aspirina') }),
+      }));
+    });
+
+    it('PROD-05: a mesma substância por outro nome é duplicação (Ben-u-ron com Paracetamol activo)', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João' });
+      mockPrisma.alergia.findMany.mockResolvedValue([]);
+      mockPrisma.medicacao.findMany.mockResolvedValue([{ id: 'm0', nome: 'Paracetamol 1 g', dci: null, dose: '1 g', via: 'oral', frequencia: '8/8h' }]);
+      mockPrisma.medicacao.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'm1', ...data }));
+      await expect(service.prescrever({ ...dadosBase, nome: 'Ben-u-ron', dose: '1 g' })).rejects.toThrow(/DUPLICACAO: Paracetamol já está prescrito/);
+      const r: any = await service.prescrever({
+        ...dadosBase, nome: 'Ben-u-ron', dose: '1 g', forcarDuplicacao: true,
+        justificativaDuplicacao: 'Transição de via IV para oral, a anterior será suspensa hoje',
+      });
+      expect(r).toMatchObject({ dci: 'Paracetamol', overrideDuplicacao: true, foraCatalogo: true });
+      expect(r.avisoForaCatalogo).toMatch(/não está no catálogo/);
+    });
+
+    it('PROD-05: escolhido do catálogo, a prescrição guarda DCI e ATC; texto livre pode exigir justificação', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João' });
+      mockPrisma.alergia.findMany.mockResolvedValue([]);
+      mockPrisma.medicacao.findMany.mockResolvedValue([]);
+      mockPrisma.medicacao.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'm1', ...data }));
+      mockCatalogo.resolver.mockResolvedValueOnce({ id: 'cat-1', dci: 'Omeprazol', codigoATC: 'A02BC01' });
+      const r: any = await service.prescrever({ ...dadosBase, nome: 'Omeprazol 20 mg', dose: '20 mg', catalogoId: 'cat-1' });
+      expect(r).toMatchObject({ catalogoId: 'cat-1', dci: 'Omeprazol', codigoATC: 'A02BC01', foraCatalogo: false, avisoForaCatalogo: null });
+
+      process.env['PRESCRICAO_EXIGIR_CATALOGO'] = 'true';
+      try {
+        await expect(service.prescrever({ ...dadosBase, nome: 'Xarope caseiro', dose: '10 ml' })).rejects.toThrow(/FORA_CATALOGO/);
+        const ok: any = await service.prescrever({ ...dadosBase, nome: 'Xarope caseiro', dose: '10 ml', justificacaoForaCatalogo: 'Manipulado da farmácia hospitalar' });
+        expect(ok).toMatchObject({ foraCatalogo: true, justificacaoForaCatalogo: 'Manipulado da farmácia hospitalar' });
+      } finally { delete process.env['PRESCRICAO_EXIGIR_CATALOGO']; }
     });
 
     // ── BA-03: o override de alergia é persistido, não descartado ────────────

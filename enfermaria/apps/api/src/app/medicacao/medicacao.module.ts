@@ -7,9 +7,10 @@ import { PdfService } from '../common/pdf.service';
 import { StewardshipModule } from '../stewardship/stewardship.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
 import { AlertasModule } from '../alertas/alertas.module';
+import { CatalogoModule } from '../catalogo/catalogo.module';
 
 @Module({
-  imports: [NotificacoesModule, DoenteModule, StewardshipModule, WebhooksModule, AlertasModule],
+  imports: [NotificacoesModule, DoenteModule, StewardshipModule, WebhooksModule, AlertasModule, CatalogoModule],
   controllers: [MedicacaoController],
   providers: [MedicacaoService, PdfService],
   exports: [MedicacaoService],

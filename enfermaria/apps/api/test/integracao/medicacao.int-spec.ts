@@ -89,4 +89,20 @@ describe('integração: medicação segura', () => {
     expect((await med.pedido('POST', `/alergias/${novo.doenteId}`, { alergenio: 'Látex', tipo: 'latex', severidade: 'leve' })).status).toBe(201);
     expect((await enf.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(409);
   });
+  it('PROD-05: catálogo — marca resolvida para a DCI, duplicação pela substância e fonte das interacções', async () => {
+    const far = await entrar(ctx, '00006');
+    const imp = await far.pedido('POST', '/catalogo/importar-amostra', {});
+    expect(imp.status).toBe(201);
+    expect((await far.pedido('GET', '/catalogo/fonte')).json).toMatchObject({ apenasAmostra: true });
+
+    const novo = await criarDoenteInternado(ctx, ['00003', '00013']);
+    const med = await entrar(ctx, '00013');
+    expect((await med.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(201);
+    const p1 = await med.pedido('POST', '/medicacao/prescrever', { doenteId: novo.doenteId, nome: 'Ben-u-ron', dose: '1 g', via: 'oral', frequencia: '8/8h' });
+    expect(p1.status).toBe(201);
+    expect(p1.json).toMatchObject({ dci: 'Paracetamol', codigoATC: 'N02BE01', foraCatalogo: false, fonteInteracoes: expect.objectContaining({ versao: expect.any(String) }) });
+    const dup = await med.pedido('POST', '/medicacao/prescrever', { doenteId: novo.doenteId, nome: 'Paracetamol', dose: '1 g', via: 'iv', frequencia: '6/6h' });
+    expect(dup.status).toBe(409);
+    expect(dup.json.message).toMatch(/DUPLICACAO/);
+  });
 });

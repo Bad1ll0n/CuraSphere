@@ -6,7 +6,10 @@ import { AI_MODELS } from '../common/ai-models';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
-import interacoesJson from './interacoes.json';
+import { Interacao, SEVERIDADES_BLOQUEANTES, fonteInteracoes, verificarInteracao } from './interacoes';
+import { ajusteRenal, estadioKdigo } from './ajuste-renal';
+import { CatalogoService } from '../catalogo/catalogo.service';
+import { dciDoNome, normalizarDci } from '../catalogo/catalogo-nacional';
 import { sanitizeForPrompt } from '../ai-clinico/prompt-sanitizer';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { AlertasService } from '../alertas/alertas.service';
@@ -46,8 +49,6 @@ const CERTO_HORA = 'Hora certa';
 /** Ordem canónica, tal como o enfermeiro a executa à cabeceira. */
 const NOMES_5_CERTOS = [CERTO_DOENTE, CERTO_MEDICAMENTO, CERTO_DOSE, CERTO_VIA, CERTO_HORA];
 
-export interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
-const INTERACOES: Interacao[] = interacoesJson as Interacao[];
 
 /** Justificação mínima para prescrever apesar de uma alergia documentada. */
 const MIN_JUSTIFICACAO_OVERRIDE = 20;
@@ -64,27 +65,7 @@ function compararCampoPrescrito(declarado: string | undefined, prescrito: string
   return normalizar(declarado) === normalizar(prescrito);
 }
 
-function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Interacao[] {
-  const medNorm = nomeMed.toLowerCase();
-  const encontradas: Interacao[] = [];
-  for (const med of medicacoesAtivas) {
-    const ativaNorm = med.toLowerCase();
-    for (const interacao of INTERACOES) {
-      const m1 = interacao.med1.toLowerCase();
-      const m2 = interacao.med2.toLowerCase();
-      const matchNovo = medNorm.includes(m1) || m1.includes(medNorm.split(' ')[0]);
-      const matchAtivo = ativaNorm.includes(m2) || m2.includes(ativaNorm.split(' ')[0]);
-      const matchNovo2 = medNorm.includes(m2) || m2.includes(medNorm.split(' ')[0]);
-      const matchAtivo2 = ativaNorm.includes(m1) || m1.includes(ativaNorm.split(' ')[0]);
-      if ((matchNovo && matchAtivo) || (matchNovo2 && matchAtivo2)) {
-        if (!encontradas.find((e) => e.med1 === interacao.med1 && e.med2 === interacao.med2)) {
-          encontradas.push(interacao);
-        }
-      }
-    }
-  }
-  return encontradas;
-}
+// PROD-05: interacções em ./interacoes.ts (base com fonte e versão, comparação por DCI).
 
 @Injectable()
 export class MedicacaoService {
@@ -98,38 +79,47 @@ export class MedicacaoService {
     private readonly stewardship: StewardshipService,
     private readonly webhooks: WebhooksService,
     private readonly alertas: AlertasService,
+    private readonly catalogo: CatalogoService,
   ) {}
 
-  private async verificarInteracaoIA(novoNome: string, ativas: string[]): Promise<{ bloqueante: boolean; aviso: string | null }> {
-    if (ativas.length === 0) return { bloqueante: false, aviso: null };
-    // PROD-19: um LLM não bloqueia prescrições sem enquadramento regulamentar. A tabela
-    // determinística de interacções (interacoes.json) continua a correr na prescrição.
-    if (!iaPermitida('interacoes_medicacao')) return { bloqueante: false, aviso: null };
+  /**
+   * PROD-05/PROD-19: o LLM nunca decide se há interacção nem bloqueia. Com a função activada,
+   * só EXPLICA, em linguagem clínica, os alertas que a base determinística já deu.
+   */
+  private async explicarInteracoesIA(novoNome: string, interacoes: Interacao[]): Promise<string | null> {
+    if (!interacoes.length || !iaPermitida('interacoes_medicacao')) return null;
     try {
       const msg = await this.anthropic.messages.create({
         model: AI_MODELS.FAST,
         max_tokens: 200,
         temperature: 0.05 as any,
-        system: [{ type: 'text' as const, text: 'És um sistema de verificação de interações medicamentosas clínicas. Responde APENAS com JSON válido: { "interacao": boolean, "severidade": "nenhuma|minor|moderada|grave|contraindicada", "descricao": "string curta ou null" }. Sê conservador — só assinala interações clinicamente documentadas.', cache_control: { type: 'ephemeral' as const } }],
-        messages: [{ role: 'user', content: `Novo fármaco: ${sanitizeForPrompt(novoNome, 100)}\nAtivos: ${ativas.map(a => sanitizeForPrompt(a, 80)).join(', ')}` }],
+        system: [{ type: 'text' as const, text: 'És um farmacêutico clínico. Explica em 2 frases, em português europeu, o mecanismo e o que vigiar nas interacções indicadas. Não acrescentes interacções, não alteres a severidade e não dês doses.', cache_control: { type: 'ephemeral' as const } }],
+        messages: [{ role: 'user', content: `Novo fármaco: ${sanitizeForPrompt(novoNome, 100)}\nInteracções detectadas: ${interacoes.map((x) => `${x.med1} + ${x.med2} (${x.severidade}): ${x.descricao}`).join('; ')}` }],
       });
-      const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-      const r = JSON.parse(texto);
-      if (!r.interacao || r.severidade === 'nenhuma') return { bloqueante: false, aviso: null };
-      const aviso = `${(r.severidade as string).toUpperCase()}: ${r.descricao ?? 'Interação detectada'}`;
-      return { bloqueante: r.severidade === 'contraindicada', aviso };
+      return msg.content[0].type === 'text' ? msg.content[0].text.trim() : null;
     } catch (err) {
-      this.logger.warn('IA interação falhou (fallback para JSON)', (err as any)?.message);
-      const jsonInteracoes = verificarInteracao(novoNome, ativas);
-      if (jsonInteracoes.length === 0) return { bloqueante: false, aviso: null };
-      const pior = jsonInteracoes.find((i) => i.severidade === 'contraindicada')
-        ?? jsonInteracoes.find((i) => i.severidade === 'grave')
-        ?? jsonInteracoes[0];
-      return {
-        bloqueante: pior.severidade === 'contraindicada',
-        aviso: `${pior.severidade.toUpperCase()}: ${pior.descricao}`,
-      };
+      this.logger.warn('Explicação IA de interacção falhou', (err as any)?.message);
+      return null;
     }
+  }
+
+  /** TFG (CKD-EPI 2021) da última creatinina do doente, ou `null` sem creatinina. */
+  private async tfgDoDoente(doenteId: string): Promise<{ tfg: number; nota?: string; creatinina: number; unidade: string } | null> {
+    const [creatinina, doente] = await Promise.all([
+      (this.prisma as any).resultadoAnalise?.findFirst({
+        where: { doenteId, parametro: { contains: 'Creatinina', mode: 'insensitive' } },
+        orderBy: { registadoEm: 'desc' },
+        select: { valor: true, unidade: true },
+      }).catch(() => null) ?? null,
+      this.prisma.doente.findUnique({ where: { id: doenteId }, select: { dataNascimento: true, sexo: true } }),
+    ]);
+    if (!creatinina || !Number.isFinite(Number(creatinina.valor))) return null;
+    const cr = Number(creatinina.valor);
+    const idade = doente?.dataNascimento
+      ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 86_400_000))
+      : 65;
+    const { tfg, nota } = tfgCkdEpi2021(cr, idade, doente?.sexo);
+    return { tfg, nota, creatinina: cr, unidade: creatinina.unidade ?? 'mg/dL' };
   }
 
   async listarPorDoente(doenteId: string) {
@@ -160,6 +150,12 @@ export class MedicacaoService {
     justificativaDose?: string;
     intervaloMinimoH?: number;
     maxDosesDia?: number;
+    catalogoId?: string;
+    justificacaoForaCatalogo?: string;
+    forcarDuplicacao?: boolean;
+    justificativaDuplicacao?: string;
+    forcarInteracao?: boolean;
+    justificativaInteracao?: string;
   }) {
     // QA-07/QA-08: plausibilidade antes de tudo (dose legível, frequência reconhecida, SOS
     // com intervalo mínimo, dose dentro dos máximos de adulto ou override justificado).
@@ -177,15 +173,17 @@ export class MedicacaoService {
       );
     }
 
-    // Verificação IA de interações antes da transação (não-bloqueante em caso de falha)
-    const ativasPreCheck = await this.prisma.medicacao.findMany({
-      where: { doenteId: data.doenteId, ativo: true, deletedAt: null },
-      select: { nome: true },
-    });
-    const iaCheck = await this.verificarInteracaoIA(data.nome, ativasPreCheck.map(m => m.nome));
-    if (iaCheck.bloqueante) {
-      throw new ConflictException(`INTERAÇÃO CONTRAINDICADA: ${iaCheck.aviso}`);
+    // PROD-05: a prescrição liga-se ao catálogo (escolha do autocomplete, ou DCI reconhecida no
+    // nome). Texto livre fica sinalizado e, com PRESCRICAO_EXIGIR_CATALOGO=true, só com justificação.
+    const item = await this.catalogo.resolver(data.nome, data.via, data.catalogoId);
+    const justificacaoForaCatalogo = (data.justificacaoForaCatalogo ?? '').trim();
+    if (!item && process.env['PRESCRICAO_EXIGIR_CATALOGO'] === 'true' && justificacaoForaCatalogo.length < 10) {
+      throw new ConflictException(
+        `FORA_CATALOGO: "${data.nome}" não está no catálogo. Escolha-o do catálogo ou justifique a prescrição em texto livre (justificacaoForaCatalogo).`,
+      );
     }
+    const dcisCatalogo = await this.catalogo.dcis();
+    const dciNova = item?.dci ?? dciDoNome(data.nome, dcisCatalogo);
 
     const resultado = await this.prisma.$transaction(async (tx) => {
       const doente = await tx.doente.findUnique({ where: { id: data.doenteId } });
@@ -222,12 +220,47 @@ export class MedicacaoService {
 
       const medicacoesAtivas = await tx.medicacao.findMany({
         where: { doenteId: data.doenteId, ativo: true, deletedAt: null },
-        select: { nome: true },
+        select: { id: true, nome: true, dci: true, dose: true, via: true, frequencia: true },
       });
+
+      // PROD-05 / UX-17: duplicação terapêutica pela SUBSTÂNCIA (Paracetamol 1 g oral e
+      // Ben-u-ron 1 g são o mesmo fármaco). Só com justificação.
+      const duplicada = dciNova
+        ? medicacoesAtivas.find((m) => {
+          const d = m.dci ?? dciDoNome(m.nome, dcisCatalogo);
+          return d && normalizarDci(d) === normalizarDci(dciNova);
+        })
+        : undefined;
+      const justDuplicacao = (data.justificativaDuplicacao ?? '').trim();
+      if (duplicada && !data.forcarDuplicacao) {
+        throw new ConflictException(
+          `DUPLICACAO: ${dciNova} já está prescrito (${duplicada.nome} ${duplicada.dose} ${duplicada.via} ${duplicada.frequencia}). ` +
+          `Suspenda a prescrição anterior ou envie forcarDuplicacao=true com justificativaDuplicacao (mínimo ${MIN_JUSTIFICACAO_OVERRIDE} caracteres).`,
+        );
+      }
+      if (duplicada && justDuplicacao.length < MIN_JUSTIFICACAO_OVERRIDE) {
+        throw new BadRequestException(`Duplicação terapêutica exige justificação com pelo menos ${MIN_JUSTIFICACAO_OVERRIDE} caracteres.`);
+      }
+
+      // PROD-05: interacções pela base determinística; grave/contraindicada só com justificação.
       const interacoesDetectadas = verificarInteracao(data.nome, medicacoesAtivas.map((m) => m.nome));
+      const bloqueantes = interacoesDetectadas.filter((i) => SEVERIDADES_BLOQUEANTES.includes(i.severidade));
+      const justInteracao = (data.justificativaInteracao ?? '').trim();
+      if (bloqueantes.length && !data.forcarInteracao) {
+        throw new ConflictException(
+          `INTERACAO: ${bloqueantes.map((i) => `${i.med1} + ${i.med2} (${i.severidade}): ${i.descricao}`).join(' | ')} ` +
+          `[fonte: ${fonteInteracoes().fonte}, ${fonteInteracoes().versao}]. Para prescrever mesmo assim, envie forcarInteracao=true ` +
+          `com justificativaInteracao (mínimo ${MIN_JUSTIFICACAO_OVERRIDE} caracteres).`,
+        );
+      }
+      if (bloqueantes.length && justInteracao.length < MIN_JUSTIFICACAO_OVERRIDE) {
+        throw new BadRequestException(`Prescrição com interacção grave exige justificação com pelo menos ${MIN_JUSTIFICACAO_OVERRIDE} caracteres.`);
+      }
 
       const {
         forcarApesarDeAlergia: _, justificativaOverride: __, forcarDoseAcimaMaximo: ___, justificativaDose: ____,
+        catalogoId: _c, justificacaoForaCatalogo: _j, forcarDuplicacao: _d, justificativaDuplicacao: _jd,
+        forcarInteracao: _i, justificativaInteracao: _ji,
         ...dadosMedicacao
       } = data;
       // Só é override se havia mesmo alergia a ultrapassar — `forcar` sozinho não marca nada.
@@ -237,6 +270,17 @@ export class MedicacaoService {
           ...dadosMedicacao,
           overrideAlergia: houveOverride,
           overrideDose: !!doseVerificada,
+          catalogoId: item?.id ?? null,
+          dci: dciNova,
+          codigoATC: item?.codigoATC ?? null,
+          foraCatalogo: !item,
+          justificacaoForaCatalogo: !item && justificacaoForaCatalogo ? justificacaoForaCatalogo.slice(0, 1000) : null,
+          overrideDuplicacao: !!duplicada,
+          overrideDuplicacaoMotivo: duplicada ? `${justDuplicacao} [já prescrito: ${duplicada.nome}]`.slice(0, 1000) : null,
+          overrideInteracao: bloqueantes.length > 0,
+          overrideInteracaoMotivo: bloqueantes.length
+            ? `${justInteracao} [${bloqueantes.map((i) => `${i.med1}+${i.med2}`).join(', ')}]`.slice(0, 1000)
+            : null,
           ...(doseVerificada && { overrideDoseMotivo: `${justificacaoDose} [${doseVerificada.motivo}]`.slice(0, 1000) }),
           ...(houveOverride && {
             overrideMotivo: `${justificacao} [${conflito.correspondencia.motivo}]`.slice(0, 1000),
@@ -275,10 +319,17 @@ export class MedicacaoService {
       ).catch((err) => this.logger.warn('Notificação ao farmacêutico falhou', err?.message ?? String(err)));
     }
 
+    const renal = await this.tfgDoDoente(data.doenteId);
+    const ajuste = renal ? ajusteRenal(data.nome, renal.tfg) : null;
     return {
       ...resultado.medicacao,
       avisoInteracoes: resultado.interacoesDetectadas,
-      avisoIA: iaCheck.aviso,
+      fonteInteracoes: fonteInteracoes(),
+      explicacaoIA: await this.explicarInteracoesIA(data.nome, resultado.interacoesDetectadas),
+      avisoForaCatalogo: item
+        ? null
+        : `"${data.nome}" não está no catálogo de medicamentos — prescrição em texto livre (sinalizada à farmácia).`,
+      avisoRenal: ajuste && renal ? `TFG ${renal.tfg} (${estadioKdigo(renal.tfg)}): ${ajuste.texto} Fonte: ${ajuste.fonte}.` : null,
       overrideAlergia: resultado.override,
       // QA-06: nome que o verificador de alergias não reconhece (nem marca nem substância).
       avisoNomeNaoReconhecido: nomeReconhecido(data.nome)
@@ -1147,46 +1198,25 @@ export class MedicacaoService {
     };
   }
 
+  /**
+   * PROD-05: TFG (CKD-EPI 2021, com o sexo) e orientação de ajuste DETERMINÍSTICA, com fonte.
+   * Antes a dose ajustada vinha de um LLM, sem fonte nem referência.
+   */
   async calcularAjusteRenal(doenteId: string, nomeMedicamento: string) {
-    const [creatinina, doente] = await Promise.all([
-      (this.prisma as any).resultadoAnalise?.findFirst({
-        where: { doenteId, parametro: { contains: 'Creatinina', mode: 'insensitive' } },
-        orderBy: { registadoEm: 'desc' },
-        select: { valor: true, unidade: true },
-      }).catch(() => null) ?? null,
-      this.prisma.doente.findUnique({
-        where: { id: doenteId },
-        select: { dataNascimento: true, sexo: true },
-      }),
-    ]);
-
-    if (!creatinina) {
-      return { gfr: null, aviso: 'Sem creatinina registada — ajuste manual necessário.' };
-    }
-
-    const cr = Number(creatinina.valor);
-    const idade = doente?.dataNascimento
-      ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 86_400_000))
-      : 65;
-
-    // PROD-22: CKD-EPI 2021 com o sexo do doente (antes: sempre a equação masculina, que
-    // sobrestima a TFG de uma mulher — o lado perigoso para fármacos de eliminação renal).
-    const { tfg: gfr, nota: notaSexo } = tfgCkdEpi2021(cr, idade, doente?.sexo);
-
-    // PROD-19: a TFG (CKD-EPI) é determinística e é sempre devolvida; a dose ajustada por LLM só
-    // com activação explícita.
-    if (!iaPermitida('ajuste_renal')) {
-      return { gfr, aviso: `TFG ${gfr} mL/min/1,73m² (CKD-EPI 2021) — ajuste de dose por IA desactivado; ajustar segundo o RCM/formulário.${notaSexo ? ' ' + notaSexo : ''}` };
-    }
-    const msg = await this.anthropic.messages.create({
-      model: AI_MODELS.FAST,
-      max_tokens: 400,
-      system: 'És um farmacêutico clínico especialista em insuficiência renal. Responde apenas com JSON no formato: {"doseRecomendada":"...","intervalo":"...","classificacao":"normal|ligeira|moderada|grave|terminal","observacoes":"..."}',
-      messages: [{ role: 'user', content: `Medicamento: ${nomeMedicamento}\nGFR estimado (CKD-EPI): ${gfr} mL/min/1.73m²\nCreatinina sérica: ${cr} ${creatinina.unidade ?? 'mg/dL'}` }],
-    });
-
-    const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-    const ajuste = (() => { try { return JSON.parse(texto); } catch { return {}; } })();
-    return { gfr, creatinina: cr, unidadeCreatinina: creatinina.unidade ?? 'mg/dL', ...ajuste };
+    const r = await this.tfgDoDoente(doenteId);
+    if (!r) return { gfr: null, aviso: 'Sem creatinina registada — ajuste manual necessário.' };
+    const ajuste = ajusteRenal(nomeMedicamento, r.tfg);
+    return {
+      gfr: r.tfg,
+      estadio: estadioKdigo(r.tfg),
+      creatinina: r.creatinina,
+      unidadeCreatinina: r.unidade,
+      ajuste,
+      aviso: ajuste
+        ? `TFG ${r.tfg} mL/min/1,73m² (${estadioKdigo(r.tfg)}): ${ajuste.texto}`
+        : `TFG ${r.tfg} mL/min/1,73m² (${estadioKdigo(r.tfg)}) — sem regra de ajuste registada para "${nomeMedicamento}"; confirmar no RCM.`,
+      ...(r.nota && { nota: r.nota }),
+    };
   }
+
 }
