@@ -1635,5 +1635,16 @@
     "noPatientsBody": "Se devia ter doentes, peça a atribuição à chefia de equipa ou veja a lista do serviço.",
     "openAssignments": "Ver atribuições",
     "openPatients": "Ver doentes do serviço"
+  },
+  "prescricao": {
+    "dose": "Dose",
+    "unit": "Unidade da dose",
+    "doseHint": "Valor e unidade (ex.: 500 mg, 1 comp, 10 UI).",
+    "indication": "Indicação",
+    "indicationPlaceholder": "Para que é (ex.: dor, febre, profilaxia)",
+    "duration": "Duração (dias)",
+    "durationPlaceholder": "Até nova ordem",
+    "forIndication": "Para: {indicacao}",
+    "until": "Até {data}"
   }
 }

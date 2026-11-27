@@ -26,7 +26,7 @@ const UNIDADES: Record<string, { canon: string; paraMg?: number }> = {
   comprimidos: { canon: 'comp' }, caps: { canon: 'cáps' }, capsula: { canon: 'cáps' }, gotas: { canon: 'gotas' },
   gts: { canon: 'gotas' }, puff: { canon: 'puff' }, puffs: { canon: 'puff' }, inal: { canon: 'inalação' },
   saqueta: { canon: 'saqueta' }, amp: { canon: 'ampola' }, ampola: { canon: 'ampola' }, un: { canon: 'un' },
-  aplicacao: { canon: 'aplicação' }, gota: { canon: 'gotas' },
+  aplicacao: { canon: 'aplicação' }, gota: { canon: 'gotas' }, inalacao: { canon: 'inalação' },
 };
 
 /**
@@ -34,7 +34,9 @@ const UNIDADES: Record<string, { canon: string; paraMg?: number }> = {
  * Devolve `null` se não houver um número seguido de uma unidade conhecida.
  */
 export function parsearDose(dose: string | null | undefined): DoseInterpretada | null {
-  const t = (dose ?? '').toLowerCase().replace(/\s+/g, ' ').trim();
+  // UX-17: sem acentos antes de ler a unidade — "1 cáps", "1 inalação" e "1 aplicação" (as próprias
+  // formas canónicas) eram recusados como dose ilegível.
+  const t = (dose ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
   const m = t.match(/^(\d+(?:[.,]\d+)?)(?:\s*\/\s*\d+(?:[.,]\d+)?)?\s*([a-zµ]+)/);
   if (!m) return null;
   const valor = Number(m[1].replace(',', '.'));

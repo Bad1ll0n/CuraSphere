@@ -33,7 +33,7 @@
   "app/(dashboard)/(clinico)/doentes/[id]/components/internamentos-panel.tsx": 11,
   "app/(dashboard)/(clinico)/doentes/[id]/components/los-widget.tsx": 6,
   "app/(dashboard)/(clinico)/doentes/[id]/components/maternidade-panel.tsx": 41,
-  "app/(dashboard)/(clinico)/doentes/[id]/components/medicacao-panel.tsx": 61,
+  "app/(dashboard)/(clinico)/doentes/[id]/components/medicacao-panel.tsx": 59,
   "app/(dashboard)/(clinico)/doentes/[id]/components/nota-alta-enfermagem-panel.tsx": 7,
   "app/(dashboard)/(clinico)/doentes/[id]/components/notas-clinicas-panel.tsx": 5,
   "app/(dashboard)/(clinico)/doentes/[id]/components/notas-turno-panel.tsx": 9,

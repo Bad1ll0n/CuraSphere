@@ -1635,5 +1635,16 @@
     "noPatientsBody": "If you should have patients, ask the team lead for an assignment or see the ward list.",
     "openAssignments": "See assignments",
     "openPatients": "See ward patients"
+  },
+  "prescricao": {
+    "dose": "Dose",
+    "unit": "Dose unit",
+    "doseHint": "Value and unit (e.g. 500 mg, 1 tab, 10 IU).",
+    "indication": "Indication",
+    "indicationPlaceholder": "What it is for (e.g. pain, fever, prophylaxis)",
+    "duration": "Duration (days)",
+    "durationPlaceholder": "Until further notice",
+    "forIndication": "For: {indicacao}",
+    "until": "Until {data}"
   }
 }

@@ -705,16 +705,22 @@ model Tarefa {
 // ─── Medicação ───────────────────────────────────────────────────────────────
 
 model Medicacao {
-  id          String    @id @default(uuid())
-  tenantId    String    @default("default")
-  nome        String
-  dose        String
-  via         String
-  frequencia  String
-  ativo       Boolean   @default(true)
-  iniciadoEm  DateTime  @default(now())
-  terminadoEm DateTime?
-  deletedAt   DateTime?
+  id              String    @id @default(uuid())
+  tenantId        String    @default("default")
+  nome            String
+  dose            String
+  via             String
+  frequencia      String
+  // UX-17: dose estruturada (valor + unidade de lista fechada); `dose` fica como texto composto.
+  doseValor       Float?
+  doseUnidade     String? // mg | g | mcg | UI | ml | mEq | mmol | comp | cáps | gotas | puff | inalação | saqueta | ampola | un | aplicação
+  indicacao       String?   @db.VarChar(300)
+  duracaoDias     Int?
+  dataFimPrevista DateTime?
+  ativo           Boolean   @default(true)
+  iniciadoEm      DateTime  @default(now())
+  terminadoEm     DateTime?
+  deletedAt       DateTime?
 
   doenteId       String
   prescritoPorId String

@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { CampoDoseEstruturada, CamposIndicacaoDuracao, IndicacaoEFim } from './prescricao-campos';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { QRCode } from '@/components/qr-diferido';
 import api from '@/lib/api';
@@ -15,6 +16,7 @@ interface Medicacao {
   id: string;
   nome: string;
   dose: string;
+  indicacao?: string | null; dataFimPrevista?: string | null; // UX-17
   via: string;
   frequencia: string;
   iniciadoEm: string;
@@ -132,7 +134,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   // Prescrever medicação state
   const [modalMed, setModalMed] = useState(false);
   const [medNome, setMedNome] = useState('');
-  const [medDose, setMedDose] = useState('');
+  const [medDose, setMedDose] = useState(''); const [medUnidade, setMedUnidade] = useState<string>('mg'); const [medIndicacao, setMedIndicacao] = useState(''); const [medDuracao, setMedDuracao] = useState(''); // UX-17
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
   const [erroModal, setErroModal] = useState('');
@@ -248,7 +250,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   };
 
   const submeterMed = async () => {
-    if (!medNome.trim() || !medDose.trim() || !medVia.trim() || !medFreq.trim()) return;
+    if (!medNome.trim() || !(Number(medDose.replace(',', '.')) > 0) || !medVia.trim() || !medFreq.trim()) return;
     if (temInteracaoGrave && !justificativaInteracao.trim()) {
       setErroModal('Interação grave detetada — é obrigatório registar a justificação clínica.');
       return;
@@ -256,7 +258,8 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     setSalvando(true); setErroModal('');
     try {
       const { data: criada } = await api.post('/medicacao/prescrever', {
-        doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
+        doenteId, nome: medNome, doseValor: Number(medDose.replace(',', '.')), doseUnidade: medUnidade, via: medVia, frequencia: medFreq,
+        ...(medIndicacao.trim() ? { indicacao: medIndicacao.trim() } : {}), ...(medDuracao ? { duracaoDias: Number(medDuracao) } : {}),
         ...(medFreq === 'SOS' ? { intervaloMinimoH: Number(sosIntervalo), ...(sosMaxDia ? { maxDosesDia: Number(sosMaxDia) } : {}) } : {}),
         ...(catalogoItem ? { catalogoId: catalogoItem.id } : {}),
         // A justificação da interacção grave, escrita ao ver o aviso, vai no campo certo (antes ia no da alergia).
@@ -273,7 +276,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       if (criada?.avisoFrequencia) toast.warning(criada.avisoFrequencia);
       if (criada?.avisoForaCatalogo) toast.warning(criada.avisoForaCatalogo);
       if (criada?.avisoRenal) toast.warning(criada.avisoRenal);
-      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setCatalogoItem(null);
+      setModalMed(false); setMedNome(''); setMedDose(''); setMedUnidade('mg'); setMedIndicacao(''); setMedDuracao(''); setMedVia(''); setMedFreq(''); setCatalogoItem(null);
       setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride('');
       onRefresh();
     } catch (e: any) {
@@ -421,6 +424,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
                       <p className="text-sm font-medium text-slate-600" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                      <IndicacaoEFim indicacao={m.indicacao} dataFimPrevista={m.dataFimPrevista} />
                       {m.prescritoPor && (
                         <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
                       )}
@@ -564,13 +568,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               )}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="fmedicaca-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
-                <input id="fmedicaca-1" type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
-                  placeholder="Ex: 500mg"
-                  className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  style={{ padding: '10px 14px' }} />
-              </div>
+              <div><CampoDoseEstruturada valor={medDose} onValor={setMedDose} unidade={medUnidade} onUnidade={setMedUnidade} /></div>
               <div>
                 <label htmlFor="fmedicaca-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
                 <select id="fmedicaca-2" value={medVia} onChange={(e) => setMedVia(e.target.value)}
@@ -578,11 +576,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                   style={{ padding: '10px 14px' }}>
                   <option value="">Selecionar...</option>
                   <option value="oral">Oral</option>
-                  <option value="intravenosa">Intravenosa</option>
-                  <option value="intramuscular">Intramuscular</option>
-                  <option value="subcutanea">Subcutânea</option>
+                  <option value="iv">Intravenosa</option>
+                  <option value="im">Intramuscular</option>
+                  <option value="sc">Subcutânea</option>
                   <option value="topica">Tópica</option>
-                  <option value="inalatoria">Inalatória</option>
+                  <option value="inalacao">Inalatória</option>
                 </select>
               </div>
             </div>
@@ -602,6 +600,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <option value="contínua">Contínua (perfusão)</option>
               </select>
             </div>
+            <CamposIndicacaoDuracao indicacao={medIndicacao} onIndicacao={setMedIndicacao} duracao={medDuracao} onDuracao={setMedDuracao} />
           </div>
           {medFreq === 'SOS' && (
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '16px' }}>
@@ -663,7 +662,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           )}
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
             loading={salvando}
-            disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
+            disabled={!medNome.trim() || !(Number(medDose.replace(',', '.')) > 0) || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
               || (medFreq === 'SOS' && !(Number(sosIntervalo) >= 1))
               || (overridePedido && justificacaoOverride.trim().length < 20)}
             labelConfirm={overridePedido ? 'Prescrever com justificação' : 'Prescrever'} />

@@ -43,8 +43,10 @@ test.describe('Jornadas clínicas', () => {
     await page.getByRole('button', { name: 'Prescrever medicação' }).click();
     await expect(page.getByRole('heading', { name: 'Prescrever Medicação' })).toBeVisible();
     await page.getByPlaceholder('Ex: Paracetamol').fill('Ben-u-ron');
-    await page.getByPlaceholder('Ex: 500mg').first().fill('1 g');
-    await page.locator('#fmedicaca-2').selectOption('oral');
+    // UX-17: dose em valor + unidade; via IV (antes o formulário enviava "intravenosa" e a API recusava).
+    await page.locator('#fmedicaca-1').fill('1');
+    await page.getByLabel('Unidade da dose').selectOption('g');
+    await page.locator('#fmedicaca-2').selectOption('iv');
     await page.locator('#fmedicaca-3').selectOption('3x/dia');
     await page.getByRole('button', { name: 'Prescrever', exact: true }).click();
     // O servidor recusa (409) e o formulário explica porquê, pedindo justificação para avançar.
@@ -185,13 +187,18 @@ test.describe('Jornadas clínicas', () => {
       await expect(page.locator('#catalogo-sugestoes option')).not.toHaveCount(0, { timeout: 10000 });
       await nome.fill('Omeprazol 20 mg — Cápsula gastrorresistente, oral');
       await expect(page.getByText('No catálogo: Omeprazol · ATC A02BC01')).toBeVisible();
-      await page.getByPlaceholder('Ex: 500mg').first().fill('20 mg');
+      await page.locator('#fmedicaca-1').fill('20');
+      await page.getByLabel('Unidade da dose').selectOption('mg');
+      await page.locator('#fmed-indicacao').fill('Proteção gástrica');
+      await page.locator('#fmed-duracao').fill('7');
       await page.locator('#fmedicaca-2').selectOption('oral');
       await page.locator('#fmedicaca-3').selectOption('1x/dia');
       await page.getByRole('button', { name: 'Prescrever', exact: true }).click();
     };
     await prescrever();
     await expect(page.getByText('Prescrição guardada')).toBeVisible({ timeout: 10000 });
+    // UX-17: a lista ativa mostra a indicação e o fim previsto (7 dias).
+    await expect(page.getByText(/Para: Proteção gástrica · Até \d{2}\/\d{2}\/\d{4}/).first()).toBeVisible();
 
     await prescrever();
     await expect(page.getByText(/DUPLICACAO: Omeprazol já está prescrito/)).toBeVisible({ timeout: 10000 });

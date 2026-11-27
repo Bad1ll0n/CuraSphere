@@ -1,4 +1,5 @@
-import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty, IsBoolean, IsInt, Min, Max, MaxLength, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString, IsNotEmpty, IsBoolean, IsInt, Min, Max, MaxLength, IsUUID, IsIn, IsNumber, IsPositive, ValidateIf } from 'class-validator';
+import { UNIDADES_DOSE } from '@org/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum ViaAdministracaoEnum {
@@ -27,10 +28,37 @@ export class PrescreverMedicacaoDto {
   @IsNotEmpty()
   nome: string;
 
+  // UX-17: a dose pode vir estruturada (doseValor + doseUnidade); então o texto é composto no
+  // servidor e este campo é opcional.
   @ApiProperty()
+  @ValidateIf((o) => o.doseValor === undefined || o.doseUnidade === undefined)
   @IsString()
   @IsNotEmpty()
   dose: string;
+
+  @ApiPropertyOptional({ description: 'Valor da dose (com doseUnidade)' })
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 3 })
+  @IsPositive()
+  doseValor?: number;
+
+  @ApiPropertyOptional({ enum: UNIDADES_DOSE })
+  @IsOptional()
+  @IsIn(UNIDADES_DOSE as unknown as string[])
+  doseUnidade?: string;
+
+  @ApiPropertyOptional({ description: 'Para que é (indicação clínica)' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  indicacao?: string;
+
+  @ApiPropertyOptional({ description: 'Duração prevista em dias (1–365); sem valor = até nova ordem' })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(365)
+  duracaoDias?: number;
 
   @ApiProperty({ enum: ViaAdministracaoEnum })
   @IsEnum(ViaAdministracaoEnum)

@@ -19,6 +19,8 @@ import { detetarConflitoAlergia, nomeReconhecido } from './alergias.helper';
 import { parsearFrequenciaHoras, tomasPlaneadas, classificarTomas, horaLocal, JANELA_ANTES_MS, JANELA_DEPOIS_MS } from './posologia';
 import { eAltoRisco } from './alto-risco';
 import { eSOS, frequenciaValida, parsearDose, tomasPorDia, verificarDoseMaxima } from './limites-dose';
+import { camposPrescricaoEstruturada, doseComposta, type EntradaPrescricao } from './prescricao-entrada';
+
 import { inicioDoDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { verificarTotpAssinatura } from '../common/seguranca/totp-assinatura';
 
@@ -30,7 +32,7 @@ import { tfgCkdEpi2021 } from '../common/clinico/antropometria';
 import { reavaliacaoDorAte } from '../common/clinico/vigilancia';
 import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/clinico/hora-do-ato';
 import { registarFalha } from '../common/infra/falhas';
-import { assinarQR } from './qr-assinatura';
+import { assinarQR } from './qr-assinatura';
 import { verificarValidacaoFarmaceutica } from './politica-validacao';
 import { descontinuarMedicacao } from './descontinuacao';
 import { HORAS_TURNO } from '@org/shared';
@@ -145,26 +147,8 @@ export class MedicacaoService {
     });
   }
 
-  async prescrever(data: {
-    doenteId: string;
-    nome: string;
-    dose: string;
-    via: string;
-    frequencia: string;
-    prescritoPorId: string;
-    forcarApesarDeAlergia?: boolean;
-    justificativaOverride?: string;
-    forcarDoseAcimaMaximo?: boolean;
-    justificativaDose?: string;
-    intervaloMinimoH?: number;
-    maxDosesDia?: number;
-    catalogoId?: string;
-    justificacaoForaCatalogo?: string;
-    forcarDuplicacao?: boolean;
-    justificativaDuplicacao?: string;
-    forcarInteracao?: boolean;
-    justificativaInteracao?: string;
-  }) {
+  async prescrever(entrada: EntradaPrescricao) {
+    const data = { ...entrada, dose: doseComposta(entrada) }; // UX-17: ver prescricao-entrada.ts
     // QA-07/QA-08: plausibilidade antes de tudo (dose legível, frequência reconhecida, SOS
     // com intervalo mínimo, dose dentro dos máximos de adulto ou override justificado).
     const doseVerificada = this.verificarPlausibilidade(data);
@@ -266,6 +250,7 @@ export class MedicacaoService {
       }
 
       const {
+        duracaoDias, indicacao,
         forcarApesarDeAlergia: _, justificativaOverride: __, forcarDoseAcimaMaximo: ___, justificativaDose: ____,
         catalogoId: _c, justificacaoForaCatalogo: _j, forcarDuplicacao: _d, justificativaDuplicacao: _jd,
         forcarInteracao: _i, justificativaInteracao: _ji,
@@ -276,6 +261,7 @@ export class MedicacaoService {
       const medicacao = await tx.medicacao.create({
         data: {
           ...dadosMedicacao,
+          ...camposPrescricaoEstruturada({ indicacao, duracaoDias }),
           overrideAlergia: houveOverride,
           overrideDose: !!doseVerificada,
           catalogoId: item?.id ?? null,

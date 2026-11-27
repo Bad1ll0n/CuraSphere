@@ -20,12 +20,16 @@ export const ESTADOS_SENHA = ['aguarda', 'chamado', 'em_atendimento', 'concluido
 
 export const TIPOS_CONSENTIMENTO_INFORMADO = ['cirurgia', 'procedimento_invasivo', 'anestesia', 'transfusao', 'outro'] as const;
 export const TIPOS_PROTOCOLO_CLINICO = ['sepsis', 'avc', 'iamcst', 'outro'] as const;
+/** UX-17: unidades de dose (as formas canónicas do parser de dose da API). */
+export const UNIDADES_DOSE = ['mg', 'g', 'mcg', 'UI', 'ml', 'mEq', 'mmol', 'comp', 'cáps', 'gotas', 'puff', 'inalação', 'saqueta', 'ampola', 'un', 'aplicação'] as const;
+
 export const TIPOS_DIETA = ['normal', 'hipocalorica', 'diabetica', 'renal', 'hepatica', 'liquida', 'jejum', 'outra'] as const;
 
 /** `Modelo.campo` → valores permitidos. Cada entrada tem um CHECK na base de dados. */
 export const DOMINIOS: Record<string, readonly string[]> = {
   'PassagemTurno.estadoDesafio': ['pendente', 'aceite', 'expirado'],
   'Medicacao.estadoValidacao': ['pendente', 'pendente_medico', 'aprovada', 'rejeitada'],
+  'Medicacao.doseUnidade': UNIDADES_DOSE,
   'RegistoDotacao.turno': ['manha', 'tarde', 'noite'],
   'RegistoDotacao.semaforo': ['verde', 'amarelo', 'vermelho', 'sem_doentes'],
   'LaudoRadiologico.estado': ['rascunho', 'assinado'],
