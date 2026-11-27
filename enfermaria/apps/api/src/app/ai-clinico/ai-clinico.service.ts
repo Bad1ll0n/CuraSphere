@@ -10,6 +10,7 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { sanitizeForPrompt } from './prompt-sanitizer';
 import { AiMetricsService } from './ai-metrics.service';
 import { AI_MODELS } from '../common/ai-models';
+import { exigirIaPermitida, iaPermitida } from '../common/funcoes-ia';
 import {
   parseWithSchema,
   AnaliseClinicoSchema,
@@ -21,6 +22,15 @@ import {
   ReadmissaoSchema,
   NLQSchema,
 } from './ai-response-schemas';
+
+/**
+ * ARQ-05 — minimização de dados (RGPD art. 5.º, 1, c). O modelo não precisa do nome para
+ * analisar sinais vitais, protocolos ou o turno: os prompts usam um pseudónimo. Quando o texto
+ * gerado TEM de levar o nome (carta de alta), o modelo escreve um marcador e o nome é posto
+ * localmente depois da resposta. Teste estrutural: nenhum prompt leva `.nome` de um doente.
+ */
+const PSEUDONIMO_DOENTE = 'Doente A';
+const MARCADOR_NOME = '[NOME_DO_DOENTE]';
 
 export interface EpisodioTriagem {
   queixaPrincipal: string;
@@ -86,6 +96,8 @@ export class AiClinicoService {
   }
 
   private async callAI(feature: string, params: Parameters<typeof this.client.messages.create>[0]) {
+    // PROD-19: decisão clínica por LLM só com activação explícita (ver common/funcoes-ia.ts).
+    exigirIaPermitida(feature);
     const t0 = Date.now();
     let success = true;
     let erro: string | undefined;
@@ -203,7 +215,7 @@ export class AiClinicoService {
     const examesCriticos = (exames as any[]).filter((e) => e.critico || e.alterado);
 
     const contexto = `
-Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'não registado'} | Internado há ${diasInternamento} dias
+Doente: ${PSEUDONIMO_DOENTE} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'não registado'} | Internado há ${diasInternamento} dias
 
 SINAIS VITAIS (últimos ${ultimosSV.length}):
 ${ultimosSV.map(formatSV).join('\n') || 'Sem registos'}
@@ -294,7 +306,7 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
     const examesCriticos = (exames as any[]).filter((e) => e.critico || e.alterado);
 
     const contexto = `
-Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'não registado'} | Internado há ${diasInternamento} dias
+Doente: ${PSEUDONIMO_DOENTE} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'não registado'} | Internado há ${diasInternamento} dias
 
 SINAIS VITAIS (últimos ${ultimosSV.length}):
 ${ultimosSV.map(formatSV).join('\n') || 'Sem registos'}
@@ -443,7 +455,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
         const msg = await this.callAI('protocolo', {
           model: this.MODEL_FAST, max_tokens: 350, temperature: 0.1 as any,
           system: [{ type: 'text' as const, text: 'Gera observações clínicas concisas sobre protocolos em desvio num hospital português. Nunca prescrevas tratamentos. JSON: { "observacoes": ["..."] }', cache_control: { type: 'ephemeral' as const } }],
-          messages: [{ role: 'user', content: `Doente: ${doente.nome}\nProtocolos:\n${contextoStr}` }],
+          messages: [{ role: 'user', content: `Doente: ${PSEUDONIMO_DOENTE}\nProtocolos:\n${contextoStr}` }],
         });
         const texto = msg.content[0].type === 'text' ? msg.content[0].text : '';
         const parsed = parseWithSchema(texto, ProtocoloAiSchema, { observacoes: [] });
@@ -471,7 +483,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
     if (doentes.length === 0) return { narrativa: 'Sem doentes no serviço.', destaques: [], disclaimer: '' };
 
     const contexto = doentes
-      .map((d, i) => `${i + 1}. ${d.nome} (Cama ${d.cama}) — ${d.diagnostico} — NEWS2: ${d.news2 ?? 'sem registo'} — Alertas: ${d.alertas.join(', ') || 'nenhum'} — Tarefas pendentes: ${d.tarefasPendentes.join(', ') || 'nenhuma'}`)
+      .map((d, i) => `${i + 1}. Doente ${i + 1} (Cama ${d.cama}) — ${d.diagnostico} — NEWS2: ${d.news2 ?? 'sem registo'} — Alertas: ${d.alertas.join(', ') || 'nenhum'} — Tarefas pendentes: ${d.tarefasPendentes.join(', ') || 'nenhuma'}`)
       .join('\n');
 
     try {
@@ -714,6 +726,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
 
   @Cron('0 */30 * * * *')
   async watchdogDeterioration(): Promise<void> {
+    if (!iaPermitida('watchdog')) return; // PROD-19: desligada por omissão
     if (!(await this.prisma.tryBecomeLeader('watchdog-deterioracao', 1_500_000))) return; // 25min < 30min
 
     const doentes = await this.prisma.doente.findMany({
@@ -753,7 +766,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
         });
 
         const labsInfo = labsAlertas.length > 0 ? ` | Labs críticos: ${labsAlertas.join('; ')}` : '';
-        const contextoCompacto = `Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'desconhecido'} | Estado: ${doente.estado} | NEWS2 atual: ${ultimoSinal?.news2 ?? 'sem registo'} | Tendência NEWS2 (slope/medição): ${slopeNews2.toFixed(2)} | Medições 24h: ${sinais24h.length} | SpO2: ${ultimoSinal?.saturacaoO2 ?? '?'}% | FC: ${ultimoSinal?.pulso ?? '?'} | Alertas urgentes: ${alertasAtivos}${labsInfo}`;
+        const contextoCompacto = `Doente: ${PSEUDONIMO_DOENTE} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'desconhecido'} | Estado: ${doente.estado} | NEWS2 atual: ${ultimoSinal?.news2 ?? 'sem registo'} | Tendência NEWS2 (slope/medição): ${slopeNews2.toFixed(2)} | Medições 24h: ${sinais24h.length} | SpO2: ${ultimoSinal?.saturacaoO2 ?? '?'}% | FC: ${ultimoSinal?.pulso ?? '?'} | Alertas urgentes: ${alertasAtivos}${labsInfo}`;
 
         const msg = await this.callAI('watchdog', {
           model: this.MODEL_FAST,
@@ -944,7 +957,8 @@ Tabelas disponíveis e campos:
       : null;
 
     const contexto = JSON.stringify({
-      nomePaciente: doente.nome,
+      // ARQ-05: o nome não sai do hospital — o modelo escreve o marcador e substitui-se cá.
+      nomePaciente: MARCADOR_NOME,
       idade,
       dataAdmissao,
       dataAlta,
@@ -963,8 +977,10 @@ Tabelas disponíveis e campos:
       messages: [{ role: 'user', content: contexto }],
     });
 
-    const carta = msg.content[0].type === 'text' ? msg.content[0].text : '';
-    if (!carta) return;
+    const textoModelo = msg.content[0].type === 'text' ? msg.content[0].text : '';
+    if (!textoModelo) return;
+    // Reidentificação local: o marcador volta a ser o nome só depois da resposta.
+    const carta = textoModelo.split(MARCADOR_NOME).join(doente.nome);
 
     // Rascunho: qualquer revisão anterior deixa de valer, porque o texto mudou. Condicional
     // ao estado: se a carta foi assinada enquanto o modelo escrevia, não é reescrita.
@@ -1124,6 +1140,7 @@ Tabelas disponíveis e campos:
 
   @Cron('0 22 * * *')
   async cronStaffingPrevisao(): Promise<void> {
+    if (!iaPermitida('staffing')) return; // PROD-19: desligada por omissão
     if (!(await this.prisma.tryBecomeLeader('staffing-previsao', 3_600_000))) return;
 
     try {

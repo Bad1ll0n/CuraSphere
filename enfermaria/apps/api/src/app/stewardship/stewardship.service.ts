@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
 import { AI_MODELS } from '../common/ai-models';
+import { iaPermitida } from '../common/funcoes-ia';
 
 const ANTIBIOTICOS_BROAD: string[] = [
   'meropenem', 'imipenem', 'ertapenem', 'doripenem',
@@ -91,6 +92,10 @@ export class StewardshipService {
   }
 
   private async gerarSugestaoDeescalacao(doenteId: string, nomeMed: string, diasTerapia: number): Promise<string> {
+    // PROD-19: sem sugestão por LLM — fica o alerta determinístico (dias de terapia).
+    if (!iaPermitida('stewardship')) {
+      return `${nomeMed} há ${diasTerapia} dias — rever indicação e possível de-escalação segundo os resultados microbiológicos.`;
+    }
     try {
       const ontem = new Date(Date.now() - 24 * 60 * 60 * 1000);
       const antibiogramas = await this.prisma.resultadoAnalise.findMany({

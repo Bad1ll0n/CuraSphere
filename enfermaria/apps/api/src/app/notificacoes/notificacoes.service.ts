@@ -30,6 +30,17 @@ class PushCircuitBreaker {
   }
 }
 
+/**
+ * SEC-18 — o push sai do hospital (Expo, Apple, Google) e aparece no ecrã bloqueado. Por
+ * omissão leva só um aviso genérico; o conteúdo completo fica na notificação dentro da app.
+ * `PUSH_CONTEUDO_COMPLETO=true` repõe o texto completo — só com DPA/SCC documentados
+ * (docs/SUBPROCESSADORES.md).
+ */
+export function conteudoPush(titulo: string, corpo: string): { title: string; body: string } {
+  if (process.env['PUSH_CONTEUDO_COMPLETO'] === 'true') return { title: titulo, body: corpo };
+  return { title: 'CuraSphere', body: 'Tem uma nova notificação — abra a aplicação para a ver.' };
+}
+
 @Injectable()
 export class NotificacoesService {
   private readonly logger = new Logger(NotificacoesService.name);
@@ -57,8 +68,9 @@ export class NotificacoesService {
 
     const mensagens: ExpoPushMessage[] = dispositivos.map((d) => ({
       to: d.token,
-      title: titulo,
-      body: corpo,
+      // SEC-18: o Expo Push (EUA) passa pela Apple e pela Google e aparece no ecrã bloqueado —
+      // o texto vai genérico e o conteúdo (com nomes de doentes) lê-se dentro da app.
+      ...conteudoPush(titulo, corpo),
       data,
     }));
 
@@ -127,8 +139,9 @@ export class NotificacoesService {
 
     const mensagens: ExpoPushMessage[] = tokens.map((d) => ({
       to: d.token,
-      title: titulo,
-      body: corpo,
+      // SEC-18: o Expo Push (EUA) passa pela Apple e pela Google e aparece no ecrã bloqueado —
+      // o texto vai genérico e o conteúdo (com nomes de doentes) lê-se dentro da app.
+      ...conteudoPush(titulo, corpo),
       data,
     }));
 

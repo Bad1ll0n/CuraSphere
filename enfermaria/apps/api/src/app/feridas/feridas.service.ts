@@ -5,6 +5,7 @@ import { StorageService } from '../common/storage.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
 import { randomUUID as uuid } from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
+import { exigirIaPermitida } from '../common/funcoes-ia';
 
 const PROMPT_VISAO_FERIDA = `Analisa esta imagem de ferida clínica.
 Responde APENAS com JSON válido (sem markdown, sem texto extra):
@@ -132,6 +133,7 @@ export class FeridasService {
   }
 
   async analisarFoto(fotoId: string, avaliacaoId: string, userId: string) {
+    exigirIaPermitida('analise_ferida'); // PROD-19
     const foto = await this.prisma.fotoFerida.findUnique({ where: { id: fotoId } });
     if (!foto || foto.avaliacaoId !== avaliacaoId) throw new NotFoundException('Fotografia não encontrada');
 

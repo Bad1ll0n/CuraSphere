@@ -3,6 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { MailerService } from '../mailer/mailer.service';
+import { escaparHtml } from '../common/escapar-html';
 
 @Injectable()
 export class LembretesService {
@@ -47,7 +48,8 @@ export class LembretesService {
         this.mailer.enviar({
           para: email,
           assunto: 'Lembrete da sua consulta',
-          html: `<p>Olá ${nome},</p><p>Lembramos a sua consulta de <b>${c.especialidade}</b> em <b>${quando}</b>${c.tipo === 'teleconsulta' ? ' (teleconsulta)' : ''}.</p><p>Se não puder comparecer, contacte-nos para reagendar.</p><p>— CuraSphere</p>`,
+          // SEC-18: valores escapados — eram interpolados em HTML tal como vinham da BD.
+          html: `<p>Olá ${escaparHtml(nome)},</p><p>Lembramos a sua consulta de <b>${escaparHtml(c.especialidade)}</b> em <b>${escaparHtml(quando)}</b>${c.tipo === 'teleconsulta' ? ' (teleconsulta)' : ''}.</p><p>Se não puder comparecer, contacte-nos para reagendar.</p><p>— CuraSphere</p>`,
         }).catch((e) => this.logger.warn('Lembrete email falhou', e?.message ?? String(e)));
       }
 

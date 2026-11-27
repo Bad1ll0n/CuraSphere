@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
-import { PdfService } from '../common/pdf.service';
 import { MailerService } from '../mailer/mailer.service';
 
 @Injectable()
@@ -10,7 +9,6 @@ export class RelatoriosAgendadosService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly pdf: PdfService,
     private readonly mailer: MailerService,
   ) {}
 
@@ -28,7 +26,8 @@ export class RelatoriosAgendadosService {
         return;
       }
 
-      const pdfBuffer = await this.pdf.gerarRelatorioTurno(turno.id);
+      // SEC-18: o relatório (dados clínicos de todos os doentes do turno) deixou de ir em anexo
+      // por email (Resend, EUA); o email leva só o link para a aplicação, que exige sessão.
 
       // Destinatários configurados por ambiente (lista separada por vírgulas). O modelo de
       // utilizador não tem email; os relatórios de gestão vão para uma lista de ops definida
@@ -46,8 +45,9 @@ export class RelatoriosAgendadosService {
       await this.mailer.enviar({
         para: emails,
         assunto: `Relatório Passagem de Turno — ${data}`,
-        html: `<p>Relatório de passagem de turno do dia <strong>${data}</strong> em anexo.</p><p><small>Enviado automaticamente pelo CuraSphere.</small></p>`,
-        anexos: [{ nome: `relatorio-turno-${turno.id}.pdf`, conteudo: pdfBuffer }],
+        html: `<p>O relatório de passagem de turno do dia <strong>${data}</strong> está disponível no CuraSphere` +
+          (process.env['NEXT_PUBLIC_WEB_URL'] ? `: <a href="${process.env['NEXT_PUBLIC_WEB_URL']}/turnos">abrir os turnos</a>` : ' (Turnos → relatório).') +
+          `</p><p><small>Enviado automaticamente pelo CuraSphere. Por segurança, o relatório não segue em anexo.</small></p>`,
       });
 
       this.logger.log(`Relatório de turno enviado para ${emails.length} destinatários`);
