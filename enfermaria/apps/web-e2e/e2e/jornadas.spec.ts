@@ -112,4 +112,38 @@ test.describe('Jornadas clínicas', () => {
     await expect(painel).toBeVisible({ timeout: 15000 });
     await expect(painel.getByText(`Episódio n.º 1 — em curso · E2E-${marca}`)).toBeVisible();
   });
+  test('alta: o modal mostra o que falta (nota de enfermagem) e só sai com justificação (PROD-12)', async ({ page }) => {
+    const adm = await pwRequest.newContext({ baseURL: API });
+    await adm.get('/v1/csrf-token');
+    await adm.post('/v1/auth/login', { data: { numeroFuncionario: '00007', password: 'Teste1234!' } });
+    await adm.get('/v1/csrf-token');
+    const h = { 'x-csrf-token': (await adm.storageState()).cookies.find((c) => c.name === 'csrf-token')?.value ?? '' };
+    const marca = Date.now().toString().slice(-6);
+    const cama = await adm.post('/v1/camas', { data: { numero: `AL-${marca}`, quarto: `AL${marca}`, servico: `ALTA-${marca}` }, headers: h });
+    const admitido = await adm.post('/v1/doentes/admitir', {
+      data: { nome: `Doente Alta ${marca}`, dataNascimento: '1952-03-03', diagnosticoPrincipal: 'Pielonefrite', camaId: (await cama.json()).id },
+      headers: h,
+    });
+    expect(admitido.status()).toBe(201);
+    const doenteId = (await admitido.json()).id;
+    await adm.dispose();
+
+    await loginAs(page, '00012');
+    await page.goto('/dashboard');
+    const bg = await page.request.post(`${API}/v1/break-glass`, {
+      data: { doenteId, motivo: 'Validação E2E do fluxo de alta estruturada' }, headers: { 'x-csrf-token': await csrf(page) },
+    });
+    expect(bg.ok()).toBeTruthy();
+    await page.goto(`/doentes/${doenteId}`);
+    await page.getByRole('button', { name: 'Dar Alta' }).click();
+    await expect(page.getByRole('list', { name: 'Requisitos da alta' })).toContainText('Nota de alta de enfermagem', { timeout: 10000 });
+    const resumo = page.getByPlaceholder(/Descreva o internamento|A gerar resumo/);
+    await expect(resumo).toBeEnabled({ timeout: 20000 });
+    await resumo.fill('Pielonefrite tratada, apirético há 72 h, alta para o domicílio.');
+    await page.getByRole('button', { name: 'Confirmar Alta' }).click();
+    await expect(page.getByRole('alert').filter({ hasText: 'Falta para a alta' })).toBeVisible({ timeout: 10000 });
+    await page.getByLabel(/Para dar alta sem estes requisitos/).fill('Nota de enfermagem enviada em papel ao centro de saúde');
+    await page.getByRole('button', { name: 'Confirmar Alta' }).click();
+    await expect(page).toHaveURL(/\/doentes$/, { timeout: 15000 });
+  });
 });

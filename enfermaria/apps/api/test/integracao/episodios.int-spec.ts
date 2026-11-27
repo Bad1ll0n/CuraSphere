@@ -64,10 +64,12 @@ describe('integração: episódio de internamento, transferência e pedido de ca
 
   it('alta fecha o episódio; o NIF repetido não cria outra pessoa: pede reinternamento', async () => {
     const adm = await entrar(ctx, '00007');
-    expect((await adm.pedido('PATCH', `/doentes/${doenteId}/alta`, {})).status).toBe(200);
+    // PROD-12: a alta é a estruturada (sem prescrições activas; nota de enfermagem justificada).
+    const alta = { motivoAlta: 'melhoria', destino: 'domicilio', resumoClinical: 'Alta clínica', justificacaoRequisitos: 'Teste de integração do episódio' };
+    expect((await adm.pedido('POST', `/doentes/${doenteId}/alta-estruturada`, alta)).status).toBe(201);
     const ep = await ctx.bd.query('SELECT estado, "dataAlta" FROM episodios_internamento WHERE "doenteId" = $1', [doenteId]);
     expect(ep.rows).toEqual([expect.objectContaining({ estado: 'alta', dataAlta: expect.any(Date) })]);
-    expect((await adm.pedido('PATCH', `/doentes/${doenteId}/alta`, {})).status).toBe(400); // já teve alta
+    expect((await adm.pedido('POST', `/doentes/${doenteId}/alta-estruturada`, alta)).status).toBe(400); // já teve alta
 
     const dup = await adm.pedido('POST', '/doentes/admitir', {
       nome: `Doente Episódio ${sufixo}`, dataNascimento: '1948-03-04', diagnosticoPrincipal: 'Queda', nif,

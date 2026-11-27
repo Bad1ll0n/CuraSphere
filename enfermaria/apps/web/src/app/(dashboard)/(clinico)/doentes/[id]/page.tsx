@@ -20,6 +20,8 @@ import { DispositivosPanel } from './components/dispositivos-panel';
 import { ConsentimentosTratamentoPanel } from './components/consentimentos-tratamento-panel';
 import { AlergiasContactosPanel } from './components/alergias-contactos-panel';
 import { InternamentosPanel } from './components/internamentos-panel';
+import { ReconciliacaoAlta, type RequisitosAlta, type Decisao, type Nova } from './components/reconciliacao-alta';
+import { NotaAltaEnfermagemPanel } from './components/nota-alta-enfermagem-panel';
 import { InterconsultasPanel } from './components/interconsultas-panel';
 import { NotasTurnoPanel } from './components/notas-turno-panel';
 import { TarefasPanel } from './components/tarefas-panel';
@@ -185,6 +187,12 @@ export default function DoenteDetalhe() {
   const [altaResumo, setAltaResumo] = useState('');
   const [altaPrescricao, setAltaPrescricao] = useState('');
   const [altaMedicoFamilia, setAltaMedicoFamilia] = useState('');
+  // PROD-12: requisitos da alta, reconciliação por linha e justificação quando falta algo.
+  const [altaRequisitos, setAltaRequisitos] = useState<RequisitosAlta | null>(null);
+  const [altaDecisoes, setAltaDecisoes] = useState<Record<string, Decisao>>({});
+  const [altaNovas, setAltaNovas] = useState<Nova[]>([]);
+  const [altaEmFalta, setAltaEmFalta] = useState<string[]>([]);
+  const [altaJustificacao, setAltaJustificacao] = useState('');
 
   // Turno ativo
   const [emTurno, setEmTurno] = useState(false);
@@ -348,6 +356,8 @@ export default function DoenteDetalhe() {
 
   const abrirModalAlta = async () => {
     setModalAltaEstruturada(true);
+    setAltaDecisoes({}); setAltaNovas([]); setAltaEmFalta([]); setAltaJustificacao(''); setAltaRequisitos(null);
+    api.get(`/doentes/${id}/alta/requisitos`).then((r) => setAltaRequisitos(r.data)).catch(() => setAltaRequisitos(null));
     setCarregandoResumo(true);
     try {
       const r = await api.get(`/doentes/${id}/resumo-alta`);
@@ -413,16 +423,27 @@ export default function DoenteDetalhe() {
     if (!altaResumo.trim()) return;
     setSalvandoAlta(true);
     try {
+      const reconciliacao = [
+        ...Object.entries(altaDecisoes).filter(([, d]) => d.decisao).map(([medicacaoId, d]) => ({
+          medicacaoId, decisao: d.decisao, dose: d.dose?.trim() || undefined, notas: d.notas?.trim() || undefined,
+        })),
+        ...altaNovas.filter((n) => n.nome.trim()).map((n) => ({
+          decisao: 'nova', nome: n.nome.trim(), dose: n.dose.trim() || undefined, via: n.via.trim() || undefined, frequencia: n.frequencia.trim() || undefined,
+        })),
+      ];
       await api.post(`/doentes/${id}/alta-estruturada`, {
         motivoAlta: altaMotivo,
         destino: altaMotivo !== 'obito' ? altaDestino : undefined,
         resumoClinical: altaResumo,
         prescricaoSaida: altaPrescricao || undefined,
         medicoFamilia: altaMedicoFamilia || undefined,
+        reconciliacao,
+        justificacaoRequisitos: altaJustificacao.trim() || undefined,
       });
       setModalAltaEstruturada(false);
       router.push('/doentes');
     } catch (e: any) {
+      if (e?.response?.data?.errorCode === 'ALTA_INCOMPLETA') setAltaEmFalta(e.response.data.contexto?.emFalta ?? []);
       toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoAlta(false); }
   };
@@ -917,6 +938,7 @@ export default function DoenteDetalhe() {
       {/* Plano de Alta */}
       <PanelErrorBoundary name="Plano de Alta">
         <PlanoAltaPanel doenteId={id!} utilizador={utilizador} />
+        <NotaAltaEnfermagemPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Escalas de Risco */}
@@ -1141,7 +1163,7 @@ export default function DoenteDetalhe() {
                 {[
                   { value: 'melhoria', label: 'Melhoria Clínica' },
                   { value: 'transferencia', label: 'Transferência' },
-                  { value: 'pedido_proprio', label: 'Pedido Próprio' },
+                  { value: 'alta_voluntaria', label: 'Alta a pedido' },
                   { value: 'obito', label: 'Óbito' },
                 ].map((op) => (
                   <button key={op.value} type="button"
@@ -1160,9 +1182,11 @@ export default function DoenteDetalhe() {
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'domicilio', label: 'Domicílio' },
-                    { value: 'outro_hospital', label: 'Outro Hospital' },
-                    { value: 'lar', label: 'Lar/Institucional' },
-                    { value: 'outro', label: 'Outro' },
+                    { value: 'hospital_referencia', label: 'Outro hospital' },
+                    { value: 'lar', label: 'Lar/ERPI' },
+                    { value: 'rncci', label: 'RNCCI' },
+                    { value: 'ucc', label: 'UCC' },
+                    { value: 'outra_instituicao', label: 'Outra instituição' },
                   ].map((op) => (
                     <button key={op.value} type="button"
                       onClick={() => setAltaDestino(op.value)}
@@ -1198,13 +1222,17 @@ export default function DoenteDetalhe() {
               />
             </div>
 
+            {altaMotivo !== 'obito' && altaRequisitos && (
+              <ReconciliacaoAlta requisitos={altaRequisitos} decisoes={altaDecisoes} setDecisoes={setAltaDecisoes} novas={altaNovas} setNovas={setAltaNovas} />
+            )}
+
             <div style={{ marginBottom: '20px' }}>
-              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-500 font-normal text-xs">(opcional)</span></label>
+              <label htmlFor="fpage-6" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Notas para a prescrição de saída <span className="text-slate-500 font-normal text-xs">(opcional)</span></label>
               <textarea id="fpage-6"
                 value={altaPrescricao}
                 onChange={(e) => setAltaPrescricao(e.target.value)}
                 rows={2}
-                placeholder="Ex: Amoxicilina 500mg 3×/dia 7 dias, Ibuprofeno 400mg SOS..."
+                placeholder="Ex.: duração do antibiótico, ajustes a fazer pelo médico de família..."
                 className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition resize-none"
                 style={{ padding: '10px 14px' }}
               />
@@ -1221,13 +1249,27 @@ export default function DoenteDetalhe() {
               />
             </div>
 
+            {altaEmFalta.length > 0 && (
+              <div role="alert" className="rounded-xl bg-amber-50 border border-amber-200" style={{ padding: '12px 14px', marginBottom: '16px' }}>
+                <p className="text-sm font-semibold text-amber-800">Falta para a alta:</p>
+                <ul className="text-xs text-amber-800 list-disc" style={{ margin: '4px 0 8px 18px' }}>
+                  {altaEmFalta.map((f) => <li key={f}>{f}</li>)}
+                </ul>
+                <label htmlFor="alta-justificacao" className="block text-xs font-semibold text-amber-800" style={{ marginBottom: '4px' }}>
+                  Para dar alta sem estes requisitos, justifique (fica registado no sumário):
+                </label>
+                <textarea id="alta-justificacao" rows={2} value={altaJustificacao} onChange={(e) => setAltaJustificacao(e.target.value)} maxLength={1000}
+                  className="w-full border border-amber-300 rounded-lg text-sm bg-white" style={{ padding: '8px 10px' }} />
+              </div>
+            )}
+
             <div className="flex gap-3">
               <button onClick={() => setModalAltaEstruturada(false)}
                 className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>
                 Cancelar
               </button>
-              <button onClick={submeterAltaEstruturada} disabled={salvandoAlta || !altaResumo.trim()}
+              <button onClick={submeterAltaEstruturada} disabled={salvandoAlta || !altaResumo.trim() || (altaEmFalta.length > 0 && altaJustificacao.trim().length < 15)}
                 className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50 transition-colors"
                 style={{ padding: '11px' }}>
                 {salvandoAlta ? 'A processar...' : 'Confirmar Alta'}

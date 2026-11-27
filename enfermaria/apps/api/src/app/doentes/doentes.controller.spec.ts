@@ -17,6 +17,7 @@ const mockLeituras = { registar: jest.fn(), listarPorDoente: jest.fn() };
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { EpisodiosService } from '../episodios/episodios.service';
+import { AltaService } from './alta.service';
 
 const mockDoenteService = {
   listar: jest.fn(),
@@ -62,6 +63,7 @@ describe('DoenteController', () => {
         { provide: AcessoLeituraService, useValue: mockLeituras },
         { provide: CartaAltaService, useValue: { rever: jest.fn(), assinar: jest.fn(), garantirAssinada: jest.fn() } },
         { provide: EpisodiosService, useValue: { listar: jest.fn(), reinternar: jest.fn(), transferir: jest.fn(), marcarAlergiasRevistas: jest.fn() } },
+        { provide: AltaService, useValue: { darAlta: jest.fn(), requisitos: jest.fn(), notaEnfermagem: jest.fn(), guardarNotaEnfermagem: jest.fn() } },
       ],
     })
       .overrideGuard(JwtAuthGuard).useValue(mockGuard)

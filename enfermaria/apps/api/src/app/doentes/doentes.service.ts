@@ -5,7 +5,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { StorageService } from '../common/storage.service';
 import { EstadoDoente } from '../common/enums';
 import * as jwt from 'jsonwebtoken';
@@ -15,7 +14,7 @@ import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
 
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { ultimosSinaisVitais } from '../common/ultimos-registos';
-import { abrirEpisodio, fecharEpisodio, ocuparCama } from '../episodios/episodios.core';
+import { abrirEpisodio, ocuparCama } from '../episodios/episodios.core';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -71,7 +70,6 @@ export class DoenteService {
     private readonly prisma: PrismaService,
     private readonly tenantContext: TenantContextService,
     private readonly notificacoes: NotificacoesService,
-    private readonly aiClinico: AiClinicoService,
     private readonly storage: StorageService,
     private readonly config: ConfigService,
     private readonly webhooks: WebhooksService,
@@ -404,55 +402,6 @@ export class DoenteService {
     });
   }
 
-  async darAlta(id: string, administrativoId: string) {
-    const doente = await this.buscarPorId(id);
-    if (!doente.ativo) throw new BadRequestException('O doente já teve alta.');
-
-    // `Doente.camaId` é `@unique`: se a alta não o limpar, a cama fica presa a um doente
-    // com alta e a próxima `admitir()` naquela cama viola a constraint. Libertar o vínculo,
-    // mudar o estado da cama e fechar o episódio (PROD-02) acontecem na MESMA transacção.
-    await this.prisma.$transaction(async (tx) => {
-      await tx.doente.update({
-        where: { id },
-        data: { ativo: false, dataAlta: new Date(), estado: 'alta_prevista', camaId: null },
-      });
-      if (doente.camaId) {
-        await tx.cama.update({ where: { id: doente.camaId }, data: { estado: 'em_limpeza' } });
-      }
-      await fecharEpisodio(tx, id, { motivoAlta: 'alta', criadoPorId: administrativoId });
-    }, { isolationLevel: 'Serializable' });
-
-    // Agendar follow-ups (fire-and-forget)
-    this.agendarFollowUps(id, doente.nome).catch((err) =>
-      this.logger.warn(`Follow-up scheduling failed: ${err?.message}`),
-    );
-
-    this.webhooks.dispatcharEvento('doente.alta', { doenteId: id, nome: doente.nome }).catch(() => null);
-
-    return { mensagem: 'Alta registada com sucesso' };
-  }
-
-  private async agendarFollowUps(doenteId: string, doenteNome: string) {
-    const medico = await this.prisma.utilizador.findFirst({
-      where: { role: 'medico', ativo: true },
-      orderBy: { criadoEm: 'asc' },
-    });
-    if (!medico) return;
-
-    const agora = new Date();
-    await this.prisma.followUpAgendado.createMany({
-      data: [
-        { doenteId, tipo: '7_dias', dataAgendada: new Date(agora.getTime() + 7 * 86_400_000), responsavelId: medico.id },
-        { doenteId, tipo: '30_dias', dataAgendada: new Date(agora.getTime() + 30 * 86_400_000), responsavelId: medico.id },
-      ],
-    });
-    await this.notificacoes.enviarParaUtilizador(
-      medico.id,
-      `Follow-up agendado: ${doenteNome}`,
-      `Doente teve alta. Follow-ups agendados para 7 e 30 dias.`,
-    );
-  }
-
   async uploadFoto(id: string, file: Express.Multer.File, utilizadorId: string, role: string) {
     await this.assertAcessoDoente(utilizadorId, role, id);
 
@@ -693,62 +642,6 @@ export class DoenteService {
     return this.prisma.notaTurno.update({
       where: { id: notaId },
       data: { deletedAt: new Date(), removidoPorId: autorId, motivoRemocao: motivo },
-    });
-  }
-
-  async altaEstruturada(doenteId: string, criadoPorId: string, role: string, body: Record<string, any>) {
-    const ROLES_ALTA = ['medico', 'chefe_medicos', 'chefe_turno', 'administrativo', 'chefe_enfermeiros'];
-    if (!ROLES_ALTA.includes(role)) throw new ForbiddenException('Sem permissão para dar alta');
-
-    const doente = await this.buscarPorId(doenteId);
-    if (!doente.ativo) throw new BadRequestException('O doente já teve alta.');
-
-    return this.prisma.$transaction(async (tx) => {
-      // PROD-02: a alta fecha o episódio, e o sumário é DESTE episódio.
-      const episodio = await fecharEpisodio(tx, doenteId, {
-        motivoAlta: body['motivoAlta'] as string, destinoAlta: body['destino'] as string | undefined, criadoPorId,
-      });
-      const sumario = await tx.sumarioAlta.create({
-        data: {
-          doenteId,
-          episodioId: episodio.id,
-          criadoPorId,
-          motivoAlta:      body['motivoAlta'] as string,
-          destino:         body['destino'] as string | undefined,
-          resumoClinical:  body['resumoClinical'] as string,
-          prescricaoSaida: body['prescricaoSaida'] as string | undefined,
-          medicoFamilia:   body['medicoFamilia'] as string | undefined,
-        },
-      });
-
-      // Ver `darAlta()`: libertar `camaId` (que é `@unique`) faz parte da alta, senão a
-      // cama fica presa a este doente e a readmissão nela rebenta na constraint.
-      await tx.doente.update({
-        where: { id: doenteId },
-        data: { ativo: false, dataAlta: new Date(), camaId: null },
-      });
-
-      if (doente.camaId) {
-        const cama = await tx.cama.update({
-          where: { id: doente.camaId },
-          data: { estado: 'em_limpeza' },
-        });
-        this.notificacoes.enviarParaRole(
-          'auxiliar',
-          '🧹 Cama disponível para limpeza',
-          `Cama ${cama.quarto}/${cama.numero} — doente teve alta. Por favor efectue a limpeza.`,
-          { camaId: cama.id },
-        ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
-      }
-
-      return sumario;
-    }, { isolationLevel: 'Serializable' }).then((sumario) => {
-      // Fire-and-forget: gerar carta de alta e calcular risco de readmissão em background
-      this.aiClinico.gerarCartaAlta(doenteId)
-        .catch(err => this.logger.warn('gerarCartaAlta falhou', (err as any)?.message));
-      this.aiClinico.calcularRiscoReadmissao(doenteId)
-        .catch(err => this.logger.warn('calcularRiscoReadmissao falhou', (err as any)?.message));
-      return sumario;
     });
   }
 
