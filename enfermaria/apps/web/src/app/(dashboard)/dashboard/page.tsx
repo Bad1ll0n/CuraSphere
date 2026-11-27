@@ -14,6 +14,7 @@ import {
   PieChart, Pie, Cell,
 } from 'recharts';
 import { DraggableDashboard, WidgetDef } from '@/components/draggable-dashboard';
+import { VigilanciaEmAtraso } from '@/components/vigilancia-em-atraso';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -696,6 +697,9 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
         <StatCard label="Tarefas Urgentes" value={urgentes.length} color={urgentes.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
         <StatCard label="Mensagens Não Lidas" value={mensagensNaoLidas} color={mensagensNaoLidas > 0 ? 'bg-blue-600' : 'bg-slate-400'} />
       </div>
+
+      {/* PROD-10: observações devidas e não feitas */}
+      {podeNews2 && <VigilanciaEmAtraso />}
 
       {/* Widget NEWS2 clínico */}
       {news2Data && (

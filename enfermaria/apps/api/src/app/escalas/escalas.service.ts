@@ -2,45 +2,14 @@ import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nest
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { avaliarRisco } from '../common/escalas-motor';
+import { proximaAvaliacaoRisco } from '../common/vigilancia';
 
 const ROLES_PODEM = [
   'enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos',
 ];
 
-function calcularBraden(itens: Record<string, number>): { pontuacao: number; risco: string } {
-  const pontuacao =
-    (itens['percepcaoSensorial'] ?? 0) +
-    (itens['humidade'] ?? 0) +
-    (itens['atividade'] ?? 0) +
-    (itens['mobilidade'] ?? 0) +
-    (itens['nutricao'] ?? 0) +
-    (itens['friccaoCisalhamento'] ?? 0);
-
-  let risco: string;
-  if (pontuacao <= 9)       risco = 'muito_alto';
-  else if (pontuacao <= 12) risco = 'alto';
-  else if (pontuacao <= 14) risco = 'moderado';
-  else                       risco = 'baixo';
-
-  return { pontuacao, risco };
-}
-
-function calcularMorse(itens: Record<string, number>): { pontuacao: number; risco: string } {
-  const pontuacao =
-    (itens['historiaQueda'] ?? 0) +
-    (itens['diagnosticoSecundario'] ?? 0) +
-    (itens['ajudaMarcha'] ?? 0) +
-    (itens['heparinaIV'] ?? 0) +
-    (itens['marchaTransferencia'] ?? 0) +
-    (itens['estadoMental'] ?? 0);
-
-  let risco: string;
-  if (pontuacao >= 45)       risco = 'alto';
-  else if (pontuacao >= 25)  risco = 'moderado';
-  else                        risco = 'baixo';
-
-  return { pontuacao, risco };
-}
+// PROD-08: o cálculo vive em common/escalas-motor.ts (motor único, cortes DGS configuráveis).
 
 @Injectable()
 export class EscalasService {
@@ -82,17 +51,26 @@ export class EscalasService {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
     if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
-    const { pontuacao, risco } = tipo === 'braden' ? calcularBraden(itens) : calcularMorse(itens);
+    // PROD-08: itens validados (incompleta → 400), cortes DGS configuráveis e versionados.
+    const r = avaliarRisco(tipo === 'braden' ? 'braden' : 'morse', itens);
+    const { pontuacao, risco } = r;
+    const agora = new Date();
+    const servico = await this.prisma.cama.findFirst({ where: { doente: { id: doenteId } }, select: { servico: true } }).catch(() => null);
 
     const avaliacao = await this.prisma.avaliacaoRisco.create({
-      data: { doenteId, registadoPorId, tipo, pontuacao, itens, risco },
+      data: {
+        doenteId, registadoPorId, tipo, pontuacao, itens: r.itens, risco, versao: r.versao,
+        // PROD-10: reavaliação programada.
+        proximaAvaliacaoEm: proximaAvaliacaoRisco(tipo === 'braden' ? 'braden' : 'morse', agora, servico?.servico),
+      },
       include: { registadoPor: { select: { nome: true } } },
     });
 
     // Criar alerta e push se risco elevado
-    if (risco === 'alto' || risco === 'muito_alto') {
+    // PROD-08: o motor só devolve baixo/moderado/alto (cortes DGS); 'alto' pede alerta.
+    if (risco === 'alto') {
       const nomeEscala = tipo === 'braden' ? 'Braden (úlceras)' : 'Morse (quedas)';
-      const nivelLabel = risco === 'muito_alto' ? 'Muito Alto' : 'Alto';
+      const nivelLabel = 'Alto';
       const msg = `Risco ${nivelLabel} — Escala ${nomeEscala}: ${pontuacao} pontos`;
       this.alertasService.criarAlerta(doenteId, 'risco_clinico', msg);
       this.notificacoesService.enviarParaDoente(

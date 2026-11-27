@@ -9,6 +9,7 @@ const mockPrisma = {
   doente: {
     findUnique: jest.fn(),
   },
+  cama: { findFirst: jest.fn() },
   avaliacaoRisco: {
     create: jest.fn(),
     findFirst: jest.fn(),
@@ -30,6 +31,7 @@ describe('EscalasService', () => {
   beforeEach(async () => {
     jest.resetAllMocks();
     mockNotificacoesService.enviarParaDoente.mockResolvedValue(undefined);
+    mockPrisma.cama.findFirst.mockResolvedValue({ servico: 'Medicina' });
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -60,7 +62,7 @@ describe('EscalasService', () => {
       ).rejects.toThrow(NotFoundException);
     });
 
-    it('cria registo de avaliação Braden com pontuação < 12 (risco alto)', async () => {
+    it('cria registo de avaliação Braden com pontuação ≤ 16 (risco alto, DGS 017/2011)', async () => {
       mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', ativo: true, nome: 'João Silva' });
       const avaliacaoCriada = {
         id: 'aval-1',
@@ -72,7 +74,7 @@ describe('EscalasService', () => {
       };
       mockPrisma.avaliacaoRisco.create.mockResolvedValue(avaliacaoCriada);
 
-      // Braden: soma dos itens = 10 → pontuação ≤ 12 → risco 'alto'
+      // Braden: soma dos itens = 10 → ≤ 16 → risco 'alto'
       const itens = {
         percepcaoSensorial: 2,
         humidade: 2,
@@ -92,6 +94,8 @@ describe('EscalasService', () => {
             tipo: 'braden',
             pontuacao: 10,
             risco: 'alto',
+            versao: expect.stringContaining('braden'),
+            proximaAvaliacaoEm: expect.any(Date),
           }),
         }),
       );
@@ -110,14 +114,14 @@ describe('EscalasService', () => {
       };
       mockPrisma.avaliacaoRisco.create.mockResolvedValue(avaliacaoCriada);
 
-      // Morse: soma = 65 → ≥ 45 → risco 'alto'
+      // Morse: 25 + 15 + 15 + 0 + 10 + 0 = 65 → ≥ 45 → risco 'alto'
       const itens = {
         historiaQueda: 25,
         diagnosticoSecundario: 15,
-        ajudaMarcha: 10,
-        heparinaIV: 10,
-        marchaTransferencia: 3,
-        estadoMental: 2,
+        ajudaMarcha: 15,
+        heparinaIV: 0,
+        marchaTransferencia: 10,
+        estadoMental: 0,
       };
 
       const resultado = await service.criar('doente-1', 'user-1', 'medico', 'morse', itens);
@@ -137,7 +141,7 @@ describe('EscalasService', () => {
     it('cria avaliação e aciona alertas quando risco é alto', async () => {
       mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', ativo: true, nome: 'João Silva' });
       mockPrisma.avaliacaoRisco.create.mockResolvedValue({
-        id: 'aval-3', doenteId: 'doente-1', tipo: 'braden', pontuacao: 8, risco: 'muito_alto',
+        id: 'aval-3', doenteId: 'doente-1', tipo: 'braden', pontuacao: 8, risco: 'alto',
         registadoPor: { nome: 'Enf. Maria' },
       });
 
@@ -151,8 +155,30 @@ describe('EscalasService', () => {
       expect(mockAlertasService.criarAlerta).toHaveBeenCalledWith(
         'doente-1',
         'risco_clinico',
-        expect.stringContaining('Muito Alto'),
+        expect.stringContaining('Risco Alto'),
       );
+    });
+
+    it('recusa Braden incompleta ou com valores fora da escala (PROD-08)', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', ativo: true, nome: 'João Silva' });
+      await expect(service.criar('doente-1', 'user-1', 'enfermeiro', 'braden', { percepcaoSensorial: 2 }))
+        .rejects.toThrow(/incompleta ou inválida/);
+      await expect(service.criar('doente-1', 'user-1', 'enfermeiro', 'braden', {
+        percepcaoSensorial: 9, humidade: 1, atividade: 1, mobilidade: 1, nutricao: 1, friccaoCisalhamento: 1,
+      })).rejects.toThrow(/incompleta ou inválida/);
+      expect(mockPrisma.avaliacaoRisco.create).not.toHaveBeenCalled();
+    });
+
+    it('Braden 17 é risco baixo e não alerta', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', ativo: true, nome: 'João Silva' });
+      mockPrisma.avaliacaoRisco.create.mockResolvedValue({ id: 'a' });
+      await service.criar('doente-1', 'user-1', 'enfermeiro', 'braden', {
+        percepcaoSensorial: 3, humidade: 3, atividade: 3, mobilidade: 3, nutricao: 3, friccaoCisalhamento: 2,
+      });
+      expect(mockPrisma.avaliacaoRisco.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ pontuacao: 17, risco: 'baixo' }),
+      }));
+      expect(mockAlertasService.criarAlerta).not.toHaveBeenCalled();
     });
   });
 

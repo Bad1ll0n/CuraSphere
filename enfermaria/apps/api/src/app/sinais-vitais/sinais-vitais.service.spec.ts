@@ -366,6 +366,33 @@ describe('SinaisVitaisService', () => {
 
   // ── analisarTendencia() ──────────────────────────────────────────────────
 
+  describe('criar() — PROD-09 dor e PROD-10 próxima avaliação', () => {
+    beforeEach(() => {
+      mockPrisma.doente.findUnique.mockResolvedValue(mockDoente);
+      mockPrisma.sinalVital.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'sv1', ...data }));
+    });
+
+    it('dor fora da escala → 400; escala sem intensidade → 400; dor sem escala = numérica', async () => {
+      await expect(service.criar('d1', 'u1', 'enfermeiro', { dor: 9, escalaDor: 'cpot' } as any)).rejects.toThrow(/fora da/);
+      await expect(service.criar('d1', 'u1', 'enfermeiro', { escalaDor: 'eva' } as any)).rejects.toThrow(/intensidade/);
+      await service.criar('d1', 'u1', 'enfermeiro', { dor: 3 } as any);
+      expect(mockPrisma.sinalVital.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ dor: 3, escalaDor: 'numerica', proximaAvaliacaoEm: expect.any(Date) }),
+      }));
+    });
+
+    it('dor ≥ 7 (ou CPOT > 2) gera alerta de dor intensa', async () => {
+      await service.criar('d1', 'u1', 'enfermeiro', { dor: 8, escalaDor: 'numerica' } as any);
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'dor_intensa', expect.stringContaining('Dor 8/10'), 3);
+      mockAlertas.criarAlerta.mockClear();
+      await service.criar('d1', 'u1', 'enfermeiro', { dor: 4, escalaDor: 'cpot' } as any);
+      expect(mockAlertas.criarAlerta).toHaveBeenCalledWith('d1', 'dor_intensa', expect.stringContaining('CPOT 4/8'), 3);
+      mockAlertas.criarAlerta.mockClear();
+      await service.criar('d1', 'u1', 'enfermeiro', { dor: 2, escalaDor: 'cpot' } as any);
+      expect(mockAlertas.criarAlerta).not.toHaveBeenCalledWith('d1', 'dor_intensa', expect.anything(), 3);
+    });
+  });
+
   describe('analisarTendencia()', () => {
     it('retorna risco indeterminado com menos de 2 registos', async () => {
       mockPrisma.sinalVital.findMany.mockResolvedValueOnce([

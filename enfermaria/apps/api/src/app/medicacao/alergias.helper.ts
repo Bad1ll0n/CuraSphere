@@ -320,3 +320,19 @@ export function nomeReconhecido(nomeMedicamento: string): boolean {
   if (tokens.some((t) => DCI_CONHECIDAS.has(t))) return true;
   return classesDoTermo(tokens).length > 0;
 }
+
+/**
+ * PROD-06: codifica um alergénio contra o catálogo interno (marcas → substância activa,
+ * substâncias, classes farmacológicas). Ordem: designação de classe ("penicilinas") →
+ * substância activa → classe a que a substância pertence → texto livre normalizado.
+ * Quando houver o catálogo nacional (PROD-05), o código passa a ser o dele.
+ */
+export function codificarAlergenio(alergenio: string): { codigo: string; sistemaCodigo: 'dci' | 'classe' | 'livre' } {
+  const tokens = tokenizar(expandirMarcas(alergenio));
+  const designada = classesDesignadas(alergenio, tokens)[0];
+  if (designada) return { codigo: designada.id, sistemaCodigo: 'classe' };
+  const membros = new Set(CLASSES_FARMACOLOGICAS.flatMap((c) => c.membros));
+  const substancia = tokens.find((t) => DCI_CONHECIDAS.has(t) || membros.has(t));
+  if (substancia) return { codigo: substancia, sistemaCodigo: 'dci' };
+  return { codigo: normalizarTermo(alergenio), sistemaCodigo: 'livre' };
+}

@@ -21,6 +21,8 @@ import { verificarTotpAssinatura } from '../common/totp-assinatura';
 import { chaveDiaClinico } from '../common/dia-clinico.helper';
 import { ultimasAdministracoes } from '../common/ultimos-registos';
 import { iaPermitida } from '../common/funcoes-ia';
+import { tfgCkdEpi2021 } from '../common/antropometria';
+import { reavaliacaoDorAte } from '../common/vigilancia';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -188,6 +190,13 @@ export class MedicacaoService {
     const resultado = await this.prisma.$transaction(async (tx) => {
       const doente = await tx.doente.findUnique({ where: { id: data.doenteId } });
       if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
+      // PROD-06: sem avaliação de alergias não há prescrição. "Lista vazia" não é "sem
+      // alergias": alguém tem de ter perguntado (JCI IPSG / segurança medicamentosa).
+      if (doente.avaliacaoAlergias === 'nao_avaliado') {
+        throw new ConflictException(
+          'ALERGIAS_NAO_AVALIADAS: registe as alergias do doente ou "sem alergias conhecidas" antes de prescrever.',
+        );
+      }
 
       // As alergias são SEMPRE consultadas, mesmo com override: sem saber o que se está a
       // ultrapassar não há registo possível do override (era este o defeito BA-03).
@@ -467,6 +476,8 @@ export class MedicacaoService {
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
           certosVerificados: certos,
+          // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada (30/60 min).
+          reavaliarDorAte: reavaliacaoDorAte(medicacao.nome, medicacao.via, new Date()),
         },
         include: {
           administradoPor: { select: { id: true, nome: true } },
@@ -616,6 +627,13 @@ export class MedicacaoService {
     }
     const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
     if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
+    // PROD-06: sem avaliação de alergias não há prescrição. "Lista vazia" não é "sem
+    // alergias": alguém tem de ter perguntado (JCI IPSG / segurança medicamentosa).
+    if (doente.avaliacaoAlergias === 'nao_avaliado') {
+      throw new ConflictException(
+        'ALERGIAS_NAO_AVALIADAS: registe as alergias do doente ou "sem alergias conhecidas" antes de prescrever.',
+      );
+    }
 
     const medicacao = await this.prisma.medicacao.create({
       data: {
@@ -1138,7 +1156,7 @@ export class MedicacaoService {
       }).catch(() => null) ?? null,
       this.prisma.doente.findUnique({
         where: { id: doenteId },
-        select: { dataNascimento: true },
+        select: { dataNascimento: true, sexo: true },
       }),
     ]);
 
@@ -1151,15 +1169,14 @@ export class MedicacaoService {
       ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 86_400_000))
       : 65;
 
-    // CKD-EPI simplificado (sem sexo — equação masculina conservadora)
-    const gfr = Math.round(
-      141 * Math.pow(Math.min(cr / 0.9, 1), -0.411) * Math.pow(Math.max(cr / 0.9, 1), -1.209) * Math.pow(0.993, idade),
-    );
+    // PROD-22: CKD-EPI 2021 com o sexo do doente (antes: sempre a equação masculina, que
+    // sobrestima a TFG de uma mulher — o lado perigoso para fármacos de eliminação renal).
+    const { tfg: gfr, nota: notaSexo } = tfgCkdEpi2021(cr, idade, doente?.sexo);
 
     // PROD-19: a TFG (CKD-EPI) é determinística e é sempre devolvida; a dose ajustada por LLM só
     // com activação explícita.
     if (!iaPermitida('ajuste_renal')) {
-      return { gfr, aviso: `TFG ${gfr} mL/min/1,73m² — ajuste de dose por IA desactivado; ajustar segundo o RCM/formulário.` };
+      return { gfr, aviso: `TFG ${gfr} mL/min/1,73m² (CKD-EPI 2021) — ajuste de dose por IA desactivado; ajustar segundo o RCM/formulário.${notaSexo ? ' ' + notaSexo : ''}` };
     }
     const msg = await this.anthropic.messages.create({
       model: AI_MODELS.FAST,

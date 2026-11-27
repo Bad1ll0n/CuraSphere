@@ -105,6 +105,12 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                     <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>
                       Avaliado por {av.registadoPor?.nome?.split(' ')[0]} · {new Date(av.criadaEm).toLocaleDateString('pt-PT')}
                     </p>
+                    {av.proximaAvaliacaoEm && (
+                      <p className={`text-xs ${new Date(av.proximaAvaliacaoEm).getTime() < Date.now() ? 'text-red-600 font-semibold' : 'text-slate-500'}`} style={{ marginTop: '2px' }}>
+                        {new Date(av.proximaAvaliacaoEm).getTime() < Date.now() ? 'Reavaliação em atraso desde ' : 'Reavaliar até '}
+                        {new Date(av.proximaAvaliacaoEm).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    )}
                   </div>
                 </div>
               ) : (

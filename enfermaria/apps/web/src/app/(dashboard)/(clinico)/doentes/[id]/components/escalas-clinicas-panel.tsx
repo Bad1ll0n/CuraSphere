@@ -47,7 +47,7 @@ const ESCALA_CONFIG: Record<string, {
       { key: 'tensao', label: 'Tensão Muscular', opcoes: [{ v: 0, l: '0 — Relaxada' }, { v: 1, l: '1 — Tensa/Rígida' }, { v: 2, l: '2 — Muito tensa/Rígida' }] },
     ],
     calcularPontuacao: (v) => (['expressao', 'movimento', 'ventilacao', 'tensao'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
-    classificar: (p) => p === 0 ? 'Sem dor' : p <= 2 ? 'Dor leve' : p <= 4 ? 'Dor moderada' : 'Dor intensa',
+    classificar: (p) => p === 0 ? 'Sem dor' : p <= 2 ? 'Dor improvável' : p <= 4 ? 'Dor moderada' : 'Dor intensa',
   },
   SOFA: {
     label: 'SOFA', cor: 'red',
@@ -136,9 +136,16 @@ const ESCALA_CONFIG: Record<string, {
       { key: 'flex_dir', label: 'Flexão cotovelo D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
       { key: 'dors_esq', label: 'Dorsiflexão tornozelo E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
       { key: 'dors_dir', label: 'Dorsiflexão tornozelo D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'ext_punho_esq', label: 'Extensão punho E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'ext_punho_dir', label: 'Extensão punho D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'flex_anca_esq', label: 'Flexão anca E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'flex_anca_dir', label: 'Flexão anca D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'ext_joelho_esq', label: 'Extensão joelho E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'ext_joelho_dir', label: 'Extensão joelho D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
     ],
-    calcularPontuacao: (v) => ['abd_esq','abd_dir','flex_esq','flex_dir','dors_esq','dors_dir'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
-    classificar: (p) => p <= 24 ? 'Fraqueza grave (≤4/grupo)' : p <= 36 ? 'Fraqueza moderada' : p <= 48 ? 'Fraqueza leve' : 'Força normal',
+    // MRC Sum Score: 6 grupos × 2 lados = 12 itens (0–60), como no servidor (PROD-08).
+    calcularPontuacao: (v) => ['abd','flex','ext_punho','flex_anca','ext_joelho','dors'].flatMap((g) => [`${g}_esq`, `${g}_dir`]).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p < 36 ? 'Fraqueza grave (< 36)' : p < 48 ? 'Fraqueza adquirida na UCI (< 48)' : p < 60 ? 'Força ligeiramente reduzida' : 'Força normal',
   },
   NRS2002: {
     label: 'NRS-2002 (Nutrição)', cor: 'amber',

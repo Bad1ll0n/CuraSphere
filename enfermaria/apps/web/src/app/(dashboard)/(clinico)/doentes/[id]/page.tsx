@@ -53,6 +53,12 @@ interface Doente {
   ativo: boolean;
   emIsolamento: boolean;
   motivoIsolamento?: string;
+  // PROD-22
+  sexo?: string | null;
+  pesoReferenciaKg?: number | null;
+  pesoReferenciaEm?: string | null;
+  pesoReferenciaFonte?: string | null;
+  alturaCm?: number | null;
   // Sem cama: em espera de cama, em ambulatório ou já com alta. A ficha rebentava
   // (`null.quarto`) e mostrava "Erro ao carregar doente" (encontrado pelo E2E, QA-22).
   cama: { numero: string; quarto: string } | null;
@@ -164,6 +170,11 @@ export default function DoenteDetalhe() {
   const [modalEditarDoente, setModalEditarDoente] = useState(false);
   const [editDiagnostico, setEditDiagnostico] = useState('');
   const [editAltaPrevista, setEditAltaPrevista] = useState('');
+  // PROD-22: sexo e antropometria (TFG, doses por peso, superfície corporal).
+  const [editSexo, setEditSexo] = useState('');
+  const [editPeso, setEditPeso] = useState('');
+  const [editPesoFonte, setEditPesoFonte] = useState('medido');
+  const [editAltura, setEditAltura] = useState('');
   const [salvandoEdicao, setSalvandoEdicao] = useState(false);
 
   // Alta estruturada
@@ -371,6 +382,10 @@ export default function DoenteDetalhe() {
     if (!doente) return;
     setEditDiagnostico(doente.diagnosticoPrincipal);
     setEditAltaPrevista(doente.dataAltaPrevista ? doente.dataAltaPrevista.split('T')[0] : '');
+    setEditSexo(doente.sexo ?? '');
+    setEditPeso(doente.pesoReferenciaKg != null ? String(doente.pesoReferenciaKg) : '');
+    setEditPesoFonte(doente.pesoReferenciaFonte ?? 'medido');
+    setEditAltura(doente.alturaCm != null ? String(doente.alturaCm) : '');
     setModalEditarDoente(true);
   };
 
@@ -380,6 +395,10 @@ export default function DoenteDetalhe() {
       await api.patch(`/doentes/${id}`, {
         diagnosticoPrincipal: editDiagnostico || undefined,
         dataAltaPrevista: editAltaPrevista ? new Date(editAltaPrevista) : null,
+        sexo: editSexo || undefined,
+        // Só se envia o peso/altura quando mudam: cada envio regista a data (e a fonte) da medição.
+        ...(editPeso !== '' && Number(editPeso) !== doente?.pesoReferenciaKg && { pesoReferenciaKg: Number(editPeso), pesoReferenciaFonte: editPesoFonte }),
+        ...(editAltura !== '' && Number(editAltura) !== doente?.alturaCm && { alturaCm: Number(editAltura) }),
       });
       toast.success('Guardado com sucesso');
       setModalEditarDoente(false);
@@ -960,6 +979,38 @@ export default function DoenteDetalhe() {
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
             </div>
+            <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '16px' }}>
+              <div>
+                <label htmlFor="fpage-sexo" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Sexo</label>
+                <select id="fpage-sexo" value={editSexo} onChange={(e) => setEditSexo(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
+                  <option value="">Não registado</option>
+                  <option value="feminino">Feminino</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="indeterminado">Indeterminado</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="fpage-altura" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Altura (cm)</label>
+                <input id="fpage-altura" type="number" min={20} max={260} value={editAltura} onChange={(e) => setEditAltura(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+              </div>
+              <div>
+                <label htmlFor="fpage-peso" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Peso de referência (kg)</label>
+                <input id="fpage-peso" type="number" step="0.1" min={0.3} max={400} value={editPeso} onChange={(e) => setEditPeso(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+              </div>
+              <div>
+                <label htmlFor="fpage-peso-fonte" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fonte do peso</label>
+                <select id="fpage-peso-fonte" value={editPesoFonte} onChange={(e) => setEditPesoFonte(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }}>
+                  <option value="medido">Medido</option>
+                  <option value="referido">Referido</option>
+                  <option value="estimado">Estimado</option>
+                </select>
+              </div>
+            </div>
+            {doente?.pesoReferenciaEm && (
+              <p className="text-xs text-slate-500" style={{ marginTop: '-8px', marginBottom: '16px' }}>
+                Peso registado em {new Date(doente.pesoReferenciaEm).toLocaleDateString('pt-PT')} ({doente.pesoReferenciaFonte ?? 'medido'})
+              </p>
+            )}
             <div style={{ marginBottom: '24px' }}>
               <label htmlFor="fpage-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
               <input id="fpage-2" type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}

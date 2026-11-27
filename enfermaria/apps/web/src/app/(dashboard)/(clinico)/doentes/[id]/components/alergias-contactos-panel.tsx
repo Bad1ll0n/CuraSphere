@@ -98,7 +98,13 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
   const [alergiaTipo, setAlergiaTipo] = useState('medicamento');
   const [alergiaSev, setAlergiaSev] = useState('moderada');
   const [alergiaNotas, setAlergiaNotas] = useState('');
+  const [alergiaReacao, setAlergiaReacao] = useState('');
+  const [alergiaCerteza, setAlergiaCerteza] = useState('');
+  const [alergiaFonte, setAlergiaFonte] = useState('');
   const [salvandoAlergia, setSalvandoAlergia] = useState(false);
+  // PROD-06: "ninguém perguntou" (nao_avaliado) ≠ "perguntámos e não tem".
+  const [avaliacao, setAvaliacao] = useState<{ estado: string; em: string | null } | null>(null);
+  const [registandoSemAlergias, setRegistandoSemAlergias] = useState(false);
 
   // Contactos state
   const [contactos, setContactos] = useState<any[]>([]);
@@ -116,7 +122,20 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
 
   const carregarAlergias = useCallback(() => {
     api.get(`/alergias/${doenteId}`).then(r => setAlergias(r.data)).catch(() => setAlergias([]));
+    api.get(`/alergias/${doenteId}/avaliacao`).then(r => setAvaliacao(r.data)).catch(() => setAvaliacao(null));
   }, [doenteId]);
+
+  const podeRegistarAlergias = utilizador?.role === 'medico' || utilizador?.role === 'enfermeiro';
+  const registarSemAlergias = async () => {
+    setRegistandoSemAlergias(true);
+    try {
+      await api.post(`/alergias/${doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' });
+      toast.success('Registado: sem alergias conhecidas');
+      carregarAlergias();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+    } finally { setRegistandoSemAlergias(false); }
+  };
 
   const carregarContactos = useCallback(() => {
     api.get(`/contactos/${doenteId}`).then(r => setContactos(r.data)).catch(() => setContactos([]));
@@ -131,9 +150,12 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
     if (!alergenio.trim()) return;
     setSalvandoAlergia(true);
     try {
-      await api.post(`/alergias/${doenteId}`, { alergenio, tipo: alergiaTipo, severidade: alergiaSev, notas: alergiaNotas || undefined });
+      await api.post(`/alergias/${doenteId}`, {
+        alergenio, tipo: alergiaTipo, severidade: alergiaSev, notas: alergiaNotas || undefined,
+        reacao: alergiaReacao.trim() || undefined, certeza: alergiaCerteza || undefined, fonte: alergiaFonte || undefined,
+      });
       toast.success('Guardado com sucesso');
-      setModalAlergia(false); setAlergenio(''); setAlergiaNotas('');
+      setModalAlergia(false); setAlergenio(''); setAlergiaNotas(''); setAlergiaReacao(''); setAlergiaCerteza(''); setAlergiaFonte('');
       carregarAlergias();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
@@ -195,7 +217,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
     });
   };
 
-  const sevCor: Record<string, string> = { anafilaxia: 'bg-red-100 text-red-700', grave: 'bg-orange-100 text-orange-700', moderada: 'bg-yellow-100 text-yellow-700', ligeira: 'bg-slate-100 text-slate-600' };
+  const sevCor: Record<string, string> = { anafilaxia: 'bg-red-100 text-red-700', grave: 'bg-orange-100 text-orange-700', moderada: 'bg-yellow-100 text-yellow-700', leve: 'bg-slate-100 text-slate-600' };
 
   return (
     <>
@@ -212,7 +234,24 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
             <BtnAdd label="Registar alergia" onClick={() => { setAlergenio(''); setAlergiaNotas(''); setModalAlergia(true); }} />
           </div>
           {alergias.length === 0 ? (
-            <p className="text-sm text-slate-500 text-center" style={{ padding: '16px 0' }}>Sem alergias registadas</p>
+            avaliacao?.estado === 'sem_alergias_conhecidas' ? (
+              <p className="text-sm text-green-700 bg-green-50 rounded-lg text-center" style={{ padding: '12px' }}>
+                Sem alergias conhecidas
+                {avaliacao.em && <span className="block text-xs text-green-600">avaliado em {new Date(avaliacao.em).toLocaleDateString('pt-PT')}</span>}
+              </p>
+            ) : (
+              <div className="rounded-lg bg-amber-50 border border-amber-200 text-center" style={{ padding: '12px' }} role="status">
+                <p className="text-sm font-semibold text-amber-800">Alergias não avaliadas</p>
+                <p className="text-xs text-amber-700" style={{ margin: '4px 0 10px' }}>Sem avaliação não é possível prescrever. Pergunte ao doente/família ou consulte o processo.</p>
+                {podeRegistarAlergias && (
+                  <button onClick={registarSemAlergias} disabled={registandoSemAlergias}
+                    className="text-xs font-semibold bg-white border border-amber-300 text-amber-800 rounded-lg hover:bg-amber-100 disabled:opacity-50 transition-colors"
+                    style={{ padding: '6px 12px' }}>
+                    {registandoSemAlergias ? 'A registar...' : 'Sem alergias conhecidas'}
+                  </button>
+                )}
+              </div>
+            )
           ) : (
             <div className="flex flex-col gap-2">
               {alergias.map((a: any) => (
@@ -221,6 +260,11 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
                   <div className="flex-1">
                     <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
                     <span className="text-xs text-slate-500 ml-2">{a.tipo}</span>
+                    {(a.reacao || a.certeza || a.fonte) && (
+                      <span className="block text-xs text-slate-500">
+                        {[a.reacao, a.certeza, a.fonte && `fonte: ${a.fonte}`].filter(Boolean).join(' · ')}
+                      </span>
+                    )}
                   </div>
                   {podeRemoverAlergia && (
                     <button onClick={() => removerAlergia(a.id, a.alergenio)} aria-label={`Remover alergia ${a.alergenio}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
@@ -273,7 +317,7 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
           <div style={{ marginBottom: '14px' }}>
             <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</span>
             <div className="flex gap-2 flex-wrap">
-              {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
+              {['medicamento', 'alimento', 'ambiental', 'contraste', 'latex', 'outros'].map((t) => (
                 <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
               ))}
             </div>
@@ -281,9 +325,27 @@ export function AlergiasContactosPanel({ doenteId, utilizador }: Props) {
           <div style={{ marginBottom: '14px' }}>
             <label htmlFor="alergia-notas" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
             <div className="flex gap-2 flex-wrap">
-              {['ligeira', 'moderada', 'grave', 'anafilaxia'].map((s) => (
+              {['leve', 'moderada', 'grave', 'anafilaxia'].map((s) => (
                 <button key={s} onClick={() => setAlergiaSev(s)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
               ))}
+            </div>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label htmlFor="alergia-reacao" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Reação</label>
+            <input id="alergia-reacao" type="text" maxLength={200} value={alergiaReacao} onChange={(e) => setAlergiaReacao(e.target.value)} placeholder="Ex: urticária, broncospasmo..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+          </div>
+          <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
+            <div>
+              <label htmlFor="alergia-certeza" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Certeza</label>
+              <select id="alergia-certeza" value={alergiaCerteza} onChange={(e) => setAlergiaCerteza(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800" style={{ padding: '10px 14px' }}>
+                <option value="">—</option><option value="suspeita">Suspeita</option><option value="confirmada">Confirmada</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="alergia-fonte" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Fonte</label>
+              <select id="alergia-fonte" value={alergiaFonte} onChange={(e) => setAlergiaFonte(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800" style={{ padding: '10px 14px' }}>
+                <option value="">—</option><option value="doente">Doente</option><option value="familia">Família</option><option value="processo">Processo clínico</option><option value="observada">Observada</option>
+              </select>
             </div>
           </div>
           <div style={{ marginBottom: '14px' }}>

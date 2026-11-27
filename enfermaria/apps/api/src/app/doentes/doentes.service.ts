@@ -35,6 +35,16 @@ function validarMagicBytesImagem(buffer: Buffer, mimetype: string): boolean {
   return false;
 }
 
+// PROD-22: dados de sexo/antropometria, com data e fonte do peso e da altura.
+function dadosAntropometria(dto: { sexo?: string; pesoReferenciaKg?: number; pesoReferenciaFonte?: string; alturaCm?: number }) {
+  const agora = new Date();
+  return {
+    ...(dto.sexo !== undefined && { sexo: dto.sexo }),
+    ...(dto.pesoReferenciaKg !== undefined && { pesoReferenciaKg: dto.pesoReferenciaKg, pesoReferenciaEm: agora, pesoReferenciaFonte: dto.pesoReferenciaFonte ?? 'medido' }),
+    ...(dto.alturaCm !== undefined && { alturaCm: dto.alturaCm, alturaEm: agora }),
+  };
+}
+
 @Injectable()
 export class DoenteService {
   private readonly logger = new Logger(DoenteService.name);
@@ -222,6 +232,10 @@ export class DoenteService {
     camaId?: string;
     dataAltaPrevista?: Date;
     administrativoAdmissaoId: string;
+    sexo?: string;
+    pesoReferenciaKg?: number;
+    pesoReferenciaFonte?: string;
+    alturaCm?: number;
     nif?: string;
     numeroSNS?: string;
     morada?: string;
@@ -274,6 +288,7 @@ export class DoenteService {
           estadoRegisto: data.camaId ? 'internado' : 'pendente_cama',
           dataAltaPrevista: data.dataAltaPrevista ? new Date(data.dataAltaPrevista) : undefined,
           administrativoAdmissaoId: data.administrativoAdmissaoId,
+          ...dadosAntropometria(data),
         },
         include: { cama: true },
       });
@@ -314,7 +329,10 @@ export class DoenteService {
     return resultado;
   }
 
-  async editar(id: string, dto: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
+  async editar(id: string, dto: {
+    diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string;
+    sexo?: string; pesoReferenciaKg?: number; pesoReferenciaFonte?: string; alturaCm?: number;
+  }) {
     await this.buscarPorId(id);
     return this.prisma.doente.update({
       where: { id },
@@ -322,8 +340,12 @@ export class DoenteService {
         ...(dto.diagnosticoPrincipal !== undefined && { diagnosticoPrincipal: dto.diagnosticoPrincipal }),
         ...(dto.dataAltaPrevista !== undefined && { dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : null }),
         ...(dto.numeroProcesso !== undefined && { numeroProcesso: dto.numeroProcesso }),
+        ...dadosAntropometria(dto),
       },
-      select: { id: true, nome: true, diagnosticoPrincipal: true, dataAltaPrevista: true, numeroProcesso: true },
+      select: {
+        id: true, nome: true, diagnosticoPrincipal: true, dataAltaPrevista: true, numeroProcesso: true,
+        sexo: true, pesoReferenciaKg: true, pesoReferenciaEm: true, pesoReferenciaFonte: true, alturaCm: true, alturaEm: true,
+      },
     });
   }
 

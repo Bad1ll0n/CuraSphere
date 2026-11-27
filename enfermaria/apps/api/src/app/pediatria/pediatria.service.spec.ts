@@ -5,7 +5,7 @@ import { PediatriaService } from './pediatria.service';
 describe('PediatriaService', () => {
   let prisma: any, svc: PediatriaService;
   beforeEach(() => {
-    prisma = { sinalVital: { findFirst: jest.fn(), findMany: jest.fn() } };
+    prisma = { sinalVital: { findFirst: jest.fn(), findMany: jest.fn() }, doente: { findUnique: jest.fn().mockResolvedValue(null) } };
     svc = new PediatriaService(prisma);
   });
 
@@ -19,6 +19,12 @@ describe('PediatriaService', () => {
     prisma.sinalVital.findFirst.mockResolvedValue({ peso: 12, data: new Date('2026-11-01T10:00:00Z') });
     const r = await svc.calcularDose({ mgPorKg: 10, doenteId: 'd1' } as any);
     expect(r).toMatchObject({ doseMg: 120, pesoKg: 12, fontePeso: 'último registo (2026-11-01)' });
+  });
+
+  it('sem peso: usa o peso de referência do doente antes do último registo (PROD-22)', async () => {
+    prisma.doente.findUnique.mockResolvedValue({ pesoReferenciaKg: 14, pesoReferenciaEm: new Date('2026-11-02T00:00:00Z'), pesoReferenciaFonte: 'medido' });
+    const r = await svc.calcularDose({ mgPorKg: 10, doenteId: 'd1' } as any);
+    expect(r).toMatchObject({ doseMg: 140, pesoKg: 14, fontePeso: 'peso de referência (medido, 2026-11-02)' });
   });
 
   it('sem peso e sem registo: recusa (nunca inventa um peso)', async () => {

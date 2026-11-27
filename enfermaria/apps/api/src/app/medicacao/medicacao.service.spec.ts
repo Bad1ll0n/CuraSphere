@@ -102,6 +102,14 @@ describe('MedicacaoService', () => {
       await expect(service.prescrever(dadosBase)).rejects.toThrow(NotFoundException);
     });
 
+    it('PROD-06: recusa prescrever sem avaliação de alergias (lista vazia não é "sem alergias")', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValueOnce({ id: 'doente-1', nome: 'João', avaliacaoAlergias: 'nao_avaliado' });
+      mockPrisma.alergia.findMany.mockResolvedValue([]);
+      mockPrisma.medicacao.findMany.mockResolvedValue([]);
+      await expect(service.prescrever(dadosBase)).rejects.toThrow(/ALERGIAS_NAO_AVALIADAS/);
+      expect(mockPrisma.medicacao.create).not.toHaveBeenCalled();
+    });
+
     describe('QA-07/QA-08 — plausibilidade', () => {
       it('recusa dose ilegível', async () => {
         await expect(service.prescrever({ ...dadosBase, dose: 'abc' })).rejects.toThrow(/não é legível/);

@@ -37,9 +37,9 @@ export default function ModalRegistarAlergia({ visible, doenteId, onClose, onSav
           <Text style={shared.formLabel}>Agente alérgeno *</Text>
           <TextInput style={shared.formInput} value={alergenio} onChangeText={setAlergenio} placeholder="Ex: Penicilina, Ibuprofeno..." />
           <Text style={shared.formLabel}>Tipo</Text>
-          <SelectPicker options={[{ value: 'medicamento', label: 'Med.' }, { value: 'alimento', label: 'Alim.' }, { value: 'ambiental', label: 'Amb.' }, { value: 'outro', label: 'Outro' }]} value={tipo} onChange={setTipo} />
+          <SelectPicker options={[{ value: 'medicamento', label: 'Med.' }, { value: 'alimento', label: 'Alim.' }, { value: 'ambiental', label: 'Amb.' }, { value: 'outros', label: 'Outro' }]} value={tipo} onChange={setTipo} />
           <Text style={shared.formLabel}>Severidade</Text>
-          <SelectPicker options={[{ value: 'ligeira', label: 'Ligeira' }, { value: 'moderada', label: 'Moder.' }, { value: 'grave', label: 'Grave' }, { value: 'anafilaxia', label: 'Anafilax.' }]} value={sev} onChange={setSev} />
+          <SelectPicker options={[{ value: 'leve', label: 'Leve' }, { value: 'moderada', label: 'Moder.' }, { value: 'grave', label: 'Grave' }, { value: 'anafilaxia', label: 'Anafilax.' }]} value={sev} onChange={setSev} />
           <Text style={shared.formLabel}>Notas</Text>
           <TextInput style={shared.formInput} value={notas} onChangeText={setNotas} placeholder="Observações..." />
           <View style={shared.modalBotoes}>
