@@ -675,7 +675,9 @@
     "obsOverdue": "Vitais/escalas em atraso ({n})",
     "tasks": "Tarefas ({n})",
     "chart": "Ficha",
-    "administer": "Administrar"
+    "administer": "Administrar",
+    "care": "Cuidados de enfermagem ({n})",
+    "careLate": "Cuidados em atraso ({n})"
   },
   "idBand": {
     "dnrPrompt": "Fundamentação da decisão de não reanimar (fica registada):",
@@ -747,7 +749,8 @@
       "exames": "Exames e documentos",
       "alta": "Plano de alta",
       "especialidades": "Especialidades",
-      "administrativo": "Administrativo"
+      "administrativo": "Administrativo",
+      "cuidados": "Plano de cuidados"
     },
     "sections": "Secções da ficha",
     "notFound": "Doente não encontrado",
@@ -889,5 +892,94 @@
     "keepCodeHint": "No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.",
     "done": "Concluir",
     "footer": "CuraSphere — Sistema de Gestão Hospitalar"
+  },
+  "carePlan": {
+    "title": "Plano de cuidados de enfermagem",
+    "summary": "{devidas, plural, one {# registo devido} other {# registos devidos}} · {atraso, plural, one {# em atraso} other {# em atraso}}",
+    "loading": "A carregar o plano de cuidados...",
+    "loadErrorTitle": "Não foi possível carregar o plano de cuidados",
+    "loadErrorBody": "Isto não quer dizer que o doente não tenha cuidados planeados. Verifique a ligação e tente de novo.",
+    "initial": {
+      "title": "Avaliação inicial de enfermagem",
+      "none": "Sem avaliação inicial neste internamento.",
+      "incomplete": "Avaliação inicial incompleta — {por}, {quando}",
+      "complete": "Avaliação inicial completa — {por}, {quando}",
+      "do": "Fazer avaliação inicial",
+      "edit": "Rever avaliação inicial",
+      "section": {
+        "antecedentes": "Antecedentes e motivo de internamento",
+        "autocuidado": "Autocuidado (higiene, vestir, alimentar-se, eliminação)",
+        "comunicacao": "Comunicação, visão e audição",
+        "eliminacao": "Eliminação",
+        "sono": "Sono e repouso",
+        "nutricao": "Nutrição e deglutição",
+        "pele": "Pele e feridas",
+        "dor": "Dor",
+        "mobilidade": "Mobilidade e risco de queda",
+        "apoio": "Rede de apoio",
+        "preferencias": "Preferências, crenças e o que é importante para o doente"
+      },
+      "caregiverName": "Cuidador principal — nome",
+      "caregiverContact": "Cuidador principal — contacto",
+      "markComplete": "Avaliação completa",
+      "saved": "Avaliação inicial guardada"
+    },
+    "suggestions": {
+      "title": "Sugestões a partir das escalas",
+      "hint": "O diagnóstico é decidido por si; nada é criado automaticamente.",
+      "applySet": "Aplicar «{conjunto}»",
+      "add": "Adicionar diagnóstico"
+    },
+    "diagnoses": {
+      "title": "Diagnósticos ativos",
+      "none": "Sem diagnósticos de enfermagem ativos.",
+      "by": "{por} · {quando}",
+      "lastReview": "Última reavaliação: {evolucao} ({quando})",
+      "review": "Reavaliar",
+      "cancel": "Cancelar diagnóstico"
+    },
+    "evolution": {
+      "melhorou": "Melhorou",
+      "igual": "Sem alteração",
+      "piorou": "Piorou",
+      "resolvido": "Resolvido"
+    },
+    "interventions": {
+      "prn": "SOS",
+      "due": "Devida às {hora}",
+      "late": "Em atraso desde as {hora}",
+      "last": "Último registo: {quando} — {por}",
+      "lastNotDone": "Último registo: não realizada ({quando}) — {por}",
+      "record": "Registar",
+      "notDone": "Não realizada",
+      "recorded": "Registo guardado",
+      "suspend": "Suspender"
+    },
+    "prompts": {
+      "notDoneTitle": "Intervenção não realizada",
+      "notDoneLabel": "Motivo",
+      "notDonePlaceholder": "Ex.: doente no bloco operatório",
+      "reviewTitle": "Reavaliar diagnóstico",
+      "reviewLabel": "Nota da reavaliação",
+      "cancelTitle": "Cancelar diagnóstico",
+      "cancelLabel": "Porque se cancela (fica registado)",
+      "confirm": "Confirmar"
+    },
+    "add": {
+      "title": "Adicionar ao plano",
+      "set": "Conjunto tipo",
+      "setPlaceholder": "Escolher um conjunto…",
+      "applySet": "Aplicar conjunto",
+      "diagnosis": "Diagnóstico",
+      "judgement": "Juízo (ex.: risco, presente, dependente)",
+      "intervention": "Intervenção",
+      "frequency": "Frequência (8/8h, 3x/dia, SOS)",
+      "submit": "Adicionar diagnóstico",
+      "applied": "Conjunto aplicado: {criados}",
+      "alreadyActive": "Já estavam ativos: {ignorados}",
+      "created": "Diagnóstico adicionado"
+    },
+    "error": "Não foi possível guardar",
+    "readOnly": "Só leitura — o plano de cuidados é registado pela enfermagem."
   }
 }

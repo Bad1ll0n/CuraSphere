@@ -57,6 +57,8 @@ export interface LinhaMeuTurno<D = string> {
     alergias: string[] | null;
   };
   medicacao: { devidas: number; emAtraso: number };
+  /** PROD-07: intervenções do plano de cuidados devidas / em atraso no turno. */
+  cuidados: { devidas: number; emAtraso: number };
   observacoesEmAtraso: { tipo: string; motivo: string; atrasoMinutos: number }[];
   news2: News2Resumo<D> | null;
   tarefas: { pendentes: number; urgentes: number };
@@ -130,4 +132,63 @@ export interface LinhaMar<D = string> {
   prescritoPor: { nome: string } | null;
   /** Mais recentes primeiro. */
   registos: RegistoMar<D>[];
+}
+
+// ─── PROD-07 — processo de enfermagem ─────────────────────────────────────────
+
+export type EstadoRegistoDevido = 'devida' | 'em_atraso' | 'realizada';
+
+export interface IntervencaoPlano<D = string> {
+  id: string;
+  termo: string;
+  frequencia: string;
+  estado: string;
+  iniciadaEm: D;
+  /** Registos devidos na janela do turno (4 h para trás, 1 h para a frente). SOS: vazio. */
+  devidas: { hora: D; estado: EstadoRegistoDevido }[];
+  ultimaExecucao: { em: D; por: string; realizada: boolean; nota: string | null } | null;
+}
+
+export interface DiagnosticoPlano<D = string> {
+  id: string;
+  termo: string;
+  juizo: string | null;
+  origem: string;
+  estado: string;
+  resultadoEsperado: string | null;
+  identificadoEm: D;
+  identificadoPor: string;
+  intervencoes: IntervencaoPlano<D>[];
+  ultimaAvaliacao: { evolucao: string; em: D; nota: string | null } | null;
+}
+
+export interface SugestaoCuidados {
+  diagnostico: string;
+  juizo: string;
+  conjunto: string | null;
+  motivo: string;
+  origemRef: string;
+}
+
+/** GET /processo-enfermagem/doente/:id/plano */
+export interface PlanoCuidados<D = string> {
+  avaliacaoInicial: { id: string; completa: boolean; atualizadaEm: D; por: string } | null;
+  diagnosticos: DiagnosticoPlano<D>[];
+  sugestoes: SugestaoCuidados[];
+  resumo: { devidas: number; emAtraso: number };
+}
+
+export interface ItemCatalogoCuidados {
+  id: string;
+  tipo: 'diagnostico' | 'intervencao';
+  termo: string;
+  foco: string | null;
+  codigoCipe: string | null;
+  frequenciaSugerida: string | null;
+}
+
+export interface ConjuntoCuidadosResumo {
+  id: string;
+  nome: string;
+  descricao: string | null;
 }

@@ -108,6 +108,9 @@ export function MeuTurnoCliente() {
                   {d.isolamento && <Chip tom="ambar">{t('isolation')}</Chip>}
                   {l.medicacao.emAtraso > 0 && <Chip tom="vermelho">{t('medOverdue', { n: l.medicacao.emAtraso })}</Chip>}
                   {l.medicacao.devidas > 0 && <Chip tom="azul">{t('medNow', { n: l.medicacao.devidas })}</Chip>}
+                  {/* PROD-07: intervenções do plano de cuidados devidas / em atraso. */}
+                  {l.cuidados?.emAtraso > 0 && <Chip tom="vermelho">{t('careLate', { n: l.cuidados.emAtraso })}</Chip>}
+                  {l.cuidados?.devidas > 0 && <Chip tom="azul">{t('care', { n: l.cuidados.devidas })}</Chip>}
                   {l.observacoesEmAtraso.length > 0 && (
                     <Chip tom="ambar" rotulo={l.observacoesEmAtraso.map((o) => o.motivo).join('; ')}>{t('obsOverdue', { n: l.observacoesEmAtraso.length })}</Chip>
                   )}

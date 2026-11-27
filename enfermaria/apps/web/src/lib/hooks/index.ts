@@ -6,3 +6,4 @@ export * from './use-alertas';
 export * from './use-feature-flags';
 export { usePermissao } from './use-permissao';
 export * from './use-resumo-clinico';
+export * from './use-plano-cuidados';

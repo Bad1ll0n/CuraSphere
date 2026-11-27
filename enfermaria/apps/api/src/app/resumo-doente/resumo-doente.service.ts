@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { VigilanciaService } from '../vigilancia/vigilancia.service';
+import { ProcessoEnfermagemService } from '../processo-enfermagem/processo-enfermagem.service';
 import { classificarTomas, tomasPlaneadas } from '../medicacao/posologia';
 import { conteudoPulseira } from '../medicacao/leitura-bcma';
 // ARQ-12: as respostas seguem o contrato partilhado com a web e a mobile.
@@ -17,7 +18,11 @@ const tendencia = (atual: number | null | undefined, anterior: number | null | u
  */
 @Injectable()
 export class ResumoDoenteService {
-  constructor(private readonly prisma: PrismaService, private readonly vigilancia: VigilanciaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly vigilancia: VigilanciaService,
+    private readonly processo: ProcessoEnfermagemService,
+  ) {}
 
   /** Faixa de identificação (sticky) da ficha e dos modais clínicos. */
   async faixa(doenteId: string): Promise<FaixaDoente<Date>> {
@@ -121,6 +126,8 @@ export class ResumoDoenteService {
       },
       orderBy: [{ cama: { quarto: 'asc' } }, { cama: { numero: 'asc' } }],
     });
+    // PROD-07: registos de enfermagem (intervenções do plano de cuidados) devidos no turno.
+    const cuidados = await this.processo.resumoTurno(doentes.map((d) => d.id), agora);
     const resultado: LinhaMeuTurno<Date>[] = [];
     for (const d of doentes) {
       let devidas = 0, emAtraso = 0;
@@ -140,6 +147,7 @@ export class ResumoDoenteService {
           alergias: d.alergias.length ? d.alergias.map((a) => a.alergenio) : d.avaliacaoAlergias === 'nao_avaliado' ? null : [],
         },
         medicacao: { devidas, emAtraso },
+        cuidados: cuidados.get(d.id) ?? { devidas: 0, emAtraso: 0 },
         observacoesEmAtraso: obs.map((o) => ({ tipo: o.tipo, motivo: o.motivo, atrasoMinutos: o.atrasoMinutos })),
         news2: sv ? { valor: sv.news2, em: sv.data, tendencia: tendencia(sv.news2, svAnt?.news2) } : null,
         tarefas: { pendentes: d.tarefas.length, urgentes: d.tarefas.filter((t) => t.prioridade === 'urgente' || t.prioridade === 'alta').length },
