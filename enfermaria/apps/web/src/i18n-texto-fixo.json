@@ -53,7 +53,7 @@
   "app/(dashboard)/(clinico)/doentes/[id]/error.tsx": 4,
   "app/(dashboard)/(clinico)/doentes/[id]/page.tsx": 49,
   "app/(dashboard)/(clinico)/doentes/admitir/page.tsx": 27,
-  "app/(dashboard)/(clinico)/doentes/page.tsx": 1,
+  "app/(dashboard)/(clinico)/doentes/doentes-cliente.tsx": 1,
   "app/(dashboard)/(clinico)/error.tsx": 3,
   "app/(dashboard)/(clinico)/especialidades/page.tsx": 19,
   "app/(dashboard)/(clinico)/fisioterapia/page.tsx": 15,

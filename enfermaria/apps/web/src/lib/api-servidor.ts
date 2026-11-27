@@ -28,3 +28,21 @@ export async function buscarNoServidor<T>(caminho: string): Promise<T> {
   if (!r.ok) throw new Error(`api ${r.status}`);
   return (await r.json()) as T;
 }
+
+/**
+ * PERF-12 — o papel do utilizador, lido do JWT da sessão, só para escolher o que pré-carregar
+ * (ex.: "os meus doentes" ou todos). Não é uma decisão de acesso: a assinatura não é verificada
+ * aqui e a api continua a ser a autoridade. Sem sessão ou com um token ilegível → null.
+ */
+export async function papelDaSessao(): Promise<string | null> {
+  const jar = await cookies();
+  const sessao = jar.get('access_token')?.value;
+  const corpo = sessao?.split('.')[1];
+  if (!corpo) return null;
+  try {
+    const dados = JSON.parse(Buffer.from(corpo, 'base64url').toString('utf8')) as { role?: unknown };
+    return typeof dados.role === 'string' ? dados.role : null;
+  } catch {
+    return null;
+  }
+}
