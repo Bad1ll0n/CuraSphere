@@ -23,7 +23,7 @@
  * clínico. Confirmado empiricamente: com o Redis em baixo, estas 12 personas não passavam do
  * login; com o Redis a correr, passam todas. Risco de disponibilidade — ver relatório.
  */
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, Request } from '@playwright/test';
 import { loginAs } from './helpers';
 
 interface Persona {
@@ -59,6 +59,15 @@ const MAX_LINKS_PER_PERSONA = 10;
 const ERROR_BOUNDARY_TEXT = /Algo correu mal|Erro ao carregar|Unhandled Runtime Error|Server Error|Console Error/;
 const FORBIDDEN_TEXT = /acesso negado|não tem permissão|forbidden|BREAK_GLASS_REQUIRED/i;
 const SAFE_BUTTON_NAME = /^(\+|novo|nova|adicionar|criar|filtrar|exportar|pesquisar|ver detalhe|detalhes?)\b/i;
+/**
+ * Botões cujo nome casa com SAFE_BUTTON_NAME mas que gravam no próprio clique, sem modal nem
+ * confirmação. Ex.: em /horarios, sem escala do mês, "Criar Escala Vazia" faz logo POST /horarios —
+ * o smoke do 00007 (administrativo = chefe de escalas) criava a escala e ficava pendurado (ver o
+ * comentário junto ao clique). Só falhava quando o mês ainda não tinha escala: numa BD acabada de
+ * semear, ou seja, na suite completa; corrido à parte depois disso, a escala já existia e passava.
+ */
+const ACAO_QUE_GRAVA_LOGO = /escala vazia/i;
+const API_ORIGIN = process.env['API_URL'] ?? 'http://localhost:3333';
 const HEALTH_CHECK_TIMEOUT = 6000;
 
 async function collectSidebarLinks(page: Page): Promise<{ href: string; text: string }[]> {
@@ -107,13 +116,29 @@ for (const persona of PERSONAS) {
         await assertPageHealthy(page, link.href);
 
         // Botão de ação segura: abre modal/filtro/tab, nunca submete.
-        const safeButton = page.getByRole('button', { name: SAFE_BUTTON_NAME }).first();
+        const safeButton = page.getByRole('button', { name: SAFE_BUTTON_NAME })
+          .filter({ hasNotText: ACAO_QUE_GRAVA_LOGO })
+          .first();
         if (await safeButton.count().catch(() => 0)) {
           const enabled = await safeButton.isEnabled().catch(() => false);
           if (enabled) {
+            // O nome lê-se ANTES do clique e com prazo: o clique pode fazer o botão desaparecer, e
+            // um innerText() sem timeout esperava por ele até ao timeout do teste (150 s).
+            const nome = (await safeButton.innerText({ timeout: 2000 }).catch(() => '?')).trim();
+            const escritas: string[] = [];
+            const registarEscrita = (r: Request) => {
+              // Refresh de sessão e token CSRF podem coincidir com o clique — não são do botão.
+              const deSessao = /\/v1\/(auth|csrf)/.test(r.url());
+              if (!['GET', 'HEAD', 'OPTIONS'].includes(r.method()) && r.url().startsWith(API_ORIGIN) && !deSessao) {
+                escritas.push(`${r.method()} ${r.url()}`);
+              }
+            };
+            page.on('request', registarEscrita);
             await safeButton.click({ timeout: 3000 }).catch(() => undefined);
             await page.waitForTimeout(400);
-            await assertPageHealthy(page, `${link.href} após clicar em "${await safeButton.innerText().catch(() => '?')}"`);
+            page.off('request', registarEscrita);
+            expect(escritas, `o clique "seguro" em "${nome}" (${link.href}) gravou dados`).toEqual([]);
+            await assertPageHealthy(page, `${link.href} após clicar em "${nome}"`);
             await page.keyboard.press('Escape').catch(() => undefined);
           }
         }
