@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, Modal } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { CameraView, Camera } from 'expo-camera';
 import { shared } from '../styles';
 import EmptyState from '../../../components/EmptyState';
 import api from '../../../lib/api';
@@ -21,7 +21,7 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
   const [scanFeito, setScanFeito] = useState(false);
 
   const abrirScanner = async () => {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
+    const { status } = await Camera.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert('Permissão necessária', 'Active o acesso à câmara para usar o scanner.');
       return;
@@ -100,8 +100,10 @@ export default function TabMedicacao({ doenteId, medicacoesAtivas, podePrescreve
       {/* Modal scanner de barcode */}
       <Modal visible={scanAtivo} animationType="slide" onRequestClose={() => setScanAtivo(false)}>
         <View style={s.scanContainer}>
-          <BarCodeScanner
-            onBarCodeScanned={onScan}
+          {/* UX-08: expo-camera (expo-barcode-scanner foi descontinuado). QR das etiquetas, DataMatrix GS1 das embalagens. */}
+          <CameraView
+            onBarcodeScanned={scanFeito ? undefined : onScan}
+            barcodeScannerSettings={{ barcodeTypes: ['qr', 'datamatrix', 'code128', 'ean13'] }}
             style={StyleSheet.absoluteFillObject}
           />
           <View style={s.scanOverlay}>

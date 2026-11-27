@@ -105,4 +105,34 @@ describe('integração: medicação segura', () => {
     expect(dup.status).toBe(409);
     expect(dup.json.message).toMatch(/DUPLICACAO/);
   });
+
+  it('UX-08: leitura à cabeceira — pulseira de outro doente bloqueia; pulseira + etiqueta certas ficam no registo', async () => {
+    const novo = await criarDoenteInternado(ctx, ['00003', '00013']);
+    const outro = await criarDoenteInternado(ctx, ['00003']);
+    const med = await entrar(ctx, '00013');
+    expect((await med.pedido('POST', `/alergias/${novo.doenteId}/avaliacao`, { estado: 'sem_alergias_conhecidas' })).status).toBe(201);
+    const p = await med.pedido('POST', '/medicacao/prescrever', { doenteId: novo.doenteId, nome: 'Omeprazol 20mg', dose: '20 mg', via: 'oral', frequencia: '1x/dia' });
+    expect(p.status).toBe(201);
+
+    const enf = await entrar(ctx, '00003');
+    const pulseira = await enf.pedido('GET', `/resumo/doente/${novo.doenteId}/pulseira`);
+    expect(pulseira.status).toBe(200);
+    expect(pulseira.json.conteudo).toMatch(/^CSP1\|INT-.+\|19500505$/);
+    const pulseiraOutro = (await enf.pedido('GET', `/resumo/doente/${outro.doenteId}/pulseira`)).json.conteudo;
+    const etiqueta = await enf.pedido('GET', `/medicacao/${p.json.id}/etiqueta`);
+    expect(etiqueta.status).toBe(200);
+
+    const v = await enf.pedido('POST', `/medicacao/${p.json.id}/verificar-leitura`, { doenteId: novo.doenteId, pulseira: pulseiraOutro });
+    expect(v.json.pulseira).toMatchObject({ ok: false, motivo: expect.stringMatching(/OUTRO DOENTE/) });
+    const errada = await enf.pedido('POST', `/medicacao/${p.json.id}/administrar`, { doenteId: novo.doenteId, atestadoPeloEnfermeiro: true, leituraPulseira: pulseiraOutro });
+    expect(errada.status).toBe(409);
+
+    const a = await enf.pedido('POST', `/medicacao/${p.json.id}/administrar`, {
+      doenteId: novo.doenteId, atestadoPeloEnfermeiro: true, leituraPulseira: pulseira.json.conteudo, leituraMedicamento: etiqueta.json.qrPayload,
+    });
+    expect(a.status).toBe(201);
+    const reg = await ctx.bd.query('SELECT "leituraPulseira", "certosVerificados" FROM registos_medicacao WHERE id=$1', [a.json.id]);
+    expect(reg.rows[0].leituraPulseira).toBe(true);
+    expect(reg.rows[0].certosVerificados.leitura).toEqual({ pulseira: true, medicamento: true });
+  });
 });

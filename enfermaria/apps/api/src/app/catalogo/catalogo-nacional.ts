@@ -16,6 +16,7 @@ export interface ItemCatalogo {
   via?: string | null;
   codigoATC?: string | null;
   codigoCHNM?: string | null;
+  gtin?: string | null;
   embalagem?: string | null;
   classeTerap: string;
   unidade: string;
@@ -29,6 +30,7 @@ const COLUNAS: Record<keyof Omit<ItemCatalogo, 'classeTerap' | 'unidade'>, strin
   via: ['via de administracao', 'via'],
   codigoATC: ['codigo atc', 'atc'],
   codigoCHNM: ['chnm', 'codigo chnm', 'codigo hospitalar nacional do medicamento', 'codigo hospitalar'],
+  gtin: ['gtin', 'ean', 'codigo de barras', 'codigo ean'],
   embalagem: ['embalagem', 'apresentacao', 'dimensao da embalagem'],
 };
 
@@ -102,7 +104,7 @@ export function lerCsvCatalogo(texto: string): { itens: ItemCatalogo[]; rejeitad
     const atc = get('codigoATC');
     itens.push({
       dci, formaFarmaceutica: forma, nomeMarca: get('nomeMarca'), concentracao: get('concentracao'), via: get('via'),
-      codigoATC: atc, codigoCHNM: get('codigoCHNM'), embalagem: get('embalagem'),
+      codigoATC: atc, codigoCHNM: get('codigoCHNM'), gtin: get('gtin'), embalagem: get('embalagem'),
       classeTerap: classeDeATC(atc), unidade: unidadeDaForma(forma),
     });
   });
@@ -144,7 +146,7 @@ export async function gravarItensCatalogo(prisma: any, itens: ItemCatalogo[], fo
     const dados = {
       dci: it.dci.trim(), nomeMarca: it.nomeMarca ?? null, formaFarmaceutica: it.formaFarmaceutica,
       concentracao: it.concentracao ?? null, via: it.via ?? null, codigoATC: it.codigoATC ?? null,
-      codigoCHNM: it.codigoCHNM ?? null, embalagem: it.embalagem ?? null, classeTerap: it.classeTerap, unidade: it.unidade,
+      codigoCHNM: it.codigoCHNM ?? null, gtin: it.gtin ?? null, embalagem: it.embalagem ?? null, classeTerap: it.classeTerap, unidade: it.unidade,
       fonte, versaoFonte: versao, ativo: true,
     };
     const existente = it.codigoCHNM

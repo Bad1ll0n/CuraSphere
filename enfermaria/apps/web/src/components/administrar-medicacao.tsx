@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Modal } from '@/components/ui/modal';
 import { FaixaAlergias, type AlergiaResumo } from '@/components/faixa-alergias';
+import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 
 export interface MedicacaoAAdministrar {
   medicacaoId: string;
@@ -27,6 +28,10 @@ export interface DoenteAAdministrar {
 export interface ConfirmacaoAdministracao {
   atestadoPeloEnfermeiro: true;
   observacoes?: string;
+  // UX-08: o que o leitor leu (o servidor verifica de novo).
+  leituraPulseira?: string;
+  leituraMedicamento?: string;
+  leituraExcecao?: string;
 }
 
 const CERTOS = [
@@ -64,16 +69,27 @@ export function AdministrarMedicacaoDialog({
   const [marcados, setMarcados] = useState<Record<string, boolean>>({});
   const [duplaVerificacao, setDuplaVerificacao] = useState(false);
   const [segundoVerificador, setSegundoVerificador] = useState('');
+  const [leitura, setLeitura] = useState<EstadoLeitura>(LEITURA_VAZIA);
 
   useEffect(() => {
-    if (aberto) { setMarcados({}); setDuplaVerificacao(false); setSegundoVerificador(''); }
+    if (aberto) { setMarcados({}); setDuplaVerificacao(false); setSegundoVerificador(''); setLeitura(LEITURA_VAZIA); }
   }, [aberto, medicacao?.medicacaoId]);
+
+  // UX-08: uma leitura que confere dá o "certo" correspondente; uma que não confere tira-o.
+  const mudarLeitura = (e: EstadoLeitura) => {
+    setLeitura(e);
+    setMarcados((m) => ({
+      ...m,
+      ...(e.pulseira ? { doente: e.pulseira.resultado.ok } : {}),
+      ...(e.medicamento ? { medicamento: e.medicamento.resultado.ok } : {}),
+    }));
+  };
 
   if (!medicacao || !doente) return null;
 
   const todosCertos = CERTOS.every((c) => marcados[c.id]);
   const altoRiscoOk = !medicacao.altoRisco || (duplaVerificacao && segundoVerificador.trim().length >= 3);
-  const pode = todosCertos && altoRiscoOk && !aGravar;
+  const pode = todosCertos && altoRiscoOk && !aGravar && !leituraBloqueia(leitura);
   const nasc = doente.dataNascimento ? new Date(doente.dataNascimento).toLocaleDateString('pt-PT') : null;
   const hora = medicacao.hora
     ? new Date(medicacao.hora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })
@@ -83,6 +99,7 @@ export function AdministrarMedicacaoDialog({
     if (!pode) return;
     onConfirmar({
       atestadoPeloEnfermeiro: true,
+      ...camposLeitura(leitura),
       ...(medicacao.altoRisco
         ? { observacoes: `Alto risco — dupla verificação com ${segundoVerificador.trim()}` }
         : {}),
@@ -103,6 +120,9 @@ export function AdministrarMedicacaoDialog({
         </div>
 
         <FaixaAlergias alergias={doente.alergias ?? null} compacta />
+
+        {/* UX-08: pulseira e embalagem lidas, verificadas no servidor. */}
+        <LeituraBcma medicacaoId={medicacao.medicacaoId} doenteId={doente.id} estado={leitura} onChange={mudarLeitura} />
 
         {/* Fármaco completo */}
         <div className="rounded-lg border border-slate-200" style={{ padding: '10px 12px' }}>

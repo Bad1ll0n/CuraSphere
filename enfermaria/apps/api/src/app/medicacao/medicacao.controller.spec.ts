@@ -62,6 +62,12 @@ describe('MedicacaoController', () => {
 
   // ── POST /medicacao/prescrever ────────────────────────────────────────────────
 
+  // Regressão: uma classe declarada entre @UseGuards e @Controller "rouba" os guards e as
+  // rotas ficam sem autenticação (aconteceu com o DTO da leitura BCMA).
+  it('o controller tem JwtAuthGuard e RolesGuard', () => {
+    expect(Reflect.getMetadata('__guards__', MedicacaoController)).toEqual([JwtAuthGuard, RolesGuard]);
+  });
+
   describe('prescrever()', () => {
     it('chama medicacaoService.prescrever com dto e prescritoPorId', () => {
       const dto = { doenteId: 'd1', nome: 'Ibuprofeno', dose: '400mg', via: 'oral', frequencia: '8/8h' };

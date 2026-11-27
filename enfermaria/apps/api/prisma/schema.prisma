@@ -763,6 +763,13 @@ model RegistoMedicacao {
   justificacaoSOS    String? @db.VarChar(500)
   // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada até este momento.
   reavaliarDorAte    DateTime?
+  // UX-08: leitura por código (BCMA) — pulseira do doente e embalagem/unidose, verificadas no
+  // servidor; ou a razão por que não foi possível ler.
+  leituraPulseira    Boolean   @default(false)
+  leituraMedicamento Boolean   @default(false)
+  leituraExcecao     String?   @db.VarChar(500)
+  loteLido           String?
+  validadeLida       DateTime?
   deletedAt          DateTime?
 
   medicacaoId       String
@@ -1850,6 +1857,8 @@ model CatalogoMedicamento {
   criadoEm          DateTime @default(now())
   // PROD-05: catálogo nacional (INFARMED/CHNM) — código, via, embalagem e de onde veio.
   codigoCHNM        String?  @unique
+  // UX-08: GTIN da embalagem (GS1) para a leitura por código de barras à cabeceira.
+  gtin              String?  @unique
   via               String?
   embalagem         String?
   fonte             String   @default("local") // 'infarmed' | 'amostra' | 'local'
