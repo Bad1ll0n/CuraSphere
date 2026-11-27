@@ -12,6 +12,8 @@ import { WebAuthnController } from './webauthn/webauthn.controller';
 import { SsoService } from './sso/sso.service';
 import { SsoController } from './sso/sso.controller';
 
+import { SessaoCacheSincronizacao } from './sessao-cache.sync';
+
 @Module({
   imports: [
     PrismaModule,
@@ -37,7 +39,7 @@ import { SsoController } from './sso/sso.controller';
     }),
   ],
   controllers: [AuthController, WebAuthnController, SsoController],
-  providers: [AuthService, JwtStrategy, WebAuthnService, SsoService],
+  providers: [AuthService, JwtStrategy, WebAuthnService, SsoService, SessaoCacheSincronizacao],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

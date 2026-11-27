@@ -20,12 +20,15 @@
 #   3. cópia de segurança antes de mexer no schema;
 #   4. schema e triggers (serviço `migrate`: `prisma migrate deploy` — ARQ-11). Se uma
 #      migração falhar, o deploy pára aqui com a versão antiga a servir;
-#   5. só então substituir api e web — sem `down`: base de dados, cache, nginx e backup
-#      nunca param;
-#   6. se a API nova não ficar saudável, voltar às imagens anteriores.
+#   5. só então substituir api e web EM ROLAMENTO (OPS-09): os contentores novos arrancam ao
+#      lado dos antigos, e os antigos só saem quando os novos estão saudáveis e prontos. O
+#      nginx re-resolve as réplicas (upstream com `resolve`), por isso nunca há um instante
+#      sem nenhuma a responder. Base de dados, cache, nginx e backup nunca param;
+#   6. se os novos não ficarem saudáveis, são removidos — os antigos nunca deixaram de servir.
 #
-# Limite conhecido: o rollback troca as imagens, não desfaz o schema do passo 4. É por isso
-# que só passam alterações aditivas — as que a versão anterior do código tolera.
+# Limite conhecido: a reversão não desfaz o schema do passo 4. É por isso que só passam
+# alterações aditivas — as que a versão anterior do código tolera (e que, durante o
+# rolamento, as duas versões têm de tolerar ao mesmo tempo).
 
 set -eu
 
@@ -76,37 +79,36 @@ esperar_bd() {
   done
 }
 
-esperar_api() {
-  tentativas=0
-  until docker inspect --format='{{.State.Health.Status}}' curasphere-api 2>/dev/null | grep -q '^healthy$'; do
-    tentativas=$((tentativas + 1))
-    if [ "$tentativas" -ge 30 ]; then
-      echo ""
-      echo "ERRO: a API não ficou healthy em $((tentativas * 3))s. Logs:"
-      docker logs curasphere-api --tail 30
-      return 1
-    fi
-    printf "."
-    sleep 3
-  done
-  echo ""
-  # OPS-06: o healthcheck do contentor é só liveness. Antes de dar a versão como boa, a API tem
-  # de estar PRONTA: BD acessível, nenhuma migração falhada e trilho de auditoria completo.
-  if ! docker exec curasphere-api wget -qO- http://localhost:3333/v1/health/ready >/dev/null 2>&1; then
-    echo "ERRO: a API está viva mas não pronta (/v1/health/ready):"
-    docker exec curasphere-api wget -qO- http://localhost:3333/v1/health/ready 2>&1 | head -c 600; echo
-    return 1
-  fi
+# Prontidão de cada serviço (OPS-06): o healthcheck do contentor é só liveness; antes de pôr
+# um contentor novo em serviço, tem de estar PRONTO (API: BD acessível, nenhuma migração
+# falhada e trilho de auditoria completo).
+pronto_url() {
+  case "$1" in
+    api) echo "http://localhost:3333/v1/health/ready" ;;
+    web) echo "http://localhost:3000/api/health" ;;
+  esac
 }
+
+replicas_de() {
+  case "$1" in
+    api) v=$(grep '^API_REPLICAS=' "$ENV_FILE" | cut -d= -f2 | tr -d ' "') ;;
+    web) v=$(grep '^WEB_REPLICAS=' "$ENV_FILE" | cut -d= -f2 | tr -d ' "') ;;
+  esac
+  echo "${v:-2}"
+}
+
+contentor_lb() { dc ps -q nginx | head -1; }
+
+# shellcheck source=scripts/lib-rolamento.sh
+. "$(dirname "$0")/lib-rolamento.sh"
 
 reverter() {
   if [ -z "$ANTERIOR" ]; then
     echo "      Não há versão anterior registada ($FICHEIRO_VERSAO): não há para onde voltar."
     return 1
   fi
-  echo "[rollback] A repor a versão $ANTERIOR..."
-  CURASPHERE_VERSION="$ANTERIOR" dc up -d --no-deps --force-recreate api web
-  if esperar_api; then
+  echo "[rollback] A repor a versão $ANTERIOR (em rolamento)..."
+  if CURASPHERE_VERSION="$ANTERIOR" rolar api && CURASPHERE_VERSION="$ANTERIOR" rolar web; then
     echo "[rollback] A versão $ANTERIOR voltou ao serviço."
     echo "$(date -u +%FT%TZ) rollback $VERSAO -> $ANTERIOR" >> deploys.log
     return 0
@@ -183,12 +185,17 @@ docker exec -i curasphere-db psql -U "$DB_USER" -d "$DB_NAME" < scripts/pg-trgm.
   && echo "  → Índices pg_trgm aplicados." \
   || echo "  → AVISO: não foi possível aplicar índices pg_trgm."
 
-# 7. Substituir api e web
-echo "[7/8] A substituir api e web..."
-dc up -d --no-deps api web
-if ! esperar_api; then
-  echo "      Um deploy que termina com código 0 sem a API viva faz com que a avaria só seja"
-  echo "      descoberta pelos enfermeiros, e não por quem fez o deploy."
+# 7. Substituir api e web, em rolamento (OPS-09)
+echo "[7/8] A substituir api e web em rolamento (sem paragem)..."
+if ! rolar api; then
+  echo "      A API nova não ficou pronta; a versão anterior continua a servir, sem paragem."
+  echo "      (Um deploy que terminasse com código 0 sem a API pronta deixaria a avaria para os"
+  echo "      enfermeiros descobrirem.)"
+  exit 1
+fi
+if ! rolar web; then
+  echo "      A web nova não ficou pronta; a API nova fica (tolera a web anterior), a web anterior"
+  echo "      continua a servir. Para voltar também a API: CURASPHERE_VERSION=$ANTERIOR."
   reverter || true
   exit 1
 fi
@@ -196,6 +203,10 @@ fi
 # 8. Restantes serviços e estado final
 echo "[8/8] Estado dos serviços:"
 dc up -d --no-deps nginx backup
+# OPS-12: o nginx re-resolve as réplicas sozinho; o reload (sem paragem) só aplica uma
+# configuração nova do nginx.conf, se a houver, depois de a validar.
+dc exec -T nginx nginx -t >/dev/null 2>&1 && dc exec -T nginx nginx -s reload >/dev/null 2>&1 \
+  || echo "  → AVISO: o nginx não recarregou a configuração (ver: docker compose exec nginx nginx -t)."
 dc ps
 echo "$VERSAO" > "$FICHEIRO_VERSAO"
 echo "$(date -u +%FT%TZ) deploy ${ANTERIOR:-nenhuma} -> $VERSAO" >> deploys.log

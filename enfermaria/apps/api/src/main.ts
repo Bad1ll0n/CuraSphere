@@ -88,6 +88,10 @@ async function bootstrap() {
   app.useWebSocketAdapter(redisIoAdapter);
 
   const port = process.env.PORT || 3333;
+  // OPS-09: no rolamento do deploy, o contentor antigo recebe SIGTERM. Com os shutdown hooks
+  // o Nest deixa de aceitar ligações, termina os pedidos em curso e fecha BD/Redis/socket
+  // (onModuleDestroy) antes de sair — sem eles, o processo morria a meio de pedidos.
+  app.enableShutdownHooks();
   await app.listen(port);
   Logger.log(`API a correr em: http://localhost:${port}`);
   Logger.log(`Swagger docs em: http://localhost:${port}/api/docs`);
