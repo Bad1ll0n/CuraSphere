@@ -8,7 +8,9 @@
         "command": "next build --webpack --experimental-build-mode=compile",
         "cwd": "{projectRoot}"
       },
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "typecheck": {
       "executor": "nx:run-commands",
@@ -16,9 +18,18 @@
         "command": "tsc -p tsconfig.json --noEmit",
         "cwd": "{projectRoot}"
       },
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": true,
-      "inputs": ["default", "^default"]
+      "inputs": [
+        "default",
+        "^default"
+      ]
     }
-  }
+  },
+  "tags": [
+    "scope:web",
+    "type:app"
+  ]
 }

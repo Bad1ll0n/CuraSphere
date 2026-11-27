@@ -95,7 +95,7 @@ export class StorageService {
   async delete(key: string): Promise<void> {
     if (this.provider === 'local') {
       const filePath = path.join(this.localBase, key.replace(/\//g, '_'));
-      await fs.promises.unlink(filePath).catch(() => {});
+      await fs.promises.unlink(filePath).catch(() => undefined);
       return;
     }
     const { DeleteObjectCommand } = require('@aws-sdk/client-s3');

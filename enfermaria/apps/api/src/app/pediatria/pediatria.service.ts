@@ -13,7 +13,7 @@ export class PediatriaService {
    */
   async calcularDose(dto: CalcularDoseDto) {
     let pesoKg = dto.pesoKg ?? null;
-    let fontePeso: string = 'fornecido';
+    let fontePeso = 'fornecido';
     if (pesoKg == null && dto.doenteId) {
       const ultimo = await this.prisma.sinalVital.findFirst({
         where: { doenteId: dto.doenteId, peso: { not: null } },

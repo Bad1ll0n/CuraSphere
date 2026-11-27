@@ -861,7 +861,7 @@ Máximo 5 diagnósticos. Ordena por probabilidade decrescente. Responde APENAS c
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '[]';
     const resultado = (() => { try { return JSON.parse(texto); } catch { return []; } })();
 
-    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId, { sintomas }).catch(() => {});
+    this.logDecisao('diagnostico_diferencial', { sintomas, resultado }, utilizadorId, doenteId, { sintomas }).catch(() => undefined);
     return resultado;
   }
 
@@ -900,7 +900,7 @@ Tabelas disponíveis e campos:
     });
 
     if (utilizadorId) {
-      this.logDecisao('nlq', { filtros, count: resultados.length }, utilizadorId, undefined, { query }).catch(() => {});
+      this.logDecisao('nlq', { filtros, count: resultados.length }, utilizadorId, undefined, { query }).catch(() => undefined);
     }
 
     return { resultados, explicacao: filtros.explicacao ?? 'Pesquisa concluída', total: resultados.length };

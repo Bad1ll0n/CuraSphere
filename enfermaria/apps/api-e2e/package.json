@@ -21,6 +21,10 @@
           "@org/api:serve"
         ]
       }
-    }
+    },
+    "tags": [
+      "scope:api",
+      "type:e2e"
+    ]
   }
 }

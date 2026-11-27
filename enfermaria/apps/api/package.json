@@ -22,7 +22,11 @@
               "--node-env=development"
             ]
           }
-        }
+        },
+        "dependsOn": [
+          "prisma-generate",
+          "^build"
+        ]
       },
       "prune-lockfile": {
         "dependsOn": [
@@ -84,9 +88,43 @@
           "env": {
             "NODE_OPTIONS": "--experimental-vm-modules"
           }
+        },
+        "dependsOn": [
+          "prisma-generate",
+          "^build"
+        ]
+      },
+      "prisma-generate": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/prisma/schema.prisma",
+          "{projectRoot}/prisma.config.ts"
+        ],
+        "outputs": [
+          "{projectRoot}/src/generated/prisma"
+        ],
+        "options": {
+          "command": "prisma generate",
+          "cwd": "apps/api"
         }
+      },
+      "typecheck": {
+        "dependsOn": [
+          "prisma-generate",
+          "^typecheck"
+        ]
+      },
+      "lint": {
+        "dependsOn": [
+          "prisma-generate"
+        ]
       }
-    }
+    },
+    "tags": [
+      "scope:api",
+      "type:app"
+    ]
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",

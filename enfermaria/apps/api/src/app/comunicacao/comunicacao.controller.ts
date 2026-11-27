@@ -130,7 +130,7 @@ export class ComunicacaoController {
     }
     // Sanitiza o nome original para nunca conter CRLF / control chars / path-separators
     const nomeOriginalSanitizado = file.originalname
-      .replace(/[\r\n\t\u0000-\u001f\u007f]/g, '')
+      .replace(/[\r\n\t\u0000-\u001f\u007f]/g, '')  // eslint-disable-line no-control-regex -- remove caracteres de controlo de propósito
       .replace(/[\\/]/g, '_')
       .slice(0, 200);
     return this.service.adicionarAnexo(mensagemId, req.user.sub, {

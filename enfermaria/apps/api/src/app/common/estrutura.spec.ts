@@ -314,7 +314,7 @@ describe('estrutura — pedidos de saída', () => {
     // Só interessa o `fetch` cujo destino NÃO é um literal do próprio código: um URL
     // fixo (a API de push do Expo, por exemplo) não é uma primitiva de SSRF. O que é
     // perigoso é o destino vir de um registo que um utilizador criou.
-    const destinoVariavel = /\bfetch\s*\(\s*(?!['\"`]https?:\/\/)/;
+    const destinoVariavel = /\bfetch\s*\(\s*(?!['"`]https?:\/\/)/;
 
     const semGuarda = servicos
       .filter((f) => destinoVariavel.test(lerCodigo(f)))

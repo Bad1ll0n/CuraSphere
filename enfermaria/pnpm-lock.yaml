@@ -547,11 +547,11 @@ importers:
         specifier: ^5.106.1
         version: 5.106.1
       '@tanstack/react-query':
-        specifier: ^5.102.8
-        version: 5.102.8(react@19.2.4)
+        specifier: ^5.106.1
+        version: 5.106.1(@types/react@19.3.0)(react@19.2.4)
       '@tanstack/react-query-persist-client':
-        specifier: ^5.102.8
-        version: 5.102.8(@tanstack/react-query@5.102.8(react@19.2.4))(react@19.2.4)
+        specifier: ^5.106.1
+        version: 5.106.1(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(@types/react@19.3.0)(react@19.2.4)
       '@testing-library/react-native':
         specifier: '*'
         version: 13.3.3(jest@30.5.2(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.12))(ts-node@10.9.1(@swc/core@1.16.21(@swc/helpers@0.5.18))(@types/node@20.19.9)(typescript@6.0.3)))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react-test-renderer@19.2.0(react@19.2.4))(react@19.2.4)
@@ -6809,17 +6809,11 @@ packages:
   '@tanstack/query-async-storage-persister@5.106.1':
     resolution: {integrity: sha512-fOyeC5sUa3kHS2QhahKjvuD/nq8TmlAIV+Aa5H7JWaAAW9xLrPQEnFQSsrK4ZlHokV3BJiqRVuTenp/Xbe51NQ==}
 
-  '@tanstack/query-core@5.102.8':
-    resolution: {integrity: sha512-ZNjkJ33CqvPNec/6lZBnHqLc3EVGPZ9ySLhYahU9TcuRFdmwXewuj0c4hwSWcGHqEUwcSrKeZ+oGcvPBqXcQcg==}
-
   '@tanstack/query-core@5.106.1':
     resolution: {integrity: sha512-erYv/UACddcdgjOL2ixmFdK6tO/AVBeUcTCOtX2N51yZpDQ2U7KJ+xgB/bCNfsF3uoCDTqGHEEbDiFsIO9YUmQ==}
 
   '@tanstack/query-devtools@5.100.10':
     resolution: {integrity: sha512-3DmJf25hDPus5IpVvp6ujXv6bKV2zPzI9vpbAmpJigsL/H6DPvPjmf7/Q9yVKEke//8fgeQ45abjgnLuyYxAiw==}
-
-  '@tanstack/query-persist-client-core@5.102.8':
-    resolution: {integrity: sha512-t3v4/D6ejo/BrPzM5gm/AT3c4CWPCxFa+0cIjAeHAeanGPG6rCjFS1hZnPZH/rf55qe3qYYgx5U6iBZMY1PQjA==}
 
   '@tanstack/query-persist-client-core@5.106.1':
     resolution: {integrity: sha512-UprIWmgSMdzj4aW0Erv4BbM89lwmkmsnPuVwsUbEFHg5XUVBIlrOjVTVW837GnqI/AKZykpS0TBiXREpSrh1MQ==}
@@ -6830,16 +6824,15 @@ packages:
       '@tanstack/react-query': ^5.100.10
       react: ^18 || ^19
 
-  '@tanstack/react-query-persist-client@5.102.8':
-    resolution: {integrity: sha512-WOZReC+m9klekPtG7eeZ3txJeMA9lg2R0RytSG3yXcZgJItQAVIyoobJdbdIQtlpgcU2tSzsOEBtJacs2vlCOA==}
+  '@tanstack/react-query-persist-client@5.106.1':
+    resolution: {integrity: sha512-sigG1TAR+AlfK/yKTzw9vtmmCdjLmaOCYHwpKRi/YOC2oDBmz7o3dwedTS2ibJjNtxhzffw3E97UiVvqMtN1Cg==}
     peerDependencies:
-      '@tanstack/react-query': ^5.102.8
+      '@tanstack/react-query': ^5.106.1
+      '@types/react': ^18 || ^19
       react: ^18 || ^19
-
-  '@tanstack/react-query@5.102.8':
-    resolution: {integrity: sha512-TYBea4OuXWD7MhaSHq069TWbFe7rcwWN6kzT7JF0OKi1K6c1gTv2IzD6A6ExJsCMozdkqBWeuIUZmu4KQg0O5A==}
-    peerDependencies:
-      react: ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@tanstack/react-query@5.106.1':
     resolution: {integrity: sha512-ORDvJG/DSfmlFL9lQ8GDkE0VjtQbLeRDY7BL8xjKkQFGLfjFGfNWNuteWgPqA2gPJgLLuWfQ7IX0FlsHCJriyg==}
@@ -18281,7 +18274,7 @@ snapshots:
       postcss: 8.5.31
       resolve-from: 5.0.0
     optionalDependencies:
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -18373,7 +18366,7 @@ snapshots:
       '@expo/json-file': 10.0.13
       '@react-native/normalize-colors': 0.81.5
       debug: 4.4.3(supports-color@7.2.0)
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       resolve-from: 5.0.0
       semver: 7.7.4
       xml2js: 0.6.0
@@ -23118,6 +23111,16 @@ snapshots:
       '@babel/types': 7.29.11
       entities: 4.5.0
 
+  '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@5.9.3))':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
+      '@svgr/core': 8.1.0(typescript@5.9.3)
+      '@svgr/hast-util-to-babel-ast': 8.0.0
+      svg-parser: 2.0.4
+    transitivePeerDependencies:
+      - supports-color
+
   '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@6.0.3))':
     dependencies:
       '@babel/core': 7.29.7
@@ -23128,9 +23131,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@svgr/plugin-svgo@8.1.0(@svgr/core@8.1.0(typescript@6.0.3))(typescript@5.9.3)':
+  '@svgr/plugin-svgo@8.1.0(@svgr/core@8.1.0(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
-      '@svgr/core': 8.1.0(typescript@6.0.3)
+      '@svgr/core': 8.1.0(typescript@5.9.3)
       cosmiconfig: 8.3.6(typescript@5.9.3)
       deepmerge: 4.3.1
       svgo: 3.3.5
@@ -23378,15 +23381,9 @@ snapshots:
       '@tanstack/query-core': 5.106.1
       '@tanstack/query-persist-client-core': 5.106.1
 
-  '@tanstack/query-core@5.102.8': {}
-
   '@tanstack/query-core@5.106.1': {}
 
   '@tanstack/query-devtools@5.100.10': {}
-
-  '@tanstack/query-persist-client-core@5.102.8':
-    dependencies:
-      '@tanstack/query-core': 5.102.8
 
   '@tanstack/query-persist-client-core@5.106.1':
     dependencies:
@@ -23398,16 +23395,13 @@ snapshots:
       '@tanstack/react-query': 5.106.1(@types/react@19.3.0)(react@19.2.4)
       react: 19.2.4
 
-  '@tanstack/react-query-persist-client@5.102.8(@tanstack/react-query@5.102.8(react@19.2.4))(react@19.2.4)':
+  '@tanstack/react-query-persist-client@5.106.1(@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4))(@types/react@19.3.0)(react@19.2.4)':
     dependencies:
-      '@tanstack/query-persist-client-core': 5.102.8
-      '@tanstack/react-query': 5.102.8(react@19.2.4)
+      '@tanstack/query-persist-client-core': 5.106.1
+      '@tanstack/react-query': 5.106.1(@types/react@19.3.0)(react@19.2.4)
       react: 19.2.4
-
-  '@tanstack/react-query@5.102.8(react@19.2.4)':
-    dependencies:
-      '@tanstack/query-core': 5.102.8
-      react: 19.2.4
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   '@tanstack/react-query@5.106.1(@types/react@19.3.0)(react@19.2.4)':
     dependencies:
@@ -25058,7 +25052,7 @@ snapshots:
       resolve-from: 5.0.0
     optionalDependencies:
       '@babel/runtime': 7.27.6
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -27160,7 +27154,7 @@ snapshots:
 
   expo-keep-awake@15.0.8(expo@54.0.33)(react@19.2.4):
     dependencies:
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
       react: 19.2.4
 
   expo-local-authentication@15.0.2(expo@54.0.33):
@@ -27219,7 +27213,7 @@ snapshots:
   expo-splash-screen@31.0.13(expo@54.0.33):
     dependencies:
       '@expo/prebuild-config': 54.0.8(expo@54.0.33)
-      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      expo: 54.0.33(@babel/core@7.29.7)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -31798,8 +31792,8 @@ snapshots:
   react-native-svg-transformer@1.5.3(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(typescript@5.9.3):
     dependencies:
       '@svgr/core': 8.1.0(typescript@5.9.3)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@6.0.3))
-      '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@6.0.3))(typescript@5.9.3)
+      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))
+      '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))(typescript@5.9.3)
       path-dirname: 1.0.2
       react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4)
       react-native-svg: 15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.3.0)(react@19.2.4))(react@19.2.4)

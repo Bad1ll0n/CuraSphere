@@ -111,17 +111,17 @@ for (const persona of PERSONAS) {
         if (await safeButton.count().catch(() => 0)) {
           const enabled = await safeButton.isEnabled().catch(() => false);
           if (enabled) {
-            await safeButton.click({ timeout: 3000 }).catch(() => {});
+            await safeButton.click({ timeout: 3000 }).catch(() => undefined);
             await page.waitForTimeout(400);
             await assertPageHealthy(page, `${link.href} após clicar em "${await safeButton.innerText().catch(() => '?')}"`);
-            await page.keyboard.press('Escape').catch(() => {});
+            await page.keyboard.press('Escape').catch(() => undefined);
           }
         }
 
         // Tab de navegação secundária (se existir) — clique não-destrutivo.
         const firstTab = page.getByRole('tab').first();
         if (await firstTab.count().catch(() => 0)) {
-          await firstTab.click({ timeout: 3000 }).catch(() => {});
+          await firstTab.click({ timeout: 3000 }).catch(() => undefined);
           await page.waitForTimeout(300);
           await assertPageHealthy(page, `${link.href} após clicar na 1ª tab`);
         }

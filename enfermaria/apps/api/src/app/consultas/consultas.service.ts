@@ -329,7 +329,7 @@ export class ConsultasService {
     if (portal?.ativo) {
       await this.notificacoesService
         .enviarParaUtilizador(portal.id, 'Teleconsulta iniciada', 'O seu médico está à sua espera na videochamada.')
-        .catch(() => {});
+        .catch(() => undefined);
     }
     const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
     return { videoRoomId, roomUrl: `${server}/${videoRoomId}`, consultaId };

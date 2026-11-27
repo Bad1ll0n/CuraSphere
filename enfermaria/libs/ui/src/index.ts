@@ -1,6 +1,6 @@
-export { StatusBadge } from './components/StatusBadge';
-export type { StatusBadgeProps } from './components/StatusBadge';
-export { EmptyState } from './components/EmptyState';
-export { LoadingSpinner } from './components/LoadingSpinner';
-export { PageShell } from './components/PageShell';
-export type { PageShellProps } from './components/PageShell';
+export { StatusBadge } from './components/StatusBadge.js';
+export type { StatusBadgeProps } from './components/StatusBadge.js';
+export { EmptyState } from './components/EmptyState.js';
+export { LoadingSpinner } from './components/LoadingSpinner.js';
+export { PageShell } from './components/PageShell.js';
+export type { PageShellProps } from './components/PageShell.js';

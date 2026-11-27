@@ -23,7 +23,7 @@ export class AnomalyDetectionService {
 
   // Chamado pelo AuditInterceptor para GET /doentes/:id — fire-and-forget
   rastrearAcessoDoente(userId: string, doenteId: string): void {
-    this.detectarAcessoBulk(userId, doenteId).catch(() => {});
+    this.detectarAcessoBulk(userId, doenteId).catch(() => undefined);
   }
 
   private async detectarAcessoBulk(userId: string, doenteId: string): Promise<void> {
@@ -50,7 +50,7 @@ export class AnomalyDetectionService {
 
   // Chamado após login bem-sucedido para detectar IP diferente do habitual
   verificarIpLogin(userId: string, novoIp: string | undefined): void {
-    this.detectarIpDiferente(userId, novoIp).catch(() => {});
+    this.detectarIpDiferente(userId, novoIp).catch(() => undefined);
   }
 
   private async detectarIpDiferente(userId: string, novoIp: string | undefined): Promise<void> {
