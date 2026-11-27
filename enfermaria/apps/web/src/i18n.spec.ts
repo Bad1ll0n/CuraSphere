@@ -36,7 +36,8 @@ function tsx(dir: string): string[] {
 const rel = (f: string) => relative(RAIZ, f).replace(/\\/g, '/');
 
 // Texto fixo: nós de texto JSX e atributos visíveis com pelo menos duas letras seguidas.
-const TEXTO = />\s*([^<>{}]*[A-Za-zÀ-ÿ]{2,}[^<>{}]*?)\s*</g;
+// `(?<!=)`: o `>` de uma seta (`=> fn<T>(…)`) não abre texto JSX.
+const TEXTO = /(?<!=)>\s*([^<>{}]*[A-Za-zÀ-ÿ]{2,}[^<>{}]*?)\s*</g;
 const ATRIBUTO = /\b(?:placeholder|title|aria-label|alt|label)="([^"]*[A-Za-zÀ-ÿ]{2,}[^"]*)"/g;
 const NAO_E_TEXTO = /[;=()]|&&|\|\||\?\s|\bconst\b|\breturn\b/;
 export function textoFixo(fonte: string): string[] {
@@ -90,6 +91,7 @@ describe('i18n (UX-07)', () => {
       expect(textoFixo('<input placeholder="Descreva o motivo" />')).toEqual(['Descreva o motivo']);
       expect(textoFixo("<p>{t('vazio')}</p>")).toEqual([]);
       expect(textoFixo('const x = useState<string | null>(null);')).toEqual([]);
+      expect(textoFixo('queryFn: () => buscar<Tipo>("/x") });')).toEqual([]);
     });
 
     it('nenhum ficheiro ganha texto fixo (ficheiros novos nascem traduzidos)', () => {

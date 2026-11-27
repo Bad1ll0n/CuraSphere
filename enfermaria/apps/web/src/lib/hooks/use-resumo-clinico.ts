@@ -7,13 +7,8 @@ import api from '../api';
  * partilhado com a api (`@org/shared`). Uma única chave por recurso: administrar no MAR
  * invalida "O meu turno" e a faixa do doente, em vez de cada ecrã ter o seu `setInterval`.
  */
-export const chavesClinicas = {
-  meuTurno: ['resumo', 'meu-turno'] as const,
-  faixa: (doenteId: string) => ['resumo', 'faixa', doenteId] as const,
-  pulseira: (doenteId: string) => ['resumo', 'pulseira', doenteId] as const,
-  etiqueta: (medicacaoId: string) => ['medicacao', 'etiqueta', medicacaoId] as const,
-  mar: ['medicacao', 'mar'] as const,
-};
+import { chavesClinicas } from './chaves-clinicas';
+export { chavesClinicas };
 
 export function useMeuTurno() {
   return useQuery<MeuTurno>({

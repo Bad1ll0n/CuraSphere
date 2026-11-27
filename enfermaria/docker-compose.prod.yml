@@ -469,6 +469,8 @@ services:
       # `report-only` desliga o bloqueio sem novo build (a CSP passa a só reportar para
       # /api/v1/csp-report). Válvula para um incidente — não é para ficar assim.
       CSP_MODO: ${CSP_MODO:-}
+      # PERF-12: o servidor do Next pré-carrega "O meu turno" e o MAR pela rede interna.
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-http://api:3333}
     depends_on:
       api:
         condition: service_healthy

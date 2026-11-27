@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import QRCode from 'react-qr-code';
+import { QRCode } from '@/components/qr-diferido';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
