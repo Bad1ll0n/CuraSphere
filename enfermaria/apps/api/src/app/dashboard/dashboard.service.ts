@@ -1,9 +1,11 @@
+import { euros, somarEuros } from '../common/infra/dinheiro';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
-import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { chaveDiaClinico, inicioDoDiaClinico, somarDiasClinicos } from '../common/clinico/dia-clinico.helper';
+import { ultimosSinaisVitais } from '../common/clinico/ultimos-registos';
 import { RedisService } from '../redis/redis.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 
 /** PERF-06: indicadores agregados — 30 s de frescura chega para painéis de gestão. */
 const TTL_DASHBOARD_S = Number(process.env['DASHBOARD_CACHE_S'] ?? 30);
@@ -28,34 +30,23 @@ export class DashboardService {
     const agora = Date.now();
     const local = this.cacheLocal.get(chave);
     if (local && local.expira > agora) return local.valor as T;
-    const remoto = await this.redis.get<T>(chave).catch(() => null);
+    // PERF-07: os painéis trazem nomes de doentes (alertas recentes…) — cifrados no Redis.
+    const remoto = await this.redis.getCifrado<T>(chave).catch(() => null);
     if (remoto !== null && remoto !== undefined) {
       this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor: remoto });
       return remoto;
     }
     const valor = await calcular();
     this.cacheLocal.set(chave, { expira: agora + TTL_DASHBOARD_S * 1000, valor });
-    await this.redis.set(chave, valor, TTL_DASHBOARD_S).catch(() => undefined);
+    await this.redis.setCifrado(chave, valor, TTL_DASHBOARD_S).catch(() => undefined);
     return valor;
   }
 
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
     const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    const dataRef = new Date(agora);
-    let tipoTurno: string;
-    if (min >= 8 * 60 && min < 16 * 60 + 30)      tipoTurno = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
-    else {
-      tipoTurno = 'noite';
-      if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
-    }
-    // BE-03: a janela do turno é o dia DO HOSPITAL. Derivada de `toISOString()`, a partir
-    // de uma hora local, deslocava-se um dia durante o horário de verão — precisamente na
-    // madrugada, que é quando o turno da noite a consulta.
-    const dataInicio = inicioDoDiaClinico(dataRef);
-    const dataFimDia = new Date(somarDiasClinicos(dataInicio, 1).getTime() - 1);
-    return { tipoTurno, dataInicio, dataFimDia, agora };
+    const t = turnoEmCurso(agora);
+    return { tipoTurno: t.tipo, dataInicio: t.data.gte, dataFimDia: t.data.lte, agora };
   }
 
   async analytics() {
@@ -198,7 +189,9 @@ export class DashboardService {
       this.prisma.doente.count({ where: { estadoRegisto: 'ambulatorio', ativo: true } }),
       this.prisma.doente.count({ where: { estadoRegisto: 'pendente_cama', ativo: true } }),
       this.prisma.cama.count(),
-      this.prisma.cama.count({ where: { estado: 'ocupada' } }),
+      // UX-20: "ocupada" = com um doente internado, a mesma definição do KPI "Internados". Pelo
+      // `estado` da cama, a direção via "Internados 1" ao lado de "2/2 camas ocupadas".
+      this.prisma.cama.count({ where: { doente: { is: { estadoRegisto: 'internado', ativo: true } } } }),
       this.prisma.cama.count({ where: { estado: 'em_limpeza' } }),
       this.prisma.cama.count({ where: { estado: 'reservada' } }),
       this.prisma.episodioFaturacao.findMany({ where: { criadoEm: { gte: inicioMes } }, select: { totalCobrado: true, estado: true, tipoCobertura: true } }),
@@ -210,13 +203,18 @@ export class DashboardService {
       this.prisma.ausencia.count({ where: { estado: 'aprovada', dataInicio: { lte: agora }, dataFim: { gte: agora } } }).catch(() => 0),
     ]);
 
+    // Livres pelo estado da cama (uma cama marcada ocupada sem doente não é livre).
+    const camasLivres = await this.prisma.cama.count({ where: { estado: 'livre' } });
+
     // Tendência de ocupação — 14 dias
     const totalCamas = await this.prisma.cama.count();
     const tendenciaOcupacao = await Promise.all(
       Array.from({ length: 14 }, (_, i) => {
         const inicioDia = somarDiasClinicos(inicioDoDiaClinico(agora), i - 13);
         const dia = new Date(somarDiasClinicos(inicioDia, 1).getTime() - 1);
-        return this.prisma.doente.count({
+        // UX-20: episódios de internamento (antes contava todos os doentes, ambulatório incluído,
+        // e a tendência subia para valores que nenhum outro KPI mostrava).
+        return this.prisma.episodioInternamento.count({
           where: { dataAdmissao: { lte: dia }, OR: [{ dataAlta: null }, { dataAlta: { gte: inicioDia } }] },
         }).then((ocupadas) => ({
           data: chaveDiaClinico(inicioDia),
@@ -237,7 +235,7 @@ export class DashboardService {
           _sum: { totalCobrado: true },
         }).then((r) => ({
           mes: data.toLocaleString('pt-PT', { month: 'short' }),
-          total: Math.round((r._sum.totalCobrado ?? 0) * 100) / 100,
+          total: euros(r._sum.totalCobrado),
         }));
       }),
     );
@@ -250,13 +248,13 @@ export class DashboardService {
       ? Math.round(doentesCama.reduce((acc, d) => acc + (agora.getTime() - d.dataAdmissao.getTime()) / (1000 * 60 * 60 * 24), 0) / doentesCama.length)
       : 0;
 
-    const totalMes = faturacaoMes.reduce((a, f) => a + f.totalCobrado, 0);
-    const pagoMes = faturacaoMes.filter(f => f.estado === 'paga').reduce((a, f) => a + f.totalCobrado, 0);
-    const pendenteMes = faturacaoMes.filter(f => f.estado === 'pendente').reduce((a, f) => a + f.totalCobrado, 0);
+    const totalMes = somarEuros(faturacaoMes.map((f) => f.totalCobrado));
+    const pagoMes = somarEuros(faturacaoMes.filter(f => f.estado === 'paga').map((f) => f.totalCobrado));
+    const pendenteMes = somarEuros(faturacaoMes.filter(f => f.estado === 'pendente').map((f) => f.totalCobrado));
     const porCobertura = { sns: 0, seguro: 0, particular: 0 };
     for (const f of faturacaoMes) {
       const k = (f.tipoCobertura ?? 'sns') as keyof typeof porCobertura;
-      if (k in porCobertura) porCobertura[k] += f.totalCobrado;
+      if (k in porCobertura) porCobertura[k] = somarEuros([porCobertura[k], f.totalCobrado]);
     }
 
     const countUrg = (estado: string) => (episodiosUrgenciaHoje as any[]).find(e => e.estado === estado)?._count?.id ?? 0;
@@ -267,7 +265,7 @@ export class DashboardService {
       doentes: { internados, ambulatorio, pendenteCama, mediaInternamento },
       camas: {
         total: todasCamas, ocupadas: camasOcupadas,
-        livres: todasCamas - camasOcupadas - camasLimpeza - camasReservadas,
+        livres: camasLivres,
         limpeza: camasLimpeza, reservadas: camasReservadas,
         taxaOcupacao: todasCamas > 0 ? Math.round((camasOcupadas / todasCamas) * 100) : 0,
       },
@@ -330,33 +328,42 @@ export class DashboardService {
       include: { doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } } },
     });
 
-    const doenteIds = atribuicoes.filter(a => a.doente).map(a => a.doenteId!);
+    const doenteIds = [...new Set(atribuicoes.filter(a => a.doente).map(a => a.doenteId!))];
     if (doenteIds.length === 0) return [];
 
-    return Promise.all(doenteIds.map(async (doenteId) => {
+    // PERF-14: eram 4 consultas POR doente atribuído (a cada pedido do painel do turno — com 12
+    // doentes, 48 idas à BD em paralelo). São 4 no total, agrupadas por doente.
+    const em = { in: doenteIds };
+    const [medicacao, tarefas, alertas, sinais] = await Promise.all([
+      this.prisma.medicacao.groupBy({
+        by: ['doenteId'],
+        where: { doenteId: em, registos: { none: { administradoEm: { gte: oitoHorasAtras } } } } as any,
+        _count: { _all: true },
+      }),
+      this.prisma.tarefa.groupBy({
+        by: ['doenteId'],
+        where: { doenteId: em, estado: { in: ['pendente', 'em_progresso'] }, prazo: { lt: agora } },
+        _count: { _all: true },
+      }),
+      this.prisma.alertaClinico.groupBy({ by: ['doenteId'], where: { doenteId: em, lido: false }, _count: { _all: true } }),
+      this.prisma.sinalVital.groupBy({ by: ['doenteId'], where: { doenteId: em }, _max: { data: true } }),
+    ]);
+    const contagem = (linhas: any[]) => new Map(linhas.map((l) => [l.doenteId, l._count?._all ?? 0]));
+    const med = contagem(medicacao as any[]);
+    const tar = contagem(tarefas as any[]);
+    const ale = contagem(alertas as any[]);
+    const ultimo = new Map((sinais as any[]).map((l) => [l.doenteId, l._max?.data as Date | null]));
+
+    return doenteIds.map((doenteId) => {
       const doente = atribuicoes.find(a => a.doenteId === doenteId)?.doente;
-      const [medicacoesPendentes, tarefasAtrasadas, alertasNaoLidos, ultimoSinalVital] = await Promise.all([
-        this.prisma.medicacao.count({
-          where: { doenteId, registos: { none: { administradoEm: { gte: oitoHorasAtras } } } } as any,
-        }),
-        this.prisma.tarefa.count({
-          where: { doenteId, estado: { in: ['pendente', 'em_progresso'] }, prazo: { lt: agora } },
-        }),
-        this.prisma.alertaClinico.count({ where: { doenteId, lido: false } }),
-        this.prisma.sinalVital.findFirst({
-          where: { doenteId },
-          orderBy: { data: 'desc' },
-          select: { data: true },
-        }),
-      ]);
       return {
         doente: { id: doenteId, nome: doente?.nome ?? '', cama: doente?.cama?.numero ?? null, quarto: doente?.cama?.quarto ?? null },
-        medicacoesPendentes,
-        tarefasAtrasadas,
-        alertasNaoLidos,
-        ultimoSinalVital: ultimoSinalVital?.data?.toISOString() ?? null,
+        medicacoesPendentes: med.get(doenteId) ?? 0,
+        tarefasAtrasadas: tar.get(doenteId) ?? 0,
+        alertasNaoLidos: ale.get(doenteId) ?? 0,
+        ultimoSinalVital: ultimo.get(doenteId)?.toISOString() ?? null,
       };
-    }));
+    });
   }
 
   async dashboardQualidade() {

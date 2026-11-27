@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { Utilizador } from '@org/shared';
 import api from './api';
+import { definirUtilizadorRascunhos, limparRascunhos } from './rascunhos';
 import { destinoInicial } from '@/app/(dashboard)/nav-data';
 import {
   startAuthentication,
@@ -27,7 +28,8 @@ interface AuthContextType {
   loginMfa: (mfaChallengeToken: string, code: string) => Promise<void>;
   loginPasskey: (numeroFuncionario?: string) => Promise<void>;
   registerPasskey: (nome?: string) => Promise<void>;
-  logout: () => void;
+  /** UX-21: `manterRascunhos` no fim por inatividade — o mesmo profissional recupera as notas. */
+  logout: (opcoes?: { manterRascunhos?: boolean; motivo?: 'inatividade' }) => void;
   passwordAviso: { ativo: boolean; diasRestantes: number | null };
 }
 
@@ -99,14 +101,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await api.post('/auth/webauthn/register/verify', { response, nome: nome ?? 'Passkey' });
   };
 
-  const logout = () => {
+  // UX-21: os rascunhos de notas (memória do separador) são deste utilizador.
+  useEffect(() => { definirUtilizadorRascunhos(utilizador?.id ?? null); }, [utilizador?.id]);
+
+  const logout = (opcoes: { manterRascunhos?: boolean; motivo?: 'inatividade' } = {}) => {
+    if (!opcoes.manterRascunhos) limparRascunhos(utilizador?.id ?? null);
     api.post('/auth/logout').catch(() => { /* vazio */ });
     sessionStorage.removeItem('mfaSetupToken');
     sessionStorage.removeItem('pwdExpiredToken');
     queryClient.clear();
     setUtilizador(null);
     setPasswordAviso({ ativo: false, diasRestantes: null });
-    router.push('/login');
+    router.push(opcoes.motivo ? `/login?motivo=${opcoes.motivo}` : '/login');
   };
 
   return (

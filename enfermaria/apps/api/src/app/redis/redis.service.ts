@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { cifrarSegredo, decifrarSegredo } from '../prisma/encryption.middleware';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
@@ -80,6 +81,32 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
    * (fail-open vs fail-closed). Para segurança crítica (anti-replay TOTP),
    * o caller deve interpretar `null` como "indisponível" e recusar.
    */
+  /**
+   * PERF-07 — cache de dados que trazem PII (nomes, diagnósticos): o valor vai CIFRADO para o Redis
+   * (AES-GCM, ENCRYPTION_KEY), como na BD. Um dump do Redis deixava de ser uma lista de doentes.
+   */
+  async setCifrado(key: string, value: unknown, ttlSeconds: number): Promise<void> {
+    await this.set(key, cifrarSegredo(JSON.stringify(value)), ttlSeconds);
+  }
+
+  async getCifrado<T>(key: string): Promise<T | null> {
+    const bruto = await this.get<string>(key);
+    if (typeof bruto !== 'string') return null;
+    try { return JSON.parse(decifrarSegredo(bruto)) as T; } catch { return null; } // ilegível (chave rodada) = miss
+  }
+
+  /** O valor em bruto (sem JSON.parse); `null` se não existir ou o Redis estiver indisponível. */
+  async obterTexto(key: string): Promise<string | null> {
+    if (!this.connected) return null;
+    try { return await this.client.get(key); } catch { return null; }
+  }
+
+  /** GETDEL — lê e apaga numa só operação (consumo de uso único, sem corrida entre pedidos). */
+  async consumir(key: string): Promise<string | null> {
+    if (!this.connected) return null;
+    try { return await this.client.getdel(key); } catch { return null; }
+  }
+
   async setIfNotExists(key: string, value: string, ttlSeconds: number): Promise<boolean | null> {
     if (!this.connected) return null;
     try {

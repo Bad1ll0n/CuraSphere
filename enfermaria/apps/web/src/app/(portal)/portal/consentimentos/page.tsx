@@ -15,11 +15,11 @@ interface Finalidade {
 const TEXTO: Record<Finalidade['finalidade'], { titulo: string; explicacao: string }> = {
   partilha_familiares: {
     titulo: 'Partilha com familiares',
-    explicacao: 'A equipa pode enviar a um familiar um link que mostra o seu estado geral (sem dados clínicos detalhados). Ao revogar, os links activos deixam de funcionar.',
+    explicacao: 'A equipa pode enviar a um familiar um link que mostra o seu estado geral (sem dados clínicos detalhados). Ao revogar, os links ativos deixam de funcionar.',
   },
   portal_doente: {
     titulo: 'Conta no portal',
-    explicacao: 'Esta conta dá-lhe acesso remoto aos seus documentos, medicação e plano de alta. Se revogar, a conta é desactivada e termina a sessão; para voltar a ter acesso tem de o pedir à equipa.',
+    explicacao: 'Esta conta dá-lhe acesso remoto aos seus documentos, medicação e plano de alta. Se revogar, a conta é desativada e termina a sessão; para voltar a ter acesso tem de o pedir à equipa.',
   },
   ia_clinica: {
     titulo: 'Ferramentas de inteligência artificial',

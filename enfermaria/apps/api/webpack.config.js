@@ -50,6 +50,19 @@ module.exports = {
       externalDependencies: 'all',
     }),
     ...OPTIONAL_UNUSED_PEERS.map((resourceRegExp) => new webpack.IgnorePlugin({ resourceRegExp })),
+    // As libs do workspace (@org/shared) chegam já compiladas (`libs/*/dist/*.js`). O ts-loader do
+    // Nx apanhava esses .js como ficheiros de raiz do programa TS da api (TS6059, fora do rootDir) e
+    // o build falhava — o webpack empacota-os como JS normal; os tipos vêm dos .d.ts no typecheck.
+    {
+      apply(compiler) {
+        const distDasLibs = /[\\/]libs[\\/][^\\/]+[\\/]dist[\\/]/;
+        for (const regra of compiler.options.module.rules ?? []) {
+          if (regra && JSON.stringify(regra.loader ?? regra.use ?? '').includes('ts-loader')) {
+            regra.exclude = [].concat(regra.exclude ?? [], distDasLibs);
+          }
+        }
+      },
+    },
     // Externalizar o cliente Prisma GERADO (não o empacotar). Empacotar o runtime pré-minificado do
     // Prisma faz o webpack reordenar `this`/`super` das suas classes de erro → em runtime rebenta com
     // "Must call super constructor in derived class…", pelo que P2002/P2025 nunca são instâncias de
@@ -64,6 +77,16 @@ module.exports = {
           // Cliente Prisma gerado → require em runtime de dist/generated/prisma (ver acima).
           if (request && /(^|[\\/])generated[\\/]prisma($|[\\/])/.test(request)) {
             return callback(null, 'commonjs ./generated/prisma');
+          }
+          // OPS-08: o tracing só via o http/dns/net do Node — nenhum span da BD, do Express nem do
+          // Redis. Duas causas: (1) o OpenTelemetry instrumenta um módulo quando ele é `require`d, e
+          // o pg, o express e o ioredis vinham embutidos no bundle; (2) o próprio SDK vinha embutido,
+          // e aí o `require-in-the-middle` não consegue resolver caminhos reais (o `require.resolve`
+          // do webpack devolve ids), por isso só os módulos nativos eram patchados. Todos passam a
+          // ser carregados do node_modules em runtime — são dependências diretas da api,
+          // instaladas na imagem.
+          if (request && /^(pg|express|ioredis|@opentelemetry\/(sdk-node|auto-instrumentations-node|exporter-trace-otlp-http))($|\/)/.test(request)) {
+            return callback(null, 'commonjs ' + request);
           }
           // @node-rs/bcrypt (napi + binário .node por plataforma) NÃO pode ser empacotado — o
           // webpack tentaria fazer parse do binário nativo. Externalizar → require do node_modules

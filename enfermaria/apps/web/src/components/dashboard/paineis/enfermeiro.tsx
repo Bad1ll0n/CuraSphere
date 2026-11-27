@@ -4,12 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useTranslations } from 'next-intl';
+import { EmptyState } from '@/components/empty-state';
 import { VigilanciaEmAtraso } from '@/components/vigilancia-em-atraso';
-import { estadoCor, estadoLabel, prioridadeCor, StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
+import { estadoCor, estadoLabel, prioridadeCor, StatCard, AtalhoModulo, CardContainer, CardHeader, Vazio, DashboardHeader, SOSBannerGlobal, Spinner } from '../partilhado';
 import { DistribuicaoNews2 } from '../distribuicao-news2';
 
 export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
   const tEnf = useTranslations('dashboard');
+  const tv = useTranslations('vazios');
   const tN2 = useTranslations('news2Distribution');
   // auxiliar partilha este dashboard mas não tem acesso a /dashboard/news2 (clínico) — evitar o pedido
   const podeNews2 = utilizador.role === 'enfermeiro';
@@ -79,7 +81,11 @@ export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
         <CardContainer>
           <CardHeader title={tEnf('myPatients')} count={doentes.length} countColor="bg-teal-100 text-teal-700" />
-          {doentes.length === 0 ? <Vazio msg={tEnf('noPatientsShift')} /> : (
+          {doentes.length === 0 ? (
+            // UX-10: o "sem doentes" diz o que fazer a seguir.
+            <EmptyState icon="patients" title={tEnf('noPatientsShift')} description={tv('noPatientsBody')}
+              acoes={[{ label: tv('openAssignments'), href: '/atribuicoes' }, { label: tv('openPatients'), href: '/doentes' }]} />
+          ) : (
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
               {doentes.map((d: any, i: number) => (
                 <Link key={d.id} href={`/doentes/${d.id}`}>
@@ -144,7 +150,7 @@ export function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
               </div>
             )}
           </CardContainer>
-          {isUCI && <EmBreve titulo="Dispositivos Invasivos" descricao="Cateteres, ventiladores, drenos — Fase 7" />}
+          {isUCI && <AtalhoModulo href="/doentes" titulo="Dispositivos Invasivos" descricao="Cateteres, ventiladores e drenos — na ficha de cada doente, separador «Vitais e escalas»" />}
         </div>
       </div>
     </>

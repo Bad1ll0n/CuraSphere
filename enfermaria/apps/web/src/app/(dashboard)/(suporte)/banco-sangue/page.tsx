@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { Button } from '@/components/ui';
 
 const COMPONENTES: Record<string, string> = {
   concentrado_eritrocitos: 'Concentrado Eritrocitário',
@@ -89,10 +90,10 @@ export default function BancoSanguePage() {
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>{t('subtitle', { count: disponiveis })}</p>
         </div>
         {podeAdicionar && (
-          <button onClick={() => setModal(true)} className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl transition-colors" style={{ padding: '10px 18px' }}>
+          <Button variant="danger" className="flex gap-2" onClick={() => setModal(true)}  style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
             {t('addBag')}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -186,8 +187,8 @@ export default function BancoSanguePage() {
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '22px' }}>
-              <button onClick={() => setModal(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>{tc('cancel')}</button>
-              <button onClick={adicionar} disabled={salvando || !form.numeroUnidade.trim() || !form.dataValidade} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>{salvando ? t('saving') : t('add')}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}  style={{ padding: '11px' }}>{tc('cancel')}</Button>
+              <Button variant="danger" className="flex-1" onClick={adicionar} disabled={salvando || !form.numeroUnidade.trim() || !form.dataValidade}  style={{ padding: '11px' }}>{salvando ? t('saving') : t('add')}</Button>
             </div>
           </div>
         </div>

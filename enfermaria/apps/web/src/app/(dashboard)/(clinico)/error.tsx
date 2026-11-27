@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { reportarErro } from '@/lib/monitorizacao';
+import { Button } from '@/components/ui';
 
 /**
  * Fronteira de erro das vistas clínicas.
@@ -45,12 +46,11 @@ export default function ClinicoError({ error, reset }: { error: Error & { digest
           style={{ padding: '9px 20px', minHeight: '44px' }}>
           Ir ao dashboard
         </Link>
-        <button
+        <Button variant="primary"
           onClick={reset}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
           style={{ padding: '9px 20px', minHeight: '44px' }}>
           Tentar novamente
-        </button>
+        </Button>
       </div>
     </div>
   );

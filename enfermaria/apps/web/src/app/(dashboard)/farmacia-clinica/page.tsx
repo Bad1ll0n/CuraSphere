@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
+import { Button } from '@/components/ui';
 
 type Tab = 'prescricoes' | 'interacoes' | 'reconciliacao';
 
@@ -105,7 +106,7 @@ export default function FarmaciaPage() {
   };
 
   const TABS: { value: Tab; label: string }[] = [
-    { value: 'prescricoes', label: 'Prescrições Activas' },
+    { value: 'prescricoes', label: 'Prescrições Ativas' },
     { value: 'interacoes', label: 'Interacções' },
     { value: 'reconciliacao', label: 'Reconciliação' },
   ];
@@ -125,14 +126,13 @@ export default function FarmaciaPage() {
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Farmácia Clínica</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Prescrições, interacções medicamentosas e reconciliação</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Prescrições, interações medicamentosas e reconciliação</p>
         </div>
         {tab === 'reconciliacao' && (
-          <button onClick={() => setModalRec(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          <Button variant="primary" onClick={() => setModalRec(true)}
             style={{ padding: '10px 20px' }}>
             + Nova Reconciliação
-          </button>
+          </Button>
         )}
       </div>
 
@@ -169,7 +169,7 @@ export default function FarmaciaPage() {
               <tr className="border-b border-slate-100 bg-slate-50">
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Doente</th>
                 <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Cama</th>
-                <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Medicações Activas</th>
+                <th className="text-left font-semibold text-slate-500 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Medicações Ativas</th>
               </tr>
             </thead>
             <tbody>
@@ -192,7 +192,7 @@ export default function FarmaciaPage() {
                 </tr>
               ))}
               {prescricoes.length === 0 && (
-                <tr><td colSpan={3} className="text-center text-slate-500 text-sm" style={{ padding: '40px' }}>Sem prescrições activas</td></tr>
+                <tr><td colSpan={3} className="text-center text-slate-500 text-sm" style={{ padding: '40px' }}>Sem prescrições ativas</td></tr>
               )}
             </tbody>
           </table>
@@ -204,7 +204,7 @@ export default function FarmaciaPage() {
         <div className="flex flex-col gap-3">
           {interacoes.length === 0 && (
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
-              Nenhuma interacção medicamentosa activa detectada
+              Nenhuma interação medicamentosa ativa detetada
             </div>
           )}
           {interacoes.map((i, idx) => (
@@ -333,11 +333,11 @@ export default function FarmaciaPage() {
                 style={{ padding: '9px 12px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRec(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterReconciliacao} disabled={salvandoRec}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRec(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterReconciliacao} disabled={salvandoRec}
+                 style={{ padding: '11px' }}>
                 {salvandoRec ? 'A guardar...' : 'Criar Reconciliação'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

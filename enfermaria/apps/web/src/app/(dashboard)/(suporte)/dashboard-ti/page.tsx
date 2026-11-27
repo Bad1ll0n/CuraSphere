@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Incidente {
   id: string; titulo: string; tipo: string; prioridade: string; estado: string;
@@ -309,12 +310,12 @@ export default function DashboardTIPage() {
           <h1 className="text-3xl font-bold text-slate-900">Dashboard TI</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Monitorização de incidentes, sistema e atividade de utilizadores</p>
         </div>
-        <button onClick={() => refetch()} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
+        <Button variant="secondary" className="flex gap-2" onClick={() => refetch()}  style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           Atualizar
-        </button>
+        </Button>
       </div>
 
       {loading ? (

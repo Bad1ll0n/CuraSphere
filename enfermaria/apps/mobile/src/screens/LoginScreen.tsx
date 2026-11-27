@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform,
   ActivityIndicator, ScrollView, Alert,
 } from 'react-native';
 import Svg, { Circle, Ellipse, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
-import { login, logout } from '../lib/auth';
-import {
-  autenticarComBiometria, biometriaDisponivel,
-  guardarCredenciaisBiometricas, obterCredenciaisBiometricas,
-} from '../lib/biometric';
+import { ativarEntradaBiometrica, entrarComBiometria, login, logout, verificarMfa, type ResultadoLogin } from '../lib/auth';
+import { autenticarComBiometria, biometriaDisponivel, temSessaoBiometrica } from '../lib/biometric';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 const PAPEIS_CLINICOS = ['medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros'];
 
@@ -40,80 +38,101 @@ function LogoCuraSphere({ size = 72 }: { size?: number }) {
 }
 
 export default function LoginScreen({ onLogin }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [numeroFuncionario, setNumeroFuncionario] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
   const [temBiometria, setTemBiometria] = useState(false);
   const [oferecerBiometria, setOferecerBiometria] = useState(false);
+  // SEC-23: passo do código MFA (papéis clínicos têm MFA obrigatório).
+  const [desafioMfa, setDesafioMfa] = useState<string | null>(null);
+  const [codigoMfa, setCodigoMfa] = useState('');
+
+  const entrarPorBiometria = async () => {
+    setLoading(true);
+    setErro('');
+    try {
+      // O sistema pede Face ID / impressão digital para libertar a sessão guardada.
+      const u = await entrarComBiometria();
+      if (u) onLogin();
+      else { setTemBiometria(false); setErro('A sessão guardada expirou. Entre com a password.'); }
+    } finally { setLoading(false); }
+  };
 
   useEffect(() => {
     (async () => {
-      const disponivel = await biometriaDisponivel();
-      if (!disponivel) return;
-      const credenciais = await obterCredenciaisBiometricas();
-      if (credenciais) {
-        setTemBiometria(true);
-        // Auto-tentativa biométrica ao abrir a app
-        const ok = await autenticarComBiometria();
-        if (ok) {
-          setLoading(true);
-          try {
-            await login(credenciais.username, credenciais.password);
-            onLogin();
-          } catch {
-            setErro('Sessão expirada. Por favor inicie sessão manualmente.');
-          } finally {
-            setLoading(false);
-          }
-        }
-      }
+      if (!(await biometriaDisponivel()) || !(await temSessaoBiometrica())) return;
+      setTemBiometria(true);
+      await entrarPorBiometria();
     })();
   }, []);
+
+  /** Depois de autenticado (com ou sem MFA): biometria obrigatória para papéis clínicos. */
+  const concluir = async (r: ResultadoLogin) => {
+    if (r.tipo === 'mfa') { setDesafioMfa(r.desafio); setCodigoMfa(''); return; }
+    if (r.tipo === 'mfa_setup') {
+      setErro('Este perfil exige autenticação de dois fatores. Configure-a primeiro na aplicação web e volte a entrar.');
+      return;
+    }
+    if (r.tipo === 'password_expirada') {
+      setErro('A sua password expirou. Altere-a na aplicação web e volte a entrar.');
+      return;
+    }
+    setDesafioMfa(null);
+    const disponivel = await biometriaDisponivel();
+    if (PAPEIS_CLINICOS.includes(r.utilizador.role)) {
+      if (disponivel) {
+        const ok = await autenticarComBiometria();
+        if (!ok) {
+          await logout();
+          Alert.alert(
+            'Biometria necessária',
+            'A biometria é obrigatória para acesso clínico. Tente novamente e confirme com Face ID / Touch ID.',
+          );
+          return;
+        }
+      } else {
+        Alert.alert(
+          '⚠️ Recomendação de segurança',
+          'Ative biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
+          [{ text: 'OK' }],
+        );
+      }
+    }
+    if (disponivel && !temBiometria) setOferecerBiometria(true);
+    else onLogin();
+  };
 
   const handleLogin = async () => {
     if (!numeroFuncionario || !password) return;
     setLoading(true);
     setErro('');
     try {
-      const utilizador = await login(numeroFuncionario, password);
-      const disponivel = await biometriaDisponivel();
-
-      // Biometria obrigatória para papéis clínicos
-      if (PAPEIS_CLINICOS.includes(utilizador.role)) {
-        if (disponivel) {
-          const ok = await autenticarComBiometria();
-          if (!ok) {
-            await logout();
-            Alert.alert(
-              'Biometria necessária',
-              'A biometria é obrigatória para acesso clínico. Tente novamente e confirme com Face ID / Touch ID.',
-            );
-            return;
-          }
-        } else {
-          Alert.alert(
-            '⚠️ Recomendação de segurança',
-            'Active biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
-            [{ text: 'OK' }],
-          );
-        }
-      }
-
-      if (disponivel && !temBiometria) {
-        setOferecerBiometria(true);
-      } else {
-        onLogin();
-      }
+      await concluir(await login(numeroFuncionario, password));
     } catch {
       setErro('Número de funcionário ou password incorretos.');
     } finally {
+      setPassword(''); // SEC-23: a password não fica em memória depois de usada
       setLoading(false);
     }
   };
 
+  const handleMfa = async () => {
+    if (!desafioMfa || codigoMfa.length !== 6) return;
+    setLoading(true);
+    setErro('');
+    try {
+      await concluir(await verificarMfa(desafioMfa, codigoMfa));
+    } catch {
+      setCodigoMfa('');
+      setErro('Código inválido ou expirado. Tente o código seguinte da sua aplicação.');
+    } finally { setLoading(false); }
+  };
+
   const activarBiometria = async () => {
-    await guardarCredenciaisBiometricas(numeroFuncionario, password);
+    // SEC-23: guarda a sessão (refresh token) protegida por biometria — nunca a password.
+    await ativarEntradaBiometrica();
     setTemBiometria(true);
     setOferecerBiometria(false);
     onLogin();
@@ -180,46 +199,52 @@ export default function LoginScreen({ onLogin }: Props) {
           </View>
         ) : null}
 
+        {desafioMfa ? (
+          <View style={s.campo}>
+            <Text style={s.label}>Código de autenticação (6 dígitos)</Text>
+            <TextInput
+              style={s.input}
+              value={codigoMfa}
+              onChangeText={(v) => setCodigoMfa(v.replace(/\D/g, '').slice(0, 6))}
+              placeholder="000000"
+              placeholderTextColor="#94a3b8"
+              keyboardType="number-pad"
+              autoComplete="one-time-code"
+              textContentType="oneTimeCode"
+              accessibilityLabel="Código de autenticação de dois fatores"
+              autoFocus
+            />
+          </View>
+        ) : null}
+
         <TouchableOpacity accessibilityRole="button"
-          style={[s.botao, (!numeroFuncionario || !password || loading) && s.botaoDesativado]}
-          onPress={handleLogin}
-          disabled={!numeroFuncionario || !password || loading}
+          style={[s.botao, (desafioMfa ? codigoMfa.length !== 6 : (!numeroFuncionario || !password)) || loading ? s.botaoDesativado : null]}
+          onPress={desafioMfa ? handleMfa : handleLogin}
+          disabled={(desafioMfa ? codigoMfa.length !== 6 : (!numeroFuncionario || !password)) || loading}
           activeOpacity={0.85}
         >
           {loading
             ? <ActivityIndicator color="#fff" />
-            : <Text style={s.botaoTexto}>Entrar</Text>
+            : <Text style={s.botaoTexto}>{desafioMfa ? 'Confirmar código' : 'Entrar'}</Text>
           }
         </TouchableOpacity>
 
         {temBiometria && !oferecerBiometria && (
-          <TouchableOpacity accessibilityRole="button" style={s.botaoBio} onPress={async () => {
-            const credenciais = await obterCredenciaisBiometricas();
-            if (!credenciais) return;
-            const ok = await autenticarComBiometria();
-            if (!ok) return;
-            setLoading(true);
-            try {
-              await login(credenciais.username, credenciais.password);
-              onLogin();
-            } catch {
-              setErro('Sessão expirada. Por favor inicie sessão manualmente.');
-            } finally { setLoading(false); }
-          }} activeOpacity={0.8}>
+          <TouchableOpacity accessibilityRole="button" style={s.botaoBio} onPress={entrarPorBiometria} activeOpacity={0.8}>
             <Text style={s.botaoBioTexto}>🔒 Entrar com biometria</Text>
           </TouchableOpacity>
         )}
 
         {oferecerBiometria && (
           <View style={s.bioOferta}>
-            <Text style={s.bioOfertaTitulo}>Activar autenticação biométrica?</Text>
+            <Text style={s.bioOfertaTitulo}>Ativar autenticação biométrica?</Text>
             <Text style={s.bioOfertaDesc}>Utilize Face ID / Touch ID nos próximos acessos</Text>
             <View style={s.bioOfertaBotoes}>
               <TouchableOpacity accessibilityRole="button" style={s.bioNao} onPress={() => { setOferecerBiometria(false); onLogin(); }}>
                 <Text style={s.bioNaoTexto}>Agora não</Text>
               </TouchableOpacity>
               <TouchableOpacity accessibilityRole="button" style={s.bioSim} onPress={activarBiometria}>
-                <Text style={s.bioSimTexto}>Activar</Text>
+                <Text style={s.bioSimTexto}>Ativar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -231,13 +256,13 @@ export default function LoginScreen({ onLogin }: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   root: { flex: 1, backgroundColor: '#0a0f1e' },
 
   // Topo
   topo: { alignItems: 'center', paddingTop: 64, paddingBottom: 40, gap: 8 },
   marca: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: -0.5, marginTop: 4 },
-  slogan: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  slogan: { fontSize: 13, color: c.textoTenue, fontWeight: '500' },
   badge: {
     flexDirection: 'row', alignItems: 'center', gap: 6,
     backgroundColor: 'rgba(59,130,246,0.12)', borderWidth: 1,
@@ -245,30 +270,30 @@ const s = StyleSheet.create({
     paddingHorizontal: 14, paddingVertical: 6, marginTop: 12,
   },
   badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#60a5fa' },
-  badgeTexto: { fontSize: 13, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: 0.8 },
 
   // Formulário
   sheet: {
-    flex: 1, backgroundColor: '#fff',
+    flex: 1, backgroundColor: c.superficie,
     borderTopLeftRadius: 28, borderTopRightRadius: 28,
   },
   sheetContent: { padding: 28, paddingTop: 32, paddingBottom: 40 },
-  bemVindo: { fontSize: 22, fontWeight: '800', color: '#0f172a', marginBottom: 4 },
-  instrucao: { fontSize: 13, color: '#64748b', marginBottom: 28 },
+  bemVindo: { fontSize: 22, fontWeight: '800', color: c.texto, marginBottom: 4 },
+  instrucao: { fontSize: 13, color: c.textoTenue, marginBottom: 28 },
 
   campo: { marginBottom: 20 },
-  label: { fontSize: 13, fontWeight: '700', color: '#334155', marginBottom: 8 },
+  label: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, marginBottom: 8 },
   input: {
-    borderWidth: 1.5, borderColor: '#e2e8f0', borderRadius: 12,
+    borderWidth: 1.5, borderColor: c.borda, borderRadius: 12,
     paddingHorizontal: 16, paddingVertical: 14,
-    fontSize: 15, color: '#0f172a', backgroundColor: '#f8fafc',
+    fontSize: 15, color: c.texto, backgroundColor: c.fundo,
   },
 
   erroBox: {
     backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca',
     borderRadius: 10, padding: 12, marginBottom: 16,
   },
-  erroTexto: { color: '#dc2626', fontSize: 13, fontWeight: '500' },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, fontWeight: '500' },
 
   botao: {
     backgroundColor: '#2563eb', borderRadius: 14,
@@ -279,7 +304,7 @@ const s = StyleSheet.create({
   botaoDesativado: { backgroundColor: '#93c5fd', shadowOpacity: 0 },
   botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
 
-  rodape: { textAlign: 'center', fontSize: 13, color: '#94a3b8', marginTop: 24 },
+  rodape: { textAlign: 'center', fontSize: 13, color: c.textoTenue, marginTop: 24 },
 
   botaoBio: {
     marginTop: 12, borderWidth: 1.5, borderColor: '#2563eb',
@@ -295,7 +320,7 @@ const s = StyleSheet.create({
   bioOfertaDesc: { fontSize: 13, color: '#3b82f6', marginBottom: 14 },
   bioOfertaBotoes: { flexDirection: 'row', gap: 10 },
   bioNao: { flex: 1, borderWidth: 1, borderColor: '#93c5fd', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
-  bioNaoTexto: { color: '#3b82f6', fontSize: 13, fontWeight: '600' },
+  bioNaoTexto: { color: '#3b82f6', fontSize: LETRA.corpo, fontWeight: '600' },
   bioSim: { flex: 1, backgroundColor: '#2563eb', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
-  bioSimTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
-});
+  bioSimTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
+}));

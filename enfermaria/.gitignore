@@ -94,3 +94,18 @@ nginx/ssl/*.key
 .env.prod
 .env.staging
 .env.efemero
+
+# PERF-09: sumários dos testes de carga (gerados pelo k6)
+load/k6-summary*.json
+
+# OPS-19: as redes reais do hospital (exemplo versionado em nginx/rede-interna.conf.example)
+nginx/rede-interna.conf
+
+# ARQ-27: artefactos que não pertencem ao repositório
+*.tsbuildinfo
+# ficheiros carregados em desenvolvimento (StorageService local → <cwd>/uploads)
+/uploads/
+/apps/api/uploads/
+# relatórios do Playwright
+/apps/web-e2e/playwright-report/
+/apps/web-e2e/test-results/

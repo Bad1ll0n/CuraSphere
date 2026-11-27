@@ -2,14 +2,16 @@ import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nest
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { avaliarRisco } from '../common/escalas-motor';
-import { proximaAvaliacaoRisco } from '../common/vigilancia';
+import { avaliarRisco } from '../common/clinico/escalas-motor';
+import { proximaAvaliacaoRisco } from '../common/clinico/vigilancia';
+import { registarFalha } from '../common/infra/falhas';
+import { acoesDaEscala, aplicarAcoesEscala } from '../common/clinico/escala-acoes';
 
 const ROLES_PODEM = [
   'enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos',
 ];
 
-// PROD-08: o cálculo vive em common/escalas-motor.ts (motor único, cortes DGS configuráveis).
+// PROD-08: o cálculo vive em common/clinico/escalas-motor.ts (motor único, cortes DGS configuráveis).
 
 @Injectable()
 export class EscalasService {
@@ -55,7 +57,7 @@ export class EscalasService {
     const r = avaliarRisco(tipo === 'braden' ? 'braden' : 'morse', itens);
     const { pontuacao, risco } = r;
     const agora = new Date();
-    const servico = await this.prisma.cama.findFirst({ where: { doente: { id: doenteId } }, select: { servico: true } }).catch(() => null);
+    const servico = await this.prisma.cama.findFirst({ where: { doente: { id: doenteId } }, select: { servico: true } }).catch(registarFalha('escalas:servico-do-doente'));
 
     const avaliacao = await this.prisma.avaliacaoRisco.create({
       data: {
@@ -80,6 +82,8 @@ export class EscalasService {
       ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
-    return avaliacao;
+    // PROD-21: risco alto gera as medidas de prevenção como tarefa do turno (além do alerta).
+    const acoesGeradas = await aplicarAcoesEscala(this.prisma, doenteId, registadoPorId, acoesDaEscala(tipo === 'braden' ? 'braden' : 'morse', pontuacao, risco));
+    return { ...avaliacao, acoesGeradas };
   }
 }

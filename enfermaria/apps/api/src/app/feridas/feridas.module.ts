@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FeridasService } from './feridas.service';
 import { FeridasController } from './feridas.controller';
 import { DoenteModule } from '../doentes/doentes.module';
-import { StorageModule } from '../common/storage.module';
+import { StorageModule } from '../common/infra/storage.module';
 
 @Module({
   imports: [DoenteModule, StorageModule],

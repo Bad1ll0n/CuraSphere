@@ -46,3 +46,23 @@ pnpm exec prisma migrate deploy && node scripts/apply-audit-triggers.mjs
 ```
 
 Depois disto, o deploy normal (`migrate deploy`) trata de tudo.
+
+## Valores permitidos e dinheiro (ARQ-22)
+
+- Os campos de estado/tipo guardados como texto têm um `CHECK` na BD com os valores de
+  `libs/shared/src/lib/dominios.ts` (a fonte única, usada também pelos DTOs). Para acrescentar um
+  valor: na lista partilhada, no comentário do campo no schema e numa migração nova
+  (`ALTER TABLE … DROP CONSTRAINT ck_… ; ALTER TABLE … ADD CONSTRAINT ck_… CHECK (…) NOT VALID;`).
+  O teste `common/schema-modelacao.spec.ts` falha se os três divergirem.
+- Os `CHECK` entram como `NOT VALID`: valem para tudo o que se escreve a partir daí, sem que a
+  migração falhe por linhas antigas. Depois do deploy, em cada ambiente:
+
+  ```sql
+  -- linhas fora do domínio (corrigir antes de validar), por exemplo:
+  SELECT tipo, count(*) FROM tickets WHERE tipo NOT IN ('admissao','consulta','faturacao','farmacia','exames','urgencia','geral') GROUP BY 1;
+  -- e depois:
+  ALTER TABLE tickets VALIDATE CONSTRAINT ck_tickets_tipo;
+  ```
+
+- O dinheiro é `DECIMAL(12,2)`. A aritmética passa por `common/infra/dinheiro.ts` (ao cêntimo), e o
+  `Decimal` serializa em JSON como número, por isso o contrato da API não muda.

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useNetworkStatus } from '../lib/network';
 import { aoMudarFila, estadoSincronizacao, limparDescartadas, type Descartada, type QueuedOp } from '../lib/mutation-queue';
+import { estilosTematicos, LETRA } from '../lib/tema';
 
 /** O que é cada operação, em palavras do enfermeiro (não o URL). */
 function tipoDeOperacao(o: { method: string; url: string }): string {
@@ -68,14 +69,14 @@ export function SyncStatusBanner({ global = false }: { global?: boolean }) {
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   banner: { paddingVertical: 8, paddingHorizontal: 16 },
   offline: { backgroundColor: '#fef3c7' },
   aSincronizar: { backgroundColor: '#dbeafe' },
   erro: { backgroundColor: '#fee2e2' },
-  texto: { fontSize: 14, fontWeight: '600', textAlign: 'center', color: '#1e293b' },
+  texto: { fontSize: LETRA.corpo, fontWeight: '600', textAlign: 'center', color: c.texto },
   lista: { marginTop: 6, gap: 4 },
-  item: { fontSize: 13, color: '#334155' },
+  item: { fontSize: 13, color: c.textoSecundario },
   itemErro: { color: '#991b1b', fontWeight: '600' },
   limpar: { fontSize: 13, color: '#1d4ed8', fontWeight: '600', textDecorationLine: 'underline', marginTop: 4 },
-});
+}));

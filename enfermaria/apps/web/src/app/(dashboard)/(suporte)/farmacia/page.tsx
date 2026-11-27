@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface StockItem {
   id: string;
@@ -291,12 +292,11 @@ export default function FarmaciaPage() {
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Gestão de stock, transferências e encomendas</p>
         </div>
         {isFarmacia && (
-          <button onClick={() => setNovoItemModal(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+          <Button variant="primary" className="flex gap-2" onClick={() => setNovoItemModal(true)}
             style={{ padding: '10px 20px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
             Novo Item
-          </button>
+          </Button>
         )}
       </div>
 
@@ -346,16 +346,13 @@ export default function FarmaciaPage() {
                 </div>
                 <div className="flex items-center gap-2 flex-wrap justify-end">
                   {baixo && <span className="text-xs font-semibold text-red-600 bg-red-50 badge-pad py-1 rounded-full">Stock baixo</span>}
-                  <button onClick={() => { setHistoricoModal(item); }}
-                    className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
-                    style={{ padding: '7px 12px' }}>Histórico</button>
-                  <button onClick={() => { setTransferirModal(item); setTransferirForm({ servicoDestino: '', quantidade: 1, motivo: '' }); }}
-                    className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                    style={{ padding: '7px 12px' }}>Transferir</button>
+                  <Button variant="secondary" size="sm" onClick={() => { setHistoricoModal(item); }}
+                    style={{ padding: '7px 12px' }}>Histórico</Button>
+                  <Button variant="secondary" size="sm" onClick={() => { setTransferirModal(item); setTransferirForm({ servicoDestino: '', quantidade: 1, motivo: '' }); }}
+                    style={{ padding: '7px 12px' }}>Transferir</Button>
                   {isFarmaceutico && (
-                    <button onClick={() => { setAjustarModal(item); setAjustarForm({ quantidade: item.quantidade, motivo: '', tipo: 'ajuste' }); }}
-                      className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                      style={{ padding: '7px 12px' }}>Ajustar</button>
+                    <Button variant="secondary" size="sm" onClick={() => { setAjustarModal(item); setAjustarForm({ quantidade: item.quantidade, motivo: '', tipo: 'ajuste' }); }}
+                      style={{ padding: '7px 12px' }}>Ajustar</Button>
                   )}
                   <button onClick={() => { setPedidoModal(item); setPedidoForm({ quantidade: 1, observacoes: '' }); }}
                     className="text-xs font-semibold border border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
@@ -384,9 +381,8 @@ export default function FarmaciaPage() {
                   </div>
                 </div>
                 {p.estado === 'aprovado' && isFarmacia && (
-                  <button onClick={() => mutDispensar.mutate(p.id)}
-                    className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
-                    style={{ padding: '7px 14px' }}>Dispensar</button>
+                  <Button variant="primary" size="sm" className="shrink-0" onClick={() => mutDispensar.mutate(p.id)}
+                    style={{ padding: '7px 14px' }}>Dispensar</Button>
                 )}
               </div>
             );
@@ -408,9 +404,8 @@ export default function FarmaciaPage() {
                 <p className="font-semibold text-slate-900 text-sm">{item.nome}</p>
                 <p className="text-red-600 text-sm font-medium" style={{ marginTop: '2px' }}>{item.quantidade} {item.unidade} (mínimo: {item.quantidadeMinima})</p>
               </div>
-              <button onClick={() => { setPedidoModal(item); setPedidoForm({ quantidade: Math.max(1, item.quantidadeMinima - item.quantidade), observacoes: '' }); }}
-                className="text-xs font-semibold bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors shrink-0"
-                style={{ padding: '7px 14px' }}>Repor</button>
+              <Button variant="danger" size="sm" className="shrink-0" onClick={() => { setPedidoModal(item); setPedidoForm({ quantidade: Math.max(1, item.quantidadeMinima - item.quantidade), observacoes: '' }); }}
+                style={{ padding: '7px 14px' }}>Repor</Button>
             </div>
           ))}
         </div>
@@ -442,12 +437,10 @@ export default function FarmaciaPage() {
                 </div>
                 {t.estado === 'pendente' && isFarmaceutico && (
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => mutCancelarTransf.mutate(t.id)}
-                      className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
-                      style={{ padding: '7px 12px' }}>Cancelar</button>
-                    <button onClick={() => mutConfirmarTransf.mutate(t.id)}
-                      className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                      style={{ padding: '7px 14px' }}>Confirmar</button>
+                    <Button variant="secondary" size="sm" onClick={() => mutCancelarTransf.mutate(t.id)}
+                      style={{ padding: '7px 12px' }}>Cancelar</Button>
+                    <Button variant="primary" size="sm" onClick={() => mutConfirmarTransf.mutate(t.id)}
+                      style={{ padding: '7px 14px' }}>Confirmar</Button>
                   </div>
                 )}
               </div>
@@ -521,7 +514,7 @@ export default function FarmaciaPage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
-              <p className="text-slate-500">Selecciona um período e clica em Calcular.</p>
+              <p className="text-slate-500">Selecione um período e clique em Calcular.</p>
             </div>
           )}
         </div>
@@ -593,9 +586,8 @@ export default function FarmaciaPage() {
                 <button onClick={() => { setModalRejeitarPedido(p.id); setMotivoRejPedido(''); }}
                   className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   style={{ padding: '7px 12px' }}>Rejeitar</button>
-                <button onClick={() => mutAprovarPedido.mutate(p.id)} disabled={mutAprovarPedido.isPending}
-                  className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
-                  style={{ padding: '7px 14px' }}>Aprovar</button>
+                <Button variant="primary" size="sm" onClick={() => mutAprovarPedido.mutate(p.id)} disabled={mutAprovarPedido.isPending}
+                  style={{ padding: '7px 14px' }}>Aprovar</Button>
               </div>
             </div>
           ))}
@@ -619,9 +611,9 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} rows={3} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRejeitar(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutRejeitar.mutate({ id: modalRejeitar, motivo: motivoRejeicao })} disabled={!motivoRejeicao.trim() || mutRejeitar.isPending}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRejeitar(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={() => mutRejeitar.mutate({ id: modalRejeitar, motivo: motivoRejeicao })} disabled={!motivoRejeicao.trim() || mutRejeitar.isPending}
+                 style={{ padding: '11px' }}>Rejeitar</Button>
             </div>
           </div>
         </div>
@@ -642,10 +634,10 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} rows={3} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRejeitarPedido(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutRejeitarPedido.mutate({ id: modalRejeitarPedido, motivo: motivoRejPedido })}
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRejeitarPedido(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={() => mutRejeitarPedido.mutate({ id: modalRejeitarPedido, motivo: motivoRejPedido })}
                 disabled={!motivoRejPedido.trim() || mutRejeitarPedido.isPending}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+                 style={{ padding: '11px' }}>Rejeitar</Button>
             </div>
           </div>
         </div>
@@ -673,12 +665,12 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setPedidoModal(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutPedido.mutate({ stockItemId: pedidoModal.id, quantidade: pedidoForm.quantidade, observacoes: pedidoForm.observacoes, servico: pedidoModal.servico })}
+              <Button variant="secondary" className="flex-1" onClick={() => setPedidoModal(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={() => mutPedido.mutate({ stockItemId: pedidoModal.id, quantidade: pedidoForm.quantidade, observacoes: pedidoForm.observacoes, servico: pedidoModal.servico })}
                 disabled={mutPedido.isPending || pedidoForm.quantidade <= 0}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                 style={{ padding: '11px' }}>
                 {mutPedido.isPending ? 'A enviar...' : 'Enviar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -720,7 +712,7 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setAjustarModal(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setAjustarModal(null)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={() => mutAjustar.mutate({ quantidade: ajustarForm.quantidade, motivo: ajustarForm.motivo, tipo: ajustarForm.tipo })}
                 disabled={mutAjustar.isPending || !ajustarForm.motivo.trim()}
                 className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
@@ -783,7 +775,7 @@ export default function FarmaciaPage() {
               <select id="fpage-10" value={transferirForm.servicoDestino} onChange={e => setTransferirForm(f => ({ ...f, servicoDestino: e.target.value }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {SERVICOS.filter(s => s !== transferirModal.servico).map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -800,12 +792,12 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} placeholder="Motivo opcional..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setTransferirModal(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutTransferir.mutate({ servicoDestino: transferirForm.servicoDestino, quantidade: transferirForm.quantidade, motivo: transferirForm.motivo || undefined })}
+              <Button variant="secondary" className="flex-1" onClick={() => setTransferirModal(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={() => mutTransferir.mutate({ servicoDestino: transferirForm.servicoDestino, quantidade: transferirForm.quantidade, motivo: transferirForm.motivo || undefined })}
                 disabled={mutTransferir.isPending || !transferirForm.servicoDestino || transferirForm.quantidade <= 0}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                 style={{ padding: '11px' }}>
                 {mutTransferir.isPending ? 'A transferir...' : 'Criar Transferência'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -884,11 +876,11 @@ export default function FarmaciaPage() {
                 style={{ padding: '10px 14px' }} min={0} step="0.01" placeholder="0.00" />
             </div>
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => setNovoItemModal(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => mutNovoItem.mutate(novoItemForm)} disabled={mutNovoItem.isPending || !novoItemForm.nome.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setNovoItemModal(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={() => mutNovoItem.mutate(novoItemForm)} disabled={mutNovoItem.isPending || !novoItemForm.nome.trim()}
+                 style={{ padding: '11px' }}>
                 {mutNovoItem.isPending ? 'A criar...' : 'Criar Item'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

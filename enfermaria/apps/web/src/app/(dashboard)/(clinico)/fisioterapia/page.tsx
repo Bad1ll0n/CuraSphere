@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface SessaoFisioterapia {
   id: string;
@@ -171,9 +172,8 @@ export default function FisioterapiaPage() {
                 style={{ padding: '10px 14px' }} placeholder="Descreva os exercícios ou técnicas previstos..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={agendarSessao} disabled={salvando || !form.doenteId.trim() || !form.data || !form.descricao.trim()}
                 className="flex-1 bg-lime-600 hover:bg-lime-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
@@ -200,9 +200,8 @@ export default function FisioterapiaPage() {
                 style={{ padding: '10px 14px' }} placeholder="Descreva a evolução observada durante a sessão..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setRealizarModal(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setRealizarModal(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={realizarSessao} disabled={salvando}
                 className="flex-1 bg-lime-600 hover:bg-lime-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>

@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { HORAS_TURNO } from '@org/shared';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { DotacaoPanel } from './dotacao-panel';
+import { Button } from '@/components/ui';
 
 interface HorarioTurno {
   id: string;
@@ -55,6 +58,7 @@ const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Ag
 const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 export default function HorariosPagina() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const hoje = new Date();
   const [mes, setMes] = useState(hoje.getMonth() + 1);
@@ -477,13 +481,11 @@ export default function HorariosPagina() {
           <p className="text-slate-500 text-sm" style={{ marginBottom: '24px' }}>Ainda não foi criada uma escala para este mês</p>
           {isChefe && (
             <div className="flex gap-3">
-              <button onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
-                className="border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+              <Button variant="secondary" onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
                 style={{ padding: '10px 24px', fontSize: '14px' }}>
                 Criar Escala Vazia
-              </button>
-              <button onClick={gerarAutomatico} disabled={gerandoAuto}
-                className="bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors flex items-center gap-2"
+              </Button>
+              <Button variant="primary" className="flex gap-2" onClick={gerarAutomatico} disabled={gerandoAuto}
                 style={{ padding: '10px 24px', fontSize: '14px' }}>
                 {gerandoAuto ? (
                   <>
@@ -494,7 +496,7 @@ export default function HorariosPagina() {
                     A gerar...
                   </>
                 ) : 'Gerar Automaticamente'}
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -549,7 +551,7 @@ export default function HorariosPagina() {
                 Escala gerada: <strong>{resultadoAuto.turnosCriados} turnos</strong> criados para {resultadoAuto.diasGerados} dias,
                 com <strong>{resultadoAuto.profissionaisUsados} profissionais</strong>.
               </p>
-              <button onClick={() => setResultadoAuto(null)} className="text-green-400 hover:text-green-600">
+              <button aria-label={tA11y('close')} onClick={() => setResultadoAuto(null)} className="text-green-400 hover:text-green-600">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -625,13 +627,13 @@ export default function HorariosPagina() {
                         {new Date(t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
                       </p>
                     </div>
-                    <button
+                    <Button variant="primary" size="sm"
                       onClick={() => aprovarTrocaFolga(t.id)}
                       disabled={respondendoTroca === t.id}
-                      className="text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+                      
                       style={{ padding: '5px 14px' }}>
                       {respondendoTroca === t.id ? '...' : 'Aprovar'}
-                    </button>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -692,12 +694,12 @@ export default function HorariosPagina() {
                           </>
                         )}
                         {euSouSolicitante && t.estado === 'pendente' && (
-                          <button
+                          <Button variant="secondary" size="sm"
                             onClick={() => cancelarTrocaFolga(t.id)}
-                            className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                            
                             style={{ padding: '4px 10px' }}>
                             Cancelar pedido
-                          </button>
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -879,21 +881,20 @@ export default function HorariosPagina() {
             )}
 
             <div className="flex gap-3">
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => { setModalDia(null); setNovoTurno({ tipo: 'manha', profissionaisIds: [] }); setErroModal(''); }}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={submeterTurno}
                 disabled={salvando}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
                 style={{ padding: '11px' }}
               >
                 {salvando ? 'A guardar...' : 'Adicionar Turno'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -984,19 +985,18 @@ export default function HorariosPagina() {
                 style={{ padding: '11px 16px' }}>
                 Apagar
               </button>
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => setTurnoEditando(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={guardarEdicaoTurno}
                 disabled={salvandoEdit}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
                 style={{ padding: '11px' }}>
                 {salvandoEdit ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1081,12 +1081,12 @@ export default function HorariosPagina() {
                 </div>
               )}
 
-              <button
+              <Button variant="secondary" fullWidth
                 onClick={() => setTurnoVendo(null)}
-                className="w-full border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Fechar
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -1140,19 +1140,18 @@ export default function HorariosPagina() {
             </div>
 
             <div className="flex gap-3">
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => { setModalTroca(null); setTrocaDestId(''); setTrocaDiaDest(''); setTrocaMotivo(''); }}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={pedirTrocaFolga}
                 disabled={submittingTroca || !trocaDestId || !trocaDiaDest}
-                className="flex-1 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 transition-colors"
                 style={{ padding: '11px' }}>
                 {submittingTroca ? 'A enviar...' : 'Enviar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1162,11 +1161,8 @@ export default function HorariosPagina() {
       {diaSelecionado && (() => {
         const turnosDia = turnosPorDia[diaSelecionado] ?? [];
         const dataObj = new Date(diaSelecionado + 'T12:00:00');
-        const horasLabel: Record<string, string> = {
-          manha: '08:00 – 16:00',
-          tarde: '16:00 – 00:00',
-          noite: '00:00 – 08:00',
-        };
+        // UX-12: a definição única dos turnos (libs/shared).
+        const horasLabel: Record<string, string> = Object.fromEntries(Object.entries(HORAS_TURNO).map(([k, h]) => [k, `${String(h.inicio).padStart(2, '0')}:00 – ${String(h.fim % 24).padStart(2, '0')}:00`]));
         return (
           <>
             <div role="presentation" className="fixed inset-0 bg-black/30 z-40" style={{ backdropFilter: 'blur(2px)' }} onClick={() => setDiaSelecionado(null)} />
@@ -1182,7 +1178,7 @@ export default function HorariosPagina() {
                     {dataObj.getDate()} de {meses[mes - 1]} {ano}
                   </h2>
                 </div>
-                <button onClick={() => setDiaSelecionado(null)}
+                <button aria-label={tA11y('close')} onClick={() => setDiaSelecionado(null)}
                   className="text-slate-500 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
                   style={{ padding: '8px' }}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1222,7 +1218,7 @@ export default function HorariosPagina() {
 
                 {/* Botão adicionar turno (chefe) */}
                 {isChefe && (
-                  <button
+                  <Button variant="primary" fullWidth
                     onClick={() => {
                       const existentes = turnosDia.map((t) => t.tipo);
                       const primeiroDisponivel = (['manha','tarde','noite'] as const).find((t) => !existentes.includes(t));
@@ -1231,10 +1227,10 @@ export default function HorariosPagina() {
                       setModalDia(diaSelecionado);
                     }}
                     disabled={turnosDia.length >= 3}
-                    className="w-full bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    
                     style={{ padding: '10px', marginBottom: '20px' }}>
                     {turnosDia.length >= 3 ? 'Todos os turnos preenchidos' : '+ Adicionar Turno'}
-                  </button>
+                  </Button>
                 )}
 
                 {/* Blocos de turno — só para profissionais com turnos rotativos */}
@@ -1329,13 +1325,13 @@ export default function HorariosPagina() {
                       <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest" style={{ marginBottom: '10px' }}>Folga</p>
                         {!f ? (
-                          <button
+                          <Button variant="secondary" fullWidth className="border-dashed hover:border-yellow-400 hover:text-yellow-700"
                             onClick={() => pedirFolga(diaSelecionado)}
                             disabled={pedindoFolga}
-                            className="w-full border border-dashed border-slate-300 text-slate-600 text-sm font-medium rounded-xl hover:border-yellow-400 hover:text-yellow-700 hover:bg-yellow-50 disabled:opacity-50 transition-colors"
+                            
                             style={{ padding: '10px' }}>
                             {pedindoFolga ? 'A enviar pedido...' : '+ Pedir folga neste dia'}
-                          </button>
+                          </Button>
                         ) : (
                           <button
                             onClick={() => { setModalTroca({ diaOrigem: diaSelecionado }); setDiaSelecionado(null); }}

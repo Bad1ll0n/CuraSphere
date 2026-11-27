@@ -3,7 +3,8 @@ import { IsArray, ArrayMinSize, IsString, IsUrl } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
-import { WebhooksService } from './webhooks.service';
+import { WebhooksService } from './webhooks.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 class CriarWebhookDto {
   @IsUrl() url!: string;
@@ -17,7 +18,7 @@ export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
   @Post()
-  criar(@Body() dto: CriarWebhookDto, @Request() req: any) {
+  criar(@Body() dto: CriarWebhookDto, @Request() req: PedidoAutenticado) {
     return this.webhooksService.criar({ ...dto, criadoPorId: req.user.sub });
   }
 

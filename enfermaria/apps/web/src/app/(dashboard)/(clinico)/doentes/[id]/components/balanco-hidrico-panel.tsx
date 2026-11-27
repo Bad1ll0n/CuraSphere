@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } fro
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface Registo {
   id: string;
@@ -192,11 +193,10 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
             ›
           </button>
           {canEdit && (
-            <button onClick={abrirModal}
-              className="flex items-center gap-1 px-3 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-colors"
+            <Button variant="primary" size="sm" className="flex gap-1 h-7" onClick={abrirModal}
               style={{ marginLeft: '8px' }}>
               + Registar
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -338,14 +338,14 @@ export function BalancoHidricoPanel({ doenteId, utilizador }: Props) {
             </div>
 
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => setShowModal(false)} disabled={saving}
-                className="flex-1 py-2 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+              <Button variant="secondary" className="flex-1" onClick={() => setShowModal(false)} disabled={saving}
+                >
                 Cancelar
-              </button>
-              <button onClick={guardar} disabled={saving || !quantidade}
-                className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-50">
+              </Button>
+              <Button variant="primary" className="flex-1" onClick={guardar} disabled={saving || !quantidade}
+                >
                 {saving ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>

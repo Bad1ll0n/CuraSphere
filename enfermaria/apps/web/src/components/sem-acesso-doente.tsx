@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 /** O 403 de "sem atribuição" (break-glass necessário) — para a ficha mostrar o ecrã certo. */
 export function eSemAtribuicao(err: any): boolean {
@@ -56,9 +57,9 @@ export function SemAcessoDoente({ doenteId, onConcedido }: { doenteId: string; o
       <h1 className="text-lg font-bold text-slate-900">{t('title')}</h1>
       <p className="text-sm text-slate-600" style={{ marginTop: '6px' }}>{t('body')}</p>
       <div className="flex flex-wrap gap-3" style={{ marginTop: '20px' }}>
-        <button type="button" onClick={pedir} className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg" style={{ padding: '10px 16px' }}>
+        <Button variant="primary" type="button" onClick={pedir}  style={{ padding: '10px 16px' }}>
           {t('requestAssignment')}
-        </button>
+        </Button>
         <button type="button" onClick={() => setModal(true)} className="border border-red-300 text-red-700 hover:bg-red-50 text-sm font-semibold rounded-lg" style={{ padding: '10px 16px' }}>
           {t('emergency')}
         </button>
@@ -81,10 +82,10 @@ export function SemAcessoDoente({ doenteId, onConcedido }: { doenteId: string; o
             <p className="text-xs text-slate-500">{t('minChars', { n: texto.trim().length })}</p>
             <div className="flex gap-2 justify-end">
               <button type="button" onClick={() => setModal(false)} className="border border-slate-200 text-sm rounded-lg" style={{ padding: '8px 14px' }}>{t('cancel')}</button>
-              <button type="button" disabled={texto.trim().length < 20 || aEnviar} onClick={emergencia}
-                className="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '8px 14px' }}>
+              <Button variant="danger" type="button" disabled={texto.trim().length < 20 || aEnviar} onClick={emergencia}
+                 style={{ padding: '8px 14px' }}>
                 {t('confirmEmergency')}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

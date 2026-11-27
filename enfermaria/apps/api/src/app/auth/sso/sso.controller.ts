@@ -14,9 +14,10 @@ import { JwtAuthGuard } from '../jwt-auth.guard';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
 import { RedisService } from '../../redis/redis.service';
+import { CacheSamlRedis } from './saml-cache';
 import * as crypto from 'crypto';
 
-import { assertUrlDestinoPublico } from '../../common/ssrf-guard';
+import { assertUrlDestinoPublico } from '../../common/seguranca/ssrf-guard';
 class CriarProviderDto {
   @IsString() @IsIn(['saml', 'oidc']) tipo: string;
   @IsString() @MaxLength(100) nome: string;
@@ -110,7 +111,13 @@ export class SsoController {
       callbackUrl: `${apiUrl}/v1/auth/sso/saml/callback`,
       entryPoint: config['entryPoint'],
       wantAssertionsSigned: true,
-      validateInResponseTo: ValidateInResponseTo.ifPresent,
+      // SEC-06: a resposta tem de responder a um pedido nosso (consumido uma vez) e a mesma
+      // assertion não é aceite duas vezes. A cache é a do Redis — a em memória do node-saml
+      // morria com esta instância, e o ID do pedido nunca chegava ao callback.
+      validateInResponseTo: ValidateInResponseTo.always,
+      rejectReplayedAssertions: true,
+      requestIdExpirationPeriodMs: 10 * 60 * 1000,
+      cacheProvider: new CacheSamlRedis(this.redis),
     });
   }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { turnoDaHora } from '@org/shared';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import api from '@/lib/api';
@@ -11,9 +12,11 @@ import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
+import { EmptyState } from '@/components/empty-state';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { LeituraBcma, LEITURA_VAZIA, camposLeitura, leituraBloqueia, type EstadoLeitura } from '@/components/leitura-bcma';
 import { RegistoDiferido } from '@/components/registo-diferido';
+import { Button } from '@/components/ui';
 
 // UX-07: o texto vem de mar.reason.<valor>.
 const MOTIVOS_NAO_ADMIN = ['recusou', 'contraindicacao', 'em_exame', 'indisponivel', 'outro'] as const;
@@ -133,7 +136,8 @@ export function MarCliente() {
     } finally { setRegistandoNaoAdmin(false); }
   };
 
-  const administrar = async (justificacaoSOS?: string) => {
+  // QA-08 (SOS) e QA-15 (1.ª dose antes da validação): o servidor pede uma justificação com 409.
+  const administrar = async (extra: { justificacaoSOS?: string; justificacaoNaoValidada?: string } = {}) => {
     if (!modalId || !todasMarcadas || leituraBloqueia(leitura)) return;
     setAdministrando(modalId);
     try {
@@ -146,7 +150,7 @@ export function MarCliente() {
         atestadoPeloEnfermeiro: todasMarcadas,
         observacoes: obs || undefined,
         ...camposLeitura(leitura),
-        ...(justificacaoSOS ? { justificacaoSOS } : {}),
+        ...extra,
       });
       toast.success(t('administered'));
       setModalId(null);
@@ -164,7 +168,19 @@ export function MarCliente() {
             botao: t('sosButton'),
             placeholder: t('sosPlaceholder'),
           });
-          if (justificacao) { setTimeout(() => void administrar(justificacao), 0); return; }
+          if (justificacao) { setTimeout(() => void administrar({ ...extra, justificacaoSOS: justificacao }), 0); return; }
+        }
+        // QA-15: prescrição por validar — só a 1.ª dose, urgente e justificada.
+        const naoValidada = e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '');
+        if (naoValidada) {
+          const justificacao = await pedirTexto({
+            titulo: t('notValidatedTitle'),
+            descricao: e.response.data.message,
+            rotulo: t('notValidatedLabel'),
+            botao: t('notValidatedButton'),
+            placeholder: t('notValidatedPlaceholder'),
+          });
+          if (justificacao) { setTimeout(() => void administrar({ ...extra, justificacaoNaoValidada: justificacao }), 0); return; }
         }
         toast.error(e?.response?.data?.message ?? t('administerError'));
     } finally { setAdministrando(null); }
@@ -178,7 +194,8 @@ export function MarCliente() {
   }, {});
 
   const horaAtual = new Date().getHours();
-  const turnoLabel = t(horaAtual >= 8 && horaAtual < 16 ? 'shift.morning' : horaAtual >= 16 && horaAtual < 23 ? 'shift.afternoon' : 'shift.night');
+  // UX-12: a definição única dos turnos (libs/shared) — antes a tarde acabava aqui às 23.
+  const turnoLabel = t(({ manha: 'shift.morning', tarde: 'shift.afternoon', noite: 'shift.night' } as const)[turnoDaHora(horaAtual)]);
 
   const modalMed = medicacoes.find((m) => m.id === modalId);
   const certasValues = getCertasValues(modalMed, t);
@@ -190,12 +207,12 @@ export function MarCliente() {
           <h1 className="text-3xl font-bold text-slate-900">{t('title')}</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>{t('currentShift', { turno: turnoLabel })}</p>
         </div>
-        <button onClick={carregar} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
+        <Button variant="secondary" className="flex gap-2" onClick={carregar}  style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           {tc('refresh')}
-        </button>
+        </Button>
       </div>
 
       {loading ? (
@@ -216,15 +233,9 @@ export function MarCliente() {
           />
         </div>
       ) : Object.keys(porDoente).length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
-          <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-          </div>
-          <p className="text-slate-500 font-medium" style={{ marginBottom: '4px' }}>{t('emptyTitle')}</p>
-          <p className="text-slate-500 text-sm">{t('emptyBody')}</p>
-        </div>
+        // UX-10: sem medicação a mostrar não é um beco sem saída — diz onde ver as atribuições.
+        <EmptyState cartao icon="medication" title={t('emptyTitle')} description={t('emptyBody')}
+          acoes={[{ label: t('emptyActionAssignments'), href: '/atribuicoes' }, { label: t('emptyActionPatients'), href: '/doentes' }]} />
       ) : (
         <div className="flex flex-col gap-6">
           {doenteFiltro && (
@@ -260,9 +271,11 @@ export function MarCliente() {
                           <span className={`text-xs font-medium rounded-md badge-pad py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
                           {validacao && (
                             <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-500'}`}>
-                              {validacao === 'aprovada' ? t('validated') : t('rejected')}
+                              {validacao === 'aprovada' ? t('validated') : validacao === 'rejeitada' ? t('rejected') : t('notValidated')}
                             </span>
                           )}
+                          {/* QA-15: por validar pela farmácia — a administração pode ser bloqueada ou pedir justificação. */}
+                          {!validacao && <span className="text-xs font-medium text-amber-700">{t('notValidated')}</span>}
                           {ultimaAdmin?.verificacao5Certas && (
                             <span className="text-xs font-medium text-emerald-600 bg-emerald-50 rounded-md badge-pad py-0.5">5✓</span>
                           )}
@@ -345,15 +358,13 @@ export function MarCliente() {
               )}
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalNaoAdmin(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>{tc('cancel')}</button>
-              <button onClick={registarNaoAdmin}
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNaoAdmin(null)}
+                style={{ padding: '11px' }}>{tc('cancel')}</Button>
+              <Button variant="danger" className="flex-1" onClick={registarNaoAdmin}
                 disabled={registandoNaoAdmin || (motivoSelecionado === 'outro' && !motivoOutro.trim())}
-                className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 style={{ padding: '11px' }}>
                 {registandoNaoAdmin ? t('recording') : tc('confirm')}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -442,9 +453,8 @@ export function MarCliente() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalId(null)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>{tc('cancel')}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalId(null)}
+                style={{ padding: '11px' }}>{tc('cancel')}</Button>
               <button
                 onClick={() => administrar()}
                 disabled={!todasMarcadas || !!administrando || leituraBloqueia(leitura)}

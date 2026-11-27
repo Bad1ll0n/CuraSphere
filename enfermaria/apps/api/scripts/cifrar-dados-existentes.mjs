@@ -16,7 +16,7 @@
  *
  * Sem `--aplicar` faz apenas a contagem — corre-se sempre primeiro assim.
  */
-import { createCipheriv, randomBytes } from 'crypto';
+import { createCipheriv, createHmac, randomBytes } from 'crypto';
 import { PrismaClient } from '../src/generated/prisma/index.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
@@ -31,6 +31,10 @@ if (KEY_HEX.length !== 64) {
 const KEY = Buffer.from(KEY_HEX, 'hex');
 
 /** Tem de coincidir com `encryption.middleware.ts` — mesmo formato, mesma chave. */
+/** SEC-12: índice cego do NIF — igual a `indiceNif` em encryption.middleware.ts. */
+const CHAVE_NIF = createHmac('sha256', KEY).update('curasphere:indice-cego:nif:v1').digest();
+const indiceNif = (nif) => createHmac('sha256', CHAVE_NIF).update(String(nif).replace(/\D/g, '')).digest('hex');
+
 function cifrar(texto) {
   const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', KEY, iv);
@@ -43,7 +47,10 @@ function cifrar(texto) {
 const ALVOS = [
   { delegate: 'doente', campos: ['nome'] },
   { delegate: 'contactoEmergencia', campos: ['nome', 'telefone'] },
-  { delegate: 'ficheiroPessoalDoente', campos: ['morada', 'telefone', 'email'] },
+  { delegate: 'ficheiroPessoalDoente', campos: ['morada', 'telefone', 'email', 'nif'] },
+  // SEC-11: segredos que o servidor volta a ler (cifrados em escrita por cifrarSegredo).
+  { delegate: 'utilizador', campos: ['mfaSecret', 'mfaSecretPendente'] },
+  { delegate: 'webhook', campos: ['secret'] },
 ];
 
 // Cliente SEM a extensão de cifragem: aqui é preciso ler o valor em bruto e escrever já
@@ -68,6 +75,7 @@ for (const { delegate, campos } of ALVOS) {
       const valor = registo[campo];
       if (typeof valor === 'string' && valor.length > 0 && !valor.startsWith('enc:')) {
         patch[campo] = cifrar(valor);
+        if (delegate === 'ficheiroPessoalDoente' && campo === 'nif') patch.nifBusca = indiceNif(valor);
       }
     }
     if (Object.keys(patch).length === 0) continue;

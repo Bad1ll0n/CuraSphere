@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsInt, IsIn, ValidateIf, IsUUID, Min, MaxLength, IsArray, ArrayMaxSize } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { ROLES, Servico } from '../../common/enums';
+import { ROLES, Servico } from '../../common/infra/enums';
 
 const ROLES_PERMITIDAS = Object.values(ROLES);
 const SERVICOS_PERMITIDOS = Object.values(Servico);

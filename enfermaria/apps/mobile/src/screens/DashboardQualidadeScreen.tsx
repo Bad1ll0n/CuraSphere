@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface DadosQualidade {
   iacs: {
@@ -70,6 +71,7 @@ const GRAVIDADE_LABEL: Record<string, string> = {
 };
 
 export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [dados, setDados] = useState<DadosQualidade | null>(null);
   const [eventos, setEventos] = useState<EventosIndicadores | null>(null);
   const [loading, setLoading] = useState(true);
@@ -182,7 +184,7 @@ export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props
             {dados.iacs.tendencia.length > 0 && (
               <View style={s.secao}>
                 <Text style={s.secaoTitulo}>Tendência IACS — 7 dias</Text>
-                <Text style={s.secaoSub}>Isolamentos activos por dia</Text>
+                <Text style={s.secaoSub}>Isolamentos ativos por dia</Text>
                 <View style={s.tendenciaGrafico}>
                   {dados.iacs.tendencia.map(({ data, total }) => (
                     <View key={data} style={s.tendenciaColuna}>
@@ -219,7 +221,7 @@ export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props
                 )}
               </View>
               {dados.alertas.recentes.length === 0 ? (
-                <Text style={s.semDados}>Sem alertas activos</Text>
+                <Text style={s.semDados}>Sem alertas ativos</Text>
               ) : dados.alertas.recentes.slice(0, 8).map(alerta => (
                 <View key={alerta.id} style={s.alertaRow}>
                   <View style={s.alertaPonto} />
@@ -348,68 +350,68 @@ export default function DashboardQualidadeScreen({ utilizador, onVoltar }: Props
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#0d9488', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#99f6e4', marginTop: 2 },
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
 
   kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  kpiCard: { flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 14, padding: 14, borderTopWidth: 3, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 2 },
-  kpiValor: { fontSize: 24, fontWeight: '800', color: '#1e293b' },
-  kpiTitulo: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
+  kpiCard: { flex: 1, minWidth: '45%', backgroundColor: c.superficie, borderRadius: 14, padding: 14, borderTopWidth: 3, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 2 },
+  kpiValor: { fontSize: 24, fontWeight: '800', color: c.texto },
+  kpiTitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4 },
 
-  secao: { backgroundColor: '#fff', borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 2 },
+  secao: { backgroundColor: c.superficie, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 2 },
   secaoHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
-  secaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', marginBottom: 4 },
-  secaoSub: { fontSize: 13, color: '#94a3b8', marginBottom: 12 },
-  secaoSubSecao: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  secaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto, marginBottom: 4 },
+  secaoSub: { fontSize: 13, color: c.textoTenue, marginBottom: 12 },
+  secaoSubSecao: { fontSize: 13, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
 
   ocupacaoRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  ocupacaoLabel: { fontSize: 13, color: '#475569' },
-  ocupacaoValor: { fontSize: 13, fontWeight: '700', color: '#1e293b' },
+  ocupacaoLabel: { fontSize: LETRA.corpo, color: c.textoSecundario },
+  ocupacaoValor: { fontSize: 13, fontWeight: '700', color: c.texto },
   barraFundo: { height: 8, backgroundColor: '#e2e8f0', borderRadius: 4, overflow: 'hidden' },
   barraPreenchimento: { height: '100%', borderRadius: 4 },
-  ocupacaoSub: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
+  ocupacaoSub: { fontSize: 13, color: c.textoTenue, marginTop: 4 },
 
   estadoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, padding: 10, marginBottom: 8 },
   estadoPonto: { width: 8, height: 8, borderRadius: 4 },
-  estadoLabel: { fontSize: 13, color: '#334155' },
+  estadoLabel: { fontSize: LETRA.corpo, color: c.textoSecundario },
   estadoValor: { fontSize: 14, fontWeight: '700' },
 
   tendenciaGrafico: { flexDirection: 'row', alignItems: 'flex-end', height: 88, gap: 6 },
   tendenciaColuna: { flex: 1, alignItems: 'center', gap: 4 },
-  tendenciaNum: { fontSize: 13, color: '#94a3b8', fontWeight: '600' },
+  tendenciaNum: { fontSize: 13, color: c.textoTenue, fontWeight: '600' },
   tendenciaBarra: { width: '100%', backgroundColor: '#fca5a5', borderTopLeftRadius: 3, borderTopRightRadius: 3 },
   tendenciaDia: { fontSize: 13, color: '#cbd5e1' },
 
-  listaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
-  listaLabel: { fontSize: 13, color: '#475569', textTransform: 'capitalize' },
-  listaValor: { fontSize: 13, fontWeight: '700', color: '#1e293b', width: 20, textAlign: 'right' },
+  listaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: c.borda },
+  listaLabel: { fontSize: LETRA.corpo, color: c.textoSecundario, textTransform: 'capitalize' },
+  listaValor: { fontSize: 13, fontWeight: '700', color: c.texto, width: 20, textAlign: 'right' },
   miniBarraFundo: { width: 60, height: 6, backgroundColor: '#e2e8f0', borderRadius: 3, overflow: 'hidden' },
   miniBarraPreenchimento: { height: '100%', backgroundColor: '#818cf8', borderRadius: 3 },
 
   badge: { backgroundColor: '#ef4444', borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2 },
-  badgeTexto: { fontSize: 13, fontWeight: '700', color: '#fff' },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#fff' },
 
-  semDados: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic', paddingVertical: 8 },
-  alertaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
+  semDados: { fontSize: 13, color: c.textoTenue, fontStyle: 'italic', paddingVertical: 8 },
+  alertaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: c.borda },
   alertaPonto: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#f59e0b', marginTop: 5 },
-  alertaTipo: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'capitalize' },
+  alertaTipo: { fontSize: 13, fontWeight: '700', color: c.textoTenue, textTransform: 'capitalize' },
   alertaSep: { fontSize: 13, color: '#cbd5e1' },
-  alertaDoente: { fontSize: 13, color: '#94a3b8', flex: 1 },
-  alertaMensagem: { fontSize: 13, color: '#475569' },
+  alertaDoente: { fontSize: 13, color: c.textoTenue, flex: 1 },
+  alertaMensagem: { fontSize: LETRA.corpo, color: c.textoSecundario },
   alertaHora: { fontSize: 13, color: '#cbd5e1', marginTop: 2 },
 
   altaRow: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-  altaCirculo: { width: 72, height: 72, borderRadius: 36, borderWidth: 4, borderColor: '#e2e8f0', alignItems: 'center', justifyContent: 'center' },
+  altaCirculo: { width: 72, height: 72, borderRadius: 36, borderWidth: 4, borderColor: c.borda, alignItems: 'center', justifyContent: 'center' },
   altaPct: { fontSize: 16, fontWeight: '800' },
-  altaNumero: { fontSize: 24, fontWeight: '800', color: '#1e293b' },
-  altaTotal: { fontSize: 16, fontWeight: '400', color: '#94a3b8' },
-  altaSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  altaNumero: { fontSize: 24, fontWeight: '800', color: c.texto },
+  altaTotal: { fontSize: 16, fontWeight: '400', color: c.textoTenue },
+  altaSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   altaAlerta: { fontSize: 13, color: '#f43f5e', fontWeight: '600', marginTop: 4 },
-});
+}));

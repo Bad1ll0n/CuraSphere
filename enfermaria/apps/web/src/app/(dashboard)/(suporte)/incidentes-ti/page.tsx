@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import { Button } from '@/components/ui';
 
 const TIPOS = [
   { value: 'infraestrutura', label: 'Infraestrutura' },
@@ -77,6 +79,7 @@ function tempoRelativo(data: string) {
 }
 
 export default function IncidentesTIPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const [incidentes, setIncidentes] = useState<Incidente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -199,13 +202,13 @@ export default function IncidentesTIPage() {
           <h1 className="text-2xl font-bold text-slate-900">Incidentes TI</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Reporte, acompanhe e resolva problemas técnicos</p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={() => { setModalAberto(true); setErro(''); }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors flex items-center gap-2"
+          
           style={{ padding: '10px 20px' }}
         >
           <span className="text-lg leading-none">+</span> Novo Incidente
-        </button>
+        </Button>
       </div>
 
       {/* ── Stats ── */}
@@ -363,14 +366,14 @@ export default function IncidentesTIPage() {
                               className="flex-1 border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                               style={{ padding: '8px 12px' }}
                             />
-                            <button
+                            <Button variant="primary" size="sm" className="self-end"
                               onClick={() => adicionarNota(inc.id)}
                               disabled={adicionandoNota === inc.id || !notaTexto[inc.id]?.trim()}
-                              className="self-end bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
+                              
                               style={{ padding: '8px 14px', whiteSpace: 'nowrap' }}
                             >
                               {adicionandoNota === inc.id ? '...' : 'Adicionar'}
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
@@ -387,14 +390,14 @@ export default function IncidentesTIPage() {
                                 <option value="">— Sem responsável —</option>
                                 {tiUsers.map(u => <option key={u.id} value={u.id}>{u.nome}</option>)}
                               </select>
-                              <button
+                              <Button variant="primary" size="sm"
                                 onClick={() => atribuirResponsavel(inc.id, respDropdown[inc.id] ?? '')}
                                 disabled={atribuindoResp === inc.id || !respDropdown[inc.id]}
-                                className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                                
                                 style={{ padding: '6px 12px', whiteSpace: 'nowrap' }}
                               >
                                 {atribuindoResp === inc.id ? '...' : 'Guardar'}
-                              </button>
+                              </Button>
                             </div>
                           ) : (
                             <p className="text-sm text-slate-700">{inc.responsavel?.nome ?? '—'}</p>
@@ -451,28 +454,28 @@ export default function IncidentesTIPage() {
                             ))}
                             {/* Reabrir se resolvido/fechado */}
                             {(inc.estado === 'resolvido' || inc.estado === 'fechado') && (
-                              <button
+                              <Button variant="secondary" size="sm" fullWidth
                                 onClick={() => atualizarEstado(inc.id, 'aberto')}
                                 disabled={atualizando === inc.id}
-                                className="w-full text-xs font-semibold rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50"
+                                
                                 style={{ padding: '8px' }}
                               >
                                 Reabrir
-                              </button>
+                              </Button>
                             )}
                           </div>
                         )}
 
                         {/* Estado completo para todos os roles TI */}
                         {eTI && acoes.length === 0 && inc.estado !== 'fechado' && (
-                          <button
+                          <Button variant="secondary" size="sm" fullWidth
                             onClick={() => atualizarEstado(inc.id, 'aberto')}
                             disabled={atualizando === inc.id}
-                            className="w-full text-xs font-semibold rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors"
+                            
                             style={{ padding: '8px' }}
                           >
                             Reabrir
-                          </button>
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -494,7 +497,7 @@ export default function IncidentesTIPage() {
                 <h2 className="text-lg font-bold text-slate-900">Novo Incidente TI</h2>
                 <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Será encaminhado automaticamente à equipa responsável</p>
               </div>
-              <button onClick={() => setModalAberto(false)} className="text-slate-500 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
+              <button aria-label={tA11y('close')} onClick={() => setModalAberto(false)} className="text-slate-500 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -564,21 +567,20 @@ export default function IncidentesTIPage() {
               )}
 
               <div className="flex gap-3">
-                <button
+                <Button variant="secondary" className="flex-1"
                   onClick={() => setModalAberto(false)}
-                  className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+                  
                   style={{ padding: '11px' }}
                 >
                   Cancelar
-                </button>
-                <button
+                </Button>
+                <Button variant="primary" className="flex-1"
                   onClick={criarIncidente}
                   disabled={salvando || !titulo.trim() || !descricao.trim()}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 text-sm"
                   style={{ padding: '11px' }}
                 >
                   {salvando ? 'A criar...' : 'Criar Incidente'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

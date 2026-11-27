@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface DoenteBasico {
   id: string;
@@ -297,33 +298,30 @@ export default function DoenteAdminDetalhePage() {
               {ESTADO_LABEL[doente.estadoRegisto] ?? doente.estadoRegisto}
             </span>
             {!editando ? (
-              <button
+              <Button variant="primary" className="flex gap-2"
                 onClick={iniciarEdicao}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
                 style={{ padding: '9px 18px' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
                 Editar
-              </button>
+              </Button>
             ) : (
               <div className="flex gap-2">
-                <button
+                <Button variant="secondary"
                   onClick={cancelar}
-                  className="border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                   style={{ padding: '9px 16px' }}
                 >
                   Cancelar
-                </button>
-                <button
+                </Button>
+                <Button variant="primary"
                   onClick={guardar}
                   disabled={salvando}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                   style={{ padding: '9px 18px' }}
                 >
                   {salvando ? 'A guardar...' : 'Guardar'}
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -476,13 +474,12 @@ export default function DoenteAdminDetalhePage() {
 
         return (
           <Secao titulo="Consultas" action={
-            <button
+            <Button variant="primary" size="sm" className="flex gap-1.5"
               onClick={abrirModalAgendar}
-              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors"
               style={{ padding: '6px 12px' }}
             >
               + Agendar Consulta
-            </button>
+            </Button>
           }>
             {consultas.length === 0 ? (
               <p className="text-sm text-slate-500 text-center" style={{ padding: '8px 0' }}>Sem consultas registadas</p>
@@ -770,21 +767,20 @@ export default function DoenteAdminDetalhePage() {
                   <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl" style={{ padding: '10px 14px', marginBottom: '16px' }}>{agErro}</p>
                 )}
                 <div className="flex gap-3">
-                  <button
+                  <Button variant="secondary" className="flex-1"
                     onClick={() => setModalAgendar(false)}
-                    className="flex-1 border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                    
                     style={{ padding: '11px' }}
                   >
                     Cancelar
-                  </button>
-                  <button
+                  </Button>
+                  <Button variant="primary" className="flex-1"
                     onClick={confirmarAgendamento}
                     disabled={agSalvando}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                     style={{ padding: '11px' }}
                   >
                     {agSalvando ? 'A agendar...' : 'Confirmar Marcação'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}

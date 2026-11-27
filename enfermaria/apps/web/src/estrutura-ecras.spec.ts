@@ -93,3 +93,15 @@ describe('estrutura web - erro de carga vs lista vazia', () => {
     expect(jaCorrigidos).toEqual([]);
   });
 });
+
+// UX-10: os estados vazios dos ecrãs de turno dizem o que fazer a seguir — não são becos sem saída.
+describe('UX-10 — estados vazios com saída', () => {
+  it.each([
+    'app/(dashboard)/(clinico)/mar/mar-cliente.tsx',
+    'app/(dashboard)/(clinico)/atribuicoes/page.tsx',
+    'components/dashboard/paineis/enfermeiro.tsx',
+  ])('%s usa o EmptyState com ações', (f) => {
+    const src = readFileSync(join(__dirname, f), 'utf8');
+    expect(src).toMatch(/<EmptyState[\s\S]{0,400}acoes=\{\[/);
+  });
+});

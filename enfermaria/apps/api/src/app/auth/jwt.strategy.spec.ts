@@ -52,6 +52,17 @@ describe('JwtStrategy — versão da sessão', () => {
     expect(prisma.utilizador.findUnique).toHaveBeenCalledTimes(2);
   });
 
+  // ARQ-21: uma instalação, um hospital — um token de outro tenant não vale aqui.
+  it('recusa uma sessão de outra instalação, antes de ir à BD', async () => {
+    await expect(strategy.validate({ ...token, tenantId: 'outro-hospital' })).rejects.toThrow(/outra instalação/);
+    expect(prisma.utilizador.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('aceita uma sessão desta instalação (tenant por omissão)', async () => {
+    prisma.utilizador.findUnique.mockResolvedValue({ versaoSessao: 2, ativo: true });
+    await expect(strategy.validate({ ...token, tenantId: 'default' })).resolves.toMatchObject({ sub: 'u1' });
+  });
+
   it('tokens intermédios (mfa_setup) não dependem da versão da sessão', async () => {
     await expect(strategy.validate({ sub: 'u1', tipo: 'mfa_setup' })).resolves.toEqual({ sub: 'u1', tipoToken: 'mfa_setup' });
     expect(prisma.utilizador.findUnique).not.toHaveBeenCalled();

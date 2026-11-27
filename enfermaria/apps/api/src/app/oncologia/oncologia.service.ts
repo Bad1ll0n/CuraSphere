@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { Prisma } from '../../generated/prisma';
-import { superficieCorporal, doseQuimio, toxicidadeAcionavel } from '../common/oncologia.helper';
+import { superficieCorporal, doseQuimio, toxicidadeAcionavel } from '../common/clinico/oncologia.helper';
 import { CriarPlanoDto } from './dto/criar-plano.dto';
 import { AgendarCicloDto } from './dto/agendar-ciclo.dto';
 import { AdministrarCicloDto } from './dto/administrar-ciclo.dto';

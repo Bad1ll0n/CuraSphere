@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, Alert, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Alert, ScrollView } from 'react-native';
 import { shared } from '../styles';
 import api from '../../../lib/api';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 const BRADEN_ITEMS = [
   { key: 'percepcaoSensorial', label: 'Percepção Sensorial', opts: [[1,'Completamente limitada'],[2,'Muito limitada'],[3,'Ligeiramente limitada'],[4,'Sem limitação']] },
@@ -30,6 +31,7 @@ interface Props {
 }
 
 export default function ModalAvaliacaoEscala({ visible, tipo, doenteId, onClose, onSaved }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [itens, setItens] = useState<Record<string, number>>({});
   const [salvando, setSalvando] = useState(false);
 
@@ -99,15 +101,15 @@ export default function ModalAvaliacaoEscala({ visible, tipo, doenteId, onClose,
   );
 }
 
-const s = StyleSheet.create({
-  opcao: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10, borderRadius: 10, backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0' },
+const s = estilosTematicos((c) => ({
+  opcao: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10, borderRadius: 10, backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda },
   opcaoAtiva: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
   opcaoNum: { fontSize: 14, fontWeight: '800', color: '#2563eb', width: 20, textAlign: 'center' },
-  opcaoDesc: { fontSize: 13, color: '#334155', flex: 1 },
+  opcaoDesc: { fontSize: 13, color: c.textoSecundario, flex: 1 },
   pill: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, backgroundColor: '#e2e8f0' },
   pillAtivo: { backgroundColor: '#2563eb' },
-  pillTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
-  pontuacaoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#e2e8f0', marginTop: 8 },
-  pontuacaoLabel: { fontSize: 13, fontWeight: '600', color: '#475569' },
+  pillTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
+  pontuacaoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderTopWidth: 1, borderTopColor: c.borda, marginTop: 8 },
+  pontuacaoLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario },
   pontuacaoValor: { fontSize: 20, fontWeight: '800', color: '#2563eb' },
-});
+}));

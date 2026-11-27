@@ -2,23 +2,27 @@ packages:
   - 'packages/*'
   - 'apps/*'
   - 'libs/*'
+# SEC-24: só correm scripts de instalação os pacotes que precisam deles (binários nativos e
+# geradores). Os outros ficam bloqueados de forma explícita: o Scarf é telemetria (envia dados
+# de instalação para fora), o @nestjs/core e o protobufjs só imprimem mensagens, e o detox, o
+# dtrace-provider e o less chegam por dependências de ferramentas que não usamos para isso.
 allowBuilds:
-  '@nestjs/core': true
   '@prisma/client': true
   '@prisma/engines': true
   prisma: true
   '@parcel/watcher': true
-  '@scarf/scarf': true
-  '@sentry/cli': true
+  '@sentry/cli': true        # upload de sourcemaps (só com SENTRY_AUTH_TOKEN)
   '@swc/core': true
   esbuild: true
-  protobufjs: true
-  detox: true
-  dtrace-provider: true
-  less: true
   nx: true
   sharp: true
   unrs-resolver: true
+  '@nestjs/core': false
+  '@scarf/scarf': false
+  protobufjs: false
+  detox: false
+  dtrace-provider: false
+  less: false
 
 # Overrides de segurança: forçam a versão corrigida mais recente DENTRO da mesma major
 # de dependências transitivas vulneráveis. Vivem aqui e não no campo `pnpm` do

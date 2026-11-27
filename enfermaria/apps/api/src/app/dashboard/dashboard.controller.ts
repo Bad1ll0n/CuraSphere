@@ -2,7 +2,8 @@ import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { DashboardService } from './dashboard.service';
+import { DashboardService } from './dashboard.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('dashboard')
@@ -34,7 +35,7 @@ export class DashboardController {
 
   @Get('workload-turno')
   @Roles('enfermeiro', 'medico', 'auxiliar')
-  workloadTurno(@Request() req: any) {
+  workloadTurno(@Request() req: PedidoAutenticado) {
     return this.service.workloadTurno(req.user.sub);
   }
 

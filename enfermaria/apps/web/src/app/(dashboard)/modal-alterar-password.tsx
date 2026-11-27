@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface Props {
   onClose: () => void;
@@ -51,9 +52,8 @@ export function ModalAlterarPassword({ onClose }: Props) {
             <div className="bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm text-center" style={{ padding: '16px', marginBottom: '16px' }}>
               Password alterada com sucesso!
             </div>
-            <button onClick={fechar}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
-              style={{ padding: '11px' }}>Fechar</button>
+            <Button variant="primary" fullWidth onClick={fechar}
+              style={{ padding: '11px' }}>Fechar</Button>
           </>
         ) : (
           <>
@@ -78,14 +78,12 @@ export function ModalAlterarPassword({ onClose }: Props) {
             </div>
             {erro && <p id="pwd-erro" role="alert" className="text-red-600 text-sm" style={{ marginBottom: '12px' }}>{erro}</p>}
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={fechar}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={alterar} disabled={salvando || !senhaAtual || !novaSenha || !confirmarSenha}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+              <Button variant="secondary" className="flex-1" onClick={fechar}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={alterar} disabled={salvando || !senhaAtual || !novaSenha || !confirmarSenha}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </>
         )}

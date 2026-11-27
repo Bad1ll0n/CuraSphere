@@ -55,7 +55,7 @@ export function NotificationBell() {
 
   return (
     <div ref={ref} className="relative">
-      <button
+      <button data-tour="notificacoes"
         onClick={() => setOpen((o) => !o)}
         aria-label={count > 0 ? t('bellUnread', { count }) : t('bell')}
         aria-expanded={open}

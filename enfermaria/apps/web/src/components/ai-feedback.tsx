@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from './toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   decisaoId?: string | null;
@@ -69,13 +70,13 @@ export function AiFeedback({ decisaoId, className = '' }: Props) {
             style={{ padding: '6px 8px' }}
           />
           <div className="flex gap-2">
-            <button
+            <Button variant="secondary" size="sm" className="flex-1"
               onClick={() => setEstado('idle')}
-              className="flex-1 text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+              
               style={{ padding: '5px' }}
             >
               Cancelar
-            </button>
+            </Button>
             <button
               onClick={() => enviar(false)}
               disabled={enviando}

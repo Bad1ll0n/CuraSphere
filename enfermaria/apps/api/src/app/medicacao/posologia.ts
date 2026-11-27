@@ -9,7 +9,7 @@
 // num MAR em papel: âncora às 08:00 e tomas de N em N horas (q6h → 08-14-20-02), na hora
 // local do hospital.
 
-import { inicioDoDiaClinico, somarDiasClinicos } from '../common/dia-clinico.helper';
+import { inicioDoDiaClinico, somarDiasClinicos } from '../common/clinico/dia-clinico.helper';
 
 /** Hora da primeira toma do dia nos horários-padrão (hora local do hospital). */
 export const HORA_ANCORA = 8;

@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, ActivityIndicator, RefreshControl, Alert,
+  View, Text, ScrollView, TouchableOpacity, Modal, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
@@ -20,6 +20,7 @@ const estadoConfig: Record<string, { label: string; cor: string; bg: string }> =
 };
 
 export default function TrocasScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [pedidos, setPedidos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -257,7 +258,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
               </TouchableOpacity>
             </View>
 
-            <Text style={s.stepLabel}>1. O teu turno</Text>
+            <Text style={s.stepLabel}>1. O seu turno</Text>
             {meusTurnos.length === 0
               ? <Text style={s.vazioTexto}>Sem turnos futuros disponíveis</Text>
               : (
@@ -321,54 +322,54 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  subtituloH: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  subtituloH: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   addBotao: { backgroundColor: '#2563eb', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10 },
-  addTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  addTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
   scroll: { flex: 1 },
   secao: { padding: 16 },
-  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
-  pedidoCard: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  pedidoCard: { backgroundColor: c.superficie, borderRadius: 14, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
   pedidoTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   turnoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  turnoBadgeTexto: { fontSize: 13, fontWeight: '600' },
+  turnoBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoBadgeTexto: { fontSize: 13, fontWeight: '600' },
-  pedidoDesc: { fontSize: 14, fontWeight: '600', color: '#1e293b', marginBottom: 4 },
-  pedidoData: { fontSize: 13, color: '#94a3b8' },
+  estadoBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  pedidoDesc: { fontSize: 14, fontWeight: '600', color: c.texto, marginBottom: 4 },
+  pedidoData: { fontSize: 13, color: c.textoTenue },
   acoes: { flexDirection: 'row', gap: 8, marginTop: 12 },
   recusarBotao: { flex: 1, paddingVertical: 9, borderRadius: 10, borderWidth: 1, borderColor: '#fecaca', alignItems: 'center' },
-  recusarTexto: { color: '#dc2626', fontWeight: '600', fontSize: 13 },
+  recusarTexto: { color: '#dc2626', fontWeight: '600', fontSize: LETRA.corpo },
   aceitarBotao: { flex: 1, paddingVertical: 9, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
-  aceitarTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  cancelarBotao: { marginTop: 10, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center' },
-  cancelarTexto: { color: '#64748b', fontWeight: '600', fontSize: 13 },
-  vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center', paddingVertical: 12 },
+  aceitarTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  cancelarBotao: { marginTop: 10, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: c.borda, alignItems: 'center' },
+  cancelarTexto: { color: c.textoTenue, fontWeight: '600', fontSize: LETRA.corpo },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center', paddingVertical: 12 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 18, fontWeight: '700', color: '#1e293b' },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  stepLabel: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
-  turnoPill: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5, borderColor: '#e2e8f0' },
+  sheetTitulo: { fontSize: 18, fontWeight: '700', color: c.texto },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  stepLabel: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  turnoPill: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5, borderColor: c.borda },
   turnoPillAtivo: { borderColor: '#2563eb', backgroundColor: '#eff6ff' },
-  turnoPillTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  turnoPillTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   turnoPillTextoAtivo: { color: '#2563eb' },
-  colegaRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  colegaRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: c.borda },
   colegaRowAtivo: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
-  colegaNome: { fontSize: 14, color: '#1e293b', fontWeight: '500' },
-  erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
+  colegaNome: { fontSize: LETRA.corpo, color: c.texto, fontWeight: '500' },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 16 },
   cancelarBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarBtnTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarBtnTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
-  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-});
+  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
+}));

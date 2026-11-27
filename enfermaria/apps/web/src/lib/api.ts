@@ -54,6 +54,9 @@ api.interceptors.response.use(
       original._retry ||
       original.url?.includes('/auth/refresh') ||
       original.url?.includes('/auth/login') ||
+      // UX-21: no desbloqueio do posto, 401 é password errada — renovar e repetir contava a
+      // mesma tentativa duas vezes no bloqueio por falhas.
+      original.url?.includes('/auth/desbloquear') ||
       original.url?.includes('/auth/me')
     ) {
       return Promise.reject(err);

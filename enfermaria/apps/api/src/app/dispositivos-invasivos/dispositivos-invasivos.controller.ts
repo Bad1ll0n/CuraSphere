@@ -3,7 +3,8 @@ import { DispositivosInvasivosService } from './dispositivos-invasivos.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CriarDispositivoDto } from './dto/criar-dispositivo.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard)
 @AcessoDoentePor('dispositivoInvasivo')
@@ -28,7 +29,7 @@ export class DispositivosInvasivosController {
   async registar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarDispositivoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.dispositivosInvasivosService.registar(doenteId, req.user.sub, dto);

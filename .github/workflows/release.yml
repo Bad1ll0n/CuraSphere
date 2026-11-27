@@ -128,6 +128,7 @@ jobs:
             NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
             NEXT_PUBLIC_JITSI_SERVER=${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+            VERSAO=${{ github.ref_name }}
           cache-from: type=gha,scope=${{ matrix.app }}
           cache-to: type=gha,mode=max,scope=${{ matrix.app }}
 
@@ -161,6 +162,7 @@ jobs:
             NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
             NEXT_PUBLIC_JITSI_SERVER=${{ vars.NEXT_PUBLIC_JITSI_SERVER }}
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+            VERSAO=${{ github.ref_name }}
           cache-from: type=gha,scope=${{ matrix.app }}
 
       # 4. Assinatura keyless: o certificado prova que a imagem saiu DESTE workflow, nesta tag.

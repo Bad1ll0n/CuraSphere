@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, TextInput, Alert, ActivityIndicator, RefreshControl,
+  View, Text, ScrollView, SectionList, TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const roleLabel: Record<string, string> = {
@@ -41,6 +41,7 @@ interface SubRoleOpc { chave: string; label: string }
 interface RoleOpc { chave: string; label: string; subRoles: SubRoleOpc[] }
 
 export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [utilizadores, setUtilizadores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -155,41 +156,47 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
       {loading ? (
         <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
       ) : (
-        <ScrollView
+        <SectionList // PERF-17: virtualizada e agrupada por papel (antes ScrollView + 2 maps)
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
-        >
-          {rolesComUtilizadores.map((role) => (
-            <View key={role} style={s.grupoBloco}>
+          sections={rolesComUtilizadores.map((role) => ({ role, data: porRole[role] }))}
+          keyExtractor={(u) => u.id}
+          initialNumToRender={15}
+          windowSize={7}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={({ section }) => (
+            <View style={[s.grupoBloco, s.grupoTopo]}>
               <View style={s.grupoCabecalho}>
-                <View style={[s.grupoDot, { backgroundColor: roleCor[role] ?? '#94a3b8' }]} />
-                <Text style={s.grupoTitulo}>{roleLabel[role]}</Text>
+                <View style={[s.grupoDot, { backgroundColor: roleCor[section.role] ?? '#94a3b8' }]} />
+                <Text style={s.grupoTitulo}>{roleLabel[section.role]}</Text>
                 <View style={s.grupoBadge}>
-                  <Text style={s.grupoBadgeTexto}>{porRole[role].length}</Text>
+                  <Text style={s.grupoBadgeTexto}>{section.data.length}</Text>
                 </View>
               </View>
-              {porRole[role].map((u) => (
-                <View key={u.id} style={s.utilizadorRow}>
-                  <View style={s.avatar}>
-                    <Text style={s.avatarTexto}>{u.nome.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase()}</Text>
-                  </View>
-                  <View style={s.utilizadorInfo}>
-                    <Text style={s.utilizadorNome}>{u.nome}</Text>
-                    <Text style={s.utilizadorNum}>Nº {u.numeroFuncionario}{u.equipa ? ` · Equipa ${u.equipa}` : ''}</Text>
-                  </View>
-                  <View style={s.utilizadorAcoes}>
-                    <TouchableOpacity accessibilityRole="button" style={s.editarBotao} onPress={() => abrirEditar(u)}>
-                      <Text style={s.editarTexto}>✏️</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity accessibilityRole="button" style={s.desativarBotao} onPress={() => desativar(u)}>
-                      <Text style={s.desativarTexto}>✕</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))}
             </View>
-          ))}
-          <View style={{ height: 32 }} />
-        </ScrollView>
+          )}
+          renderItem={({ item: u, index, section }) => (
+            <View style={[s.grupoLinha, index === section.data.length - 1 && s.grupoFundo]}>
+              <View style={s.utilizadorRow}>
+                <View style={s.avatar}>
+                  <Text style={s.avatarTexto}>{u.nome.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase()}</Text>
+                </View>
+                <View style={s.utilizadorInfo}>
+                  <Text style={s.utilizadorNome}>{u.nome}</Text>
+                  <Text style={s.utilizadorNum}>Nº {u.numeroFuncionario}{u.equipa ? ` · Equipa ${u.equipa}` : ''}</Text>
+                </View>
+                <View style={s.utilizadorAcoes}>
+                  <TouchableOpacity accessibilityRole="button" style={s.editarBotao} onPress={() => abrirEditar(u)}>
+                    <Text style={s.editarTexto}>✏️</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity accessibilityRole="button" style={s.desativarBotao} onPress={() => desativar(u)}>
+                    <Text style={s.desativarTexto}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
+          ListFooterComponent={<View style={{ height: 32 }} />}
+        />
       )}
 
       {/* Modal: Criar Utilizador */}
@@ -350,48 +357,52 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
-  subtitulo: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  subtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   addBotao: { backgroundColor: '#2563eb', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10 },
-  addTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  grupoBloco: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
-  grupoCabecalho: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 14, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  addTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  grupoBloco: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4, elevation: 1 },
+  // PERF-17: o cartão do grupo é desenhado em partes (cabeçalho, linhas, fundo) pela SectionList.
+  grupoTopo: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 },
+  grupoLinha: { backgroundColor: c.superficie, marginHorizontal: 16 },
+  grupoFundo: { borderBottomLeftRadius: 16, borderBottomRightRadius: 16, overflow: 'hidden', marginBottom: 0 },
+  grupoCabecalho: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 14, borderBottomWidth: 1, borderBottomColor: c.borda },
   grupoDot: { width: 10, height: 10, borderRadius: 5 },
-  grupoTitulo: { flex: 1, fontSize: 14, fontWeight: '700', color: '#1e293b' },
-  grupoBadge: { backgroundColor: '#f1f5f9', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 20 },
-  grupoBadgeTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
-  utilizadorRow: { flexDirection: 'row', alignItems: 'center', padding: 12, borderBottomWidth: 1, borderBottomColor: '#f8fafc', gap: 10 },
+  grupoTitulo: { flex: 1, fontSize: LETRA.corpo, fontWeight: '700', color: c.texto },
+  grupoBadge: { backgroundColor: c.fundo, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 20 },
+  grupoBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
+  utilizadorRow: { flexDirection: 'row', alignItems: 'center', padding: 12, borderBottomWidth: 1, borderBottomColor: c.borda, gap: 10 },
   avatar: { width: 38, height: 38, borderRadius: 10, backgroundColor: '#1e293b', alignItems: 'center', justifyContent: 'center' },
-  avatarTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  avatarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
   utilizadorInfo: { flex: 1 },
-  utilizadorNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  utilizadorNum: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  utilizadorNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  utilizadorNum: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   utilizadorAcoes: { flexDirection: 'row', gap: 6 },
-  editarBotao: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  editarTexto: { fontSize: 14 },
+  editarBotao: { width: 32, height: 32, borderRadius: 8, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  editarTexto: { fontSize: LETRA.corpo },
   desativarBotao: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#fef2f2', alignItems: 'center', justifyContent: 'center' },
-  desativarTexto: { color: '#dc2626', fontWeight: '700', fontSize: 14 },
+  desativarTexto: { color: '#dc2626', fontWeight: '700', fontSize: LETRA.corpo },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b' },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  formLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 12, marginBottom: 6 },
-  formInput: { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 8, padding: 10, fontSize: 14, color: '#334155', backgroundColor: '#f8fafc' },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  formLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario, marginTop: 12, marginBottom: 6 },
+  formInput: { borderWidth: 1, borderColor: c.borda, borderRadius: 8, padding: 10, fontSize: 14, color: c.textoSecundario, backgroundColor: c.fundo },
   rolePill: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, backgroundColor: '#e2e8f0' },
-  rolePillTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
-  erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
+  rolePillTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 20 },
   cancelarBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarBtnTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarBtnTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
-  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
-});
+  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
+}));

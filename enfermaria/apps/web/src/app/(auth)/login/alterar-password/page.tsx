@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 export default function AlterarPasswordExpiradaPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function AlterarPasswordExpiradaPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (novaPassword !== confirmar) { setErro('As passwords não coincidem.'); return; }
-    if (novaPassword.length < 8) { setErro('Mínimo 8 caracteres.'); return; }
+    if ([...novaPassword].length < 12) { setErro('Mínimo 12 caracteres (uma frase curta serve).'); return; } // SEC-25
     setErro('');
     setLoading(true);
     try {
@@ -61,13 +62,12 @@ export default function AlterarPasswordExpiradaPage() {
             className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
           />
           {erro && <p className="text-red-400 text-sm">{erro}</p>}
-          <button
+          <Button variant="primary" fullWidth
             type="submit"
             disabled={loading || !novaPassword || !confirmar}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg py-3 font-medium transition-colors"
           >
             {loading ? 'A alterar...' : 'Alterar Password'}
-          </button>
+          </Button>
         </form>
         <button
           type="button"

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
-import { calcularDPP, semanasGestacao, fcFetalAnormal } from '../common/obstetricia.helper';
+import { calcularDPP, semanasGestacao, fcFetalAnormal } from '../common/clinico/obstetricia.helper';
 import { CriarGravidezDto } from './dto/criar-gravidez.dto';
 import { RegistoPartogramaDto } from './dto/registo-partograma.dto';
 import { RegistarPartoDto } from './dto/registar-parto.dto';

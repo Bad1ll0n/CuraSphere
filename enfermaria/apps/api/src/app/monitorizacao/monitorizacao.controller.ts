@@ -7,7 +7,8 @@ import { MonitorizacaoService } from './monitorizacao.service';
 import { RegistarDispositivoDto } from './dto/registar-dispositivo.dto';
 import { IngerirVitalDto } from './dto/ingerir-vital.dto';
 import { RejeitarLeiturasDto, ValidarLeiturasDto } from './dto/validar-leituras.dto';
-import { LeiturasMonitorService } from './leituras-monitor.service';
+import { LeiturasMonitorService } from './leituras-monitor.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @Controller('monitorizacao')
 export class MonitorizacaoController {
@@ -57,14 +58,14 @@ export class MonitorizacaoController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   @Post('doente/:doenteId/leituras/validar')
-  validar(@Param('doenteId') doenteId: string, @Body() dto: ValidarLeiturasDto, @Request() req: any) {
+  validar(@Param('doenteId') doenteId: string, @Body() dto: ValidarLeiturasDto, @Request() req: PedidoAutenticado) {
     return this.leituras.validar(doenteId, dto.ids, req.user.sub);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   @Post('doente/:doenteId/leituras/rejeitar')
-  rejeitar(@Param('doenteId') doenteId: string, @Body() dto: RejeitarLeiturasDto, @Request() req: any) {
+  rejeitar(@Param('doenteId') doenteId: string, @Body() dto: RejeitarLeiturasDto, @Request() req: PedidoAutenticado) {
     return this.leituras.rejeitar(doenteId, dto.ids, req.user.sub, dto.motivo);
   }
 }

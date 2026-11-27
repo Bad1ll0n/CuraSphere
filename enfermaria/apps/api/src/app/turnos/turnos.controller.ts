@@ -1,16 +1,17 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { TurnosService } from './turnos.service';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/infra/enums';
 import { CheckInDto } from './dto/check-in.dto';
 import { NotaTurnoDto } from './dto/nota-turno.dto';
 import { CriarTurnoDto } from './dto/criar-turno.dto';
 import { AtribuirDoentesTurnoDto } from './dto/atribuir-doentes-turno.dto';
-import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -26,13 +27,13 @@ export class TurnosController {
   }
 
   @Get('passagem-turno')
-  passagemTurno(@Request() req: any) {
+  passagemTurno(@Request() req: PedidoAutenticado) {
     return this.turnosService.passagemTurno(req.user.sub);
   }
 
   @Post('check-in')
   checkIn(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Body() dto: CheckInDto = {},
   ) {
     const ip = req.ip ?? ''; // SEC-08: o cabeçalho é falsificável; o req.ip vem do trust proxy
@@ -44,12 +45,12 @@ export class TurnosController {
   }
 
   @Post('iniciar-passagem')
-  iniciarPassagem(@Request() req: any) {
+  iniciarPassagem(@Request() req: PedidoAutenticado) {
     return this.turnosService.iniciarPassagem(req.user.sub);
   }
 
   @Post('confirmar-passagem')
-  confirmarPassagem(@Request() req: any) {
+  confirmarPassagem(@Request() req: PedidoAutenticado) {
     return this.turnosService.confirmarPassagemTurno(req.user.sub);
   }
 
@@ -72,7 +73,7 @@ export class TurnosController {
   @Post('nota')
   adicionarNota(
     @Body() dto: NotaTurnoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.turnosService.adicionarNota({ ...dto, autorId: req.user.sub });
   }

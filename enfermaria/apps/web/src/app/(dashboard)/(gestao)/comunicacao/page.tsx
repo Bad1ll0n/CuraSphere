@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Anuncio {
   id: string;
@@ -197,23 +198,21 @@ export default function ComunicacaoPage() {
               Broadcast
             </button>
           )}
-          <button onClick={() => setMensagemModal(true)}
-            className="flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold rounded-xl transition-colors"
+          <Button variant="secondary" className="flex gap-2" onClick={() => setMensagemModal(true)}
             style={{ padding: '10px 20px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             Enviar Mensagem
-          </button>
+          </Button>
           {podePublicar && (
-            <button onClick={() => setAnuncioModal(true)}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            <Button variant="primary" className="flex gap-2" onClick={() => setAnuncioModal(true)}
               style={{ padding: '10px 20px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
               </svg>
               Publicar Anúncio
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -288,7 +287,7 @@ export default function ComunicacaoPage() {
         <div className="grid gap-4">
           {anuncios.length === 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
-              <p className="text-slate-500">Nenhum anúncio activo para o seu serviço.</p>
+              <p className="text-slate-500">Nenhum anúncio ativo para o seu serviço.</p>
             </div>
           ) : anuncios.map(a => (
             <div key={a.id} className="bg-white rounded-2xl border border-slate-200" style={{ padding: '24px 28px' }}>
@@ -398,14 +397,13 @@ export default function ComunicacaoPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <p className="text-orange-700 text-xs">
-                Sem filtros seleccionados, a mensagem é enviada para <strong>todos os utilizadores</strong> da plataforma.
+                Sem filtros selecionados, a mensagem é enviada para <strong>todos os utilizadores</strong> da plataforma.
               </p>
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => { setBroadcastModal(false); setBroadcastForm({ servicoAlvo: '', roleAlvo: '', assunto: '', texto: '' }); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => { setBroadcastModal(false); setBroadcastForm({ servicoAlvo: '', roleAlvo: '', assunto: '', texto: '' }); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={async () => { await enviarBroadcast(); setBroadcastModal(false); }}
                 disabled={enviandoBroadcast || !broadcastForm.texto.trim()}
                 className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
@@ -455,14 +453,12 @@ export default function ComunicacaoPage() {
                 style={{ padding: '10px 14px' }} />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setAnuncioModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={publicarAnuncio} disabled={salvando || !anuncioForm.titulo.trim() || !anuncioForm.texto.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setAnuncioModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={publicarAnuncio} disabled={salvando || !anuncioForm.titulo.trim() || !anuncioForm.texto.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A publicar...' : 'Publicar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -574,26 +570,23 @@ export default function ComunicacaoPage() {
                     className="text-slate-500 hover:text-red-500 font-bold ml-2 shrink-0" aria-label="Fechar">✕</button>
                 </div>
               ) : (
-                <button onClick={() => anexoInputRef.current?.click()}
-                  className="flex items-center gap-2 border border-dashed border-slate-300 text-slate-500 hover:border-blue-400 hover:text-blue-600 rounded-xl text-sm font-medium transition-colors w-full justify-center"
+                <Button variant="secondary" fullWidth className="flex gap-2 border-dashed hover:border-blue-400 hover:text-blue-600" onClick={() => anexoInputRef.current?.click()}
                   style={{ padding: '10px 14px' }}>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                   </svg>
                   Adicionar anexo (PDF, imagem, Word, Excel — máx. 10 MB)
-                </button>
+                </Button>
               )}
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setMensagemModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={enviarMensagem} disabled={salvando || !mensagemForm.destinatarioId || !mensagemForm.texto.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setMensagemModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={enviarMensagem} disabled={salvando || !mensagemForm.destinatarioId || !mensagemForm.texto.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A enviar...' : 'Enviar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

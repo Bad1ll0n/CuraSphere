@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { LeituraMonitorPendente } from '@org/shared';
 import { useToast } from '@/components/toast';
 import { useDecidirLeituras, useLeiturasMonitor } from '@/lib/hooks/use-leituras-monitor';
+import { Button } from '@/components/ui';
 
 const ROLES_VALIDAM = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno'];
 
@@ -108,15 +109,15 @@ export function LeiturasMonitorPanel({ doenteId, role, onValidadas }: { doenteId
       </ul>
       {podeValidar ? (
         <div className="flex flex-wrap items-center gap-2" style={{ marginTop: '10px' }}>
-          <button type="button" disabled={!ids.length || decidir.isPending} onClick={validar}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+          <Button variant="primary" type="button" disabled={!ids.length || decidir.isPending} onClick={validar}
+             style={{ padding: '6px 12px' }}>
             {t('validate', { n: ids.length })}
-          </button>
+          </Button>
           {!aRejeitar ? (
-            <button type="button" disabled={!ids.length} onClick={() => setARejeitar(true)}
-              className="border border-slate-300 text-slate-700 text-sm rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+            <Button variant="secondary" type="button" disabled={!ids.length} onClick={() => setARejeitar(true)}
+               style={{ padding: '6px 12px' }}>
               {t('reject')}
-            </button>
+            </Button>
           ) : (
             <>
               <label htmlFor="lm-motivo" className="sr-only">{t('reasonLabel')}</label>

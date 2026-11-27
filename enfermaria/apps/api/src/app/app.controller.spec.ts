@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
 import { RedisService } from './redis/redis.service';
-import { AuditoriaInstaladaService } from './common/auditoria-instalada.service';
+import { AuditoriaInstaladaService } from './common/auditoria/auditoria-instalada.service';
 
 const mockPrisma = { $queryRaw: jest.fn(), $connect: jest.fn(), $disconnect: jest.fn() };
 const mockRedis = { set: jest.fn(), get: jest.fn(), ping: jest.fn() };

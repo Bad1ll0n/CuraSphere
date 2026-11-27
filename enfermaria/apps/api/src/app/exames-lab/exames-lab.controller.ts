@@ -5,6 +5,7 @@ import { Roles } from '../auth/roles.decorator';
 import { ExamesLabService } from './exames-lab.service';
 import { CriarResultadoDto } from './dto/criar-resultado.dto';
 import { CriarLoteResultadosDto } from './dto/criar-lote.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('exames-lab')
@@ -28,13 +29,13 @@ export class ExamesLabController {
 
   @Post()
   @Roles('medico', 'enfermeiro', 'farmaceutico')
-  criar(@Body() dto: CriarResultadoDto, @Request() req: any) {
-    return this.service.criar(dto, req.user.userId);
+  criar(@Body() dto: CriarResultadoDto, @Request() req: PedidoAutenticado) {
+    return this.service.criar(dto, req.user.sub);
   }
 
   @Post('lote')
   @Roles('medico', 'enfermeiro', 'farmaceutico')
-  criarLote(@Body() dto: CriarLoteResultadosDto, @Request() req: any) {
-    return this.service.criarLote(dto.resultados, req.user.userId);
+  criarLote(@Body() dto: CriarLoteResultadosDto, @Request() req: PedidoAutenticado) {
+    return this.service.criarLote(dto.resultados, req.user.sub);
   }
 }

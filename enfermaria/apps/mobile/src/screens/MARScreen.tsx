@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert,
+  View, Text, FlatList, TouchableOpacity,
+  ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import { administradaHoje } from '../lib/mar';
 import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
 import { corpoAdministracao } from '../lib/administracao';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 /**
  * ARQ-12: a forma vem do contrato partilhado com a api. Antes este ecrã lia
@@ -32,6 +33,7 @@ const viaCor: Record<string, string> = {
 };
 
 export default function MARScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const { t } = useTranslation();
   const [medicacoes, setMedicacoes] = useState<MedicacaoMAR[]>([]);
   const [loading, setLoading] = useState(true);
@@ -104,22 +106,25 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
         ))}
       </View>
 
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}>
-        {erroCarga
-          ? (
-            <ErroCarregamento
+      <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todas as linhas)
+        data={erroCarga ? [] : filtradas}
+        keyExtractor={(m) => m.id}
+        initialNumToRender={8}
+        windowSize={7}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
+        ListEmptyComponent={erroCarga ? (
+          <ErroCarregamento
               texto={t('mar.loadError')}
               onTentarNovamente={() => { setLoading(true); carregar(); }}
             />
-          )
-          : filtradas.length === 0
-          ? (
+        ) : (
             <View style={s.vazio}>
               <Ionicons name="checkmark-circle-outline" size={48} color="#22c55e" />
               <Text style={s.vazioTexto}>{t('mar.allGiven')}</Text>
             </View>
-          )
-          : filtradas.map(m => {
+        )}
+        ListFooterComponent={<View style={{ height: 32 }} />}
+        renderItem={({ item: m }) => {
             const corVia = viaCor[m.via] ?? '#64748b';
             return (
               <View key={m.id} style={[s.cartao, m.administradoHoje && s.cartaoAdministrado]}>
@@ -161,38 +166,36 @@ export default function MARScreen({ utilizador, onVoltar }: Props) {
                 )}
               </View>
             );
-          })
-        }
-        <View style={{ height: 32 }} />
-      </ScrollView>
+        }}
+      />
     </View>
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
-  filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
+  filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center' },
   filtroAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoAdministrado: { opacity: 0.65 },
   cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
-  medicamentoNome: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  doenteNome: { fontSize: 13, color: '#475569', marginTop: 2 },
-  cama: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  medicamentoNome: { fontSize: 15, fontWeight: '700', color: c.texto },
+  doenteNome: { fontSize: LETRA.corpo, color: c.textoSecundario, marginTop: 2 },
+  cama: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   tags: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: 4 },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  tagTexto: { fontSize: 13, fontWeight: '600', color: '#475569' },
-  horarios: { fontSize: 13, color: '#64748b', marginTop: 4 },
+  tagTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario },
+  horarios: { fontSize: 13, color: c.textoTenue, marginTop: 4 },
   btnAdministrar: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#dbeafe', paddingVertical: 8, borderRadius: 10, justifyContent: 'center', marginTop: 10 },
-  btnAdministrarTexto: { color: '#1d4ed8', fontWeight: '700', fontSize: 14 },
-});
+  btnAdministrarTexto: { color: '#1d4ed8', fontWeight: '700', fontSize: LETRA.corpo },
+}));

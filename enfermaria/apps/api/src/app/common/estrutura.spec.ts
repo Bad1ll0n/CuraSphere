@@ -249,7 +249,7 @@ const PUBLICOS_POR_DESENHO = [
   'auth/auth.controller.ts', // login, refresh: são a porta de entrada
   'portal-doente/portal-doente.controller.ts', // tem o seu próprio PortalJwtGuard
   'tickets/quiosque.controller.ts', // tem o seu próprio QuiosqueGuard
-  'common/csp-report.controller.ts', // recebe relatórios de CSP enviados pelo browser
+  'common/seguranca/csp-report.controller.ts', // recebe relatórios de CSP enviados pelo browser
   'triagem-portal/triagem-portal.controller.ts', // orientador de sintomas: sem PHI, sem estado, throttle apertado
 ];
 
@@ -278,7 +278,7 @@ describe('estrutura — autenticação', () => {
 const CORPO_CRU_POR_DESENHO = [
   'hl7/hl7.controller.ts', // recebe uma mensagem HL7 em texto
   'fhir/fhir.controller.ts', // recebe um recurso FHIR arbitrário
-  'common/csp-report.controller.ts', // o corpo é definido pelo browser, não por nós
+  'common/seguranca/csp-report.controller.ts', // o corpo é definido pelo browser, não por nós
   'auth/sso/sso.controller.ts', // callback SAML: o corpo vem do fornecedor de identidade
 ];
 
@@ -406,6 +406,42 @@ describe('estrutura — aleatoriedade', () => {
     const jaResolvidos = MATH_RANDOM_POR_DESENHO.filter((f) => !usaMathRandom(join(RAIZ_APP, f)));
 
     expect(jaResolvidos).toEqual([]);
+  });
+});
+
+/* ------------------------------------------------------------------ *
+ * ARQ-07 — nenhuma falha engolida em silêncio
+ * ------------------------------------------------------------------ */
+describe('estrutura — falhas tratadas', () => {
+  // `.catch(() => null|undefined|{})` e `catch {}` vazios: a falha desaparece sem rasto. Usar
+  // `registarFalha('contexto')` (common/infra/falhas.ts), que regista e conta. Ficam só estes, por
+  // desenho: limpeza de temporários, ficheiro inexistente = null, e o Redis opcional (a ligação
+  // tem o seu próprio tratamento de erros e a cache degrada para a BD).
+  const SILENCIO_POR_DESENHO: Record<string, number> = {
+    'common/infra/storage.service.ts': 2, // unlink de temporário; readFile de ficheiro que não existe → null
+    'comunicacao/comunicacao.controller.ts': 1, // unlink do temporário do upload
+    'common/seguranca/throttler-redis.storage.ts': 2, // connect/quit do Redis opcional
+    'redis/barramento.service.ts': 4, // connect/subscribe do Redis opcional (religa sozinho)
+    'dashboard/dashboard.service.ts': 2, // cache em Redis: falhar = calcular na BD
+  };
+  const SILENCIO = /\.catch\(\s*\(\s*\w*\s*\)\s*=>\s*(null|undefined|\{\s*\})\s*\)|catch\s*(\(\s*\w*\s*\))?\s*\{\s*\}/g;
+  // Sobre o texto original: um `catch { /* porquê */ }` comentado está documentado — não é silêncio.
+  const contar = (f: string) => (readFileSync(f, 'utf8').match(SILENCIO) ?? []).length;
+
+  it('nenhum código novo engole erros em silêncio', () => {
+    const infratores = ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .map((f) => [caminhoRelativo(f), contar(f)] as const)
+      .filter(([f, n]) => n > (SILENCIO_POR_DESENHO[f] ?? 0))
+      .map(([f, n]) => `${f}: ${n}`);
+    expect(infratores).toEqual([]);
+  });
+
+  it('a lista só encolhe', () => {
+    const encolheram = Object.entries(SILENCIO_POR_DESENHO)
+      .filter(([f, n]) => contar(join(RAIZ_APP, f)) < n)
+      .map(([f]) => f);
+    expect(encolheram).toEqual([]);
   });
 });
 
@@ -640,9 +676,8 @@ describe('estrutura — cascatas no schema (ARQ-03)', () => {
 describe('estrutura — tamanho dos ficheiros', () => {
   const LIMITE_LINHAS = 800;
   const GRANDES: Record<string, number> = {
-    'ai-clinico/ai-clinico.service.ts': 1248,
-    'medicacao/medicacao.service.ts': 1331,
-    'doentes/doentes.service.ts': 1243,
+    'medicacao/medicacao.service.ts': 1307,
+    'doentes/doentes.service.ts': 1019,
   };
   const actuais = Object.fromEntries(
     ficheiros(RAIZ_APP, '.ts')
@@ -663,5 +698,115 @@ describe('estrutura — tamanho dos ficheiros', () => {
       .filter(([f, n]) => (actuais[f] ?? 0) < n)
       .map(([f, n]) => `${f}: ${n} → ${actuais[f] ?? `≤${LIMITE_LINHAS}`}`);
     expect(desceu).toEqual([]);
+  });
+});
+
+/**
+ * ARQ-08 — erosão da segurança de tipos. Os controladores recebiam `@Request() req: any` (mais de
+ * 300): um campo inventado passava sem aviso, e `req.user.userId` (que não existe) gravava o autor
+ * de resultados de análises e de outcomes como `undefined`. Agora o pedido é tipado
+ * (auth/pedido-autenticado.ts) e o número de `any` no código da API só pode descer.
+ */
+const TECTO_ANY = 389; // era ~720 antes do ARQ-08; actualizar só para BAIXO, quando se remove `any`
+
+describe('estrutura — segurança de tipos', () => {
+  const codigo = ficheiros(RAIZ_APP, '.ts').filter((f) => !f.endsWith('.spec.ts') && !f.includes('generated'));
+
+  it('nenhum pedido sem tipo (`@Request() req: any`) — usar PedidoAutenticado / PedidoPortal / PedidoQuiosque', () => {
+    const infratores = codigo.filter((f) => /@(Request|Req)\(\)\s+\w+:\s*any\b/.test(lerCodigo(f))).map(caminhoRelativo);
+    expect(infratores).toEqual([]);
+  });
+
+  it('o número de `any` não sobe (ratchet)', () => {
+    const total = codigo.reduce((n, f) => n + (lerCodigo(f).match(/(:\s*any\b|\bas any\b|<any>|\bany\[\])/g) ?? []).length, 0);
+    // Subiu: tipar em vez de `any`. Desceu: baixar o TECTO_ANY para o novo valor.
+    expect(total).toBe(TECTO_ANY);
+  });
+});
+
+describe('estrutura — identificadores do schema (PROD-24)', () => {
+  it('modelos e campos só usam letras latinas sem acentos', () => {
+    const schema = readFileSync(join(RAIZ_APP, '..', '..', 'prisma', 'schema.prisma'), 'utf8');
+    // O identificador de cada linha de modelo, enum ou campo (sem comentários).
+    const suspeitos = schema
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .split('\n')
+      .map((l) => l.replace(/\/\/.*$/, '').trim())
+      .filter((l) => l && !l.startsWith('@@') && l !== '}')
+      .map((l) => (/^(model|enum)\s/.test(l) ? l.split(/\s+/)[1] : l.split(/\s+/)[0]))
+      .filter((ident) => /[^\x20-\x7E]/.test(ident));
+    expect(suspeitos).toEqual([]);
+  });
+});
+
+describe('estrutura — seeds com dados pessoais (QA-27)', () => {
+  it('as seeds que criam doentes usam o cliente que cifra e carregam o .env antes de tudo', () => {
+    const dir = join(RAIZ_APP, '..', 'prisma');
+    const seeds = readdirSync(dir).filter((f) => /^seed.*\.ts$/.test(f) && !f.includes('.spec.'));
+    const problemas = seeds.flatMap((f) => {
+      const s = readFileSync(join(dir, f), 'utf8');
+      if (!/\.doente\.(create|upsert|createMany)\(/.test(s)) return [];
+      const erros: string[] = [];
+      if (!s.includes('criarClienteComEncriptacao(')) erros.push(`${f}: cria doentes sem o cliente que cifra`);
+      const primeiroImport = s.match(/^import [^\n]+$/m)?.[0] ?? '';
+      if (!primeiroImport.includes('carregar-env')) erros.push(`${f}: o .env tem de ser carregado no 1.º import`);
+      return erros;
+    });
+    expect(problemas).toEqual([]);
+  });
+});
+
+describe('estrutura — dependências entre módulos (ARQ-18)', () => {
+  it('nenhum módulo da api precisa de forwardRef (sem ciclos entre módulos)', () => {
+    const comForwardRef = ficheiros(RAIZ_APP, '.ts')
+      .filter((f) => !f.endsWith('.spec.ts'))
+      .filter((f) => /\bforwardRef\s*\(/.test(readFileSync(f, 'utf8')))
+      .map(caminhoRelativo);
+    expect(comForwardRef).toEqual([]);
+  });
+});
+
+describe('estrutura — módulos sem consumidor (ARQ-16)', () => {
+  // Controllers que nenhum ecrã da web nem do mobile chama — documentados em
+  // docs/MODULOS-SEM-INTERFACE.md (integrações externas, indicadores, e os que aguardam decisão
+  // de produto). Um módulo novo sem interface tem de ser acrescentado lá e aqui.
+  const CONHECIDOS = [
+    'episodios', 'fhir', 'ficheiros', 'hl7', 'lista-espera', 'outcomes', 'population-health',
+    'protocolos', 'regras-clinicas', 'sns-pem', 'transferencias', 'triagem-portal', 'webhooks',
+  ];
+  it('não aparecem módulos novos sem interface nem documentação', () => {
+    const raizApps = join(RAIZ_APP, '..', '..', '..');
+    const cliente = ['web', 'mobile'].flatMap((a) => ficheiros(join(raizApps, a, 'src'), '.ts').concat(ficheiros(join(raizApps, a, 'src'), '.tsx')))
+      .filter((f) => !f.includes('.spec.'))
+      .map((f) => readFileSync(f, 'utf8')).join('\n');
+    const prefixos = ficheiros(RAIZ_APP, '.controller.ts')
+      .flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/@Controller\(\s*['"]([^'"]+)['"]/g)].map((m) => m[1].split('/')[0]))
+      .filter(Boolean);
+    const semCliente = [...new Set(prefixos)].filter((p) => !cliente.includes(`'/${p}`) && !cliente.includes(`"/${p}`) && !cliente.includes('`/' + p) && !cliente.includes(`/v1/${p}`));
+    expect(semCliente.filter((p) => !CONHECIDOS.includes(p)).sort()).toEqual([]);
+  });
+});
+
+// ARQ-19: o common/ era um saco de 95 ficheiros (cálculo clínico, segurança, auditoria, IA e
+// infraestrutura misturados). Agora cada um vive na subpasta do seu tema; na raiz só ficam as
+// guardas do repositório e os DTOs partilhados.
+describe('estrutura — common/ organizado por tema (ARQ-19)', () => {
+  const COMMON = join(RAIZ_APP, 'common');
+  const SUBPASTAS = ['auditoria', 'clinico', 'dto', 'ia', 'infra', 'seguranca'];
+
+  it('só as subpastas conhecidas e nenhum ficheiro solto além das guardas', () => {
+    const entradas = readdirSync(COMMON);
+    const pastas = entradas.filter((e) => statSync(join(COMMON, e)).isDirectory()).sort();
+    const soltos = entradas.filter((e) => !statSync(join(COMMON, e)).isDirectory() && !e.endsWith('.spec.ts'));
+    expect(pastas).toEqual(SUBPASTAS);
+    expect(soltos).toEqual([]);
+  });
+
+  it('as escalas clínicas e a escala de serviço não se confundem', () => {
+    const gestao = readFileSync(join(RAIZ_APP, 'gestao.module.ts'), 'utf8');
+    const clinico = readFileSync(join(RAIZ_APP, 'clinical.module.ts'), 'utf8');
+    expect(gestao).not.toContain('EscalasModule');
+    expect(clinico).toContain('EscalasModule');
+    expect(readdirSync(RAIZ_APP)).not.toContain('escalas-clinicas');
   });
 });

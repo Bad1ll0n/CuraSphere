@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { pedirTexto } from '@/components/motivo-remocao';
 import { useAcaoPlaneamento, useCatalogoPlaneamentoAlta, usePlaneamentoAlta } from '@/lib/hooks/use-planeamento-alta';
+import { Button } from '@/components/ui';
 
 /** Espelho das transições da API (planeamento-alta.regras.ts) — só para mostrar os botões certos. */
 const PROXIMOS: Record<ReferenciacaoContinuidade['estado'], ReferenciacaoContinuidade['estado'][]> = {
@@ -112,10 +113,10 @@ export function ContinuidadeCuidadosPanel({ doenteId, role }: { doenteId: string
                 {podeEquipa && PROXIMOS[ref.estado].length > 0 && (
                   <div className="flex gap-2 flex-wrap" style={{ marginTop: '6px' }}>
                     {PROXIMOS[ref.estado].map((e) => (
-                      <button key={e} type="button" disabled={acao.isPending} onClick={() => mudarEstado(ref, e)}
-                        className="text-xs border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50" style={{ padding: '4px 10px' }}>
+                      <Button variant="secondary" size="sm" key={e} type="button" disabled={acao.isPending} onClick={() => mudarEstado(ref, e)}
+                         style={{ padding: '4px 10px' }}>
                         {t(`action.${e}`)}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 )}
@@ -136,11 +137,11 @@ export function ContinuidadeCuidadosPanel({ doenteId, role }: { doenteId: string
               <label htmlFor="cc-motivo" className="block text-xs font-semibold text-slate-600">{t('referral.reason')}</label>
               <input id="cc-motivo" value={motivo} maxLength={1000} onChange={(e) => setMotivo(e.target.value)} className={campo} style={{ padding: '6px 8px' }} />
             </div>
-            <button type="button" disabled={!destino || motivo.trim().length < 5 || acao.isPending}
+            <Button variant="primary" type="button" disabled={!destino || motivo.trim().length < 5 || acao.isPending}
               onClick={async () => { if (await fazer(() => api.post(`/planeamento-alta/doente/${doenteId}/referenciacoes`, { destino, motivo }), t('referral.created'))) { setDestino(''); setMotivo(''); } }}
-              className="bg-blue-600 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '7px 14px' }}>
+               style={{ padding: '7px 14px' }}>
               {t('referral.submit')}
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -208,7 +209,7 @@ export function ContinuidadeCuidadosPanel({ doenteId, role }: { doenteId: string
               </ul>
             )}
             <div style={{ gridColumn: '1 / -1' }}>
-              <button type="button" disabled={!ensino.tema || acao.isPending}
+              <Button variant="primary" type="button" disabled={!ensino.tema || acao.isPending}
                 onClick={async () => {
                   const { titulo, cuidadorNome, nota, ...resto } = ensino;
                   const corpo = { ...resto, ...(titulo ? { titulo } : {}), ...(cuidadorNome ? { cuidadorNome } : {}), ...(nota ? { nota } : {}) };
@@ -216,9 +217,9 @@ export function ContinuidadeCuidadosPanel({ doenteId, role }: { doenteId: string
                     setEnsino({ tema: '', titulo: '', destinatario: 'doente', cuidadorNome: '', compreensao: 'compreendeu', nota: '' });
                   }
                 }}
-                className="bg-blue-600 text-white text-sm font-semibold rounded-lg disabled:opacity-50" style={{ padding: '7px 14px' }}>
+                 style={{ padding: '7px 14px' }}>
                 {t('teaching.submit')}
-              </button>
+              </Button>
             </div>
           </div>
         )}

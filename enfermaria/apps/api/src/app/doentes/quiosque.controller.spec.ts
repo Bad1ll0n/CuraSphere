@@ -1,6 +1,6 @@
 import { GUARDS_METADATA } from '@nestjs/common/constants';
 import { QuiosqueController } from './quiosque.controller';
-import { QuiosqueGuard } from '../common/quiosque.guard';
+import { QuiosqueGuard } from '../common/seguranca/quiosque.guard';
 
 /**
  * S-05: `GET /doentes/quiosque-dados` validava o token de quiosque por conta própria — sem

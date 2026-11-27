@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { SinaisVitaisService, detetar } from '../sinais-vitais/sinais-vitais.service';
-import { janelaRegistoDiferidoMs, resolverHoraDoAto } from '../common/hora-do-ato';
+import { janelaRegistoDiferidoMs, resolverHoraDoAto } from '../common/clinico/hora-do-ato';
 
 /** Os parâmetros que um monitor pode enviar — os mesmos nomes do SinalVital. */
 export const PARAMETROS_MONITOR = [

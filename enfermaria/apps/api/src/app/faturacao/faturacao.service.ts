@@ -1,3 +1,4 @@
+import { euros, multiplicarEuros, somarEuros, type ValorMonetario } from '../common/infra/dinheiro';
 import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -99,7 +100,7 @@ export class FaturacaoService {
         throw new BadRequestException('Não é possível alterar um episódio pago ou anulado');
       }
       const quantidade = data.quantidade ?? 1;
-      const total = quantidade * data.precoUnitario;
+      const total = multiplicarEuros(data.precoUnitario, quantidade);
       const item = await tx.itemFatura.create({
         data: { episodioFaturacaoId: episodioId, ...data, quantidade, total },
       });
@@ -138,8 +139,9 @@ export class FaturacaoService {
       });
 
       const pagamentos = await tx.pagamento.findMany({ where: { episodioFaturacaoId: episodioId } });
-      const totalPago = pagamentos.reduce((s, p) => s + p.valor, 0);
-      if (totalPago >= ep.totalCobrado && ep.totalCobrado > 0) {
+      const totalPago = somarEuros(pagamentos.map((p) => p.valor));
+      const cobrado = euros(ep.totalCobrado);
+      if (totalPago >= cobrado && cobrado > 0) {
         await tx.episodioFaturacao.update({ where: { id: episodioId }, data: { estado: 'paga' } });
       }
 
@@ -190,10 +192,11 @@ export class FaturacaoService {
     const stats = { totalFaturado: 0, totalPago: 0, totalPendente: 0, totalAnulado: 0, countPorEstado: {} as Record<string, number> };
     for (const ep of episodios) {
       stats.countPorEstado[ep.estado] = (stats.countPorEstado[ep.estado] ?? 0) + 1;
-      if (ep.estado !== 'anulada') stats.totalFaturado += ep.totalCobrado;
-      if (ep.estado === 'paga') stats.totalPago += ep.totalCobrado;
-      if (ep.estado === 'pendente' || ep.estado === 'emitida') stats.totalPendente += ep.totalCobrado;
-      if (ep.estado === 'anulada') stats.totalAnulado += ep.totalCobrado;
+      const v = ep.totalCobrado;
+      if (ep.estado !== 'anulada') stats.totalFaturado = somarEuros([stats.totalFaturado, v]);
+      if (ep.estado === 'paga') stats.totalPago = somarEuros([stats.totalPago, v]);
+      if (ep.estado === 'pendente' || ep.estado === 'emitida') stats.totalPendente = somarEuros([stats.totalPendente, v]);
+      if (ep.estado === 'anulada') stats.totalAnulado = somarEuros([stats.totalAnulado, v]);
     }
 
     return { stats, episodios };
@@ -201,7 +204,7 @@ export class FaturacaoService {
 
   private async recalcularTotal(episodioId: string, db: any = this.prisma) {
     const itens = await db.itemFatura.findMany({ where: { episodioFaturacaoId: episodioId } });
-    const totalBase = itens.reduce((s: number, i: any) => s + i.total, 0);
+    const totalBase = somarEuros(itens.map((i: { total: ValorMonetario }) => i.total));
     await db.episodioFaturacao.update({
       where: { id: episodioId },
       data: { totalBase, totalCobrado: totalBase },

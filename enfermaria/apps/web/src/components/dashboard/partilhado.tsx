@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { capitalizarPrimeira } from '@/lib/formatar';
 import api from '@/lib/api';
 import { useSocket } from '@/lib/use-socket';
 import { useTranslations } from 'next-intl';
@@ -10,7 +11,8 @@ import { useTranslations } from 'next-intl';
  * ARQ-14 — peças comuns aos painéis do dashboard (antes num ficheiro de 1 800 linhas).
  * Cada painel por papel está em ./paineis/.
  */
-export const hoje = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
+// UX-20/UX-25: só a primeira letra em maiúscula (o `capitalize` do CSS dava "Quinta-Feira, 5 De Novembro").
+export const hoje = capitalizarPrimeira(new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' }));
 
 export const hojeISO = new Date().toISOString().split('T')[0];
 
@@ -77,17 +79,19 @@ export function StatCard({ label, value, sub, color = 'bg-blue-600' }: { label: 
   );
 }
 
-export function EmBreve({ titulo, descricao }: { titulo: string; descricao?: string }) {
+/**
+ * ARQ-15: os dashboards anunciavam como "Em breve" funcionalidades que já existiam (validação
+ * farmacêutica, IACS, checklist cirúrgica, auditoria...). O cartão passa a ser um atalho para o
+ * módulo; o que não existe deixa de ser anunciado.
+ */
+export function AtalhoModulo({ titulo, descricao, href }: { titulo: string; descricao?: string; href: string }) {
   const tCommon = useTranslations('common');
   return (
-    <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-center" style={{ padding: '40px 24px' }}>
-      <svg className="w-8 h-8 text-slate-300" style={{ marginBottom: '12px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <p className="font-semibold text-slate-500 text-sm">{titulo}</p>
-      {descricao && <p className="text-slate-500 text-xs" style={{ marginTop: '6px' }}>{descricao}</p>}
-      <span className="inline-block text-[10px] font-semibold badge-pad py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>{tCommon('comingSoon')}</span>
-    </div>
+    <Link href={href} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 hover:bg-blue-50/40 block" style={{ padding: '24px' }}>
+      <p className="text-sm font-semibold text-slate-800">{titulo}</p>
+      {descricao && <p className="text-sm text-slate-500" style={{ marginTop: '6px' }}>{descricao}</p>}
+      <span className="inline-block text-xs font-semibold text-blue-700" style={{ marginTop: '12px' }}>{tCommon('open')} →</span>
+    </Link>
   );
 }
 
@@ -131,7 +135,7 @@ export function DashboardHeader({ utilizador }: { utilizador: { nome: string; ro
   return (
     <div className="flex items-start justify-between" style={{ marginBottom: '36px' }}>
       <div>
-        <p className="text-sm text-slate-500 capitalize" style={{ marginBottom: '4px' }}>{hoje}</p>
+        <p className="text-sm text-slate-500" style={{ marginBottom: '4px' }}>{hoje}</p>
         <h1 className="text-3xl font-bold text-slate-900">{saudacaoStr}, {primeiro} 👋</h1>
         <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
           <span className="text-xs font-medium badge-pad py-1 rounded-full bg-blue-100 text-blue-700">{rl}</span>

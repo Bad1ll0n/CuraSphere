@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react-native';
 import { useTranslation } from 'react-i18next';
 import i18n from '../lib/i18n';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, TouchableOpacity, Modal, ActivityIndicator, StyleSheet, AppState, AppStateStatus, Platform, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,7 +12,7 @@ import { queryClient } from '../lib/query-client';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
 
-import { getUtilizador, logout, Utilizador } from '../lib/auth';
+import { getUtilizador, limparPersistenciaAntiga, logout, Utilizador } from '../lib/auth';
 import api, { setUnauthorizedCallback } from '../lib/api';
 import LoginScreen from '../screens/LoginScreen';
 import DashboardScreen from '../screens/DashboardScreen';
@@ -30,6 +30,8 @@ import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import { corpoAdministracao } from '../lib/administracao';
 import { SyncStatusBanner } from '../components/SyncStatusBanner';
+import { ROLES_ENFERMAGEM, ROLES_CLINICO } from '@org/shared';
+import { CORES, estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 // Os imports ES são içados: TODOS executam antes de qualquer instrução do corpo do
 // módulo. Ter esta chamada no meio da lista de imports não a tornava mais cedo — só
 // partia a regra `import/first` (22 erros de lint) e dava uma falsa ideia de
@@ -44,9 +46,7 @@ const Tab = createBottomTabNavigator();
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
-const ROLES_MEDICO     = ['medico'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
-const ROLES_CLINICO    = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
+// ARQ-24: as constantes de papéis vêm da matriz partilhada com a web (libs/shared/permissoes).
 
 function grupoRole(role: string): 'clinical' | 'ti' | 'admin' | 'operacional' | 'direcao' | 'qualidade' {
   if (ROLES_CLINICO.includes(role)) return 'clinical';
@@ -83,6 +83,11 @@ function TabIcon({ label, ativo }: { label: string; ativo: boolean }) {
 }
 
 function App() {
+  // UX-24: o tema da navegação (fundos, cartões, separadores) segue o modo do telemóvel.
+  const esquema = useEsquema();
+  const temaNavegacao = esquema === 'escuro'
+    ? { ...DarkTheme, colors: { ...DarkTheme.colors, background: CORES.escuro.fundo, card: CORES.escuro.superficie, border: CORES.escuro.borda, primary: CORES.escuro.acento } }
+    : { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: CORES.claro.fundo, card: CORES.claro.superficie, border: CORES.claro.borda, primary: CORES.claro.acento } };
   const [utilizador, setUtilizador] = useState<Utilizador | null>(null);
   const [loading, setLoading] = useState(true);
   const [scannerAberto, setScannerAberto] = useState(false);
@@ -148,6 +153,8 @@ function App() {
     setUnauthorizedCallback(() => setUtilizador(null));
 
     const iniciar = async () => {
+      // SEC-23: o que versões antigas guardavam em disco (token, perfil, password) sai no arranque.
+      await limparPersistenciaAntiga();
       const u = await getUtilizador();
       if (!u) { setLoading(false); return; }
 
@@ -222,7 +229,7 @@ function App() {
 
       {/* UX-24: o estado da sincronização à vista em toda a app. */}
       <SyncStatusBanner global />
-      <NavigationContainer>
+      <NavigationContainer theme={temaNavegacao}>
         {grupoRole(utilizador.role) === 'ti' ? (
           /* ── Navigator TI ──────────────────────────────── */
           <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
@@ -322,12 +329,12 @@ function App() {
   );
 }
 
-const estilos = StyleSheet.create({
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' },
-  tabBar: { height: 72, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#e2e8f0' },
+const estilos = estilosTematicos((c) => ({
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: c.fundo },
+  tabBar: { height: 72, backgroundColor: c.superficie, borderTopWidth: 1, borderTopColor: c.borda },
   tabItem: { justifyContent: 'center', alignItems: 'center', paddingTop: 10, paddingBottom: 10 },
   tabIcon: { alignItems: 'center', justifyContent: 'center', gap: 3 },
-  tabLabel: { fontSize: 13, fontWeight: '500' },
+  tabLabel: { fontSize: LETRA.secundario, fontWeight: '500' },
   scanBotaoWrapper: {
     flex: 1,
     alignItems: 'center',
@@ -347,6 +354,6 @@ const estilos = StyleSheet.create({
     shadowRadius: 10,
     elevation: 8,
   },
-});
+}));
 
 export default Sentry.wrap(App);

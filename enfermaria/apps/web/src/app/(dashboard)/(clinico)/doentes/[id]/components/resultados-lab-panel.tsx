@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { Button } from '@/components/ui';
 
 interface ResultadoAnalise {
   id: string;
@@ -302,9 +303,8 @@ export function ResultadosLabPanel({ doenteId, utilizador }: { doenteId: string;
             </div>
 
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => setModalNovo(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNovo(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeter} disabled={salvando || !form.parametro || !form.valor || !form.unidade}
                 className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl disabled:opacity-50 transition-colors"
                 style={{ padding: '11px' }}>

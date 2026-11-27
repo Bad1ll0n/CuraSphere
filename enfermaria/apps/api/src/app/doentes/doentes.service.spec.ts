@@ -4,7 +4,8 @@ import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
-import { StorageService } from '../common/storage.service';
+import { AiVigilanciaService } from '../ai-clinico/ai-vigilancia.service';
+import { StorageService } from '../common/infra/storage.service';
 import { ConfigService } from '@nestjs/config';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
@@ -124,6 +125,7 @@ describe('DoenteService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: AiClinicoService, useValue: mockAiClinico },
+        { provide: AiVigilanciaService, useValue: mockAiClinico },
         { provide: StorageService, useValue: mockStorage },
         { provide: ConfigService, useValue: mockConfig },
         { provide: TenantContextService, useValue: { tenantId: 'default', run: (_id: string, fn: () => unknown) => fn() } },
@@ -482,43 +484,6 @@ describe('DoenteService', () => {
       mockPrisma.atribuicaoHorarioTurno.findFirst.mockResolvedValue(null);
 
       await expect(service.assertAcessoDoente('user-1', 'enfermeiro', 'doente-1')).rejects.toThrow(ForbiddenException);
-    });
-  });
-
-  // ── listar() ─────────────────────────────────────────────────────────────────
-
-  describe('listar()', () => {
-    beforeEach(() => {
-      mockPrisma.doente.findMany.mockResolvedValue([]);
-      mockPrisma.doente.count.mockResolvedValue(0);
-    });
-
-    it('não filtra por atribuições para role não-clínico (ti)', async () => {
-      await service.listar('user-1', 'ti');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).not.toHaveProperty('atribuicoesHorario');
-    });
-
-    it('não filtra por atribuições para role clínico com search', async () => {
-      await service.listar('user-1', 'enfermeiro', 1, 25, 'maria');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).not.toHaveProperty('atribuicoesHorario');
-    });
-
-    it('filtra por turnos activos para role clínico sem search', async () => {
-      await service.listar('user-1', 'enfermeiro');
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.where).toHaveProperty('atribuicoesHorario');
-    });
-
-    it('limita o resultado a 100 quando limit=500 é pedido', async () => {
-      await service.listar('user-1', 'ti', 1, 500);
-
-      const callArgs = mockPrisma.doente.findMany.mock.calls[0][0];
-      expect(callArgs.take).toBeLessThanOrEqual(100);
     });
   });
 

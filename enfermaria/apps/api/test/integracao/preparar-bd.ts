@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 import { join } from 'path';
 import { Client } from 'pg';
+import { AUDIT_SIGNING_KEY_INTEGRACAO, ENCRYPTION_KEY_INTEGRACAO } from './chaves';
 
 /**
  * QA-20 — globalSetup: BD nova a cada corrida, com o MESMO caminho de produção.
@@ -25,7 +26,8 @@ export default async function prepararBd(): Promise<void> {
   await c.end();
 
   const raizApi = join(__dirname, '..', '..');
-  const env = { ...process.env, DATABASE_URL: url };
+  // A semente cifra os dados das personas: com a chave da integração (a mesma da aplicação em teste).
+  const env = { ...process.env, DATABASE_URL: url, ENCRYPTION_KEY: ENCRYPTION_KEY_INTEGRACAO, AUDIT_SIGNING_KEY: AUDIT_SIGNING_KEY_INTEGRACAO };
   const correr = (cmd: string) => execSync(cmd, { cwd: raizApi, env, stdio: 'pipe' });
   correr('npx prisma migrate deploy');
   correr('node scripts/apply-audit-triggers.mjs');

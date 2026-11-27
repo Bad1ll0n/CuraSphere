@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { HORAS_TURNO, ROTULO_TURNO, TIPOS_TURNO, turnoDaHora } from '@org/shared';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { Breadcrumb } from '@/components/breadcrumb';
@@ -53,18 +54,17 @@ interface TimelineData {
   doentes: DoenteTimeline[];
 }
 
-const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = [
-  { value: 'manha', label: 'Manhã', inicio: 8, fim: 16 },
-  { value: 'tarde', label: 'Tarde', inicio: 16, fim: 24 },
-  { value: 'noite', label: 'Noite', inicio: 0, fim: 8 },
-];
+// UX-12: a definição única dos turnos (libs/shared).
+const TURNOS: { value: Turno; label: string; inicio: number; fim: number }[] = TIPOS_TURNO.map((value) => ({
+  value, label: ROTULO_TURNO[value], ...HORAS_TURNO[value],
+}));
 
 // '' = todos os serviços. A API filtra pelo serviço da cama.
 const SERVICOS = ['', 'Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
 
 export default function TimelineMedicacoesPage() {
   const toast = useToast();
-  const [turno, setTurno] = useState<Turno>('manha');
+  const [turno, setTurno] = useState<Turno>(() => turnoDaHora(new Date().getHours()));
   const [servico, setServico] = useState(SERVICOS[0]);
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
   const [timeline, setTimeline] = useState<TimelineData | null>(null);
@@ -97,14 +97,15 @@ export default function TimelineMedicacoesPage() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [servico, turno, data]);
 
-  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao, justificacaoSOS?: string) => {
+  // QA-08 (SOS) e QA-15 (1.ª dose antes da validação): o servidor pede uma justificação com 409.
+  const administrar = async (med: SlotMed, confirmacao: ConfirmacaoAdministracao, extra: { justificacaoSOS?: string; justificacaoNaoValidada?: string } = {}) => {
     // Segunda barreira: mesmo que dois eventos passem o `disabled`, só o primeiro entra.
     if (administrando) return;
     setAdministrando(med.medicacaoId);
     try {
       // UX-01: os 5 certos foram percorridos no diálogo — vai como atestação, como no MAR.
       await api.post(`/medicacao/${med.medicacaoId}/administrar`, {
-        doenteId: med.doenteId, ...confirmacao, ...(justificacaoSOS ? { justificacaoSOS } : {}),
+        doenteId: med.doenteId, ...confirmacao, ...extra,
       });
       setConfirmar(null);
       // Marca localmente antes do recarregamento para o botão não voltar a ficar activo
@@ -136,7 +137,18 @@ export default function TimelineMedicacoesPage() {
             placeholder: 'Ex.: dor 8/10 persistente, médico contactado',
           });
           // Repete depois de o `finally` libertar a guarda de duplo-submit.
-          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, justificacao), 0); return; }
+          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, { ...extra, justificacaoSOS: justificacao }), 0); return; }
+        }
+        // QA-15: prescrição por validar — só a 1.ª dose, urgente e justificada.
+        if (e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '')) {
+          const justificacao = await pedirTexto({
+            titulo: 'Prescrição por validar',
+            descricao: e.response.data.message,
+            rotulo: 'Porque é urgente dar a 1.ª dose',
+            botao: 'Administrar 1.ª dose',
+            placeholder: 'Ex.: dor 9/10, farmácia sem turno até às 8h',
+          });
+          if (justificacao) { setTimeout(() => void administrar(med, confirmacao, { ...extra, justificacaoNaoValidada: justificacao }), 0); return; }
         }
       toast.error(e?.response?.data?.message ?? 'Erro');
     } finally {
@@ -165,7 +177,7 @@ export default function TimelineMedicacoesPage() {
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Timeline de Medicação</h1>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Vista por turno — actualização automática cada 60s</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Vista por turno — atualização automática cada 60s</p>
         </div>
         <div className="flex items-center gap-3">
           <input type="date" value={data} onChange={e => setData(e.target.value)}
@@ -280,7 +292,7 @@ export default function TimelineMedicacoesPage() {
 
           {timeline.doentes.length === 0 && (
             <div className="text-center text-slate-500 text-sm" style={{ padding: '48px' }}>
-              Sem doentes activos neste serviço
+              Sem doentes ativos neste serviço
             </div>
           )}
         </div>
@@ -298,7 +310,7 @@ export default function TimelineMedicacoesPage() {
           <div className="w-3 h-3 rounded ring-2 ring-red-500" />
           <span className="text-xs text-slate-500">⚠️ Alto risco</span>
         </div>
-        <span className="text-xs text-slate-500 ml-auto">Click no bloco → confirmar administração</span>
+        <span className="text-xs text-slate-500 ml-auto">Clique no bloco → confirmar administração</span>
       </div>
 
       {/* UX-01: o mesmo diálogo de administração do MAR e da ficha. */}

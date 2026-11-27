@@ -3,10 +3,11 @@ import { UnauthorizedException, BadRequestException, ConflictException, Forbidde
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
-import { AuthService } from './auth.service';
+import { AuthService, hashRefreshToken } from './auth.service';
+import { decifrarSegredo } from '../prisma/encryption.middleware';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { AnomalyDetectionService } from '../common/anomaly-detection.service';
+import { AnomalyDetectionService } from '../common/ia/anomaly-detection.service';
 
 jest.mock('otplib', () => ({
   verify: jest.fn().mockResolvedValue({ valid: true, delta: 0 }),
@@ -292,6 +293,30 @@ describe('AuthService', () => {
 
   // ── verificarMfaLogin() ────────────────────────────────────────────────────
 
+  describe('confirmarPasswordSessao() — desbloqueio do ecrã (UX-21)', () => {
+    const base = { id: '1', ativo: true, passwordHash: '', numeroFuncionario: '12345', ultimaFalhaLoginEm: null, bloqueadoAte: null };
+
+    it('password certa desbloqueia e limpa as falhas', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 2 });
+      await expect(service.confirmarPasswordSessao('1', 'passwordCorreta')).resolves.toEqual({ desbloqueado: true });
+      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(expect.objectContaining({ data: { tentativasLoginFalhadas: 0, ultimaFalhaLoginEm: null } }));
+    });
+
+    it('password errada conta como falha de login (não é um oráculo sem limite)', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 4, ultimaFalhaLoginEm: new Date() });
+      mockPrisma.utilizador.update.mockResolvedValueOnce({ tentativasLoginFalhadas: 5 });
+      await expect(service.confirmarPasswordSessao('1', 'passwordErrada')).rejects.toThrow(/bloqueada/i);
+      expect(mockPrisma.utilizador.update).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        data: expect.objectContaining({ bloqueadoAte: expect.any(Date) }),
+      }));
+    });
+
+    it('conta bloqueada não desbloqueia, mesmo com a password certa', async () => {
+      mockPrisma.utilizador.findUnique.mockResolvedValue({ ...base, passwordHash: hashCorreto, tentativasLoginFalhadas: 0, bloqueadoAte: new Date(Date.now() + 60_000) });
+      await expect(service.confirmarPasswordSessao('1', 'passwordCorreta')).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
   describe('verificarMfaLogin()', () => {
     it('lança UnauthorizedException quando jwt.verify lança', async () => {
       mockJwt.verify.mockImplementation(() => { throw new Error('expired'); });
@@ -494,9 +519,11 @@ describe('AuthService', () => {
       expect(resultado).toHaveProperty('secret', 'JBSWY3DPEHPK3PXP');
       expect(resultado).toHaveProperty('qrCodeDataUrl', 'data:image/png;base64,fake');
       // SEC-02: o segredo proposto fica guardado no servidor.
-      expect(mockPrisma.utilizador.update).toHaveBeenCalledWith({
-        where: { id: 'user-id-1' }, data: { mfaSecretPendente: 'JBSWY3DPEHPK3PXP' },
-      });
+      // SEC-11: e fica cifrado em repouso (nunca a semente TOTP em claro na BD).
+      const gravado = mockPrisma.utilizador.update.mock.calls[0][0];
+      expect(gravado.where).toEqual({ id: 'user-id-1' });
+      expect(gravado.data.mfaSecretPendente).toMatch(/^enc:/);
+      expect(decifrarSegredo(gravado.data.mfaSecretPendente)).toBe('JBSWY3DPEHPK3PXP');
     });
   });
 
@@ -546,7 +573,7 @@ describe('AuthService', () => {
       expect(mockPrisma.utilizador.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'user-id-1' },
-          data: { mfaSecret: 'MY-SECRET', mfaAtivo: true, mfaSecretPendente: null },
+          data: { mfaSecret: expect.stringMatching(/^enc:/), mfaAtivo: true, mfaSecretPendente: null },
         }),
       );
       expect(resultado).toMatchObject({ mensagem: expect.stringContaining('ativada') });
@@ -710,8 +737,12 @@ describe('AuthService', () => {
       const resultado = await service.refresh('tok-antigo');
 
       expect(mockPrisma.refreshToken.update).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { token: 'tok-antigo' }, data: { revogado: true } }),
+        expect.objectContaining({ where: { token: hashRefreshToken('tok-antigo') }, data: { revogado: true } }),
       );
+      // SEC-11: o token novo guarda-se em hash — o valor devolvido ao cliente nunca vai para a BD.
+      const novo = mockPrisma.refreshToken.create.mock.calls[0][0].data.token;
+      expect(novo).toMatch(/^[0-9a-f]{64}$/);
+      expect(novo).toBe(hashRefreshToken(resultado.refreshToken));
       expect(resultado).toHaveProperty('accessToken');
       expect(typeof resultado.refreshToken).toBe('string');
     });

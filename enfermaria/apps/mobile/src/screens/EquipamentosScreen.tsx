@@ -1,18 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  TextInput, Modal, ActivityIndicator, Alert, Platform,
+  View, Text, ScrollView, TouchableOpacity, TextInput, Modal, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
 const TIPOS: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap }> = {
-  cama_eletrica:  { label: 'Cama Eléctrica',   icon: 'bed-outline' },
+  cama_eletrica:  { label: 'Cama Elétrica',   icon: 'bed-outline' },
   ventilador:     { label: 'Ventilador',        icon: 'cloud-outline' },
   monitor:        { label: 'Monitor',           icon: 'desktop-outline' },
   cadeira_rodas:  { label: 'Cadeira de Rodas',  icon: 'accessibility-outline' },
@@ -87,6 +87,7 @@ function formatarData(iso?: string) {
 // ─── Componente Principal ─────────────────────────────────────────────────────
 
 export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const role = utilizador.role;
   const podeGerirEquip     = ['operacional', 'ti'].includes(role);
   const podeReportar       = ['operacional', 'ti', 'enfermeiro', 'medico', 'auxiliar'].includes(role);
@@ -209,7 +210,7 @@ export default function EquipamentosScreen({ utilizador, onVoltar }: Props) {
         setManutDetalhe(r.data);
       }
     } catch {
-      Alert.alert('Erro', 'Não foi possível actualizar a manutenção.');
+      Alert.alert('Erro', 'Não foi possível atualizar a manutenção.');
     } finally {
       setAtualizando(false);
     }
@@ -575,85 +576,85 @@ function CampoLabel({ label }: { label: string }) {
 
 // ─── Estilos ──────────────────────────────────────────────────────────────────
 
-const s = StyleSheet.create({
-  container:        { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
 
-  header:           { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  btnVoltar:        { width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  headerTitulo:     { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  btnVoltar: { width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
-  tabRow:           { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  tab:              { flex: 1, paddingVertical: 12, alignItems: 'center' },
-  tabAtiva:         { borderBottomWidth: 2, borderBottomColor: '#0f172a' },
-  tabLabel:         { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
-  tabLabelAtiva:    { color: '#0f172a', fontWeight: '700' },
+  tabRow: { flexDirection: 'row', backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  tab: { flex: 1, paddingVertical: 12, alignItems: 'center' },
+  tabAtiva: { borderBottomWidth: 2, borderBottomColor: '#0f172a' },
+  tabLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
+  tabLabelAtiva: { color: c.texto, fontWeight: '700' },
 
-  pesquisaRow:      { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 6, backgroundColor: '#fff' },
-  pesquisaBox:      { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f1f5f9', borderRadius: 10, paddingHorizontal: 12, gap: 8 },
-  pesquisaInput:    { flex: 1, height: 38, fontSize: 14, color: '#0f172a' },
+  pesquisaRow: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 6, backgroundColor: c.superficie },
+  pesquisaBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.fundo, borderRadius: 10, paddingHorizontal: 12, gap: 8 },
+  pesquisaInput: { flex: 1, height: 38, fontSize: 14, color: c.texto },
 
-  filtroScroll:     { flexGrow: 0, backgroundColor: '#fff', paddingVertical: 8 },
-  filtroPill:       { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  filtroPillLabel:  { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  filtroScroll: { flexGrow: 0, backgroundColor: c.superficie, paddingVertical: 8 },
+  filtroPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: c.borda, backgroundColor: c.superficie },
+  filtroPillLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
 
-  lista:            { padding: 16, gap: 10, paddingBottom: 32 },
-  centro:           { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  vazio:            { textAlign: 'center', color: '#94a3b8', fontSize: 14, marginTop: 32 },
+  lista: { padding: 16, gap: 10, paddingBottom: 32 },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  vazio: { textAlign: 'center', color: c.textoTenue, fontSize: 14, marginTop: 32 },
 
-  card:             { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#e2e8f0' },
-  cardTopo:         { flexDirection: 'row', alignItems: 'flex-start' },
-  tipoBox:          { width: 38, height: 38, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  cardNome:         { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-  cardSub:          { fontSize: 13, color: '#64748b', marginTop: 2 },
-  cardRodape:       { marginTop: 8, gap: 3 },
-  cardMeta:         { fontSize: 13, color: '#94a3b8' },
-  estadoBadge:      { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoLabel:      { fontSize: 13, fontWeight: '600' },
-  alertaBadge:      { flexDirection: 'row', alignItems: 'center', gap: 3, alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8, marginTop: 2 },
-  alertaLabel:      { fontSize: 13, fontWeight: '600' },
-  priorBadge:       { fontSize: 13, fontWeight: '600' },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: c.borda },
+  cardTopo: { flexDirection: 'row', alignItems: 'flex-start' },
+  tipoBox: { width: 38, height: 38, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  cardNome: { fontSize: 15, fontWeight: '700', color: c.texto },
+  cardSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  cardRodape: { marginTop: 8, gap: 3 },
+  cardMeta: { fontSize: 13, color: c.textoTenue },
+  estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
+  estadoLabel: { fontSize: LETRA.corpo, fontWeight: '600' },
+  alertaBadge: { flexDirection: 'row', alignItems: 'center', gap: 3, alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8, marginTop: 2 },
+  alertaLabel: { fontSize: LETRA.corpo, fontWeight: '600' },
+  priorBadge: { fontSize: 13, fontWeight: '600' },
 
   // modal
-  modal:            { flex: 1, backgroundColor: '#fff' },
-  modalHeader:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 56 : 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  modalTitulo:      { fontSize: 17, fontWeight: '700', color: '#0f172a', flex: 1, marginRight: 12 },
-  modalFechar:      { width: 36, height: 36, borderRadius: 18, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  modalBody:        { flex: 1, paddingHorizontal: 20, paddingTop: 16 },
+  modal: { flex: 1, backgroundColor: c.superficie },
+  modalHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 56 : 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: c.borda },
+  modalTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, flex: 1, marginRight: 12 },
+  modalFechar: { width: 36, height: 36, borderRadius: 18, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  modalBody: { flex: 1, paddingHorizontal: 20, paddingTop: 16 },
 
-  infoGrid:         { backgroundColor: '#f8fafc', borderRadius: 12, padding: 14, gap: 8, marginBottom: 16 },
-  infoRow:          { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  infoLabel:        { fontSize: 13, color: '#64748b', flex: 1 },
-  infoValor:        { fontSize: 13, color: '#0f172a', fontWeight: '500', textAlign: 'right', flex: 1 },
+  infoGrid: { backgroundColor: c.fundo, borderRadius: 12, padding: 14, gap: 8, marginBottom: 16 },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  infoLabel: { fontSize: LETRA.corpo, color: c.textoTenue, flex: 1 },
+  infoValor: { fontSize: LETRA.corpo, color: c.texto, fontWeight: '500', textAlign: 'right', flex: 1 },
 
-  btnReportar:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#0f172a', borderRadius: 10, paddingVertical: 12, marginBottom: 20 },
-  btnReportarLabel: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  btnReportar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#0f172a', borderRadius: 10, paddingVertical: 12, marginBottom: 20 },
+  btnReportarLabel: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
 
-  secaoTitulo:      { fontSize: 14, fontWeight: '700', color: '#0f172a', marginBottom: 10 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, marginBottom: 10 },
 
-  manCard:          { backgroundColor: '#f8fafc', borderRadius: 10, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: '#e2e8f0' },
-  manCardTopo:      { flexDirection: 'row', gap: 8 },
-  manTipo:          { fontSize: 13, fontWeight: '700', color: '#0f172a', marginBottom: 2 },
-  manDesc:          { fontSize: 13, color: '#475569' },
-  manCardRodape:    { marginTop: 6, gap: 2 },
+  manCard: { backgroundColor: c.fundo, borderRadius: 10, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: c.borda },
+  manCardTopo: { flexDirection: 'row', gap: 8 },
+  manTipo: { fontSize: 13, fontWeight: '700', color: c.texto, marginBottom: 2 },
+  manDesc: { fontSize: 13, color: c.textoSecundario },
+  manCardRodape: { marginTop: 6, gap: 2 },
 
-  equip:            { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 16 },
-  campoLabel:       { fontSize: 13, color: '#64748b', fontWeight: '600', marginBottom: 6, marginTop: 14 },
-  gradeOpcoes:      { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  opcaoBtn:         { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  opcaoBtnAtivo:    { backgroundColor: '#0f172a18', borderColor: '#0f172a' },
-  opcaoBtnLabel:    { fontSize: 13, color: '#475569' },
-  opcaoBtnLabelAtivo: { color: '#0f172a', fontWeight: '600' },
-  textarea:         { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, padding: 12, fontSize: 14, color: '#0f172a', backgroundColor: '#fff', minHeight: 88 },
+  equip: { fontSize: 15, fontWeight: '700', color: c.texto, marginBottom: 16 },
+  campoLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '600', marginBottom: 6, marginTop: 14 },
+  gradeOpcoes: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  opcaoBtn: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: c.borda, backgroundColor: c.superficie },
+  opcaoBtnAtivo: { backgroundColor: '#0f172a18', borderColor: '#0f172a' },
+  opcaoBtnLabel: { fontSize: LETRA.corpo, color: c.textoSecundario },
+  opcaoBtnLabelAtivo: { color: c.texto, fontWeight: '600' },
+  textarea: { borderWidth: 1, borderColor: c.borda, borderRadius: 10, padding: 12, fontSize: 14, color: c.texto, backgroundColor: c.superficie, minHeight: 88 },
 
-  btnPrimario:      { backgroundColor: '#0f172a', borderRadius: 10, paddingVertical: 14, alignItems: 'center', marginTop: 20 },
+  btnPrimario: { backgroundColor: '#0f172a', borderRadius: 10, paddingVertical: 14, alignItems: 'center', marginTop: 20 },
   btnPrimarioLabel: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  btnDesativado:    { opacity: 0.5 },
+  btnDesativado: { opacity: 0.5 },
 
   // overlay sheet (atualizar manutenção)
-  overlay:          { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
-  sheet:            { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24 },
-  sheetTitulo:      { fontSize: 17, fontWeight: '700', color: '#0f172a', marginBottom: 4 },
-  sheetBotoes:      { flexDirection: 'row', gap: 10, marginTop: 20 },
-  btnSecundario:    { flex: 1, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
-  btnSecundarioLabel: { fontSize: 15, color: '#475569', fontWeight: '600' },
-});
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, marginBottom: 4 },
+  sheetBotoes: { flexDirection: 'row', gap: 10, marginTop: 20 },
+  btnSecundario: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
+  btnSecundarioLabel: { fontSize: 15, color: c.textoSecundario, fontWeight: '600' },
+}));

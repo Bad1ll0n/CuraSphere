@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Formacao {
   id: string;
@@ -106,14 +107,13 @@ export default function FormacoesPage() {
           </div>
         </div>
         {isGestor && (
-          <button onClick={() => setModalNova(true)}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          <Button variant="primary" className="flex gap-2" onClick={() => setModalNova(true)}
             style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Registar Formação
-          </button>
+          </Button>
         )}
       </div>
 
@@ -170,11 +170,10 @@ export default function FormacoesPage() {
                     </p>
                   </div>
                   {isGestor && (
-                    <button onClick={() => mutApagar.mutate(f.id)}
-                      className="shrink-0 text-xs font-medium text-slate-500 hover:text-red-500 border border-slate-200 hover:border-red-200 rounded-lg transition-colors"
+                    <Button variant="secondary" size="sm" className="shrink-0 hover:text-red-500 hover:border-red-200" onClick={() => mutApagar.mutate(f.id)}
                       style={{ padding: '5px 10px' }}>
                       Remover
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -198,7 +197,7 @@ export default function FormacoesPage() {
               <select id="fpage-0" value={novaUtilizadorId} onChange={e => setNovaUtilizadorId(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {utilizadoresLista.map(u => <option key={u.id} value={u.id}>{u.nome} ({u.role})</option>)}
               </select>
             </div>
@@ -240,14 +239,12 @@ export default function FormacoesPage() {
             </label>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalNova(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarFormacao} disabled={mutNova.isPending || !novaNome.trim() || !novaData}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNova(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={criarFormacao} disabled={mutNova.isPending || !novaNome.trim() || !novaData}
                 style={{ padding: '11px' }}>
                 {mutNova.isPending ? 'A guardar...' : 'Registar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

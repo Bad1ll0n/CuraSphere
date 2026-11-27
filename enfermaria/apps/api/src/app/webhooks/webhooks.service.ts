@@ -1,8 +1,9 @@
 import { Injectable, Logger, Optional } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
-import { assertUrlDestinoPublico, exigirSemRedireccionamento, SEM_REDIRECCIONAMENTOS } from '../common/ssrf-guard';
+import { assertUrlDestinoPublico, exigirSemRedireccionamento, SEM_REDIRECCIONAMENTOS } from '../common/seguranca/ssrf-guard';
 import { Hl7SaidaService } from '../hl7/hl7-saida.service';
+import { cifrarSegredo, decifrarSegredo } from '../prisma/encryption.middleware';
 
 /**
  * SEC-10: um webhook é um sistema de terceiros — recebe identificadores, não dados pessoais.
@@ -29,11 +30,13 @@ export class WebhooksService {
     // resolução DNS do hostname pode mudar entre o registo e o disparo.
     await assertUrlDestinoPublico(dto.url);
     const secret = crypto.randomBytes(32).toString('hex');
-    return this.prisma.webhook.create({ data: { ...dto, secret } });
+    // SEC-11: cifrado em repouso; devolve-se em claro só agora, à criação, para o destino o configurar.
+    const criado = await this.prisma.webhook.create({ data: { ...dto, secret: cifrarSegredo(secret) } });
+    return { ...criado, secret };
   }
 
   async listar() {
-    return this.prisma.webhook.findMany({ where: { ativo: true } });
+    return this.prisma.webhook.findMany({ where: { ativo: true }, omit: { secret: true } }); // SEC-11: o segredo não sai
   }
 
   async remover(id: string) {
@@ -65,7 +68,7 @@ export class WebhooksService {
         }
 
         const body = JSON.stringify({ evento, payload: semDadosPessoais(payload), timestamp: new Date().toISOString() });
-        const sig = crypto.createHmac('sha256', hook.secret).update(body).digest('hex');
+        const sig = crypto.createHmac('sha256', decifrarSegredo(hook.secret)).update(body).digest('hex');
         const res = await fetch(hook.url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-CuraSphere-Signature': sig },

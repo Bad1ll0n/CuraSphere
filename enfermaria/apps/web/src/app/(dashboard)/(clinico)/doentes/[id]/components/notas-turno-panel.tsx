@@ -1,8 +1,11 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import { useRascunho } from '@/lib/rascunhos';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface NotaTurno {
   id: string;
@@ -86,14 +89,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 }) {
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>Cancelar</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? 'A guardar...' : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -134,11 +135,12 @@ function getDeadlineEdicao(criadaEm: string): Date {
 }
 
 export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefresh }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
 
   const [modalNota, setModalNota] = useState(false);
-  const [notaTexto, setNotaTexto] = useState('');
+  const [notaTexto, setNotaTexto] = useRascunho(`nota-turno:${doenteId}`, ''); // UX-21
   const [notaEditandoId, setNotaEditandoId] = useState<string | null>(null);
   const [notaEditTexto, setNotaEditTexto] = useState('');
   const [salvandoNota, setSalvandoNota] = useState(false);
@@ -208,7 +210,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
         </div>
         {notasFiltradas.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
-            {podeCriarNota ? 'Sem notas — clica em + para adicionar' : 'Sem notas registadas'}
+            {podeCriarNota ? 'Sem notas — clique em + para adicionar' : 'Sem notas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
@@ -224,16 +226,14 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
                       style={{ padding: '10px 12px', marginBottom: '10px' }}
                     />
                     <div className="flex gap-2">
-                      <button onClick={() => guardarEdicaoNota(n.id)} disabled={salvandoNota || !notaEditTexto.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg disabled:opacity-50 transition-colors"
+                      <Button variant="primary" size="sm" onClick={() => guardarEdicaoNota(n.id)} disabled={salvandoNota || !notaEditTexto.trim()}
                         style={{ padding: '6px 14px' }}>
                         {salvandoNota ? 'A guardar...' : 'Guardar'}
-                      </button>
-                      <button onClick={() => setNotaEditandoId(null)}
-                        className="border border-slate-200 text-slate-500 hover:bg-slate-50 text-xs font-medium rounded-lg transition-colors"
+                      </Button>
+                      <Button variant="secondary" size="sm" onClick={() => setNotaEditandoId(null)}
                         style={{ padding: '6px 14px' }}>
                         Cancelar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ) : (
@@ -249,7 +249,7 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
                       </span>
                       {isNotaEditavel(n) && (
                         <div className="flex items-center gap-1" style={{ marginLeft: 'auto' }}>
-                          <button onClick={() => { setNotaEditandoId(n.id); setNotaEditTexto(n.texto); }} title="Editar"
+                          <button aria-label={tA11y('edit')} onClick={() => { setNotaEditandoId(n.id); setNotaEditTexto(n.texto); }} title="Editar"
                             className="w-6 h-6 rounded-md hover:bg-indigo-100 flex items-center justify-center transition-colors">
                             <svg className="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

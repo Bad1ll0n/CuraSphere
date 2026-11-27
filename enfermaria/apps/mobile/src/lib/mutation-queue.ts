@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from './api';
+import { apagarCifrado, guardarCifrado, lerCifrado } from './armazem-cifrado';
 
 /** Formato antigo: a fila inteira num só JSON (migrado na primeira leitura). */
 const QUEUE_KEY = 'curasphere:mutation_queue';
@@ -169,7 +170,21 @@ async function lerIndice(): Promise<string[]> {
 }
 
 const escreverIndice = (ids: string[]) => AsyncStorage.setItem(KEY_INDICE, JSON.stringify(ids));
-const escreverOp = (op: QueuedOp) => AsyncStorage.setItem(keyOp(op.id), JSON.stringify(op));
+// ARQ-26: o conteúdo de cada operação (dados clínicos) vai cifrado para o SecureStore; no
+// AsyncStorage ficam só o índice de ids e o estado da sincronização.
+const escreverOp = (op: QueuedOp) => guardarCifrado(keyOp(op.id), JSON.stringify(op));
+const apagarOp = async (id: string) => { await apagarCifrado(keyOp(id)); await AsyncStorage.removeItem(keyOp(id)); };
+
+/** Lê uma operação; as que versões antigas deixaram em claro passam para o armazenamento cifrado. */
+async function lerOp(id: string): Promise<string | null> {
+  const cifrada = await lerCifrado(keyOp(id));
+  if (cifrada != null) return cifrada;
+  const emClaro = await AsyncStorage.getItem(keyOp(id));
+  if (emClaro == null) return null;
+  await guardarCifrado(keyOp(id), emClaro);
+  await AsyncStorage.removeItem(keyOp(id));
+  return emClaro;
+}
 
 /** Migra o formato antigo (uma só chave) para uma chave por operação. Corre sob o mútex. */
 async function migrarFormatoAntigo(): Promise<void> {
@@ -182,7 +197,7 @@ async function migrarFormatoAntigo(): Promise<void> {
   } catch {
     // Fila corrompida: não se inventa conteúdo clínico, mas guarda-se o que lá estava para
     // análise em vez de o apagar — e a app segue.
-    await AsyncStorage.setItem(KEY_CORROMPIDA, raw);
+    await guardarCifrado(KEY_CORROMPIDA, raw); // ARQ-26: também é conteúdo clínico
   }
   const indice = await lerIndice();
   for (const op of antigas) if (!indice.includes(op.id)) { await escreverOp(op); indice.push(op.id); }
@@ -195,7 +210,7 @@ async function lerFilaCrua(): Promise<QueuedOp[]> {
   const ids = await lerIndice();
   const ops = await Promise.all(ids.map(async (id) => {
     try {
-      const raw = await AsyncStorage.getItem(keyOp(id));
+      const raw = await lerOp(id);
       return raw ? (JSON.parse(raw) as QueuedOp) : null;
     } catch {
       return null;
@@ -341,7 +356,7 @@ export async function flushMutationQueue(): Promise<{
       // O índice primeiro (sem as que saíram), depois as chaves: o pior caso é uma chave órfã.
       await escreverIndice(actual.filter((o) => !sair(o)).map((o) => o.id));
       for (const o of actual) {
-        if (sair(o)) await AsyncStorage.removeItem(keyOp(o.id));
+        if (sair(o)) await apagarOp(o.id);
         else if (avaliadas.has(o.id)) await escreverOp({ ...o, tentativas: (o.tentativas ?? 0) + 1 });
       }
       // UX-24: o que foi descartado fica à vista (não some em silêncio) e a hora da última
@@ -367,7 +382,7 @@ export async function flushMutationQueue(): Promise<{
 
 export async function clearQueue(): Promise<void> {
   await emExclusao(async () => {
-    for (const id of await lerIndice()) await AsyncStorage.removeItem(keyOp(id));
+    for (const id of await lerIndice()) await apagarOp(id);
     await AsyncStorage.removeItem(KEY_INDICE);
     await AsyncStorage.removeItem(QUEUE_KEY);
     await AsyncStorage.removeItem(KEY_ESTADO);

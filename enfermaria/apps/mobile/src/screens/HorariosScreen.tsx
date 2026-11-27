@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, ActivityIndicator, RefreshControl, Alert,
+  View, Text, ScrollView, FlatList, TouchableOpacity, Modal, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 interface Ausencia { id: string; utilizadorId?: string; utilizador: { id: string; nome: string }; dataInicio: string; dataFim: string; estado: string }
@@ -24,6 +24,7 @@ const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Ag
 const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 export default function HorariosScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const hoje = new Date();
   const [mes, setMes] = useState(hoje.getMonth() + 1);
   const [ano, setAno] = useState(hoje.getFullYear());
@@ -339,12 +340,16 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             </View>
 
             <Text style={s.formLabel}>Profissionais</Text>
-            <ScrollView style={{ maxHeight: 220 }}>
-              {profissionais.map((p) => {
+            <FlatList // PERF-17: a equipa toda, virtualizada
+              style={{ maxHeight: 220 }}
+              data={profissionais}
+              keyExtractor={(p) => p.id}
+              initialNumToRender={12}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item: p }) => {
                 const ausente = modalDia ? isAusenteNoDia(p.id, modalDia) : false;
                 return (
                   <TouchableOpacity accessibilityRole="button"
-                    key={p.id}
                     style={[s.profRow, novoProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, novoProfs, setNovoProfs)}
                     activeOpacity={ausente ? 1 : 0.7}
@@ -356,8 +361,8 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                     {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : novoProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
+              }}
+            />
 
             {erroModal ? <Text style={s.erroTexto}>{erroModal}</Text> : null}
 
@@ -396,13 +401,17 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
             </View>
 
             <Text style={s.formLabel}>Profissionais</Text>
-            <ScrollView style={{ maxHeight: 200 }}>
-              {profissionais.map((p) => {
+            <FlatList // PERF-17: a equipa toda, virtualizada
+              style={{ maxHeight: 200 }}
+              data={profissionais}
+              keyExtractor={(p) => p.id}
+              initialNumToRender={12}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item: p }) => {
                 const diaStr = turnoEditando ? new Date(turnoEditando.data).toISOString().split('T')[0] : null;
                 const ausente = diaStr ? isAusenteNoDia(p.id, diaStr) : false;
                 return (
                   <TouchableOpacity accessibilityRole="button"
-                    key={p.id}
                     style={[s.profRow, editProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
                     onPress={() => !ausente && toggleProf(p.id, editProfs, setEditProfs)}
                     activeOpacity={ausente ? 1 : 0.7}
@@ -414,8 +423,8 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                     {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : editProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
+              }}
+            />
 
             {erroEdit ? <Text style={s.erroTexto}>{erroEdit}</Text> : null}
 
@@ -438,8 +447,8 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: {
@@ -452,66 +461,66 @@ const s = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 10,
   },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   mesNav: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   mesBtn: { width: 32, height: 32, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
   mesBtnTexto: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  mesTexto: { color: '#e2e8f0', fontSize: 13, fontWeight: '600' },
-  semEscalaTitulo: { fontSize: 18, fontWeight: '600', color: '#475569', textAlign: 'center', marginBottom: 20 },
+  mesTexto: { color: '#e2e8f0', fontSize: LETRA.corpo, fontWeight: '600' },
+  semEscalaTitulo: { fontSize: 18, fontWeight: '600', color: c.textoSecundario, textAlign: 'center', marginBottom: 20 },
   criarEscalaBtn: { backgroundColor: '#2563eb', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 12 },
   criarEscalaTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
   // Calendário
-  cal: { backgroundColor: '#fff', margin: 16, borderRadius: 16, padding: 12, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
+  cal: { backgroundColor: c.superficie, margin: 16, borderRadius: 16, padding: 12, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   calRow: { flexDirection: 'row' },
-  calDiaSemana: { flex: 1, textAlign: 'center', fontSize: 13, fontWeight: '700', color: '#94a3b8', paddingBottom: 8 },
+  calDiaSemana: { flex: 1, textAlign: 'center', fontSize: 13, fontWeight: '700', color: c.textoTenue, paddingBottom: 8 },
   cel: { flex: 1, alignItems: 'center', paddingVertical: 6, borderRadius: 8 },
   celSelec: { backgroundColor: '#eff6ff' },
   celNum: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
   celNumHoje: { backgroundColor: '#2563eb' },
-  celNumTexto: { fontSize: 13, fontWeight: '600', color: '#1e293b' },
+  celNumTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
   celNumTextoHoje: { color: '#fff', fontWeight: '700' },
   celDots: { flexDirection: 'row', gap: 2, marginTop: 2, height: 6, alignItems: 'center' },
   dot: { width: 5, height: 5, borderRadius: 3 },
   // Detalhe
-  detalhe: { marginHorizontal: 16, backgroundColor: '#fff', borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
+  detalhe: { marginHorizontal: 16, backgroundColor: c.superficie, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   detalheHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  detalheTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
+  detalheTitulo: { fontSize: 15, fontWeight: '700', color: c.texto },
   addDiaBotao: { width: 28, height: 28, borderRadius: 8, backgroundColor: '#eff6ff', alignItems: 'center', justifyContent: 'center' },
   addDiaTexto: { color: '#2563eb', fontSize: 20, fontWeight: '700', lineHeight: 26 },
   turnoCard: { borderLeftWidth: 3, paddingLeft: 10, marginBottom: 8, paddingVertical: 6 },
   turnoCardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  profsList: { fontSize: 13, color: '#64748b' },
-  editarTexto: { fontSize: 14 },
+  profsList: { fontSize: 13, color: c.textoTenue },
+  editarTexto: { fontSize: LETRA.corpo },
   turnoPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  turnoPillTexto: { fontSize: 13, fontWeight: '600' },
-  vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center', paddingVertical: 12 },
+  turnoPillTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center', paddingVertical: 12 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
   sheetCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sheetTitulo: { fontSize: 17, fontWeight: '700', color: '#1e293b' },
-  fechar: { fontSize: 18, color: '#94a3b8', fontWeight: '700' },
-  formLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginTop: 12, marginBottom: 8 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
+  fechar: { fontSize: 18, color: c.textoTenue, fontWeight: '700' },
+  formLabel: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoSecundario, marginTop: 12, marginBottom: 8 },
   seletorRow: { flexDirection: 'row', gap: 8, marginBottom: 4 },
   seletorOpcao: { flex: 1, paddingVertical: 8, borderRadius: 14, backgroundColor: '#e2e8f0', alignItems: 'center' },
   seletorAtivo: { backgroundColor: '#2563eb' },
-  seletorTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  seletorTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   seletorTextoAtivo: { color: '#fff' },
-  profRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  profRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, paddingHorizontal: 4, borderBottomWidth: 1, borderBottomColor: c.borda },
   profRowAtivo: { backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 8 },
   profInfo: { flex: 1 },
-  profNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  profRole: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  profNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  profRole: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   check: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
-  erroTexto: { color: '#dc2626', fontSize: 13, marginTop: 8 },
+  erroTexto: { color: '#dc2626', fontSize: LETRA.corpo, marginTop: 8 },
   botoes: { flexDirection: 'row', gap: 10, marginTop: 16 },
   cancelarBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, backgroundColor: '#e2e8f0', alignItems: 'center' },
-  cancelarBtnTexto: { fontWeight: '600', color: '#64748b', fontSize: 14 },
+  cancelarBtnTexto: { fontWeight: '600', color: c.textoTenue, fontSize: LETRA.corpo },
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
-  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
+  submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: LETRA.corpo },
   feriasBadge: { fontSize: 13, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 3, paddingVertical: 1, borderRadius: 4, marginTop: 2 },
   profRowAusente: { opacity: 0.5 },
-  ausenteLabel: { fontSize: 13, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
-});
+  ausenteLabel: { fontSize: LETRA.corpo, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
+}));

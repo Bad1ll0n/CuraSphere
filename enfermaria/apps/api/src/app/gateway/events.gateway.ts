@@ -11,6 +11,8 @@ import { RedisService } from '../redis/redis.service';
 import { ModuleRef } from '@nestjs/core';
 import { VERIFICADOR_ACESSO_DOENTE, type VerificadorAcessoDoente } from '../doentes/acesso-doente.token';
 import { AUD_SOCKET, JWT_ISSUER, type TipoToken } from '../auth/token-audiences';
+import { chavesJwt } from '../auth/chaves-jwt';
+import { registarFalha } from '../common/infra/falhas';
 
 interface JwtPayload {
   sub: string;
@@ -83,7 +85,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly jwt: JwtService,
-    private readonly config: ConfigService,
+    _config: ConfigService, // SEC-11: as chaves dos tokens vêm de chavesJwt()
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     // Resolvido em tempo de chamada, não injectado: o DoenteService arrasta o ciclo
@@ -102,9 +104,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // ligação e entrava na sala 'geral', que difunde alertas clínicos. A separação de
       // domínios feita em token-audiences.ts não cobre este ponto, porque não passa pela
       // JwtStrategy: o socket verifica o token por sua conta e tem de repetir as mesmas regras.
+      const chaves = chavesJwt(); // SEC-11
       const payload = this.jwt.verify(token, {
-        secret: this.config.get('JWT_SECRET'),
-        algorithms: ['HS256'],
+        ...(chaves.algoritmo === 'ES256' ? { publicKey: chaves.verificacao } : { secret: chaves.verificacao }),
+        algorithms: [chaves.algoritmo],
         issuer: JWT_ISSUER,
         audience: AUD_SOCKET,
       }) as JwtPayload;
@@ -200,7 +203,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         turnoAtual: { select: { dataInicio: true, dataFim: true } },
         turnoAnterior: { select: { chefeTurnoId: true } },
       },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:passagem-turno'));
 
     if (!passagem || passagem.estadoDesafio !== 'pendente') return;
 
@@ -217,7 +220,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       },
       // Chave composta (horarioTurnoId, utilizadorId): o modelo não tem `id`.
       select: { horarioTurnoId: true },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:passagem-turno'));
 
     if (!escalado) {
       client.emit('turno:passagem-recusada', {
@@ -310,7 +313,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const nota = await this.prisma.notaClinica.findUnique({
       where: { id: data.notaId },
       select: { doenteId: true },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:bloqueio-nota'));
     if (!nota || nota.doenteId !== data.doenteId) {
       client.emit('nota:acesso-negado', { doenteId: data.doenteId, notaId: data.notaId });
       return;
@@ -363,7 +366,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async estaOnline(utilizadorId: string): Promise<boolean> {
     const presenca = await this.prisma.presencaOnline.findUnique({
       where: { utilizadorId },
-    }).catch(() => null);
+    }).catch(registarFalha('socket:presenca'));
     if (!presenca) return false;
     // Considerar offline se último ping há mais de 2 min
     const doisMinutos = 2 * 60 * 1000;

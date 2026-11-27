@@ -5,7 +5,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { CriarInterconsultaDto } from './dto/criar-interconsulta.dto';
-import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
+import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('interconsultas')
@@ -20,13 +21,13 @@ export class InterconsultasController {
   criar(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarInterconsultaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.interconsultasService.criar(doenteId, req.user.sub, dto);
   }
 
   @Get('doente/:doenteId')
-  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.interconsultasService.listarPorDoente(doenteId);
   }
@@ -37,13 +38,13 @@ export class InterconsultasController {
   }
 
   @Get('minhas')
-  listarMinhas(@Request() req: any) {
+  listarMinhas(@Request() req: PedidoAutenticado) {
     return this.interconsultasService.listarMinhas(req.user.sub);
   }
 
   @Roles('medico')
   @Patch(':id/aceitar')
-  aceitar(@Param('id') id: string, @Request() req: any) {
+  aceitar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.interconsultasService.aceitar(id, req.user.sub);
   }
 
@@ -52,14 +53,14 @@ export class InterconsultasController {
   responder(
     @Param('id') id: string,
     @Body() dto: ResponderInterconsultaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.interconsultasService.responder(id, req.user.sub, dto.resposta);
   }
 
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   @Patch(':id/cancelar')
-  cancelar(@Param('id') id: string, @Request() req: any) {
+  cancelar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.interconsultasService.cancelar(id, req.user.sub);
   }
 }

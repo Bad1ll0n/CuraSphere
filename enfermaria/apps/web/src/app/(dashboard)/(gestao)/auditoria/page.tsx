@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { linhaCsv } from '@/lib/csv';
+import { Button } from '@/components/ui';
 
 interface LogUtilizador {
   id: string;
@@ -175,7 +177,7 @@ export default function AuditoriaPagina() {
         l.ip ?? '—',
       ]),
     ];
-    const csv = linhas.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const csv = linhas.map(r => linhaCsv(r, ';')).join('\n'); // SEC-15: sem injeção de fórmulas
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -282,33 +284,30 @@ export default function AuditoriaPagina() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
+            <Button variant="primary"
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
               style={{ padding: '9px 20px' }}
             >
               Pesquisar
-            </button>
-            <button
+            </Button>
+            <Button variant="secondary"
               type="button"
               onClick={limparFiltros}
-              className="border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
               style={{ padding: '9px 20px' }}
             >
               Limpar
-            </button>
+            </Button>
             {logs.length > 0 && (
-              <button
+              <Button variant="secondary" className="flex gap-2"
                 type="button"
                 onClick={exportarCSV}
-                className="flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
                 style={{ padding: '9px 20px' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 Exportar CSV
-              </button>
+              </Button>
             )}
             {total > 0 && (
               <span className="text-xs text-slate-500" style={{ marginLeft: '8px' }}>
@@ -409,14 +408,14 @@ export default function AuditoriaPagina() {
             Página {pagina} de {totalPaginas}
           </p>
           <div className="flex gap-2">
-            <button
+            <Button variant="secondary"
               onClick={() => carregar(pagina - 1)}
               disabled={pagina <= 1}
-              className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              
               style={{ padding: '8px 16px' }}
             >
               ← Anterior
-            </button>
+            </Button>
             {Array.from({ length: Math.min(totalPaginas, 7) }, (_, i) => {
               const pg = pagina <= 4
                 ? i + 1
@@ -436,14 +435,14 @@ export default function AuditoriaPagina() {
                 </button>
               );
             })}
-            <button
+            <Button variant="secondary"
               onClick={() => carregar(pagina + 1)}
               disabled={pagina >= totalPaginas}
-              className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              
               style={{ padding: '8px 16px' }}
             >
               Próxima →
-            </button>
+            </Button>
           </div>
         </div>
       )}

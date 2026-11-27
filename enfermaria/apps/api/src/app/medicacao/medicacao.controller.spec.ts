@@ -10,7 +10,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MedicacaoController } from './medicacao.controller';
 import { MedicacaoService } from './medicacao.service';
 import { DoenteService } from '../doentes/doentes.service';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 

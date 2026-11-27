@@ -3,11 +3,15 @@ admin_utilizador: opscurasphere
 # Quem pode fazer SSH (bastion / VPN de administração). Nunca 0.0.0.0/0.
 ssh_redes_admin:
   - 10.10.0.0/24
-# Quem pode chegar ao nginx (LAN e VPN do hospital) — tem de coincidir com a allowlist do
-# nginx/nginx.conf. O portal do doente, se for exposto, entra por um proxy próprio.
+# Quem pode chegar à aplicação do pessoal (LAN e VPN do hospital) — tem de coincidir com
+# nginx/rede-interna.conf, onde o nginx aplica a restrição (OPS-19).
 https_redes_permitidas:
   - 192.168.0.0/16
   - 10.0.0.0/8
+# OPS-19: true para o portal do doente e o acesso da família chegarem de fora (e para o ACME
+# HTTP-01 do certbot): a firewall abre 80/443 a todos e o nginx mantém o resto só na rede
+# do hospital. false (omissão): 80/443 só para https_redes_permitidas.
+acesso_publico: false
 fuso_horario: Europe/Lisbon
 servidores_ntp:
   - ntp02.oal.ul.pt

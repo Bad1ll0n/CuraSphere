@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { Button } from './ui/button';
 const ICONS: Record<string, React.ReactNode> = {
   patients: (
     <svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,34 +38,52 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
 };
 
+/** Uma saída do estado vazio: ir a outro ecrã (href) ou fazer algo aqui (onClick). */
+export interface AcaoVazio { label: string; href?: string; onClick?: () => void; principal?: boolean }
+
 interface EmptyStateProps {
   icon?: keyof typeof ICONS;
   title: string;
   description?: string;
+  /** Compatibilidade: uma ação principal. */
   action?: { label: string; onClick: () => void };
+  /** UX-10: um estado vazio não é um beco sem saída — diz o que fazer a seguir. */
+  acoes?: AcaoVazio[];
+  /** Fundo de cartão (quando o vazio ocupa o lugar de uma lista inteira). */
+  cartao?: boolean;
 }
 
-export function EmptyState({ icon = 'generic', title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon = 'generic', title, description, action, acoes = [], cartao }: EmptyStateProps) {
+  const todas: AcaoVazio[] = [...(action ? [{ ...action, principal: true }] : []), ...acoes];
   return (
-    <div className="flex flex-col items-center justify-center text-center" style={{ padding: '48px 24px' }}>
+    <div role="status" className={`flex flex-col items-center justify-center text-center ${cartao ? 'bg-white rounded-2xl border border-slate-100 shadow-sm' : ''}`} style={{ padding: cartao ? '64px 24px' : '48px 24px' }}>
       <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
         {ICONS[icon]}
       </div>
-      <p className="text-slate-700 font-semibold text-sm" style={{ marginBottom: description ? '6px' : action ? '16px' : '0' }}>
+      <p className="text-slate-700 font-semibold text-sm" style={{ marginBottom: description ? '6px' : todas.length ? '16px' : '0' }}>
         {title}
       </p>
       {description && (
-        <p className="text-slate-500 text-xs leading-relaxed" style={{ maxWidth: '280px', marginBottom: action ? '20px' : '0' }}>
+        <p className="text-slate-500 text-sm leading-relaxed" style={{ maxWidth: '360px', marginBottom: todas.length ? '20px' : '0' }}>
           {description}
         </p>
       )}
-      {action && (
-        <button
-          onClick={action.onClick}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
-          style={{ padding: '8px 20px' }}>
-          {action.label}
-        </button>
+      {todas.length > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {todas.map((a, i) => {
+            const variante = (a.principal ?? i === 0) ? 'primary' : 'secondary';
+            return a.href ? (
+              <Link key={a.label} href={a.href} className="inline-flex items-center rounded-xl text-sm font-semibold"
+                style={variante === 'primary'
+                  ? { padding: '8px 18px', background: 'var(--accent)', color: 'white' }
+                  : { padding: '8px 18px', background: 'var(--bg-surface-2)', color: 'var(--text-hi)', border: '1px solid var(--border)' }}>
+                {a.label}
+              </Link>
+            ) : (
+              <Button key={a.label} variant={variante} onClick={a.onClick}>{a.label}</Button>
+            );
+          })}
+        </div>
       )}
     </div>
   );

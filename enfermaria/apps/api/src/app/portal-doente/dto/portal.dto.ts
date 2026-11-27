@@ -17,6 +17,29 @@ import { ApiProperty } from '@nestjs/swagger';
  * pipe global entrar em acção.
  */
 
+/** UX-28: pedido de recuperação (endpoint público). */
+export class PortalRecuperarDto {
+  @ApiProperty()
+  @IsEmail({}, { message: 'Email inválido' })
+  @MaxLength(320)
+  email: string;
+}
+
+/** UX-28: nova password a partir do link de recuperação. */
+export class PortalRedefinirDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
+  token: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
+  senha: string;
+}
+
 export class PortalLoginDto {
   // Endpoint PÚBLICO — a validação aqui é a primeira barreira antes do bcrypt.
   @ApiProperty()

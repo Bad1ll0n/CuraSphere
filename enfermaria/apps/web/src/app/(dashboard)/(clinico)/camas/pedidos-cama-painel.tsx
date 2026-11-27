@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 /**
  * PROD-03 — pedidos de cama (urgência, bloco, consulta, outro serviço): atribuir uma cama
@@ -129,10 +130,10 @@ export function PedidosCamaPainel({ camas, podeGerir, onAlterado }: { camas: Cam
                         );
                       })}
                     </select>
-                    <button onClick={() => atribuir(p)} disabled={!escolha[p.id] || aGuardar === p.id}
-                      className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50" style={{ padding: '6px 12px' }}>
+                    <Button variant="primary" size="sm" onClick={() => atribuir(p)} disabled={!escolha[p.id] || aGuardar === p.id}
+                       style={{ padding: '6px 12px' }}>
                       Reservar
-                    </button>
+                    </Button>
                     {p.estado === 'atribuida' && (
                       <button onClick={() => ocupar(p)} disabled={aGuardar === p.id || !p.doente}
                         title={p.doente ? undefined : 'Registe o doente antes de dar entrada'}
@@ -140,10 +141,10 @@ export function PedidosCamaPainel({ camas, podeGerir, onAlterado }: { camas: Cam
                         Dar entrada
                       </button>
                     )}
-                    <button onClick={() => cancelar(p)} disabled={aGuardar === p.id}
-                      className="text-xs font-semibold text-slate-600 border border-slate-200 bg-white hover:bg-slate-100 rounded-lg" style={{ padding: '6px 12px' }}>
+                    <Button variant="secondary" size="sm" onClick={() => cancelar(p)} disabled={aGuardar === p.id}
+                       style={{ padding: '6px 12px' }}>
                       Cancelar
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>

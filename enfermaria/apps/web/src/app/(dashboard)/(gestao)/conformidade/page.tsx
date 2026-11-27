@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
+import { linhaCsv } from '@/lib/csv';
+import { DireitosTitular } from '@/components/rgpd/direitos-titular';
+import { Button } from '@/components/ui';
 
 interface AuditEntry {
   id: string;
@@ -29,11 +32,11 @@ interface ChecklistItem {
 }
 
 const CHECKLIST = [
-  { id: 'rgpd_1', label: 'Registo de acessos a dados pessoais activo', categoria: 'RGPD' },
+  { id: 'rgpd_1', label: 'Registo de acessos a dados pessoais ativo', categoria: 'RGPD' },
   { id: 'rgpd_2', label: 'Política de retenção de dados documentada', categoria: 'RGPD' },
   { id: 'rgpd_3', label: 'Designação de DPO comunicada à CNPD', categoria: 'RGPD' },
   { id: 'dgs_1',  label: 'Notificação de incidentes de segurança à DGS', categoria: 'DGS' },
-  { id: 'dgs_2',  label: 'Plano de emergência hospitalar actualizado', categoria: 'DGS' },
+  { id: 'dgs_2',  label: 'Plano de emergência hospitalar atualizado', categoria: 'DGS' },
   { id: 'acss_1', label: 'Relatório de qualidade enviado à ACSS', categoria: 'ACSS' },
   { id: 'acss_2', label: 'Indicadores de segurança do doente registados', categoria: 'ACSS' },
   { id: 'sns_1',  label: 'Integração SNS24 testada', categoria: 'SNS' },
@@ -100,7 +103,7 @@ export default function ConformidadePage() {
         a.acao, a.entidadeTipo ?? '', a.ip ?? '',
       ]),
     ];
-    const csv = linhas.map(r => r.join(';')).join('\n');
+    const csv = linhas.map(r => linhaCsv(r, ';')).join('\n'); // SEC-15: aspas e sem fórmulas
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -119,14 +122,13 @@ export default function ConformidadePage() {
           <h1 className="text-2xl font-bold text-slate-900">Conformidade & RGPD</h1>
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>Monitorização de acessos, RGPD e conformidade regulatória</p>
         </div>
-        <button onClick={exportarCSV}
-          className="flex items-center gap-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+        <Button variant="secondary" className="flex gap-2" onClick={exportarCSV}
           style={{ padding: '9px 16px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
           Exportar CSV
-        </button>
+        </Button>
       </div>
 
       {/* KPIs */}
@@ -281,6 +283,7 @@ export default function ConformidadePage() {
           )}
         </>
       )}
+      <DireitosTitular />
     </div>
   );
 }

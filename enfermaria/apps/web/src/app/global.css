@@ -325,3 +325,13 @@ html.noite :is(.text-slate-700, .text-slate-600, .text-gray-700) { color: #a3aeb
 html.noite :is(.border-slate-100, .border-slate-200) { border-color: #1c2840 !important; }
 html.noite :is(.animate-pulse, .animate-ping, .animate-bounce) { animation: none !important; }
 html.noite img, html.noite video { filter: brightness(0.8); }
+
+/* ── UX-15: alvos táteis ─────────────────────────────────────────────────────────
+   WCAG 2.5.8: nenhum botão abaixo de 24 × 24 px (havia ícones de 20 px). Em ecrãs táteis
+   (tablet de enfermaria, muitas vezes com luvas), 44 × 44 px. Os interruptores (role=switch)
+   desenham o fundo no próprio botão e ficam de fora. */
+main :is(button, [role="button"]):not([role="switch"]) { min-width: 24px; min-height: 24px; }
+@media (pointer: coarse) {
+  main :is(button, [role="button"]):not([role="switch"]) { min-width: 44px; min-height: 44px; }
+  #sidebar-nav :is(a, button) { min-height: 44px; }
+}

@@ -109,3 +109,17 @@ describe('i18n (UX-07)', () => {
     });
   });
 });
+
+// UX-26: espanhol e ucraniano só no quiosque. Têm o namespace do quiosque inteiro (e as etiquetas
+// do seletor), as mesmas chaves e os mesmos parâmetros do inglês; o resto cai para o inglês.
+describe('UX-26 — idiomas do quiosque (es, uk)', () => {
+  const parametros = (s: unknown) => (typeof s === 'string' ? [...s.matchAll(/\{(\w+)/g)].map((m) => m[1]).sort() : []);
+  it.each(['es', 'uk'])('%s.json traduz o quiosque inteiro, sem chaves a mais', (l) => {
+    const msgs = JSON.parse(readFileSync(join(__dirname, 'messages', `${l}.json`), 'utf8')) as Arvore;
+    const doQuiosque = folhas((en as Arvore)['kiosk'] as Arvore, 'kiosk.');
+    const deste = folhas(msgs);
+    expect(doQuiosque.filter((k) => !deste.includes(k))).toEqual([]);
+    expect(deste.filter((k) => obter(en as Arvore, k) === undefined)).toEqual([]);
+    for (const k of doQuiosque) expect(parametros(obter(msgs, k))).toEqual(parametros(obter(en as Arvore, k)));
+  });
+});

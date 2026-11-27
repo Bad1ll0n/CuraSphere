@@ -1,6 +1,6 @@
 # Registo das funções de IA
 
-A fonte de verdade em código é [`apps/api/src/app/common/funcoes-ia.ts`](../apps/api/src/app/common/funcoes-ia.ts).
+A fonte de verdade em código é [`apps/api/src/app/common/ia/funcoes-ia.ts`](../apps/api/src/app/common/ia/funcoes-ia.ts).
 Este documento acrescenta o que o código não diz: porque cada função está ligada ou desligada,
 que dados saem do hospital e quem revê o resultado.
 
@@ -54,7 +54,7 @@ Quando uma função está desligada:
 - **Nunca** são enviados o nome, o NIF, o n.º SNS, a morada ou os contactos do doente.
   Nos prompts, o doente aparece como `Doente A` (ou `Doente 1..n` no turno).
   Na carta de alta, o modelo escreve o marcador `[NOME_DO_DOENTE]`, que só é substituído pelo nome real no servidor.
-  O teste estrutural `common/ia-rgpd.spec.ts` impede que o nome seja interpolado em template strings.
+  O teste estrutural `common/ia/ia-rgpd.spec.ts` impede que o nome seja interpolado em template strings.
 - São enviados os dados clínicos necessários à função: idade, diagnósticos, sinais vitais, medicação, notas.
 - **Feridas**: a fotografia segue para o modelo. Não deve mostrar o rosto nem tatuagens.
 - **Triagem do portal**: segue o texto livre escrito pelo doente, que pode conter dados identificativos.

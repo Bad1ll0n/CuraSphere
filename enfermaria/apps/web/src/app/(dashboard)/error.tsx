@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { reportarErro } from '@/lib/monitorizacao';
+import { Button } from '@/components/ui';
 
 export default function DashboardError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
@@ -26,12 +27,11 @@ export default function DashboardError({ error, reset }: { error: Error & { dige
           style={{ padding: '9px 20px' }}>
           Ir ao dashboard
         </Link>
-        <button
+        <Button variant="primary"
           onClick={reset}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
           style={{ padding: '9px 20px' }}>
           Tentar novamente
-        </button>
+        </Button>
       </div>
     </div>
   );

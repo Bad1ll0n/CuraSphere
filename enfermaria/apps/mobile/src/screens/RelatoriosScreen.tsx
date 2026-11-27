@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, Platform,
+  ActivityIndicator, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 type TabKey = 'internamento' | 'ocupacao' | 'diagnosticos' | 'medicamentos' | 'urgencia' | 'produtividade';
 
@@ -75,6 +76,7 @@ function primeiroDoMes() {
 }
 
 export default function RelatoriosScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [abaAtual, setAbaAtual] = useState<TabKey>('internamento');
   const [loadingAba, setLoadingAba] = useState(false);
   const cacheRef = useRef<Partial<Record<TabKey, TabData>>>({});
@@ -310,81 +312,81 @@ export default function RelatoriosScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16,
-    paddingBottom: 12, backgroundColor: '#fff',
-    borderBottomWidth: 1, borderBottomColor: '#e2e8f0',
+    paddingBottom: 12, backgroundColor: c.superficie,
+    borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   btnVoltar: {
-    width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9',
+    width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo,
     alignItems: 'center', justifyContent: 'center',
   },
-  headerTitulo: { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
   periodoRow: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
-    backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10,
-    borderBottomWidth: 1, borderBottomColor: '#e2e8f0',
+    backgroundColor: c.superficie, paddingHorizontal: 16, paddingVertical: 10,
+    borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   periodoBtn: {
-    backgroundColor: '#f1f5f9', borderRadius: 8,
+    backgroundColor: c.fundo, borderRadius: 8,
     paddingHorizontal: 10, paddingVertical: 6,
   },
-  periodoBtnTexto: { fontSize: 13, color: '#334155', fontWeight: '500' },
-  periodoDash: { fontSize: 13, color: '#94a3b8' },
+  periodoBtnTexto: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
+  periodoDash: { fontSize: 13, color: c.textoTenue },
 
-  tabScroll: { flexGrow: 0, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0', paddingVertical: 10 },
+  tabScroll: { flexGrow: 0, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda, paddingVertical: 10 },
   tabPill: {
     paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20,
-    backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.fundo, borderWidth: 1, borderColor: c.borda,
   },
   tabPillAtivo: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  tabPillTexto: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  tabPillTexto: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
   tabPillTextoAtivo: { color: '#fff', fontWeight: '700' },
 
-  vazioTexto: { color: '#94a3b8', fontSize: 14, textAlign: 'center', marginTop: 32 },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center', marginTop: 32 },
 
   kpiRow: { flexDirection: 'row', gap: 10 },
   kpiCard: {
-    flex: 1, backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center',
+    flex: 1, backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda, alignItems: 'center',
   },
   kpiCardFull: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 16,
-    borderWidth: 1, borderColor: '#e2e8f0', alignItems: 'center',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 16,
+    borderWidth: 1, borderColor: c.borda, alignItems: 'center',
   },
-  kpiNum: { fontSize: 28, fontWeight: '800', color: '#0f172a' },
-  kpiNumGrande: { fontSize: 36, fontWeight: '800', color: '#0f172a' },
-  kpiLabel: { fontSize: 13, color: '#64748b', marginTop: 4, textAlign: 'center' },
+  kpiNum: { fontSize: 28, fontWeight: '800', color: c.texto },
+  kpiNumGrande: { fontSize: 36, fontWeight: '800', color: c.texto },
+  kpiLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4, textAlign: 'center' },
 
   listaCard: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 14,
-    borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: c.borda,
   },
   listaCardTopo: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  listaCardNome: { fontSize: 14, fontWeight: '700', color: '#0f172a', marginBottom: 6 },
-  listaCardRole: { fontSize: 13, color: '#64748b', marginTop: 1 },
+  listaCardNome: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, marginBottom: 6 },
+  listaCardRole: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   listaCardMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  listaCardMetaTexto: { fontSize: 13, color: '#64748b' },
-  listaCardMetaVal: { fontWeight: '700', color: '#0f172a' },
+  listaCardMetaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  listaCardMetaVal: { fontWeight: '700', color: c.texto },
 
   rankCard: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
-    backgroundColor: '#fff', borderRadius: 12, padding: 12,
-    borderWidth: 1, borderColor: '#e2e8f0',
+    backgroundColor: c.superficie, borderRadius: 12, padding: 12,
+    borderWidth: 1, borderColor: c.borda,
   },
-  rankNum: { fontSize: 13, fontWeight: '700', color: '#94a3b8', width: 28 },
+  rankNum: { fontSize: 13, fontWeight: '700', color: c.textoTenue, width: 28 },
   rankBadge: { backgroundColor: '#eff6ff', borderRadius: 6, paddingHorizontal: 7, paddingVertical: 3 },
-  rankBadgeTexto: { fontSize: 13, fontWeight: '700', color: '#2563eb' },
-  rankDescricao: { flex: 1, fontSize: 13, color: '#334155' },
-  rankCount: { fontSize: 15, fontWeight: '800', color: '#0f172a', minWidth: 36, textAlign: 'right' },
+  rankBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#2563eb' },
+  rankDescricao: { flex: 1, fontSize: LETRA.corpo, color: c.textoSecundario },
+  rankCount: { fontSize: 15, fontWeight: '800', color: c.texto, minWidth: 36, textAlign: 'right' },
 
   triagemBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, alignSelf: 'flex-start' },
-  triagemBadgeTexto: { fontSize: 13, fontWeight: '700', textTransform: 'capitalize' },
-  triagemPct: { fontSize: 13, color: '#64748b', fontWeight: '600', minWidth: 44, textAlign: 'right' },
-});
+  triagemBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', textTransform: 'capitalize' },
+  triagemPct: { fontSize: 13, color: c.textoTenue, fontWeight: '600', minWidth: 44, textAlign: 'right' },
+}));

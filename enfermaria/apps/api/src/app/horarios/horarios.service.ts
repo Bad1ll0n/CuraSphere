@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/infra/enums';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { DotacoesService } from '../dotacoes/dotacoes.service';
 import { gerarEscala } from '../dotacoes/dotacoes.regras';
 

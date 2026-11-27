@@ -2,10 +2,12 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable,
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
+import { AiVigilanciaService } from '../ai-clinico/ai-vigilancia.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { episodioAtivo, fecharEpisodio } from '../episodios/episodios.core';
-import { temPapel } from '../common/roles.util';
+import { temPapel } from '../common/seguranca/roles.util';
 import type { AltaEstruturadaDto, NotaAltaEnfermagemDto } from './dto/alta-estruturada.dto';
+import { registarFalha } from '../common/infra/falhas';
 
 export type RequisitoAlta = 'reconciliacao' | 'nota_enfermagem' | 'plano';
 const REQUISITOS_VALIDOS: RequisitoAlta[] = ['reconciliacao', 'nota_enfermagem', 'plano'];
@@ -17,7 +19,7 @@ export function requisitosConfigurados(): RequisitoAlta[] {
 }
 
 const CRITERIOS_PLANO = [
-  'afebrилApenas24h', 'mobilidadeAdequada', 'alimentacaoOral', 'doresControladas',
+  'afebril24h', 'mobilidadeAdequada', 'alimentacaoOral', 'doresControladas',
   'familiaInformada', 'transporteAssegurado', 'medicacaoPreparada', 'consultaSegAlt',
 ] as const;
 
@@ -36,6 +38,7 @@ export class AltaService {
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
     private readonly aiClinico: AiClinicoService,
+    private readonly aiVigilancia: AiVigilanciaService,
     private readonly webhooks: WebhooksService,
   ) {}
 
@@ -164,9 +167,9 @@ export class AltaService {
       this.agendarFollowUps(doenteId, doente.nome, utilizador, ep?.dataAdmissao ?? null)
         .catch((err) => this.logger.warn(`Follow-ups falharam: ${err?.message}`));
       this.aiClinico.gerarCartaAlta(doenteId).catch((err) => this.logger.warn('gerarCartaAlta falhou', err?.message));
-      this.aiClinico.calcularRiscoReadmissao(doenteId).catch((err) => this.logger.warn('calcularRiscoReadmissao falhou', err?.message));
+      this.aiVigilancia.calcularRiscoReadmissao(doenteId).catch((err) => this.logger.warn('calcularRiscoReadmissao falhou', err?.message));
     }
-    this.webhooks.dispatcharEvento('doente.alta', { doenteId, nome: doente.nome }).catch(() => null);
+    this.webhooks.dispatcharEvento('doente.alta', { doenteId, nome: doente.nome }).catch(registarFalha('webhook:doente.alta'));
     return sumario;
   }
 

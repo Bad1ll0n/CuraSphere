@@ -2,8 +2,9 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { PrismaService } from '../prisma/prisma.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { VigilanciaService } from '../vigilancia/vigilancia.service';
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { temPapel } from '../common/roles.util';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { temPapel } from '../common/seguranca/roles.util';
+import { turnoDaHora } from '@org/shared';
 
 export type Turno = 'manha' | 'tarde' | 'noite';
 export interface ConteudoIsbar { identificacao: string; situacao: string; antecedentes: string; avaliacao: string; recomendacoes: string }
@@ -14,7 +15,7 @@ const PAPEIS_SERVICO = ['chefe_enfermeiros', 'chefe_turno', 'chefe_medicos', 'di
 /** Turno e dia (do hospital) de um instante: manhã 08–16, tarde 16–24, noite 00–08. */
 export function turnoDe(instante: Date = new Date()): { data: string; turno: Turno } {
   const h = Number(new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hourCycle: 'h23', timeZone: TZ }).format(instante));
-  const turno: Turno = h >= 8 && h < 16 ? 'manha' : h >= 16 ? 'tarde' : 'noite';
+  const turno: Turno = turnoDaHora(h); // UX-12: a definição única (libs/shared)
   return { data: chaveDiaClinico(instante), turno };
 }
 

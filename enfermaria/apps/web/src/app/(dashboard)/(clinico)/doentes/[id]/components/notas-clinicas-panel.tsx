@@ -1,11 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useRascunho } from '@/lib/rascunhos';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { useSocket, emitSocket } from '@/lib/use-socket';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -25,11 +28,12 @@ function BtnAdd({ onClick, label = 'Adicionar' }: { onClick: () => void; label?:
 }
 
 export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [notasClincias, setNotasClincias] = useState<any[]>([]);
   const [modalNotaClinica, setModalNotaClinica] = useState(false);
-  const [soapForm, setSoapForm] = useState({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
+  const [soapForm, setSoapForm] = useRascunho(`soap:${doenteId}`, { subjetivo: '', objetivo: '', avaliacao: '', plano: '' }); // UX-21
   const [salvandoSoap, setSalvandoSoap] = useState(false);
   const [notaSoapEditandoId, setNotaSoapEditandoId] = useState<string | null>(null);
   const dlgSoap = useDialogoAcessivel({ aberto: modalNotaClinica, onFechar: () => setModalNotaClinica(false), titulo: 'Nota clínica SOAP' });
@@ -129,7 +133,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
   const apagarNotaClinica = (notaId: string) => {
     setConfirmarAcao({
       titulo: 'Apagar Nota Clínica',
-      mensagem: 'Apagar esta nota clínica permanentemente? Esta acção não pode ser revertida.',
+      mensagem: 'Apagar esta nota clínica permanentemente? Esta ação não pode ser revertida.',
       variant: 'danger',
       onConfirmar: async () => {
         setConfirmarAcao(null);
@@ -169,7 +173,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
         </div>
         {notasClincias.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
-            {podeCriarNotaClinica ? 'Sem notas SOAP — clica em + para adicionar' : 'Sem notas clínicas registadas'}
+            {podeCriarNotaClinica ? 'Sem notas SOAP — clique em + para adicionar' : 'Sem notas clínicas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-4">
@@ -231,7 +235,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
           <div {...dlgSoap.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
-              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('cancelEdit')} onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -267,9 +271,8 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
               </div>
             ))}
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeterNotaClinica} disabled={salvandoSoap || !soapForm.subjetivo.trim() || !soapForm.objetivo.trim() || !soapForm.avaliacao.trim() || !soapForm.plano.trim()}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>

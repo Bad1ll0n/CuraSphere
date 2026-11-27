@@ -124,4 +124,10 @@ export class CriarSinalVitalDto {
   @IsIn(['numerica', 'eva', 'faces', 'painad', 'cpot', 'flacc'])
   @IsOptional()
   escalaDor?: string;
+
+  // QA-16: pulso < 20, FR < 4, PAS < 50, SpO2 < 50 ou T < 32 °C só com esta confirmação.
+  @ApiPropertyOptional({ description: 'Confirma um valor crítico (incompatível com a vida ou extremo)' })
+  @IsBoolean()
+  @IsOptional()
+  confirmarValorCritico?: boolean;
 }

@@ -4,7 +4,8 @@ import { IsString, IsOptional, MaxLength } from 'class-validator';
 import type { Response } from 'express';
 import { WebAuthnService } from './webauthn.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../auth.service';
+import type { PedidoAutenticado } from '../pedido-autenticado';
 
 class RegistarVerificarDto {
   @IsString() response: any;
@@ -36,14 +37,14 @@ export class WebAuthnController {
 
   @UseGuards(JwtAuthGuard)
   @Get('register/options')
-  registerOptions(@Request() req: any) {
+  registerOptions(@Request() req: PedidoAutenticado) {
     return this.webAuthn.generateRegistrationOptions(req.user.sub);
   }
 
   @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('register/verify')
-  registerVerify(@Request() req: any, @Body() dto: RegistarVerificarDto) {
+  registerVerify(@Request() req: PedidoAutenticado, @Body() dto: RegistarVerificarDto) {
     return this.webAuthn.verifyRegistration(req.user.sub, dto.response, dto.nome ?? 'Passkey');
   }
 
@@ -93,14 +94,14 @@ export class WebAuthnController {
 
   @UseGuards(JwtAuthGuard)
   @Get('credentials')
-  listar(@Request() req: any) {
+  listar(@Request() req: PedidoAutenticado) {
     return this.webAuthn.listarCredenciais(req.user.sub);
   }
 
   @UseGuards(JwtAuthGuard)
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Delete('credentials/:id')
-  remover(@Param('id') id: string, @Request() req: any) {
+  remover(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.webAuthn.removerCredencial(id, req.user.sub);
   }
 }

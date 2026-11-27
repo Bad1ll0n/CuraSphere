@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
+import { turnoDeEscalaEmCurso } from '@org/shared';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, Alert, ActivityIndicator, RefreshControl, Image,
+  Alert, ActivityIndicator, RefreshControl, Image,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -32,10 +33,12 @@ import ModalRegistarVitais from './doente-detalhe/modals/ModalRegistarVitais';
 import ModalAltaEstruturada from './doente-detalhe/modals/ModalAltaEstruturada';
 import ModalAvaliacaoEscala from './doente-detalhe/modals/ModalAvaliacaoEscala';
 import ModalEditarDoente from './doente-detalhe/modals/ModalEditarDoente';
+import ModalMotivo from './doente-detalhe/modals/ModalMotivo';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ModalCincoCertos, { type MedicacaoAConfirmar } from '../components/ModalCincoCertos';
 import { corpoAdministracao } from '../lib/administracao';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -52,7 +55,10 @@ interface Props {
 type Aba = 'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas' | 'feridas' | 'ia' | 'alertas';
 
 export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doente, setDoente] = useState<any>(null);
+  // QA-14 (motivo de descontinuação) e QA-15 (justificação da 1.ª dose por validar).
+  const [pedidoMotivo, setPedidoMotivo] = useState<null | { tipo: 'descontinuar' | 'primeiraDose'; id: string; corpo?: object }>(null);
   const [loading, setLoading] = useState(true);
   const [alergias, setAlergias] = useState<any[]>([]);
   const [contactos, setContactos] = useState<any[]>([]);
@@ -137,18 +143,17 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const verificarTurnoAtivo = async () => {
+    // UX-12: a definição única dos turnos (libs/shared) — o turno em curso ou, nos 30 min de
+    // passagem, o que está a sair (a mesma regra da api).
     const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    let tipo: string;
-    const dataRef = new Date(agora);
-    if (min >= 8 * 60 && min < 16 * 60) tipo = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60) tipo = 'tarde';
-    else if (min >= 23 * 60) tipo = 'noite';
-    else { tipo = 'noite'; dataRef.setDate(dataRef.getDate() - 1); }
+    const { emCurso, emPassagem } = turnoDeEscalaEmCurso(agora.getHours() * 60 + agora.getMinutes());
+    const janelas = [emCurso, ...(emPassagem ? [emPassagem] : [])].map((t) => {
+      const d = new Date(agora); d.setDate(d.getDate() - t.diasAtras);
+      return { tipo: t.tipo, dia: d.toDateString(), mes: d.getMonth() + 1, ano: d.getFullYear() };
+    });
     try {
-      const r = await api.get(`/horarios/meu?mes=${dataRef.getMonth() + 1}&ano=${dataRef.getFullYear()}`);
-      const diaRef = dataRef.toDateString();
-      setEmTurno(r.data.some((h: any) => h.horarioTurno.tipo === tipo && new Date(h.horarioTurno.data).toDateString() === diaRef));
+      const r = await api.get(`/horarios/meu?mes=${janelas[0].mes}&ano=${janelas[0].ano}`);
+      setEmTurno(r.data.some((h: any) => janelas.some((j) => h.horarioTurno.tipo === j.tipo && new Date(h.horarioTurno.data).toDateString() === j.dia)));
     } catch { setEmTurno(false); }
   };
 
@@ -181,9 +186,24 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     } catch { Alert.alert('Erro', 'Não foi possível concluir a tarefa'); }
   };
 
-  const concluirMedicacao = async (id: string) => {
-    try { await api.patch(`/medicacao/${id}/descontinuar`); await carregar(); }
-    catch { Alert.alert('Erro', 'Não foi possível concluir a medicação'); }
+  const concluirMedicacao = (id: string) => setPedidoMotivo({ tipo: 'descontinuar', id });
+
+  const confirmarMotivo = async (texto: string) => {
+    const pedido = pedidoMotivo;
+    setPedidoMotivo(null);
+    if (!pedido) return;
+    try {
+      if (pedido.tipo === 'descontinuar') {
+        await api.patch(`/medicacao/${pedido.id}/descontinuar`, { motivo: texto });
+        await carregar();
+      } else {
+        await api.post(`/medicacao/${pedido.id}/administrar`, { ...pedido.corpo, justificacaoNaoValidada: texto });
+        Alert.alert('Registado', 'Administração registada com sucesso');
+      }
+    } catch (e: any) {
+      registarFalhaSilenciosa('DoenteDetalheScreen.confirmarMotivo', e);
+      Alert.alert('Não registado', e?.response?.data?.message ?? 'Não foi possível registar.');
+    }
   };
 
   const registarMedicacao = (id: string) => {
@@ -206,6 +226,11 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       await api.post(`/medicacao/${id}/administrar`, corpo);
       Alert.alert('Registado', 'Administração registada com sucesso');
     } catch (e: any) {
+      // QA-15: prescrição por validar — a 1.ª dose só com justificação (pedida aqui, e o pedido repete-se).
+      if (e?.response?.status === 409 && /justificacaoNaoValidada/.test(e?.response?.data?.message ?? '')) {
+        setPedidoMotivo({ tipo: 'primeiraDose', id, corpo });
+        return;
+      }
       registarFalhaSilenciosa('DoenteDetalheScreen.registarMedicacao', e);
       const motivo = e?.response?.data?.message ?? 'Não foi possível registar.';
       Alert.alert('Administração NÃO registada', motivo);
@@ -399,6 +424,18 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       <ModalContactoEmergencia visible={modalContacto} doenteId={doenteId} onClose={() => setModalContacto(false)} onSaved={carregarContactos} />
       <ModalCincoCertos medicacao={medAConfirmar} doente={{ nome: doente.nome, numeroProcesso: doente.numeroProcesso }} offline={!isOnline}
         onConfirmar={administrarConfirmada} onCancelar={() => setMedAConfirmar(null)} />
+      <ModalMotivo
+        visible={!!pedidoMotivo}
+        titulo={pedidoMotivo?.tipo === 'primeiraDose' ? 'Prescrição por validar' : 'Descontinuar medicação'}
+        descricao={pedidoMotivo?.tipo === 'primeiraDose'
+          ? 'A farmácia ainda não validou esta prescrição. Só a 1.ª dose, se for urgente.'
+          : 'Fica no processo com o seu nome, a hora e o motivo. Se não for o médico, o prescritor recebe uma tarefa para confirmar.'}
+        rotulo={pedidoMotivo?.tipo === 'primeiraDose' ? 'Porque é urgente dar a 1.ª dose' : 'Motivo da descontinuação'}
+        botao={pedidoMotivo?.tipo === 'primeiraDose' ? 'Administrar 1.ª dose' : 'Descontinuar'}
+        minimo={pedidoMotivo?.tipo === 'primeiraDose' ? 10 : 5}
+        onCancelar={() => setPedidoMotivo(null)}
+        onConfirmar={confirmarMotivo}
+      />
       <ModalRegistarVitais visible={modalVitais} doenteId={doenteId} onClose={() => setModalVitais(false)} onSaved={carregarVitais} />
       <ModalAltaEstruturada visible={modalAltaEstruturada} doenteId={doenteId} onClose={() => setModalAltaEstruturada(false)} onDone={onVoltar} />
       <ModalAvaliacaoEscala visible={modalEscala !== null} tipo={modalEscala} doenteId={doenteId} onClose={() => setModalEscala(null)} onSaved={carregarEscalas} />
@@ -412,8 +449,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
@@ -422,20 +459,20 @@ const s = StyleSheet.create({
   avatarPlaceholder: { backgroundColor: '#3b82f6', alignItems: 'center', justifyContent: 'center' },
   avatarInicial: { fontSize: 20, fontWeight: '700', color: '#fff' },
   avatarCamIcon: { fontSize: 13, marginTop: 2 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerInfo: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   headerNome: { fontSize: 20, fontWeight: '700', color: '#fff', flex: 1, marginRight: 12 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
-  headerSub: { fontSize: 13, color: '#64748b' },
-  abas: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0', maxHeight: 44 },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  headerSub: { fontSize: 13, color: c.textoTenue },
+  abas: { backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda, maxHeight: 44 },
   aba: { paddingVertical: 12, paddingHorizontal: 14, alignItems: 'center' },
   abaAtiva: { borderBottomWidth: 2, borderBottomColor: '#2563eb' },
-  abaTexto: { fontSize: 13, color: '#94a3b8', fontWeight: '500' },
+  abaTexto: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
   abaTextoAtivo: { color: '#2563eb', fontWeight: '700' },
   conteudo: { flex: 1 },
   bannerAlergia: { backgroundColor: '#fef2f2', borderBottomWidth: 1, borderBottomColor: '#fecaca', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlergiaTexto: { fontSize: 13, fontWeight: '700', color: '#dc2626' },
+  bannerAlergiaTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#dc2626' },
   bannerAlerta: { backgroundColor: '#fef9c3', borderBottomWidth: 1, borderBottomColor: '#fde047', paddingHorizontal: 16, paddingVertical: 8 },
-  bannerAlertaTexto: { fontSize: 13, fontWeight: '700', color: '#92400e' },
-});
+  bannerAlertaTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#92400e' },
+}));

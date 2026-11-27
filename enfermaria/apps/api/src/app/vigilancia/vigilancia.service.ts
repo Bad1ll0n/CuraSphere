@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
-import { intervalosDoServico, proximaAvaliacaoRisco, proximaAvaliacaoSinaisVitais } from '../common/vigilancia';
-import { temPapel } from '../common/roles.util';
+import { intervalosDoServico, proximaAvaliacaoRisco, proximaAvaliacaoSinaisVitais } from '../common/clinico/vigilancia';
+import { temPapel } from '../common/seguranca/roles.util';
 
 export type TipoVigilancia = 'sinais_vitais' | 'braden' | 'morse' | 'dor_pos_analgesia';
 

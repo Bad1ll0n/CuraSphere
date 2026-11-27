@@ -7,19 +7,23 @@ import { VERIFICADOR_ACESSO_DOENTE } from './acesso-doente.token';
 import { DoenteController } from './doentes.controller';
 import { QuiosqueController } from './quiosque.controller';
 import { PrismaModule } from '../prisma/prisma.module';
-import { PdfService } from '../common/pdf.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { NotificacoesModule } from '../notificacoes/notificacoes.module';
 import { AiClinicoModule } from '../ai-clinico/ai-clinico.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
 import { BreakGlassModule } from '../break-glass/break-glass.module';
 import { EpisodiosModule } from '../episodios/episodios.module';
 import { AltaService } from './alta.service';
+import { ListagemDoentesService } from './listagem-doentes.service';
+import { RegistoUtenteService } from './registo-utente.service';
 
 @Module({
   imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule, EpisodiosModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [
+    RegistoUtenteService,
     DoenteService,
+    ListagemDoentesService,
     AltaService,
     CartaAltaService,
     PdfService,

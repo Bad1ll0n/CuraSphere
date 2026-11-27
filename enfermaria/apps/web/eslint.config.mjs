@@ -52,6 +52,19 @@ export default [
     },
   },
   {
+    // UX-15: um botão só com ícone (ou só com `title`) é anunciado como "botão", sem nome.
+    // Havia 41; ficaram todos com `aria-label`. A regra impede que voltem.
+    files: ['**/*.tsx'],
+    rules: {
+      'jsx-a11y/control-has-associated-label': ['error', {
+        depth: 5,
+        ignoreElements: ['input', 'select', 'textarea', 'td', 'th', 'tr', 'option', 'a', 'canvas', 'video', 'audio'],
+        ignoreRoles: ['presentation', 'none'],
+        includeRoles: ['button'],
+      }],
+    },
+  },
+  {
     ignores: ['.next/**/*', '**/out-tsc'],
   },
 ];

@@ -5,6 +5,9 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import { destinoPorOmissao, rotaPermitida } from './nav-data';
+import { moduloDaRotaWeb } from '@org/shared';
+import { useModulosDesligados } from '@/lib/hooks/use-modulos';
+import { Button } from '@/components/ui';
 
 /**
  * Camada 2 do controlo de acessos, montada uma única vez no layout do dashboard e por isso
@@ -22,16 +25,25 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const t = useTranslations('errors');
 
-  const permitido = !utilizador || rotaPermitida(pathname, utilizador);
+  // PROD-20: um módulo opcional desligado nesta instalação conta como rota indisponível.
+  const modulosDesligados = useModulosDesligados();
+  const modulo = moduloDaRotaWeb(pathname);
+  const desligado = !!modulo && modulosDesligados.has(modulo.id);
+  const permitido = !utilizador || (rotaPermitida(pathname, utilizador) && !desligado);
 
+  // UX-23: a recusa diz-se — antes o redirecionamento era imediato e a mensagem só piscava (o
+  // administrativo em /doentes/admitir ia parar ao dashboard sem saber porquê). Fica 6 s, com
+  // um botão para ir já.
+  const destino = utilizador ? destinoPorOmissao(utilizador) : '/';
   useEffect(() => {
     if (loading || !utilizador || permitido) return;
-    router.replace(destinoPorOmissao(utilizador));
-  }, [loading, utilizador, permitido, router]);
+    const t = setTimeout(() => router.replace(destino), 6000);
+    return () => clearTimeout(t);
+  }, [loading, utilizador, permitido, router, destino]);
 
   if (permitido) return <>{children}</>;
 
-  // Estado de permissão insuficiente enquanto a redirecção não acontece — anunciado a
+  // Estado de permissão insuficiente enquanto a redireção não acontece — anunciado a
   // leitores de ecrã em vez de um ecrã em branco silencioso.
   return (
     <div role="alert" style={{ padding: '64px 48px', maxWidth: '640px', margin: '0 auto' }}>
@@ -45,9 +57,13 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
           </svg>
         </div>
         <h1 className="text-lg font-bold text-slate-900" style={{ marginBottom: '8px' }}>
-          {t('forbiddenTitle')}
+          {desligado ? t('moduleOffTitle') : t('forbiddenTitle')}
         </h1>
-        <p className="text-sm text-slate-500">{t('forbiddenBody')}</p>
+        <p className="text-sm text-slate-500">{desligado ? t('moduleOffBody') : t('forbiddenBody')}</p>
+        <Button variant="primary" type="button" onClick={() => router.replace(destino)}
+           style={{ marginTop: '20px', padding: '8px 16px' }}>
+          {t('forbiddenGoHome')}
+        </Button>
       </div>
     </div>
   );

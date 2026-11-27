@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import api, { initCsrf } from '@/lib/api';
 import Link from 'next/link';
@@ -10,27 +10,37 @@ import { useAuth } from '@/lib/auth-context';
 import { useNaoLidasCount } from '@/lib/hooks';
 import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
-import { filtrarMenus } from './nav-data';
+import { filtrarMenus, rotaPermitida } from './nav-data';
 import { FilaAlertasCriticos, chaveAlerta, type AlertaCritico } from './sos-banner';
 import { useAlertaSonoro } from '@/lib/alerta-sonoro';
 import { SocketStatusBanner } from '@/components/socket-status-banner';
 import { SidebarNav } from './sidebar-nav';
 import { RouteGuard } from './route-guard';
+import { moduloDaRotaWeb } from '@org/shared';
+import { useModulosDesligados } from '@/lib/hooks/use-modulos';
 import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
 import { TourOverlay } from '@/components/tour-overlay';
 import { CommandPalette } from '@/components/command-palette';
+import { AvisoInatividade, EcraBloqueado, useSessaoPosto } from '@/components/sessao-posto';
 import { DarkModeToggle } from '@/components/dark-mode-toggle';
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal';
 import { NotificationBell } from '@/components/notification-bell';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useTranslations } from 'next-intl';
 import { aplicarModos } from '@/lib/modos-turno';
+import { NovidadesModal } from '@/components/novidades-modal';
+import { PrimeirosPassos } from '@/components/primeiros-passos';
+import { gravarOnboarding, lerOnboarding } from '@/lib/onboarding';
+import { NOVIDADE_MAIS_RECENTE } from '@/lib/novidades';
+import { Button } from '@/components/ui';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
+  const modulosDesligados = useModulosDesligados();
   const tCommon = useTranslations('common');
   const tLayout = useTranslations('layout');
+  const tSessao = useTranslations('session');
   const router = useRouter();
   const pathname = usePathname();
 
@@ -47,6 +57,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mostrarTour, setMostrarTour] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  // UX-27: ajuda (visita guiada, primeiros passos, novidades) a partir do menu "?".
+  const tAjuda = useTranslations('shortcuts');
+  const [forcarPrimeiros, setForcarPrimeiros] = useState(false);
+  const [mostrarNovidades, setMostrarNovidades] = useState(false);
+  const [novidadePorVer, setNovidadePorVer] = useState(false);
+  useEffect(() => {
+    if (utilizador?.id) setNovidadePorVer(NOVIDADE_MAIS_RECENTE !== null && lerOnboarding(utilizador.id).novidadesVistas !== NOVIDADE_MAIS_RECENTE);
+  }, [utilizador?.id]);
+  const abrirNovidades = () => {
+    setMostrarNovidades(true); setNovidadePorVer(false);
+    if (utilizador?.id) gravarOnboarding(utilizador.id, { ...lerOnboarding(utilizador.id), novidadesVistas: NOVIDADE_MAIS_RECENTE });
+  };
 
   useEffect(() => { initCsrf(); }, []);
 
@@ -85,29 +107,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
   });
 
-  const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const resetIdleTimer = useCallback(() => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    idleTimerRef.current = setTimeout(async () => {
-      try {
-        await api.post('/auth/logout');
-      } catch { /* ignore */ }
-      router.push('/login');
-    }, IDLE_TIMEOUT_MS);
-  }, [router]);
-
-  useEffect(() => {
-    resetIdleTimer();
-    const events = ['mousemove', 'keydown', 'click', 'touchstart'] as const;
-    events.forEach(e => window.addEventListener(e, resetIdleTimer, { passive: true }));
-    return () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      events.forEach(e => window.removeEventListener(e, resetIdleTimer));
-    };
-  }, [resetIdleTimer]);
+  // UX-21: aviso aos 13 min, fim aos 15 (os rascunhos ficam para o mesmo profissional) e bloqueio
+  // rápido do posto. Antes: `api.post('/auth/logout')` em silêncio, sem limpar a cache de dados.
+  const sessao = useSessaoPosto(utilizador?.id ?? null, () => logout({ manterRascunhos: true, motivo: 'inatividade' }));
 
   useEffect(() => {
     if (!loading && !utilizador) { router.push('/login'); return; }
@@ -133,7 +135,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 
-  const itemsVisiveis = filtrarMenus(utilizador);
+  // PROD-20: os módulos opcionais desligados nesta instalação saem do menu.
+  const itemsVisiveis = filtrarMenus(utilizador).filter((i) => {
+    const m = moduloDaRotaWeb(i.href);
+    return !m || !modulosDesligados.has(m.id);
+  });
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">
@@ -167,8 +173,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }} />
       )}
 
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
-      <KeyboardShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+      {sessao.bloqueado && (
+        <EcraBloqueado nome={utilizador.nome} alertasCriticos={alertasCriticos.filter((a) => a.respondidoPor == null).length}
+          onDesbloqueado={sessao.desbloqueado} onTrocarUtilizador={() => { sessao.desbloqueado(); logout({ manterRascunhos: true }); }} />
+      )}
+      {!sessao.bloqueado && sessao.avisoSegundos != null && (
+        <AvisoInatividade segundos={sessao.avisoSegundos} onContinuar={sessao.continuar} onSair={() => logout()} />
+      )}
+
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)}
+        itens={itemsVisiveis.map((i) => ({ href: i.href, label: i.label }))} utilizadorId={utilizador.id}
+        podePesquisarDoentes={rotaPermitida('/doentes', utilizador)} podeAdmitir={rotaPermitida('/doentes/admitir', utilizador)} />
+      <KeyboardShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} novidadePorVer={novidadePorVer}
+        onVisita={() => { setShortcutsOpen(false); setMostrarTour(true); }}
+        onPrimeirosPassos={() => { setShortcutsOpen(false); setForcarPrimeiros(true); }}
+        onNovidades={() => { setShortcutsOpen(false); abrirNovidades(); }} />
+      {mostrarNovidades && <NovidadesModal onClose={() => setMostrarNovidades(false)} />}
+      <PrimeirosPassos utilizadorId={utilizador.id} role={utilizador.role} forcarAberto={forcarPrimeiros} onFechado={() => setForcarPrimeiros(false)} />
 
       <SidebarNav
         utilizador={utilizador}
@@ -198,6 +219,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
+          <Button variant="secondary" className="relative h-10 w-10" type="button" data-tour="ajuda" onClick={() => setShortcutsOpen(true)} aria-label={tAjuda('help')} title={tAjuda('help')}
+            >
+            ?{novidadePorVer && <span className="sr-only">{tAjuda('newBadge')}</span>}
+            {novidadePorVer && <span aria-hidden="true" className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600" />}
+          </Button>
+          <Button variant="secondary" className="h-10 flex gap-2" type="button" data-tour="bloquear" onClick={sessao.bloquear} title={tSessao('lockHint')} aria-label={tSessao('lock')}
+             style={{ padding: '0 12px' }}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <span className="hidden sm:inline">{tSessao('lock')}</span>
+          </Button>
           <NotificationBell />
           <LanguageSwitcher />
           <DarkModeToggle />
@@ -221,7 +252,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             </div>
           )}
-          <RouteGuard>{children}</RouteGuard>
+          {/* UX-21: com o posto bloqueado, o conteúdo clínico nem fica no DOM. */}
+          {!sessao.bloqueado && <RouteGuard>{children}</RouteGuard>}
         </ToastProvider>
       </main>
 

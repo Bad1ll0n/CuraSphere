@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert,
+  View, Text, FlatList, TouchableOpacity,
+  ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
@@ -9,6 +9,7 @@ import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import { registarFalhaSilenciosa } from '../lib/erros';
 import ErroCarregamento from '../components/ErroCarregamento';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Doente {
   id: string;
@@ -43,6 +44,7 @@ const grupoLabel: Record<string, string> = {
 interface Props { utilizador: Utilizador; onVoltar?: () => void }
 
 export default function TurnoScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [tarefasPorDoente, setTarefasPorDoente] = useState<Record<string, Tarefa[]>>({});
   const [loading, setLoading] = useState(true);
@@ -109,7 +111,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
       if (!dentroGeofence) {
         Alert.alert(
           '⚠️ Localização fora do hospital',
-          'O check-in foi registado, mas a tua localização indica que podes estar fora das instalações hospitalares. O chefe de turno foi notificado.',
+          'O check-in foi registado, mas a sua localização indica que pode estar fora das instalações hospitalares. O chefe de turno foi notificado.',
           [{ text: 'OK' }],
         );
       } else {
@@ -157,163 +159,169 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   );
 
   return (
-    <ScrollView
+    <FlatList // PERF-17: virtualizada (antes ScrollView + map)
       style={s.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
-    >
-      <View style={s.header}>
-        {onVoltar && (
-          <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
-            <Text style={s.voltarTexto}>‹  Voltar</Text>
-          </TouchableOpacity>
-        )}
-        <Text style={s.headerTitulo}>O Meu Turno</Text>
-        <Text style={s.headerSubtitulo}>
-          {erroCarga ? 'Lista por carregar' : doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
-        </Text>
-      </View>
+      data={erroCarga ? [] : doentes}
+      keyExtractor={(d) => d.id}
+      initialNumToRender={8}
+      windowSize={7}
+      ListHeaderComponent={(
+        <>
+          <View style={s.header}>
+            {onVoltar && (
+              <TouchableOpacity accessibilityRole="button" onPress={onVoltar} style={s.voltarBotao}>
+                <Text style={s.voltarTexto}>‹  Voltar</Text>
+              </TouchableOpacity>
+            )}
+            <Text style={s.headerTitulo}>O Meu Turno</Text>
+            <Text style={s.headerSubtitulo}>
+              {erroCarga ? 'Lista por carregar' : doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
+            </Text>
+          </View>
 
-      {/* Acções de turno */}
-      <View style={s.accoesRow}>
-        <TouchableOpacity accessibilityRole="button"
-          style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
-          onPress={fazerCheckIn}
-          disabled={checkInFeito || checkInLoading}
-        >
-          {checkInLoading
-            ? <ActivityIndicator size="small" color="#fff" />
-            : <Text style={s.accaoBotaoTexto}>{checkInFeito ? '✓ Check-in feito' : '📍 Fazer Check-in'}</Text>
-          }
-        </TouchableOpacity>
+          {/* Acções de turno */}
+          <View style={s.accoesRow}>
+            <TouchableOpacity accessibilityRole="button"
+              style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
+              onPress={fazerCheckIn}
+              disabled={checkInFeito || checkInLoading}
+            >
+              {checkInLoading
+                ? <ActivityIndicator size="small" color="#fff" />
+                : <Text style={s.accaoBotaoTexto}>{checkInFeito ? '✓ Check-in feito' : '📍 Fazer Check-in'}</Text>
+              }
+            </TouchableOpacity>
 
-        <TouchableOpacity accessibilityRole="button"
-          style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
-          onPress={iniciarPassagem}
-          disabled={passagemLoading}
-        >
-          {passagemLoading
-            ? <ActivityIndicator size="small" color="#1e293b" />
-            : <Text style={[s.accaoBotaoTexto, { color: '#1e293b' }]}>🔄 Passar Turno</Text>
-          }
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity accessibilityRole="button"
+              style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
+              onPress={iniciarPassagem}
+              disabled={passagemLoading}
+            >
+              {passagemLoading
+                ? <ActivityIndicator size="small" color="#1e293b" />
+                : <Text style={[s.accaoBotaoTexto, { color: '#1e293b' }]}>🔄 Passar Turno</Text>
+              }
+            </TouchableOpacity>
+          </View>
 
-      {erroCarga ? (
-        <ErroCarregamento
-          texto="Isto não quer dizer que não tenha doentes atribuídos. Verifique a ligação e tente de novo."
-          onTentarNovamente={() => { setLoading(true); carregar(); }}
-        />
-      ) : doentes.length === 0 && (
-        <View style={s.centro}>
-          <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
-          <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
-        </View>
-      )}
-
-      {doentes.map((d) => {
-        const tarefas = tarefasPorDoente[d.id] ?? [];
-        const aberto = doenteAberto === d.id;
-        return (
-          <TouchableOpacity accessibilityRole="button"
-            key={d.id}
-            style={s.cartao}
-            onPress={() => setDoenteAberto(aberto ? null : d.id)}
-            activeOpacity={0.8}
-          >
-            <View style={s.cartaoCabecalho}>
-              <View style={s.cartaoCabecalhoEsq}>
-                <Text style={s.doenteNome}>{d.nome}</Text>
-                <Text style={s.doenteInfo}>Cama {d.cama.quarto}/{d.cama.numero}</Text>
-                <Text style={s.doenteInfo} numberOfLines={1}>{d.diagnosticoPrincipal}</Text>
-              </View>
-              <View style={[s.estadoBadge, { backgroundColor: estadoDoenteCor[d.estado] + '20' }]}>
-                <Text style={[s.estadoTexto, { color: estadoDoenteCor[d.estado] }]}>
-                  {estadoDoenteLabel[d.estado]}
-                </Text>
-              </View>
+          {erroCarga ? (
+            <ErroCarregamento
+              texto="Isto não quer dizer que não tenha doentes atribuídos. Verifique a ligação e tente de novo."
+              onTentarNovamente={() => { setLoading(true); carregar(); }}
+            />
+          ) : doentes.length === 0 && (
+            <View style={s.centro}>
+              <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
+              <Text style={s.semTurnoSub}>Não tem doentes atribuídos no turno atual</Text>
             </View>
-
-            <View style={s.resumo}>
-              {tarefas.length > 0 ? (
-                <View style={s.badge}>
-                  <Text style={s.badgeTexto}>{tarefas.length} tarefa{tarefas.length !== 1 ? 's' : ''}</Text>
+          )}
+        </>
+      )}
+      renderItem={({ item: d }) => {
+          const tarefas = tarefasPorDoente[d.id] ?? [];
+          const aberto = doenteAberto === d.id;
+          return (
+            <TouchableOpacity accessibilityRole="button"
+              key={d.id}
+              style={s.cartao}
+              onPress={() => setDoenteAberto(aberto ? null : d.id)}
+              activeOpacity={0.8}
+            >
+              <View style={s.cartaoCabecalho}>
+                <View style={s.cartaoCabecalhoEsq}>
+                  <Text style={s.doenteNome}>{d.nome}</Text>
+                  <Text style={s.doenteInfo}>Cama {d.cama.quarto}/{d.cama.numero}</Text>
+                  <Text style={s.doenteInfo} numberOfLines={1}>{d.diagnosticoPrincipal}</Text>
                 </View>
-              ) : (
-                <View style={[s.badge, { backgroundColor: '#f0fdf4' }]}>
-                  <Text style={[s.badgeTexto, { color: '#16a34a' }]}>Sem tarefas</Text>
+                <View style={[s.estadoBadge, { backgroundColor: estadoDoenteCor[d.estado] + '20' }]}>
+                  <Text style={[s.estadoTexto, { color: estadoDoenteCor[d.estado] }]}>
+                    {estadoDoenteLabel[d.estado]}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.resumo}>
+                {tarefas.length > 0 ? (
+                  <View style={s.badge}>
+                    <Text style={s.badgeTexto}>{tarefas.length} tarefa{tarefas.length !== 1 ? 's' : ''}</Text>
+                  </View>
+                ) : (
+                  <View style={[s.badge, { backgroundColor: '#f0fdf4' }]}>
+                    <Text style={[s.badgeTexto, { color: '#16a34a' }]}>Sem tarefas</Text>
+                  </View>
+                )}
+              </View>
+
+              {aberto && tarefas.length > 0 && (
+                <View style={s.detalhes}>
+                  <Text style={s.secaoTitulo}>Tarefas Pendentes</Text>
+                  {tarefas.map((t) => {
+                    const podeConcluir =
+                      t.responsavel?.id === utilizador.id ||
+                      (t.grupoResponsavel === meuGrupoChave && !t.responsavel);
+                    return (
+                      <View key={t.id} style={s.tarefa}>
+                        <View style={[s.prioridadeDot, { backgroundColor: prioridadeCor[t.prioridade] ?? '#94a3b8' }]} />
+                        <View style={s.tarefaConteudo}>
+                          <Text style={s.tarefaTexto} numberOfLines={2}>{t.descricao}</Text>
+                          {t.responsavel ? (
+                            <Text style={s.tarefaMeta}>A cargo: {t.responsavel.nome}</Text>
+                          ) : t.grupoResponsavel ? (
+                            <Text style={s.tarefaMeta}>Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</Text>
+                          ) : null}
+                        </View>
+                        {podeConcluir && (
+                          <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
+                            <Text style={s.concluirTexto}>✓</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    );
+                  })}
                 </View>
               )}
-            </View>
-
-            {aberto && tarefas.length > 0 && (
-              <View style={s.detalhes}>
-                <Text style={s.secaoTitulo}>Tarefas Pendentes</Text>
-                {tarefas.map((t) => {
-                  const podeConcluir =
-                    t.responsavel?.id === utilizador.id ||
-                    (t.grupoResponsavel === meuGrupoChave && !t.responsavel);
-                  return (
-                    <View key={t.id} style={s.tarefa}>
-                      <View style={[s.prioridadeDot, { backgroundColor: prioridadeCor[t.prioridade] ?? '#94a3b8' }]} />
-                      <View style={s.tarefaConteudo}>
-                        <Text style={s.tarefaTexto} numberOfLines={2}>{t.descricao}</Text>
-                        {t.responsavel ? (
-                          <Text style={s.tarefaMeta}>A cargo: {t.responsavel.nome}</Text>
-                        ) : t.grupoResponsavel ? (
-                          <Text style={s.tarefaMeta}>Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</Text>
-                        ) : null}
-                      </View>
-                      {podeConcluir && (
-                        <TouchableOpacity accessibilityRole="button" style={s.concluirBotao} onPress={() => concluirTarefa(t.id)}>
-                          <Text style={s.concluirTexto}>✓</Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  );
-                })}
-              </View>
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
+            </TouchableOpacity>
+          );
+      }}
+    />
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: '#1e293b', textAlign: 'center', marginBottom: 8 },
-  semTurnoSub: { fontSize: 15, color: '#64748b', textAlign: 'center', lineHeight: 22 },
+  semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: c.texto, textAlign: 'center', marginBottom: 8 },
+  semTurnoSub: { fontSize: 15, color: c.textoTenue, textAlign: 'center', lineHeight: 22 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
-  voltarTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  voltarTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
-  headerSubtitulo: { fontSize: 14, color: '#94a3b8', marginTop: 2 },
+  headerSubtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   accoesRow: { flexDirection: 'row', gap: 10, margin: 16 },
   accaoBotao: { flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   accaoBotaoPrimario: { backgroundColor: '#2563eb' },
   accaoBotaoSucesso: { backgroundColor: '#16a34a' },
   accaoBotaoSecundario: { backgroundColor: '#e2e8f0' },
   accaoBotaoDisabled: { opacity: 0.6 },
-  accaoBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
+  accaoBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cartaoCabecalhoEsq: { flex: 1, marginRight: 12 },
-  doenteNome: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
-  doenteInfo: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  doenteNome: { fontSize: 16, fontWeight: '700', color: c.texto },
+  doenteInfo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
-  estadoTexto: { fontSize: 13, fontWeight: '600' },
+  estadoTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
   resumo: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
   badge: { backgroundColor: '#fee2e2', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, color: '#dc2626', fontWeight: '500' },
-  detalhes: { marginTop: 14, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 14 },
-  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
-  tarefa: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f8fafc', gap: 10 },
+  badgeTexto: { fontSize: LETRA.corpo, color: '#dc2626', fontWeight: '500' },
+  detalhes: { marginTop: 14, borderTopWidth: 1, borderTopColor: c.borda, paddingTop: 14 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoSecundario, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
+  tarefa: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: c.borda, gap: 10 },
   prioridadeDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   tarefaConteudo: { flex: 1 },
-  tarefaTexto: { fontSize: 14, color: '#334155' },
-  tarefaMeta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  tarefaTexto: { fontSize: LETRA.corpo, color: c.textoSecundario },
+  tarefaMeta: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   concluirBotao: { backgroundColor: '#dcfce7', width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 16 },
-});
+}));

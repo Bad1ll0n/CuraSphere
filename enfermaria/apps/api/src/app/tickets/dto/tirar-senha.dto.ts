@@ -1,19 +1,22 @@
 import { IsString, IsOptional, IsIn, MaxLength, Matches } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-const TIPOS_SENHA = ['consulta', 'urgencia', 'admissao', 'farmacia', 'administrativo', 'exames'];
-const PRIORIDADES = ['normal', 'prioritario', 'urgente'];
+import { PRIORIDADES_SENHA, TIPOS_SENHA } from '@org/shared';
+
+// ARQ-22: a lista daqui recusava "faturacao" e "geral" (botões do quiosque) e a prioridade
+// "senior"; aceitava "administrativo" e "urgente", que não têm letra nem ordem na fila. As
+// listas vêm agora de @org/shared — as mesmas do quiosque e do CHECK na base de dados.
 
 export class TirarSenhaDto {
   @ApiProperty()
   @IsString()
-  @IsIn(TIPOS_SENHA)
+  @IsIn(TIPOS_SENHA as string[])
   tipo: string;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  @IsIn(PRIORIDADES)
+  @IsIn(PRIORIDADES_SENHA as unknown as string[])
   prioridade?: string;
 
   @ApiPropertyOptional()

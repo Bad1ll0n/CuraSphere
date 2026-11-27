@@ -8,6 +8,7 @@ import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import type { Cama as SharedCama } from '@org/shared';
 import { PedidosCamaPainel } from './pedidos-cama-painel';
+import { Button } from '@/components/ui';
 
 interface Cama extends SharedCama {
   // PROD-03: atributos reais da cama e alta prevista do doente.
@@ -161,13 +162,13 @@ export default function CamasPagina() {
           </p>
         </div>
         {podeCriar && (
-          <button
+          <Button variant="primary"
             onClick={() => setMostrarFormCama(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            
             style={{ padding: '10px 20px', fontSize: '14px' }}
           >
             + Adicionar Cama
-          </button>
+          </Button>
         )}
       </div>
 
@@ -336,21 +337,20 @@ export default function CamasPagina() {
                 />
               </div>
               <div className="flex gap-3">
-                <button
+                <Button variant="secondary" className="flex-1"
                   type="button"
                   onClick={() => setMostrarFormCama(false)}
-                  className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                  
                   style={{ padding: '11px' }}
                 >
                   Cancelar
-                </button>
-                <button
+                </Button>
+                <Button variant="primary" className="flex-1"
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors"
                   style={{ padding: '11px' }}
                 >
                   Criar Cama
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -373,13 +373,13 @@ export default function CamasPagina() {
               <QRCode value={qrCama.doente.id} size={180} aria-label="QR Code do doente" />
             </div>
             <p className="text-xs text-slate-500" style={{ marginBottom: '20px' }}>Aponta a câmara da app mobile para aceder à ficha do doente</p>
-            <button
+            <Button variant="primary" fullWidth
               onClick={() => window.print()}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+              
               style={{ padding: '11px' }}
             >
               Imprimir QR
-            </button>
+            </Button>
           </div>
         </div>
       )}

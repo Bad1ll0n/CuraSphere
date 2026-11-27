@@ -1,7 +1,21 @@
 import { createCipheriv, createDecipheriv, createHmac, randomBytes } from 'crypto';
 
 const KEY_HEX = process.env['ENCRYPTION_KEY'] ?? '';
-const KEY = KEY_HEX.length === 64 ? Buffer.from(KEY_HEX, 'hex') : null;
+const KEY = /^[0-9a-fA-F]{64}$/.test(KEY_HEX) ? Buffer.from(KEY_HEX, 'hex') : null;
+
+/**
+ * OPS-20 — rotação da ENCRYPTION_KEY. A chave nova vai para `ENCRYPTION_KEY` e as antigas para
+ * `ENCRYPTION_KEYS_ANTERIORES` (separadas por vírgulas): tudo o que foi cifrado com elas continua a
+ * ler-se (o AES-GCM diz qual é a chave certa — com outra, a etiqueta de autenticação falha) e a
+ * pesquisa por nome e NIF também procura nos índices cegos antigos. Depois corre-se
+ * `src/prisma/rodar-chave-cifragem.ts`, que recifra tudo com a chave nova; no fim retiram-se as
+ * antigas. Procedimento completo em docs/SEGREDOS.md.
+ */
+const CHAVES_ANTERIORES: Buffer[] = (process.env['ENCRYPTION_KEYS_ANTERIORES'] ?? '')
+  .split(',')
+  .map((h) => h.trim())
+  .filter((h) => /^[0-9a-fA-F]{64}$/.test(h) && h.toLowerCase() !== KEY_HEX.toLowerCase())
+  .map((h) => Buffer.from(h, 'hex'));
 
 /**
  * Campos cifrados em repouso, por modelo Prisma (S-14).
@@ -23,7 +37,7 @@ const KEY = KEY_HEX.length === 64 ? Buffer.from(KEY_HEX, 'hex') : null;
 const ENCRYPTED_FIELDS: Record<string, string[]> = {
   Doente: ['nome'],
   ContactoEmergencia: ['nome', 'telefone'],
-  FicheiroPessoalDoente: ['morada', 'telefone', 'email'],
+  FicheiroPessoalDoente: ['morada', 'telefone', 'email', 'nif'], // SEC-12: o NIF também
 };
 
 /** Nome do delegate Prisma (camelCase) para cada modelo cifrado. */
@@ -42,19 +56,42 @@ function encrypt(text: string): string {
   return `enc:${Buffer.concat([iv, tag, enc]).toString('base64')}`;
 }
 
-function decrypt(text: string): string {
-  if (!KEY || !text?.startsWith('enc:')) return text;
+/** Decifra com UMA chave; `null` se não for esta (a etiqueta GCM não confere). */
+function decifrarCom(chave: Buffer, text: string): string | null {
   try {
     const buf = Buffer.from(text.slice(4), 'base64');
     const iv = buf.subarray(0, 12);
     const tag = buf.subarray(12, 28);
     const enc = buf.subarray(28);
-    const decipher = createDecipheriv('aes-256-gcm', KEY, iv, { authTagLength: 16 });
+    const decipher = createDecipheriv('aes-256-gcm', chave, iv, { authTagLength: 16 });
     decipher.setAuthTag(tag);
     return Buffer.concat([decipher.update(enc), decipher.final()]).toString('utf8');
   } catch {
-    return text;
+    return null;
   }
+}
+
+function decrypt(text: string): string {
+  if (!KEY || !text?.startsWith('enc:')) return text;
+  for (const chave of [KEY, ...CHAVES_ANTERIORES]) {
+    const claro = decifrarCom(chave, text);
+    if (claro !== null) return claro;
+  }
+  return text;
+}
+
+/**
+ * OPS-20 — para a rotação: se `valor` está cifrado com uma chave ANTERIOR, devolve o texto em
+ * claro (para ser recifrado com a atual); `null` se já está com a atual, em claro, ou ilegível.
+ */
+export function claroSeChaveAntiga(valor: unknown): string | null {
+  if (!KEY || typeof valor !== 'string' || !valor.startsWith('enc:')) return null;
+  if (decifrarCom(KEY, valor) !== null) return null;
+  for (const chave of CHAVES_ANTERIORES) {
+    const claro = decifrarCom(chave, valor);
+    if (claro !== null) return claro;
+  }
+  return null;
 }
 
 function encryptData(model: string, data: Record<string, any>): void {
@@ -63,6 +100,10 @@ function encryptData(model: string, data: Record<string, any>): void {
   // Índice cego do nome (QA-05): calculado a partir do valor EM CLARO, antes de cifrar.
   if (model === 'Doente' && typeof data['nome'] === 'string' && !data['nome'].startsWith('enc:')) {
     data['nomeBusca'] = tokensDeBuscaNome(data['nome']);
+  }
+  // SEC-12: índice cego do NIF (igualdade exata), calculado do valor em claro.
+  if (model === 'FicheiroPessoalDoente' && typeof data['nif'] === 'string' && !data['nif'].startsWith('enc:')) {
+    data['nifBusca'] = indiceNif(data['nif']);
   }
   for (const f of fields) {
     // Um valor já cifrado não se cifra outra vez (ex.: recifragem de linhas antigas).
@@ -125,6 +166,23 @@ function decryptAny(model: string, result: any): any {
   return result;
 }
 
+/**
+ * PERF-16 — decifrar uma lista grande sem prender o event loop. A decifragem é síncrona (AES-GCM
+ * por campo, mais o percurso das relações): numa exportação ou num relatório com milhares de
+ * linhas, a API deixava de responder a todos os outros pedidos — incluindo os alertas clínicos em
+ * tempo real — até acabar. Por lotes, com uma pausa (setImmediate) entre eles, os outros pedidos
+ * são servidos pelo meio. Listas pequenas (o normal) decifram-se de uma vez, como antes.
+ */
+export const LOTE_DECIFRAGEM = 200;
+export async function decifrarSemBloquear(model: string, result: any, lote = LOTE_DECIFRAGEM): Promise<any> {
+  if (!Array.isArray(result) || result.length <= lote) return decryptAny(model, result);
+  for (let i = 0; i < result.length; i += lote) {
+    for (let j = i; j < Math.min(i + lote, result.length); j++) decryptDeep(model, result[j]);
+    if (i + lote < result.length) await new Promise<void>((ok) => setImmediate(ok));
+  }
+  return result;
+}
+
 /* ------------------------------------------------------------------ *
  * Índice cego para pesquisa por nome (QA-05)
  *
@@ -136,7 +194,10 @@ function decryptAny(model: string, result: any): any {
  * o índice só revela igualdade de tokens — o compromisso habitual de um índice cego.
  * ------------------------------------------------------------------ */
 
-const CHAVE_BUSCA = KEY ? createHmac('sha256', KEY).update('curasphere:indice-cego:nome:v1').digest() : null;
+const derivarBusca = (k: Buffer) => createHmac('sha256', k).update('curasphere:indice-cego:nome:v1').digest();
+const CHAVE_BUSCA = KEY ? derivarBusca(KEY) : null;
+/** OPS-20: durante a rotação, a pesquisa também procura nos índices calculados com as chaves antigas. */
+const CHAVES_BUSCA_ANTERIORES = CHAVES_ANTERIORES.map(derivarBusca);
 
 function normalizar(texto: string): string[] {
   return texto
@@ -147,8 +208,48 @@ function normalizar(texto: string): string[] {
     .filter((p) => p.length > 0);
 }
 
-function tokenBusca(parte: string): string {
-  return createHmac('sha256', CHAVE_BUSCA as Buffer).update(parte).digest('hex').slice(0, 16);
+function tokenBusca(parte: string, chave: Buffer = CHAVE_BUSCA as Buffer): string {
+  return createHmac('sha256', chave).update(parte).digest('hex').slice(0, 16);
+}
+
+/**
+ * SEC-11 — segredos que o servidor tem de voltar a ler (semente TOTP, segredo de webhook) ficam
+ * cifrados em repouso com a ENCRYPTION_KEY. Não passam pela cifragem automática por modelo (o
+ * `Utilizador` está ligado a quase tudo e a decifragem em profundidade correria em cada leitura):
+ * cifra-se e decifra-se onde se escreve e lê. Um valor antigo em claro continua a ler-se.
+ */
+export function cifrarSegredo(valor: string): string;
+export function cifrarSegredo(valor: string | null): string | null;
+export function cifrarSegredo(valor: string | null): string | null {
+  if (valor == null || valor.startsWith('enc:')) return valor;
+  return encrypt(valor);
+}
+export function decifrarSegredo(valor: string): string;
+export function decifrarSegredo(valor: string | null): string | null;
+export function decifrarSegredo(valor: string | null): string | null {
+  return valor == null ? null : decrypt(valor);
+}
+
+/**
+ * SEC-12 — índice cego do NIF: HMAC (chave derivada, própria do NIF) dos 9 dígitos. Só revela
+ * igualdade. Sem ENCRYPTION_KEY (desenvolvimento) não há cifragem, e procura-se o NIF em claro.
+ */
+const derivarNif = (k: Buffer) => createHmac('sha256', k).update('curasphere:indice-cego:nif:v1').digest();
+const CHAVE_NIF = KEY ? derivarNif(KEY) : null;
+const CHAVES_NIF_ANTERIORES = CHAVES_ANTERIORES.map(derivarNif);
+
+export function indiceNif(nif: string, chave: Buffer | null = CHAVE_NIF): string | null {
+  const digitos = String(nif).replace(/\D/g, '');
+  if (!chave || !digitos) return null;
+  return createHmac('sha256', chave).update(digitos).digest('hex');
+}
+
+/** Filtro Prisma para encontrar uma ficha pelo NIF (no índice cego, ou em claro sem chave). */
+export function filtroNif(nif: string): Record<string, unknown> {
+  const indice = indiceNif(nif);
+  if (!indice) return { nif: String(nif).replace(/\D/g, '') };
+  if (CHAVES_NIF_ANTERIORES.length === 0) return { nifBusca: indice };
+  return { nifBusca: { in: [indice, ...CHAVES_NIF_ANTERIORES.map((k) => indiceNif(nif, k) as string)] } };
 }
 
 /** Tokens de busca de um nome em claro, como ` t1 t2 … ` (espaços nas pontas para `contains` exato). */
@@ -170,7 +271,9 @@ export function filtroPesquisaNome(pesquisa: string): Record<string, unknown> | 
   if (!CHAVE_BUSCA) return null;
   const palavras = normalizar(pesquisa);
   if (palavras.length === 0) return null;
-  return { AND: palavras.map((p) => ({ nomeBusca: { contains: ` ${tokenBusca(p)} ` } })) };
+  const comChave = (k: Buffer) => ({ AND: palavras.map((p) => ({ nomeBusca: { contains: ` ${tokenBusca(p, k)} ` } })) });
+  if (CHAVES_BUSCA_ANTERIORES.length === 0) return comChave(CHAVE_BUSCA);
+  return { OR: [CHAVE_BUSCA, ...CHAVES_BUSCA_ANTERIORES].map(comChave) };
 }
 
 // Prisma 7 removed the `$use` middleware API this used to run on ($use was
@@ -245,7 +348,7 @@ export function criarClienteComEncriptacao(prisma: any) {
           }
         }
         const resultado = await executar(args);
-        return decryptAny(model, resultado);
+        return decifrarSemBloquear(model, resultado);
       },
     },
   };

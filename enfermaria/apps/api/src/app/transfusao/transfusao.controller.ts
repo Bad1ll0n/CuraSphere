@@ -8,7 +8,8 @@ import { CriarPedidoTransfusaoDto } from './dto/criar-pedido-transfusao.dto';
 import { AdicionarBolsaDto } from './dto/adicionar-bolsa.dto';
 import { RegistarTransfusaoDto } from './dto/registar-transfusao.dto';
 import { RegistarReacaoDto } from './dto/registar-reacao.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('transfusao')
@@ -21,14 +22,14 @@ export class TransfusaoController {
   // ── Doente ─────────────────────────────────────────────────────────────────
   @Get('doente/:doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico', 'direcao')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarPorDoente(doenteId);
   }
 
   @Post('doente/:doenteId/pedido')
   @Roles('medico', 'chefe_enfermeiros')
-  async criarPedido(@Param('doenteId') doenteId: string, @Body() dto: CriarPedidoTransfusaoDto, @Request() req: any) {
+  async criarPedido(@Param('doenteId') doenteId: string, @Body() dto: CriarPedidoTransfusaoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.criarPedido(doenteId, dto, req.user.sub);
   }
@@ -36,7 +37,7 @@ export class TransfusaoController {
   @AcessoDoentePor('pedidoTransfusao')
   @Patch('pedido/:id/cancelar')
   @Roles('medico', 'chefe_enfermeiros')
-  async cancelar(@Param('id') id: string, @Body('motivo') motivo: string, @Request() req: any) {
+  async cancelar(@Param('id') id: string, @Body('motivo') motivo: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPedido(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.cancelarPedido(id, motivo ?? 'Sem motivo indicado');
@@ -45,7 +46,7 @@ export class TransfusaoController {
   @AcessoDoentePor('pedidoTransfusao')
   @Get('pedido/:id/compativeis')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
-  async compativeis(@Param('id') id: string, @Request() req: any) {
+  async compativeis(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPedido(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.bolsasCompativeis(id);
@@ -54,7 +55,7 @@ export class TransfusaoController {
   @AcessoDoentePor('pedidoTransfusao')
   @Patch('pedido/:id/reservar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'farmaceutico')
-  async reservar(@Param('id') id: string, @Body('bolsaId') bolsaId: string, @Request() req: any) {
+  async reservar(@Param('id') id: string, @Body('bolsaId') bolsaId: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPedido(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.reservarBolsa(id, bolsaId);
@@ -63,7 +64,7 @@ export class TransfusaoController {
   @AcessoDoentePor('pedidoTransfusao')
   @Post('pedido/:id/administrar')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async administrar(@Param('id') id: string, @Body() dto: RegistarTransfusaoDto, @Request() req: any) {
+  async administrar(@Param('id') id: string, @Body() dto: RegistarTransfusaoDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPedido(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.administrar(id, dto, req.user.sub);
@@ -72,7 +73,7 @@ export class TransfusaoController {
   @AcessoDoentePor('registoTransfusao')
   @Post('registo/:id/reacao')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  async registarReacao(@Param('id') id: string, @Body() dto: RegistarReacaoDto, @Request() req: any) {
+  async registarReacao(@Param('id') id: string, @Body() dto: RegistarReacaoDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoRegisto(id);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.registarReacao(id, dto, req.user.sub);

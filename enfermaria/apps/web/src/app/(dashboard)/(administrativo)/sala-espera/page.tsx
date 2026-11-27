@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import { Button } from '@/components/ui';
 
 interface Checkin {
   id: string;
@@ -154,21 +155,20 @@ export default function SalaEsperaPage() {
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Gestão de utentes em espera para consulta</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={carregar} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
+          <Button variant="secondary" className="flex gap-2" onClick={carregar}  style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             Atualizar
-          </button>
+          </Button>
           {podeRegistar && (
-            <button onClick={() => setModal(true)}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            <Button variant="primary" className="flex gap-2" onClick={() => setModal(true)}
               style={{ padding: '10px 20px' }}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Registar Entrada
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -380,14 +380,12 @@ export default function SalaEsperaPage() {
             )}
 
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => { setModal(false); setErros({}); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={registar} disabled={salvando}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => { setModal(false); setErros({}); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={registar} disabled={salvando}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A registar...' : 'Registar Entrada'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -436,17 +434,15 @@ function CheckinCard({ c, podeChamar, onChamar, onConcluir }: {
             </button>
           )}
           {c.estado === 'em_atendimento' && (
-            <button onClick={() => onConcluir(c.id, 'atendido')}
-              className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            <Button variant="primary" size="sm" onClick={() => onConcluir(c.id, 'atendido')}
               style={{ padding: '7px 14px' }}>
               Concluído
-            </button>
+            </Button>
           )}
-          <button onClick={() => onConcluir(c.id, 'desistiu')}
-            className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+          <Button variant="secondary" size="sm" onClick={() => onConcluir(c.id, 'desistiu')}
             style={{ padding: '7px 12px' }}>
             Desistiu
-          </button>
+          </Button>
         </div>
       )}
     </div>

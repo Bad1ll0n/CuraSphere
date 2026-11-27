@@ -7,11 +7,10 @@ import { HorariosModule } from './horarios/horarios.module';
 import { DotacoesModule } from './dotacoes/dotacoes.module';
 import { AtribuicoesModule } from './atribuicoes/atribuicoes.module';
 import { TrocasModule } from './trocas/trocas.module';
-import { EscalasModule } from './escalas/escalas.module';
 
 const gestaoModules = [
   UtilizadoresModule, RhModule, EspecialidadesModule,
-  TurnosModule, HorariosModule, DotacoesModule, AtribuicoesModule, TrocasModule, EscalasModule,
+  TurnosModule, HorariosModule, DotacoesModule, AtribuicoesModule, TrocasModule,
 ];
 
 @Module({

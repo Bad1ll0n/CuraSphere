@@ -2,16 +2,10 @@ import { Injectable, Optional } from '@nestjs/common';
 import { BarramentoService } from '../redis/barramento.service';
 import { Subject, filter } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { LETRA_SENHA } from '@org/shared';
 
-const LETRAS: Record<string, string> = {
-  admissao: 'A',
-  consulta: 'C',
-  faturacao: 'F',
-  farmacia: 'R',
-  exames: 'E',
-  urgencia: 'U',
-  geral: 'G',
-};
+// UX-26: letras mnemónicas (F = Farmácia, I = Informações, P = Pagamentos), em libs/shared.
+const LETRAS = LETRA_SENHA;
 
 const ORDEM_PRIORIDADE = ['prioritario', 'senior', 'normal'];
 
@@ -46,7 +40,7 @@ export class TicketsService {
     nomeUtente?: string;
     telefone?: string;
   }) {
-    const letra = LETRAS[body.tipo] ?? 'G';
+    const letra = LETRAS[body.tipo] ?? LETRAS['geral'];
     const tipo = LETRAS[body.tipo] ? body.tipo : 'geral';
 
     const hoje = new Date();

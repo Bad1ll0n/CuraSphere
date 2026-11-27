@@ -103,6 +103,21 @@ groups:
         annotations:
           resumo: "Menos de 10 % de memória disponível no host."
 
+  # ARQ-07: falhas de passos acessórios que antes desapareciam em silêncio (common/falhas.ts).
+  - name: falhas-tratadas
+    rules:
+      - alert: FalhaComImpactoClinico
+        expr: sum by (contexto) (increase(curasphere_falhas_tratadas_total{gravidade="erro"}[15m])) > 0
+        labels: { severidade: critico }
+        annotations:
+          resumo: "Falhou um passo com impacto clínico ou de auditoria: {{ $labels.contexto }} (alerta clínico, registo de decisão de IA, PEM…)."
+          accao: "Logs da API (FalhaTratada) no Loki; ver o contexto em common/falhas.ts."
+      - alert: FalhasRepetidas
+        expr: sum by (contexto) (increase(curasphere_falhas_tratadas_total{gravidade="aviso"}[1h])) > 20
+        labels: { severidade: aviso }
+        annotations:
+          resumo: "{{ $labels.contexto }} falhou mais de 20 vezes na última hora."
+
   - name: backups-e-certificados
     rules:
       # Métrica escrita pelo scripts/backup-all.sh no fim de cada cópia bem-sucedida
@@ -113,6 +128,16 @@ groups:
         annotations:
           resumo: "O último backup bem-sucedido tem mais de 26 h."
           accao: "docker logs curasphere-backup --tail 100 (ver DR-RUNBOOK.md)"
+
+      # OPS-04: escrita pelo backup-all.sh quando a rotina falha — avisa na hora.
+      - alert: BackupFalhou
+        expr: >
+          curasphere_backup_ultima_falha_timestamp_segundos > curasphere_backup_ultimo_sucesso_timestamp_segundos
+          or (curasphere_backup_ultima_falha_timestamp_segundos unless curasphere_backup_ultimo_sucesso_timestamp_segundos)
+        labels: { severidade: critico }
+        annotations:
+          resumo: "A última rotina de backup falhou (e não houve nenhuma bem-sucedida depois)."
+          accao: "docker logs curasphere-backup --tail 100; tail /backups/backup.log (ver DR-RUNBOOK.md §3)"
 
       - alert: BackupNuncaRegistado
         expr: absent(curasphere_backup_ultimo_sucesso_timestamp_segundos)

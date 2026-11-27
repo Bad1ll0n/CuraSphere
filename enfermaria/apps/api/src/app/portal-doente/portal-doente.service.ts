@@ -3,13 +3,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { StorageService } from '../common/storage.service';
-import { PdfService } from '../common/pdf.service';
-import { hashPassword, verifyPassword } from '../common/password';
+import { StorageService } from '../common/infra/storage.service';
+import { PdfService } from '../common/infra/pdf.service';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 import { AUD_PORTAL } from '../auth/token-audiences';
-import { configJitsi, dadosSala, tokenJitsi } from '../common/jitsi';
-import { exigirTratamentoPermitido } from '../common/consentimento-tratamento';
+import { configJitsi, dadosSala, tokenJitsi } from '../common/infra/jitsi';
+import { exigirTratamentoPermitido } from '../common/clinico/consentimento-tratamento';
 import { TEMAS_ENSINO } from '../planeamento-alta/planeamento-alta.regras';
+import { exigirPasswordForte } from '../auth/politica-password';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta quando a conta
 // não existe. Mesma constante e mesma técnica do login de pessoal (`auth.service.ts`).
@@ -38,6 +39,7 @@ export class PortalDoenteService {
       throw new ConflictException('Email já utilizado por outro doente');
     }
 
+    exigirPasswordForte(senha, { email, nome: doente.nome }); // SEC-25
     const passwordHash = await hashPassword(senha, 12);
     return this.prisma.portalDoente.upsert({
       where: { doenteId },
@@ -149,7 +151,7 @@ export class PortalDoenteService {
       orderBy: { criadoEm: 'desc' },
       select: {
         id: true, episodioId: true, dataAlvoDia: true, notas: true, criadoEm: true,
-        afebrилApenas24h: true, mobilidadeAdequada: true, alimentacaoOral: true,
+        afebril24h: true, mobilidadeAdequada: true, alimentacaoOral: true,
         doresControladas: true, familiaInformada: true,
       },
     });
@@ -173,48 +175,19 @@ export class PortalDoenteService {
     return this.pdf.gerarSumarioAlta(doenteId);
   }
 
-  async exportarJson(doenteId: string) {
-    const doente = await this.prisma.doente.findUnique({
-      where: { id: doenteId },
-      select: {
-        id: true, nome: true, dataNascimento: true, numeroProcesso: true,
-        diagnosticoPrincipal: true, dataAdmissao: true, dataAltaPrevista: true, estado: true,
-      },
+  /**
+   * UX-28: a próxima consulta agendada do doente (presencial ou teleconsulta), ou null. Só o
+   * que o doente precisa de saber para lá estar: quando, especialidade, médico e tipo.
+   */
+  async proximaConsulta(portalId: string) {
+    const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
+    if (!portal) throw new UnauthorizedException();
+    const c = await this.prisma.consulta.findFirst({
+      where: { doenteId: portal.doenteId, estado: 'agendada', dataHora: { gte: new Date() } },
+      orderBy: { dataHora: 'asc' },
+      select: { id: true, dataHora: true, especialidade: true, tipo: true, medico: { select: { nome: true } } },
     });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
-
-    const [medicacao, sinaisVitais, documentos, planoAlta] = await Promise.all([
-      this.prisma.medicacao.findMany({
-        where: { doenteId, ativo: true, deletedAt: null },
-        select: { nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true },
-      }),
-      this.prisma.sinalVital.findMany({
-        where: { doenteId, data: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } },
-        orderBy: { data: 'desc' },
-        select: { data: true, pressaoSistolica: true, pressaoDiastolica: true, pulso: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true, news2: true },
-        take: 100,
-      }),
-      this.prisma.documentoSaude.findMany({
-        where: { doenteId, deletedAt: null },
-        select: { titulo: true, tipo: true, formato: true, origem: true, dataDocumento: true },
-        orderBy: { dataDocumento: 'desc' },
-      }),
-      this.prisma.planoAlta.findFirst({
-        where: { doenteId },
-        orderBy: { criadoEm: 'desc' },
-        select: { dataAlvoDia: true, notas: true, criadoEm: true },
-      }),
-    ]);
-
-    return {
-      exportadoEm: new Date().toISOString(),
-      regulamento: 'RGPD Art. 20 — Direito à portabilidade dos dados',
-      doente,
-      medicacaoActiva: medicacao,
-      sinaisVitaisUltimos30Dias: sinaisVitais,
-      documentosClinicosListagem: documentos,
-      planoAlta,
-    };
+    return c ?? null;
   }
 
   async teleconsultas(portalId: string) {

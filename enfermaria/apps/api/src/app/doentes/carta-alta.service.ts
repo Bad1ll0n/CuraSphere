@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { verificarTotpAssinatura } from '../common/totp-assinatura';
+import { verificarTotpAssinatura } from '../common/seguranca/totp-assinatura';
 
 export const ESTADOS_CARTA_ALTA = ['rascunho', 'revista', 'assinada'] as const;
 export type EstadoCartaAlta = (typeof ESTADOS_CARTA_ALTA)[number];

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -181,10 +182,10 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
                     ))}
                   </div>
                   {podeAdministrar && ['pendente', 'reservado'].includes(p.estado) && (
-                    <button onClick={() => abrirAdmin(p)}
-                      className="shrink-0 text-xs font-semibold bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors" style={{ padding: '6px 12px' }}>
+                    <Button variant="danger" size="sm" className="shrink-0" onClick={() => abrirAdmin(p)}
+                       style={{ padding: '6px 12px' }}>
                       Administrar
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -235,8 +236,8 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModalPedido(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarPedido} disabled={salvando || !form.indicacao.trim()} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>{salvando ? 'A guardar...' : 'Pedir'}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalPedido(false)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={criarPedido} disabled={salvando || !form.indicacao.trim()}  style={{ padding: '11px' }}>{salvando ? 'A guardar...' : 'Pedir'}</Button>
             </div>
           </div>
         </div>
@@ -280,10 +281,10 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalAdmin(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={administrar} disabled={salvando || !bolsaSel || !todosCertos} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAdmin(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={administrar} disabled={salvando || !bolsaSel || !todosCertos}  style={{ padding: '11px' }}>
                 {salvando ? 'A registar...' : todosCertos && bolsaSel ? 'Confirmar Transfusão' : 'Confirme bolsa + 3 certos'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -319,8 +320,8 @@ export function TransfusaoPanel({ doenteId, utilizador }: Props) {
               </div>
             </div>
             <div className="flex gap-3" style={{ marginTop: '22px' }}>
-              <button onClick={() => setModalReacao(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterReacao} disabled={salvando || !reacao.sintomas.trim()} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>{salvando ? 'A guardar...' : 'Registar'}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalReacao(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={submeterReacao} disabled={salvando || !reacao.sintomas.trim()}  style={{ padding: '11px' }}>{salvando ? 'A guardar...' : 'Registar'}</Button>
             </div>
           </div>
         </div>

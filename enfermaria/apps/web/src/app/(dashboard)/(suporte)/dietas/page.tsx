@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 const TIPOS_DIETA: Record<string, { label: string; cor: string }> = {
   normal: { label: 'Normal', cor: 'bg-slate-100 text-slate-700' },
@@ -258,13 +259,13 @@ export default function DietasPage() {
                 />
               </div>
 
-              <button
+              <Button variant="primary" fullWidth
                 onClick={() => prescreverMutation.mutate({ doenteId, tipo, restricoes, observacoes })}
                 disabled={!doenteId || prescreverMutation.isPending}
-                className="w-full py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                
               >
                 {prescreverMutation.isPending ? 'A prescrever...' : 'Prescrever Dieta'}
-              </button>
+              </Button>
             </div>
           </div>
         )}

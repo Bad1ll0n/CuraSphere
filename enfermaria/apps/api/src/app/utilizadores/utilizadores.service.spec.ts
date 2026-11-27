@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
-jest.mock('../common/password', () => ({
+jest.mock('../common/seguranca/password', () => ({
   hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
   verifyPassword: jest.fn(),
 }));
-import { hashPassword } from '../common/password';
+import { hashPassword } from '../common/seguranca/password';
 import { UtilizadoresService } from './utilizadores.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { Servico } from '../common/enums';
+import { Servico } from '../common/infra/enums';
 
 // Mock da transação Prisma para modo sequencial (array → Promise.all)
 // e para modo callback (função assíncrona)
@@ -74,11 +74,11 @@ describe('UtilizadoresService', () => {
       await service.criar({
         numeroFuncionario: '12345',
         nome: 'Dr. Ana',
-        password: 'senhaSegura123',
+        password: 'cavalo bateria agrafo',
         role: 'medico',
       });
 
-      expect(hashPassword).toHaveBeenCalledWith('senhaSegura123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('cavalo bateria agrafo', 12);
     });
 
     it('SEC-03: a password inicial definida pelo TI nasce expirada', async () => {
@@ -103,7 +103,7 @@ describe('UtilizadoresService', () => {
       await service.criar({
         numeroFuncionario: '12345',
         nome: 'Dr. Ana',
-        password: 'senhaSegura123',
+        password: 'cavalo bateria agrafo',
         role: 'medico',
       });
 
@@ -125,7 +125,7 @@ describe('UtilizadoresService', () => {
         service.criar({
           numeroFuncionario: '12345',
           nome: 'Outro',
-          password: 'pass',
+          password: 'cavalo bateria agrafo',
           role: 'enfermeiro',
         }),
       ).rejects.toThrow(ConflictException);

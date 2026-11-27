@@ -39,7 +39,9 @@
     proto: tcp
     src: "{{ item.0 }}"
     comment: curasphere-web
-  loop: "{{ https_redes_permitidas | product(['80', '443']) | list }}"
+  # OPS-19: com o portal/família públicos, 80/443 abrem a todos — é o nginx que restringe a
+  # aplicação do pessoal à rede do hospital (nginx/rede-interna.conf). 80 também serve o ACME.
+  loop: "{{ (['0.0.0.0/0'] if acesso_publico | default(false) else https_redes_permitidas) | product(['80', '443']) | list }}"
 
 - name: Política por omissão — recusar entradas, permitir saídas; ligar
   community.general.ufw:

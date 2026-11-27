@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { EventsGateway } from '../gateway/events.gateway';
 import { CriarSinalizacaoDto } from './dto/criar-sinalizacao.dto';
+import { registarFalha } from '../common/infra/falhas';
 
 @Injectable()
 export class SinalizacoesService {
@@ -31,7 +32,7 @@ export class SinalizacoesService {
       doenteId,
       'sinalizacao_preocupante',
       `⚠ Sinalizado como preocupante por ${sinal.criadaPor.nome}${dto.nivelUrgencia === 'urgente' ? ' [URGENTE]' : ''}: ${dto.motivo}`,
-    ).catch(() => null);
+    ).catch(registarFalha('alerta:sinalizacao', 'erro'));
 
     this.gateway.server?.to(`doente:${doenteId}`).emit('doente:estado', {
       doenteId,

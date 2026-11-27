@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform,
+  ActivityIndicator, RefreshControl, Alert, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface DoenteIsolado {
   id: string; nome: string; numeroProcesso: string;
@@ -52,6 +53,7 @@ const SURTO_COR: Record<string, { bg: string; text: string; label: string; borda
 };
 
 export default function IACSScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [aba, setAba] = useState<Aba>('isolamentos');
   const [isolados, setIsolados] = useState<DoenteIsolado[]>([]);
   const [culturas, setCulturas] = useState<Cultura[]>([]);
@@ -114,7 +116,7 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={s.headerTitulo}>IACS</Text>
-          <Text style={s.headerSub}>Infecções Associadas aos Cuidados de Saúde</Text>
+          <Text style={s.headerSub}>Infeções Associadas aos Cuidados de Saúde</Text>
         </View>
       </View>
 
@@ -280,35 +282,35 @@ export default function IACSScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#7c3aed', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#ddd6fe', marginTop: 2 },
-  tabBar: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  tabBar: { flexDirection: 'row', backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   tabItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 12, gap: 6, borderBottomWidth: 2, borderBottomColor: 'transparent' },
   tabItemAtivo: { borderBottomColor: '#7c3aed' },
-  tabTexto: { fontSize: 13, fontWeight: '600', color: '#94a3b8' },
+  tabTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   tabTextoAtivo: { color: '#7c3aed' },
   tabBadge: { backgroundColor: '#e2e8f0', borderRadius: 10, paddingHorizontal: 6, paddingVertical: 1 },
   tabBadgeAtivo: { backgroundColor: '#ede9fe' },
-  tabBadgeTexto: { fontSize: 13, fontWeight: '700', color: '#64748b' },
+  tabBadgeTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue },
   tabBadgeTextoAtivo: { color: '#7c3aed' },
   vazio: { padding: 60, alignItems: 'center', gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
-  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  cartaoProc: { fontSize: 13, color: '#94a3b8', marginTop: 2, textTransform: 'capitalize' },
+  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto },
+  cartaoProc: { fontSize: 13, color: c.textoTenue, marginTop: 2, textTransform: 'capitalize' },
   motivoBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  motivoTexto: { fontSize: 13, fontWeight: '700' },
+  motivoTexto: { fontSize: LETRA.corpo, fontWeight: '700' },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
-  infoTexto: { fontSize: 13, color: '#64748b' },
+  infoTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
   btnLevantar: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#ede9fe', paddingVertical: 8, borderRadius: 10, justifyContent: 'center', marginTop: 10 },
-  btnLevantarTexto: { color: '#7c3aed', fontWeight: '700', fontSize: 14 },
+  btnLevantarTexto: { color: '#7c3aed', fontWeight: '700', fontSize: LETRA.corpo },
   medidasBox: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
-  medidaBadge: { backgroundColor: '#f1f5f9', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
-  medidaTexto: { fontSize: 13, color: '#475569', fontWeight: '500' },
-});
+  medidaBadge: { backgroundColor: c.fundo, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
+  medidaTexto: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
+}));

@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  TextInput, Modal, ActivityIndicator, Alert, Platform, Switch,
+  View, Text, ScrollView, TouchableOpacity, TextInput, Modal, ActivityIndicator, Alert, Platform, Switch,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -62,6 +62,7 @@ function estadoConsentimento(c: Consentimento): { label: string; cor: string; fu
 // ─── Componente Principal ─────────────────────────────────────────────────────
 
 export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const role = utilizador.role;
   const podeCriar   = ['medico', 'enfermeiro'].includes(role);
   const podeAssinar = ['medico', 'enfermeiro', 'administrativo'].includes(role);
@@ -258,7 +259,7 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
       {!doenteSelec ? (
         <View style={s.centro}>
           <Ionicons name="document-text-outline" size={48} color="#cbd5e1" />
-          <Text style={s.emptyTitulo}>Seleccione um doente</Text>
+          <Text style={s.emptyTitulo}>Selecione um doente</Text>
           <Text style={s.emptySub}>Pesquise pelo nome ou número de processo</Text>
         </View>
       ) : carregando ? (
@@ -496,83 +497,83 @@ export default function ConsentimentosScreen({ utilizador, onVoltar }: Props) {
 
 // ─── Estilos ──────────────────────────────────────────────────────────────────
 
-const s = StyleSheet.create({
-  container:        { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
 
-  header:           { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  btnVoltar:        { width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  headerTitulo:     { fontSize: 17, fontWeight: '700', color: '#0f172a' },
-  btnNovo:          { width: 38, height: 38, borderRadius: 10, backgroundColor: '#6366f1', alignItems: 'center', justifyContent: 'center' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  btnVoltar: { width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
+  btnNovo: { width: 38, height: 38, borderRadius: 10, backgroundColor: '#6366f1', alignItems: 'center', justifyContent: 'center' },
 
-  doenteSelector:   { backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  doenteSelecCard:  { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  doenteSelecInfo:  { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  doenteNome:       { fontSize: 14, fontWeight: '700', color: '#0f172a' },
-  doenteSub:        { fontSize: 13, color: '#64748b', marginTop: 1 },
-  btnMudar:         { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0' },
-  btnMudarLabel:    { fontSize: 13, color: '#475569', fontWeight: '600' },
+  doenteSelector: { backgroundColor: c.superficie, paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: c.borda },
+  doenteSelecCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  doenteSelecInfo: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  doenteNome: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto },
+  doenteSub: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
+  btnMudar: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1, borderColor: c.borda },
+  btnMudarLabel: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '600' },
 
-  pesquisaBox:      { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f1f5f9', borderRadius: 10, paddingHorizontal: 12, gap: 8 },
-  pesquisaInput:    { flex: 1, height: 40, fontSize: 14, color: '#0f172a' },
-  doentesLista:     { backgroundColor: '#fff', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, marginTop: 4, overflow: 'hidden' },
-  doenteItem:       { paddingHorizontal: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  doenteItemNome:   { fontSize: 14, fontWeight: '600', color: '#0f172a' },
-  doenteItemSub:    { fontSize: 13, color: '#64748b', marginTop: 1 },
+  pesquisaBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.fundo, borderRadius: 10, paddingHorizontal: 12, gap: 8 },
+  pesquisaInput: { flex: 1, height: 40, fontSize: 14, color: c.texto },
+  doentesLista: { backgroundColor: c.superficie, borderWidth: 1, borderColor: c.borda, borderRadius: 10, marginTop: 4, overflow: 'hidden' },
+  doenteItem: { paddingHorizontal: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: c.borda },
+  doenteItemNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  doenteItemSub: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
 
-  lista:            { padding: 16, gap: 10, paddingBottom: 32 },
-  centro:           { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
-  emptyTitulo:      { fontSize: 16, fontWeight: '700', color: '#334155', marginTop: 8 },
-  emptySub:         { fontSize: 13, color: '#94a3b8', textAlign: 'center', paddingHorizontal: 32 },
-  btnNovoCentro:    { marginTop: 12, backgroundColor: '#6366f1', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12 },
-  btnNovoCentroLabel: { color: '#fff', fontWeight: '700', fontSize: 14 },
+  lista: { padding: 16, gap: 10, paddingBottom: 32 },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
+  emptyTitulo: { fontSize: 16, fontWeight: '700', color: c.textoSecundario, marginTop: 8 },
+  emptySub: { fontSize: 13, color: c.textoTenue, textAlign: 'center', paddingHorizontal: 32 },
+  btnNovoCentro: { marginTop: 12, backgroundColor: '#6366f1', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12 },
+  btnNovoCentroLabel: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
 
-  card:             { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#e2e8f0' },
-  cardTopo:         { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
-  cardTipo:         { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 4 },
-  cardDesc:         { fontSize: 13, color: '#475569', lineHeight: 18 },
-  estadoBadge:      { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20, alignSelf: 'flex-start' },
-  estadoLabel:      { fontSize: 13, fontWeight: '700' },
-  cardMeta:         { marginTop: 10, gap: 2 },
-  metaTexto:        { fontSize: 13, color: '#94a3b8' },
-  cardAcoes:        { flexDirection: 'row', gap: 8, marginTop: 12 },
-  btnAssinar:       { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, backgroundColor: '#059669', borderRadius: 8, paddingVertical: 10 },
-  btnAssinarLabel:  { color: '#fff', fontSize: 13, fontWeight: '700' },
-  btnRecusar:       { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderWidth: 1, borderColor: '#fca5a5', borderRadius: 8, paddingVertical: 10 },
-  btnRecusarLabel:  { color: '#dc2626', fontSize: 13, fontWeight: '700' },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: c.borda },
+  cardTopo: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
+  cardTipo: { fontSize: 15, fontWeight: '700', color: c.texto, marginBottom: 4 },
+  cardDesc: { fontSize: 13, color: c.textoSecundario, lineHeight: 18 },
+  estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20, alignSelf: 'flex-start' },
+  estadoLabel: { fontSize: LETRA.corpo, fontWeight: '700' },
+  cardMeta: { marginTop: 10, gap: 2 },
+  metaTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
+  cardAcoes: { flexDirection: 'row', gap: 8, marginTop: 12 },
+  btnAssinar: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, backgroundColor: '#059669', borderRadius: 8, paddingVertical: 10 },
+  btnAssinarLabel: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '700' },
+  btnRecusar: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderWidth: 1, borderColor: '#fca5a5', borderRadius: 8, paddingVertical: 10 },
+  btnRecusarLabel: { color: '#dc2626', fontSize: LETRA.corpo, fontWeight: '700' },
 
-  modal:            { flex: 1, backgroundColor: '#fff' },
-  modalHeader:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 56 : 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  modalTitulo:      { fontSize: 17, fontWeight: '700', color: '#0f172a', flex: 1, marginRight: 12 },
-  modalFechar:      { width: 36, height: 36, borderRadius: 18, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  modalBody:        { flex: 1, paddingHorizontal: 20, paddingTop: 16 },
+  modal: { flex: 1, backgroundColor: c.superficie },
+  modalHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 56 : 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: c.borda },
+  modalTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, flex: 1, marginRight: 12 },
+  modalFechar: { width: 36, height: 36, borderRadius: 18, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  modalBody: { flex: 1, paddingHorizontal: 20, paddingTop: 16 },
 
-  doenteInfoBox:    { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#eef2ff', borderRadius: 10, padding: 12, marginBottom: 16 },
-  doenteInfoNome:   { fontSize: 14, fontWeight: '700', color: '#4338ca', flex: 1 },
+  doenteInfoBox: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#eef2ff', borderRadius: 10, padding: 12, marginBottom: 16 },
+  doenteInfoNome: { fontSize: LETRA.corpo, fontWeight: '700', color: '#4338ca', flex: 1 },
 
-  campoLabel:       { fontSize: 13, color: '#64748b', fontWeight: '600', marginBottom: 8, marginTop: 16 },
-  gradeOpcoes:      { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  opcaoBtn:         { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  opcaoBtnAtivo:    { backgroundColor: '#eef2ff', borderColor: '#6366f1' },
-  opcaoBtnLabel:    { fontSize: 13, color: '#475569' },
+  campoLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '600', marginBottom: 8, marginTop: 16 },
+  gradeOpcoes: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  opcaoBtn: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: c.borda, backgroundColor: c.superficie },
+  opcaoBtnAtivo: { backgroundColor: '#eef2ff', borderColor: '#6366f1' },
+  opcaoBtnLabel: { fontSize: LETRA.corpo, color: c.textoSecundario },
   opcaoBtnLabelAtivo: { color: '#6366f1', fontWeight: '700' },
-  textarea:         { borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, padding: 12, fontSize: 14, color: '#0f172a', backgroundColor: '#fff', minHeight: 100 },
+  textarea: { borderWidth: 1, borderColor: c.borda, borderRadius: 10, padding: 12, fontSize: 14, color: c.texto, backgroundColor: c.superficie, minHeight: 100 },
 
-  btnPrimario:      { backgroundColor: '#6366f1', borderRadius: 10, paddingVertical: 14, alignItems: 'center', marginTop: 20 },
+  btnPrimario: { backgroundColor: '#6366f1', borderRadius: 10, paddingVertical: 14, alignItems: 'center', marginTop: 20 },
   btnPrimarioLabel: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  btnVerde:         { backgroundColor: '#059669', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
-  btnVermelho:      { backgroundColor: '#dc2626', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
-  btnDesativado:    { opacity: 0.45 },
+  btnVerde: { backgroundColor: '#059669', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
+  btnVermelho: { backgroundColor: '#dc2626', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
+  btnDesativado: { opacity: 0.45 },
 
-  overlay:          { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
-  sheet:            { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: Platform.OS === 'ios' ? 44 : 24 },
-  sheetTitulo:      { fontSize: 17, fontWeight: '700', color: '#0f172a', marginBottom: 12 },
-  sheetInfoBox:     { backgroundColor: '#f8fafc', borderRadius: 10, padding: 12, marginBottom: 12 },
-  sheetInfoTipo:    { fontSize: 14, fontWeight: '700', color: '#0f172a', marginBottom: 4 },
-  sheetInfoDesc:    { fontSize: 13, color: '#475569' },
-  sheetTexto:       { fontSize: 13, color: '#64748b', lineHeight: 19 },
-  confirmacaoRow:   { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginTop: 16, marginBottom: 4 },
-  confirmacaoLabel: { flex: 1, fontSize: 13, color: '#334155', lineHeight: 18 },
-  sheetBotoes:      { flexDirection: 'row', gap: 10, marginTop: 16 },
-  btnSecundario:    { flex: 1, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
-  btnSecundarioLabel: { fontSize: 15, color: '#475569', fontWeight: '600' },
-});
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: c.superficie, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: Platform.OS === 'ios' ? 44 : 24 },
+  sheetTitulo: { fontSize: 17, fontWeight: '700', color: c.texto, marginBottom: 12 },
+  sheetInfoBox: { backgroundColor: c.fundo, borderRadius: 10, padding: 12, marginBottom: 12 },
+  sheetInfoTipo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, marginBottom: 4 },
+  sheetInfoDesc: { fontSize: LETRA.corpo, color: c.textoSecundario },
+  sheetTexto: { fontSize: LETRA.corpo, color: c.textoTenue, lineHeight: 19 },
+  confirmacaoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginTop: 16, marginBottom: 4 },
+  confirmacaoLabel: { flex: 1, fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 18 },
+  sheetBotoes: { flexDirection: 'row', gap: 10, marginTop: 16 },
+  btnSecundario: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
+  btnSecundarioLabel: { fontSize: 15, color: c.textoSecundario, fontWeight: '600' },
+}));

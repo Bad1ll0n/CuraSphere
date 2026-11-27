@@ -1,3 +1,4 @@
+import { multiplicarEuros } from '../common/infra/dinheiro';
 import { Injectable, Logger, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -364,7 +365,7 @@ export class FarmaciaService {
     for (const a of ajustes) {
       const key = a.stockItemId;
       const consumo = Math.abs(a.delta);
-      const custo = a.stockItem.precoUnitario ? consumo * a.stockItem.precoUnitario : 0;
+      const custo = multiplicarEuros(a.stockItem.precoUnitario, consumo);
       custoTotal += custo;
 
       if (!porItem.has(key)) {

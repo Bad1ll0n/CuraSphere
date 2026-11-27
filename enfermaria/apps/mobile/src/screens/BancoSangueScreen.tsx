@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, useEsquema } from '../lib/tema';
 
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
@@ -24,6 +25,7 @@ function grupoLabel(abo: string, rh: string) {
 }
 
 export default function BancoSangueScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [bolsas, setBolsas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -97,22 +99,22 @@ export default function BancoSangueScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
-  header: { flexDirection: 'row', alignItems: 'center', paddingTop: 56, paddingBottom: 12, paddingHorizontal: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
+const styles = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
+  header: { flexDirection: 'row', alignItems: 'center', paddingTop: 56, paddingBottom: 12, paddingHorizontal: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
   voltar: { padding: 4, marginRight: 8 },
-  titulo: { fontSize: 20, fontWeight: '700', color: '#0f172a' },
-  seccao: { fontSize: 13, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  titulo: { fontSize: 20, fontWeight: '700', color: c.texto },
+  seccao: { fontSize: 13, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
   grelha: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  grupoCard: { width: '22%', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', paddingVertical: 12, alignItems: 'center' },
+  grupoCard: { width: '22%', backgroundColor: c.superficie, borderRadius: 12, borderWidth: 1, borderColor: c.borda, paddingVertical: 12, alignItems: 'center' },
   grupoLabel: { fontSize: 15, fontWeight: '700', color: '#dc2626' },
-  grupoNum: { fontSize: 22, fontWeight: '800', color: '#0f172a', marginTop: 2 },
+  grupoNum: { fontSize: 22, fontWeight: '800', color: c.texto, marginTop: 2 },
   grupoZero: { color: '#cbd5e1' },
-  bolsaCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', padding: 14, marginBottom: 8 },
-  bolsaNum: { fontSize: 15, fontWeight: '600', color: '#0f172a' },
-  bolsaSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  bolsaCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.superficie, borderRadius: 12, borderWidth: 1, borderColor: c.borda, padding: 14, marginBottom: 8 },
+  bolsaNum: { fontSize: 15, fontWeight: '600', color: c.texto },
+  bolsaSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   grupoTag: { backgroundColor: '#fee2e2', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, marginRight: 10 },
   grupoTagText: { color: '#b91c1c', fontWeight: '700', fontSize: 13 },
   estadoPonto: { width: 10, height: 10, borderRadius: 5 },
-  vazio: { color: '#94a3b8', fontSize: 14, paddingVertical: 12 },
-});
+  vazio: { color: c.textoTenue, fontSize: 14, paddingVertical: 12 },
+}));

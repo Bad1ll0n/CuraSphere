@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, RefreshControl, Alert,
+  View, Text, ScrollView, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Notificacao {
   id: string;
@@ -35,6 +35,7 @@ function formatarData(iso: string) {
 }
 
 export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [naoLidas, setNaoLidas] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -106,16 +107,20 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
           <ActivityIndicator size="large" color="#6366f1" />
         </View>
       ) : (
-        <ScrollView
-          style={s.lista}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} tintColor="#6366f1" />}
-        >
-          {notificacoes.length === 0 ? (
+        <FlatList // PERF-17: virtualizada (antes ScrollView + map montava todas as linhas)
+          style={s.lista} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} tintColor="#6366f1" />}
+          data={notificacoes}
+          keyExtractor={(n) => n.id}
+          initialNumToRender={10}
+          windowSize={7}
+          ListEmptyComponent={(
             <View style={s.vazio}>
               <Ionicons name="notifications-off-outline" size={48} color="#cbd5e1" />
               <Text style={s.vazioTexto}>Sem notificações</Text>
             </View>
-          ) : notificacoes.map((n) => (
+                    )}
+          ListFooterComponent={<View style={{ height: 32 }} />}
+          renderItem={({ item: n }) => (
             <TouchableOpacity accessibilityRole="button"
               key={n.id}
               style={[s.card, !n.lida && s.cardNaoLido]}
@@ -140,16 +145,15 @@ export default function NotificacoesScreen({ utilizador, onVoltar }: Props) {
                 )}
               </View>
             </TouchableOpacity>
-          ))}
-          <View style={{ height: 32 }} />
-        </ScrollView>
+          )}
+        />
       )}
     </View>
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   header: {
     backgroundColor: '#6366f1',
     paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16,
@@ -164,13 +168,13 @@ const s = StyleSheet.create({
   },
   badgeHeaderText: { color: '#fff', fontSize: 13, fontWeight: '700' },
   todosBotao: { paddingHorizontal: 10, paddingVertical: 6, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10 },
-  todosTexto: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  todosTexto: { color: '#fff', fontSize: LETRA.corpo, fontWeight: '600' },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   lista: { flex: 1 },
   vazio: { alignItems: 'center', justifyContent: 'center', paddingVertical: 80, gap: 12 },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
   card: {
-    backgroundColor: '#fff', marginHorizontal: 16, marginTop: 10,
+    backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 10,
     borderRadius: 14, flexDirection: 'row',
     shadowColor: '#000', shadowOpacity: 0.04, shadowOffset: { width: 0, height: 1 }, shadowRadius: 4,
     elevation: 1, overflow: 'hidden',
@@ -184,13 +188,13 @@ const s = StyleSheet.create({
   dotLido: { backgroundColor: '#e2e8f0' },
   cardConteudo: { flex: 1, padding: 14, paddingLeft: 4 },
   cardTopo: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
-  cardTitulo: { flex: 1, fontSize: 14, fontWeight: '500', color: '#475569' },
-  cardTituloNaoLido: { color: '#1e293b', fontWeight: '700' },
-  cardData: { fontSize: 13, color: '#94a3b8' },
-  cardCorpo: { fontSize: 13, color: '#64748b', marginTop: 4, lineHeight: 18 },
+  cardTitulo: { flex: 1, fontSize: LETRA.corpo, fontWeight: '500', color: c.textoSecundario },
+  cardTituloNaoLido: { color: c.texto, fontWeight: '700' },
+  cardData: { fontSize: 13, color: c.textoTenue },
+  cardCorpo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 4, lineHeight: 18 },
   tagNaoLida: {
     marginTop: 8, alignSelf: 'flex-start',
     backgroundColor: '#e0e7ff', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2,
   },
   tagNaoLidaText: { fontSize: 13, fontWeight: '700', color: '#6366f1' },
-});
+}));

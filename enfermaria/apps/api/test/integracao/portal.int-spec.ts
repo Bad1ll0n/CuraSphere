@@ -33,7 +33,10 @@ describe('integração: portal do doente', () => {
     );
 
     const portal = new Sessao(ctx.url);
-    expect((await portal.pedido('POST', '/portal/login', { email: emailA, senha: 'PortalTeste12345!' })).status).toBeLessThan(300);
+    const login = await portal.pedido('POST', '/portal/login', { email: emailA, senha: 'PortalTeste12345!' });
+    expect(login.status).toBeLessThan(300);
+    // QA-28: o token vai só no cookie httpOnly — nunca no corpo, onde um XSS o leria.
+    expect(JSON.stringify(login.json)).not.toMatch(/accessToken|eyJ/);
     const me = await portal.pedido('GET', '/portal/me');
     expect(me.status).toBe(200);
     expect(me.json.id).toBe(a.doenteId);

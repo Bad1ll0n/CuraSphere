@@ -4,7 +4,8 @@ import { randomBytes } from 'crypto';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from './prisma/prisma.service';
 import { RedisService } from './redis/redis.service';
-import { AuditoriaInstaladaService } from './common/auditoria-instalada.service';
+import { AuditoriaInstaladaService } from './common/auditoria/auditoria-instalada.service';
+import { versaoDaAplicacao } from '../versao';
 
 type ComponentStatus = { status: 'up' | 'down' };
 
@@ -40,7 +41,8 @@ export class AppController {
    */
   @Get('health/live')
   live() {
-    return { status: 'ok', uptimeSegundos: Math.round(process.uptime()) };
+    // OPS-08: a versão em execução — o deploy confirma que é a que acabou de instalar.
+    return { status: 'ok', versao: versaoDaAplicacao(), uptimeSegundos: Math.round(process.uptime()) };
   }
 
   /**

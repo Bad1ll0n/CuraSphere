@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AI_MODELS } from '../common/ai-models';
-import { StorageService } from '../common/storage.service';
+import { AI_MODELS } from '../common/ia/ai-models';
+import { StorageService } from '../common/infra/storage.service';
 import { CriarAvaliacaoFerida } from './dto/criar-avaliacao-ferida.dto';
 import { randomUUID as uuid } from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
-import { exigirIaPermitida } from '../common/funcoes-ia';
+import { exigirIaPermitida } from '../common/ia/funcoes-ia';
 
 const PROMPT_VISAO_FERIDA = `Analisa esta imagem de ferida clínica.
 Responde APENAS com JSON válido (sem markdown, sem texto extra):

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
-import { StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { StatCard, AtalhoModulo, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
 
 export function DashboardFarmacia({ utilizador }: { utilizador: any }) {
   const { data = {}, isLoading } = useQuery({
@@ -68,7 +68,7 @@ export function DashboardFarmacia({ utilizador }: { utilizador: any }) {
               </div>
             )}
           </CardContainer>
-          <EmBreve titulo="Validação de Prescrições" descricao="Validar prescrições médicas antes da dispensa" />
+          <AtalhoModulo href="/farmacia" titulo="Validação de Prescrições" descricao="Prescrições por validar antes da dispensa — separador Validação" />
         </div>
       </div>
     </>

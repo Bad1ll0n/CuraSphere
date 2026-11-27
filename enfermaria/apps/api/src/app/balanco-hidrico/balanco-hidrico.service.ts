@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
 import {
   chaveDiaClinico, inicioDoDiaClinico, inicioDoDiaClinicoHaDias, somarDiasClinicos,
-} from '../common/dia-clinico.helper';
+} from '../common/clinico/dia-clinico.helper';
 
 const ROLES_PODEM_REGISTAR = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros'];
 

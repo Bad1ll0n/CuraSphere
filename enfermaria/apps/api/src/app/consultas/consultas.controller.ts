@@ -8,7 +8,8 @@ import { CriarAgendaDto } from './dto/criar-agenda.dto';
 import { AtualizarAgendaDto } from './dto/atualizar-agenda.dto';
 import { AgendarConsultaDto } from './dto/agendar-consulta.dto';
 import { RealizarConsultaDto } from './dto/realizar-consulta.dto';
-import { AdicionarAtoDto } from './dto/adicionar-ato.dto';
+import { AdicionarAtoDto } from './dto/adicionar-ato.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('consultas')
@@ -91,7 +92,7 @@ export class ConsultasController {
 
   @Patch(':id/realizar')
   @Roles('medico')
-  realizar(@Param('id') id: string, @Body() dto: RealizarConsultaDto, @Request() req: any) {
+  realizar(@Param('id') id: string, @Body() dto: RealizarConsultaDto, @Request() req: PedidoAutenticado) {
     return this.service.realizar(id, dto, req.user.sub);
   }
 
@@ -120,19 +121,19 @@ export class ConsultasController {
 
   @Post(':id/video/iniciar')
   @Roles('medico')
-  iniciarVideo(@Param('id') id: string, @Request() req: any) {
+  iniciarVideo(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.iniciarVideo(id, req.user.sub);
   }
 
   @Post(':id/video/terminar')
   @Roles('medico')
-  terminarVideo(@Param('id') id: string, @Request() req: any) {
+  terminarVideo(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.terminarVideo(id, req.user.sub);
   }
 
   @Get(':id/video/entrar')
   @Roles('medico')
-  dadosVideo(@Param('id') id: string, @Request() req: any) {
+  dadosVideo(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.dadosVideo(id, req.user.sub);
   }
 }

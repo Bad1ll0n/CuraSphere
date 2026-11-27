@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { DicomViewer } from '@/components/dicom-viewer';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -54,6 +56,7 @@ function formatBytes(bytes?: number) {
 }
 
 export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const role = utilizador?.role ?? '';
   const podeUpload = ['medico', 'enfermeiro', 'tecnico_saude'].includes(role);
@@ -134,7 +137,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   };
 
   const submeterUpload = async () => {
-    if (!fileSeleccionado) { toast.error('Selecciona um ficheiro'); return; }
+    if (!fileSeleccionado) { toast.error('Selecione um ficheiro'); return; }
     setEnviando(true);
     try {
       const fd = new FormData();
@@ -156,7 +159,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   };
 
   const assinarDocumento = async (docId: string) => {
-    if (!confirm('Assinar digitalmente este documento? Esta acção não pode ser revertida.')) return;
+    if (!confirm('Assinar digitalmente este documento? Esta ação não pode ser revertida.')) return;
     try {
       await api.post(`/documentos-saude/${docId}/assinar`);
       toast.success('Documento assinado com sucesso');
@@ -196,21 +199,20 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           )}
           <div className="flex items-center gap-2" style={{ marginLeft: 'auto' }}>
             {podeSincronizar && (
-              <button
+              <Button variant="secondary" size="sm" className="flex gap-1 hover:text-blue-600 hover:border-blue-300"
                 onClick={sincronizar}
                 disabled={sincronizando}
                 title="Sincronizar com sistemas externos"
-                className="flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg transition-colors disabled:opacity-50"
                 style={{ padding: '5px 10px' }}
               >
                 <svg className={`w-3 h-3 ${sincronizando ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 {sincronizando ? 'A sincronizar...' : 'Sincronizar'}
-              </button>
+              </Button>
             )}
             {podeUpload && (
-              <button
+              <button aria-label={tA11y('uploadDocument')}
                 onClick={() => setModalUpload(true)}
                 className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
                 title="Carregar documento"
@@ -338,7 +340,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           <div {...dlgDoc.propsPainel} className="bg-white rounded-2xl shadow-2xl flex flex-col" style={{ width: '90vw', height: '90vh', maxWidth: '1200px' }}>
             <div className="flex items-center justify-between" style={{ padding: '16px 20px', borderBottom: '1px solid #f1f5f9' }}>
               <span className="text-sm font-semibold text-slate-700 truncate">{docAberto.titulo}</span>
-              <button
+              <button aria-label={tA11y('close')}
                 onClick={() => setDocAberto(null)}
                 className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors"
               >
@@ -390,7 +392,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
           <div {...dlgUpload.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">Carregar Documento</h2>
-              <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => { setModalUpload(false); setFileSeleccionado(null); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -418,7 +420,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                   <svg className="w-8 h-8 text-slate-300" style={{ marginBottom: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <p className="text-sm text-slate-500">Arrasta ou clica para seleccionar</p>
+                  <p className="text-sm text-slate-500">Arraste ou clique para selecionar</p>
                   <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>PDF, JPEG, PNG, DICOM — até 50 MB</p>
                 </>
               )}
@@ -483,15 +485,13 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
               />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => { setModalUpload(false); setFileSeleccionado(null); }}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={submeterUpload}
+              <Button variant="secondary" className="flex-1" onClick={() => { setModalUpload(false); setFileSeleccionado(null); }}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={submeterUpload}
                 disabled={enviando || !fileSeleccionado || !uploadForm.titulo.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
                 {enviando ? 'A carregar...' : 'Carregar Documento'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

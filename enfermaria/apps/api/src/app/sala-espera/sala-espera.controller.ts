@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SalaEsperaService } from './sala-espera.service';
-import { RegistarSalaEsperaDto } from './dto/registar-sala-espera.dto';
+import { RegistarSalaEsperaDto } from './dto/registar-sala-espera.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sala-espera')
@@ -22,13 +23,13 @@ export class SalaEsperaController {
 
   @Post()
   @Roles('administrativo', 'auxiliar')
-  registar(@Body() dto: RegistarSalaEsperaDto, @Request() req: any) {
+  registar(@Body() dto: RegistarSalaEsperaDto, @Request() req: PedidoAutenticado) {
     return this.service.registar(dto, req.user.sub);
   }
 
   @Patch(':id/chamar')
   @Roles('medico', 'enfermeiro')
-  chamar(@Param('id') id: string, @Request() req: any) {
+  chamar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.chamar(id, req.user.sub);
   }
 

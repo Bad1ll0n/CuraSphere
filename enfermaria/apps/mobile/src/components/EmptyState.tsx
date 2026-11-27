@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
+import { estilosTematicos } from '../lib/tema';
 
 interface Props { text: string }
 
@@ -7,6 +8,6 @@ export default function EmptyState({ text }: Props) {
   return <Text style={s.text}>{text}</Text>;
 }
 
-const s = StyleSheet.create({
-  text: { color: '#94a3b8', fontSize: 14, textAlign: 'center', padding: 20 },
-});
+const s = estilosTematicos((c) => ({
+  text: { color: c.textoTenue, fontSize: 14, textAlign: 'center', padding: 20 },
+}));

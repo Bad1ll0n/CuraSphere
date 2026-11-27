@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform, Linking,
+  ActivityIndicator, RefreshControl, Alert, Platform, Linking,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Consulta {
   id: string;
@@ -31,6 +32,7 @@ const estadoLabel: Record<string, string> = {
 };
 
 export default function ConsultasScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -163,34 +165,34 @@ export default function ConsultasScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
-  filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
+  filtros: { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  filtro: { flex: 1, paddingVertical: 7, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center' },
   filtroAtivo: { backgroundColor: '#2563eb' },
-  filtroTexto: { fontSize: 13, fontWeight: '600', color: '#64748b' },
+  filtroTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   filtroTextoAtivo: { color: '#fff' },
   vazio: { padding: 40, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoHoje: { borderLeftWidth: 4, borderLeftColor: '#2563eb' },
   hojeTag: { backgroundColor: '#dbeafe', alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, marginBottom: 8 },
-  hojeTagTexto: { fontSize: 13, fontWeight: '700', color: '#1d4ed8' },
+  hojeTagTexto: { fontSize: LETRA.corpo, fontWeight: '700', color: '#1d4ed8' },
   cartaoTopo: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
-  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  cartaoProcesso: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto },
+  cartaoProcesso: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
-  infoTexto: { fontSize: 13, color: '#64748b' },
+  infoTexto: { fontSize: LETRA.corpo, color: c.textoTenue },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, fontWeight: '600' },
-  motivo: { fontSize: 13, color: '#475569', marginTop: 8, fontStyle: 'italic' },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
+  motivo: { fontSize: 13, color: c.textoSecundario, marginTop: 8, fontStyle: 'italic' },
   btnRealizar: { marginTop: 10, backgroundColor: '#dcfce7', paddingVertical: 8, borderRadius: 10, alignItems: 'center' },
-  btnRealizarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 14 },
+  btnRealizarTexto: { color: '#16a34a', fontWeight: '700', fontSize: LETRA.corpo },
   btnVideo: { marginTop: 8, backgroundColor: '#22c55e', paddingVertical: 8, borderRadius: 10, alignItems: 'center' },
-  btnVideoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
-});
+  btnVideoTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+}));

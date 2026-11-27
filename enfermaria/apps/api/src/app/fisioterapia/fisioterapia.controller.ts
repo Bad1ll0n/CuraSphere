@@ -6,7 +6,8 @@ import { FisioterapiaService } from './fisioterapia.service';
 import { CriarPlanoReabilitacaoDto } from './dto/criar-plano-reabilitacao.dto';
 import { AgendarSessaoFisioterapiaDto } from './dto/agendar-sessao-fisioterapia.dto';
 import { RealizarSessaoDto } from './dto/realizar-sessao.dto';
-import { AcessoDoenteIsento, AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoenteIsento, AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('fisioterapia')
@@ -15,7 +16,7 @@ export class FisioterapiaController {
 
   @Post('plano/:doenteId')
   @Roles('tecnico_saude')
-  criarPlano(@Param('doenteId') doenteId: string, @Body() dto: CriarPlanoReabilitacaoDto, @Request() req: any) {
+  criarPlano(@Param('doenteId') doenteId: string, @Body() dto: CriarPlanoReabilitacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.criarPlano(doenteId, dto, req.user.sub);
   }
 
@@ -27,7 +28,7 @@ export class FisioterapiaController {
   @AcessoDoenteIsento('agendamento: não lê nem altera dados clínicos e o doente pode ainda não estar atribuído ao profissional')
   @Post('sessao')
   @Roles('tecnico_saude')
-  agendarSessao(@Body() dto: AgendarSessaoFisioterapiaDto, @Request() req: any) {
+  agendarSessao(@Body() dto: AgendarSessaoFisioterapiaDto, @Request() req: PedidoAutenticado) {
     return this.service.agendarSessao(dto, req.user.sub);
   }
 
@@ -39,7 +40,7 @@ export class FisioterapiaController {
   }
 
   @Get('agenda')
-  agendaFisioterapeuta(@Request() req: any) {
+  agendaFisioterapeuta(@Request() req: PedidoAutenticado) {
     return this.service.agendaFisioterapeuta(req.user.sub);
   }
 }

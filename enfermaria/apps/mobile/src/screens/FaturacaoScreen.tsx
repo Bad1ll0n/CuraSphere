@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Platform,
+  View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -61,6 +61,7 @@ function formatarData(iso?: string) {
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function FaturacaoScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [stats, setStats] = useState<ResumoStats | null>(null);
   const [episodios, setEpisodios] = useState<Episodio[]>([]);
   const [carregando, setCarregando] = useState(false);
@@ -197,36 +198,36 @@ export default function FaturacaoScreen({ utilizador, onVoltar }: Props) {
 
 // ─── Estilos ──────────────────────────────────────────────────────────────────
 
-const s = StyleSheet.create({
-  container:       { flex: 1, backgroundColor: '#f8fafc' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
 
-  header:          { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  btnVoltar:       { width: 38, height: 38, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  headerTitulo:    { fontSize: 17, fontWeight: '700', color: '#0f172a' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: Platform.OS === 'ios' ? 56 : 16, paddingBottom: 12, backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda },
+  btnVoltar: { width: 38, height: 38, borderRadius: 10, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center' },
+  headerTitulo: { fontSize: 17, fontWeight: '700', color: c.texto },
 
-  lista:           { padding: 16, gap: 10 },
-  centro:          { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  vazio:           { textAlign: 'center', color: '#94a3b8', fontSize: 14, marginTop: 24 },
+  lista: { padding: 16, gap: 10 },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  vazio: { textAlign: 'center', color: c.textoTenue, fontSize: 14, marginTop: 24 },
 
-  kpiGrid:         { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 4 },
-  kpiCard:         { flex: 1, minWidth: '45%', borderRadius: 12, padding: 14 },
-  kpiVal:          { fontSize: 18, fontWeight: '800', marginBottom: 2 },
-  kpiLabel:        { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 4 },
+  kpiCard: { flex: 1, minWidth: '45%', borderRadius: 12, padding: 14 },
+  kpiVal: { fontSize: 18, fontWeight: '800', marginBottom: 2 },
+  kpiLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
 
-  filtroScroll:    { flexGrow: 0, marginBottom: 4 },
-  filtroPill:      { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#fff' },
-  filtroPillLabel: { fontSize: 13, color: '#64748b', fontWeight: '500' },
+  filtroScroll: { flexGrow: 0, marginBottom: 4 },
+  filtroPill: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: c.borda, backgroundColor: c.superficie },
+  filtroPillLabel: { fontSize: LETRA.corpo, color: c.textoTenue, fontWeight: '500' },
 
-  card:            { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#e2e8f0' },
-  cardTopo:        { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  cardNome:        { fontSize: 14, fontWeight: '700', color: '#0f172a' },
-  cardSub:         { fontSize: 13, color: '#64748b', marginTop: 2 },
-  estadoBadge:     { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  estadoLabel:     { fontSize: 13, fontWeight: '700' },
-  cardValorRow:    { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
-  cardValor:       { fontSize: 18, fontWeight: '800', color: '#0f172a' },
-  coberturaBadge:  { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, backgroundColor: '#f1f5f9' },
-  coberturaLabel:  { fontSize: 13, color: '#475569', fontWeight: '600' },
-  cardRodape:      { marginTop: 6, gap: 2 },
-  cardMeta:        { fontSize: 13, color: '#94a3b8' },
-});
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: c.borda },
+  cardTopo: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  cardNome: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto },
+  cardSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
+  estadoLabel: { fontSize: LETRA.corpo, fontWeight: '700' },
+  cardValorRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
+  cardValor: { fontSize: 18, fontWeight: '800', color: c.texto },
+  coberturaBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, backgroundColor: c.fundo },
+  coberturaLabel: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '600' },
+  cardRodape: { marginTop: 6, gap: 2 },
+  cardMeta: { fontSize: 13, color: c.textoTenue },
+}));

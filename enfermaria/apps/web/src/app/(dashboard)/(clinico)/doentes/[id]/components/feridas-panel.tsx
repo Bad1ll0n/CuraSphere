@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { FormField } from '@/components/form-field';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { pedirMotivoRemocao } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -144,6 +146,7 @@ const EMPTY_FORM = {
 };
 
 export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const [avaliacoes, setAvaliacoes] = useState<AvaliacaoFerida[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState(false);
@@ -441,13 +444,13 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                                 ref={el => { fileInputRefs.current[av.id] = el; }}
                                 onChange={e => { const f = e.target.files?.[0]; if (f) uploadFoto(av.id, f); e.target.value = ''; }}
                               />
-                              <button
+                              <Button variant="secondary" size="sm" className="hover:text-rose-600 hover:border-rose-300"
                                 onClick={() => fileInputRefs.current[av.id]?.click()}
                                 disabled={uploadingFoto === av.id}
-                                className="text-xs text-slate-500 hover:text-rose-600 border border-slate-200 hover:border-rose-300 rounded-lg transition-colors disabled:opacity-50"
+                                
                                 style={{ padding: '3px 10px' }}>
                                 {uploadingFoto === av.id ? 'A enviar...' : '+ Foto'}
-                              </button>
+                              </Button>
                             </>
                           )}
                         </div>
@@ -586,10 +589,8 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
             {/* Modal header */}
             <div className="flex items-center justify-between shrink-0" style={{ padding: '24px 28px 0' }}>
               <h2 className="text-lg font-bold text-slate-900">Nova Avaliação de Ferida</h2>
-              <button onClick={() => setModalAberto(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              <button aria-label={tA11y('close')} onClick={() => setModalAberto(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
 
@@ -791,11 +792,10 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
             {/* Modal footer */}
             <div className="flex gap-3 border-t border-slate-100 shrink-0" style={{ padding: '16px 28px' }}>
-              <button onClick={() => setModalAberto(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAberto(false)}
                 style={{ padding: '11px' }}>
                 Cancelar
-              </button>
+              </Button>
               <button onClick={submeter} disabled={guardando || !form.localizacao.trim()}
                 className="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
                 style={{ padding: '11px' }}>

@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import { useToast } from '@/components/toast';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface DoenteRisco {
   id: string;
@@ -135,14 +136,14 @@ export default function RiscoClinicoPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Dashboard de Risco Clínico</h1>
-            <p className="text-sm text-slate-500">Monitorização em tempo real · actualizado a cada minuto</p>
+            <p className="text-sm text-slate-500">Monitorização em tempo real · atualizado a cada minuto</p>
           </div>
         </div>
       </div>
 
       {/* Resumo — 4 cartões */}
       <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '32px', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <StatCard label="Total internados" value={totalInternados} sub="doentes activos" />
+        <StatCard label="Total internados" value={totalInternados} sub="doentes ativos" />
         <StatCard
           label="NEWS2 crítico (≥7)"
           value={news2Criticos}
@@ -297,13 +298,13 @@ export default function RiscoClinicoPage() {
                       <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{a.mensagem}</p>
                     </div>
                     {!a.acusadoEm && (
-                      <button
+                      <Button variant="secondary" size="sm" className="whitespace-nowrap"
                         onClick={() => mutAcusar.mutate(a.id)}
                         disabled={mutAcusar.isPending}
-                        className="text-xs font-semibold text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 whitespace-nowrap"
+                        
                         style={{ padding: '4px 10px', flexShrink: 0 }}>
                         Acusar
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>

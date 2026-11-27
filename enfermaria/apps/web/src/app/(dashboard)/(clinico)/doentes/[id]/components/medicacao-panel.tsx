@@ -1,5 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { CampoDoseEstruturada, CamposIndicacaoDuracao, IndicacaoEFim } from './prescricao-campos';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { QRCode } from '@/components/qr-diferido';
 import api from '@/lib/api';
@@ -7,11 +9,14 @@ import { useEtiquetaUnidose } from '@/lib/hooks';
 import { useToast } from '@/components/toast';
 import { FaixaAlergiasDoente } from '@/components/faixa-alergias';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { pedirTexto } from '@/components/motivo-remocao';
+import { Button } from '@/components/ui';
 
 interface Medicacao {
   id: string;
   nome: string;
   dose: string;
+  indicacao?: string | null; dataFimPrevista?: string | null; // UX-17
   via: string;
   frequencia: string;
   iniciadoEm: string;
@@ -94,14 +99,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
 }) {
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>Cancelar</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>Cancelar</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? 'A guardar...' : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -115,6 +118,7 @@ function ErroBox({ texto }: { texto: string }) {
 }
 
 export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
   const role = utilizador?.role ?? '';
   const podePrescreveMed = role === 'medico';
@@ -130,7 +134,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   // Prescrever medicação state
   const [modalMed, setModalMed] = useState(false);
   const [medNome, setMedNome] = useState('');
-  const [medDose, setMedDose] = useState('');
+  const [medDose, setMedDose] = useState(''); const [medUnidade, setMedUnidade] = useState<string>('mg'); const [medIndicacao, setMedIndicacao] = useState(''); const [medDuracao, setMedDuracao] = useState(''); // UX-17
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
   const [erroModal, setErroModal] = useState('');
@@ -246,15 +250,16 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   };
 
   const submeterMed = async () => {
-    if (!medNome.trim() || !medDose.trim() || !medVia.trim() || !medFreq.trim()) return;
+    if (!medNome.trim() || !(Number(medDose.replace(',', '.')) > 0) || !medVia.trim() || !medFreq.trim()) return;
     if (temInteracaoGrave && !justificativaInteracao.trim()) {
-      setErroModal('Interacção grave detectada — é obrigatório registar a justificação clínica.');
+      setErroModal('Interação grave detetada — é obrigatório registar a justificação clínica.');
       return;
     }
     setSalvando(true); setErroModal('');
     try {
       const { data: criada } = await api.post('/medicacao/prescrever', {
-        doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
+        doenteId, nome: medNome, doseValor: Number(medDose.replace(',', '.')), doseUnidade: medUnidade, via: medVia, frequencia: medFreq,
+        ...(medIndicacao.trim() ? { indicacao: medIndicacao.trim() } : {}), ...(medDuracao ? { duracaoDias: Number(medDuracao) } : {}),
         ...(medFreq === 'SOS' ? { intervaloMinimoH: Number(sosIntervalo), ...(sosMaxDia ? { maxDosesDia: Number(sosMaxDia) } : {}) } : {}),
         ...(catalogoItem ? { catalogoId: catalogoItem.id } : {}),
         // A justificação da interacção grave, escrita ao ver o aviso, vai no campo certo (antes ia no da alergia).
@@ -271,7 +276,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
       if (criada?.avisoFrequencia) toast.warning(criada.avisoFrequencia);
       if (criada?.avisoForaCatalogo) toast.warning(criada.avisoForaCatalogo);
       if (criada?.avisoRenal) toast.warning(criada.avisoRenal);
-      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setCatalogoItem(null);
+      setModalMed(false); setMedNome(''); setMedDose(''); setMedUnidade('mg'); setMedIndicacao(''); setMedDuracao(''); setMedVia(''); setMedFreq(''); setCatalogoItem(null);
       setInteracoes([]); setJustificativaInteracao(''); setOverridePedido(null); setJustificacaoOverride('');
       onRefresh();
     } catch (e: any) {
@@ -285,22 +290,17 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     } finally { setSalvando(false); }
   };
 
-  const concluirMedicacao = (medId: string) => {
-    setConfirmarAcao({
-      titulo: 'Descontinuar Medicação',
-      mensagem: 'Confirmar conclusão desta medicação? Esta acção não pode ser revertida.',
-      variant: 'warning',
-      onConfirmar: async () => {
-        setConfirmarAcao(null);
-        try {
-          await api.patch(`/medicacao/${medId}/descontinuar`);
-          toast.success('Medicação descontinuada');
-          onRefresh();
-        } catch (e: any) {
-          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
-        }
-      },
-    });
+  // QA-14: descontinuar é uma decisão terapêutica — fica o motivo e o autor (se não for o médico, o prescritor confirma).
+  const concluirMedicacao = async (medId: string, nome: string, dose?: string) => { // UX-15: o diálogo nomeia o fármaco
+    const motivo = await pedirTexto({ titulo: `Descontinuar ${nome}${dose ? ` ${dose}` : ''}`, rotulo: 'Motivo da descontinuação', botao: 'Descontinuar', minimo: 5,
+      descricao: 'A prescrição deixa de estar ativa. Fica no processo com o seu nome, a hora e o motivo; se não for o médico, o prescritor recebe uma tarefa para confirmar.',
+      placeholder: 'Ex.: fim do tratamento, reação adversa' });
+    if (!motivo) return;
+    try {
+      await api.patch(`/medicacao/${medId}/descontinuar`, { motivo });
+      toast.success('Medicação descontinuada');
+      onRefresh();
+    } catch (e: any) { toast.error(e?.response?.data?.message ?? 'Erro ao guardar'); }
   };
 
   const submeterProposta = async () => {
@@ -324,7 +324,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     setSalvandoProposta('aprovar');
     try {
       await api.patch(`/medicacao/${medicacaoId}/aprovar-medico`);
-      toast.success('Prescrição aprovada e activada');
+      toast.success('Prescrição aprovada e ativada');
       onRefresh(); carregarPropostas();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao aprovar');
@@ -412,7 +412,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         </div>
         {medicacoes.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '24px 0' }}>
-            {podePrescreveMed ? 'Sem medicação ativa — clica em + para prescrever' : 'Sem medicação ativa'}
+            {podePrescreveMed ? 'Sem medicação ativa — clique em + para prescrever' : 'Sem medicação ativa'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
@@ -424,6 +424,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
                       <p className="text-sm font-medium text-slate-600" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                      <IndicacaoEFim indicacao={m.indicacao} dataFimPrevista={m.dataFimPrevista} />
                       {m.prescritoPor && (
                         <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
                       )}
@@ -436,22 +437,20 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
+                    {/* UX-15: alvos de 32 px e a ação destrutiva com texto, cor e afastada (antes: dois ícones de 24 px). */}
+                    <div className="flex items-center gap-4 shrink-0" style={{ marginLeft: '8px' }}>
                       <button
                         onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
-                        title="Etiqueta de unidose (QR assinado)"
-                        className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
-                        <svg className="w-3 h-3 text-slate-500 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        title="Etiqueta de unidose (QR assinado)" aria-label={`Etiqueta de unidose de ${m.nome}`}
+                        className="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
+                        <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                         </svg>
                       </button>
                       {podePrescreveMed && (
-                        <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
-                          className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors">
-                          <svg className="w-3 h-3 text-slate-500 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
+                        <button onClick={() => concluirMedicacao(m.id, m.nome, m.dose)} aria-label={`Descontinuar ${m.nome}`}
+                          className="h-8 rounded-lg border border-red-200 bg-white text-red-700 hover:bg-red-50 text-xs font-semibold transition-colors"
+                          style={{ padding: '0 10px' }}>{tA11y('discontinue')}</button>
                       )}
                     </div>
                   </div>
@@ -569,13 +568,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               )}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="fmedicaca-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Dose *</label>
-                <input id="fmedicaca-1" type="text" value={medDose} onChange={(e) => setMedDose(e.target.value)}
-                  placeholder="Ex: 500mg"
-                  className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  style={{ padding: '10px 14px' }} />
-              </div>
+              <div><CampoDoseEstruturada valor={medDose} onValor={setMedDose} unidade={medUnidade} onUnidade={setMedUnidade} /></div>
               <div>
                 <label htmlFor="fmedicaca-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Via *</label>
                 <select id="fmedicaca-2" value={medVia} onChange={(e) => setMedVia(e.target.value)}
@@ -583,11 +576,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                   style={{ padding: '10px 14px' }}>
                   <option value="">Selecionar...</option>
                   <option value="oral">Oral</option>
-                  <option value="intravenosa">Intravenosa</option>
-                  <option value="intramuscular">Intramuscular</option>
-                  <option value="subcutanea">Subcutânea</option>
+                  <option value="iv">Intravenosa</option>
+                  <option value="im">Intramuscular</option>
+                  <option value="sc">Subcutânea</option>
                   <option value="topica">Tópica</option>
-                  <option value="inalatoria">Inalatória</option>
+                  <option value="inalacao">Inalatória</option>
                 </select>
               </div>
             </div>
@@ -607,6 +600,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <option value="contínua">Contínua (perfusão)</option>
               </select>
             </div>
+            <CamposIndicacaoDuracao indicacao={medIndicacao} onIndicacao={setMedIndicacao} duracao={medDuracao} onDuracao={setMedDuracao} />
           </div>
           {medFreq === 'SOS' && (
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '16px' }}>
@@ -647,7 +641,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     rows={2}
                     value={justificativaInteracao}
                     onChange={(e) => setJustificativaInteracao(e.target.value)}
-                    placeholder="Fundamente clinicamente a prescrição apesar da interacção grave..."
+                    placeholder="Fundamente clinicamente a prescrição apesar da interação grave..."
                     className="w-full border border-red-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
                     style={{ padding: '8px 12px' }}
                   />
@@ -668,7 +662,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           )}
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
             loading={salvando}
-            disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
+            disabled={!medNome.trim() || !(Number(medDose.replace(',', '.')) > 0) || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())
               || (medFreq === 'SOS' && !(Number(sosIntervalo) >= 1))
               || (overridePedido && justificacaoOverride.trim().length < 20)}
             labelConfirm={overridePedido ? 'Prescrever com justificação' : 'Prescrever'} />
@@ -684,7 +678,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
                 <p className="text-xs text-violet-600 font-medium" style={{ marginTop: '2px' }}>Aguardará aprovação do médico responsável</p>
               </div>
-              <button aria-label="Fechar" onClick={() => setModalPropor(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label={tA11y('close')} onClick={() => setModalPropor(false)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fmedicaca-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
@@ -703,7 +697,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <select id="fmedicaca-6" value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {['Oral','IV','IM','SC','Tópica','Inalatória','SL','Retal','Nasal'].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </div>
@@ -712,7 +706,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               <select id="fmedicaca-7" value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Seleccionar...</option>
+                <option value="">Selecionar...</option>
                 {['SOS','1x/dia','2x/dia','3x/dia','4x/dia','6/6h','8/8h','12/12h','Contínuo'].map(f => <option key={f} value={f}>{f}</option>)}
               </select>
             </div>
@@ -723,7 +717,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 style={{ padding: '10px 14px' }} placeholder="Justificação clínica, alergias conhecidas..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalPropor(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalPropor(false)}  style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={submeterProposta} disabled={salvandoProposta === 'propor' || !propostaMedNome.trim() || !propostaMedDose.trim() || !propostaMedVia || !propostaMedFreq}
                 className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {salvandoProposta === 'propor' ? 'A enviar...' : 'Propor ao Médico'}
@@ -739,7 +733,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div {...dlgRejeitarProposta.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
-              <button aria-label="Fechar" onClick={() => setModalRejeitarProposta(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button aria-label={tA11y('close')} onClick={() => setModalRejeitarProposta(null)} className="text-slate-500 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="fmedicaca-9" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
@@ -748,9 +742,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 style={{ padding: '10px 14px' }} placeholder="Ex: Contra-indicação com medicação atual..." />
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setModalRejeitarProposta(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={rejeitarProposta} disabled={!motivoRejProposta.trim() || salvandoProposta === 'rejeitar'}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalRejeitarProposta(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={rejeitarProposta} disabled={!motivoRejProposta.trim() || salvandoProposta === 'rejeitar'}
+                 style={{ padding: '11px' }}>Rejeitar</Button>
             </div>
           </div>
         </div>
@@ -767,7 +761,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 </svg>
                 <h2 className="text-xl font-bold text-slate-900">Histórico de Medicação</h2>
               </div>
-              <button onClick={() => setModalHistoricoMed(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+              <button aria-label={tA11y('close')} onClick={() => setModalHistoricoMed(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -836,7 +830,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div {...dlgQrMed.propsPainel} className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
               <h3 className="text-base font-bold text-slate-900">Etiqueta de unidose</h3>
-              <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button aria-label={tA11y('close')} onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

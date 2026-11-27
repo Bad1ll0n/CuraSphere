@@ -107,7 +107,7 @@ if (alvo.length !== ids.length) throw new ForbiddenException('Um ou mais itens n
 - React (`apps/web`): grep for `dangerouslySetInnerHTML` — any instance rendering patient-derived free text (clinical notes, message bodies) without sanitization is stored/reflected XSS.
 - File uploads (Multer, in `comunicacao`, `documentos-saude`, `feridas`, `guidelines`): validate by magic bytes/mime detection, not just file extension; if any uploaded file (especially SVG) can be served back with `Content-Type: image/svg+xml` or `text/html`, it can execute script in the victim's origin — serve uploads with `Content-Disposition: attachment` or sanitize SVG before serving inline. Trace this end-to-end for any module that both accepts an upload and serves it back.
 - Sort/filter query params (`orderBy`, `sortBy`) on any list endpoint: validated against an explicit allowlist of column names, never interpolated directly.
-- CSV/Excel export (`common/excel.service.ts` or similar): fields starting with `=`, `+`, `-`, `@` need a leading `'` or quote-escaping before being written, or a formula-injection payload executes when the file is opened in Excel/Sheets.
+- CSV/Excel export (`common/infra/excel.service.ts` or similar): fields starting with `=`, `+`, `-`, `@` need a leading `'` or quote-escaping before being written, or a formula-injection payload executes when the file is opened in Excel/Sheets.
 
 ### A04 — Insecure Design
 
@@ -145,7 +145,7 @@ if (alvo.length !== ids.length) throw new ForbiddenException('Um ou mais itens n
 
 ### A09 — Security Logging and Monitoring Failures
 
-- `AllExceptionsFilter` (`common/exception.filter.ts`) — verified: 5xx responses return a generic message (`"Erro interno do servidor"` / `"Erro de base de dados"`), full stack traces go only to the Pino logger + Sentry, never to the HTTP response body. Prisma error codes (`P2002`, `P2025`) map to generic client-facing messages, not raw DB error text. If you touch this file, don't regress that boundary.
+- `AllExceptionsFilter` (`common/infra/exception.filter.ts`) — verified: 5xx responses return a generic message (`"Erro interno do servidor"` / `"Erro de base de dados"`), full stack traces go only to the Pino logger + Sentry, never to the HTTP response body. Prisma error codes (`P2002`, `P2025`) map to generic client-facing messages, not raw DB error text. If you touch this file, don't regress that boundary.
 - Pino `redact` config in `main.ts` covers PII paths (`nome`, `contacto`, `morada`, `password`, `authorization`, cookies) — any new top-level body field carrying PII needs adding to that list, same as the encryption-middleware allowlist.
 - `AuditInterceptor` — verify new sensitive endpoints (break-glass, role changes, PII exports) actually flow through it and that break-glass access always produces an audit entry, no code path around it.
 

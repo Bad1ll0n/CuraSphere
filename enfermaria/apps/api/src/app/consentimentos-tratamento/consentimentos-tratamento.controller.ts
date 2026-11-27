@@ -4,6 +4,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ConsentimentosTratamentoService } from './consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from './consentimentos-tratamento.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 /**
  * SEC-19 — registo presencial das decisões do doente (o doente também as gere no portal).
@@ -22,13 +23,13 @@ export class ConsentimentosTratamentoController {
 
   @Post('doente/:doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo')
-  registar(@Param('doenteId') doenteId: string, @Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: any) {
+  registar(@Param('doenteId') doenteId: string, @Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: PedidoAutenticado) {
     return this.service.registar(doenteId, dto, 'presencial', req.user.sub);
   }
 
   @Post('doente/:doenteId/revogar/:finalidade')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo')
-  revogar(@Param('doenteId') doenteId: string, @Param('finalidade') finalidade: string, @Request() req: any) {
+  revogar(@Param('doenteId') doenteId: string, @Param('finalidade') finalidade: string, @Request() req: PedidoAutenticado) {
     return this.service.revogar(doenteId, finalidade, 'presencial', req.user.sub);
   }
 }

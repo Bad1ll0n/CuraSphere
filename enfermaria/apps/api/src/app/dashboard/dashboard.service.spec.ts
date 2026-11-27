@@ -13,7 +13,7 @@ const mockPrisma = {
   horarioTurno: { findFirst: jest.fn() },
   alertaClinico: { count: jest.fn(), findMany: jest.fn(), groupBy: jest.fn() },
   avaliacaoRisco: { count: jest.fn(), groupBy: jest.fn() },
-  medicacao: { count: jest.fn() },
+  medicacao: { count: jest.fn(), groupBy: jest.fn() },
   registoMedicacao: { count: jest.fn() },
   sumarioAlta: { count: jest.fn() },
   notaTurno: { count: jest.fn(), findMany: jest.fn() },
@@ -39,7 +39,7 @@ describe('DashboardService', () => {
         DashboardService,
         { provide: PrismaService, useValue: mockPrisma },
         // PERF-06: cache — o Redis devolve sempre miss nos testes.
-        { provide: RedisService, useValue: { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined) } },
+        { provide: RedisService, useValue: { get: jest.fn().mockResolvedValue(null), set: jest.fn().mockResolvedValue(undefined), getCifrado: jest.fn().mockResolvedValue(null), setCifrado: jest.fn().mockResolvedValue(undefined) } },
         { provide: TenantContextService, useValue: { tenantId: 'default' } },
       ],
     }).compile();
@@ -75,6 +75,36 @@ describe('DashboardService', () => {
       const resultado = await service.news2Distribuicao();
 
       expect(resultado).toBeDefined();
+    });
+  });
+
+  describe('workloadTurno() — PERF-14', () => {
+    it('faz 4 consultas no total (agrupadas por doente), não 4 por doente', async () => {
+      const doente = (id: string) => ({ doenteId: id, doente: { id, nome: `D ${id}`, cama: { numero: '1', quarto: 'A' } } });
+      mockPrisma.atribuicaoHorarioTurno.findMany.mockResolvedValue([doente('d1'), doente('d2'), doente('d3')]);
+      mockPrisma.medicacao.groupBy.mockResolvedValue([{ doenteId: 'd1', _count: { _all: 2 } }]);
+      mockPrisma.tarefa.groupBy.mockResolvedValue([{ doenteId: 'd2', _count: { _all: 1 } }]);
+      mockPrisma.alertaClinico.groupBy.mockResolvedValue([{ doenteId: 'd1', _count: { _all: 3 } }]);
+      mockPrisma.sinalVital.groupBy.mockResolvedValue([{ doenteId: 'd3', _max: { data: new Date('2026-11-20T08:00:00Z') } }]);
+
+      const r = await service.workloadTurno('u1');
+
+      for (const m of [mockPrisma.medicacao, mockPrisma.tarefa, mockPrisma.alertaClinico, mockPrisma.sinalVital]) {
+        expect(m.groupBy).toHaveBeenCalledTimes(1);
+        expect(m.groupBy.mock.calls[0][0].where.doenteId).toEqual({ in: ['d1', 'd2', 'd3'] });
+      }
+      expect(mockPrisma.medicacao.count).not.toHaveBeenCalled();
+      expect(r).toEqual([
+        { doente: { id: 'd1', nome: 'D d1', cama: '1', quarto: 'A' }, medicacoesPendentes: 2, tarefasAtrasadas: 0, alertasNaoLidos: 3, ultimoSinalVital: null },
+        { doente: { id: 'd2', nome: 'D d2', cama: '1', quarto: 'A' }, medicacoesPendentes: 0, tarefasAtrasadas: 1, alertasNaoLidos: 0, ultimoSinalVital: null },
+        { doente: { id: 'd3', nome: 'D d3', cama: '1', quarto: 'A' }, medicacoesPendentes: 0, tarefasAtrasadas: 0, alertasNaoLidos: 0, ultimoSinalVital: '2026-11-20T08:00:00.000Z' },
+      ]);
+    });
+
+    it('sem doentes atribuídos não consulta mais nada', async () => {
+      mockPrisma.atribuicaoHorarioTurno.findMany.mockResolvedValue([]);
+      expect(await service.workloadTurno('u1')).toEqual([]);
+      expect(mockPrisma.sinalVital.groupBy).not.toHaveBeenCalled();
     });
   });
 });

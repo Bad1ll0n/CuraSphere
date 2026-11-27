@@ -30,6 +30,9 @@ ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 # cai em 'meet.jit.si' e as videochamadas clínicas saem por um servidor público.
 ARG NEXT_PUBLIC_JITSI_SERVER
 ENV NEXT_PUBLIC_JITSI_SERVER=$NEXT_PUBLIC_JITSI_SERVER
+# OPS-08: a versão do release, para o `release` do Sentry (servidor e browser).
+ARG VERSAO=desconhecida
+ENV NEXT_PUBLIC_APP_VERSION=$VERSAO
 
 COPY . .
 RUN pnpm install --frozen-lockfile --prefer-offline

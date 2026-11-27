@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
-import { hashPassword, verifyPassword } from '../common/password';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { LeiturasMonitorService } from './leituras-monitor.service';

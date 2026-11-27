@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Utilizador { id: string; nome: string; role: string }
 interface PedidoTI {
@@ -119,19 +120,19 @@ export default function PedidosTIPage() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Pedidos TI</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
-            {isTI ? 'Gestão de pedidos internos de tecnologia de informação' : 'Os teus pedidos ao departamento de TI'}
+            {isTI ? 'Gestão de pedidos internos de tecnologia de informação' : 'Os seus pedidos ao departamento de TI'}
           </p>
         </div>
-        <button
+        <Button variant="primary" className="flex gap-2"
           onClick={() => { setModal(true); setErroModal(''); }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
+          
           style={{ padding: '11px 22px', fontSize: '14px' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Novo Pedido
-        </button>
+        </Button>
       </div>
 
       {/* Estatísticas (só TI) */}
@@ -188,7 +189,7 @@ export default function PedidosTIPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           <p className="text-slate-500 font-medium">Sem pedidos</p>
-          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Clica em "Novo Pedido" para submeter um pedido ao departamento TI</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Clique em "Novo Pedido" para submeter um pedido ao departamento TI</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -257,14 +258,14 @@ export default function PedidosTIPage() {
                       <div className="flex gap-2 flex-wrap">
                         {p.estado === 'pendente' && (
                           <>
-                            <button
+                            <Button variant="primary" size="sm"
                               onClick={() => alterarEstado(p.id, 'em_curso')}
                               disabled={!!salvando}
-                              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
+                              
                               style={{ padding: '8px 16px' }}
                             >
                               {salvando === p.id + 'em_curso' ? 'A guardar...' : 'Iniciar'}
-                            </button>
+                            </Button>
                             <button
                               onClick={() => alterarEstado(p.id, 'recusado')}
                               disabled={!!salvando}
@@ -286,14 +287,14 @@ export default function PedidosTIPage() {
                           </button>
                         )}
                         {(p.estado === 'concluido' || p.estado === 'recusado') && (
-                          <button
+                          <Button variant="secondary" size="sm"
                             onClick={() => alterarEstado(p.id, 'pendente')}
                             disabled={!!salvando}
-                            className="border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-medium rounded-xl transition-colors disabled:opacity-50"
+                            
                             style={{ padding: '8px 16px' }}
                           >
                             Reabrir
-                          </button>
+                          </Button>
                         )}
                       </div>
                     )}
@@ -368,21 +369,20 @@ export default function PedidosTIPage() {
             )}
 
             <div className="flex gap-3">
-              <button
+              <Button variant="secondary" className="flex-1"
                 onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                
                 style={{ padding: '11px' }}
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button variant="primary" className="flex-1"
                 onClick={criarPedido}
                 disabled={criando}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
                 style={{ padding: '11px' }}
               >
                 {criando ? 'A enviar...' : 'Submeter Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

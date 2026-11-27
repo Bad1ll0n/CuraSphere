@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 interface ExpoPushMessage {
   to: string;
   title: string;
@@ -185,18 +185,10 @@ export class NotificacoesService {
    * Turno em curso, pelo relógio. Duplica deliberadamente o helper homónimo de
    * `AlertasService`: esse serviço depende deste, e importá-lo aqui fecharia um ciclo.
    */
+  /** UX-12: a regra do turno está em libs/shared (turnos.ts) — ver common/clinico/turno-em-curso.ts. */
   private turnoAtual() {
-    const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    let tipoTurno: string;
-    if (min >= 8 * 60 && min < 16 * 60 + 30) tipoTurno = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipoTurno = 'tarde';
-    else tipoTurno = 'noite';
-
-    const diaStr = chaveDiaClinico(agora);
-    const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFim = new Date(dataHoje.getTime() + 24 * 60 * 60 * 1000 - 1);
-    return { tipoTurno, dataHoje, dataFim };
+    const t = turnoEmCurso();
+    return { tipoTurno: t.tipo, dataHoje: t.data.gte, dataFim: t.data.lte };
   }
 
   /**

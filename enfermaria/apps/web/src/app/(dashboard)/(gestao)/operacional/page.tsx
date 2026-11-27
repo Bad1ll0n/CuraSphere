@@ -153,7 +153,7 @@ export default function OperacionalPage() {
           {/* Cards de resumo */}
           <div className={`grid gap-4 ${['equipamentos_medicos', 'facilities'].includes(subRole) ? 'grid-cols-3' : 'grid-cols-2'}`}>
             <div className="bg-amber-50 border border-amber-100 rounded-2xl" style={{ padding: '20px 24px' }}>
-              <p className="text-xs font-semibold text-amber-600 uppercase tracking-wide">Tarefas Activas</p>
+              <p className="text-xs font-semibold text-amber-600 uppercase tracking-wide">Tarefas Ativas</p>
               <p className="text-3xl font-bold text-amber-700" style={{ marginTop: '6px' }}>{tarefasAtivas.length}</p>
             </div>
             <div className="bg-blue-50 border border-blue-100 rounded-2xl" style={{ padding: '20px 24px' }}>
@@ -211,10 +211,10 @@ export default function OperacionalPage() {
 
           {/* Tarefas activas */}
           <section>
-            <h2 className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Tarefas Activas</h2>
+            <h2 className="text-sm font-semibold text-slate-700" style={{ marginBottom: '12px' }}>Tarefas Ativas</h2>
             {tarefasAtivas.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center" style={{ padding: '40px' }}>
-                <p className="text-sm text-slate-500">Sem tarefas activas</p>
+                <p className="text-sm text-slate-500">Sem tarefas ativas</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">

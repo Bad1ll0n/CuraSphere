@@ -6,11 +6,14 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PortalJwtGuard } from './portal-jwt.guard';
 import { PortalDoenteService } from './portal-doente.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { PortalRecuperacaoService } from './portal-recuperacao.service';
+import { RgpdService } from '../rgpd/rgpd.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 import { ConsentimentosTratamentoService } from '../consentimentos-tratamento/consentimentos-tratamento.service';
 import { RegistarConsentimentoTratamentoDto } from '../consentimentos-tratamento/consentimentos-tratamento.dto';
+import type { PedidoPortal } from '../auth/pedido-autenticado';
 import {
-  PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto,
+  PortalLoginDto, CriarAcessoPortalDto, MensagemPortalDto, PortalRecuperarDto, PortalRedefinirDto,
   SubmeterProDto, CriarTemplateProDto,
 } from './dto/portal.dto';
 
@@ -27,6 +30,8 @@ export class PortalDoenteController {
     private readonly service: PortalDoenteService,
     private readonly leituras: AcessoLeituraService,
     private readonly consentimentos: ConsentimentosTratamentoService,
+    private readonly rgpd: RgpdService,
+    private readonly recuperacao: PortalRecuperacaoService,
   ) {}
 
   // SEC-06: tentativas por IP em 10 min. Complementa o bloqueio por conta (5 falhas /
@@ -42,9 +47,10 @@ export class PortalDoenteController {
 
     // SEC-07: o token do portal passa a viajar em cookie `httpOnly`, como o do pessoal.
     // Enquanto vivia em `localStorage` bastava um XSS no portal para o ler; aqui o
-    // JavaScript da página não lhe toca. O `accessToken` continua no corpo apenas
-    // durante a transição do cliente — assim que o portal deixar de o ler, retirar daqui.
-    res.cookie('portal_token', resultado.accessToken, {
+    // JavaScript da página não lhe toca. QA-28: o token já não vai no corpo — o portal só usa
+    // o cookie; com ele no corpo, um XSS voltava a conseguir lê-lo e anulava o SEC-07.
+    const { accessToken, ...publico } = resultado;
+    res.cookie('portal_token', accessToken, {
       httpOnly: true,
       secure: process.env['NODE_ENV'] === 'production',
       sameSite: 'strict',
@@ -52,13 +58,31 @@ export class PortalDoenteController {
       maxAge: PORTAL_COOKIE_MAX_AGE,
     });
 
-    return resultado;
+    return publico;
   }
 
   /**
    * SEC-07: sem isto, terminar sessão no portal deixava o cookie válido no browser
    * durante 8 h. O cookie é `httpOnly`, por isso só o servidor o pode apagar.
    */
+  /**
+   * UX-28: "esqueci-me da password". Público; resposta sempre igual (não revela se o email tem
+   * conta). O link aponta para PORTAL_URL (ou a 1.ª origem permitida) — nunca para o Host do
+   * pedido, que um atacante controla.
+   */
+  @Throttle({ default: { ttl: 900000, limit: 3 } })
+  @Post('recuperar')
+  recuperar(@Body() dto: PortalRecuperarDto) {
+    const origem = process.env['PORTAL_URL'] ?? (process.env['ALLOWED_ORIGINS'] ?? '').split(',')[0]?.trim() ?? '';
+    return this.recuperacao.pedir(dto.email, origem || 'http://localhost:3000');
+  }
+
+  @Throttle({ default: { ttl: 900000, limit: 10 } })
+  @Post('redefinir')
+  redefinir(@Body() dto: PortalRedefinirDto) {
+    return this.recuperacao.redefinir(dto.token, dto.senha);
+  }
+
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('portal_token', { path: '/', httpOnly: true, sameSite: 'strict' });
@@ -70,38 +94,38 @@ export class PortalDoenteController {
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   criarAcesso(
     @Body() dto: CriarAcessoPortalDto,
-    @Request() req: any,
+    @Request() req: PedidoPortal,
   ) {
     return this.service.criarAcesso(dto.doenteId, dto.email, dto.senha, req.user.sub);
   }
 
   @Get('me')
   @UseGuards(PortalJwtGuard)
-  me(@Request() req: any) {
+  me(@Request() req: PedidoPortal) {
     return this.service.me(req.user.doenteId);
   }
 
   @Get('documentos')
   @UseGuards(PortalJwtGuard)
-  documentos(@Request() req: any) {
+  documentos(@Request() req: PedidoPortal) {
     return this.service.meusDocumentos(req.user.doenteId);
   }
 
   @Get('medicacao')
   @UseGuards(PortalJwtGuard)
-  medicacao(@Request() req: any) {
+  medicacao(@Request() req: PedidoPortal) {
     return this.service.minhaMedicacao(req.user.doenteId);
   }
 
   @Get('plano-alta')
   @UseGuards(PortalJwtGuard)
-  planoAlta(@Request() req: any) {
+  planoAlta(@Request() req: PedidoPortal) {
     return this.service.meuPlanoAlta(req.user.doenteId);
   }
 
   @Post('mensagem')
   @UseGuards(PortalJwtGuard)
-  mensagem(@Body() dto: MensagemPortalDto, @Request() req: any) {
+  mensagem(@Body() dto: MensagemPortalDto, @Request() req: PedidoPortal) {
     return this.service.enviarMensagem(req.user.doenteId, dto.conteudo);
   }
 
@@ -109,7 +133,7 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="meus-dados-clinicos.pdf"')
-  async exportarPdf(@Request() req: any, @Res() res: Response) {
+  async exportarPdf(@Request() req: PedidoPortal, @Res() res: Response) {
     const buffer = await this.service.exportarDados(req.user.doenteId);
     res.send(buffer);
   }
@@ -117,25 +141,34 @@ export class PortalDoenteController {
   // SEC-09 / art. 15.º RGPD: o titular vê quem consultou o seu processo.
   @Get('acessos')
   @UseGuards(PortalJwtGuard)
-  acessos(@Request() req: any) {
+  acessos(@Request() req: PedidoPortal) {
     return this.leituras.listarPorDoente(req.user.doenteId, { paraTitular: true, limite: 100 });
   }
 
   @Get('exportar/json')
   @UseGuards(PortalJwtGuard)
-  exportarJson(@Request() req: any) {
-    return this.service.exportarJson(req.user.doenteId);
+  @Throttle({ default: { ttl: 3600000, limit: 10 } })
+  exportarJson(@Request() req: PedidoPortal) {
+    // SEC-20: a exportação completa (todas as tabelas do titular + quem consultou o processo).
+    return this.rgpd.exportar(req.user.doenteId, { via: 'portal' });
+  }
+
+  // UX-28: o cartão "próxima consulta" no início do portal.
+  @Get('proxima-consulta')
+  @UseGuards(PortalJwtGuard)
+  proximaConsulta(@Request() req: PedidoPortal) {
+    return this.service.proximaConsulta(req.user.sub);
   }
 
   @Get('teleconsultas')
   @UseGuards(PortalJwtGuard)
-  teleconsultas(@Request() req: any) {
+  teleconsultas(@Request() req: PedidoPortal) {
     return this.service.teleconsultas(req.user.sub);
   }
 
   @Get('teleconsultas/:id/video')
   @UseGuards(PortalJwtGuard)
-  entrarVideoPortal(@Param('id') id: string, @Request() req: any) {
+  entrarVideoPortal(@Param('id') id: string, @Request() req: PedidoPortal) {
     return this.service.entrarVideoPortal(id, req.user.sub);
   }
 
@@ -143,19 +176,19 @@ export class PortalDoenteController {
 
   @Get('consentimentos')
   @UseGuards(PortalJwtGuard)
-  consentimentosDoente(@Request() req: any) {
+  consentimentosDoente(@Request() req: PedidoPortal) {
     return this.consentimentos.estado(req.user.doenteId);
   }
 
   @Post('consentimentos')
   @UseGuards(PortalJwtGuard)
-  registarConsentimento(@Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: any) {
+  registarConsentimento(@Body() dto: RegistarConsentimentoTratamentoDto, @Request() req: PedidoPortal) {
     return this.consentimentos.registar(req.user.doenteId, dto, 'portal', null);
   }
 
   @Post('consentimentos/:finalidade/revogar')
   @UseGuards(PortalJwtGuard)
-  revogarConsentimento(@Param('finalidade') finalidade: string, @Request() req: any) {
+  revogarConsentimento(@Param('finalidade') finalidade: string, @Request() req: PedidoPortal) {
     return this.consentimentos.revogar(req.user.doenteId, finalidade, 'portal', null);
   }
 
@@ -171,14 +204,14 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   submeterPRO(
     @Body() dto: SubmeterProDto,
-    @Request() req: any,
+    @Request() req: PedidoPortal,
   ) {
     return this.service.submeterPRO(req.user.doenteId, dto.templateId, dto.respostas);
   }
 
   @Get('pro/historico')
   @UseGuards(PortalJwtGuard)
-  historicoPRO(@Request() req: any, @Query('templateId') templateId?: string) {
+  historicoPRO(@Request() req: PedidoPortal, @Query('templateId') templateId?: string) {
     return this.service.historicoPRO(req.user.doenteId, templateId);
   }
 

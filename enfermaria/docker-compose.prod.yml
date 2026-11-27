@@ -28,6 +28,7 @@ services:
     image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
     container_name: curasphere-db
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       POSTGRES_DB:       ${DB_NAME:-enfermaria}
       POSTGRES_USER:     ${DB_USER}
@@ -46,7 +47,37 @@ services:
           -c archive_mode=on \
           -c archive_timeout=300 \
           -c 'archive_command=/scripts/arquivar-wal.sh %p %f' \
-          -c max_wal_senders=3
+          -c max_wal_senders=3 \
+          -c shared_preload_libraries=pg_stat_statements \
+          -c pg_stat_statements.track=top \
+          -c pg_stat_statements.max=5000 \
+          -c track_io_timing=on \
+          -c shared_buffers=${PG_SHARED_BUFFERS:-512MB} \
+          -c effective_cache_size=${PG_EFFECTIVE_CACHE_SIZE:-1536MB} \
+          -c work_mem=${PG_WORK_MEM:-8MB} \
+          -c maintenance_work_mem=${PG_MAINTENANCE_WORK_MEM:-128MB} \
+          -c max_connections=${PG_MAX_CONNECTIONS:-150} \
+          -c random_page_cost=1.1 \
+          -c effective_io_concurrency=200 \
+          -c wal_buffers=16MB \
+          -c checkpoint_completion_target=0.9 \
+          -c max_wal_size=2GB \
+          -c min_wal_size=512MB \
+          -c idle_in_transaction_session_timeout=60s \
+          -c log_min_duration_statement=${PG_LOG_LENTAS_MS:-500} \
+          -c log_lock_waits=on \
+          -c log_temp_files=10MB
+    # PERF-15: o Postgres corria com a configuração por omissão da imagem — 128 MB de
+    # shared_buffers num contentor de 2 GB, custos de disco rotativo, checkpoints apertados — e sem
+    # pg_stat_statements, por isso não havia como saber que queries pesavam. Os valores acima são
+    # para o limite de 2 GB deste contentor (¼ em shared_buffers, ¾ como cache efectiva, SSD) e
+    # ajustam-se no .env.prod (PG_*) se o contentor mudar de tamanho. max_connections cobre as
+    # réplicas da API × DB_POOL_MAX (2 × 20) mais migrações, backup, exporter e manutenção.
+    # Diagnóstico: queries > 500 ms e esperas por locks no log; transacções esquecidas abertas
+    # (idle in transaction) terminam ao fim de 60 s. O consumo: docs/DESEMPENHO-BD.md.
+    # shm: as queries paralelas usam memória partilhada POSIX (/dev/shm); os 64 MB por omissão
+    # do Docker davam "could not resize shared memory segment".
+    shm_size: 256mb
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # OPS-01: o Postgres já não monta ./backups — não precisa, e montava-o em leitura-escrita.
@@ -85,9 +116,16 @@ services:
           cpus: "0.25"
         reservations:
           memory: 64M
-    image: postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139
+    # OPS-04: imagem própria (infra/backup/Dockerfile) com openssl, tar, age e rclone instalados no
+    # build — antes instalavam-se a cada arranque, com `|| true`, e uma falha deixava a rotina sem
+    # cifra nem cópia externa sem ninguém saber.
+    build:
+      context: .
+      dockerfile: infra/backup/Dockerfile
+    image: curasphere-backup:${CURASPHERE_VERSION:-local}
     container_name: curasphere-backup
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       POSTGRES_DB:       ${DB_NAME:-enfermaria}
       POSTGRES_USER:     ${DB_USER}
@@ -132,7 +170,6 @@ services:
     # domingo 03:00 — base backup físico (ponto de partida do PITR).
     entrypoint: >
       sh -c "
-        apk add --no-cache openssl tar age rclone >/dev/null 2>&1 || true;
         printf '%s\n'
           '0 2 * * * /scripts/backup-all.sh >> /backups/backup.log 2>&1'
           '*/5 * * * * /scripts/enviar-wal.sh >> /backups/wal.log 2>&1'
@@ -166,11 +203,16 @@ services:
     image: redis:7-alpine@sha256:c5d34a98396a4775e223c74e929162c35c5a2182901ba26b50ade939941ce14b
     container_name: curasphere-redis
     restart: unless-stopped
-    command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
+    # OPS-17: o Redis tinha a porta aberta a toda a rede interna sem autenticação (sessões
+    # bloqueadas, throttler, barramento entre réplicas). Agora exige REDIS_PASSWORD.
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?defina REDIS_PASSWORD (openssl rand -hex 32)}
+    command: ["sh", "-c", "exec redis-server --save '' --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass \"$$REDIS_PASSWORD\""]
     networks:
       - curasphere-internal
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "redis-cli --no-auth-warning -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -215,6 +257,12 @@ services:
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-api:${CURASPHERE_VERSION:-local}
     # OPS-09: sem `container_name` — um nome fixo impede mais do que um contentor do serviço.
     restart: unless-stopped
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid"]
     # ─────────────────────────────────────────────────────────────────────────
     # OPS-03 + OPS-13 — convenção deste bloco:
     #   ${VAR:?...}  = falha, não opção. `docker compose up` RECUSA arrancar e
@@ -234,10 +282,14 @@ services:
       DB_POOL_TIMEOUT_MS:      ${DB_POOL_TIMEOUT_MS:-10000}
       DB_STATEMENT_TIMEOUT_MS: ${DB_STATEMENT_TIMEOUT_MS:-15000}
       JWT_SECRET:              ${JWT_SECRET:?JWT_SECRET em falta (min. 32 chars) — validado por Joi no arranque}
+      # SEC-11: os tokens assinam-se com ES256. A chave privada fica SÓ aqui; o web recebe a pública.
+      # PEM numa linha, com as quebras escritas como \n (ver .env.example para os comandos openssl).
+      JWT_PRIVATE_KEY:         ${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY em falta — em produção os tokens são ES256 (SEC-11)}
+      JWT_PUBLIC_KEY:          ${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY em falta — em produção os tokens são ES256 (SEC-11)}
       JWT_EXPIRES_IN:          ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN:  ${JWT_REFRESH_EXPIRES_IN:-7d}
       ALLOWED_ORIGINS:         ${ALLOWED_ORIGINS:?ALLOWED_ORIGINS em falta — obrigatório em produção (Joi)}
-      REDIS_URL:               redis://redis:6379
+      REDIS_URL:               redis://:${REDIS_PASSWORD}@redis:6379  # OPS-17: com autenticação
       NODE_ENV:                production
       PORT:                    3333
       SENTRY_DSN:              ${SENTRY_DSN:-}
@@ -281,9 +333,10 @@ services:
       # o /metrics devolve 401 e o sistema fica sem métricas nenhumas. Definir
       # se houver recolha (ver OPS-11). Gerar: openssl rand -hex 32
       METRICS_TOKEN:           ${METRICS_TOKEN:-}
-      # Assinatura das etiquetas QR de medicação. Cai no JWT_SECRET quando
-      # ausente (omissão segura), mas convém ser uma chave própria.
-      MEDICACAO_QR_SECRET:     ${MEDICACAO_QR_SECRET:-}
+      # Assinatura das etiquetas QR de medicação — chave própria, obrigatória em produção (ARQ-20).
+      MEDICACAO_QR_SECRET:     ${MEDICACAO_QR_SECRET:?MEDICACAO_QR_SECRET em falta — openssl rand -hex 32 (já não reutiliza o JWT_SECRET)}
+      # OPS-20: durante a rotação da ENCRYPTION_KEY, as chaves antigas (só leitura). Ver docs/SEGREDOS.md.
+      ENCRYPTION_KEYS_ANTERIORES: ${ENCRYPTION_KEYS_ANTERIORES:-}
       # Idade máxima de um token de quiosque (SEC-17). Omissão no código.
       QUIOSQUE_TOKEN_MAX_DIAS: ${QUIOSQUE_TOKEN_MAX_DIAS:-}
 
@@ -322,6 +375,8 @@ services:
       # Token do endpoint HL7. Omissão '' e o controlador falha FECHADO
       # (401 em /hl7/receive) — opção segura: vazio = integração HL7 desligada.
       HL7_API_TOKEN:           ${HL7_API_TOKEN:-}
+      # SEC-22: de onde o motor HL7 pode chamar (IPs/CIDR); obrigatório se o token estiver definido.
+      HL7_ORIGENS_PERMITIDAS:  ${HL7_ORIGENS_PERMITIDAS:-}
 
       # ── IA clínica ─────────────────────────────────────────────────────────
       # Sem ANTHROPIC_API_KEY: AI Clínico e stewardship antibiótico desligados.
@@ -414,6 +469,12 @@ services:
     # `build:` acima só serve o modo `deploy.sh local` (construir no próprio servidor).
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-migrate:${CURASPHERE_VERSION:-local}
     restart: "no"
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid"]
     working_dir: /workspace/apps/api
     environment:
       DATABASE_URL: "postgresql://${DB_USER:?DB_USER em falta no .env.prod}:${DB_PASSWORD:?DB_PASSWORD em falta no .env.prod}@postgres:5432/${DB_NAME:-enfermaria}?schema=public"
@@ -469,12 +530,18 @@ services:
     image: ${CURASPHERE_IMAGE_PREFIX:-curasphere}-web:${CURASPHERE_VERSION:-local}
     # OPS-09: sem `container_name` (réplicas).
     restart: unless-stopped
+    # OPS-17: sem capacidades do kernel e com o sistema de ficheiros só de leitura; só /tmp
+    # (em memória) e os volumes declarados são graváveis.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid", "/app/apps/web/.next/cache:size=128m,uid=1001,gid=1001"]
     environment:
       NODE_ENV: production
-      # TEM de ser o mesmo valor que a API — src/middleware.ts verifica a assinatura
-      # JWT (HS256) server-side; sem isto o secret resolve para a string "undefined"
-      # e todos os utilizadores autenticados são redirecionados para /login
-      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET em falta — o middleware do web rejeitaria todas as sessões}
+      # SEC-11: só a chave PÚBLICA — src/middleware.ts verifica a sessão (ES256) mas não a
+      # consegue assinar. O JWT_SECRET já não entra neste contentor (com ele, quem comprometesse o
+      # web forjava sessões de qualquer pessoa).
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY em falta — o middleware do web rejeitaria todas as sessões}
       # Sentry server-side do Next.js (o DSN público é build-arg, este não).
       SENTRY_DSN: ${SENTRY_DSN:-}
       # Origem pública do MinIO/S3. Os documentos e fotografias clínicas abrem-se por URL
@@ -527,12 +594,26 @@ services:
     image: nginx:1.30-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
     container_name: curasphere-nginx
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     ports:
       - "80:80"
       - "443:443"
+    # OPS-19: o nginx.conf gera-se do template no arranque (envsubst da imagem oficial), só com
+    # DOMINIO e TLS_DIR — o domínio e as redes do hospital deixam de estar versionados.
+    environment:
+      DOMINIO: ${DOMINIO:?DOMINIO em falta no .env.prod — o domínio do hospital, por exemplo curasphere.hospital.pt}
+      # OPS-18: Let's Encrypt (certbot, perfil `acme`) ou, com CA interna, /etc/nginx/ssl.
+      TLS_DIR: ${TLS_DIR:-/etc/letsencrypt/live/curasphere}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
+      NGINX_ENVSUBST_FILTER: "^(DOMINIO|TLS_DIR)$$"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - ./nginx/rede-interna.conf:/etc/nginx/rede-interna.conf:ro
+      - ./nginx/entrypoint.d/05-curasphere-validar.sh:/docker-entrypoint.d/05-curasphere-validar.sh:ro
+      - ./nginx/entrypoint.d/40-curasphere-recarregar.sh:/docker-entrypoint.d/40-curasphere-recarregar.sh:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
       # OPS-07: sem volume de logs — o nginx escreve para stdout/stderr (a imagem oficial liga
       # access.log/error.log a eles), com rotação pelo json-file e recolha pelo Alloy/Loki.
     depends_on:
@@ -550,6 +631,30 @@ services:
     labels:
       autoheal: "true"
 
+  # ── Certificados (OPS-18) ──────────────────────────────────────────────────
+  # Let's Encrypt: a 1.ª emissão faz-se com scripts/emitir-certificado.sh; daqui em diante este
+  # serviço tenta renovar de 12 em 12 h (o certbot só renova a menos de 30 dias do fim) pelo
+  # desafio HTTP-01, que o nginx serve a partir do volume certbot_www. O nginx recarrega o
+  # certificado sozinho (nginx/entrypoint.d/40-curasphere-recarregar.sh). Perfil `acme`: com um
+  # certificado da CA interna do hospital não é preciso (TLS_DIR=/etc/nginx/ssl).
+  # O CertificadoAExpirar (Prometheus/blackbox) avisa a 14 dias se a renovação falhar.
+  certbot:
+    image: certbot/certbot:v4.1.1@sha256:263fe7ee9dde6440bf8baa957c0a8eb0118fc05ef86cf743c4cc84ca84303a21
+    container_name: curasphere-certbot
+    profiles: ["acme"]
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM;
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --quiet --no-random-sleep-on-renew;
+          sleep 12h & wait $${!};
+        done"
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
   # ── Autoheal (OPS-06) ──────────────────────────────────────────────────────
   # O Docker sem orquestrador NÃO reinicia contentores unhealthy (`restart` só reage à saída
   # do processo): uma API com o event loop pendurado ficava unhealthy a receber tráfego. Este
@@ -559,6 +664,7 @@ services:
     image: willfarrell/autoheal:1.2.0@sha256:31f580ef0279eaced5b38d631b08c474d70d8403c1c2fdd6ddcf2e879d5f3f7c
     container_name: curasphere-autoheal
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     network_mode: none
     environment:
       AUTOHEAL_CONTAINER_LABEL: autoheal
@@ -575,6 +681,7 @@ services:
     image: prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06
     container_name: curasphere-prometheus
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       # Opcional no compose (o perfil base não o exige); este contentor recusa arrancar sem ele.
       METRICS_TOKEN: ${METRICS_TOKEN:-}
@@ -597,6 +704,7 @@ services:
     image: prom/alertmanager:v0.34.2@sha256:39d8bb3966c694a124428a3a88fbcffd40bd069129ecd47c059f8a3f17c55f3b
     container_name: curasphere-alertmanager
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["--config.file=/etc/alertmanager/alertmanager.yml", "--storage.path=/alertmanager"]
     volumes:
       - ./monitoring/alertmanager:/etc/alertmanager:ro
@@ -609,6 +717,7 @@ services:
     image: grafana/grafana:13.3.0@sha256:488984b716c0862639f91a698adbe2862677a5a07bad42da5f03f3030883b205
     container_name: curasphere-grafana
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-}
       GF_USERS_ALLOW_SIGN_UP: "false"
@@ -634,6 +743,7 @@ services:
     image: prom/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
     container_name: curasphere-node-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command:
       - --path.rootfs=/host
       - --collector.textfile.directory=/metricas
@@ -649,8 +759,13 @@ services:
     image: prometheuscommunity/postgres-exporter:v0.20.1@sha256:ac5ec343104fae0e2d84a27bb8d69b38430a11910c5382cad85d478d2bab713e
     container_name: curasphere-postgres-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     environment:
       DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-enfermaria}?sslmode=disable"
+    # PERF-15: as queries mais pesadas (pg_stat_statements) também no Prometheus/Grafana.
+    command: ["--collector.stat_statements", "--collector.stat_statements.limit=50"]
     networks: [curasphere-internal]
     logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 
@@ -659,8 +774,12 @@ services:
     image: oliver006/redis_exporter:v1.97.0@sha256:f5f903fbe77571d455ede0453b084d6840bc62fc105efac001034421cab83b99
     container_name: curasphere-redis-exporter
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     environment:
       REDIS_ADDR: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     networks: [curasphere-internal]
     logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
 
@@ -683,6 +802,9 @@ services:
     image: prom/blackbox-exporter:v0.29.1@sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13
     container_name: curasphere-blackbox
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17
+    cap_drop: [ALL]
+    read_only: true
     command: ["--config.file=/etc/blackbox/blackbox.yml"]
     volumes:
       - ./monitoring/blackbox:/etc/blackbox:ro
@@ -694,6 +816,7 @@ services:
     image: grafana/loki:3.6.20@sha256:be040ec94865dabe4821ce1c0f109452bd4b5acb566ae376672696eb43caedb7
     container_name: curasphere-loki
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["-config.file=/etc/loki/loki.yml"]
     volumes:
       - ./monitoring/loki/loki.yml:/etc/loki/loki.yml:ro
@@ -707,6 +830,7 @@ services:
     image: grafana/alloy:v1.21.3@sha256:8ab871206bd2d8f89277f53abffee5f452a293980788d52f85fa183a87a505a4
     container_name: curasphere-alloy
     restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]  # OPS-17: nenhum processo ganha privilégios (setuid)
     command: ["run", "/etc/alloy/config.alloy", "--storage.path=/var/lib/alloy/data"]
     volumes:
       - ./monitoring/alloy/config.alloy:/etc/alloy/config.alloy:ro
@@ -729,6 +853,9 @@ networks:
 
 volumes:
   postgres_data:
+  # OPS-18: certificados do Let's Encrypt (conta ACME, chaves e renovações) e o webroot do desafio.
+  certbot_conf:
+  certbot_www:
   # OPS-02: WAL arquivado (PITR). Copiado cifrado para fora do host a cada 5 min.
   wal_arquivo:
   # OPS-05: métricas escritas pelos scripts de backup/WAL, lidas pelo node-exporter.

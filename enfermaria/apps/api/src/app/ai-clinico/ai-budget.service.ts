@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { registarFalha } from '../common/infra/falhas';
 
 const BUDGET_TOKENS_DIA = 500_000;
 const COST_PER_1K_INPUT = 0.00025;
@@ -41,7 +42,7 @@ export class AiBudgetService {
       await Promise.all([
         this.notif.enviarParaRole('ti', 'Budget IA excedido', corpo, { tipo: 'ia_budget' }),
         this.notif.enviarParaRole('direcao', 'Budget IA excedido', corpo, { tipo: 'ia_budget' }),
-      ]).catch(() => null);
+      ]).catch(registarFalha('ia:aviso-orcamento'));
     }
   }
 }

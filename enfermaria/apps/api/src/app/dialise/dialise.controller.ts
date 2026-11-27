@@ -4,7 +4,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { DoenteService } from '../doentes/doentes.service';
 import { DialiseService } from './dialise.service';
-import { RegistarSessaoDto } from './dto/registar-sessao.dto';
+import { RegistarSessaoDto } from './dto/registar-sessao.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('dialise')
@@ -16,14 +17,14 @@ export class DialiseController {
 
   @Get('doente/:doenteId/sessoes')
   @Roles('medico', 'enfermeiro')
-  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarSessoes(doenteId);
   }
 
   @Post('doente/:doenteId/sessao')
   @Roles('medico', 'enfermeiro')
-  async registar(@Param('doenteId') doenteId: string, @Body() dto: RegistarSessaoDto, @Request() req: any) {
+  async registar(@Param('doenteId') doenteId: string, @Body() dto: RegistarSessaoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.registarSessao(doenteId, dto, req.user.sub);
   }

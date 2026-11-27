@@ -13,7 +13,7 @@ module.exports = {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   // QA-25: nenhum teste unitário sai para a rede.
-  setupFiles: ['<rootDir>/test/sem-rede.ts'],
+  setupFiles: ['<rootDir>/test/chave-de-teste.ts', '<rootDir>/test/sem-rede.ts'],
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
@@ -33,7 +33,7 @@ module.exports = {
     'src/app/**/*.strategy.ts',
     'src/app/**/*.filter.ts',
     'src/app/**/*.middleware.ts',
-    'src/app/common/*.ts',
+    'src/app/common/**/*.ts',
     '!src/app/**/*.module.ts',
     '!src/app/**/*.dto.ts',
     '!src/app/**/index.ts',
@@ -63,10 +63,10 @@ module.exports = {
     './src/app/auth/webauthn/webauthn.service.ts': { statements: 69, branches: 53, functions: 61, lines: 68 },
     './src/app/doentes/acesso-doente.interceptor.ts': { statements: 97, branches: 82, functions: 100, lines: 100 },
     './src/app/prisma/contexto-pedido.interceptor.ts': { statements: 100, branches: 75, functions: 100, lines: 100 },
-    './src/app/common/correlacao.ts': { statements: 100, branches: 90, functions: 100, lines: 100 },
-    './src/app/common/consentimento-tratamento.ts': { statements: 90, branches: 81, functions: 91, lines: 96 },
-    './src/app/common/funcoes-ia.ts': { statements: 100, branches: 100, functions: 100, lines: 100 },
-    './src/app/common/jitsi.ts': { statements: 97, branches: 100, functions: 100, lines: 97 },
+    './src/app/common/infra/correlacao.ts': { statements: 100, branches: 90, functions: 100, lines: 100 },
+    './src/app/common/clinico/consentimento-tratamento.ts': { statements: 90, branches: 81, functions: 91, lines: 96 },
+    './src/app/common/ia/funcoes-ia.ts': { statements: 100, branches: 100, functions: 100, lines: 100 },
+    './src/app/common/infra/jitsi.ts': { statements: 97, branches: 100, functions: 100, lines: 97 },
     './src/app/consentimentos-tratamento/consentimentos-tratamento.service.ts': { statements: 98, branches: 92, functions: 100, lines: 97 },
   },
 };

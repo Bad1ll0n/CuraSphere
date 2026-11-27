@@ -1,5 +1,5 @@
 import { classificarTomas, horaLocal, horariosPadrao, parsearFrequenciaHoras, tomasPlaneadas } from './posologia';
-import { inicioDoDiaClinico } from '../common/dia-clinico.helper';
+import { inicioDoDiaClinico } from '../common/clinico/dia-clinico.helper';
 
 // PROD-04: o formulário da web oferece "Nx/dia"; o parser antigo só lia "N/Nh".
 describe('parsearFrequenciaHoras', () => {

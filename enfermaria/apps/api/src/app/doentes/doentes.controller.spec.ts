@@ -9,15 +9,17 @@ jest.mock('pdfmake', () => ({
 import { Test, TestingModule } from '@nestjs/testing';
 import { DoenteController } from './doentes.controller';
 import { DoenteService } from './doentes.service';
-import { PdfService } from '../common/pdf.service';
+import { ListagemDoentesService } from './listagem-doentes.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { CartaAltaService } from './carta-alta.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 
 const mockLeituras = { registar: jest.fn(), listarPorDoente: jest.fn() };
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { EpisodiosService } from '../episodios/episodios.service';
 import { AltaService } from './alta.service';
+import { RegistoUtenteService } from './registo-utente.service';
 
 const mockDoenteService = {
   listar: jest.fn(),
@@ -40,6 +42,8 @@ const mockDoenteService = {
   listarProblemas: jest.fn(),
 };
 
+const mockListagem = { listar: jest.fn() };
+
 const mockPdfService = {
   gerarRelatorioAlta: jest.fn(),
 };
@@ -53,12 +57,14 @@ describe('DoenteController', () => {
     jest.resetAllMocks();
     mockGuard.canActivate.mockReturnValue(true);
     mockDoenteService.assertAcessoDoente.mockResolvedValue(undefined);
-    mockDoenteService.listar.mockResolvedValue({ data: [], total: 0 });
+    mockListagem.listar.mockResolvedValue({ data: [], total: 0 });
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DoenteController],
       providers: [
         { provide: DoenteService, useValue: mockDoenteService },
+        { provide: ListagemDoentesService, useValue: mockListagem },
+        { provide: RegistoUtenteService, useValue: { registroRapido: jest.fn(), possiveisDuplicados: jest.fn() } },
         { provide: PdfService, useValue: mockPdfService },
         { provide: AcessoLeituraService, useValue: mockLeituras },
         { provide: CartaAltaService, useValue: { rever: jest.fn(), assinar: jest.fn(), garantirAssinada: jest.fn() } },
@@ -81,9 +87,7 @@ describe('DoenteController', () => {
 
       controller.listar(req as any, 'true', '1', '25');
 
-      expect(mockDoenteService.listar).toHaveBeenCalledWith(
-        'u1', 'todos', 1, 25,
-      );
+      expect(mockListagem.listar).toHaveBeenCalledWith('u1', 'todos', { page: 1, limit: 25, search: undefined });
     });
 
     it('limita a 100 quando limit=500 é pedido', () => {
@@ -91,9 +95,17 @@ describe('DoenteController', () => {
 
       controller.listar(req as any, undefined, '1', '500');
 
-      expect(mockDoenteService.listar).toHaveBeenCalledWith(
-        'u1', 'ti', 1, 100,
-      );
+      expect(mockListagem.listar).toHaveBeenCalledWith('u1', 'ti', { page: 1, limit: 100, search: undefined });
+    });
+
+    it('passa a pesquisa ao servidor (PERF-05)', () => {
+      controller.listar({ user: { sub: 'u1', role: 'direcao' } } as any, 'true', '2', '20', 'zulmira');
+      expect(mockListagem.listar).toHaveBeenCalledWith('u1', 'todos', { page: 2, limit: 20, search: 'zulmira' });
+    });
+
+    it('administrativo com todos=true não passa a "todos" (fica com a visão administrativa)', () => {
+      controller.listar({ user: { sub: 'u1', role: 'administrativo' } } as any, 'true', '1', '25');
+      expect(mockListagem.listar).toHaveBeenCalledWith('u1', 'administrativo', { page: 1, limit: 25, search: undefined });
     });
 
     it('role clínico com todos=true NÃO bypassa o filtro', () => {
@@ -101,9 +113,7 @@ describe('DoenteController', () => {
 
       controller.listar(req as any, 'true', '1', '25');
 
-      expect(mockDoenteService.listar).toHaveBeenCalledWith(
-        'u1', 'enfermeiro', 1, 25,
-      );
+      expect(mockListagem.listar).toHaveBeenCalledWith('u1', 'enfermeiro', { page: 1, limit: 25, search: undefined });
     });
   });
 

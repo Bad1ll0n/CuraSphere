@@ -133,6 +133,44 @@ describe('AuthController', () => {
     });
   });
 
+  // ── SEC-23: cliente nativo (app mobile) ─────────────────────────────────────
+
+  describe('cliente nativo (X-Cliente: mobile) — SEC-23', () => {
+    const nativo = (extra: Record<string, unknown> = {}) => ({ headers: { 'x-cliente': 'mobile' }, cookies: {}, ip: '1.1.1.1', ...extra });
+
+    it('login devolve os tokens no corpo e não põe cookies', async () => {
+      const mockRes = { cookie: jest.fn() };
+      mockAuthService.login.mockResolvedValue({ mfaPendente: false, accessToken: 'a', refreshToken: 'r', utilizador: { id: '1' } });
+      const r: any = await controller.login({ numeroFuncionario: '1', password: 'p' } as any, mockRes as any, nativo() as any);
+      expect(r).toMatchObject({ accessToken: 'a', refreshToken: 'r', utilizador: { id: '1' } });
+      expect(mockRes.cookie).not.toHaveBeenCalled();
+    });
+
+    it('o browser continua sem tokens no corpo', async () => {
+      const mockRes = { cookie: jest.fn() };
+      mockAuthService.login.mockResolvedValue({ mfaPendente: false, accessToken: 'a', refreshToken: 'r', utilizador: { id: '1' } });
+      const r: any = await controller.login({ numeroFuncionario: '1', password: 'p' } as any, mockRes as any, { headers: {}, ip: '1' } as any);
+      expect(JSON.stringify(r)).not.toMatch(/"a"|"r"/);
+    });
+
+    it('refresh nativo usa só o token do corpo — nunca o cookie do browser', async () => {
+      const mockRes = { cookie: jest.fn(), clearCookie: jest.fn() };
+      await expect(controller.refresh(nativo({ cookies: { refresh_token: 'do-cookie' } }) as any, mockRes as any, {} as any)).rejects.toThrow(UnauthorizedException);
+      expect(mockAuthService.refresh).not.toHaveBeenCalled();
+      mockAuthService.refresh.mockResolvedValue({ accessToken: 'a2', refreshToken: 'r2', utilizador: { id: '1' } });
+      const r: any = await controller.refresh(nativo() as any, mockRes as any, { refreshToken: 'do-corpo' } as any);
+      expect(mockAuthService.refresh).toHaveBeenCalledWith('do-corpo');
+      expect(r).toMatchObject({ accessToken: 'a2', refreshToken: 'r2' });
+      expect(mockRes.cookie).not.toHaveBeenCalled();
+    });
+
+    it('logout nativo termina a sessão do refresh token do corpo', async () => {
+      mockAuthService.logout.mockResolvedValue({ mensagem: 'Sessão terminada' });
+      await controller.logout(nativo() as any, { clearCookie: jest.fn() } as any, { refreshToken: 'r' } as any);
+      expect(mockAuthService.logout).toHaveBeenCalledWith('r');
+    });
+  });
+
   // ── GET /me ───────────────────────────────────────────────────────────────────
 
   describe('me()', () => {

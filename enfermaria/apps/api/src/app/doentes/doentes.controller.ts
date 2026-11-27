@@ -2,39 +2,37 @@ import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuard
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
-import { PdfService } from '../common/pdf.service';
+import { ListagemDoentesService } from './listagem-doentes.service';
+import { PdfService } from '../common/infra/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { temPapel } from '../common/roles.util';
+import { temPapel } from '../common/seguranca/roles.util';
 import { AtualizarEstadoDto } from './dto/atualizar-estado.dto';
 import { AtualizarFichaPessoalDto } from './dto/atualizar-ficha-pessoal.dto';
 import { CriarProblemaDto } from './dto/criar-problema.dto';
 import { AtualizarProblemaDto } from './dto/atualizar-problema.dto';
 import { AtualizarIsolamentoDto } from './dto/atualizar-isolamento.dto';
 import { RegistroRapidoDto } from './dto/registro-rapido.dto';
+import { RegistoUtenteService } from './registo-utente.service';
 import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
 import { AtribuirCamaDto } from './dto/atribuir-cama.dto';
 import { AssinarCartaAltaDto, ReverCartaAltaDto } from './dto/carta-alta.dto';
 import { CartaAltaService } from './carta-alta.service';
-import { AcessoLeituraService } from '../common/acesso-leitura.service';
+import { AcessoLeituraService } from '../common/auditoria/acesso-leitura.service';
 import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
 import { AltaEstruturadaDto, NotaAltaEnfermagemDto } from './dto/alta-estruturada.dto';
 import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
-import { idCorrelacaoDoPedido } from '../common/correlacao';
+import { idCorrelacaoDoPedido } from '../common/infra/correlacao';
 import { EpisodiosService } from '../episodios/episodios.service';
 import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
 import { AltaService } from './alta.service';
 
-/** QA-11: o que o papel administrativo vê do doente — identificação e internamento, sem dados clínicos. */
-export function visaoAdministrativa(d: any) {
-  if (!d) return d;
-  const { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, cama, identificadorHis } = d;
-  return { id, nome, numeroProcesso, dataNascimento, sexo, estadoRegisto, tipoVisita, dataAdmissao, dataAltaPrevista, dataAlta, ativo, identificadorHis,
-    cama: cama ? { id: cama.id, numero: cama.numero, quarto: cama.quarto, servico: cama.servico } : null };
-}
+import { visaoAdministrativa } from './visao-administrativa';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
+export { visaoAdministrativa };
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -46,32 +44,37 @@ export class DoenteController {
     private readonly leituras: AcessoLeituraService,
     private readonly episodios: EpisodiosService,
     private readonly alta: AltaService,
+    private readonly listagem: ListagemDoentesService,
+    private readonly registoUtente: RegistoUtenteService,
   ) {}
 
   @Get()
   listar(
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
     @Query('todos') todos?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('search') search?: string,
   ) {
     // O bypass `todos=true` só é permitido para roles de supervisão.
+    // (Administrativo e TI já não precisam dele: fora dos papéis restritos, recebem a visão
+    // administrativa de todos — QA-11. Com `todos` passavam a 'todos' e viam o processo clínico.)
     // Antes qualquer utilizador autenticado podia ignorar o filtro de atribuição via querystring.
     // temPapel() considera o sub-papel, para a chefia de enfermagem (role=enfermeiro,
     // subRole=chefe_enfermeiros) poder supervisionar toda a ala como se pretendia.
-    const rolesPodemVerTodos = ['direcao', 'qualidade', 'ti', 'chefe_enfermeiros', 'administrativo'];
+    const rolesPodemVerTodos = ['direcao', 'qualidade', 'chefe_enfermeiros'];
     const ignorarFiltro = todos === 'true' && temPapel(req.user, rolesPodemVerTodos);
 
     const pageNum = Math.max(1, page ? parseInt(page, 10) || 1 : 1);
     // Limite máximo defensivo — evita DoS com listagens gigantes
     const limitNum = Math.min(100, Math.max(1, limit ? parseInt(limit, 10) || 25 : 25));
 
-    return this.doenteService.listar(
-      req.user.sub,
-      ignorarFiltro ? 'todos' : req.user.role,
-      pageNum,
-      limitNum,
-    );
+    // PERF-05: a pesquisa é feita no servidor (antes `search` nem era lido).
+    return this.listagem.listar(req.user.sub, ignorarFiltro ? 'todos' : req.user.role, {
+      page: pageNum,
+      limit: limitNum,
+      search: typeof search === 'string' ? search : undefined,
+    });
   }
 
   // SEC-09: trilho de acessos ao processo de um doente (DPO / auditoria interna).
@@ -85,7 +88,7 @@ export class DoenteController {
   @Header('Content-Type', 'text/csv; charset=utf-8')
   @Header('Content-Disposition', 'attachment; filename="doentes.csv"')
   @Get('export')
-  async exportarCsv(@Res() res: Response, @Request() req: any) {
+  async exportarCsv(@Res() res: Response, @Request() req: PedidoAutenticado) {
     // SEC-09: exportação de TODOS os doentes — o acesso mais amplo que existe; fica registado.
     this.leituras.registar({
       utilizadorId: req.user.sub, utilizadorNome: req.user.nome ?? null, utilizadorRole: req.user.role ?? null,
@@ -99,6 +102,16 @@ export class DoenteController {
   // Rotas de caminho estático (ex.: 'registos-administrativos', 'risco-clinico') têm de ser
   // declaradas antes de ':id' — caso contrário o Express interpreta-as como o valor do
   // parâmetro dinâmico e nunca chegam ao handler certo (ver também 'risco-clinico' abaixo).
+  /** UX-23: possíveis duplicados antes de registar (NIF, SNS, ou nome + data de nascimento). */
+  @Roles('administrativo')
+  @Get('possiveis-duplicados')
+  possiveisDuplicados(
+    @Query('nome') nome?: string, @Query('dataNascimento') dataNascimento?: string,
+    @Query('nif') nif?: string, @Query('numeroSNS') numeroSNS?: string,
+  ) {
+    return this.registoUtente.possiveisDuplicados({ nome, dataNascimento, nif, numeroSNS });
+  }
+
   @Roles('administrativo')
   @Get('registos-administrativos')
   listarRegistosAdministrativos(@Query('search') search?: string) {
@@ -113,11 +126,12 @@ export class DoenteController {
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id')
-  async buscarPorId(@Param('id') id: string, @Request() req: any) {
+  async buscarPorId(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     // Endpoint de entrada principal do doente — único ponto que activa break-glass a partir do header;
     // uma vez concedido, assertAcessoDoente reconhece o acesso em todos os restantes endpoints deste doente.
     const motivoHeader = req.headers['x-break-glass-reason'];
-    const motivoBreakGlass = motivoHeader ? decodeURIComponent(motivoHeader) : undefined;
+    const motivoBruto = Array.isArray(motivoHeader) ? motivoHeader[0] : motivoHeader;
+    const motivoBreakGlass = motivoBruto ? decodeURIComponent(motivoBruto) : undefined;
     // QA-11: o administrativo vê a identificação e o internamento, não o processo clínico.
     const administrativo = req.user.role === 'administrativo' && !motivoBreakGlass;
     await this.verificarERegistarLeitura(req, id, motivoBreakGlass, administrativo);
@@ -153,7 +167,7 @@ export class DoenteController {
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/historico')
-  async historico(@Param('id') id: string, @Request() req: any) {
+  async historico(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id);
     return this.doenteService.historico(id);
   }
@@ -162,14 +176,14 @@ export class DoenteController {
   @Post('registro-rapido')
   registroRapido(
     @Body() dto: RegistroRapidoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
-    return this.doenteService.registroRapido(dto as any, req.user.sub);
+    return this.registoUtente.registroRapido(dto, req.user.sub);
   }
 
   @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
-  admitir(@Body() dto: AdmitirDoenteDto, @Request() req: any) {
+  admitir(@Body() dto: AdmitirDoenteDto, @Request() req: PedidoAutenticado) {
     return this.doenteService.admitir({ ...dto, dataNascimento: new Date(dto.dataNascimento), dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined, administrativoAdmissaoId: req.user.sub } as any);
   }
 
@@ -177,7 +191,7 @@ export class DoenteController {
   // Mesmos papéis que a admissão; o doente ainda não tem equipa atribuída.
   @Roles('administrativo', 'enfermeiro')
   @Post(':id/atribuir-cama')
-  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto, @Request() req: any) {
+  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto, @Request() req: PedidoAutenticado) {
     return this.doenteService.atribuirCama(id, dto.camaId, req.user.sub);
   }
 
@@ -185,7 +199,7 @@ export class DoenteController {
 
   /** Internamentos do doente (episódios, movimentos de cama/serviço, alta). */
   @Get(':id/episodios')
-  async episodiosDoDoente(@Param('id') id: string, @Request() req: any) {
+  async episodiosDoDoente(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id, undefined, true); // QA-11: dados administrativos
     return this.episodios.listar(id);
   }
@@ -196,34 +210,34 @@ export class DoenteController {
    */
   @Roles('administrativo', 'enfermeiro')
   @Post(':id/reinternar')
-  reinternar(@Param('id') id: string, @Body() dto: ReinternarDto, @Request() req: any) {
+  reinternar(@Param('id') id: string, @Body() dto: ReinternarDto, @Request() req: PedidoAutenticado) {
     return this.episodios.reinternar(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro')
   @Post(':id/episodio/alergias-revistas')
-  async alergiasRevistas(@Param('id') id: string, @Request() req: any) {
+  async alergiasRevistas(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.episodios.marcarAlergiasRevistas(id, req.user.sub);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Post(':id/transferir')
-  async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: any) {
+  async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.episodios.transferir(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
-  async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: any) {
+  async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.doenteService.editar(id, { ...dto, dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined } as any);
   }
 
   @Roles('enfermeiro', 'medico')
   @Patch(':id/estado')
-  async atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto, @Request() req: any) {
+  async atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.atualizarEstado(id, dto.estado);
   }
@@ -233,7 +247,7 @@ export class DoenteController {
   async adicionarNota(
     @Param('id') doenteId: string,
     @Body() dto: NotaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.adicionarNota(doenteId, req.user.sub, dto.texto);
@@ -245,7 +259,7 @@ export class DoenteController {
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
     @Body() dto: NotaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.editarNota(notaId, req.user.sub, dto.texto);
   }
@@ -256,7 +270,7 @@ export class DoenteController {
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
     @Body() dto: MotivoRemocaoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.apagarNota(notaId, req.user.sub, dto.motivo);
   }
@@ -266,7 +280,7 @@ export class DoenteController {
   async altaEstruturada(
     @Param('id') doenteId: string,
     @Body() dto: AltaEstruturadaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     // QA-11: o processamento da alta é também administrativo (os requisitos clínicos são verificados no serviço).
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId, undefined, true);
@@ -276,48 +290,48 @@ export class DoenteController {
 
   /** PROD-12: o que falta para a alta (reconciliação, nota de enfermagem, plano). */
   @Get(':id/alta/requisitos')
-  async requisitosAlta(@Param('id') id: string, @Request() req: any) {
+  async requisitosAlta(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id, undefined, true);
     return this.alta.requisitos(id);
   }
 
   @Get(':id/nota-alta-enfermagem')
-  async notaAltaEnfermagem(@Param('id') id: string, @Request() req: any) {
+  async notaAltaEnfermagem(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.verificarERegistarLeitura(req, id);
     return this.alta.notaEnfermagem(id);
   }
 
   @Roles('enfermeiro')
   @Put(':id/nota-alta-enfermagem')
-  async guardarNotaAltaEnfermagem(@Param('id') id: string, @Body() dto: NotaAltaEnfermagemDto, @Request() req: any) {
+  async guardarNotaAltaEnfermagem(@Param('id') id: string, @Body() dto: NotaAltaEnfermagemDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.alta.guardarNotaEnfermagem(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/sumario-alta')
-  async getSumarioAlta(@Param('id') doenteId: string, @Request() req: any) {
+  async getSumarioAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.getSumarioAlta(doenteId);
   }
 
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   @Get(':id/resumo-alta')
-  async gerarResumoAlta(@Param('id') doenteId: string, @Request() req: any) {
+  async gerarResumoAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.gerarResumoAlta(doenteId);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/timeline')
-  async getTimeline(@Param('id') doenteId: string, @Request() req: any) {
+  async getTimeline(@Param('id') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.timeline(doenteId);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/alta/pdf')
-  async pdfAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
+  async pdfAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     // Sanitiza doenteId para Content-Disposition (anti-CRLF / anti-injection)
     const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -329,7 +343,7 @@ export class DoenteController {
   // PROD-11: o médico revê (edita ou aceita) o rascunho da IA…
   @Roles('medico')
   @Patch(':id/carta-alta')
-  async reverCartaAlta(@Param('id') doenteId: string, @Body() dto: ReverCartaAltaDto, @Request() req: any) {
+  async reverCartaAlta(@Param('id') doenteId: string, @Body() dto: ReverCartaAltaDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.cartaAlta.rever(doenteId, req.user.sub, dto.texto);
   }
@@ -337,14 +351,14 @@ export class DoenteController {
   // …e assina-o com o TOTP. Só a carta assinada sai em PDF.
   @Roles('medico')
   @Post(':id/carta-alta/assinar')
-  async assinarCartaAlta(@Param('id') doenteId: string, @Body() dto: AssinarCartaAltaDto, @Request() req: any) {
+  async assinarCartaAlta(@Param('id') doenteId: string, @Body() dto: AssinarCartaAltaDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.cartaAlta.assinar(doenteId, req.user.sub, dto.totpCode);
   }
 
   @Roles('medico', 'chefe_enfermeiros', 'direcao')
   @Get(':id/carta-alta/pdf')
-  async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
+  async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: PedidoAutenticado, @Res() res: Response) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     await this.cartaAlta.garantirAssinada(doenteId);
     const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -358,7 +372,7 @@ export class DoenteController {
   async criarTarefa(
     @Param('id') doenteId: string,
     @Body() dto: TarefaDoenteDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.criarTarefa(doenteId, req.user.sub, dto as any);
@@ -375,7 +389,7 @@ export class DoenteController {
   async atualizarIsolamento(
     @Param('id') id: string,
     @Body() dto: AtualizarIsolamentoDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.atualizarIsolamento(id, dto.emIsolamento, dto.motivoIsolamento);
@@ -392,7 +406,7 @@ export class DoenteController {
   atualizarFicheiroPessoal(
     @Param('id') id: string,
     @Body() dto: AtualizarFichaPessoalDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.atualizarFicheiroPessoal(id, dto, req.user.sub);
   }
@@ -401,7 +415,7 @@ export class DoenteController {
 
   @Get(':id/problemas')
   @Roles('medico', 'enfermeiro', 'administrativo')
-  async listarProblemas(@Param('id') id: string, @Request() req: any) {
+  async listarProblemas(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.listarProblemas(id);
   }
@@ -411,7 +425,7 @@ export class DoenteController {
   async criarProblema(
     @Param('id') id: string,
     @Body() dto: CriarProblemaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.criarProblema(id, dto, req.user.sub);
@@ -423,7 +437,7 @@ export class DoenteController {
     @Param('id') doenteId: string,
     @Param('problemaId') problemaId: string,
     @Body() dto: AtualizarProblemaDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.atualizarProblema(doenteId, problemaId, dto);
@@ -431,14 +445,14 @@ export class DoenteController {
 
   @Get(':id/followups')
   @Roles('medico', 'enfermeiro', 'administrativo')
-  async listarFollowUps(@Param('id') id: string, @Request() req: any) {
+  async listarFollowUps(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
     return this.doenteService.listarFollowUps(id);
   }
 
   @Patch('followup/:followUpId/concluir')
   @Roles('medico', 'enfermeiro')
-  async concluirFollowUp(@Param('followUpId') followUpId: string, @Request() req: any) {
+  async concluirFollowUp(@Param('followUpId') followUpId: string, @Request() req: PedidoAutenticado) {
     return this.doenteService.concluirFollowUp(followUpId, req.user.sub);
   }
 
@@ -448,7 +462,7 @@ export class DoenteController {
   async uploadFoto(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.doenteService.uploadFoto(id, file, req.user.sub, req.user.role);
   }

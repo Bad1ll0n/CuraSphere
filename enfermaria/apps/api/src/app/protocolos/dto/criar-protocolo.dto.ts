@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsIn } from 'class-validator';
+import { TIPOS_PROTOCOLO_CLINICO } from '@org/shared';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CriarProtocoloDto {
@@ -7,8 +8,8 @@ export class CriarProtocoloDto {
   @IsNotEmpty()
   doenteId: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: TIPOS_PROTOCOLO_CLINICO })
   @IsString()
-  @IsNotEmpty()
+  @IsIn(TIPOS_PROTOCOLO_CLINICO) // ARQ-22: a BD tem um CHECK com os mesmos valores
   tipo: string;
 }

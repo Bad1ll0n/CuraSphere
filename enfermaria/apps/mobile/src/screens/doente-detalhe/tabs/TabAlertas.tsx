@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 const ALERT_STYLES: Record<string, { bg: string; border: string; label: string }> = {
   ia_watchdog:          { bg: '#fdf4ff', border: '#a855f7', label: '🧠 IA Watchdog' },
@@ -34,6 +35,7 @@ interface Props {
 }
 
 export default function TabAlertas({ alertas, onMarcarLido }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const sorted = [...alertas].sort((a, b) => {
     if (a.lido !== b.lido) return a.lido ? 1 : -1;
     return new Date(b.criadoEm).getTime() - new Date(a.criadoEm).getTime();
@@ -42,7 +44,7 @@ export default function TabAlertas({ alertas, onMarcarLido }: Props) {
   if (sorted.length === 0) {
     return (
       <View style={s.vazio}>
-        <Text style={s.vazioTexto}>Sem alertas activos</Text>
+        <Text style={s.vazioTexto}>Sem alertas ativos</Text>
       </View>
     );
   }
@@ -76,17 +78,17 @@ export default function TabAlertas({ alertas, onMarcarLido }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container:    { flex: 1 },
-  content:      { padding: 16, gap: 10 },
-  vazio:        { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  vazioTexto:   { color: '#94a3b8', fontSize: 14, textAlign: 'center' },
-  card:         { borderLeftWidth: 4, borderRadius: 12, padding: 14, backgroundColor: '#f8fafc' },
-  cardTopo:     { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  cardLabel:    { fontSize: 13, fontWeight: '700' },
-  cardDireita:  { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  cardTempo:    { fontSize: 13, color: '#94a3b8' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1 },
+  content: { padding: 16, gap: 10 },
+  vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, textAlign: 'center' },
+  card: { borderLeftWidth: 4, borderRadius: 12, padding: 14, backgroundColor: c.fundo },
+  cardTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  cardLabel: { fontSize: LETRA.corpo, fontWeight: '700' },
+  cardDireita: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  cardTempo: { fontSize: 13, color: c.textoTenue },
   badgeNaoLido: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#ef4444' },
-  cardMensagem: { fontSize: 13, color: '#334155', lineHeight: 19 },
-  tapParaLer:   { fontSize: 13, color: '#94a3b8', marginTop: 6, fontStyle: 'italic' },
-});
+  cardMensagem: { fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 19 },
+  tapParaLer: { fontSize: 13, color: c.textoTenue, marginTop: 6, fontStyle: 'italic' },
+}));

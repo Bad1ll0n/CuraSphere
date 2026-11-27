@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { reportarErro } from '@/lib/monitorizacao';
+import { Button } from '@/components/ui';
 
 export default function DoenteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const router = useRouter();
@@ -22,18 +23,17 @@ export default function DoenteError({ error, reset }: { error: Error & { digest?
         Não foi possível carregar os dados do doente. O registo pode ter sido removido ou houve um erro de rede.
       </p>
       <div className="flex gap-3">
-        <button
+        <Button variant="secondary"
           onClick={() => router.push('/doentes')}
-          className="text-sm font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
+          
           style={{ padding: '9px 20px' }}>
           Lista de doentes
-        </button>
-        <button
+        </Button>
+        <Button variant="primary"
           onClick={reset}
-          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
           style={{ padding: '9px 20px' }}>
           Tentar novamente
-        </button>
+        </Button>
       </div>
     </div>
   );

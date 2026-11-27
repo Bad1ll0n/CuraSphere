@@ -1,8 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { avisarAcoesGeradas } from '@/lib/acoes-escala';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -10,6 +13,7 @@ interface Props {
 }
 
 export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [escalas, setEscalas] = useState<{ braden: any; morse: any }>({ braden: null, morse: null });
@@ -30,8 +34,9 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
     if (!modalEscala) return;
     setSalvando(true);
     try {
-      await api.post(`/escalas/${doenteId}`, { tipo: modalEscala, itens: escalaItens });
+      const res = await api.post(`/escalas/${doenteId}`, { tipo: modalEscala, itens: escalaItens });
       toast.success('Guardado com sucesso');
+      avisarAcoesGeradas(toast, res.data); // PROD-21
       setModalEscala(null); setEscalaItens({});
       carregarEscalas();
     } catch (e: any) {
@@ -135,7 +140,7 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
                 <h2 className="text-xl font-bold text-slate-900">
                   {isBraden ? 'Escala de Braden' : 'Escala de Morse'}
                 </h2>
-                <button onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <button aria-label={tA11y('close')} onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                   <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
@@ -167,16 +172,14 @@ export function RiscoEscalasPanel({ doenteId, utilizador }: Props) {
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setModalEscala(null)}
-                  className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                <Button variant="secondary" className="flex-1" onClick={() => setModalEscala(null)}
                   style={{ padding: '11px' }}>
                   Cancelar
-                </button>
-                <button onClick={submeterEscala} disabled={salvando || !preenchido}
-                  className="flex-1 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                </Button>
+                <Button variant="primary" className="flex-1" onClick={submeterEscala} disabled={salvando || !preenchido}
                   style={{ padding: '11px' }}>
                   {salvando ? 'A guardar...' : 'Guardar Avaliação'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

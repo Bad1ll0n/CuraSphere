@@ -4,6 +4,8 @@ import {
 } from './mutation-queue';
 import { chamadas, falharCom, limpar } from '../test-doubles/api';
 import AsyncStorage from '../test-doubles/async-storage';
+import * as SecureStore from '../test-doubles/secure-store';
+import { guardarCifrado, lerCifrado } from './armazem-cifrado';
 
 /**
  * Estes testes existem por um motivo concreto: a fila transporta administrações de
@@ -27,6 +29,7 @@ function erroHttp(status: number) {
 beforeEach(async () => {
   limpar();
   (AsyncStorage as any).__limpar();
+  SecureStore.__limpar();
   await clearQueue();
   await definirDonoDaFila('enf-a');
 });
@@ -247,9 +250,8 @@ describe('armazenamento da fila (PERF-18)', () => {
     } finally {
       (AsyncStorage as any).setItem = original;
     }
-    // Uma operação nova e o índice — não as 10 que já lá estavam.
-    expect(escritas).toHaveLength(2);
-    expect(escritas).toContain('curasphere:mq:indice');
+    // No AsyncStorage só o índice; a operação nova vai cifrada (e as 10 antigas não se reescrevem).
+    expect(escritas).toEqual(['curasphere:mq:indice']);
     expect(await getQueueLength()).toBe(11);
   });
 
@@ -261,7 +263,7 @@ describe('armazenamento da fila (PERF-18)', () => {
     await flushMutationQueue();
     const fila = await getQueue();
     expect(fila.map((o) => (o.body as any).ordem)).toEqual([2]);
-    expect(await AsyncStorage.getItem(`curasphere:mq:op:${fila[0].id}`)).not.toBeNull();
+    expect(await lerCifrado(`curasphere:mq:op:${fila[0].id}`)).not.toBeNull();
   });
 
   it(`recusa mais de ${MAX_OPERACOES} operações por enviar — o ecrã diz que NÃO ficou guardado`, async () => {
@@ -288,15 +290,47 @@ describe('armazenamento da fila (PERF-18)', () => {
   it('fila antiga corrompida: guardada à parte para análise, e a app segue', async () => {
     await AsyncStorage.setItem('curasphere:mutation_queue', '{nao e json');
     expect(await getQueue()).toEqual([]);
-    expect(await AsyncStorage.getItem('curasphere:mq:corrompida')).toBe('{nao e json');
+    expect(await lerCifrado('curasphere:mq:corrompida')).toBe('{nao e json');
+    expect(await AsyncStorage.getItem('curasphere:mq:corrompida')).toBeNull();
   });
 
   it('uma operação ilegível sai do índice sem bloquear as outras', async () => {
     await enqueue({ ...administracao, body: { ordem: 1 } });
     await enqueue({ ...administracao, body: { ordem: 2 } });
     const [primeira] = await getQueue();
-    await AsyncStorage.setItem(`curasphere:mq:op:${primeira.id}`, '{lixo');
+    await guardarCifrado(`curasphere:mq:op:${primeira.id}`, '{lixo');
     expect((await getQueue()).map((o) => (o.body as any).ordem)).toEqual([2]);
+  });
+});
+
+describe('fila cifrada (ARQ-26)', () => {
+  it('o conteúdo clínico não fica em claro no AsyncStorage', async () => {
+    await enqueue({ ...administracao, body: { notas: 'Dor torácica, 8/10' } });
+    const [op] = await getQueue();
+    expect(await AsyncStorage.getItem(`curasphere:mq:op:${op.id}`)).toBeNull();
+    expect(await lerCifrado(`curasphere:mq:op:${op.id}`)).toContain('Dor torácica');
+  });
+
+  it('uma operação acima dos 2 KB do SecureStore guarda-se em blocos e lê-se inteira', async () => {
+    const notas = 'á'.repeat(6000); // 12 000 bytes em UTF-8
+    await enqueue({ ...administracao, body: { notas } });
+    const [op] = await getQueue();
+    expect((op.body as any).notas).toBe(notas);
+    expect(SecureStore.__chaves().filter((k) => k.startsWith('curasphere_mq_op_')).length).toBeGreaterThan(3);
+  });
+
+  it('as operações que versões antigas deixaram em claro passam para o armazenamento cifrado', async () => {
+    await AsyncStorage.setItem('curasphere:mq:indice', JSON.stringify(['v1']));
+    await AsyncStorage.setItem('curasphere:mq:op:v1', JSON.stringify({ id: 'v1', method: 'POST', url: '/x', timestamp: 1, tentativas: 0, dono: 'enf-a' }));
+    expect((await getQueue()).map((o) => o.id)).toEqual(['v1']);
+    expect(await AsyncStorage.getItem('curasphere:mq:op:v1')).toBeNull();
+    expect(await lerCifrado('curasphere:mq:op:v1')).toContain('"v1"');
+  });
+
+  it('enviar ou limpar a fila apaga também os blocos cifrados', async () => {
+    await enqueue({ ...administracao, body: { ordem: 1 } });
+    await clearQueue();
+    expect(SecureStore.__chaves().filter((k) => k.startsWith('curasphere_mq_op_'))).toEqual([]);
   });
 });
 

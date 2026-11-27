@@ -2,7 +2,8 @@ import { Controller, Get, Post, Delete, Param, Body, UseGuards, Request } from '
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { FamiliaService, CriarAcessoFamiliarDto } from './familia.service';
+import { FamiliaService, CriarAcessoFamiliarDto } from './familia.service';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @Controller('familia')
 export class FamiliaController {
@@ -20,7 +21,7 @@ export class FamiliaController {
   criarAcesso(
     @Param('doenteId') doenteId: string,
     @Body() dto: CriarAcessoFamiliarDto,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.criarAcesso(doenteId, dto, req.user.sub);
   }

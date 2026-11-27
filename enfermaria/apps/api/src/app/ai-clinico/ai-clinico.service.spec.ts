@@ -16,9 +16,8 @@ jest.mock('@anthropic-ai/sdk', () => {
 
 import Anthropic from '@anthropic-ai/sdk';
 import { GuidelinesService } from '../guidelines/guidelines.service';
-import { AlertasService } from '../alertas/alertas.service';
 import { AiMetricsService } from './ai-metrics.service';
-import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { IaNucleoService } from './ia-nucleo.service';
 
 const mockGuidelines = { buscarSimilares: jest.fn().mockResolvedValue([]) };
 const mockAlertasAI = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
@@ -48,7 +47,7 @@ const respostaEnfermeiro = JSON.stringify({
 });
 
 // PROD-19: estes testes cobrem as funções de decisão clínica quando ACTIVADAS; o fecho por
-// omissão está em common/ia-rgpd.spec.ts.
+// omissão está em common/ia/ia-rgpd.spec.ts.
 const iaDecisaoAntes = process.env['IA_DECISAO_CLINICA'];
 beforeAll(() => { process.env['IA_DECISAO_CLINICA'] = 'todas'; });
 afterAll(() => { process.env['IA_DECISAO_CLINICA'] = iaDecisaoAntes; });
@@ -65,11 +64,10 @@ describe('AiClinicoService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AiClinicoService,
+        IaNucleoService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: GuidelinesService, useValue: mockGuidelines },
-        { provide: AlertasService, useValue: mockAlertasAI },
         { provide: AiMetricsService, useValue: { registar: jest.fn().mockResolvedValue(undefined) } },
-        { provide: NotificacoesService, useValue: { enviarParaRole: jest.fn().mockResolvedValue(undefined), enviarParaUtilizador: jest.fn().mockResolvedValue(undefined) } },
       ],
     }).compile();
 

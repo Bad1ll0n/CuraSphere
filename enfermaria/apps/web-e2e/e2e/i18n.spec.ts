@@ -12,13 +12,13 @@ test.describe('i18n — quiosque em inglês', () => {
     await page.goto('/quiosque');
     await expect(page.getByRole('heading', { name: 'Choose the service you need' })).toBeVisible({ timeout: 15000 });
     await expect(page.getByRole('button', { name: /Pharmacy/ })).toBeVisible();
-    await expect(page.getByText('Seleccione o serviço pretendido')).toHaveCount(0);
+    await expect(page.getByText('Selecione o serviço pretendido')).toHaveCount(0);
     await expect(page.getByRole('button', { name: /EN/ })).toHaveAttribute('title', /beta/i);
   });
 
   test('em português (por omissão) o quiosque continua em português', async ({ page }) => {
     await page.goto('/quiosque');
-    await expect(page.getByRole('heading', { name: 'Seleccione o serviço pretendido' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: 'Selecione o serviço pretendido' })).toBeVisible({ timeout: 15000 });
     await expect(page.getByRole('button', { name: /Farmácia/ })).toBeVisible();
   });
 });

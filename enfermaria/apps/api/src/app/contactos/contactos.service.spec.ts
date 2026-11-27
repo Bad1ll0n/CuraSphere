@@ -33,6 +33,18 @@ describe('ContactosService', () => {
       const r = await service.listar('d1');
       expect(r).toHaveLength(1);
     });
+
+    it('PERF-16: ordena pelo nome já decifrado (o principal primeiro), não pelo texto cifrado', async () => {
+      mockPrisma.contactoEmergencia.findMany.mockResolvedValue([
+        { ...contactoBase, id: 'c1', nome: 'Zélia', principal: false },
+        { ...contactoBase, id: 'c2', nome: 'Óscar', principal: false },
+        { ...contactoBase, id: 'c3', nome: 'Maria', principal: true },
+        { ...contactoBase, id: 'c4', nome: 'Abel', principal: false },
+      ]);
+      const r = await service.listar('d1');
+      expect(r.map((c: any) => c.nome)).toEqual(['Maria', 'Abel', 'Óscar', 'Zélia']);
+      expect(mockPrisma.contactoEmergencia.findMany.mock.calls.at(-1)[0].orderBy).toEqual({ principal: 'desc' });
+    });
   });
 
   describe('criar()', () => {

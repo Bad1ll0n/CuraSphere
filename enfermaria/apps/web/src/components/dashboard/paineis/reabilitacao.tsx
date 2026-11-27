@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
-import { StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { StatCard, AtalhoModulo, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
 
 export function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
   const isFisio = ['fisioterapeuta', 'reabilitacao_fisica'].includes(utilizador.subRole ?? utilizador.role);
@@ -51,8 +51,8 @@ export function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
         </CardContainer>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <EmBreve titulo="Avaliações Funcionais" descricao="Barthel, FIM, MRC, FOIS, NRS-2002, PHQ-9..." />
-          <EmBreve titulo="Objetivos SMART" descricao="Defina e acompanhe objetivos de reabilitação por doente" />
+          <AtalhoModulo href="/fisioterapia" titulo="Sessões e Planos de Reabilitação" descricao="Agenda de sessões e objetivos por doente" />
+          <AtalhoModulo href="/doentes" titulo="Avaliações Funcionais" descricao="Barthel e restantes escalas — na ficha de cada doente, separador «Vitais e escalas»" />
         </div>
       </div>
     </>

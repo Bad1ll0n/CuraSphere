@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import ModalRegistarVitais from './doente-detalhe/modals/ModalRegistarVitais';
 import { ordenarParaRegistoRapido } from '../lib/prioridade-vitais';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Doente {
   id: string;
@@ -38,6 +39,7 @@ const news2Label = (score: number | null | undefined) => {
 interface Props { utilizador: Utilizador }
 
 export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -161,15 +163,15 @@ export default function RegistarVitaisRapidoScreen({ utilizador: _utilizador }: 
   );
 }
 
-const estilos = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const estilos = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centrado: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  header: { backgroundColor: '#fff', paddingHorizontal: 20, paddingTop: 56, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  titulo: { fontSize: 20, fontWeight: '700', color: '#0f172a' },
-  subtitulo: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  header: { backgroundColor: c.superficie, paddingHorizontal: 20, paddingTop: 56, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: c.borda },
+  titulo: { fontSize: 20, fontWeight: '700', color: c.texto },
+  subtitulo: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 2 },
   lista: { padding: 16, gap: 10 },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     borderRadius: 16,
     padding: 16,
     flexDirection: 'row',
@@ -190,11 +192,11 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
   },
   news2Score: { fontSize: 22, fontWeight: '800', lineHeight: 26 },
-  news2Label: { fontSize: 13, fontWeight: '600' },
+  news2Label: { fontSize: LETRA.corpo, fontWeight: '600' },
   cardInfo: { flex: 1, minWidth: 0 },
-  nomePaciente: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
-  camaText: { fontSize: 13, color: '#64748b', marginTop: 2 },
-  ultimoText: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  nomePaciente: { fontSize: 15, fontWeight: '700', color: c.texto },
+  camaText: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  ultimoText: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   btnRegistar: {
     backgroundColor: '#2563eb',
     borderRadius: 10,
@@ -202,5 +204,5 @@ const estilos = StyleSheet.create({
     paddingVertical: 8,
   },
   btnRegistarText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  vazio: { textAlign: 'center', color: '#94a3b8', fontSize: 15, marginTop: 60 },
-});
+  vazio: { textAlign: 'center', color: c.textoTenue, fontSize: 15, marginTop: 60 },
+}));

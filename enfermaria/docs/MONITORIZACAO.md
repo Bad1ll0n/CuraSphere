@@ -86,3 +86,10 @@ Pesquisas úteis (Grafana → Explore → Loki):
 {servico="nginx"} | json | estado >= 500             # 5xx vistos pelo proxy
 {servico=~".+"} |= "<id de correlação>"              # tudo de um pedido
 ```
+
+## Versão, Sentry e tracing (OPS-08)
+
+- **Versão em execução:** a imagem recebe `ARG VERSAO` no build (a tag `vX.Y.Z`, em `release.yml`) e expõe-a em `APP_VERSION`. Aparece no `GET /v1/health/live` (`versao`), no `release` do Sentry (API e web) e no `service.version` do tracing. Assim, um erro no Sentry diz de que versão vem, e o deploy confirma que a versão nova está mesmo a responder.
+- **Tracing (OpenTelemetry):** liga-se com `OTEL_EXPORTER_OTLP_ENDPOINT` (por exemplo, `http://tempo:4318`). O nome do serviço é `OTEL_SERVICE_NAME` (por omissão, `curasphere-api`). Antes só havia spans do http, do dns e do net do Node. Três causas: o SDK arrancava num `import()` assíncrono, tarde demais; o pg, o express e o ioredis vinham embutidos no bundle; e o próprio SDK também, o que impede o `require-in-the-middle` de resolver os módulos. Agora o SDK arranca de forma síncrona e estes pacotes carregam-se do `node_modules` em runtime (`webpack.config.js`). Verificado com um coletor OTLP: há spans do pg (`pg.query`), do Express e do router. Os URLs nos spans HTTP passam pelo mesmo `sanitizarUrlParaLog` dos logs, por isso não levam tokens nem o NIF.
+- O Sentry 11 não regista um fornecedor de traces próprio (`enableOpenTelemetrySetup` é `false`), por isso não compete com o OpenTelemetry. O Sentry fica com os erros e o OpenTelemetry com os traces.
+- **Threadpool do libuv:** `UV_THREADPOOL_SIZE=16` na imagem da API (PERF-20). Com as 4 threads por omissão, o bcrypt dos logins, a compressão, o DNS e a escrita em disco faziam fila uns atrás dos outros.

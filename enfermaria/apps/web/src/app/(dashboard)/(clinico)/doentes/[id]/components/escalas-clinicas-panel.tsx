@@ -1,8 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { avisarAcoesGeradas } from '@/lib/acoes-escala';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -239,6 +242,7 @@ const COR_ESCALAS: Record<string, string> = {
 };
 
 export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const toast = useToast();
 
   const [escalasClinicas, setEscalasClinicas] = useState<any[]>([]);
@@ -276,10 +280,11 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
       const config = ESCALA_CONFIG[tipoEscalaClinica];
       const pontuacao = config ? config.calcularPontuacao(valoresEscalaClinica) : undefined;
       const classificacao = config && pontuacao !== undefined ? config.classificar(pontuacao) : undefined;
-      await api.post(`/escalas-clinicas/${doenteId}`, {
+      const res = await api.post(`/escalas-clinicas/${doenteId}`, {
         tipo: tipoEscalaClinica, valores: valoresEscalaClinica, pontuacao, classificacao,
       });
       toast.success('Guardado com sucesso');
+      avisarAcoesGeradas(toast, res.data); // PROD-21
       setModalEscalaClinica(false);
       setValoresEscalaClinica({});
       carregarEscalasClinicas();
@@ -313,7 +318,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
         </div>
         {escalasClinicas.length === 0 ? (
           <p className="text-sm text-slate-500 text-center" style={{ padding: '20px 0' }}>
-            {podeRegistarEscala ? 'Sem escalas registadas — clica em + para adicionar' : 'Sem escalas registadas'}
+            {podeRegistarEscala ? 'Sem escalas registadas — clique em + para adicionar' : 'Sem escalas registadas'}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
@@ -367,7 +372,7 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
             <div {...dlgEscalaClinica.propsPainel} className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
                 <h2 className="text-xl font-bold text-slate-900">Registar Escala Clínica</h2>
-                <button onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <button aria-label={tA11y('close')} onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                   <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
@@ -412,9 +417,8 @@ export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {
                   )}
 
                   <div className="flex gap-3">
-                    <button onClick={() => setModalEscalaClinica(false)}
-                      className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                      style={{ padding: '11px' }}>Cancelar</button>
+                    <Button variant="secondary" className="flex-1" onClick={() => setModalEscalaClinica(false)}
+                      style={{ padding: '11px' }}>Cancelar</Button>
                     <button onClick={submeterEscalaClinica} disabled={salvandoEscalaClinica || !preenchido}
                       className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                       style={{ padding: '11px' }}>

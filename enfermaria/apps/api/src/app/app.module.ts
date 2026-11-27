@@ -1,17 +1,16 @@
 import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
-import { CsrfMiddleware } from './common/csrf.middleware';
-import { IdempotencyInterceptor } from './common/idempotency.interceptor';
+import { CsrfMiddleware } from './common/seguranca/csrf.middleware';
+import { IdempotencyInterceptor } from './common/infra/idempotency.interceptor';
 import { TenantMiddleware } from './prisma/tenant.middleware';
 import { RequestContextMiddleware } from './prisma/request-context.middleware';
 import { ContextoPedidoInterceptor } from './prisma/contexto-pedido.interceptor';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ThrottlerRedisStorage } from './common/throttler-redis.storage';
-import { ThrottlerPorUtilizadorGuard } from './common/throttler-por-utilizador.guard';
+import { ThrottlerRedisStorage } from './common/seguranca/throttler-redis.storage';
+import { ThrottlerPorUtilizadorGuard } from './common/seguranca/throttler-por-utilizador.guard';
 import { ScheduleModule } from '@nestjs/schedule';
-import * as Joi from 'joi';
-import { sanitizarUrlParaLog } from './common/sanitizar-url-log';
+import { sanitizarUrlParaLog } from './common/seguranca/sanitizar-url-log';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
@@ -21,33 +20,37 @@ import { GatewayModule } from './gateway/gateway.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuditModule } from './common/audit.module';
-import { AuditController } from './common/audit.controller';
-import { AuditInterceptor } from './common/audit.interceptor';
-import { CspReportController } from './common/csp-report.controller';
+import { AuditModule } from './common/auditoria/audit.module';
+import { AuditController } from './common/auditoria/audit.controller';
+import { AuditInterceptor } from './common/auditoria/audit.interceptor';
+import { CspReportController } from './common/seguranca/csp-report.controller';
 import { ClinicalModule } from './clinical.module';
 import { GestaoModule } from './gestao.module';
 import { OperacionalModule } from './operacional.module';
-import { StorageModule } from './common/storage.module';
+import { StorageModule } from './common/infra/storage.module';
 import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.module';
 import { GuidelinesModule } from './guidelines/guidelines.module';
+import { esquemaConfiguracao } from './config/esquema-config';
 import { PortalDoenteModule } from './portal-doente/portal-doente.module';
+import { RgpdModule } from './rgpd/rgpd.module';
 import { Hl7Module } from './hl7/hl7.module';
 import { DashboardConfigModule } from './dashboard-config/dashboard-config.module';
-import { AnomalyDetectionModule } from './common/anomaly-detection.module';
+import { AnomalyDetectionModule } from './common/ia/anomaly-detection.module';
 import { MailerModule } from './mailer/mailer.module';
 import { RelatoriosAgendadosModule } from './relatorios-agendados/relatorios-agendados.module';
 import { AgendaFluxoModule } from './agenda-fluxo/agenda-fluxo.module';
 import { TriagemPortalModule } from './triagem-portal/triagem-portal.module';
 import { ObservabilidadeModule } from './observabilidade/observabilidade.module';
 import { FeatureFlagsModule } from './feature-flags/feature-flags.module';
+import { ModuloGuard } from './feature-flags/modulo.guard';
 import { Icd10Module } from './codificacao/icd10.module';
 import { OutcomesModule } from './outcomes/outcomes.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { PopulationHealthModule } from './population-health/population-health.module';
 import { TransferenciasModule } from './transferencias/transferencias.module';
 import { RegrasCliniciasModule } from './regras-clinicas/regras-clinicas.module';
-import { gerarIdCorrelacao } from './common/correlacao';
+import { gerarIdCorrelacao } from './common/infra/correlacao';
+import { CAMINHOS_REDACT, CENSURA } from './common/seguranca/redact-log';
 
 @Module({
   imports: [
@@ -55,20 +58,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-        REDIS_URL: Joi.string().default('redis://localhost:6379'),
-        JWT_SECRET: Joi.string().min(32).required(),
-        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+[smhd]$/).default('15m'),
-        ENCRYPTION_KEY: Joi.string().hex().min(64).required(),
-        ALLOWED_ORIGINS: Joi.when('NODE_ENV', {
-          is: 'production',
-          then: Joi.string().required(),
-          otherwise: Joi.string().optional(),
-        }),
-        PORT: Joi.number().default(3333),
-        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
-      }),
+      // ARQ-20: esquema completo e fechado em produção — ver config/esquema-config.ts.
+      validationSchema: esquemaConfiguracao,
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -95,17 +86,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
             return { statusCode: res.statusCode };
           },
         },
-        redact: {
-          paths: [
-            'req.headers.authorization',
-            'req.headers.cookie',
-            // PII — RGPD: redactar campos sensíveis em qualquer objecto logado
-            '*.password', '*.passwordHash', '*.mfaSecret', '*.secret',
-            '*.nome', '*.contacto', '*.morada', '*.nif', '*.dataNascimento',
-            '[*].nome', '[*].contacto', '[*].morada', '[*].nif',
-          ],
-          censor: '[REDACTED]',
-        },
+        // SEC-21: segredos e PII em qualquer profundidade, e o pedido agarrado aos erros do axios.
+        redact: { paths: CAMINHOS_REDACT, censor: CENSURA },
         autoLogging: { ignore: (req) => req.url === '/v1/health' || (req.url ?? '').startsWith('/v1/health/') },
       },
     }),
@@ -127,6 +109,7 @@ import { gerarIdCorrelacao } from './common/correlacao';
     SistemasExternosModule,
     GuidelinesModule,
     PortalDoenteModule,
+    RgpdModule,
     Hl7Module,
     DashboardConfigModule,
     AnomalyDetectionModule,
@@ -159,6 +142,8 @@ import { gerarIdCorrelacao } from './common/correlacao';
     { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerPorUtilizadorGuard },
+    // PROD-20: módulos opcionais desligados por instalação respondem 404.
+    { provide: APP_GUARD, useClass: ModuloGuard },
   ],
 })
 export class AppModule implements NestModule {

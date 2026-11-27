@@ -18,12 +18,14 @@ describe('contexto do pedido (SEC-07)', () => {
   const forjado = `${b64({ alg: 'none' })}.${b64({ sub: 'B', nome: 'Intruso', role: 'medico', tenantId: 'outro-hospital' })}.`;
 
   const correr = (req: any) =>
-    new Promise<{ userId: string | null; tenantId: string }>((resolve) => {
+    new Promise<{ userId: string | null; tenantId: string }>((resolve, reject) => {
       mwCtx.use(req, {} as any, () =>
         mwTenant.use(req, {} as any, async () => {
-          const ctx = { getType: () => 'http', switchToHttp: () => ({ getRequest: () => req }) } as any;
-          await firstValueFrom(interceptor.intercept(ctx, { handle: () => of(null) }));
-          resolve({ userId: reqCtx.get()?.userId ?? null, tenantId: tenant.tenantId });
+          try {
+            const ctx = { getType: () => 'http', switchToHttp: () => ({ getRequest: () => req }) } as any;
+            await firstValueFrom(interceptor.intercept(ctx, { handle: () => of(null) }));
+            resolve({ userId: reqCtx.get()?.userId ?? null, tenantId: tenant.tenantId });
+          } catch (e) { reject(e); }
         }),
       );
     });
@@ -47,8 +49,12 @@ describe('contexto do pedido (SEC-07)', () => {
     expect(r).toEqual({ userId: null, tenantId: 'default' });
   });
 
-  it('o tenant da sessão verificada é aplicado', async () => {
-    const r = await correr({ ip: '10.0.0.1', headers: {}, user: { sub: 'C', role: 'medico', tenantId: 'hospital-2' } });
-    expect(r).toEqual({ userId: 'C', tenantId: 'hospital-2' });
+  it('o tenant da sessão verificada é aplicado (o desta instalação)', async () => {
+    const r = await correr({ ip: '10.0.0.1', headers: {}, user: { sub: 'C', role: 'medico', tenantId: 'default' } });
+    expect(r).toEqual({ userId: 'C', tenantId: 'default' });
+  });
+
+  it('ARQ-21: uma sessão de outro tenant é recusada (uma instalação, um hospital)', async () => {
+    await expect(correr({ ip: '10.0.0.1', headers: {}, user: { sub: 'C', role: 'medico', tenantId: 'hospital-2' } })).rejects.toThrow(/outra instalação/);
   });
 });

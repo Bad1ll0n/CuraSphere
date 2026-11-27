@@ -4,7 +4,7 @@ import { CamasService } from './camas.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { TenantContextService } from '../prisma/tenant-context.service';
-import { EstadoCama } from '../common/enums';
+import { EstadoCama } from '../common/infra/enums';
 
 const mockPrisma = {
   cama: {
@@ -22,6 +22,8 @@ const mockRedis = {
   get: jest.fn(),
   set: jest.fn(),
   del: jest.fn(),
+  getCifrado: jest.fn(),
+  setCifrado: jest.fn(),
 };
 
 describe('CamasService', () => {
@@ -62,7 +64,7 @@ describe('CamasService', () => {
       const resultado = await service.criar({ numero: '102', quarto: 'B' });
 
       expect(resultado).toEqual(novaCama);
-      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista', 'camas:ocupacao');
+      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista:default', 'camas:ocupacao:default');
     });
   });
 
@@ -85,7 +87,7 @@ describe('CamasService', () => {
       expect(mockPrisma.cama.update).toHaveBeenCalledWith(
         expect.objectContaining({ data: { estado: EstadoCama.ocupada } }),
       );
-      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista', 'camas:ocupacao');
+      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista:default', 'camas:ocupacao:default');
       expect(resultado).toEqual(camaAtualizada);
     });
   });
@@ -115,7 +117,7 @@ describe('CamasService', () => {
       expect(mockPrisma.cama.update).toHaveBeenCalledWith(
         expect.objectContaining({ data: { estado: 'livre' } }),
       );
-      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista', 'camas:ocupacao');
+      expect(mockRedis.del).toHaveBeenCalledWith('camas:lista:default', 'camas:ocupacao:default');
       expect(resultado).toEqual(camaLimpa);
     });
   });
@@ -152,10 +154,21 @@ describe('CamasService', () => {
         altasPrevistasHoje: 2, altasPrevistasAmanha: 4, pedidosEmEspera: 3,
       });
       expect(mockRedis.set).toHaveBeenCalledWith(
-        'camas:ocupacao',
+        'camas:ocupacao:default',
         expect.objectContaining({ total: 10, ocupadas: 5, livres: 3, emLimpeza: 1, reservadas: 1, pedidosEmEspera: 3 }),
         30,
       );
+    });
+  });
+
+  describe('listar() — PERF-07', () => {
+    it('a lista (com nomes e diagnósticos) vai CIFRADA para o Redis, numa chave do tenant', async () => {
+      mockRedis.getCifrado.mockResolvedValue(null);
+      mockPrisma.cama.findMany.mockResolvedValue([{ id: 'c1', doente: { nome: 'Ana', diagnosticoPrincipal: 'Pneumonia' } }]);
+      await service.listar();
+      expect(mockRedis.getCifrado).toHaveBeenCalledWith('camas:lista:default');
+      expect(mockRedis.setCifrado).toHaveBeenCalledWith('camas:lista:default', expect.any(Array), 30);
+      expect(mockRedis.set).not.toHaveBeenCalledWith(expect.stringContaining('camas:lista'), expect.anything(), expect.anything());
     });
   });
 });

@@ -3,7 +3,9 @@ import { loginAs } from './helpers';
 
 test.describe('Break-Glass — Acesso de Emergência', () => {
   test.beforeEach(async ({ page }) => {
-    await loginAs(page);
+    // UX-23: entrava como direção, que não tem /doentes — o teste só corria porque a guarda
+    // redirecionava logo para um dashboard com ligações a doentes. A enfermeira chefe vê a ficha.
+    await loginAs(page, '00015');
   });
 
   test('botão ou opção de break-glass existe na página do doente', async ({ page }) => {

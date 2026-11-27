@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { calcularDosePediatrica } from '../common/dosing.helper';
+import { calcularDosePediatrica } from '../common/clinico/dosing.helper';
 import { CalcularDoseDto } from './dto/calcular-dose.dto';
 
 @Injectable()

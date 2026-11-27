@@ -10,13 +10,13 @@ test.describe('Auditoria', () => {
     await page.goto('/auditoria');
     await page.waitForLoadState('networkidle');
     await expect(page.getByText(/500|internal server error/i)).not.toBeVisible();
-    await expect(page.getByText(/auditoria|log|acção|evento|utilizador/i).first()).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/auditoria|log|ação|evento|utilizador/i).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('tabela de logs de auditoria é visível', async ({ page }) => {
     await page.goto('/auditoria');
     await page.waitForLoadState('networkidle');
-    const tabela = page.getByText(/log|acção|data|ip|utilizador/i).first();
+    const tabela = page.getByText(/log|ação|data|ip|utilizador/i).first();
     if (await tabela.count() > 0) {
       await expect(tabela).toBeVisible({ timeout: 8000 });
     }

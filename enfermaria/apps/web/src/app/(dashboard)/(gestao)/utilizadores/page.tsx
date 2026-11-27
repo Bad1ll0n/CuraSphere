@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
 import type { Utilizador as SharedUtilizador } from '@org/shared';
+import { Button } from '@/components/ui';
 
 interface Utilizador extends SharedUtilizador {
   servico: string;
@@ -233,13 +234,13 @@ export default function UtilizadoresPagina() {
             {utilizadores.filter((u) => u.ativo).length} profissionais ativos
           </p>
         </div>
-        <button
+        <Button variant="primary"
           onClick={() => { setForm({ nome: '', numeroFuncionario: '', password: '', role: roles[0]?.chave ?? '', subRole: '', servico: 'internamento', ordemExperiencia: '' }); setMostrarForm(true); }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+          
           style={{ padding: '10px 20px', fontSize: '14px' }}
         >
           + Novo Utilizador
-        </button>
+        </Button>
       </div>
 
       {loading ? (
@@ -398,8 +399,8 @@ export default function UtilizadoresPagina() {
               )}
               {erroEdit && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>{erroEdit}</div>}
               <div className="flex gap-3">
-                <button type="button" onClick={() => setEditando(null)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors" style={{ padding: '11px' }}>Cancelar</button>
-                <button type="submit" className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors" style={{ padding: '11px' }}>Guardar Alterações</button>
+                <Button variant="secondary" className="flex-1" type="button" onClick={() => setEditando(null)}  style={{ padding: '11px' }}>Cancelar</Button>
+                <Button variant="primary" className="flex-1" type="submit"  style={{ padding: '11px' }}>Guardar Alterações</Button>
               </div>
             </form>
           </div>
@@ -476,10 +477,10 @@ export default function UtilizadoresPagina() {
               )}
               {erro && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>{erro}</div>}
               <div className="flex gap-3">
-                <button type="button" onClick={() => { setMostrarForm(false); setErro(''); setAgendaNovo(agendaVazia()); }}
-                  className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors" style={{ padding: '11px' }}>Cancelar</button>
-                <button type="submit"
-                  className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors" style={{ padding: '11px' }}>Criar Utilizador</button>
+                <Button variant="secondary" className="flex-1" type="button" onClick={() => { setMostrarForm(false); setErro(''); setAgendaNovo(agendaVazia()); }}
+                   style={{ padding: '11px' }}>Cancelar</Button>
+                <Button variant="primary" className="flex-1" type="submit"
+                   style={{ padding: '11px' }}>Criar Utilizador</Button>
               </div>
             </form>
           </div>

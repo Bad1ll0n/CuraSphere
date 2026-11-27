@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { EventsGateway } from '../gateway/events.gateway';
+import { registarFalha } from '../common/infra/falhas';
 
 interface SinalVitalParams {
   frequenciaRespiratoria?: number | null;
@@ -63,7 +64,7 @@ export class SepsisService {
     // Severidade 4 — a da resposta imediata, a mesma do NEWS2 ≥ 7, que já activa este
     // protocolo. Ficava na omissão (1), abaixo de um NEWS2 incompleto (2): o rastreio de
     // sépsis positivo não marcava `urgencia` e não contava como alerta urgente em lado nenhum.
-    const alertaId = await this.alertas.criarAlerta(doenteId, 'sepsis', msg, 4).catch(() => null);
+    const alertaId = await this.alertas.criarAlerta(doenteId, 'sepsis', msg, 4).catch(registarFalha('alerta:sepsis', 'erro'));
 
     // S-09: era `server.emit` sem sala — chegava a TODOS os sockets ligados, de qualquer papel,
     // com o nome do doente. E como enviava `doenteName` e `cama` em vez dos campos que o banner

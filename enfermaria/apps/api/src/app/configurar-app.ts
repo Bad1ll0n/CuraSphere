@@ -1,10 +1,11 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { excecaoValidacao } from './common/infra/validacao-pt';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { json, urlencoded, text } from 'express';
-import { AllExceptionsFilter } from './common/exception.filter';
+import { AllExceptionsFilter } from './common/infra/exception.filter';
 
 /**
  * QA-20 — a configuração HTTP da aplicação num só sítio: segurança (helmet, CORS, trust proxy),
@@ -74,7 +75,8 @@ export function configurarApp(app: NestExpressApplication): void {
   app.use('/v1/hl7/receive', text({ type: ['text/plain', 'application/hl7-v2'], limit: '100kb' }));
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+  // QA-17: mensagens de validação em PT-PT (ver common/infra/validacao-pt.ts).
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true, exceptionFactory: excecaoValidacao }));
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
 
   const origensPermitidas = process.env.ALLOWED_ORIGINS

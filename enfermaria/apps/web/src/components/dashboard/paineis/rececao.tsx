@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { StatCard, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { Button } from '@/components/ui';
 
 export function DashboardRececao({ utilizador }: { utilizador: any }) {
   const [enviandoLembretes, setEnviandoLembretes] = useState(false);
@@ -12,13 +13,15 @@ export function DashboardRececao({ utilizador }: { utilizador: any }) {
 
   const amanha = new Date(); amanha.setDate(amanha.getDate() + 1);
   const amanhaStr = amanha.toISOString().split('T')[0];
+  // ARQ-23: só as consultas de hoje (antes pedia todas as de sempre e filtrava no browser).
+  const hojeStr = new Date().toLocaleDateString('sv-SE'); // AAAA-MM-DD no fuso local
 
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-rececao'],
     queryFn: async () => {
       const hoje = new Date().toDateString();
       const [r, ra] = await Promise.all([
-        api.get('/consultas').catch(() => ({ data: [] })),
+        api.get(`/consultas?data=${hojeStr}`).catch(() => ({ data: [] })),
         api.get(`/consultas?data=${amanhaStr}`).catch(() => ({ data: [] })),
       ]);
       return {
@@ -139,14 +142,13 @@ export function DashboardRececao({ utilizador }: { utilizador: any }) {
                 {lembretesEnviados} lembrete{lembretesEnviados !== 1 ? 's' : ''} enviado{lembretesEnviados !== 1 ? 's' : ''}
               </div>
             )}
-            <button
+            <Button variant="primary" fullWidth
               onClick={enviarLembretes}
               disabled={enviandoLembretes || consultasAmanha === 0}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-40"
               style={{ padding: '10px' }}
             >
               {enviandoLembretes ? 'A enviar...' : 'Enviar Lembretes'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ContinuidadeCuidadosPanel } from './continuidade-cuidados-panel';
+import { Button } from '@/components/ui';
 
 interface PlanoAlta {
   id: string;
   doenteId: string;
   dataAlvoDia: string | null;
-  afebrилApenas24h: boolean;
+  afebril24h: boolean;
   mobilidadeAdequada: boolean;
   alimentacaoOral: boolean;
   doresControladas: boolean;
@@ -31,7 +32,7 @@ interface SumarioAlta {
 }
 
 const CRITERIOS: { campo: keyof PlanoAlta; label: string }[] = [
-  { campo: 'afebrилApenas24h',     label: 'Afebril >24h' },
+  { campo: 'afebril24h',     label: 'Afebril >24h' },
   { campo: 'mobilidadeAdequada',   label: 'Mobilidade adequada' },
   { campo: 'alimentacaoOral',      label: 'Alimentação oral' },
   { campo: 'doresControladas',     label: 'Dores controladas' },
@@ -258,11 +259,10 @@ export function PlanoAltaPanel({ doenteId, utilizador }: { doenteId: string; uti
           </div>
 
           {podeEditar && (
-            <button onClick={guardar} disabled={salvando}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
+            <Button variant="primary" onClick={guardar} disabled={salvando}
               style={{ padding: '9px 20px' }}>
               {salvando ? 'A guardar...' : 'Guardar'}
-            </button>
+            </Button>
           )}
 
           {/* Readmission risk section */}

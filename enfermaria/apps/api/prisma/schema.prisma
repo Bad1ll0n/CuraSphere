@@ -86,148 +86,149 @@ model Utilizador {
   atualizadoEm            DateTime  @updatedAt
 
   // Relações existentes
-  turnosComoChefe                Turno[]                     @relation("ChefeTurno")
-  horariosEntrada                HorarioEntrada[]
-  notasTurno                     NotaTurno[]
-  tarefasCriadas                 Tarefa[]                    @relation("TarefaCriadaPor")
-  tarefasResponsavel             Tarefa[]                    @relation("TarefaResponsavel")
-  medicacoesPrescritas           Medicacao[]                 @relation("MedicacaoPrescritor")
-  registosMedicacao              RegistoMedicacao[]
-  doentesAdmitidos               Doente[]                    @relation("DoenteAdmissao")
-  escalas                        Escala[]
-  atribuicoesEnfermeiro          AtribuicaoDoente[]
-  horariosTurnoProfissional      HorarioTurnoProfissional[]
-  atribuicoesComoUtilizador      AtribuicaoHorarioTurno[]    @relation("AtribuicaoUtilizador")
-  atribuicoesFeitas              AtribuicaoHorarioTurno[]    @relation("AtribuicaoAtribuidoPor")
-  trocasSolicitadas              PedidoTrocaTurno[]          @relation("TrocaSolicitante")
-  trocasRecebidas                PedidoTrocaTurno[]          @relation("TrocaDestinatario")
-  trocasAprovadas                PedidoTrocaTurno[]          @relation("TrocaAprovadoPor")
-  auditLogs                      AuditLog[]
-  sinaisVitaisRegistados         SinalVital[]                @relation("SinaisVitaisRegistados")
-  leiturasMonitorValidadas       LeituraMonitor[]            @relation("LeiturasMonitorValidadas")
-  referenciacoesCriadas          ReferenciacaoContinuidade[] @relation("ReferenciacoesCriadas")
-  ensinosRealizados              EnsinoDoente[]              @relation("EnsinosRealizados")
-  dispositivosTokens             DispositivoToken[]
-  notificacoesInApp              NotificacaoInApp[]
-  avaliacoesRisco                AvaliacaoRisco[]
-  sumariosAlta                   SumarioAlta[]
+  turnosComoChefe                    Turno[]                     @relation("ChefeTurno")
+  horariosEntrada                    HorarioEntrada[]
+  notasTurno                         NotaTurno[]
+  tarefasCriadas                     Tarefa[]                    @relation("TarefaCriadaPor")
+  tarefasResponsavel                 Tarefa[]                    @relation("TarefaResponsavel")
+  medicacoesPrescritas               Medicacao[]                 @relation("MedicacaoPrescritor")
+  registosMedicacao                  RegistoMedicacao[]
+  doentesAdmitidos                   Doente[]                    @relation("DoenteAdmissao")
+  escalas                            Escala[]
+  atribuicoesEnfermeiro              AtribuicaoDoente[]
+  horariosTurnoProfissional          HorarioTurnoProfissional[]
+  atribuicoesComoUtilizador          AtribuicaoHorarioTurno[]    @relation("AtribuicaoUtilizador")
+  atribuicoesFeitas                  AtribuicaoHorarioTurno[]    @relation("AtribuicaoAtribuidoPor")
+  trocasSolicitadas                  PedidoTrocaTurno[]          @relation("TrocaSolicitante")
+  trocasRecebidas                    PedidoTrocaTurno[]          @relation("TrocaDestinatario")
+  trocasAprovadas                    PedidoTrocaTurno[]          @relation("TrocaAprovadoPor")
+  auditLogs                          AuditLog[]
+  sinaisVitaisRegistados             SinalVital[]                @relation("SinaisVitaisRegistados")
+  leiturasMonitorValidadas           LeituraMonitor[]            @relation("LeiturasMonitorValidadas")
+  referenciacoesCriadas              ReferenciacaoContinuidade[] @relation("ReferenciacoesCriadas")
+  ensinosRealizados                  EnsinoDoente[]              @relation("EnsinosRealizados")
+  dispositivosTokens                 DispositivoToken[]
+  notificacoesInApp                  NotificacaoInApp[]
+  avaliacoesRisco                    AvaliacaoRisco[]
+  sumariosAlta                       SumarioAlta[]
   // Novos — Fase 7
-  notasClinciasAutor             NotaClinica[]
-  escalasClinicasRegistadas      EscalaClinica[]
+  notasClinciasAutor                 NotaClinica[]
+  escalasClinicasRegistadas          EscalaClinica[]
   // Novos — Fase 5
-  examesSolicitados              Exame[]                     @relation("ExameSolicitadoPor")
-  episodiosTriados               EpisodioUrgencia[]          @relation("EpisodioTriador")
-  episodiosMedico                EpisodioUrgencia[]          @relation("EpisodioMedico")
-  cirurgiasComoCircurgiao        CirurgiaProgramada[]        @relation("CirurgiaCircurgiao")
-  cirurgiasComoAnestesista       CirurgiaProgramada[]        @relation("CirurgiaAnestesista")
-  consultas                      Consulta[]
-  stockPedidosSolicitados        PedidoFarmacia[]            @relation("PedidoSolicitante")
-  stockPedidosProcessados        PedidoFarmacia[]            @relation("PedidoProcessador")
-  stockPedidosAprovados          PedidoFarmacia[]            @relation("PedidoAprovador")
-  planosReabilitacao             PlanoReabilitacao[]
-  sessoesFisioterapia            SessaoFisioterapia[]
-  pedidosInternosSolicitados     PedidoInterno[]             @relation("PedidoInternoSolicitante")
-  pedidosInternosExecutados      PedidoInterno[]             @relation("PedidoInternoExecutor")
-  anunciosPublicados             Anuncio[]
-  mensagensEnviadas              MensagemInterna[]           @relation("MensagemRemetente")
-  mensagensRecebidas             MensagemInterna[]           @relation("MensagemDestinatario")
+  examesSolicitados                  Exame[]                     @relation("ExameSolicitadoPor")
+  episodiosTriados                   EpisodioUrgencia[]          @relation("EpisodioTriador")
+  episodiosMedico                    EpisodioUrgencia[]          @relation("EpisodioMedico")
+  cirurgiasComoCircurgiao            CirurgiaProgramada[]        @relation("CirurgiaCircurgiao")
+  cirurgiasComoAnestesista           CirurgiaProgramada[]        @relation("CirurgiaAnestesista")
+  consultas                          Consulta[]
+  stockPedidosSolicitados            PedidoFarmacia[]            @relation("PedidoSolicitante")
+  stockPedidosProcessados            PedidoFarmacia[]            @relation("PedidoProcessador")
+  stockPedidosAprovados              PedidoFarmacia[]            @relation("PedidoAprovador")
+  planosReabilitacao                 PlanoReabilitacao[]
+  sessoesFisioterapia                SessaoFisioterapia[]
+  pedidosInternosSolicitados         PedidoInterno[]             @relation("PedidoInternoSolicitante")
+  pedidosInternosExecutados          PedidoInterno[]             @relation("PedidoInternoExecutor")
+  anunciosPublicados                 Anuncio[]
+  mensagensEnviadas                  MensagemInterna[]           @relation("MensagemRemetente")
+  mensagensRecebidas                 MensagemInterna[]           @relation("MensagemDestinatario")
   // Novos — Fase 8A
-  interconsultasRequisitadas     Interconsulta[]             @relation("InterconsultaRequisitante")
-  interconsultasRespondidas      Interconsulta[]             @relation("InterconsultaResposta")
-  dispositivosInseridos          DispositivoInvasivo[]       @relation("DispositivoInserido")
+  interconsultasRequisitadas         Interconsulta[]             @relation("InterconsultaRequisitante")
+  interconsultasRespondidas          Interconsulta[]             @relation("InterconsultaResposta")
+  dispositivosInseridos              DispositivoInvasivo[]       @relation("DispositivoInserido")
   // Novos — Fase 8B
-  medicacoesValidadas            Medicacao[]                 @relation("MedicacaoValidador")
+  medicacoesValidadas                Medicacao[]                 @relation("MedicacaoValidador")
   // Novos — Fase 8B WHO Checklist
-  checklistsSignIn               ChecklistCirurgia[]         @relation("ChecklistSignIn")
-  checklistsTimeOut              ChecklistCirurgia[]         @relation("ChecklistTimeOut")
-  checklistsSignOut              ChecklistCirurgia[]         @relation("ChecklistSignOut")
+  checklistsSignIn                   ChecklistCirurgia[]         @relation("ChecklistSignIn")
+  checklistsTimeOut                  ChecklistCirurgia[]         @relation("ChecklistTimeOut")
+  checklistsSignOut                  ChecklistCirurgia[]         @relation("ChecklistSignOut")
   // Novos — Fase 8C Sala de Espera
-  checkinsRececionados           CheckinSalaEspera[]         @relation("CheckinRececionista")
-  checkinsAtendidos              CheckinSalaEspera[]         @relation("CheckinMedico")
-  refreshTokens                  RefreshToken[]
-  incidentesCriados              IncidenteTI[]               @relation("IncidentesCriados")
-  incidentesAtribuidos           IncidenteTI[]               @relation("IncidentesAtribuidos")
-  pedidosTICriados               PedidoTI[]                  @relation("PedidosTICriados")
-  pedidosTIAtribuidos            PedidoTI[]                  @relation("PedidosTIAtribuidos")
-  ficheirosPessoaisAtualizados   FicheiroPessoalDoente[]
-  episodiosFaturacaoCriados      EpisodioFaturacao[]
-  pagamentosRegistados           Pagamento[]
-  agendas                        AgendaMedico[]              @relation("AgendaMedico")
-  problemasRegistados            ProblemaClinico[]           @relation("ProblemaRegistado")
-  manutencoesReportadas          Manutencao[]                @relation("ManutencaoReportada")
-  manutencoesTecnico             Manutencao[]                @relation("ManutencaoTecnico")
-  alertasAcusados                AlertaClinico[]             @relation("AlertaAcusador")
+  checkinsRececionados               CheckinSalaEspera[]         @relation("CheckinRececionista")
+  checkinsAtendidos                  CheckinSalaEspera[]         @relation("CheckinMedico")
+  refreshTokens                      RefreshToken[]
+  incidentesCriados                  IncidenteTI[]               @relation("IncidentesCriados")
+  incidentesAtribuidos               IncidenteTI[]               @relation("IncidentesAtribuidos")
+  pedidosTICriados                   PedidoTI[]                  @relation("PedidosTICriados")
+  pedidosTIAtribuidos                PedidoTI[]                  @relation("PedidosTIAtribuidos")
+  ficheirosPessoaisAtualizados       FicheiroPessoalDoente[]
+  episodiosFaturacaoCriados          EpisodioFaturacao[]
+  pagamentosRegistados               Pagamento[]
+  agendas                            AgendaMedico[]              @relation("AgendaMedico")
+  problemasRegistados                ProblemaClinico[]           @relation("ProblemaRegistado")
+  manutencoesReportadas              Manutencao[]                @relation("ManutencaoReportada")
+  manutencoesTecnico                 Manutencao[]                @relation("ManutencaoTecnico")
+  alertasAcusados                    AlertaClinico[]             @relation("AlertaAcusador")
   // RH
-  ausencias                      Ausencia[]                  @relation("AusenciaUtilizador")
-  ausenciasAprovadas             Ausencia[]                  @relation("AusenciaAprovador")
-  formacoes                      FormacaoUtilizador[]        @relation("FormacaoUtilizador")
-  eventosAdversosRegistados      EventoAdverso[]             @relation("EventoAdversoRegistado")
+  ausencias                          Ausencia[]                  @relation("AusenciaUtilizador")
+  ausenciasAprovadas                 Ausencia[]                  @relation("AusenciaAprovador")
+  formacoes                          FormacaoUtilizador[]        @relation("FormacaoUtilizador")
+  eventosAdversosRegistados          EventoAdverso[]             @relation("EventoAdversoRegistado")
   // Especialidades
-  sessoesEspecialidade           SessaoEspecialidade[]       @relation("SessaoEspecialidadeProfissional")
+  sessoesEspecialidade               SessaoEspecialidade[]       @relation("SessaoEspecialidadeProfissional")
   // RH expandido
-  avaliacoesComoAvaliado         AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliado")
-  avaliacoesComoAvaliador        AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliador")
-  dadosContratuais               DadosContratuais?
+  avaliacoesComoAvaliado             AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliado")
+  avaliacoesComoAvaliador            AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliador")
+  dadosContratuais                   DadosContratuais?
   // Chefe directo (hierarquia para aprovação de férias)
-  chefeId                        String?
-  chefe                          Utilizador?                 @relation("ChefeSubordinado", fields: [chefeId], references: [id], onDelete: SetNull)
-  subordinados                   Utilizador[]                @relation("ChefeSubordinado")
+  chefeId                            String?
+  chefe                              Utilizador?                 @relation("ChefeSubordinado", fields: [chefeId], references: [id], onDelete: SetNull)
+  subordinados                       Utilizador[]                @relation("ChefeSubordinado")
   // Inventário expandido
-  ajustesStock                   AjusteStock[]               @relation("AjustesFeitos")
-  transferenciasSolicitadas      TransferenciaStock[]        @relation("TransfSolicitadas")
-  transferenciasConfirmadas      TransferenciaStock[]        @relation("TransfConfirmadas")
-  encomendasRecebidas            EncomendaFornecedor[]       @relation("EncomendasRecebidas")
-  presencaOnline                 PresencaOnline?
-  registosCheckin                RegistoCheckin[]
-  consentimentosCriados          ConsentimentoInformado[]    @relation("ConsentimentoCriador")
-  consentimentosTestemunha       ConsentimentoInformado[]    @relation("ConsentimentoTestemunha")
-  breakGlassUsados               BreakGlassAccess[]
-  protocolosAtivados             ProtocoloClinico[]
-  itensProtocoloConcluidos       ItemProtocolo[]
-  prescricoesDietaCriadas        PrescricaoDieta[]
-  medicacoesAssinadas            Medicacao[]                 @relation("MedicacaoAssinatura")
-  notasAssinadas                 NotaClinica[]               @relation("NotaAssinatura")
-  adendasNotasClinicas           NotaClinicaAdenda[]         @relation("NotaClinicaAdendaAutor")
-  transfusoesSegundaVerificacao  RegistoTransfusao[]         @relation("TransfusoesSegundaVerificacao")
-  culturasRegistadas             CulturaMicrobiologica[]
-  surtosRegistados               SurtoIACS[]
-  notasIncidentesTI              NotaIncidenteTI[]           @relation("NotasIncidentesTI")
-  checklistsConformidade         ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
+  ajustesStock                       AjusteStock[]               @relation("AjustesFeitos")
+  transferenciasSolicitadas          TransferenciaStock[]        @relation("TransfSolicitadas")
+  transferenciasConfirmadas          TransferenciaStock[]        @relation("TransfConfirmadas")
+  encomendasRecebidas                EncomendaFornecedor[]       @relation("EncomendasRecebidas")
+  presencaOnline                     PresencaOnline?
+  registosCheckin                    RegistoCheckin[]
+  consentimentosCriados              ConsentimentoInformado[]    @relation("ConsentimentoCriador")
+  consentimentosTestemunha           ConsentimentoInformado[]    @relation("ConsentimentoTestemunha")
+  breakGlassUsados                   BreakGlassAccess[]          @relation("BreakGlassUtilizador")
+  protocolosAtivados                 ProtocoloClinico[]
+  itensProtocoloConcluidos           ItemProtocolo[]
+  prescricoesDietaCriadas            PrescricaoDieta[]
+  medicacoesAssinadas                Medicacao[]                 @relation("MedicacaoAssinatura")
+  medicacoesDescontinuadas           Medicacao[]                 @relation("MedicacaoDescontinuacao")
+  notasAssinadas                     NotaClinica[]               @relation("NotaAssinatura")
+  adendasNotasClinicas               NotaClinicaAdenda[]         @relation("NotaClinicaAdendaAutor")
+  transfusoesSegundaVerificacao      RegistoTransfusao[]         @relation("TransfusoesSegundaVerificacao")
+  culturasRegistadas                 CulturaMicrobiologica[]
+  surtosRegistados                   SurtoIACS[]
+  notasIncidentesTI                  NotaIncidenteTI[]           @relation("NotasIncidentesTI")
+  checklistsConformidade             ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
   // Trocas de folga
-  trocasFolgaSolicitadas         TrocaFolga[]                @relation("TrocaFolgaSolicitante")
-  trocasFolgaRecebidas           TrocaFolga[]                @relation("TrocaFolgaDestinatario")
-  trocasFolgaAprovadas           TrocaFolga[]                @relation("TrocaFolgaAprovador")
-  balancosHidricosRegistados     BalancoHidrico[]            @relation("BalancoHidricoRegistadoPor")
-  feridasRegistadas              AvaliacaoFerida[]           @relation("FeridasRegistadoPor")
-  atualizacoesTransporte         AtualizacaoTransporte[]     @relation("AtualizacaoTransporteRegistadoPor")
-  episodiosEspecialidadeActivada EpisodioUrgencia[]          @relation("EpisodioEspecialidadeActivadaPor")
-  sinalizacoesCriadas            SinalizacaoPreocupante[]    @relation("SinalizacoesCriadas")
-  sinalizacoesResolvidas         SinalizacaoPreocupante[]    @relation("SinalizacoesResolvidas")
-  relatoriosPassagemCriados      RelatorioPassagemTurno[]    @relation("RelatorioPassagemCriado")
-  relatoriosPassagemConfirmados  RelatorioPassagemTurno[]    @relation("RelatorioPassagemConfirmado")
-  reconciliacoesCriadas          ReconciliacaoMedicacao[]    @relation("ReconciliacoesCriadas")
-  reconciliacoesAprovadas        ReconciliacaoMedicacao[]    @relation("ReconciliacoesAprovadas")
-  acessosFamiliaresCriados       AcessoFamiliar[]            @relation("AcessoFamiliarCriado")
-  consentimentosTratamentoRegistados ConsentimentoTratamento[] @relation("ConsentimentoTratamentoRegistado")
-  consentimentosTratamentoRevogados  ConsentimentoTratamento[] @relation("ConsentimentoTratamentoRevogado")
-  resultadosAnaliseRegistados    ResultadoAnalise[]          @relation("ResultadosAnaliseRegisto")
-  documentosSaudeRegistados      DocumentoSaude[]            @relation("DocumentosSaudeRegisto")
-  documentosSaudeAssinados       DocumentoSaude[]            @relation("DocumentoSaudeAssinatura")
-  aiDecisoes                     AiDecisao[]                 @relation("AiDecisoes")
-  fotosFeridas                   FotoFerida[]                @relation("FotosFeridasCriadas")
-  portaisCriados                 PortalDoente[]              @relation("PortalDoentesCriados")
-  dashboardConfig                DashboardConfig?
-  followUpsResponsavel           FollowUpAgendado[]
-  outcomesRegistados             OutcomeClinico[]            @relation("OutcomesRegistados")
-  webhooksCriados                Webhook[]                   @relation("WebhooksCriados")
-  cohortsCriadas                 CohortDefinition[]          @relation("CohortsCriadas")
-  transExternasSolicitadas       TransferenciaExterna[]      @relation("TransferenciasSolicitadas")
-  transExternasAceites           TransferenciaExterna[]      @relation("TransferenciasAceites")
-  regrasCliniasCriadas           RegraClinica[]              @relation("RegrasCliniasCriadas")
-  webAuthnCredentials            WebAuthnCredential[]
-  transfusoesPrescritas          PedidoTransfusao[]          @relation("TransfusoesPrescritas")
-  transfusoesAdministradas       RegistoTransfusao[]         @relation("TransfusoesAdministradas")
-  reacoesTransfusionaisRegisto   ReacaoTransfusional[]       @relation("ReacoesTransfusRegisto")
+  trocasFolgaSolicitadas             TrocaFolga[]                @relation("TrocaFolgaSolicitante")
+  trocasFolgaRecebidas               TrocaFolga[]                @relation("TrocaFolgaDestinatario")
+  trocasFolgaAprovadas               TrocaFolga[]                @relation("TrocaFolgaAprovador")
+  balancosHidricosRegistados         BalancoHidrico[]            @relation("BalancoHidricoRegistadoPor")
+  feridasRegistadas                  AvaliacaoFerida[]           @relation("FeridasRegistadoPor")
+  atualizacoesTransporte             AtualizacaoTransporte[]     @relation("AtualizacaoTransporteRegistadoPor")
+  episodiosEspecialidadeActivada     EpisodioUrgencia[]          @relation("EpisodioEspecialidadeActivadaPor")
+  sinalizacoesCriadas                SinalizacaoPreocupante[]    @relation("SinalizacoesCriadas")
+  sinalizacoesResolvidas             SinalizacaoPreocupante[]    @relation("SinalizacoesResolvidas")
+  relatoriosPassagemCriados          RelatorioPassagemTurno[]    @relation("RelatorioPassagemCriado")
+  relatoriosPassagemConfirmados      RelatorioPassagemTurno[]    @relation("RelatorioPassagemConfirmado")
+  reconciliacoesCriadas              ReconciliacaoMedicacao[]    @relation("ReconciliacoesCriadas")
+  reconciliacoesAprovadas            ReconciliacaoMedicacao[]    @relation("ReconciliacoesAprovadas")
+  acessosFamiliaresCriados           AcessoFamiliar[]            @relation("AcessoFamiliarCriado")
+  consentimentosTratamentoRegistados ConsentimentoTratamento[]   @relation("ConsentimentoTratamentoRegistado")
+  consentimentosTratamentoRevogados  ConsentimentoTratamento[]   @relation("ConsentimentoTratamentoRevogado")
+  resultadosAnaliseRegistados        ResultadoAnalise[]          @relation("ResultadosAnaliseRegisto")
+  documentosSaudeRegistados          DocumentoSaude[]            @relation("DocumentosSaudeRegisto")
+  documentosSaudeAssinados           DocumentoSaude[]            @relation("DocumentoSaudeAssinatura")
+  aiDecisoes                         AiDecisao[]                 @relation("AiDecisoes")
+  fotosFeridas                       FotoFerida[]                @relation("FotosFeridasCriadas")
+  portaisCriados                     PortalDoente[]              @relation("PortalDoentesCriados")
+  dashboardConfig                    DashboardConfig?
+  followUpsResponsavel               FollowUpAgendado[]
+  outcomesRegistados                 OutcomeClinico[]            @relation("OutcomesRegistados")
+  webhooksCriados                    Webhook[]                   @relation("WebhooksCriados")
+  cohortsCriadas                     CohortDefinition[]          @relation("CohortsCriadas")
+  transExternasSolicitadas           TransferenciaExterna[]      @relation("TransferenciasSolicitadas")
+  transExternasAceites               TransferenciaExterna[]      @relation("TransferenciasAceites")
+  regrasCliniasCriadas               RegraClinica[]              @relation("RegrasCliniasCriadas")
+  webAuthnCredentials                WebAuthnCredential[]
+  transfusoesPrescritas              PedidoTransfusao[]          @relation("TransfusoesPrescritas")
+  transfusoesAdministradas           RegistoTransfusao[]         @relation("TransfusoesAdministradas")
+  reacoesTransfusionaisRegisto       ReacaoTransfusional[]       @relation("ReacoesTransfusRegisto")
 
   // PROD-07 — processo de enfermagem
   avaliacoesIniciaisEnfermagem AvaliacaoInicialEnfermagem[] @relation("AvaliacaoInicialAutor")
@@ -235,10 +236,12 @@ model Utilizador {
   intervencoesEnfermagem       IntervencaoEnfermagem[]      @relation("IntervencaoCriadaPor")
   execucoesIntervencao         ExecucaoIntervencao[]        @relation("ExecucaoIntervencaoAutor")
   avaliacoesDiagnostico        AvaliacaoDiagnostico[]       @relation("AvaliacaoDiagnosticoAutor")
+  breakGlassRevistos           BreakGlassAccess[]           @relation("BreakGlassRevisor")
+
+  @@unique([ssoProviderId, ssoSubject])
   @@index([tenantId, role, ativo])
   @@index([role, ativo])
   @@index([servico])
-  @@unique([ssoProviderId, ssoSubject])
   @@map("utilizadores")
 }
 
@@ -252,19 +255,19 @@ enum EstadoCama {
 }
 
 model Cama {
-  id       String     @id @default(uuid())
-  tenantId String     @default("default")
-  numero   String     @unique
-  quarto   String
-  estado   EstadoCama @default(livre)
-  servico  String?
-  piso     Int?
+  id                String     @id @default(uuid())
+  tenantId          String     @default("default")
+  numero            String     @unique
+  quarto            String
+  estado            EstadoCama @default(livre)
+  servico           String?
+  piso              Int?
   // PROD-03: atributos para alocar a cama certa. sexo null = enfermaria mista.
-  sexo           String? // 'masculino' | 'feminino'
-  isolamento     Boolean   @default(false) // quarto com condições de isolamento
-  especialidade  String?
+  sexo              String? // 'masculino' | 'feminino'
+  isolamento        Boolean    @default(false) // quarto com condições de isolamento
+  especialidade     String?
   reservadaPedidoId String?
-  reservadaAte   DateTime?
+  reservadaAte      DateTime?
 
   doente Doente?
 
@@ -283,38 +286,42 @@ enum EstadoDoente {
 }
 
 model Doente {
-  id                   String       @id @default(uuid())
-  tenantId             String       @default("default")
-  nome                 String
-  nomeBusca            String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
-  dataNascimento       DateTime?
-  numeroProcesso       String       @unique
+  id                      String       @id @default(uuid())
+  tenantId                String       @default("default")
+  nome                    String
+  nomeBusca               String? // índice cego do nome (tokens HMAC, ver encryption.middleware.ts)
+  dataNascimento          DateTime?
+  numeroProcesso          String       @unique
   // PROD-14: o número de processo no HIS (SONHO/SClínico/outro) — a chave das mensagens ADT.
   // O numeroProcesso é gerado pelo CuraSphere e nunca coincide com o do HIS.
-  identificadorHis     String?      @unique
-  estado               EstadoDoente @default(estavel)
-  diagnosticoPrincipal String?
-  icd10Code            String?
-  grupoSanguineo       String? // grupo ABO/Rh do doente (ex.: 'A+', 'O-') — do type & screen
-  estadoRegisto        String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
-  tipoVisita           String? // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
-  dataAdmissao         DateTime     @default(now())
-  dataAltaPrevista     DateTime?
-  dataAlta             DateTime?
-  ativo                Boolean      @default(true)
-  emIsolamento         Boolean      @default(false)
-  motivoIsolamento     String?
-  deletedAt            DateTime?
-  fotoUrl              String?
+  identificadorHis        String?      @unique
+  estado                  EstadoDoente @default(estavel)
+  diagnosticoPrincipal    String?
+  icd10Code               String?
+  grupoSanguineo          String? // grupo ABO/Rh do doente (ex.: 'A+', 'O-') — do type & screen
+  estadoRegisto           String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
+  tipoVisita              String? // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
+  // UX-23: utente não identificado à entrada ("Desconhecido AAAA-MM-DD #N"); funde-se depois.
+  identificacaoProvisoria Boolean      @default(false)
+  dataAdmissao            DateTime     @default(now())
+  dataAltaPrevista        DateTime?
+  dataAlta                DateTime?
+  ativo                   Boolean      @default(true)
+  emIsolamento            Boolean      @default(false)
+  motivoIsolamento        String?
+  deletedAt               DateTime?
+  fotoUrl                 String?
+  // SEC-20: identificação anonimizada no fim do prazo de retenção (o conteúdo clínico fica).
+  anonimizadoEm           DateTime?
 
   // PROD-22: sexo (valores do RNU) e antropometria de referência — sem eles não há TFG
   // correcta, dose por kg/superfície corporal, cama por sexo nem Patient.gender no FHIR.
-  sexo                 String? // 'masculino' | 'feminino' | 'indeterminado'
-  pesoReferenciaKg     Float?
-  pesoReferenciaEm     DateTime?
-  pesoReferenciaFonte  String? // 'medido' | 'referido' | 'estimado'
-  alturaCm             Float?
-  alturaEm             DateTime?
+  sexo                String? // 'masculino' | 'feminino' | 'indeterminado'
+  pesoReferenciaKg    Float?
+  pesoReferenciaEm    DateTime?
+  pesoReferenciaFonte String? // 'medido' | 'referido' | 'estimado'
+  alturaCm            Float?
+  alturaEm            DateTime?
 
   // PROD-06: "lista vazia" não é "sem alergias". O estado diz se alguém perguntou.
   avaliacaoAlergias      String    @default("nao_avaliado") // 'nao_avaliado' | 'sem_alergias_conhecidas' | 'com_alergias'
@@ -334,77 +341,78 @@ model Doente {
   administrativo           Utilizador? @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id], onDelete: SetNull)
 
   // Relações existentes
-  atribuicoes             AtribuicaoDoente[]
-  atribuicoesHorario      AtribuicaoHorarioTurno[]
-  tarefas                 Tarefa[]
-  medicacoes              Medicacao[]
-  registosMedicacao       RegistoMedicacao[]
-  notasTurno              NotaTurno[]
-  passagensTurno          PassagemTurno[]
-  sinaisVitais            SinalVital[]
-  leiturasMonitor         LeituraMonitor[]
-  referenciacoes          ReferenciacaoContinuidade[]
-  ensinos                 EnsinoDoente[]
-  alergias                Alergia[]
-  contactosEmergencia     ContactoEmergencia[]
-  alertasClinicos         AlertaClinico[]
-  avaliacoesRisco         AvaliacaoRisco[]
-  sumariosAlta            SumarioAlta[]
-  episodiosInternamento   EpisodioInternamento[]
-  pedidosCama             PedidoCama[]
+  atribuicoes              AtribuicaoDoente[]
+  atribuicoesHorario       AtribuicaoHorarioTurno[]
+  tarefas                  Tarefa[]
+  medicacoes               Medicacao[]
+  registosMedicacao        RegistoMedicacao[]
+  notasTurno               NotaTurno[]
+  passagensTurno           PassagemTurno[]
+  sinaisVitais             SinalVital[]
+  leiturasMonitor          LeituraMonitor[]
+  referenciacoes           ReferenciacaoContinuidade[]
+  ensinos                  EnsinoDoente[]
+  alergias                 Alergia[]
+  contactosEmergencia      ContactoEmergencia[]
+  alertasClinicos          AlertaClinico[]
+  avaliacoesRisco          AvaliacaoRisco[]
+  sumariosAlta             SumarioAlta[]
+  episodiosInternamento    EpisodioInternamento[]
+  pedidosCama              PedidoCama[]
   // Novos — Fase 7
-  notasClincias           NotaClinica[]
-  escalasClinicas         EscalaClinica[]
+  notasClincias            NotaClinica[]
+  escalasClinicas          EscalaClinica[]
   // Novos — Fase 5
-  exames                  Exame[]
-  episodiosUrgencia       EpisodioUrgencia[]
-  cirurgias               CirurgiaProgramada[]
-  consultas               Consulta[]
-  planosReabilitacao      PlanoReabilitacao[]
-  sessoesFisioterapia     SessaoFisioterapia[]
-  sessoesEspecialidade    SessaoEspecialidade[]
-  pedidosInternos         PedidoInterno[]
+  exames                   Exame[]
+  episodiosUrgencia        EpisodioUrgencia[]
+  cirurgias                CirurgiaProgramada[]
+  consultas                Consulta[]
+  planosReabilitacao       PlanoReabilitacao[]
+  sessoesFisioterapia      SessaoFisioterapia[]
+  sessoesEspecialidade     SessaoEspecialidade[]
+  pedidosInternos          PedidoInterno[]
   // Novos — Fase 8A
-  interconsultas          Interconsulta[]
-  dispositivosInvasivos   DispositivoInvasivo[]
+  interconsultas           Interconsulta[]
+  dispositivosInvasivos    DispositivoInvasivo[]
   // Dados administrativos (acesso restrito a role 'administrativo')
-  ficheiroPessoal         FicheiroPessoalDoente?
-  episodiosFaturacao      EpisodioFaturacao[]
-  problemas               ProblemaClinico[]
-  eventosAdversos         EventoAdverso[]          @relation("EventosAdversosDoente")
-  consentimentos          ConsentimentoInformado[]
-  breakGlassAcessos       BreakGlassAccess[]
-  protocolosClinicos      ProtocoloClinico[]
-  prescricoesDieta        PrescricaoDieta[]
-  culturasMicrobiologicas CulturaMicrobiologica[]
-  balancosHidricos        BalancoHidrico[]
-  feridas                 AvaliacaoFerida[]
-  sinalizacoes            SinalizacaoPreocupante[]
-  alertasSepsis           AlertaSepsis[]
-  baseline                BaselineDoente?
-  planosAlta              PlanoAlta[]
-  reconciliacoesMedicacao ReconciliacaoMedicacao[]
-  acessosFamiliares       AcessoFamiliar[]
+  ficheiroPessoal          FicheiroPessoalDoente?
+  episodiosFaturacao       EpisodioFaturacao[]
+  problemas                ProblemaClinico[]
+  eventosAdversos          EventoAdverso[]             @relation("EventosAdversosDoente")
+  consentimentos           ConsentimentoInformado[]
+  breakGlassAcessos        BreakGlassAccess[]
+  protocolosClinicos       ProtocoloClinico[]
+  prescricoesDieta         PrescricaoDieta[]
+  culturasMicrobiologicas  CulturaMicrobiologica[]
+  balancosHidricos         BalancoHidrico[]
+  feridas                  AvaliacaoFerida[]
+  sinalizacoes             SinalizacaoPreocupante[]
+  alertasSepsis            AlertaSepsis[]
+  baseline                 BaselineDoente?
+  planosAlta               PlanoAlta[]
+  reconciliacoesMedicacao  ReconciliacaoMedicacao[]
+  acessosFamiliares        AcessoFamiliar[]
   consentimentosTratamento ConsentimentoTratamento[]
-  resultadosAnalise       ResultadoAnalise[]
-  documentosSaude         DocumentoSaude[]
-  identificadoresExternos IdentificadorExterno[]
-  portalDoente            PortalDoente?
-  registosPro             RegistoPRO[]
-  transferenciasExternas  TransferenciaExterna[]
-  stewardshipAntibioticos StewardshipAntibiotico[]
-  followUps               FollowUpAgendado[]
-  outcomesClinicos        OutcomeClinico[]
-  pedidosTransfusao       PedidoTransfusao[]
-  registosTransfusao      RegistoTransfusao[]
-  reacoesTransfusionais   ReacaoTransfusional[]
-  gravidezes              Gravidez[]
-  planosQuimioterapia     PlanoQuimioterapia[]
-  sessoesDialise          SessaoDialise[]
+  resultadosAnalise        ResultadoAnalise[]
+  documentosSaude          DocumentoSaude[]
+  identificadoresExternos  IdentificadorExterno[]
+  portalDoente             PortalDoente?
+  registosPro              RegistoPRO[]
+  transferenciasExternas   TransferenciaExterna[]
+  stewardshipAntibioticos  StewardshipAntibiotico[]
+  followUps                FollowUpAgendado[]
+  outcomesClinicos         OutcomeClinico[]
+  pedidosTransfusao        PedidoTransfusao[]
+  registosTransfusao       RegistoTransfusao[]
+  reacoesTransfusionais    ReacaoTransfusional[]
+  gravidezes               Gravidez[]
+  planosQuimioterapia      PlanoQuimioterapia[]
+  sessoesDialise           SessaoDialise[]
 
   // PROD-07 — processo de enfermagem
   avaliacoesIniciaisEnfermagem AvaliacaoInicialEnfermagem[]
   diagnosticosEnfermagem       DiagnosticoEnfermagem[]
+
   @@index([tenantId, estado])
   // PERF-08: listas de doentes (tenant, activos, estado do registo, por data de admissão).
   @@index([tenantId, ativo, estadoRegisto, dataAdmissao])
@@ -697,55 +705,65 @@ model Tarefa {
 // ─── Medicação ───────────────────────────────────────────────────────────────
 
 model Medicacao {
-  id          String    @id @default(uuid())
-  tenantId    String    @default("default")
-  nome        String
-  dose        String
-  via         String
-  frequencia  String
-  ativo       Boolean   @default(true)
-  iniciadoEm  DateTime  @default(now())
-  terminadoEm DateTime?
-  deletedAt   DateTime?
+  id              String    @id @default(uuid())
+  tenantId        String    @default("default")
+  nome            String
+  dose            String
+  via             String
+  frequencia      String
+  // UX-17: dose estruturada (valor + unidade de lista fechada); `dose` fica como texto composto.
+  doseValor       Float?
+  doseUnidade     String? // mg | g | mcg | UI | ml | mEq | mmol | comp | cáps | gotas | puff | inalação | saqueta | ampola | un | aplicação
+  indicacao       String?   @db.VarChar(300)
+  duracaoDias     Int?
+  dataFimPrevista DateTime?
+  ativo           Boolean   @default(true)
+  iniciadoEm      DateTime  @default(now())
+  terminadoEm     DateTime?
+  deletedAt       DateTime?
 
   doenteId       String
   prescritoPorId String
 
-  estadoValidacao String? // pendente | aprovada | rejeitada
-  validadoPorId   String?
-  validadaEm      DateTime?
-  motivoRejeicao  String?
-  assinadoEm      DateTime?
-  assinadoPorId   String?
+  estadoValidacao      String? // pendente | pendente_medico | aprovada | rejeitada
+  validadoPorId        String?
+  validadaEm           DateTime?
+  motivoRejeicao       String?
+  assinadoEm           DateTime?
+  assinadoPorId        String?
+  // QA-14: quem descontinuou e porquê (antes só ficava `ativo=false` e a hora).
+  descontinuadoPorId   String?
+  motivoDescontinuacao String?   @db.VarChar(500)
 
   // Override de alergia — prescrição feita apesar de alergia documentada.
   // Persistido para rasto clínico/medico-legal (antes era descartado antes do create).
-  overrideAlergia     Boolean @default(false)
-  overrideMotivo      String? @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
-  overrideAlergenioId String?
+  overrideAlergia          Boolean              @default(false)
+  overrideMotivo           String?              @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
+  overrideAlergenioId      String?
   // QA-07: dose acima do máximo de adulto só com justificação clínica (override registado).
-  overrideDose        Boolean @default(false)
-  overrideDoseMotivo  String? @db.VarChar(1000)
+  overrideDose             Boolean              @default(false)
+  overrideDoseMotivo       String?              @db.VarChar(1000)
   // QA-08: medicação SOS — intervalo mínimo entre tomas e número máximo de tomas em 24 h.
-  intervaloMinimoH    Int?
-  maxDosesDia         Int?
+  intervaloMinimoH         Int?
+  maxDosesDia              Int?
   // PROD-05: prescrição a partir do catálogo (DCI e ATC codificados); texto livre só por
   // excepção e sinalizado. Duplicação por DCI e interacção contraindicada só com justificação.
   catalogoId               String?
   catalogo                 CatalogoMedicamento? @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
   dci                      String?
   codigoATC                String?
-  foraCatalogo             Boolean @default(false)
-  justificacaoForaCatalogo String? @db.VarChar(1000)
-  overrideDuplicacao       Boolean @default(false)
-  overrideDuplicacaoMotivo String? @db.VarChar(1000)
-  overrideInteracao        Boolean @default(false)
-  overrideInteracaoMotivo  String? @db.VarChar(1000)
+  foraCatalogo             Boolean              @default(false)
+  justificacaoForaCatalogo String?              @db.VarChar(1000)
+  overrideDuplicacao       Boolean              @default(false)
+  overrideDuplicacaoMotivo String?              @db.VarChar(1000)
+  overrideInteracao        Boolean              @default(false)
+  overrideInteracaoMotivo  String?              @db.VarChar(1000)
 
   doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Restrict)
   validadoPor       Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
   assinadoPor       Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
+  descontinuadoPor  Utilizador?             @relation("MedicacaoDescontinuacao", fields: [descontinuadoPorId], references: [id], onDelete: SetNull)
   overrideAlergenio Alergia?                @relation("MedicacaoOverrideAlergia", fields: [overrideAlergenioId], references: [id], onDelete: SetNull)
   registos          RegistoMedicacao[]
   stewardship       StewardshipAntibiotico?
@@ -779,28 +797,30 @@ model StewardshipAntibiotico {
 }
 
 model RegistoMedicacao {
-  id                 String    @id @default(uuid())
+  id                      String    @id @default(uuid())
   // PROD-16: a hora do ATO (declarada à cabeceira, dentro de uma janela); `registadoEm` é a da
   // chegada ao servidor. Uma administração offline sincronizada horas depois guarda as duas.
-  administradoEm     DateTime  @default(now())
-  registadoEm        DateTime  @default(now())
-  observacoes        String?
-  verificacao5Certas Boolean   @default(false) // resultado REAL da verificação, não um literal
-  certosVerificados  Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
-  naoAdministrada    Boolean   @default(false)
-  motivoNaoAdmin     String?
+  administradoEm          DateTime  @default(now())
+  registadoEm             DateTime  @default(now())
+  observacoes             String?
+  verificacao5Certas      Boolean   @default(false) // resultado REAL da verificação, não um literal
+  certosVerificados       Json? // detalhe: { doente, medicamento, dose, via, hora } → true/false
+  naoAdministrada         Boolean   @default(false)
+  motivoNaoAdmin          String?
   // QA-08: SOS administrado antes do intervalo mínimo (ou acima do máximo diário) — porquê.
-  justificacaoSOS    String? @db.VarChar(500)
+  justificacaoSOS         String?   @db.VarChar(500)
+  // QA-15: administração antes da validação farmacêutica (1.ª dose urgente) — porquê.
+  justificacaoNaoValidada String?   @db.VarChar(500)
   // PROD-09/PROD-10: depois de um analgésico, a dor tem de ser reavaliada até este momento.
-  reavaliarDorAte    DateTime?
+  reavaliarDorAte         DateTime?
   // UX-08: leitura por código (BCMA) — pulseira do doente e embalagem/unidose, verificadas no
   // servidor; ou a razão por que não foi possível ler.
-  leituraPulseira    Boolean   @default(false)
-  leituraMedicamento Boolean   @default(false)
-  leituraExcecao     String?   @db.VarChar(500)
-  loteLido           String?
-  validadeLida       DateTime?
-  deletedAt          DateTime?
+  leituraPulseira         Boolean   @default(false)
+  leituraMedicamento      Boolean   @default(false)
+  leituraExcecao          String?   @db.VarChar(500)
+  loteLido                String?
+  validadeLida            DateTime?
+  deletedAt               DateTime?
 
   medicacaoId       String
   doenteId          String
@@ -840,18 +860,18 @@ model ParametroDotacao {
 
 /// PROD-17 — fotografia da dotação de um serviço num turno (histórico para a direção).
 model RegistoDotacao {
-  id           String   @id @default(uuid())
-  servico      String
-  data         String // dia clínico AAAA-MM-DD
-  turno        String // manha | tarde | noite
-  doentes      Int
-  porCategoria Json // { I, II, III, IV }
-  horasNecessarias  Float
-  horasDisponiveis  Float
-  enfermeiros  Int
-  racio        Float? // disponíveis / necessárias
-  semaforo     String // verde | amarelo | vermelho | sem_doentes
-  calculadoEm  DateTime @default(now())
+  id               String   @id @default(uuid())
+  servico          String
+  data             String // dia clínico AAAA-MM-DD
+  turno            String // manha | tarde | noite
+  doentes          Int
+  porCategoria     Json // { I, II, III, IV }
+  horasNecessarias Float
+  horasDisponiveis Float
+  enfermeiros      Int
+  racio            Float? // disponíveis / necessárias
+  semaforo         String // verde | amarelo | vermelho | sem_doentes
+  calculadoEm      DateTime @default(now())
 
   @@unique([servico, data, turno])
   @@index([servico, data])
@@ -978,13 +998,13 @@ model SinalVital {
   // Um NEWS2 calculado sobre dados parciais NÃO é um NEWS2 "baixo" — é um score incompleto.
   // Estes dois campos distinguem "não medido" de "normal" para quem lê o registo.
   news2Completo          Boolean? // true = os 7 parâmetros NEWS2 estavam presentes
-  news2ParametrosFalta   String[] @default([]) // parâmetros em falta no cálculo
+  news2ParametrosFalta   String[]  @default([]) // parâmetros em falta no cálculo
   news2ParametroIsolado3 Boolean? // gatilho RCP: 3 pontos num único parâmetro
   pews                   Int? // score PEWS calculado automaticamente (pediátrico, por faixa etária)
   glasgow                Int? // Glasgow Coma Scale 3-15 (para SOFA SNC)
   pamMedia               Float? // Pressão Arterial Média mmHg (para SOFA cardiovascular)
   vasopressores          Boolean? // em suporte vasopressor (para SOFA cardiovascular)
-  origem                 String?  @default("manual") // 'manual' | 'monitor' (proveniência do registo)
+  origem                 String?   @default("manual") // 'manual' | 'monitor' (proveniência do registo)
   // PROD-09: dor como 5.º sinal vital (Circular Normativa DGS 09/DGCG/2003).
   dor                    Int?
   escalaDor              String? // 'numerica' | 'eva' | 'faces' | 'painad' | 'cpot' | 'flacc'
@@ -992,7 +1012,7 @@ model SinalVital {
   proximaAvaliacaoEm     DateTime?
   // PROD-16: `data` é a hora da medição; `registadoEm` a da chegada ao servidor. Separadas, um
   // registo feito offline à cabeceira e sincronizado depois mostra-se como "registo diferido".
-  registadoEm            DateTime @default(now())
+  registadoEm            DateTime  @default(now())
   // PROD-15: leitura de monitor validada por enfermeiro — o dispositivo de onde veio (autor técnico).
   dispositivoId          String?
 
@@ -1363,28 +1383,28 @@ model FeatureFlag {
 // ─── Alergias ─────────────────────────────────────────────────────────────────
 
 model Alergia {
-  id            String    @id @default(uuid())
-  doenteId      String
-  doente        Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  alergenio     String
-  tipo          String
-  severidade    String
-  notas         String?
-  criadaEm      DateTime  @default(now())
+  id              String    @id @default(uuid())
+  doenteId        String
+  doente          Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  alergenio       String
+  tipo            String
+  severidade      String
+  notas           String?
+  criadaEm        DateTime  @default(now())
   // PROD-06: codificação (substância activa/DCI ou classe farmacológica do catálogo interno;
   // 'livre' quando não é reconhecida), reacção, certeza, fonte e verificação.
-  codigo        String?
-  sistemaCodigo String? // 'dci' | 'classe' | 'livre'
-  reacao        String?
-  certeza       String? // 'suspeita' | 'confirmada'
-  fonte         String? // 'doente' | 'familia' | 'processo' | 'observada'
-  verificadaEm  DateTime?
+  codigo          String?
+  sistemaCodigo   String? // 'dci' | 'classe' | 'livre'
+  reacao          String?
+  certeza         String? // 'suspeita' | 'confirmada'
+  fonte           String? // 'doente' | 'familia' | 'processo' | 'observada'
+  verificadaEm    DateTime?
   verificadaPorId String?
   // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
   // mas fica o registo de quem a removeu e porquê.
-  deletedAt     DateTime?
-  removidaPorId String?
-  motivoRemocao String?
+  deletedAt       DateTime?
+  removidaPorId   String?
+  motivoRemocao   String?
 
   medicacoesOverride Medicacao[] @relation("MedicacaoOverrideAlergia")
 
@@ -1445,16 +1465,16 @@ model AlertaClinico {
 // ─── Avaliações de Risco Clínico ─────────────────────────────────────────────
 
 model AvaliacaoRisco {
-  id             String     @id @default(uuid())
-  doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  tipo           String
-  pontuacao      Int
-  itens          Json
-  risco          String
-  registadoPorId String
-  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
-  criadaEm       DateTime   @default(now())
+  id                 String     @id @default(uuid())
+  doenteId           String
+  doente             Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  tipo               String
+  pontuacao          Int
+  itens              Json
+  risco              String
+  registadoPorId     String
+  registadoPor       Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
+  criadaEm           DateTime   @default(now())
   // PROD-08: versão da escala e dos pontos de corte usados nesta avaliação.
   versao             String?
   // PROD-10: reavaliação programada.
@@ -1470,11 +1490,11 @@ model AvaliacaoRisco {
 // ─── Sumário de Alta ──────────────────────────────────────────────────────────
 
 model SumarioAlta {
-  id                     String     @id @default(uuid())
+  id                     String               @id @default(uuid())
   // PROD-02: um sumário por EPISÓDIO (antes era um por pessoa, para sempre).
   doenteId               String
-  doente                 Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  episodioId             String     @unique
+  doente                 Doente               @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId             String               @unique
   episodio               EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   motivoAlta             String
   destino                String?
@@ -1482,12 +1502,12 @@ model SumarioAlta {
   prescricaoSaida        String?
   medicoFamilia          String?
   criadoPorId            String
-  criadoPor              Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Restrict)
-  criadoEm               DateTime   @default(now())
+  criadoPor              Utilizador           @relation(fields: [criadoPorId], references: [id], onDelete: Restrict)
+  criadoEm               DateTime             @default(now())
   riscReadmissao         String?
-  fatoresReadmissao      String?    @db.Text
-  recomendacoesAlta      String?    @db.Text
-  cartaAlta              String?    @db.Text
+  fatoresReadmissao      String?              @db.Text
+  recomendacoesAlta      String?              @db.Text
+  cartaAlta              String?              @db.Text
   // PROD-11: a IA só escreve um RASCUNHO. rascunho → revista (médico edita/aceita o texto)
   // → assinada (médico, com TOTP). Só a assinada sai em PDF; depois de assinada é imutável.
   cartaAltaEstado        String?
@@ -1497,7 +1517,7 @@ model SumarioAlta {
   cartaAltaAssinadaEm    DateTime?
   icd10Code              String?
   // PROD-12: alta dada com requisitos em falta (gates) — só com justificação, que fica aqui.
-  requisitosEmFalta      String[]   @default([])
+  requisitosEmFalta      String[]             @default([])
   justificacaoRequisitos String?
 
   @@index([doenteId, criadoEm])
@@ -1882,7 +1902,7 @@ model StockItem {
   unidade          String
   validade         DateTime?
   servico          String
-  precoUnitario    Float?
+  precoUnitario    Decimal?             @db.Decimal(12, 2)
   catalogoId       String?
   catalogo         CatalogoMedicamento? @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
   criadoEm         DateTime             @default(now())
@@ -2010,7 +2030,7 @@ model EncomendaFornecedor {
   stockItemId           String
   stockItem             StockItem   @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
   quantidadeEncomendada Float
-  precoUnitario         Float?
+  precoUnitario         Decimal?    @db.Decimal(12, 2)
   estado                String      @default("pendente") // pendente | recebida | parcial | cancelada
   dataEntregaPrevista   DateTime?
   dataEntregaReal       DateTime?
@@ -2334,6 +2354,8 @@ model FicheiroPessoalDoente {
   doenteId           String      @unique
   doente             Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   nif                String?
+  // SEC-12: o NIF vai cifrado (encryption.middleware); `nifBusca` é o índice cego (HMAC) para o encontrar.
+  nifBusca           String?
   numeroSNS          String?
   morada             String?
   codigoPostal       String?
@@ -2347,6 +2369,7 @@ model FicheiroPessoalDoente {
   atualizadoPorId    String?
   atualizadoPor      Utilizador? @relation(fields: [atualizadoPorId], references: [id], onDelete: SetNull)
 
+  @@index([nifBusca])
   @@map("fichas_pessoais_doente")
 }
 
@@ -2368,8 +2391,8 @@ model EpisodioFaturacao {
   consulta      Consulta?    @relation(fields: [consultaId], references: [id], onDelete: SetNull)
   estado        EstadoFatura @default(pendente)
   dataEmissao   DateTime?
-  totalBase     Float        @default(0)
-  totalCobrado  Float        @default(0)
+  totalBase     Decimal      @default(0) @db.Decimal(12, 2)
+  totalCobrado  Decimal      @default(0) @db.Decimal(12, 2)
   tipoCobertura String?
   notas         String?
   criadoPorId   String
@@ -2390,8 +2413,8 @@ model ItemFatura {
   descricao           String
   categoria           String // 'diaria' | 'procedimento' | 'medicacao' | 'exame' | 'outro'
   quantidade          Int               @default(1)
-  precoUnitario       Float
-  total               Float
+  precoUnitario       Decimal           @db.Decimal(12, 2)
+  total               Decimal           @db.Decimal(12, 2)
   criadoEm            DateTime          @default(now())
 
   @@map("itens_fatura")
@@ -2401,7 +2424,7 @@ model Pagamento {
   id                  String            @id @default(uuid())
   episodioFaturacaoId String
   episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id], onDelete: Cascade)
-  valor               Float
+  valor               Decimal           @db.Decimal(12, 2)
   metodo              String // 'numerario' | 'multibanco' | 'transferencia' | 'seguro' | 'isencao'
   referencia          String?
   registadoPorId      String
@@ -2418,7 +2441,7 @@ model AtoClinico {
   codigo        String        @unique
   descricao     String
   categoria     String // 'consulta' | 'exame' | 'procedimento' | 'medicacao' | 'outro'
-  precoBase     Float
+  precoBase     Decimal       @db.Decimal(12, 2)
   especialidade String? // se definido, é o ato-base automático desta especialidade
   ativo         Boolean       @default(true)
   criadoEm      DateTime      @default(now())
@@ -2434,7 +2457,7 @@ model AtoConsulta {
   atoId         String
   ato           AtoClinico @relation(fields: [atoId], references: [id], onDelete: Cascade)
   quantidade    Int        @default(1)
-  precoUnitario Float
+  precoUnitario Decimal    @db.Decimal(12, 2)
   criadoEm      DateTime   @default(now())
 
   @@map("atos_consulta")
@@ -2564,7 +2587,7 @@ model TrocaFolga {
   dataOrigem     DateTime // dia do solicitante (folga a ceder)
   dataDestino    DateTime // dia do destinatário (folga a ceder)
   motivo         String?
-  estado         String   @default("pendente") // pendente|aceite|recusado|aprovado|cancelado
+  estado         String   @default("pendente") // pendente | aceite | recusado | aprovado | cancelado
   aprovadoPorId  String?
   criadoEm       DateTime @default(now())
   atualizadoEm   DateTime @updatedAt
@@ -2597,25 +2620,25 @@ model FormacaoUtilizador {
 // ─── Eventos Adversos ─────────────────────────────────────────────────────────
 
 model EventoAdverso {
-  id             String      @id @default(uuid())
-  tipo           String // 'queda' | 'erro_medicacao' | 'near_miss' | 'infecao' | 'lesao_pressao' | 'outro'
-  gravidade      String // 'sem_dano' | 'dano_leve' | 'dano_moderado' | 'dano_grave' | 'obito'
-  descricao      String
-  servicoId      String? // servico onde ocorreu (enum Servico como string)
-  doenteId       String?
-  doente         Doente?     @relation("EventosAdversosDoente", fields: [doenteId], references: [id], onDelete: SetNull)
-  registadoPorId String?
-  registadoPor   Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id], onDelete: SetNull)
-  acaoCorretiva  String?
-  estado         String      @default("aberto") // 'aberto' | 'em_investigacao' | 'encerrado'
+  id                  String      @id @default(uuid())
+  tipo                String // 'queda' | 'erro_medicacao' | 'near_miss' | 'infecao' | 'lesao_pressao' | 'outro'
+  gravidade           String // 'sem_dano' | 'dano_leve' | 'dano_moderado' | 'dano_grave' | 'obito'
+  descricao           String
+  servicoId           String? // servico onde ocorreu (enum Servico como string)
+  doenteId            String?
+  doente              Doente?     @relation("EventosAdversosDoente", fields: [doenteId], references: [id], onDelete: SetNull)
+  registadoPorId      String?
+  registadoPor        Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id], onDelete: SetNull)
+  acaoCorretiva       String?
+  estado              String      @default("aberto") // 'aberto' | 'em_investigacao' | 'encerrado'
   // PROD-18: classe de incidente da OMS (ICPS) — ver eventos-adversos/icps.ts — e notificação
   // anónima (sem autor guardado). `exportadoNotificaEm`: quando saiu no ficheiro para o NOTIFICA.
   classeIcps          String?
-  anonimo             Boolean   @default(false)
+  anonimo             Boolean     @default(false)
   exportadoNotificaEm DateTime?
-  ocorridoEm     DateTime    @default(now())
-  criadoEm       DateTime    @default(now())
-  atualizadoEm   DateTime    @updatedAt
+  ocorridoEm          DateTime    @default(now())
+  criadoEm            DateTime    @default(now())
+  atualizadoEm        DateTime    @updatedAt
 
   @@index([tipo])
   @@index([gravidade])
@@ -2719,7 +2742,7 @@ model ConsentimentoInformado {
 model BreakGlassAccess {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
+  utilizador   Utilizador @relation("BreakGlassUtilizador", fields: [utilizadorId], references: [id], onDelete: Restrict)
   doenteId     String
   doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   motivo       String
@@ -2728,7 +2751,18 @@ model BreakGlassAccess {
   criadoEm     DateTime   @default(now())
   expiradoEm   DateTime
 
+  // SEC-14: cada acesso de emergência é revisto por quem não o fez (direção, qualidade ou chefia).
+  // `revisaoResultado`: 'justificado' | 'injustificado'. Sem revisão em 72 h, escala (`escaladoEm`).
+  revistoEm        DateTime?
+  revistoPorId     String?
+  revistoPor       Utilizador? @relation("BreakGlassRevisor", fields: [revistoPorId], references: [id], onDelete: Restrict)
+  revisaoResultado String?
+  revisaoNota      String?
+  escaladoEm       DateTime?
+
   @@index([utilizadorId, doenteId, ativo])
+  @@index([revistoEm, criadoEm])
+  @@index([revistoPorId])
   @@index([expiradoEm])
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
@@ -2776,7 +2810,7 @@ model PrescricaoDieta {
   id          String     @id @default(uuid())
   doenteId    String
   doente      Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  tipo        String // normal | hipocalorica | diab | renal | hepatica | liquida | jejum | outra
+  tipo        String // normal | hipocalorica | diabetica | renal | hepatica | liquida | jejum | outra
   restricoes  String[]
   observacoes String?
   ativa       Boolean    @default(true)
@@ -2935,22 +2969,22 @@ model BaselineDoente {
 /// O pedido formal à RNCCI faz-se na plataforma da Rede; aqui fica o estado, visível à equipa
 /// e contado nas altas proteladas.
 model ReferenciacaoContinuidade {
-  id           String    @id @default(uuid())
-  doenteId     String
-  doente       Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  episodioId   String?
-  destino      String // ver DESTINOS em planeamento-alta.constantes.ts
-  estado       String    @default("proposta") // proposta | enviada | aceite | vaga_atribuida | recusada | cancelada
-  motivo       String    @db.VarChar(1000)
-  nota         String?   @db.VarChar(1000) // última nota (vaga, motivo da recusa…)
-  criadaPorId  String
-  criadaPor    Utilizador @relation("ReferenciacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Restrict)
-  criadaEm     DateTime  @default(now())
-  enviadaEm    DateTime?
-  aceiteEm     DateTime?
-  vagaEm       DateTime?
-  fechadaEm    DateTime? // recusada ou cancelada
-  historico    Json      @default("[]") // [{ estado, em, porId, nota }]
+  id          String     @id @default(uuid())
+  doenteId    String
+  doente      Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId  String?
+  destino     String // ver DESTINOS em planeamento-alta.constantes.ts
+  estado      String     @default("proposta") // proposta | enviada | aceite | vaga_atribuida | recusada | cancelada
+  motivo      String     @db.VarChar(1000)
+  nota        String?    @db.VarChar(1000) // última nota (vaga, motivo da recusa…)
+  criadaPorId String
+  criadaPor   Utilizador @relation("ReferenciacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Restrict)
+  criadaEm    DateTime   @default(now())
+  enviadaEm   DateTime?
+  aceiteEm    DateTime?
+  vagaEm      DateTime?
+  fechadaEm   DateTime? // recusada ou cancelada
+  historico   Json       @default("[]") // [{ estado, em, porId, nota }]
 
   @@index([doenteId, episodioId])
   @@index([estado])
@@ -2959,42 +2993,43 @@ model ReferenciacaoContinuidade {
 
 /// PROD-13 — ensino ao doente e/ou ao cuidador, com a verificação da compreensão (teach-back).
 model EnsinoDoente {
-  id             String    @id @default(uuid())
+  id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   episodioId     String?
   tema           String // código de TEMAS_ENSINO ou 'outro'
-  titulo         String    @db.VarChar(200)
+  titulo         String     @db.VarChar(200)
   destinatario   String // 'doente' | 'cuidador' | 'ambos'
-  cuidadorNome   String?   @db.VarChar(200)
+  cuidadorNome   String?    @db.VarChar(200)
   compreensao    String // 'compreendeu' | 'parcial' | 'nao_compreendeu'
-  nota           String?   @db.VarChar(1000)
+  nota           String?    @db.VarChar(1000)
   realizadoPorId String
   realizadoPor   Utilizador @relation("EnsinosRealizados", fields: [realizadoPorId], references: [id], onDelete: Restrict)
-  realizadoEm    DateTime  @default(now())
+  realizadoEm    DateTime   @default(now())
 
   @@index([doenteId, episodioId])
   @@map("ensinos_doente")
 }
 
 model PlanoAlta {
-  id          String    @id @default(uuid())
+  id          String               @id @default(uuid())
   // PROD-02: um plano de alta por episódio.
   doenteId    String
-  episodioId  String    @unique
+  episodioId  String               @unique
   episodio    EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
-  criadoEm    DateTime  @default(now())
+  criadoEm    DateTime             @default(now())
   dataAlvoDia DateTime?
 
-  afebrилApenas24h   Boolean @default(false)
-  mobilidadeAdequada   Boolean @default(false)
-  alimentacaoOral      Boolean @default(false)
-  doresControladas     Boolean @default(false)
-  familiaInformada     Boolean @default(false)
-  transporteAssegurado Boolean @default(false)
-  medicacaoPreparada   Boolean @default(false)
-  consultaSegAlt       Boolean @default(false)
-  notas                String? @db.VarChar(1000)
+  // PROD-24: o nome antigo tinha duas letras cirílicas («и», «л») no meio de "afebril" (migração 20261122100000).
+  afebril24h           Boolean   @default(false)
+  mobilidadeAdequada   Boolean   @default(false)
+  alimentacaoOral      Boolean   @default(false)
+  doresControladas     Boolean   @default(false)
+  familiaInformada     Boolean   @default(false)
+  transporteAssegurado Boolean   @default(false)
+  medicacaoPreparada   Boolean   @default(false)
+  consultaSegAlt       Boolean   @default(false)
+  notas                String?   @db.VarChar(1000)
   // PROD-13: o dia em que o doente ficou clinicamente pronto para a alta. Daí em diante, cada dia
   // internado é "dia após alta clínica" (alta protelada, quase sempre por razões sociais).
   altaClinicaEm        DateTime?
@@ -3038,9 +3073,9 @@ model EpisodioInternamento {
   criadoPorId           String?
   criadoEm              DateTime  @default(now())
 
-  movimentos  MovimentoInternamento[]
-  sumarioAlta SumarioAlta?
-  planoAlta   PlanoAlta?
+  movimentos         MovimentoInternamento[]
+  sumarioAlta        SumarioAlta?
+  planoAlta          PlanoAlta?
   reconciliacaoAlta  ReconciliacaoAltaLinha[]
   notaAltaEnfermagem NotaAltaEnfermagem?
   passagensIsbar     PassagemIsbar[]
@@ -3058,7 +3093,7 @@ model EpisodioInternamento {
  * saída é gerada a partir das linhas manter/alterar/nova.
  */
 model ReconciliacaoAltaLinha {
-  id          String   @id @default(uuid())
+  id          String               @id @default(uuid())
   episodioId  String
   episodio    EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   doenteId    String
@@ -3070,29 +3105,31 @@ model ReconciliacaoAltaLinha {
   decisao     String // 'manter' | 'alterar' | 'suspender' | 'nova'
   notas       String?
   criadoPorId String
-  criadoEm    DateTime @default(now())
+  criadoEm    DateTime             @default(now())
 
   @@index([episodioId])
   @@map("reconciliacao_alta_linhas")
 }
 
-/** PROD-12 — nota de alta de enfermagem para os cuidados de saúde primários / continuidade. */
+/**
+ * PROD-12 — nota de alta de enfermagem para os cuidados de saúde primários / continuidade.
+ */
 model NotaAltaEnfermagem {
-  id            String   @id @default(uuid())
-  episodioId    String   @unique
+  id            String               @id @default(uuid())
+  episodioId    String               @unique
   episodio      EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   doenteId      String
-  autonomia     String?  @db.Text // autocuidado, mobilidade, dependência (Barthel)
-  necessidades  String?  @db.Text // cuidados que continuam no domicílio/instituição
-  ensinos       String?  @db.Text // ensinos feitos ao doente e ao cuidador
-  dispositivos  String?  @db.Text // cateteres, sondas, estomas… com data de inserção/troca
-  feridas       String?  @db.Text
-  cuidador      String?  // cuidador de referência
-  referenciacao String?  // 'nenhuma' | 'csp' | 'rncci' | 'outra'
-  observacoes   String?  @db.Text
+  autonomia     String?              @db.Text // autocuidado, mobilidade, dependência (Barthel)
+  necessidades  String?              @db.Text // cuidados que continuam no domicílio/instituição
+  ensinos       String?              @db.Text // ensinos feitos ao doente e ao cuidador
+  dispositivos  String?              @db.Text // cateteres, sondas, estomas… com data de inserção/troca
+  feridas       String?              @db.Text
+  cuidador      String? // cuidador de referência
+  referenciacao String? // 'nenhuma' | 'csp' | 'rncci' | 'outra'
+  observacoes   String?              @db.Text
   autorId       String
-  criadaEm      DateTime @default(now())
-  atualizadaEm  DateTime @updatedAt
+  criadaEm      DateTime             @default(now())
+  atualizadaEm  DateTime             @updatedAt
 
   @@index([doenteId])
   @@map("notas_alta_enfermagem")
@@ -3104,26 +3141,26 @@ model NotaAltaEnfermagem {
  * quem entrega edita e entrega, quem entra confirma a receção.
  */
 model PassagemIsbar {
-  id            String    @id @default(uuid())
-  tenantId      String    @default("default")
+  id            String                @id @default(uuid())
+  tenantId      String                @default("default")
   doenteId      String
   episodioId    String?
   episodio      EpisodioInternamento? @relation(fields: [episodioId], references: [id], onDelete: SetNull)
   servico       String?
   data          String // dia do turno (AAAA-MM-DD)
   turno         String // 'manha' | 'tarde' | 'noite' — o turno que ENTREGA
-  identificacao String    @db.Text
-  situacao      String    @db.Text
-  antecedentes  String    @db.Text
-  avaliacao     String    @db.Text
-  recomendacoes String    @db.Text
-  estado        String    @default("rascunho") // 'rascunho' | 'entregue' | 'recebida'
+  identificacao String                @db.Text
+  situacao      String                @db.Text
+  antecedentes  String                @db.Text
+  avaliacao     String                @db.Text
+  recomendacoes String                @db.Text
+  estado        String                @default("rascunho") // 'rascunho' | 'entregue' | 'recebida'
   autorId       String
   entregueEm    DateTime?
   recebidaPorId String?
   recebidaEm    DateTime?
-  criadaEm      DateTime  @default(now())
-  atualizadaEm  DateTime  @updatedAt
+  criadaEm      DateTime              @default(now())
+  atualizadaEm  DateTime              @updatedAt
 
   @@unique([doenteId, data, turno])
   @@index([servico, data, turno])
@@ -3131,9 +3168,11 @@ model PassagemIsbar {
   @@map("passagens_isbar")
 }
 
-/** Mudança de cama ou de serviço dentro do mesmo episódio (PROD-03). */
+/**
+ * Mudança de cama ou de serviço dentro do mesmo episódio (PROD-03).
+ */
 model MovimentoInternamento {
-  id             String   @id @default(uuid())
+  id             String               @id @default(uuid())
   episodioId     String
   episodio       EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   doenteId       String
@@ -3144,40 +3183,42 @@ model MovimentoInternamento {
   paraServico    String?
   motivo         String
   realizadoPorId String?
-  em             DateTime @default(now())
+  em             DateTime             @default(now())
 
   @@index([episodioId, em])
   @@index([doenteId])
   @@map("movimentos_internamento")
 }
 
-/** Pedido de cama: urgência, bloco, consulta ou outro serviço → cama atribuída → ocupada. */
+/**
+ * Pedido de cama: urgência, bloco, consulta ou outro serviço → cama atribuída → ocupada.
+ */
 model PedidoCama {
-  id                 String    @id @default(uuid())
-  tenantId           String    @default("default")
-  doenteId           String?
-  doente             Doente?   @relation(fields: [doenteId], references: [id], onDelete: SetNull)
-  episodioUrgenciaId String?
-  episodioUrgencia   EpisodioUrgencia? @relation(fields: [episodioUrgenciaId], references: [id], onDelete: SetNull)
-  nomeTemporario     String?
-  origem             String // 'urgencia' | 'bloco' | 'consulta' | 'servico' | 'admissao'
-  servicoDestino     String
-  sexo               String?
-  isolamento         Boolean   @default(false)
-  motivoIsolamento   String?
-  prioridade         String    @default("normal") // 'normal' | 'urgente'
-  diagnostico        String?
-  notas              String?
-  estado             String    @default("pedido") // 'pedido' | 'atribuida' | 'ocupada' | 'cancelado'
-  camaId             String?
-  pedidoPorId        String
-  pedidoEm           DateTime  @default(now())
-  atribuidaPorId     String?
-  atribuidaEm        DateTime?
+  id                     String            @id @default(uuid())
+  tenantId               String            @default("default")
+  doenteId               String?
+  doente                 Doente?           @relation(fields: [doenteId], references: [id], onDelete: SetNull)
+  episodioUrgenciaId     String?
+  episodioUrgencia       EpisodioUrgencia? @relation(fields: [episodioUrgenciaId], references: [id], onDelete: SetNull)
+  nomeTemporario         String?
+  origem                 String // 'urgencia' | 'bloco' | 'consulta' | 'servico' | 'admissao'
+  servicoDestino         String
+  sexo                   String?
+  isolamento             Boolean           @default(false)
+  motivoIsolamento       String?
+  prioridade             String            @default("normal") // 'normal' | 'urgente'
+  diagnostico            String?
+  notas                  String?
+  estado                 String            @default("pedido") // 'pedido' | 'atribuida' | 'ocupada' | 'cancelado'
+  camaId                 String?
+  pedidoPorId            String
+  pedidoEm               DateTime          @default(now())
+  atribuidaPorId         String?
+  atribuidaEm            DateTime?
   justificacaoAtribuicao String?
-  ocupadaEm          DateTime?
-  canceladoEm        DateTime?
-  motivoCancelamento String?
+  ocupadaEm              DateTime?
+  canceladoEm            DateTime?
+  motivoCancelamento     String?
 
   @@index([estado, servicoDestino])
   @@index([doenteId])
@@ -3257,17 +3298,17 @@ model AcessoFamiliar {
 //   decisao:    consentimento | oposicao
 //   origem:     presencial (registado por um profissional) | portal (o próprio doente)
 model ConsentimentoTratamento {
-  id               String      @id @default(uuid())
-  doenteId         String
-  finalidade       String
-  decisao          String
-  origem           String
-  observacoes      String?
-  registadoEm      DateTime    @default(now())
-  registadoPorId   String?
-  revogadoEm       DateTime?
-  revogadoPorId    String?
-  origemRevogacao  String?
+  id              String    @id @default(uuid())
+  doenteId        String
+  finalidade      String
+  decisao         String
+  origem          String
+  observacoes     String?
+  registadoEm     DateTime  @default(now())
+  registadoPorId  String?
+  revogadoEm      DateTime?
+  revogadoPorId   String?
+  origemRevogacao String?
 
   doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   registadoPor Utilizador? @relation("ConsentimentoTratamentoRegistado", fields: [registadoPorId], references: [id], onDelete: Restrict)
@@ -3283,21 +3324,21 @@ model ConsentimentoTratamento {
 /// validação de enfermagem. Só depois de validada entra nos sinais vitais (NEWS2, tendências,
 /// alertas), com o enfermeiro como autor e o dispositivo como origem técnica.
 model LeituraMonitor {
-  id              String    @id @default(uuid())
-  doenteId        String
-  doente          Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
-  dispositivoId   String
-  canal           String // 'monitor' | 'fhir'
-  medidoEm        DateTime
-  recebidaEm      DateTime  @default(now())
-  valores         Json // pressaoSistolica, pulso, saturacaoO2... (mesmos nomes do SinalVital)
-  critica         Boolean   @default(false) // algum valor na banda crítica — já alertado
-  estado          String    @default("pendente") // 'pendente' | 'validada' | 'rejeitada'
-  validadaPorId   String?
-  validadaPor     Utilizador? @relation("LeiturasMonitorValidadas", fields: [validadaPorId], references: [id], onDelete: Restrict)
-  validadaEm      DateTime?
-  motivoRejeicao  String?   @db.VarChar(500)
-  sinalVitalId    String?
+  id             String      @id @default(uuid())
+  doenteId       String
+  doente         Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  dispositivoId  String
+  canal          String // 'monitor' | 'fhir'
+  medidoEm       DateTime
+  recebidaEm     DateTime    @default(now())
+  valores        Json // pressaoSistolica, pulso, saturacaoO2... (mesmos nomes do SinalVital)
+  critica        Boolean     @default(false) // algum valor na banda crítica — já alertado
+  estado         String      @default("pendente") // 'pendente' | 'validada' | 'rejeitada'
+  validadaPorId  String?
+  validadaPor    Utilizador? @relation("LeiturasMonitorValidadas", fields: [validadaPorId], references: [id], onDelete: Restrict)
+  validadaEm     DateTime?
+  motivoRejeicao String?     @db.VarChar(500)
+  sinalVitalId   String?
 
   @@index([doenteId, estado, medidoEm])
   @@map("leituras_monitor")
@@ -3567,10 +3608,27 @@ model PortalDoente {
   criadoPorId  String
   criadoEm     DateTime @default(now())
 
-  doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  criadoPor Utilizador @relation("PortalDoentesCriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
+  doente       Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  criadoPor    Utilizador          @relation("PortalDoentesCriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
+  recuperacoes RecuperacaoPortal[]
 
   @@map("portal_doentes")
+}
+
+// UX-28: pedidos de "esqueci-me da password" no portal. Só o SHA-256 do token (o token vai no
+// email); válido 30 min e uma vez.
+model RecuperacaoPortal {
+  id        String    @id @default(uuid())
+  portalId  String
+  tokenHash String    @unique
+  expiraEm  DateTime
+  usadoEm   DateTime?
+  criadoEm  DateTime  @default(now())
+
+  portal PortalDoente @relation(fields: [portalId], references: [id], onDelete: Cascade)
+
+  @@index([portalId])
+  @@map("recuperacoes_portal")
 }
 
 // ─── HL7 v2 ──────────────────────────────────────────────────────────────────

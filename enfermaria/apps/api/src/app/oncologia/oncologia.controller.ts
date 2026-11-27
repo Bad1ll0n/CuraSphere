@@ -7,7 +7,8 @@ import { OncologiaService } from './oncologia.service';
 import { CriarPlanoDto } from './dto/criar-plano.dto';
 import { AgendarCicloDto } from './dto/agendar-ciclo.dto';
 import { AdministrarCicloDto } from './dto/administrar-ciclo.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('oncologia')
@@ -19,14 +20,14 @@ export class OncologiaController {
 
   @Get('doente/:doenteId/plano')
   @Roles('medico', 'enfermeiro', 'farmaceutico')
-  async planoAtivo(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async planoAtivo(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.planoAtivo(doenteId);
   }
 
   @Post('doente/:doenteId/plano')
   @Roles('medico', 'farmaceutico')
-  async criarPlano(@Param('doenteId') doenteId: string, @Body() dto: CriarPlanoDto, @Request() req: any) {
+  async criarPlano(@Param('doenteId') doenteId: string, @Body() dto: CriarPlanoDto, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.criarPlano(doenteId, dto, req.user.sub);
   }
@@ -34,7 +35,7 @@ export class OncologiaController {
   @AcessoDoentePor('planoQuimioterapia', 'planoId')
   @Get('plano/:planoId/doses')
   @Roles('medico', 'enfermeiro', 'farmaceutico')
-  async doses(@Param('planoId') planoId: string, @Request() req: any) {
+  async doses(@Param('planoId') planoId: string, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPlano(planoId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.doses(planoId);
@@ -43,7 +44,7 @@ export class OncologiaController {
   @AcessoDoentePor('planoQuimioterapia', 'planoId')
   @Post('plano/:planoId/ciclo')
   @Roles('medico', 'enfermeiro', 'farmaceutico')
-  async agendarCiclo(@Param('planoId') planoId: string, @Body() dto: AgendarCicloDto, @Request() req: any) {
+  async agendarCiclo(@Param('planoId') planoId: string, @Body() dto: AgendarCicloDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoPlano(planoId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.agendarCiclo(planoId, dto);
@@ -52,7 +53,7 @@ export class OncologiaController {
   @AcessoDoentePor('cicloQuimioterapia', 'cicloId', 'plano.doenteId')
   @Post('ciclo/:cicloId/administrar')
   @Roles('medico', 'enfermeiro')
-  async administrar(@Param('cicloId') cicloId: string, @Body() dto: AdministrarCicloDto, @Request() req: any) {
+  async administrar(@Param('cicloId') cicloId: string, @Body() dto: AdministrarCicloDto, @Request() req: PedidoAutenticado) {
     const doenteId = await this.service.doenteIdDoCiclo(cicloId);
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.administrarCiclo(cicloId, dto, req.user.sub);

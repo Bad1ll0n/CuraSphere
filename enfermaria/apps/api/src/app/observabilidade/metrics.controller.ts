@@ -1,7 +1,7 @@
 import { Controller, Get, Header, UseGuards, VERSION_NEUTRAL } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { MetricsService } from './metrics.service';
-import { MetricsScrapeGuard } from '../common/metrics-scrape.guard';
+import { MetricsScrapeGuard } from '../common/seguranca/metrics-scrape.guard';
 
 /**
  * Endpoint Prometheus. SEC-14: deixou de ser público — protegido por `MetricsScrapeGuard`

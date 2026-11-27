@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Platform,
+  View, Text, ScrollView, TouchableOpacity, Alert, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,22 +45,11 @@ import RelatoriosScreen from './RelatoriosScreen';
 import ConformidadeScreen from './ConformidadeScreen';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
-type SubTela =
-  | null
-  | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'bancosangue'
-  | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti'
-  | 'farmacia' | 'fisioterapia' | 'consultas' | 'urgencia'
-  | 'salaespera' | 'iacs' | 'mar' | 'comunicacao'
-  | 'ferias' | 'pedidosInternos' | 'interconsultas' | 'worklist'
-  | 'especialidades' | 'bloco' | 'catalogo' | 'dashboardqualidade'
-  | 'notificacoes' | 'dietas' | 'eventosadversos' | 'equipamentos' | 'consentimentos'
-  | 'rh' | 'faturacao' | 'dashexecutivo' | 'relatorios' | 'conformidade';
+import { itemMaisVisivel, type ItemMais } from '../lib/menu-mais';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
+// ARQ-24: os itens do menu e a regra de cada um vêm de lib/menu-mais (matriz partilhada com a web).
+type SubTela = null | ItemMais;
 
-const ROLES_MEDICO     = ['medico'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
-const ROLES_CLINICO    = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
-const ROLES_ADMIN      = ['administrativo'];
-const ROLES_QUALIDADE  = ['qualidade'];
 
 const roleLabel: Record<string, string> = {
   medico:         'Médico',
@@ -78,6 +67,7 @@ const roleLabel: Record<string, string> = {
 interface Props { utilizador: Utilizador; onLogout: () => void }
 
 export default function MaisScreen({ utilizador, onLogout }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [subTela, setSubTela] = useState<SubTela>(null);
   const [naoLidasNotif, setNaoLidasNotif] = useState(0);
 
@@ -142,59 +132,48 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     }
   };
 
-  const role = utilizador.role;
-  const subRole = utilizador.subRole;
-  const eClinical = ROLES_CLINICO.includes(role);
-  const eMedico = ROLES_MEDICO.includes(role);
-  const eEnfermagem = ROLES_ENFERMAGEM.includes(role);
-  const eTI = role === 'ti';
-  const eFarmaceutico = role === 'farmaceutico';
-  const eTecnicoSaude = role === 'tecnico_saude';
-  const eAdmin = ROLES_ADMIN.includes(role);
-  const eOperacional = role === 'operacional';
-
   const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean; badge?: number }[] = [
     // — TI
-    { key: 'utilizadores', icon: 'people-outline',           cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',          visivel: eTI && subRole === 'it_admin' },
-    { key: 'auditoria',    icon: 'document-text-outline',    cor: '#64748b', titulo: 'Auditoria',          sub: 'Logs de acesso e ações',           visivel: eTI || ROLES_QUALIDADE.includes(role) },
+    { key: 'utilizadores', icon: 'people-outline',           cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',          visivel: itemMaisVisivel('utilizadores', utilizador) },
+    { key: 'auditoria',    icon: 'document-text-outline',    cor: '#64748b', titulo: 'Auditoria',          sub: 'Logs de acesso e ações',           visivel: itemMaisVisivel('auditoria', utilizador) },
     // — Comunicação e Notificações (universal)
-    { key: 'notificacoes', icon: 'notifications-outline',    cor: '#6366f1', titulo: 'Notificações',       sub: 'Alertas e avisos do sistema',      visivel: true, badge: naoLidasNotif || undefined },
-    { key: 'comunicacao',  icon: 'chatbubbles-outline',      cor: '#6366f1', titulo: 'Comunicação',        sub: 'Mensagens e anúncios',             visivel: true },
+    { key: 'notificacoes', icon: 'notifications-outline',    cor: '#6366f1', titulo: 'Notificações',       sub: 'Alertas e avisos do sistema',      visivel: itemMaisVisivel('notificacoes', utilizador), badge: naoLidasNotif || undefined },
+    { key: 'comunicacao',  icon: 'chatbubbles-outline',      cor: '#6366f1', titulo: 'Comunicação',        sub: 'Mensagens e anúncios',             visivel: itemMaisVisivel('comunicacao', utilizador) },
     // — Clínico geral
-    { key: 'turno',        icon: 'time-outline',             cor: '#8b5cf6', titulo: 'Turno',              sub: 'Doentes e tarefas do meu turno',   visivel: eClinical },
-    { key: 'passagem',     icon: 'git-merge-outline',        cor: '#06b6d4', titulo: 'Passagem de Turno',  sub: 'Informação do turno anterior',     visivel: eEnfermagem || eMedico },
-    { key: 'horarios',     icon: 'calendar-outline',         cor: '#6366f1', titulo: 'Horários',           sub: 'Escala mensal de turnos',          visivel: eClinical || eAdmin },
-    { key: 'atribuicoes',  icon: 'clipboard-outline',        cor: '#0ea5e9', titulo: 'Atribuições',        sub: 'Doentes por profissional',         visivel: eMedico || eEnfermagem },
-    { key: 'camas',        icon: 'bed-outline',              cor: '#22c55e', titulo: 'Camas',              sub: 'Mapa de camas e quartos',          visivel: eMedico || eEnfermagem || eAdmin },
-    { key: 'bancosangue',  icon: 'water-outline',            cor: '#dc2626', titulo: 'Banco de Sangue',    sub: 'Stock de bolsas e grupos',         visivel: eMedico || eEnfermagem || eFarmaceutico || eTI },
-    { key: 'trocas',       icon: 'swap-horizontal-outline',  cor: '#f59e0b', titulo: 'Trocas de Turno',    sub: 'Pedidos de cobertura',             visivel: eClinical },
+    { key: 'turno',        icon: 'time-outline',             cor: '#8b5cf6', titulo: 'Turno',              sub: 'Doentes e tarefas do meu turno',   visivel: itemMaisVisivel('turno', utilizador) },
+    { key: 'passagem',     icon: 'git-merge-outline',        cor: '#06b6d4', titulo: 'Passagem de Turno',  sub: 'Informação do turno anterior',     visivel: itemMaisVisivel('passagem', utilizador) },
+    { key: 'horarios',     icon: 'calendar-outline',         cor: '#6366f1', titulo: 'Horários',           sub: 'Escala mensal de turnos',          visivel: itemMaisVisivel('horarios', utilizador) },
+    { key: 'atribuicoes',  icon: 'clipboard-outline',        cor: '#0ea5e9', titulo: 'Atribuições',        sub: 'Doentes por profissional',         visivel: itemMaisVisivel('atribuicoes', utilizador) },
+    { key: 'camas',        icon: 'bed-outline',              cor: '#22c55e', titulo: 'Camas',              sub: 'Mapa de camas e quartos',          visivel: itemMaisVisivel('camas', utilizador) },
+    { key: 'bancosangue',  icon: 'water-outline',            cor: '#dc2626', titulo: 'Banco de Sangue',    sub: 'Stock de bolsas e grupos',         visivel: itemMaisVisivel('bancosangue', utilizador) },
+    { key: 'trocas',       icon: 'swap-horizontal-outline',  cor: '#f59e0b', titulo: 'Trocas de Turno',    sub: 'Pedidos de cobertura',             visivel: itemMaisVisivel('trocas', utilizador) },
     // — Clínico especializado
-    { key: 'iacs',         icon: 'shield-outline',           cor: '#7c3aed', titulo: 'IACS',               sub: 'Doentes em isolamento',            visivel: eMedico || eEnfermagem || ROLES_QUALIDADE.includes(role) },
-    { key: 'mar',          icon: 'medical-outline',          cor: '#3b82f6', titulo: 'MAR',                sub: 'Mapa de administração de medicação', visivel: eEnfermagem },
-    { key: 'urgencia',     icon: 'heart-outline',            cor: '#ef4444', titulo: 'Urgência',           sub: 'Episódios de urgência activos',    visivel: eMedico || eEnfermagem || eAdmin },
-    { key: 'salaespera',   icon: 'people-circle-outline',    cor: '#f97316', titulo: 'Sala de Espera',     sub: 'Fila de espera da urgência',       visivel: eEnfermagem || eAdmin },
-    { key: 'consultas',    icon: 'calendar-number-outline',  cor: '#10b981', titulo: 'Consultas',          sub: 'Consultas externas agendadas',     visivel: eMedico || eAdmin },
-    { key: 'farmacia',     icon: 'flask-outline',            cor: '#ec4899', titulo: 'Farmácia',           sub: 'Stock e pedidos de medicação',     visivel: eFarmaceutico || eMedico },
-    { key: 'fisioterapia', icon: 'fitness-outline',          cor: '#14b8a6', titulo: 'Fisioterapia',       sub: 'Planos de reabilitação',           visivel: eTecnicoSaude || eMedico },
+    { key: 'iacs',         icon: 'shield-outline',           cor: '#7c3aed', titulo: 'IACS',               sub: 'Doentes em isolamento',            visivel: itemMaisVisivel('iacs', utilizador) },
+    { key: 'mar',          icon: 'medical-outline',          cor: '#3b82f6', titulo: 'MAR',                sub: 'Mapa de administração de medicação', visivel: itemMaisVisivel('mar', utilizador) },
+    { key: 'urgencia',     icon: 'heart-outline',            cor: '#ef4444', titulo: 'Urgência',           sub: 'Episódios de urgência ativos',    visivel: itemMaisVisivel('urgencia', utilizador) },
+    { key: 'salaespera',   icon: 'people-circle-outline',    cor: '#f97316', titulo: 'Sala de Espera',     sub: 'Fila de espera da urgência',       visivel: itemMaisVisivel('salaespera', utilizador) },
+    { key: 'consultas',    icon: 'calendar-number-outline',  cor: '#10b981', titulo: 'Consultas',          sub: 'Consultas externas agendadas',     visivel: itemMaisVisivel('consultas', utilizador) },
+    { key: 'farmacia',     icon: 'flask-outline',            cor: '#ec4899', titulo: 'Farmácia',           sub: 'Stock e pedidos de medicação',     visivel: itemMaisVisivel('farmacia', utilizador) },
+    { key: 'fisioterapia', icon: 'fitness-outline',          cor: '#14b8a6', titulo: 'Fisioterapia',       sub: 'Planos de reabilitação',           visivel: itemMaisVisivel('fisioterapia', utilizador) },
     // — Novos ecrãs
-    { key: 'ferias',          icon: 'umbrella-outline',              cor: '#0ea5e9', titulo: 'As Minhas Férias',    sub: 'Pedidos e saldo de férias',              visivel: true },
-    { key: 'pedidosInternos', icon: 'list-outline',                  cor: '#f97316', titulo: 'Pedidos Internos',    sub: 'Transporte, limpeza, equipamentos',       visivel: eClinical || eAdmin || eOperacional },
-    { key: 'interconsultas',  icon: 'chatbubble-ellipses-outline',   cor: '#8b5cf6', titulo: 'Interconsultas',      sub: 'Pedidos entre especialistas',            visivel: eMedico },
-    { key: 'worklist',        icon: 'clipboard-outline',             cor: '#06b6d4', titulo: 'Worklist',            sub: 'Lista de trabalho',                      visivel: eTecnicoSaude || eMedico },
-    { key: 'especialidades',  icon: 'ribbon-outline',                cor: '#14b8a6', titulo: 'Especialidades',      sub: 'Sessões de especialidade',               visivel: eTecnicoSaude },
-    { key: 'bloco',           icon: 'cut-outline',                   cor: '#7c3aed', titulo: 'Bloco Operatório',    sub: 'Cirurgias agendadas',                    visivel: eMedico || eEnfermagem },
-    { key: 'catalogo',            icon: 'book-outline',            cor: '#ec4899', titulo: 'Catálogo',               sub: 'Medicamentos e fármacos',            visivel: eFarmaceutico || eAdmin || eMedico || eEnfermagem },
-    { key: 'dashboardqualidade',  icon: 'analytics-outline',       cor: '#0d9488', titulo: 'Dashboard Qualidade',    sub: 'Indicadores clínicos e de segurança', visivel: ROLES_QUALIDADE.includes(role) || role === 'direcao' || eMedico || eEnfermagem },
-    { key: 'dietas',             icon: 'restaurant-outline',      cor: '#16a34a', titulo: 'Dietas',                  sub: 'Prescrições dietéticas do dia',       visivel: eClinical || eAdmin },
-    { key: 'eventosadversos',    icon: 'warning-outline',         cor: '#dc2626', titulo: 'Eventos Adversos',        sub: 'Registo de incidentes e near misses',  visivel: eClinical || ROLES_QUALIDADE.includes(role) || role === 'direcao' },
-    { key: 'equipamentos',       icon: 'construct-outline',       cor: '#0891b2', titulo: 'Equipamentos',             sub: 'Inventário e gestão de manutenções',   visivel: eOperacional || eTI || eClinical || eAdmin || role === 'direcao' },
-    { key: 'consentimentos',     icon: 'document-text-outline',   cor: '#6366f1', titulo: 'Consentimentos',           sub: 'Consentimentos informados dos doentes', visivel: eMedico || eEnfermagem || eAdmin },
+    { key: 'ferias',          icon: 'umbrella-outline',              cor: '#0ea5e9', titulo: 'As Minhas Férias',    sub: 'Pedidos e saldo de férias',              visivel: itemMaisVisivel('ferias', utilizador) },
+    { key: 'pedidosInternos', icon: 'list-outline',                  cor: '#f97316', titulo: 'Pedidos Internos',    sub: 'Transporte, limpeza, equipamentos',       visivel: itemMaisVisivel('pedidosInternos', utilizador) },
+    { key: 'interconsultas',  icon: 'chatbubble-ellipses-outline',   cor: '#8b5cf6', titulo: 'Interconsultas',      sub: 'Pedidos entre especialistas',            visivel: itemMaisVisivel('interconsultas', utilizador) },
+    { key: 'worklist',        icon: 'clipboard-outline',             cor: '#06b6d4', titulo: 'Worklist',            sub: 'Lista de trabalho',                      visivel: itemMaisVisivel('worklist', utilizador) },
+    { key: 'especialidades',  icon: 'ribbon-outline',                cor: '#14b8a6', titulo: 'Especialidades',      sub: 'Sessões de especialidade',               visivel: itemMaisVisivel('especialidades', utilizador) },
+    { key: 'bloco',           icon: 'cut-outline',                   cor: '#7c3aed', titulo: 'Bloco Operatório',    sub: 'Cirurgias agendadas',                    visivel: itemMaisVisivel('bloco', utilizador) },
+    { key: 'catalogo',            icon: 'book-outline',            cor: '#ec4899', titulo: 'Catálogo',               sub: 'Medicamentos e fármacos',            visivel: itemMaisVisivel('catalogo', utilizador) },
+    { key: 'dashboardqualidade',  icon: 'analytics-outline',       cor: '#0d9488', titulo: 'Dashboard Qualidade',    sub: 'Indicadores clínicos e de segurança', visivel: itemMaisVisivel('dashboardqualidade', utilizador) },
+    { key: 'dietas',             icon: 'restaurant-outline',      cor: '#16a34a', titulo: 'Dietas',                  sub: 'Prescrições dietéticas do dia',       visivel: itemMaisVisivel('dietas', utilizador) },
+    { key: 'eventosadversos',    icon: 'warning-outline',         cor: '#dc2626', titulo: 'Eventos Adversos',        sub: 'Registo de incidentes e near misses',  visivel: itemMaisVisivel('eventosadversos', utilizador) },
+    { key: 'equipamentos',       icon: 'construct-outline',       cor: '#0891b2', titulo: 'Equipamentos',             sub: 'Inventário e gestão de manutenções',   visivel: itemMaisVisivel('equipamentos', utilizador) },
+    { key: 'consentimentos',     icon: 'document-text-outline',   cor: '#6366f1', titulo: 'Consentimentos',           sub: 'Consentimentos informados dos doentes', visivel: itemMaisVisivel('consentimentos', utilizador) },
     // — Administrativo / Direção
-    { key: 'rh',                 icon: 'people-circle-outline',   cor: '#7c3aed', titulo: 'Recursos Humanos',          sub: 'Ausências, formações e avaliações',     visivel: eAdmin || role === 'direcao' },
-    { key: 'faturacao',          icon: 'card-outline',            cor: '#0d9488', titulo: 'Faturação',                 sub: 'Episódios de faturação e pagamentos',   visivel: eAdmin || role === 'direcao' },
-    { key: 'dashexecutivo',      icon: 'bar-chart-outline',       cor: '#6366f1', titulo: 'Dashboard Executivo',       sub: 'KPIs operacionais e financeiros',        visivel: eAdmin || role === 'direcao' },
-    { key: 'relatorios',         icon: 'document-text-outline',   cor: '#b45309', titulo: 'Relatórios DGS/SNS',        sub: 'Internamento, ocupação, diagnósticos',   visivel: eAdmin || role === 'direcao' || eTI },
-    { key: 'conformidade',       icon: 'shield-checkmark-outline',cor: '#0d9488', titulo: 'Conformidade',              sub: 'Checklist RGPD, DGS, ACSS, SNS',         visivel: ROLES_QUALIDADE.includes(role) || role === 'direcao' || eTI },
+    { key: 'rh',                 icon: 'people-circle-outline',   cor: '#7c3aed', titulo: 'Recursos Humanos',          sub: 'Ausências, formações e avaliações',     visivel: itemMaisVisivel('rh', utilizador) },
+    { key: 'faturacao',          icon: 'card-outline',            cor: '#0d9488', titulo: 'Faturação',                 sub: 'Episódios de faturação e pagamentos',   visivel: itemMaisVisivel('faturacao', utilizador) },
+    { key: 'dashexecutivo',      icon: 'bar-chart-outline',       cor: '#6366f1', titulo: 'Dashboard Executivo',       sub: 'KPIs operacionais e financeiros',        visivel: itemMaisVisivel('dashexecutivo', utilizador) },
+    { key: 'relatorios',         icon: 'document-text-outline',   cor: '#b45309', titulo: 'Relatórios DGS/SNS',        sub: 'Internamento, ocupação, diagnósticos',   visivel: itemMaisVisivel('relatorios', utilizador) },
+    { key: 'conformidade',       icon: 'shield-checkmark-outline',cor: '#0d9488', titulo: 'Conformidade',              sub: 'Checklist RGPD, DGS, ACSS, SNS',         visivel: itemMaisVisivel('conformidade', utilizador) },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);
@@ -258,25 +237,25 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   perfilCard: { backgroundColor: '#1e293b', padding: 24, paddingTop: 32, flexDirection: 'row', alignItems: 'center', gap: 16 },
   avatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' },
   avatarTexto: { fontSize: 24, fontWeight: '700', color: '#fff' },
   perfilInfo: { flex: 1 },
   perfilNome: { fontSize: 18, fontWeight: '700', color: '#fff' },
-  perfilRole: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
-  perfilSubRole: { fontSize: 13, color: '#64748b', marginTop: 1, textTransform: 'capitalize' },
-  perfilNum: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  perfilRole: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
+  perfilSubRole: { fontSize: 13, color: c.textoTenue, marginTop: 1, textTransform: 'capitalize' },
+  perfilNum: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   secao: { padding: 16, paddingBottom: 0 },
-  secaoTitulo: { fontSize: 13, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
-  menuCard: { backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  secaoTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.textoTenue, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },
+  menuCard: { backgroundColor: c.superficie, borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   menuItem: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
-  menuItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  menuItemBorder: { borderBottomWidth: 1, borderBottomColor: c.borda },
   menuIconBox: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   menuTextos: { flex: 1 },
-  menuTitulo: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
-  menuSub: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  menuTitulo: { fontSize: 15, fontWeight: '600', color: c.texto },
+  menuSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   menuArrow: { fontSize: 20, color: '#cbd5e1', fontWeight: '300' },
   badge: {
     backgroundColor: '#ef4444', borderRadius: 12,
@@ -285,4 +264,4 @@ const s = StyleSheet.create({
   badgeText: { color: '#fff', fontSize: 13, fontWeight: '700' },
   sairBotao: { backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca', paddingVertical: 14, borderRadius: 14, alignItems: 'center', marginTop: 6 },
   sairTexto: { color: '#dc2626', fontWeight: '700', fontSize: 16 },
-});
+}));

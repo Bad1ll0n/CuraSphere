@@ -3,7 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ReconciliacaoMedicacaoService, CriarReconciliacaoDto } from './reconciliacao-medicacao.service';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('reconciliacaoMedicacao')
@@ -13,13 +14,13 @@ export class ReconciliacaoMedicacaoController {
 
   @Post(':doenteId')
   @Roles('farmaceutico', 'medico')
-  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarReconciliacaoDto, @Request() req: any) {
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarReconciliacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.criar(doenteId, dto, req.user.sub);
   }
 
   @Patch(':id/aprovar')
   @Roles('medico')
-  aprovar(@Param('id') id: string, @Request() req: any) {
+  aprovar(@Param('id') id: string, @Request() req: PedidoAutenticado) {
     return this.service.aprovar(id, req.user.sub);
   }
 

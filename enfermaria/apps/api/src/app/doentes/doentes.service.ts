@@ -2,19 +2,24 @@ import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenEx
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
-import { filtroPesquisaNome } from '../prisma/encryption.middleware';
+import { filtroNif, filtroPesquisaNome } from '../prisma/encryption.middleware';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import { StorageService } from '../common/storage.service';
-import { EstadoDoente } from '../common/enums';
-import * as jwt from 'jsonwebtoken';
+import { StorageService } from '../common/infra/storage.service';
+import { EstadoDoente } from '../common/infra/enums';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { BreakGlassService } from '../break-glass/break-glass.service';
-import { MAX_IDADE_DIAS_OMISSAO } from '../common/quiosque.guard';
+import { emitirTokenQuiosque } from '../common/seguranca/quiosque.guard';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { ultimosSinaisVitais } from '../common/ultimos-registos';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { PAPEIS_SEM_ACESSO_CLINICO, temAtribuicaoEmVigor } from './acesso-por-atribuicao';
+import { ultimosSinaisVitais } from '../common/clinico/ultimos-registos';
 import { abrirEpisodio, ocuparCama } from '../episodios/episodios.core';
+import { celulaCsv } from '../common/infra/csv';
+import { registarFalha } from '../common/infra/falhas';
+import { filtroHorarioTurnoAtivo } from '../common/clinico/turno-em-curso';
+import { minutosLimiteEdicao } from '@org/shared';
+import { minutosDoDiaClinico } from '../common/clinico/dia-clinico.helper';
 // ── Foto do doente (SEC-08) ──────────────────────────────────────────────────
 const FOTO_TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 const FOTO_TAMANHO_MAX = 10 * 1024 * 1024; // 10 MB
@@ -76,90 +81,7 @@ export class DoenteService {
     private readonly breakGlass: BreakGlassService,
   ) {}
 
-  async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
-    const limitSeguro = Math.min(Math.max(limit, 1), 100);
-    const skip = (page - 1) * limitSeguro;
-    const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
-
-    // O nome está cifrado: pesquisa-se no índice cego (QA-05), não com `contains` sobre `nome`.
-    const porNome = search?.trim() ? filtroPesquisaNome(search) : null;
-    const searchFilter = search?.trim()
-      ? {
-          OR: [
-            ...(porNome ? [porNome] : []),
-            { numeroProcesso: { contains: search.trim(), mode: 'insensitive' as const } },
-            { diagnosticoPrincipal: { contains: search.trim(), mode: 'insensitive' as const } },
-          ],
-        }
-      : {};
-
-    if (!restritos.includes(role)) {
-      // Admin e outros roles não clínicos: ver internados + ambulatorio (não pendente_cama)
-      const whereBase = { tenantId: this.tenantContext.tenantId, ativo: true, estadoRegisto: { not: 'pendente_cama' }, ...searchFilter };
-      // PERF-19: sem transacção — numa lista não é preciso consistência estrita entre página e total,
-      // e a forma de array retinha ligações `idle in transaction` entre round-trips.
-      const [data, total] = await Promise.all([
-        this.prisma.doente.findMany({
-          where: whereBase,
-          include: { cama: true },
-          orderBy: { dataAdmissao: 'desc' },
-          take: limitSeguro,
-          skip,
-        }),
-        this.prisma.doente.count({ where: whereBase }),
-      ]);
-      return { data, total, page, limit: limitSeguro, totalPaginas: Math.ceil(total / limitSeguro) };
-    }
-
-    // Clínicos (enfermeiro, médico, auxiliar): apenas doentes internados (com cama)
-    const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-    let tipo: string;
-    if (min >= 8 * 60 && min < 16 * 60 + 30) tipo = 'manha';
-    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
-    else tipo = 'noite';
-
-    const diaStr = chaveDiaClinico(agora);
-    const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
-    const dataBase = tipo === 'noite' && min < 8 * 60 + 30
-      ? new Date(dataHoje.getTime() - 24 * 60 * 60 * 1000)
-      : dataHoje;
-    const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
-
-    const whereClinico: any = {
-      tenantId: this.tenantContext.tenantId,
-      ativo: true,
-      estadoRegisto: 'internado',
-      ...searchFilter,
-    };
-
-    // Quando pesquisa, mostrar todos os internados (não filtrar por atribuição)
-    if (!search?.trim()) {
-      whereClinico.atribuicoesHorario = {
-        some: {
-          utilizadorId,
-          horarioTurno: {
-            tipo: tipo as any,
-            data: { gte: dataBase, lte: dataFim },
-          },
-        },
-      };
-    }
-
-    // PERF-19: sem transacção — numa lista não é preciso consistência estrita entre página e total,
-      // e a forma de array retinha ligações `idle in transaction` entre round-trips.
-      const [data, total] = await Promise.all([
-      this.prisma.doente.findMany({
-        where: whereClinico,
-        include: { cama: true },
-        orderBy: { dataAdmissao: 'desc' },
-        take: limitSeguro,
-        skip,
-      }),
-      this.prisma.doente.count({ where: whereClinico }),
-    ]);
-    return { data, total, page, limit: limitSeguro, totalPaginas: Math.ceil(total / limitSeguro) };
-  }
+  // A listagem e a pesquisa de doentes estão em ListagemDoentesService (PERF-05).
 
   /**
    * Verifica se o utilizador tem direito a aceder ao doente.
@@ -176,19 +98,16 @@ export class DoenteService {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
-    // Atribuição direta
-    const atribuicaoDireta = await this.prisma.atribuicaoDoente.findFirst({
-      where: { doenteId, enfermeiroId: utilizadorId },
-      select: { id: true },
-    });
-    if (atribuicaoDireta) return;
+    // SEC-14 / QA-11: TI e administrativo não têm acesso clínico — nem por break-glass.
+    if (PAPEIS_SEM_ACESSO_CLINICO.includes(role)) {
+      this.logger.warn(`Acesso clínico recusado ao papel ${role}: utilizador ${utilizadorId}, doente ${doenteId}`);
+      throw new ForbiddenException({ message: 'Este perfil não tem acesso ao processo clínico', errorCode: 'SEM_ACESSO_CLINICO' });
+    }
 
-    // Atribuição via horário de turno (qualquer histórico — clinicians podem precisar de continuidade)
-    const atribuicaoTurno = await this.prisma.atribuicaoHorarioTurno.findFirst({
-      where: { doenteId, utilizadorId },
-      select: { id: true },
-    });
-    if (atribuicaoTurno) return;
+    // SEC-14: atribuição (direta ou em turno) no turno em curso ou dentro do prazo de continuidade
+    // — já não "qualquer atribuição de sempre". Ver acesso-por-atribuicao.ts.
+    if (await temAtribuicaoEmVigor(this.prisma, utilizadorId, doenteId)) return;
+
 
     // Acesso de emergência (break-glass) já activo cobre todos os endpoints deste doente+utilizador
     if (await this.breakGlass.verificarAtivoParaDoente(utilizadorId, doenteId)) return;
@@ -274,7 +193,7 @@ export class DoenteService {
       // PROD-02: a mesma pessoa não se cria duas vezes. Se já cá esteve, reinterna-se
       // (POST /doentes/:id/reinternar) e as alergias e antecedentes continuam com ela.
       if (data.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: data.nif }, select: { doenteId: true } });
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: filtroNif(data.nif), select: { doenteId: true } });
         if (existenteNif) throw await conflitoPessoaExistente(tx, existenteNif.doenteId, `o NIF ${data.nif}`);
       }
       if (data.numeroSNS) {
@@ -339,7 +258,7 @@ export class DoenteService {
       return doente;
     }, { isolationLevel: 'Serializable' });
 
-    this.webhooks.dispatcharEvento('doente.admitido', { doenteId: resultado.id, nome: resultado.nome }).catch(() => null);
+    this.webhooks.dispatcharEvento('doente.admitido', { doenteId: resultado.id, nome: resultado.nome }).catch(registarFalha('webhook:doente.admitido'));
     return resultado;
   }
 
@@ -463,7 +382,7 @@ export class DoenteService {
         fu.responsavelId,
         `⏰ Follow-up: ${fu.doente.nome}`,
         `${fu.tipo === '7_dias' ? '7 dias' : '30 dias'} após alta — contactar doente`,
-      ).catch(() => undefined);
+      ).catch(registarFalha('follow-up:notificar'));
     }
     this.logger.log(`Follow-up: ${pendentes.length} lembretes enviados`);
   }
@@ -547,31 +466,13 @@ export class DoenteService {
   }
 
   /**
-   * Calcula o deadline de edição de uma nota com base no turno real:
-   *   Manhã  08:00–16:00 → editável até 16:30
-   *   Tarde  16:00–23:00 → editável até 23:30
-   *   Noite  23:00–08:00 → editável até 08:30 do dia seguinte
+   * Prazo de edição de uma nota: o fim do turno em que foi escrita mais os 30 min da passagem
+   * (manhã → 16:30, tarde → 00:30, noite → 08:30).
    */
   private getDeadlineEdicaoNota(criadaEm: Date): Date {
-    const min = criadaEm.getHours() * 60 + criadaEm.getMinutes();
-    const deadline = new Date(criadaEm);
-
-    if (min >= 8 * 60 && min < 16 * 60) {
-      // Manhã → 16:30 mesmo dia
-      deadline.setHours(16, 30, 0, 0);
-    } else if (min >= 16 * 60 && min < 23 * 60) {
-      // Tarde → 23:30 mesmo dia
-      deadline.setHours(23, 30, 0, 0);
-    } else if (min >= 23 * 60) {
-      // Noite (início) → 08:30 do dia seguinte
-      deadline.setDate(deadline.getDate() + 1);
-      deadline.setHours(8, 30, 0, 0);
-    } else {
-      // 00:00–08:30 (continuação da noite anterior) → 08:30 mesmo dia
-      deadline.setHours(8, 30, 0, 0);
-    }
-
-    return deadline;
+    // UX-12: até ao fim do turno em que a nota foi escrita, mais a passagem (libs/shared).
+    const minutos = minutosDoDiaClinico(criadaEm);
+    return new Date(criadaEm.getTime() + (minutosLimiteEdicao(minutos) - minutos) * 60_000 - criadaEm.getSeconds() * 1000 - criadaEm.getMilliseconds());
   }
 
   private notaDentroDoTurno(criadaEm: Date): boolean {
@@ -583,33 +484,9 @@ export class DoenteService {
 
   /** Verifica se o utilizador tem um HorarioTurno ativo neste momento */
   private async verificarTurnoAtivo(utilizadorId: string): Promise<void> {
-    const agora = new Date();
-    const min = agora.getHours() * 60 + agora.getMinutes();
-
-    let tipo: string;
-    const dataRef = new Date(agora);
-
-    if (min >= 8 * 60 && min < 16 * 60) {
-      tipo = 'manha';
-    } else if (min >= 16 * 60 && min < 23 * 60) {
-      tipo = 'tarde';
-    } else if (min >= 23 * 60) {
-      tipo = 'noite';
-    } else {
-      // 00:00–08:30 → noite de ontem
-      tipo = 'noite';
-      dataRef.setDate(dataRef.getDate() - 1);
-    }
-
-    const diaStr = chaveDiaClinico(dataRef);
-    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
-
+    // UX-12: o turno em curso ou, nos 30 min de passagem, o que está a sair.
     const turno = await this.prisma.horarioTurnoProfissional.findFirst({
-      where: {
-        utilizadorId,
-        horarioTurno: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },
-      },
+      where: { utilizadorId, horarioTurno: filtroHorarioTurnoAtivo() },
     });
 
     if (!turno) throw new ForbiddenException('Não tens turno ativo neste momento');
@@ -913,18 +790,6 @@ export class DoenteService {
     });
   }
 
-  private async gerarNumeroProcesso(tx: { doente: { findFirst: (args: any) => Promise<{ numeroProcesso: string } | null> } }) {
-    const ano = new Date().getFullYear();
-    const prefixo = `${ano}-`;
-    const ultimo = await tx.doente.findFirst({
-      where: { numeroProcesso: { startsWith: prefixo } },
-      orderBy: { numeroProcesso: 'desc' },
-      select: { numeroProcesso: true },
-    });
-    const proximoNum = ultimo ? parseInt(ultimo.numeroProcesso.split('-')[1], 10) + 1 : 1;
-    return `${ano}-${String(proximoNum).padStart(8, '0')}`;
-  }
-
   async listarProblemas(doenteId: string) {
     return this.prisma.problemaClinico.findMany({
       where: { doenteId },
@@ -968,89 +833,6 @@ export class DoenteService {
         ...(dto.dataFim ? { dataFim: new Date(dto.dataFim) } : {}),
       },
       include: { registadoPor: { select: { nome: true, role: true } } },
-    });
-  }
-
-  async registroRapido(
-    dto: {
-      nome: string;
-      tipoVisita?: string;
-      dataNascimento: string;
-      nif: string;
-      numeroSNS: string;
-      telefone: string;
-      email?: string;
-      tipoCobertura?: string;
-      morada?: string;
-      codigoPostal?: string;
-      localidade?: string;
-      entidadeSeguradora?: string;
-      numeroApolice?: string;
-    },
-    criadoPorId: string,
-  ) {
-    if (!dto.nome?.trim()) throw new BadRequestException('Nome é obrigatório');
-    if (!dto.dataNascimento) throw new BadRequestException('Data de nascimento é obrigatória');
-    if (!dto.nif || !/^\d{9}$/.test(dto.nif)) throw new BadRequestException('NIF inválido — deve ter 9 dígitos');
-    if (!dto.telefone || !/^[239]\d{8}$/.test(dto.telefone.replace(/\s/g, '')))
-      throw new BadRequestException('Telefone inválido — 9 dígitos, começa com 2, 3 ou 9');
-    if (!dto.numeroSNS || !/^\d{9}$/.test(dto.numeroSNS.replace(/\s/g, '')))
-      throw new BadRequestException('Número SNS inválido — deve ter 9 dígitos');
-    if (dto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
-      throw new BadRequestException('Email inválido');
-    if (dto.tipoCobertura === 'seguro') {
-      if (!dto.entidadeSeguradora?.trim()) throw new BadRequestException('Entidade seguradora obrigatória para seguro');
-      if (!dto.numeroApolice?.trim()) throw new BadRequestException('Número de apólice obrigatório para seguro');
-    }
-
-    return this.prisma.$transaction(async (tx) => {
-      if (dto.nif) {
-        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: dto.nif } });
-        if (existenteNif) throw new ConflictException(`Já existe um registo com o NIF ${dto.nif}`);
-      }
-      if (dto.numeroSNS) {
-        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: dto.numeroSNS } });
-        if (existenteSns) throw new ConflictException(`Já existe um registo com o número SNS ${dto.numeroSNS}`);
-      }
-
-      const numeroProcesso = await this.gerarNumeroProcesso(tx);
-      // Internamento → pendente_cama (aguarda cama clínica); tudo o resto → ambulatorio
-      const estadoRegisto = dto.tipoVisita === 'internamento' ? 'pendente_cama' : 'ambulatorio';
-      const doente = await tx.doente.create({
-        data: {
-          nome: dto.nome,
-          dataNascimento: dto.dataNascimento ? new Date(dto.dataNascimento) : null,
-          numeroProcesso,
-          estadoRegisto,
-          tipoVisita: dto.tipoVisita ?? null,
-          administrativoAdmissaoId: criadoPorId,
-        },
-      });
-
-      const temDadosAdmin = dto.nif || dto.numeroSNS || dto.telefone || dto.email
-        || dto.morada || dto.codigoPostal || dto.localidade
-        || dto.entidadeSeguradora || dto.numeroApolice;
-
-      if (temDadosAdmin) {
-        await tx.ficheiroPessoalDoente.create({
-          data: {
-            doenteId: doente.id,
-            nif: dto.nif ?? null,
-            numeroSNS: dto.numeroSNS ?? null,
-            telefone: dto.telefone ?? null,
-            email: dto.email ?? null,
-            tipoCobertura: dto.tipoCobertura ?? null,
-            morada: dto.morada ?? null,
-            codigoPostal: dto.codigoPostal ?? null,
-            localidade: dto.localidade ?? null,
-            entidadeSeguradora: dto.entidadeSeguradora ?? null,
-            numeroApolice: dto.numeroApolice ?? null,
-            atualizadoPorId: criadoPorId,
-          },
-        });
-      }
-
-      return doente;
     });
   }
 
@@ -1151,10 +933,7 @@ export class DoenteService {
    * e que deixava de funcionar ao fim de um mês.
    */
   gerarTokenQuiosque(servicoId: string): string {
-    const secret = this.config.get<string>('QUIOSQUE_SECRET');
-    if (!secret) throw new Error('QUIOSQUE_SECRET não configurado');
-    const dias = Number(this.config.get<string>('QUIOSQUE_TOKEN_MAX_DIAS') ?? MAX_IDADE_DIAS_OMISSAO);
-    return jwt.sign({ servicoId, purpose: 'quiosque' }, secret, { expiresIn: `${dias}d`, algorithm: 'HS256' });
+    return emitirTokenQuiosque(servicoId, this.config.get<string>('QUIOSQUE_SECRET'), this.config.get<string>('QUIOSQUE_TOKEN_MAX_DIAS'));
   }
 
   /**
@@ -1216,10 +995,7 @@ export class DoenteService {
       orderBy: { dataAdmissao: 'asc' },
     });
 
-    const escapeCsv = (v: string | null | undefined) => {
-      const s = String(v ?? '');
-      return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
-    };
+    const escapeCsv = (v: unknown) => celulaCsv(v); // SEC-15: sem injeção de fórmulas
 
     const header = 'Nome,NIF,SNS,Diagnóstico,Estado,Serviço,Cama,Data Admissão';
     const rows = doentes.map((d: any) =>

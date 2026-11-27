@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
 import { registarFalhaSilenciosa } from '../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 const estadoCor: Record<string, string> = {
   estavel: '#22c55e', grave: '#f97316', critico: '#ef4444', alta_prevista: '#3b82f6',
 };
@@ -31,6 +32,7 @@ function iniciaisDoente(nome: string) {
 interface Props { utilizador: Utilizador }
 
 export default function DashboardScreen({ utilizador }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [ocupacao, setOcupacao] = useState<any>(null);
   const [doentes, setDoentes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -181,8 +183,8 @@ export default function DashboardScreen({ utilizador }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   // Header
@@ -191,7 +193,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
-  saudacao: { fontSize: 22, fontWeight: '800', color: '#0f172a', letterSpacing: -0.5, marginTop: 2 },
+  saudacao: { fontSize: 22, fontWeight: '800', color: c.texto, letterSpacing: -0.5, marginTop: 2 },
   data: { fontSize: 13, color: '#2563eb', fontWeight: '600', textTransform: 'capitalize', letterSpacing: 0.2 },
   // Stats
   statsRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 8, marginTop: 4, marginBottom: 2 },
@@ -201,11 +203,11 @@ const s = StyleSheet.create({
   },
   statIconBox: { width: 30, height: 30, borderRadius: 9, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
   statValor: { fontSize: 18, fontWeight: '800' },
-  statLabel: { fontSize: 13, color: '#94a3b8', marginTop: 1, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.3 },
+  statLabel: { fontSize: LETRA.corpo, color: c.textoTenue, marginTop: 1, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.3 },
 
   // Cards
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: c.superficie,
     marginHorizontal: 16,
     borderRadius: 16,
     padding: 12,
@@ -217,29 +219,29 @@ const s = StyleSheet.create({
     elevation: 2,
   },
   cardHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  cardTitulo: { fontSize: 13, fontWeight: '700', color: '#1e293b', flex: 1 },
-  badgePill: { backgroundColor: '#f1f5f9', paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
+  cardTitulo: { fontSize: LETRA.corpo, fontWeight: '700', color: c.texto, flex: 1 },
+  badgePill: { backgroundColor: c.fundo, paddingHorizontal: 9, paddingVertical: 3, borderRadius: 20 },
   badgePillRed: { backgroundColor: '#fef2f2' },
   badgePillBlue: { backgroundColor: '#eff6ff' },
-  badgeNum: { fontSize: 13, fontWeight: '700', color: '#94a3b8' },
+  badgeNum: { fontSize: 13, fontWeight: '700', color: c.textoTenue },
 
   // Estado rows
-  estadoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
+  estadoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: c.borda },
   estadoEsq: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   dot: { width: 9, height: 9, borderRadius: 5 },
-  estadoLabel: { fontSize: 14, color: '#475569', fontWeight: '500' },
+  estadoLabel: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
   estadoCountBox: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12 },
   estadoCount: { fontSize: 13, fontWeight: '700' },
 
   // Doente rows
-  doenteRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: '#f8fafc' },
+  doenteRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: c.borda },
   iniciais: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  iniciaisTexto: { fontSize: 13, fontWeight: '800' },
-  doenteNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  doenteSub: { fontSize: 13, color: '#94a3b8', marginTop: 1 },
+  iniciaisTexto: { fontSize: LETRA.corpo, fontWeight: '800' },
+  doenteNome: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  doenteSub: { fontSize: 13, color: c.textoTenue, marginTop: 1 },
   estadoBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
 
   // Vazio
   vazioBox: { alignItems: 'center', paddingVertical: 10, gap: 6 },
-  vazioTexto: { color: '#94a3b8', fontSize: 13, fontWeight: '500' },
-});
+  vazioTexto: { color: c.textoTenue, fontSize: LETRA.corpo, fontWeight: '500' },
+}));

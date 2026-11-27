@@ -2,13 +2,20 @@
 
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { ACOES_FICHA } from '@/lib/paleta-comandos';
+import { Button } from '@/components/ui';
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** UX-27: ajuda a partir do menu "?" */
+  onVisita?: () => void;
+  onPrimeirosPassos?: () => void;
+  onNovidades?: () => void;
+  novidadePorVer?: boolean;
 }
 
-export function KeyboardShortcutsModal({ open, onClose }: Props) {
+export function KeyboardShortcutsModal({ open, onClose, onVisita, onPrimeirosPassos, onNovidades, novidadePorVer }: Props) {
   const t = useTranslations('shortcuts');
   const tCommon = useTranslations('common');
 
@@ -17,6 +24,8 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
     { key: '? + texto', desc: t('aiSearch') },
     { key: '?', desc: t('showShortcuts') },
     { key: 'Escape', desc: t('closeModal') },
+    // UX-18: na ficha do doente
+    ...ACOES_FICHA.map((a) => ({ key: a.tecla, desc: t('fileTab', { separador: a.label }) })),
   ];
 
   useEffect(() => {
@@ -62,6 +71,17 @@ export function KeyboardShortcutsModal({ open, onClose }: Props) {
             </div>
           ))}
         </div>
+        {(onVisita || onPrimeirosPassos || onNovidades) && (
+          <div className="flex flex-wrap gap-2" style={{ marginTop: '16px' }}>
+            {onVisita && <Button variant="secondary" type="button" onClick={onVisita}  style={{ padding: '6px 12px' }}>{t('guidedTour')}</Button>}
+            {onPrimeirosPassos && <Button variant="secondary" type="button" onClick={onPrimeirosPassos}  style={{ padding: '6px 12px' }}>{t('firstSteps')}</Button>}
+            {onNovidades && (
+              <Button variant="secondary" type="button" onClick={onNovidades}  style={{ padding: '6px 12px' }}>
+                {t('whatsNew')}{novidadePorVer ? ` · ${t('newBadge')}` : ''}
+              </Button>
+            )}
+          </div>
+        )}
         <p className="mt-4 text-xs text-slate-500 text-center">{t('hint')}</p>
       </div>
     </div>

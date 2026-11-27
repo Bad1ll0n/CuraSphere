@@ -2,11 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
-import { useTranslations } from 'next-intl';
-import { roleLabel, StatCard, EmBreve, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
+import { roleLabel, StatCard, AtalhoModulo, CardContainer, CardHeader, Vazio, DashboardHeader, Spinner } from '../partilhado';
 
 export function DashboardTI({ utilizador }: { utilizador: any }) {
-  const tCommon = useTranslations('common');
   const { data: utilizadores = [], isLoading } = useQuery<any[]>({
     queryKey: ['dash-ti'],
     queryFn: () => api.get('/utilizadores').catch(() => ({ data: { data: [] } })).then(r => r.data?.data ?? r.data ?? []),
@@ -18,13 +16,12 @@ export function DashboardTI({ utilizador }: { utilizador: any }) {
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5" style={{ marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Utilizadores Ativos" value={utilizadores.filter((u: any) => u.ativo).length} color="bg-cyan-600" />
-        <StatCard label="Sessões Abertas" value="—" color="bg-slate-400" sub={tCommon('availableSoon')} />
-        <StatCard label="Alertas de Segurança" value={0} color="bg-emerald-500" />
+        <StatCard label="Utilizadores Inativos" value={utilizadores.filter((u: any) => !u.ativo).length} color="bg-slate-400" />
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <CardContainer>
           <CardHeader title="Utilizadores Ativos por Role" count={utilizadores.filter((u: any) => u.ativo).length} />
           {utilizadores.length === 0 ? <Vazio /> : (
@@ -45,9 +42,8 @@ export function DashboardTI({ utilizador }: { utilizador: any }) {
         </CardContainer>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <EmBreve titulo="Logs de Auditoria e Segurança" descricao="Acessos, alterações, eventos de segurança em tempo real" />
-          <EmBreve titulo="Monitorização do Sistema" descricao="Estado de serviços, base de dados, latência da API" />
-          <EmBreve titulo="Gestão de Sessões Ativas" descricao="Ver e revogar sessões JWT ativas" />
+          <AtalhoModulo href="/auditoria" titulo="Trilho de Auditoria e Segurança" descricao="Acessos, alterações e eventos de segurança" />
+          <AtalhoModulo href="/dashboard-ti" titulo="Dashboard TI" descricao="Incidentes, pedidos e utilizadores por papel" />
         </div>
       </div>
     </>

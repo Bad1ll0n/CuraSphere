@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface PedidoInterno {
   id: string;
@@ -90,14 +91,13 @@ export default function PedidosInternosPage() {
           <h1 className="text-2xl font-bold text-slate-900">Pedidos Internos</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Transporte, esterilização, equipamentos e limpeza</p>
         </div>
-        <button onClick={() => setModal(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+        <Button variant="primary" className="flex gap-2" onClick={() => setModal(true)}
           style={{ padding: '10px 20px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Novo Pedido
-        </button>
+        </Button>
       </div>
 
       {/* Filtros */}
@@ -151,11 +151,10 @@ export default function PedidosInternosPage() {
                 </div>
                 <div className="flex flex-col gap-2 shrink-0">
                   {p.estado === 'pendente' && isTransporte && (
-                    <button onClick={() => aceitar(p.id)}
-                      className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    <Button variant="primary" size="sm" onClick={() => aceitar(p.id)}
                       style={{ padding: '7px 14px' }}>
                       Aceitar
-                    </button>
+                    </Button>
                   )}
                   {p.estado === 'em_curso' && isTransporte && (
                     <button onClick={() => concluir(p.id)}
@@ -213,14 +212,12 @@ export default function PedidosInternosPage() {
               </div>
             ))}
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => setModal(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarPedido} disabled={salvando || !form.descricao.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModal(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={criarPedido} disabled={salvando || !form.descricao.trim()}
                 style={{ padding: '11px' }}>
                 {salvando ? 'A criar...' : 'Criar Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

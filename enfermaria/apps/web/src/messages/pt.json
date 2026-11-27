@@ -42,8 +42,7 @@
     "online": "Online",
     "offline": "Offline",
     "systemOnline": "Sistema Online",
-    "comingSoon": "Em breve",
-    "availableSoon": "Disponível em breve"
+    "open": "Abrir"
   },
   "login": {
     "title": "CuraSphere",
@@ -130,7 +129,7 @@
     "noOutcomes": "Sem outcomes registados",
     "myPatients": "Meus Doentes",
     "noPatientsShift": "Sem doentes atribuídos neste turno",
-    "workloadMyShift": "Workload — Meu Turno",
+    "workloadMyShift": "Carga de trabalho — Meu Turno",
     "noPatientsCurrentShift": "Sem doentes atribuídos no turno atual"
   },
   "patients": {
@@ -181,7 +180,7 @@
     "clearFilters": "Limpar filtros",
     "searchPlaceholder": "Pesquisar por nome, processo ou cama...",
     "clearSearch": "Limpar pesquisa",
-    "autoRefresh": "Actualização automática cada 2 min",
+    "autoRefresh": "Atualização automática cada 2 min",
     "computingRisk": "A calcular scores de risco...",
     "col": {
       "bed": "Cama",
@@ -199,7 +198,7 @@
     "view": "Ver",
     "riskLoadErrorTitle": "Não foi possível carregar o risco do turno",
     "riskLoadErrorBody": "Isto não quer dizer que não haja doentes em risco neste serviço. Verifique a ligação e tente de novo.",
-    "noActive": "Sem doentes activos neste serviço",
+    "noActive": "Sem doentes ativos neste serviço",
     "loadErrorTitle": "Não foi possível carregar os doentes",
     "loadErrorBody": "Isto não quer dizer que não haja doentes atribuídos ou internados. Verifique a ligação e tente de novo.",
     "noneFound": "Nenhum doente encontrado",
@@ -229,7 +228,7 @@
     "startDate": "Início",
     "endDate": "Fim",
     "confirmTitle": "Confirmar administração",
-    "confirmBody": "Vai registar a administração de {farmaco} a {doente} (cama {cama}). Esta acção fica no registo clínico e não pode ser desfeita.",
+    "confirmBody": "Vai registar a administração de {farmaco} a {doente} (cama {cama}). Esta ação fica no registo clínico e não pode ser desfeita.",
     "administering": "A registar..."
   },
   "vitals": {
@@ -314,10 +313,11 @@
     "weightKg": "Peso (kg)",
     "avpuLabel": "Consciência (AVPU)",
     "avpu": {
-      "A": "A — Alert (Alerta)",
-      "V": "V — Voice (Responde à voz)",
-      "P": "P — Pain (Responde à dor)",
-      "U": "U — Unresponsive (Sem resposta)"
+      "A": "A — Alerta",
+      "V": "V — Responde à voz",
+      "P": "P — Responde à dor",
+      "U": "U — Sem resposta",
+      "none": "— Por avaliar —"
     },
     "pain": "Dor (0–{max})",
     "painIntensity": "Intensidade da dor",
@@ -334,8 +334,17 @@
     "news2Points": "(+2 pts NEWS2)",
     "notes": "Notas",
     "notesPlaceholder": "Observações...",
-    "news2Hint": "O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.",
-    "fromMonitor": "monitor"
+    "fromMonitor": "monitor",
+    "criticalTitle": "Valores críticos",
+    "criticalBody": "Estes valores são incompatíveis com a vida ou extremos: {valores}. Confirme que estão certos (se for uma emergência, ative o protocolo).",
+    "criticalConfirm": "Os valores estão certos",
+    "criticalCancel": "Corrigir",
+    "fieldPoints": "{pontos} {pontos, plural, one {ponto} other {pontos}} NEWS2 — confirme o valor",
+    "previewNone": "Preencha pelo menos 3 sinais vitais para ver o NEWS2 previsto.",
+    "previewScore": "NEWS2 previsto: {score}",
+    "previewPartial": "parcial — {n, plural, one {falta # parâmetro} other {faltam # parâmetros}}",
+    "previewRed": "Um parâmetro isolado com 3 pontos — revisão clínica urgente, independentemente do total.",
+    "weightPlaceholder": "kg"
   },
   "ai": {
     "suggestions": "Sugestões IA",
@@ -357,7 +366,10 @@
     "networkError": "Sem ligação à rede",
     "sessionExpired": "Sessão expirada. Por favor autentique-se novamente.",
     "forbiddenTitle": "Sem acesso a esta área",
-    "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho."
+    "forbiddenBody": "O seu perfil não tem permissão para esta vista. A redirecionar para a sua área de trabalho.",
+    "forbiddenGoHome": "Ir para o início",
+    "moduleOffTitle": "Módulo desligado",
+    "moduleOffBody": "Este módulo está desligado nesta instalação. Fale com a equipa de TI se precisar dele."
   },
   "roles": {
     "medico": "Médico",
@@ -446,14 +458,16 @@
   "layout": {
     "skipToContent": "Ir para conteúdo principal",
     "openMenu": "Abrir menu",
-    "passwordExpired": "A tua password expirou. Altera-a agora para continuar a aceder.",
-    "passwordExpiresSoon": "A tua password expira em {days} dia{plural}. Altera-a brevemente.",
+    "passwordExpired": "A sua password expirou. Altere-a agora para continuar a aceder.",
+    "passwordExpiresSoon": "A sua password expira em {days} dia{plural}. Altere-a brevemente.",
     "changePassword": "Alterar password",
     "day": "dia",
     "days": "dias",
     "languageGroup": "Selecionar idioma",
     "englishBeta": "English (beta — tradução parcial: alguns ecrãs continuam em português)",
-    "portuguese": "Português"
+    "portuguese": "Português",
+    "spanish": "Español",
+    "ukrainian": "Українська"
   },
   "tour": {
     "buttons": {
@@ -462,37 +476,80 @@
       "next": "Próximo",
       "start": "Começar"
     },
-    "medico": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O seu assistente clínico digital. Vamos mostrar-lhe as principais funcionalidades.",
-      "step2Title": "📊 Dashboard em tempo real",
-      "step2Desc": "Veja todos os KPIs do serviço: ocupação, doentes internados, tarefas pendentes e alertas NEWS2.",
-      "step3Title": "🔴 Vista de Risco",
-      "step3Desc": "O separador 'Risco' mostra todos os doentes ordenados por score de deterioração. Fique sempre um passo à frente.",
-      "step4Title": "🧠 IA Clínica",
-      "step4Desc": "Sugestões de diagnóstico diferencial, risco de readmissão e resumo de turno gerados por IA. Use como apoio — nunca substitui o julgamento clínico.",
-      "step5Title": "✅ Está pronto!",
-      "step5Desc": "Explore o menu lateral para aceder a medicação, notas clínicas, exames e muito mais."
-    },
-    "enfermeiro": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O seu assistente de enfermagem digital.",
-      "step2Title": "💊 Timeline de Medicação",
-      "step2Desc": "Veja todos os medicamentos agendados, administre com os 5 Certos e registe em tempo real.",
-      "step3Title": "📋 Passagem de Turno",
-      "step3Desc": "Gere resumos de turno automáticos com IA. Partilhe com o colega do turno seguinte em segundos.",
-      "step4Title": "⚠ Sinalizar Doente",
-      "step4Desc": "Use as sinalizações para alertar a equipa sobre situações que requerem atenção especial.",
-      "step5Title": "✅ Está pronto!",
-      "step5Desc": "Explore o menu para aceder a sinais vitais, tarefas e muito mais."
-    },
-    "default": {
-      "step1Title": "Bem-vindo ao CuraSphere! 👋",
-      "step1Desc": "O sistema de gestão hospitalar integrado.",
-      "step2Title": "🏥 Explore o sistema",
-      "step2Desc": "Use o menu lateral para navegar pelas funcionalidades disponíveis para o seu perfil.",
-      "step3Title": "✅ Está pronto!",
-      "step3Desc": "Em caso de dúvida, contacte o administrador do sistema."
+    "progress": "{atual} de {total}",
+    "passo": {
+      "meuTurno": {
+        "titulo": "O meu turno",
+        "texto": "A sua casa durante o turno: doentes atribuídos, doses e reavaliações em atraso e alertas, por doente."
+      },
+      "mar": {
+        "titulo": "MAR — administração",
+        "texto": "Todas as tomas do turno. Administre sempre por aqui: identifica o doente, mostra as alergias e pede os 5 certos."
+      },
+      "passagem": {
+        "titulo": "Passagem de turno",
+        "texto": "ISBAR por doente, gerada a partir do que foi registado. Quem recebe confirma."
+      },
+      "tarefas": {
+        "titulo": "Tarefas",
+        "texto": "O que tem para fazer neste turno, incluindo as tarefas geradas pelas avaliações (nutrição, prevenção de quedas…)."
+      },
+      "doentes": {
+        "titulo": "Doentes",
+        "texto": "Os seus doentes. A ficha tem separadores (V vitais, M medicação, N notas) e as alergias sempre no topo."
+      },
+      "worklist": {
+        "titulo": "Resultados por rever",
+        "texto": "Exames com resultado disponível para validar."
+      },
+      "farmacia": {
+        "titulo": "Farmácia",
+        "texto": "Stock, pedidos dos serviços e, no separador Validação, as prescrições por validar antes da dispensa."
+      },
+      "farmaciaClinica": {
+        "titulo": "Farmácia clínica",
+        "texto": "Revisão terapêutica, interações e ajuste de doses."
+      },
+      "recepcao": {
+        "titulo": "Receção",
+        "texto": "Fila de atendimento e registo rápido de utentes."
+      },
+      "registos": {
+        "titulo": "Registos administrativos",
+        "texto": "Novo utente com deteção de duplicados; para quem chega sem identificação, use \"Utente não identificado\"."
+      },
+      "camas": {
+        "titulo": "Camas",
+        "texto": "Mapa de camas em tempo real, pedidos de cama e altas previstas."
+      },
+      "executivo": {
+        "titulo": "Dashboard executivo",
+        "texto": "Ocupação, internados, urgência e indicadores do hospital, com a mesma definição em todos os ecrãs."
+      },
+      "qualidade": {
+        "titulo": "Qualidade",
+        "texto": "Indicadores de enfermagem, IACS e eventos adversos."
+      },
+      "eventos": {
+        "titulo": "Eventos adversos",
+        "texto": "Notificação e análise de incidentes."
+      },
+      "paleta": {
+        "titulo": "Pesquisa rápida (Ctrl+K)",
+        "texto": "Procure um doente, abra uma página ou, dentro da ficha, vá direto aos vitais ou à medicação."
+      },
+      "notificacoes": {
+        "titulo": "Notificações",
+        "texto": "Alertas e mensagens dirigidas a si."
+      },
+      "bloquear": {
+        "titulo": "Bloquear o posto",
+        "texto": "Vai sair do posto por pouco tempo? Bloqueie (Ctrl+Shift+L): a sessão continua e o ecrã fica protegido."
+      },
+      "ajuda": {
+        "titulo": "Ajuda",
+        "texto": "Atalhos, esta visita, os primeiros passos e o que há de novo — sempre aqui, ou com a tecla \"?\"."
+      }
     }
   },
   "shortcuts": {
@@ -501,12 +558,18 @@
     "aiSearch": "Pesquisa inteligente (IA) no Cmd+K",
     "showShortcuts": "Mostrar esta lista de atalhos",
     "closeModal": "Fechar modal, paleta ou overlay",
-    "hint": "Prima ? para reabrir"
+    "hint": "Prima ? para reabrir",
+    "fileTab": "Na ficha: {separador}",
+    "help": "Ajuda",
+    "guidedTour": "Visita guiada",
+    "firstSteps": "Primeiros passos",
+    "whatsNew": "O que há de novo",
+    "newBadge": "novidades por ver"
   },
   "theme": {
-    "activateDark": "Activar modo escuro",
-    "activateHighContrast": "Activar modo alto contraste",
-    "activateLight": "Activar modo claro"
+    "activateDark": "Ativar modo escuro",
+    "activateHighContrast": "Ativar modo alto contraste",
+    "activateLight": "Ativar modo claro"
   },
   "navItems": {
     "dashboard": "Dashboard",
@@ -561,7 +624,8 @@
     "comunicacao": "Comunicação",
     "relatorios": "Relatórios DGS",
     "dietas": "Dietas",
-    "bancoSangue": "Banco de Sangue"
+    "bancoSangue": "Banco de Sangue",
+    "acessosEmergencia": "Acessos de emergência"
   },
   "bloodBank": {
     "title": "Banco de Sangue",
@@ -599,14 +663,14 @@
     "currentShift": "Turno atual: {turno}",
     "shift": {
       "morning": "Manhã (08:00–16:00)",
-      "afternoon": "Tarde (16:00–23:00)",
-      "night": "Noite (23:00–08:00)"
+      "afternoon": "Tarde (16:00–24:00)",
+      "night": "Noite (00:00–08:00)"
     },
     "loading": "A carregar MAR...",
     "loadErrorTitle": "Não foi possível carregar o MAR",
     "loadErrorBody": "Isto não quer dizer que não haja medicações por administrar neste turno. Verifique a ligação e tente de novo antes de dar a ronda por concluída.",
     "emptyTitle": "Sem medicações para este turno",
-    "emptyBody": "Não tens doentes atribuídos com medicações ativas",
+    "emptyBody": "Não tem doentes atribuídos com medicações ativas",
     "showAllPatients": "← Ver todos os meus doentes",
     "roomBed": "Quarto {quarto} · Cama {cama}",
     "medCount": "{n, plural, one {# medicação} other {# medicações}}",
@@ -636,7 +700,7 @@
     "sosLabel": "Porque se administra agora",
     "sosButton": "Administrar com justificação",
     "sosPlaceholder": "Ex.: dor 8/10 persistente, médico contactado",
-    "fiveRightsTitle": "Verificação das 5 Corretas",
+    "fiveRightsTitle": "Verificação dos 5 Certos",
     "fiveRightsHint": "Confirme cada item antes de administrar. Todos os 5 devem estar verificados.",
     "right": {
       "0": "Doente certo",
@@ -650,7 +714,14 @@
     "notesOptional": "Observações (opcional)",
     "notesPlaceholder": "Ex: Administrado com alimento, doente com dificuldade...",
     "confirmAdministration": "Confirmar Administração",
-    "itemsLeft": "{n, plural, one {Falta # item} other {Faltam # itens}}"
+    "itemsLeft": "{n, plural, one {Falta # item} other {Faltam # itens}}",
+    "notValidated": "Por validar",
+    "notValidatedTitle": "Prescrição por validar",
+    "notValidatedLabel": "Porque é urgente dar a 1.ª dose",
+    "notValidatedButton": "Administrar 1.ª dose",
+    "notValidatedPlaceholder": "Ex.: dor 9/10, farmácia sem turno até às 8h",
+    "emptyActionAssignments": "Ver atribuições",
+    "emptyActionPatients": "Ver doentes do serviço"
   },
   "myShift": {
     "title": "O meu turno",
@@ -758,7 +829,7 @@
     "sections": "Secções da ficha",
     "notFound": "Doente não encontrado",
     "removeIsolation": "Remover Isolamento",
-    "startIsolation": "🔶 Activar Isolamento",
+    "startIsolation": "🔶 Ativar Isolamento",
     "sosSent": "SOS enviado",
     "sos": "SOS",
     "concerning": "⚠ Preocupante",
@@ -826,7 +897,7 @@
     "checkinError": "Erro ao fazer check-in. Tente novamente.",
     "bookingNotFound": "Marcação não encontrada",
     "subtitle": "Sistema de Gestão de Filas",
-    "chooseService": "Seleccione o serviço pretendido",
+    "chooseService": "Selecione o serviço pretendido",
     "ticketSeries": "Senha {letra}",
     "identifyNif": "Identificar pelo NIF",
     "haveBooking": "Já tenho marcação",
@@ -894,7 +965,11 @@
     "keepCode": "Guarde o seu código de marcação:",
     "keepCodeHint": "No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.",
     "done": "Concluir",
-    "footer": "CuraSphere — Sistema de Gestão Hospitalar"
+    "footer": "CuraSphere — Sistema de Gestão Hospitalar",
+    "nifDobHint": "Para sua segurança, indique o NIF e a data de nascimento.",
+    "nifLabel": "NIF",
+    "dobLabel": "Data de nascimento",
+    "tooManyAttempts": "Demasiadas tentativas. Aguarde um minuto ou dirija-se ao balcão."
   },
   "carePlan": {
     "title": "Plano de cuidados de enfermagem",
@@ -1297,5 +1372,279 @@
       "transferencia": "Transferência / receção do doente",
       "outro": "Outro"
     }
+  },
+  "patientPicker": {
+    "placeholder": "Pesquisar doente (nome ou n.º de processo)…",
+    "results": "Doentes encontrados",
+    "bed": "Q{quarto}/C{numero}",
+    "noResults": "Nenhum doente encontrado",
+    "typeToSearch": "Escreva para pesquisar",
+    "searching": "A pesquisar…",
+    "more": "A mostrar {n} de {total} — refine a pesquisa",
+    "error": "Não foi possível pesquisar doentes"
+  },
+  "emergencyAccessReview": {
+    "title": "Acessos de emergência",
+    "subtitle": "Cada acesso de emergência (break-glass) é revisto por quem não o fez. Sem revisão em 72 horas, é escalado para a direção e a qualidade.",
+    "tabPending": "Por rever ({n})",
+    "tabHistory": "Histórico",
+    "loading": "A carregar…",
+    "loadError": "Não foi possível carregar os acessos.",
+    "retry": "Tentar de novo",
+    "emptyPending": "Não há acessos de emergência por rever.",
+    "emptyHistory": "Ainda não há acessos de emergência registados.",
+    "who": "<b>{nome}</b> ({papel}) acedeu ao processo de <doente></doente>",
+    "overdue": "Sem revisão há {h} horas",
+    "reviewedJustified": "Justificado — revisto por {por} em {quando}",
+    "reviewedUnjustified": "Injustificado — revisto por {por} em {quando}",
+    "ownAccess": "É um acesso seu: tem de ser revisto por outra pessoa.",
+    "noteLabel": "Porque é injustificado? (pelo menos 10 caracteres)",
+    "confirmUnjustified": "Marcar como injustificado",
+    "cancel": "Cancelar",
+    "justified": "Justificado",
+    "unjustified": "Injustificado…",
+    "saved": "Revisão registada",
+    "error": "Não foi possível registar a revisão"
+  },
+  "dataSubjectRights": {
+    "title": "Direitos do titular e retenção",
+    "exportTitle": "Pedido de acesso aos dados (art.º 15.º e 20.º RGPD)",
+    "exportHint": "Para um titular que pediu os dados ao balcão. Fica registado na auditoria. Quem tem portal exporta lá.",
+    "export": "Exportar dados (JSON)",
+    "exporting": "A exportar…",
+    "exported": "Exportação concluída",
+    "retentionTitle": "Processos fora do prazo de retenção",
+    "policy": "Política: a identificação é anonimizada {anos} anos após a última alta; os dados de atendimento (senhas, sala de espera) ao fim de {dias} dias.",
+    "automatic": "Anonimização automática ligada.",
+    "manual": "A anonimização é decidida aqui, caso a caso.",
+    "loadError": "Não foi possível carregar a retenção.",
+    "noneEligible": "Nenhum processo ultrapassou o prazo de retenção.",
+    "eligibleRow": "Processo {processo} — última alta em {alta}",
+    "anonymize": "Anonimizar…",
+    "reasonLabel": "Motivo (pelo menos 10 caracteres)",
+    "irreversible": "Irreversível: o nome, os contactos e os identificadores deixam de existir. O conteúdo clínico fica, sem ligação à pessoa.",
+    "confirmAnonymize": "Anonimizar definitivamente",
+    "cancel": "Cancelar",
+    "anonymized": "Processo anonimizado",
+    "error": "Não foi possível concluir o pedido"
+  },
+  "palette": {
+    "title": "Pesquisa rápida",
+    "placeholder": "Pesquisar doentes, ações, páginas… ou ? + pergunta para IA",
+    "aiMode": "Modo IA",
+    "searching": "A pesquisar…",
+    "empty": "Sem resultados.",
+    "aiResults": "Resultados",
+    "aiError": "Erro na pesquisa IA",
+    "bed": "Cama {numero}",
+    "thisRecord": "Neste doente",
+    "patients": "Doentes",
+    "recent": "Abertos recentemente",
+    "actions": "Ações",
+    "navigation": "Ir para",
+    "admit": "Admitir doente",
+    "patientList": "Lista de doentes",
+    "hintNavigate": "navegar",
+    "hintOpen": "abrir",
+    "hintClose": "fechar",
+    "hintAi": "+ texto para pesquisa IA"
+  },
+  "a11y": {
+    "close": "Fechar",
+    "removeItem": "Remover item",
+    "previousMonth": "Mês anterior",
+    "nextMonth": "Mês seguinte",
+    "cancelEdit": "Cancelar edição",
+    "back": "Voltar",
+    "activeAct": "Ato ativo",
+    "refresh": "Atualizar",
+    "removeGuideline": "Remover guideline",
+    "taskHistory": "Histórico de tarefas",
+    "completeTask": "Concluir tarefa",
+    "edit": "Editar",
+    "uploadDocument": "Carregar documento",
+    "reactivate": "Reativar",
+    "deactivate": "Desativar",
+    "rating": "{n} de 5",
+    "discontinue": "Descontinuar"
+  },
+  "session": {
+    "idleTitle": "A sessão vai terminar",
+    "idleBody": "Sem atividade neste posto. A sessão termina dentro de {tempo}. As notas por gravar ficam guardadas para quando voltar a entrar.",
+    "continue": "Continuar",
+    "logoutNow": "Terminar sessão",
+    "lock": "Bloquear",
+    "lockHint": "Bloquear o posto (Ctrl+Shift+L) — a sessão continua",
+    "lockedLabel": "Posto bloqueado",
+    "password": "Password",
+    "unlock": "Desbloquear",
+    "switchUser": "Trocar de utilizador",
+    "wrongPassword": "Password incorreta.",
+    "tooMany": "Demasiadas tentativas. Aguarde um minuto.",
+    "criticalAlerts": "{n, plural, one {# alerta crítico por responder} other {# alertas críticos por responder}} — desbloqueie para ver.",
+    "expiredInfo": "A sessão terminou por inatividade. Entre de novo: as notas que estavam a meio foram guardadas."
+  },
+  "callPanel": {
+    "enableSound": "Ativar som das chamadas"
+  },
+  "patientPortal": {
+    "password": "Password",
+    "showPassword": "Mostrar",
+    "hidePassword": "Ocultar",
+    "forgotLink": "Esqueci-me da password",
+    "forgotTitle": "Recuperar o acesso",
+    "forgotBody": "Indique o email com que entra no portal. Enviamos uma ligação para definir uma nova password.",
+    "email": "Email",
+    "sendLink": "Enviar ligação",
+    "resetSent": "Se o email tiver acesso ao portal, vai receber uma ligação válida durante 30 minutos.",
+    "backToLogin": "Voltar a entrar",
+    "noEmailHelp": "Já não usa este email? Peça à equipa de enfermagem ou à receção para atualizar o seu acesso.",
+    "resetTitle": "Nova password",
+    "passwordRules": "Pelo menos 12 caracteres. Uma frase curta serve (ex.: três palavras sem relação).",
+    "newPassword": "Nova password",
+    "confirmPassword": "Repita a password",
+    "savePassword": "Guardar password",
+    "passwordsDiffer": "As passwords não coincidem.",
+    "resetDone": "Password alterada. Já pode entrar com a nova password.",
+    "invalidLink": "Esta ligação não é válida. Peça uma nova.",
+    "requestNewLink": "Pedir nova ligação",
+    "genericError": "Não foi possível concluir. Tente de novo.",
+    "hello": "Olá",
+    "helloName": "Olá, {nome}",
+    "welcome": "Bem-vindo(a) ao seu portal de saúde",
+    "diagnosis": "Diagnóstico: {diagnostico}",
+    "noMedicationTitle": "Não há medicação ativa registada",
+    "noMedicationBody": "Aparece aqui a medicação prescrita durante o internamento ou na alta. Se toma medicação que não está aqui, diga à sua equipa.",
+    "contactTeam": "Contactar a equipa",
+    "noQuestionnaires": "A sua equipa ainda não lhe atribuiu questionários. Quando o fizer, aparecem aqui.",
+    "back": "Voltar",
+    "title": "Portal do Doente",
+    "largeText": "Letra grande",
+    "logout": "Terminar sessão",
+    "nextAppointment": "Próxima consulta",
+    "videoCall": "Teleconsulta",
+    "inPerson": "Presencial",
+    "card": {
+      "documents": {
+        "title": "Os meus documentos",
+        "desc": "Relatórios e exames clínicos"
+      },
+      "medication": {
+        "title": "Medicação ativa",
+        "desc": "Os seus medicamentos prescritos"
+      },
+      "dischargePlan": {
+        "title": "Plano de alta",
+        "desc": "Critérios e data estimada de alta"
+      },
+      "howIFeel": {
+        "title": "Como me sinto",
+        "desc": "Registe sintomas e bem-estar"
+      },
+      "contact": {
+        "title": "Contactar a equipa",
+        "desc": "Enviar uma mensagem à equipa"
+      },
+      "consents": {
+        "title": "Os meus consentimentos",
+        "desc": "Partilha com familiares e uso de IA"
+      },
+      "myData": {
+        "title": "Os meus dados",
+        "desc": "Exportar os dados clínicos (RGPD)"
+      }
+    }
+  },
+  "patientRegistration": {
+    "unknownTitle": "Utente não identificado",
+    "unknownBody": "Regista com identificação provisória (\"Desconhecido AAAA-MM-DD #N\"). Os dados reais juntam-se depois, quando forem conhecidos.",
+    "duplicatesTitle": "{n, plural, one {Pode já existir este utente} other {Podem já existir # registos deste utente}}",
+    "process": "processo {numero}",
+    "duplicatesHint": "Confirme antes de criar um registo novo — abra o processo existente se for a mesma pessoa.",
+    "reason": {
+      "nif": "mesmo NIF",
+      "sns": "mesmo nº SNS",
+      "nome_e_data": "mesmo nome e data de nascimento"
+    }
+  },
+  "onboarding": {
+    "title": "Primeiros passos",
+    "close": "Fechar",
+    "done": "feito",
+    "todo": "por fazer",
+    "whatsNew": "O que há de novo",
+    "primeiro": {
+      "meuTurno": "Abrir O meu turno",
+      "mar": "Abrir o MAR",
+      "fichaDoente": "Abrir a ficha de um doente",
+      "passagem": "Ver a passagem de turno",
+      "tarefas": "Ver as tarefas",
+      "worklist": "Rever resultados",
+      "farmacia": "Abrir a farmácia",
+      "farmaciaClinica": "Abrir a farmácia clínica",
+      "recepcao": "Abrir a receção",
+      "registos": "Abrir os registos administrativos",
+      "camas": "Ver o mapa de camas",
+      "executivo": "Abrir o dashboard executivo",
+      "qualidade": "Abrir a qualidade"
+    }
+  },
+  "modulos": {
+    "title": "Módulos opcionais",
+    "intro": "O núcleo é o registo clínico de enfermagem e a gestão do internamento. Estes módulos podem ser desligados quando o hospital já usa outro sistema para o mesmo fim. Desligado, sai do menu e a API responde como se não existisse. Nenhum dado é apagado.",
+    "on": "Ligado",
+    "off": "Desligado",
+    "toggle": "Ligar ou desligar {nome}",
+    "error": "Não foi possível alterar o módulo.",
+    "nome": {
+      "faturacao": "Faturação e tabela de atos",
+      "compras": "Fornecedores e encomendas",
+      "equipamentos": "Equipamentos e manutenção",
+      "ti": "Pedidos e incidentes de TI",
+      "rh": "RH: formações, avaliações, contratos e bem-estar",
+      "maternidade": "Maternidade",
+      "oncologia": "Oncologia",
+      "dialise": "Diálise",
+      "triagem-portal": "Triagem por IA no portal",
+      "population-health": "Saúde populacional",
+      "outcomes": "Outcomes clínicos",
+      "regras-clinicas": "Regras clínicas configuráveis",
+      "lista-espera": "Lista de espera de consultas"
+    },
+    "motivo": {
+      "faturacao": "No SNS, o internamento é financiado por GDH a partir da codificação no sistema do hospital.",
+      "compras": "As compras são feitas no ERP.",
+      "equipamentos": "A gestão de equipamentos é do sistema de manutenção.",
+      "ti": "O hospital tem o seu próprio helpdesk.",
+      "rh": "Ausências, férias e trocas de folga continuam, porque afetam a escala.",
+      "maternidade": "Especialidade em protótipo.",
+      "oncologia": "Especialidade em protótipo.",
+      "dialise": "Especialidade em protótipo.",
+      "triagem-portal": "Decisão clínica por IA, desligada por omissão.",
+      "population-health": "Sem ecrã na aplicação web.",
+      "outcomes": "Sem ecrã na aplicação web.",
+      "regras-clinicas": "Sem ecrã na aplicação web; as regras das escalas já geram tarefas.",
+      "lista-espera": "Consulta externa, fora do internamento."
+    }
+  },
+  "vazios": {
+    "noShiftsTitle": "Sem turnos hoje",
+    "noShiftsBody": "Ainda não há turnos para hoje neste serviço. Crie-os nos Horários; depois atribua os doentes aqui.",
+    "openSchedules": "Abrir horários",
+    "openMyShift": "Ir para O meu turno",
+    "noPatientsBody": "Se devia ter doentes, peça a atribuição à chefia de equipa ou veja a lista do serviço.",
+    "openAssignments": "Ver atribuições",
+    "openPatients": "Ver doentes do serviço"
+  },
+  "prescricao": {
+    "dose": "Dose",
+    "unit": "Unidade da dose",
+    "doseHint": "Valor e unidade (ex.: 500 mg, 1 comp, 10 UI).",
+    "indication": "Indicação",
+    "indicationPlaceholder": "Para que é (ex.: dor, febre, profilaxia)",
+    "duration": "Duração (dias)",
+    "durationPlaceholder": "Até nova ordem",
+    "forIndication": "Para: {indicacao}",
+    "until": "Até {data}"
   }
 }

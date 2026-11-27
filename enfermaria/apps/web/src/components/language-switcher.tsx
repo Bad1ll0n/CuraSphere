@@ -6,9 +6,15 @@ import { useLocale, useTranslations } from 'next-intl';
 const LOCALES = [
   { code: 'pt', label: 'PT', flag: '🇵🇹' },
   { code: 'en', label: 'EN', flag: '🇬🇧' },
+  { code: 'es', label: 'ES', flag: '🇪🇸' },
+  { code: 'uk', label: 'UK', flag: '🇺🇦' },
 ] as const;
+export type CodigoIdioma = (typeof LOCALES)[number]['code'];
 
-export function LanguageSwitcher() {
+const TITULO: Record<CodigoIdioma, string> = { pt: 'portuguese', en: 'englishBeta', es: 'spanish', uk: 'ukrainian' };
+
+/** UX-26: a aplicação do pessoal tem PT/EN; o quiosque oferece também espanhol e ucraniano. */
+export function LanguageSwitcher({ idiomas = ['pt', 'en'] }: { idiomas?: readonly CodigoIdioma[] }) {
   const locale = useLocale();
   const t = useTranslations('layout');
   const [isPending, startTransition] = useTransition();
@@ -27,7 +33,7 @@ export function LanguageSwitcher() {
       aria-label={t('languageGroup')}
       role="group"
     >
-      {LOCALES.map(({ code, label, flag }) => {
+      {LOCALES.filter(({ code }) => idiomas.includes(code)).map(({ code, label, flag }) => {
         const isActive = locale === code;
         return (
           <button
@@ -36,7 +42,7 @@ export function LanguageSwitcher() {
             disabled={isPending}
             aria-pressed={isActive}
             // UX-07: o inglês cobre os fluxos clínicos principais, não a aplicação toda — diz-se.
-            title={code === 'pt' ? t('portuguese') : t('englishBeta')}
+            title={t(TITULO[code])}
             style={{
               padding: '6px 10px',
               fontSize: '11px',

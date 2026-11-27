@@ -44,7 +44,7 @@ export function SepsisPanel({ doenteId, utilizador }: { doenteId: string; utiliz
   const marcarBundle = async (id: string, campo: string) => {
     try {
       await api.patch(`/sepsis/${id}/bundle`, { campo });
-      toast.success('Bundle actualizado');
+      toast.success('Bundle atualizado');
       carregar();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro');
@@ -75,7 +75,7 @@ export function SepsisPanel({ doenteId, utilizador }: { doenteId: string; utiliz
             <span className="text-white text-lg">🦠</span>
           </div>
           <div>
-            <h3 className="text-base font-bold text-red-800">Alerta Sépsis Activo</h3>
+            <h3 className="text-base font-bold text-red-800">Alerta Sépsis Ativo</h3>
             <p className="text-sm text-red-600">
               {alerta.criterio.toUpperCase()} score {alerta.score} — desde {new Date(alerta.criadoEm).toLocaleString('pt-PT')}
             </p>

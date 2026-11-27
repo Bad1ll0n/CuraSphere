@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, Alert,
+  View, Text, FlatList, TouchableOpacity, ActivityIndicator, Alert,
 } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as WebBrowser from 'expo-web-browser';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface Documento {
   id: string;
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export default function DocumentosScreen({ route, navigation }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const { doenteId, doenteNome } = route.params;
   const { user } = useAuth();
   const role = user?.role ?? '';
@@ -179,11 +181,11 @@ export default function DocumentosScreen({ route, navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8fafc' },
+const styles = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   toolbar: {
     flexDirection: 'row', gap: 8, padding: 16,
-    backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f5f9',
+    backgroundColor: c.superficie, borderBottomWidth: 1, borderBottomColor: c.borda,
   },
   btnPrimario: {
     flex: 1, backgroundColor: '#2563eb', borderRadius: 12,
@@ -191,24 +193,24 @@ const styles = StyleSheet.create({
   },
   btnPrimarioText: { color: '#fff', fontWeight: '600', fontSize: 14 },
   btnSecundario: {
-    flex: 1, backgroundColor: '#f1f5f9', borderRadius: 12,
+    flex: 1, backgroundColor: c.fundo, borderRadius: 12,
     paddingVertical: 10, alignItems: 'center',
   },
-  btnSecundarioText: { color: '#475569', fontWeight: '600', fontSize: 14 },
+  btnSecundarioText: { color: c.textoSecundario, fontWeight: '600', fontSize: 14 },
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
-    backgroundColor: '#fff', borderRadius: 16, padding: 14,
-    borderWidth: 1, borderColor: '#f1f5f9',
+    backgroundColor: c.superficie, borderRadius: 16, padding: 14,
+    borderWidth: 1, borderColor: c.borda,
   },
   emoji: { fontSize: 24 },
   cardBody: { flex: 1 },
-  titulo: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
-  meta: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  titulo: { fontSize: LETRA.corpo, fontWeight: '600', color: c.texto },
+  meta: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   badge: { marginTop: 4, backgroundColor: '#eff6ff', borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, alignSelf: 'flex-start' },
   badgeText: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
   verBtn: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
   vazio: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
   vazioIcon: { fontSize: 48 },
-  vazioText: { fontSize: 16, fontWeight: '600', color: '#475569' },
-  vazioSub: { fontSize: 13, color: '#94a3b8' },
-});
+  vazioText: { fontSize: 16, fontWeight: '600', color: c.textoSecundario },
+  vazioSub: { fontSize: 13, color: c.textoTenue },
+}));

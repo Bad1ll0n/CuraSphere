@@ -15,7 +15,7 @@ const mockPrisma = {
 
 const planoBase = {
   id: 'pa-1', doenteId: 'd1', dataAlvoDia: null, notas: null,
-  afebrилApenas24h: false, mobilidadeAdequada: false, alimentacaoOral: false,
+  afebril24h: false, mobilidadeAdequada: false, alimentacaoOral: false,
   doresControladas: false, familiaInformada: false,
 };
 
@@ -77,7 +77,7 @@ describe('PlanoAltaService', () => {
 
   describe('calcularProgresso()', () => {
     it('calcula progresso com critérios cumpridos', async () => {
-      const plano = { ...planoBase, afebrилApenas24h: true, mobilidadeAdequada: true };
+      const plano = { ...planoBase, afebril24h: true, mobilidadeAdequada: true };
 
       const resultado = await service.calcularProgresso(plano);
 

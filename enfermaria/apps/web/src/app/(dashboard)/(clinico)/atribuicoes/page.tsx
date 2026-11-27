@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { useTranslations } from 'next-intl';
+import { EmptyState } from '@/components/empty-state';
 
 interface Utilizador {
   id: string;
@@ -59,6 +61,7 @@ const grupoRoles: Record<string, string[]> = {
 };
 
 export default function AtribuicoesPage() {
+  const tv = useTranslations('vazios');
   const { utilizador } = useAuth();
   const [turnos, setTurnos] = useState<HorarioTurno[]>([]);
   const [doentes, setDoentes] = useState<Doente[]>([]);
@@ -176,15 +179,9 @@ export default function AtribuicoesPage() {
           <span className="text-sm">A carregar...</span>
         </div>
       ) : turnos.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center" style={{ padding: '80px' }}>
-          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
-            <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem turnos hoje</p>
-          <p className="text-slate-500 text-sm">Não existem turnos agendados para hoje</p>
-        </div>
+        // UX-10: sem turnos, o caminho é criar o turno nos Horários (e depois atribuir aqui).
+        <EmptyState cartao icon="calendar" title={tv('noShiftsTitle')} description={tv('noShiftsBody')}
+          acoes={[{ label: tv('openSchedules'), href: '/horarios' }, { label: tv('openMyShift'), href: '/meu-turno' }]} />
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
 

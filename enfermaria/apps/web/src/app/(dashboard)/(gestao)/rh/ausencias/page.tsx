@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Ausencia {
   id: string;
@@ -118,14 +119,13 @@ export default function AusenciasPage() {
             <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>Gestão de pedidos de ausência</p>
           </div>
         </div>
-        <button onClick={() => setModalNova(true)}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
+        <Button variant="primary" className="flex gap-2" onClick={() => setModalNova(true)}
           style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Pedir Ausência
-        </button>
+        </Button>
       </div>
 
       {/* Tabs + filtro */}
@@ -218,11 +218,10 @@ export default function AusenciasPage() {
                     </>
                   )}
                   {aba === 'minhas' && a.estado === 'pendente' && (
-                    <button onClick={() => mutCancelar.mutate(a.id)}
-                      className="text-xs font-medium text-slate-500 hover:text-slate-700 border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors"
+                    <Button variant="secondary" size="sm" onClick={() => mutCancelar.mutate(a.id)}
                       style={{ padding: '6px 14px' }}>
                       Cancelar
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -275,14 +274,12 @@ export default function AusenciasPage() {
             {erroNova && <p className="text-xs text-red-500" style={{ marginBottom: '12px' }}>{erroNova}</p>}
 
             <div className="flex gap-3">
-              <button onClick={() => setModalNova(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarAusencia} disabled={mutNova.isPending}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNova(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={criarAusencia} disabled={mutNova.isPending}
                 style={{ padding: '11px' }}>
                 {mutNova.isPending ? 'A enviar...' : 'Submeter Pedido'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

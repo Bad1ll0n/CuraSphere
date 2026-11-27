@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -137,10 +138,10 @@ export function PediatriaPanel({ doenteId }: Props) {
           <input value={freq} onChange={(e) => setFreq(e.target.value)} type="number" placeholder="Tomas/dia"
             aria-label="Tomas por dia" className="border border-slate-200 rounded-lg px-3 py-2 text-sm" />
         </div>
-        <button onClick={calcular} disabled={calculando}
-          className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors">
+        <Button variant="primary" onClick={calcular} disabled={calculando}
+          >
           {calculando ? 'A calcular…' : 'Calcular dose'}
-        </button>
+        </Button>
         <p className="text-xs text-slate-500" style={{ marginTop: '6px' }}>
           Sem peso, usa o último registado nos sinais vitais. Apoio à decisão — validar contra o formulário.
         </p>

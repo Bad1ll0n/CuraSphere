@@ -3,18 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useTranslations } from 'next-intl';
 
-/** UX-07: devolve a chave (vitals.interval.*) em vez do texto. */
-function news2Intervalo(score: number): { chave: 'high' | 'medium' | 'low'; cor: string } {
-  if (score >= 7) return { chave: 'high', cor: 'text-red-600' };
-  if (score >= 5) return { chave: 'medium', cor: 'text-amber-600' };
-  return { chave: 'low', cor: 'text-green-600' };
-}
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { HelpTooltip } from '@/components/help-tooltip';
 import { FormField } from '@/components/form-field';
 import { RegistoDiferido } from '@/components/registo-diferido';
+import { pedirConfirmacao } from '@/components/motivo-remocao';
+import { avaliarCoerenciaVitais, calcularNEWS2Detalhado } from '@org/shared';
+import { CAMPO_NEWS2, News2Previsto, corPontosNews2 as cor, news2Intervalo } from './news2-previsto';
 import { LeiturasMonitorPanel } from './leituras-monitor-panel';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -97,14 +95,12 @@ function ModalFooter({ onCancel, onConfirm, loading, disabled, labelConfirm }: {
   const t = useTranslations('vitals');
   return (
     <div className="flex gap-3">
-      <button onClick={onCancel}
-        className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-        style={{ padding: '11px' }}>{tc('cancel')}</button>
-      <button onClick={onConfirm} disabled={disabled || loading}
-        className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      <Button variant="secondary" className="flex-1" onClick={onCancel}
+        style={{ padding: '11px' }}>{tc('cancel')}</Button>
+      <Button variant="primary" className="flex-1" onClick={onConfirm} disabled={disabled || loading}
         style={{ padding: '11px' }}>
         {loading ? t('saving') : labelConfirm}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -124,7 +120,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   const [svFreqResp, setSvFreqResp] = useState('');
   const [svPeso, setSvPeso] = useState('');
   const [svNotas, setSvNotas] = useState('');
-  const [svAvpu, setSvAvpu] = useState('A');
+  const [svAvpu, setSvAvpu] = useState('');
   const [svO2Suplementar, setSvO2Suplementar] = useState(false);
   // PROD-09: dor como 5.º sinal vital.
   const [svDor, setSvDor] = useState('');
@@ -158,13 +154,19 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   }, [doenteId]);
 
   const svItens = [
-    { key: 'pressaoS', label: t('item.pressaoS'), val: svPressaoS, set: setSvPressaoS, ph: '120', min: 50, max: 250 },
-    { key: 'pressaoD', label: t('item.pressaoD'), val: svPressaoD, set: setSvPressaoD, ph: '80', min: 30, max: 150 },
-    { key: 'pulso', label: t('item.pulso'), val: svPulso, set: setSvPulso, ph: '72', min: 20, max: 300 },
-    { key: 'temp', label: t('item.temp'), val: svTemp, set: setSvTemp, ph: '36.5', min: 30, max: 45 },
-    { key: 'spO2', label: t('item.spO2'), val: svSpO2, set: setSvSpO2, ph: '98', min: 50, max: 100 },
-    { key: 'freqResp', label: t('item.freqResp'), val: svFreqResp, set: setSvFreqResp, ph: '16', min: 5, max: 60 },
+    { key: 'pressaoS', label: t('item.pressaoS'), val: svPressaoS, set: setSvPressaoS, ph: 'mmHg', min: 50, max: 250 },
+    { key: 'pressaoD', label: t('item.pressaoD'), val: svPressaoD, set: setSvPressaoD, ph: 'mmHg', min: 30, max: 150 },
+    { key: 'pulso', label: t('item.pulso'), val: svPulso, set: setSvPulso, ph: 'bpm', min: 20, max: 300 },
+    { key: 'temp', label: t('item.temp'), val: svTemp, set: setSvTemp, ph: '°C', min: 30, max: 45 },
+    { key: 'spO2', label: t('item.spO2'), val: svSpO2, set: setSvSpO2, ph: '%', min: 50, max: 100 },
+    { key: 'freqResp', label: t('item.freqResp'), val: svFreqResp, set: setSvFreqResp, ph: 'rpm', min: 5, max: 60 },
   ] as const;
+
+  const numOuNull = (v: string, f: (x: string) => number) => (v === '' || isNaN(f(v)) ? null : f(v));
+  const previsao = calcularNEWS2Detalhado({
+    pressaoSistolica: numOuNull(svPressaoS, parseInt), pulso: numOuNull(svPulso, parseInt), temperatura: numOuNull(svTemp, parseFloat),
+    saturacaoO2: numOuNull(svSpO2, parseInt), frequenciaRespiratoria: numOuNull(svFreqResp, parseInt), o2Suplementar: svO2Suplementar, avpu: svAvpu || null,
+  });
 
   const maxDor = svEscalaDor === 'cpot' ? 8 : 10;
   const validarSV = (): boolean => {
@@ -185,22 +187,36 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
 
   const submeterSinalVital = async () => {
     if (!validarSV()) return;
+    const corpo = {
+      pressaoSistolica:       svPressaoS  ? parseInt(svPressaoS)  : undefined,
+      pressaoDiastolica:      svPressaoD  ? parseInt(svPressaoD)  : undefined,
+      pulso:                  svPulso     ? parseInt(svPulso)     : undefined,
+      temperatura:            svTemp      ? parseFloat(svTemp)    : undefined,
+      saturacaoO2:            svSpO2      ? parseInt(svSpO2)      : undefined,
+      frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
+      peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
+      notas: svNotas || undefined,
+      avpu: svAvpu || undefined,
+      o2Suplementar: svO2Suplementar || undefined,
+      dor:       svDor !== '' ? parseInt(svDor) : undefined,
+      escalaDor: svDor !== '' ? svEscalaDor : undefined,
+    };
+    // QA-16: a mesma regra da API (libs/shared) — PAD ≥ PAS é erro; valores incompatíveis com a
+    // vida pedem confirmação explícita antes de chegarem ao NEWS2.
+    const { erro, criticos } = avaliarCoerenciaVitais(corpo);
+    if (erro) { toast.error(erro); return; }
+    if (criticos.length) {
+      const ok = await pedirConfirmacao({
+        titulo: t('criticalTitle'),
+        descricao: t('criticalBody', { valores: criticos.join(', ') }),
+        confirmar: t('criticalConfirm'),
+        cancelar: t('criticalCancel'),
+      });
+      if (!ok) return;
+    }
     setSalvando(true);
     try {
-      await api.post(`/sinais-vitais/${doenteId}`, {
-        pressaoSistolica:       svPressaoS  ? parseInt(svPressaoS)  : undefined,
-        pressaoDiastolica:      svPressaoD  ? parseInt(svPressaoD)  : undefined,
-        pulso:                  svPulso     ? parseInt(svPulso)     : undefined,
-        temperatura:            svTemp      ? parseFloat(svTemp)    : undefined,
-        saturacaoO2:            svSpO2      ? parseInt(svSpO2)      : undefined,
-        frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
-        peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
-        notas: svNotas || undefined,
-        avpu: svAvpu || undefined,
-        o2Suplementar: svO2Suplementar || undefined,
-        dor:       svDor !== '' ? parseInt(svDor) : undefined,
-        escalaDor: svDor !== '' ? svEscalaDor : undefined,
-      });
+      await api.post(`/sinais-vitais/${doenteId}`, { ...corpo, ...(criticos.length ? { confirmarValorCritico: true } : {}) });
       setSvDor('');
       toast.success(t('recorded'));
       setModalSinalVital(false);
@@ -222,7 +238,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           <span className="text-sm font-semibold text-slate-700">{t('title')}</span>
           <HelpTooltip chave="news2" />
           {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
-            <BtnAdd label={t('record')} onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setSvO2Suplementar(false); setModalSinalVital(true); }} />
+            <BtnAdd label={t('record')} onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu(''); setSvO2Suplementar(false); setModalSinalVital(true); }} />
           )}
         </div>
         <LeiturasMonitorPanel doenteId={doenteId} role={utilizador?.role} onValidadas={carregarSinaisVitais} />
@@ -387,18 +403,17 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 </thead>
                 <tbody>
                   {sinaisVitais.map((sv: any) => {
-                    const taCrit = sv.pressaoSistolica != null && (sv.pressaoSistolica >= 160 || sv.pressaoSistolica < 80);
-                    const pulsoCrit = sv.pulso != null && (sv.pulso > 120 || sv.pulso < 50);
-                    const tempCrit = sv.temperatura != null && (sv.temperatura > 38.5 || sv.temperatura < 35);
-                    const spO2Crit = sv.saturacaoO2 != null && sv.saturacaoO2 < 90;
+                    // UX-16: o destaque segue os pontos NEWS2 de cada valor (vermelho = 3, âmbar = 1–2),
+                    // em vez de limiares próprios que deixavam passar TA 40/200 ou pulso 0 sem cor.
+                    const sub = calcularNEWS2Detalhado(sv).subscores;
                     return (
                       <tr key={sv.id} className="border-b border-slate-50 hover:bg-slate-50">
                         <td className="py-2.5 text-slate-500 text-xs">{new Date(sv.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}<RegistoDiferido ocorridoEm={sv.data} registadoEm={sv.registadoEm} /></td>
-                        <td className={`py-2.5 text-center font-semibold ${taCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pressaoSistolica != null ? `${sv.pressaoSistolica}/${sv.pressaoDiastolica}` : '—'}</td>
-                        <td className={`py-2.5 text-center font-semibold ${pulsoCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pulso ?? '—'}</td>
-                        <td className={`py-2.5 text-center font-semibold ${tempCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
-                        <td className={`py-2.5 text-center font-semibold ${spO2Crit ? 'text-red-600' : 'text-slate-700'}`}>{sv.saturacaoO2 != null ? `${sv.saturacaoO2}%` : '—'}</td>
-                        <td className="py-2.5 text-center text-slate-600">{sv.frequenciaRespiratoria ?? '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${cor(sub.pressaoSistolica)}`}>{sv.pressaoSistolica != null ? `${sv.pressaoSistolica}/${sv.pressaoDiastolica}` : '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${cor(sub.pulso)}`}>{sv.pulso ?? '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${cor(sub.temperatura)}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${cor(sub.saturacaoO2)}`}>{sv.saturacaoO2 != null ? `${sv.saturacaoO2}%` : '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${cor(sub.frequenciaRespiratoria)}`}>{sv.frequenciaRespiratoria ?? '—'}</td>
                         <td className={`py-2.5 text-center font-semibold ${sv.dor != null && (sv.escalaDor === 'cpot' ? sv.dor > 2 : sv.dor >= 7) ? 'text-red-600' : 'text-slate-700'}`}
                             title={sv.escalaDor ?? undefined}>
                           {sv.dor != null ? `${sv.dor}/${sv.escalaDor === 'cpot' ? 8 : 10}` : '—'}
@@ -514,22 +529,29 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
       {modalSinalVital && (
         <Modal titulo={t('recordTitle')} onClose={() => setModalSinalVital(false)}>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
-            {svItens.map(({ key, label, val, set, ph }) => (
-              <FormField key={key} label={label} error={svErrors[key]}>
-                <input type="number" value={val} onChange={(e) => { set(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n[key]; return n; }); }} placeholder={ph}
-                  className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${svErrors[key] ? 'border-red-400' : 'border-slate-200'}`}
-                  style={{ padding: '8px 12px' }} />
-              </FormField>
-            ))}
+            {svItens.map(({ key, label, val, set, ph }) => {
+              const pontos = CAMPO_NEWS2[key] ? previsao.subscores[CAMPO_NEWS2[key]!] : undefined;
+              const borda = svErrors[key] ? 'border-red-400' : pontos === 3 ? 'border-red-400 bg-red-50' : pontos ? 'border-amber-400 bg-amber-50' : 'border-slate-200';
+              return (
+                <FormField key={key} label={label} error={svErrors[key]}>
+                  <input type="number" inputMode="decimal" value={val} onChange={(e) => { set(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n[key]; return n; }); }} placeholder={ph}
+                    aria-describedby={pontos ? `sv-pontos-${key}` : undefined}
+                    className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${borda}`}
+                    style={{ padding: '8px 12px' }} />
+                  {pontos ? <p id={`sv-pontos-${key}`} className={`text-xs font-medium ${pontos === 3 ? 'text-red-700' : 'text-amber-700'}`} style={{ marginTop: '4px' }}>{t('fieldPoints', { pontos })}</p> : null}
+                </FormField>
+              );
+            })}
           </div>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
             <div>
               <label htmlFor="fsinaisvi-0" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('weightKg')}</label>
-              <input id="fsinaisvi-0" type="number" aria-label={t('weightKg')} value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+              <input id="fsinaisvi-0" type="number" aria-label={t('weightKg')} value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder={t('weightPlaceholder')} inputMode="decimal" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
             </div>
             <div>
               <label htmlFor="fsinaisvi-1" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('avpuLabel')}</label>
               <select id="fsinaisvi-1" value={svAvpu} aria-label={t('avpuLabel')} onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
+                <option value="">{t('avpu.none')}</option>
                 {(['A', 'V', 'P', 'U'] as const).map((v) => <option key={v} value={v}>{t(`avpu.${v}`)}</option>)}
               </select>
             </div>
@@ -538,7 +560,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             <FormField label={t('pain', { max: maxDor })} error={svErrors['dor']}>
               <input id="fsinaisvi-dor" type="number" min={0} max={maxDor} aria-label={t('painIntensity')} value={svDor}
                 onChange={(e) => { setSvDor(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n['dor']; return n; }); }}
-                placeholder="0"
+                inputMode="numeric"
                 className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${svErrors['dor'] ? 'border-red-400' : 'border-slate-200'}`}
                 style={{ padding: '8px 12px' }} />
             </FormField>
@@ -565,9 +587,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             <label htmlFor="fsinaisvi-2" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{t('notes')}</label>
             <textarea id="fsinaisvi-2" rows={2} aria-label={t('notes')} value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder={t('notesPlaceholder')} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
           </div>
-          <div className="rounded-xl text-xs text-slate-500 bg-slate-50 border border-slate-100" style={{ padding: '10px 14px', marginBottom: '16px' }}>
-            {t('news2Hint')}
-          </div>
+          <News2Previsto previsao={previsao} />
           <ModalFooter onCancel={() => setModalSinalVital(false)} onConfirm={submeterSinalVital} loading={salvando} disabled={salvando} labelConfirm={tc('save')} />
         </Modal>
       )}

@@ -1,5 +1,5 @@
 // pdfmake usa ESM — evitar import real do módulo
-jest.mock('../common/pdf.service', () => ({
+jest.mock('../common/infra/pdf.service', () => ({
   PdfService: jest.fn().mockImplementation(() => ({
     gerarSumarioAlta: jest.fn().mockResolvedValue(Buffer.from('pdf')),
   })),
@@ -11,16 +11,16 @@ import { JwtService } from '@nestjs/jwt';
 import { PortalDoenteService } from './portal-doente.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { StorageService } from '../common/storage.service';
-import { PdfService } from '../common/pdf.service';
+import { StorageService } from '../common/infra/storage.service';
+import { PdfService } from '../common/infra/pdf.service';
 
 // Evitar hashing real nos testes
-jest.mock('../common/password', () => ({
+jest.mock('../common/seguranca/password', () => ({
   hashPassword: jest.fn().mockResolvedValue('hash-simulado'),
   verifyPassword: jest.fn(),
 }));
 
-import { hashPassword, verifyPassword } from '../common/password';
+import { hashPassword, verifyPassword } from '../common/seguranca/password';
 
 const mockPrisma = {
   // SEC-19: consentimento do portal registado
@@ -34,6 +34,7 @@ const mockPrisma = {
   medicacao: { findMany: jest.fn() },
   planoAlta: { findFirst: jest.fn() },
   sinalVital: { findMany: jest.fn() },
+  consulta: { findFirst: jest.fn() },
 };
 
 const mockJwt = { sign: jest.fn().mockReturnValue('jwt-token-simulado') };
@@ -103,9 +104,9 @@ describe('PortalDoenteService', () => {
       mockPrisma.portalDoente.findUnique.mockResolvedValue(null);
       mockPrisma.portalDoente.upsert.mockResolvedValue({ id: 'p1', doenteId: 'd1', email: 'test@test.com', ativo: true, criadoEm: new Date() });
 
-      const resultado = await service.criarAcesso('d1', 'test@test.com', 'senha123', 'admin-1');
+      const resultado = await service.criarAcesso('d1', 'test@test.com', 'nuvem violeta quarta', 'admin-1');
 
-      expect(hashPassword).toHaveBeenCalledWith('senha123', 12);
+      expect(hashPassword).toHaveBeenCalledWith('nuvem violeta quarta', 12);
       expect(mockPrisma.portalDoente.upsert).toHaveBeenCalledWith(
         expect.objectContaining({ create: expect.objectContaining({ passwordHash: 'hash-simulado' }) }),
       );
@@ -165,6 +166,27 @@ describe('PortalDoenteService', () => {
       mockPrisma.doente.findUnique.mockResolvedValue({ id: 'd1', nome: 'Ana', estado: 'internado' });
       const resultado = await service.me('d1');
       expect(resultado.nome).toBe('Ana');
+    });
+  });
+
+  // UX-28: o cartão "próxima consulta" do portal.
+  describe('proximaConsulta()', () => {
+    it('procura só consultas agendadas e futuras deste doente, a mais próxima primeiro', async () => {
+      mockPrisma.portalDoente.findUnique.mockResolvedValue({ id: 'p1', doenteId: 'd1' });
+      mockPrisma.consulta.findFirst.mockResolvedValue({ id: 'c1', especialidade: 'Cardiologia' });
+      expect(await service.proximaConsulta('p1')).toEqual({ id: 'c1', especialidade: 'Cardiologia' });
+      const args = mockPrisma.consulta.findFirst.mock.calls[0][0];
+      expect(args.where).toMatchObject({ doenteId: 'd1', estado: 'agendada', dataHora: { gte: expect.any(Date) } });
+      expect(args.orderBy).toEqual({ dataHora: 'asc' });
+      expect(args.select).not.toHaveProperty('notas'); // só o necessário para lá estar
+    });
+
+    it('sem consulta → null; sem sessão de portal → 401', async () => {
+      mockPrisma.portalDoente.findUnique.mockResolvedValue({ id: 'p1', doenteId: 'd1' });
+      mockPrisma.consulta.findFirst.mockResolvedValue(null);
+      expect(await service.proximaConsulta('p1')).toBeNull();
+      mockPrisma.portalDoente.findUnique.mockResolvedValue(null);
+      await expect(service.proximaConsulta('x')).rejects.toThrow(/Unauthorized/);
     });
   });
 

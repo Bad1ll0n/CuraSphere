@@ -1,15 +1,12 @@
 'use client';
 
-export const ROLES_MEDICO     = ['medico'];
-export const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
-export const ROLES_SAUDE      = ['tecnico_saude'];
-export const ROLES_FARMACIA   = ['farmaceutico'];
-export const ROLES_ADMIN      = ['administrativo'];
-export const ROLES_OPERACIONAL= ['operacional'];
-export const ROLES_TI         = ['ti'];
-export const ROLES_QUALIDADE  = ['qualidade'];
-export const ROLES_DIRECAO    = ['direcao'];
-export const ROLES_CLINICO    = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA];
+// ARQ-24: os papéis e as regras de acesso por rota vivem em libs/shared (permissoes.ts) — a mesma
+// matriz serve a web (menu e guarda de rota) e o mobile. Aqui fica só a arrumação do menu.
+import { REGRAS_ROTA, papelPermitido as papelPermitidoRegra } from '@org/shared';
+export {
+  ROLES_MEDICO, ROLES_ENFERMAGEM, ROLES_SAUDE, ROLES_FARMACIA, ROLES_ADMIN, ROLES_OPERACIONAL,
+  ROLES_TI, ROLES_QUALIDADE, ROLES_DIRECAO, ROLES_CLINICO,
+} from '@org/shared';
 
 /**
  * UX-09 — ordem por frequência de uso, por papel (o resto segue a ordem desta lista). Antes
@@ -28,9 +25,9 @@ export const navItems = [
   // ── Grupo A: Dashboards ──────────────────────────────────────────────
   {
     href: '/dashboard',
+    ...REGRAS_ROTA['/dashboard'],
     label: 'Dashboard',
     servicos: null,
-    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,9 +37,9 @@ export const navItems = [
   },
   {
     href: '/dashboard-executivo',
+    ...REGRAS_ROTA['/dashboard-executivo'],
     label: 'Dashboard Executivo',
     servicos: null,
-    roles: [...ROLES_DIRECAO],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,9 +49,9 @@ export const navItems = [
   },
   {
     href: '/dashboard-ti',
+    ...REGRAS_ROTA['/dashboard-ti'],
     label: 'Dashboard TI',
     servicos: null,
-    roles: [...ROLES_TI, ...ROLES_DIRECAO],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,9 +61,9 @@ export const navItems = [
   },
   {
     href: '/dashboard-qualidade',
+    ...REGRAS_ROTA['/dashboard-qualidade'],
     label: 'Dashboard Qualidade',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'enfermeiro'],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,9 +73,9 @@ export const navItems = [
   },
   {
     href: '/dashboard-qualidade/ia-insights',
+    ...REGRAS_ROTA['/dashboard-qualidade/ia-insights'],
     label: 'IA Insights',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, 'supervisor_enfermagem'],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,9 +85,9 @@ export const navItems = [
   },
   {
     href: '/risco-clinico',
+    ...REGRAS_ROTA['/risco-clinico'],
     label: 'Risco Clínico',
     servicos: null,
-    roles: [...ROLES_MEDICO, 'supervisor_enfermagem', ...ROLES_DIRECAO],
     grupo: 'A',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,9 +98,9 @@ export const navItems = [
   // ── Grupo B: Trabalho ────────────────────────────────────────────────
   {
     href: '/doentes',
+    ...REGRAS_ROTA['/doentes'],
     label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,10 +110,9 @@ export const navItems = [
   },
   {
     href: '/doentes-admin',
+    ...REGRAS_ROTA['/doentes-admin'],
     label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling', 'backoffice', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,9 +122,9 @@ export const navItems = [
   },
   {
     href: '/urgencia',
+    ...REGRAS_ROTA['/urgencia'],
     label: 'Urgência',
     servicos: ['urgencia'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,10 +134,9 @@ export const navItems = [
   },
   {
     href: '/sala-espera',
+    ...REGRAS_ROTA['/sala-espera'],
     label: 'Sala de Espera',
     servicos: ['urgencia'],
-    roles: [...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['front_desk', 'scheduling'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,9 +146,9 @@ export const navItems = [
   },
   {
     href: '/camas',
+    ...REGRAS_ROTA['/camas'],
     label: 'Camas',
     servicos: ['internamento', 'urgencia'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,9 +159,9 @@ export const navItems = [
   {
     // UX-30: a casa do turno — destino por omissão da enfermagem.
     href: '/meu-turno',
+    ...REGRAS_ROTA['/meu-turno'],
     label: 'O meu turno',
     servicos: null,
-    roles: [...ROLES_ENFERMAGEM, ...ROLES_MEDICO],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'B',
     icon: (
@@ -177,9 +172,9 @@ export const navItems = [
   },
   {
     href: '/mar',
+    ...REGRAS_ROTA['/mar'],
     label: 'MAR',
     servicos: null,
-    roles: [...ROLES_ENFERMAGEM],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,10 +184,9 @@ export const navItems = [
   },
   {
     href: '/consultas',
+    ...REGRAS_ROTA['/consultas'],
     label: 'Consultas',
     servicos: ['consultas_externas'],
-    roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,9 +196,9 @@ export const navItems = [
   },
   {
     href: '/bloco',
+    ...REGRAS_ROTA['/bloco'],
     label: 'Bloco Operatório',
     servicos: ['bloco_operatorio'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,9 +208,9 @@ export const navItems = [
   },
   {
     href: '/worklist',
+    ...REGRAS_ROTA['/worklist'],
     label: 'Worklist',
     servicos: null,
-    roles: [...ROLES_SAUDE, ...ROLES_MEDICO],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,9 +220,9 @@ export const navItems = [
   },
   {
     href: '/interconsultas',
+    ...REGRAS_ROTA['/interconsultas'],
     label: 'Interconsultas',
     servicos: null,
-    roles: [...ROLES_MEDICO],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,9 +232,9 @@ export const navItems = [
   },
   {
     href: '/tarefas',
+    ...REGRAS_ROTA['/tarefas'],
     label: 'Tarefas',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_OPERACIONAL],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,9 +244,9 @@ export const navItems = [
   },
   {
     href: '/iacs',
+    ...REGRAS_ROTA['/iacs'],
     label: 'IACS',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro', 'auxiliar'],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,9 +256,9 @@ export const navItems = [
   },
   {
     href: '/eventos-adversos',
+    ...REGRAS_ROTA['/eventos-adversos'],
     label: 'Eventos Adversos',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'enfermeiro', 'auxiliar'],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,9 +268,9 @@ export const navItems = [
   },
   {
     href: '/fisioterapia',
+    ...REGRAS_ROTA['/fisioterapia'],
     label: 'Fisioterapia',
     servicos: null,
-    roles: [...ROLES_SAUDE],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -286,10 +280,9 @@ export const navItems = [
   },
   {
     href: '/especialidades',
+    ...REGRAS_ROTA['/especialidades'],
     label: 'Especialidades',
     servicos: null,
-    roles: [...ROLES_SAUDE],
-    subRoles: ['nutricao_clinica', 'psicologia_clinica', 'reabilitacao_fala', 'tae'],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -299,9 +292,9 @@ export const navItems = [
   },
   {
     href: '/farmacia',
+    ...REGRAS_ROTA['/farmacia'],
     label: 'Farmácia',
     servicos: null,
-    roles: [...ROLES_FARMACIA],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,9 +304,9 @@ export const navItems = [
   },
   {
     href: '/banco-sangue',
+    ...REGRAS_ROTA['/banco-sangue'],
     label: 'Banco de Sangue',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_FARMACIA, ...ROLES_TI],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,10 +316,9 @@ export const navItems = [
   },
   {
     href: '/catalogo',
+    ...REGRAS_ROTA['/catalogo'],
     label: 'Catálogo',
     servicos: null,
-    roles: [...ROLES_FARMACIA, ...ROLES_ADMIN, ...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
-    subRolesByRole: { administrativo: ['procurement', 'billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -336,10 +328,9 @@ export const navItems = [
   },
   {
     href: '/fornecedores',
+    ...REGRAS_ROTA['/fornecedores'],
     label: 'Fornecedores',
     servicos: null,
-    roles: [...ROLES_FARMACIA, ...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['procurement'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,9 +340,9 @@ export const navItems = [
   },
   {
     href: '/operacional',
+    ...REGRAS_ROTA['/operacional'],
     label: 'Operacional',
     servicos: null,
-    roles: [...ROLES_OPERACIONAL],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,9 +352,9 @@ export const navItems = [
   },
   {
     href: '/equipamentos',
+    ...REGRAS_ROTA['/equipamentos'],
     label: 'Equipamentos',
     servicos: null,
-    roles: [...ROLES_OPERACIONAL, ...ROLES_TI, ...ROLES_DIRECAO],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,11 +364,10 @@ export const navItems = [
   },
   {
     href: '/recepcao',
+    ...REGRAS_ROTA['/recepcao'],
     label: 'Receção',
     servicos: null,
     excludeServicos: ['urgencia'],
-    roles: [...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'scheduling'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -387,11 +377,10 @@ export const navItems = [
   },
   {
     href: '/registos-administrativos',
+    ...REGRAS_ROTA['/registos-administrativos'],
     label: 'Registos Admin.',
     servicos: null,
     excludeServicos: ['urgencia'],
-    roles: [...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['front_desk', 'secretariado', 'backoffice'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -401,10 +390,9 @@ export const navItems = [
   },
   {
     href: '/faturacao',
+    ...REGRAS_ROTA['/faturacao'],
     label: 'Faturação',
     servicos: null,
-    roles: [...ROLES_ADMIN],
-    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -414,10 +402,9 @@ export const navItems = [
   },
   {
     href: '/rh',
+    ...REGRAS_ROTA['/rh'],
     label: 'Recursos Humanos',
     servicos: null,
-    roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
-    subRolesByRole: { administrativo: ['hr_specialist'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -427,10 +414,9 @@ export const navItems = [
   },
   {
     href: '/relatorios-financeiros',
+    ...REGRAS_ROTA['/relatorios-financeiros'],
     label: 'Relatórios',
     servicos: null,
-    roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
-    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -440,10 +426,9 @@ export const navItems = [
   },
   {
     href: '/tabela-atos',
+    ...REGRAS_ROTA['/tabela-atos'],
     label: 'Tabela de Atos',
     servicos: null,
-    roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
-    subRolesByRole: { administrativo: ['billing_officer'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -453,9 +438,9 @@ export const navItems = [
   },
   {
     href: '/conformidade',
+    ...REGRAS_ROTA['/conformidade'],
     label: 'Conformidade',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -465,9 +450,9 @@ export const navItems = [
   },
   {
     href: '/pedidos-internos',
+    ...REGRAS_ROTA['/pedidos-internos'],
     label: 'Pedidos Internos',
     servicos: null,
-    roles: [...ROLES_CLINICO, ...ROLES_ADMIN, ...ROLES_OPERACIONAL],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -477,9 +462,9 @@ export const navItems = [
   },
   {
     href: '/pedidos-ti',
+    ...REGRAS_ROTA['/pedidos-ti'],
     label: 'Pedidos TI',
     servicos: null,
-    roles: [...ROLES_TI],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,9 +474,9 @@ export const navItems = [
   },
   {
     href: '/incidentes-ti',
+    ...REGRAS_ROTA['/incidentes-ti'],
     label: 'Incidentes TI',
     servicos: null,
-    roles: [...ROLES_TI],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -500,10 +485,23 @@ export const navItems = [
     ),
   },
   {
+    // SEC-14: revisão dos acessos de emergência (break-glass) — direção, qualidade e chefia de enfermagem.
+    href: '/acessos-emergencia',
+    ...REGRAS_ROTA['/acessos-emergencia'],
+    label: 'Acessos de emergência',
+    servicos: null,
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    ),
+  },
+  {
     href: '/auditoria',
+    ...REGRAS_ROTA['/auditoria'],
     label: 'Auditoria',
     servicos: null,
-    roles: [...ROLES_TI, ...ROLES_QUALIDADE],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -513,10 +511,9 @@ export const navItems = [
   },
   {
     href: '/utilizadores',
+    ...REGRAS_ROTA['/utilizadores'],
     label: 'Utilizadores',
     servicos: null,
-    roles: [...ROLES_TI],
-    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -526,10 +523,9 @@ export const navItems = [
   },
   {
     href: '/configuracoes',
+    ...REGRAS_ROTA['/configuracoes'],
     label: 'Configurações',
     servicos: null,
-    roles: [...ROLES_TI],
-    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -539,10 +535,9 @@ export const navItems = [
   },
   {
     href: '/sistemas-externos',
+    ...REGRAS_ROTA['/sistemas-externos'],
     label: 'Conectores Externos',
     servicos: null,
-    roles: [...ROLES_TI, ...ROLES_DIRECAO],
-    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -552,10 +547,9 @@ export const navItems = [
   },
   {
     href: '/guidelines',
+    ...REGRAS_ROTA['/guidelines'],
     label: 'Guidelines Clínicas',
     servicos: null,
-    roles: [...ROLES_TI, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'supervisor_enfermagem'],
-    subRolesByRole: { ti: ['it_admin'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -566,9 +560,9 @@ export const navItems = [
   // ── Grupo C: Pessoal ─────────────────────────────────────────────────
   {
     href: '/atribuicoes',
+    ...REGRAS_ROTA['/atribuicoes'],
     label: 'Atribuições',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'B', // UX-09: trabalho clínico, não "Pessoal"
     icon: (
@@ -579,9 +573,9 @@ export const navItems = [
   },
   {
     href: '/passagem-turno',
+    ...REGRAS_ROTA['/passagem-turno'],
     label: 'Passagem de Turno',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'B',
     icon: (
@@ -592,10 +586,10 @@ export const navItems = [
   },
   {
     href: '/turno/medicacoes',
+    ...REGRAS_ROTA['/turno/medicacoes'],
     label: 'Timeline Medicação',
     servicos: null,
     // O auxiliar não administra medicação e a API (GET /medicacao/timeline) recusa-o: o menu tem de dizer o mesmo.
-    roles: [...ROLES_MEDICO, 'enfermeiro', ...ROLES_FARMACIA],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
@@ -606,9 +600,9 @@ export const navItems = [
   },
   {
     href: '/farmacia-clinica',
+    ...REGRAS_ROTA['/farmacia-clinica'],
     label: 'Farmácia Clínica',
     servicos: null,
-    roles: [...ROLES_FARMACIA, ...ROLES_MEDICO],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -618,9 +612,9 @@ export const navItems = [
   },
   {
     href: '/trocas',
+    ...REGRAS_ROTA['/trocas'],
     label: 'Trocas de Turno',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
@@ -631,9 +625,9 @@ export const navItems = [
   },
   {
     href: '/horarios',
+    ...REGRAS_ROTA['/horarios'],
     label: 'Horários',
     servicos: null,
-    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
     grupo: 'C',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -643,9 +637,9 @@ export const navItems = [
   },
   {
     href: '/ferias',
+    ...REGRAS_ROTA['/ferias'],
     label: 'As Minhas Férias',
     servicos: null,
-    roles: null,
     grupo: 'C',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -656,9 +650,9 @@ export const navItems = [
   // ── Grupo D: Comunicação ─────────────────────────────────────────────
   {
     href: '/comunicacao',
+    ...REGRAS_ROTA['/comunicacao'],
     label: 'Comunicação',
     servicos: null,
-    roles: null,
     grupo: 'D',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -668,10 +662,9 @@ export const navItems = [
   },
   {
     href: '/relatorios',
+    ...REGRAS_ROTA['/relatorios'],
     label: 'Relatórios DGS',
     servicos: null,
-    roles: [...ROLES_DIRECAO, ...ROLES_ADMIN, ...ROLES_TI],
-    subRolesByRole: { administrativo: ['backoffice'] },
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -681,9 +674,9 @@ export const navItems = [
   },
   {
     href: '/dietas',
+    ...REGRAS_ROTA['/dietas'],
     label: 'Dietas',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_OPERACIONAL],
     grupo: 'B',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -727,14 +720,7 @@ export function menuVisivel(item: (typeof navItems)[number], u: UtilizadorNav): 
  * o menu; não fecha a rota.
  */
 export function papelPermitido(item: (typeof navItems)[number], u: UtilizadorNav): boolean {
-  const it = item as any;
-  const roleOk = !item.roles || item.roles.includes(u.role) || (!!u.subRole && item.roles.includes(u.subRole));
-  const scoped = it.subRolesByRole?.[u.role] as string[] | undefined;
-  const subRoleOk = scoped
-    ? (!!u.subRole && scoped.includes(u.subRole))
-    : (!it.subRoles || it.subRoles.includes(u.subRole));
-  const notExcluded = !it.excludeSubRoles || !it.excludeSubRoles.includes(u.subRole);
-  return roleOk && subRoleOk && notExcluded;
+  return papelPermitidoRegra(item, u);
 }
 
 /** Devolve os menus visíveis para o utilizador, na ordem de definição. */
@@ -806,70 +792,7 @@ export function destinoInicial(u: UtilizadorNav & { subRole?: string | null }): 
   return '/';
 }
 
-export const roleLabel: Record<string, string> = {
-  medico:         'Médico',
-  enfermeiro:     'Enfermeiro',
-  auxiliar:       'Auxiliar',
-  tecnico_saude:  'Técnico de Saúde',
-  farmaceutico:   'Farmacêutico',
-  administrativo: 'Administrativo',
-  operacional:    'Operacional',
-  ti:             'TI',
-  qualidade:      'Qualidade',
-  direcao:        'Direção',
-};
-
-export const subRoleLabel: Record<string, string> = {
-  clinico_geral: 'Clínico Geral', cirurgiao_geral: 'Cirurgião Geral',
-  medico_anestesia: 'Anestesiologista', medico_imagem: 'Radiologista',
-  anatomia_patologica: 'Patologista', medico_gestor: 'Médico Gestor',
-  generalista: 'Generalista', supervisor_enfermagem: 'Supervisor',
-  triador: 'Triador', instrumentista: 'Instrumentista',
-  apoio_geral: 'Apoio Geral',
-  tae: 'TAE', reabilitacao_fisica: 'Fisioterapeuta',
-  reabilitacao_fala: 'Terapeuta da Fala', nutricao_clinica: 'Nutricionista',
-  psicologia_clinica: 'Psicólogo',
-  farmaceutico_hospitalar: 'Hospitalar', farmaceutico_oncologico: 'Oncológico',
-  tecnico_farmacia_assist: 'Técnico',
-  front_desk: 'Rececionista', secretariado: 'Secretário', backoffice: 'Backoffice',
-  scheduling: 'Agenda', billing_officer: 'Faturação', hr_specialist: 'RH', procurement: 'Compras',
-  transporte_interno: 'Maqueiro', cssd: 'Esterilização',
-  higiene_hospitalar: 'Limpeza', gestao_textil: 'Lavandaria',
-  equipamentos_medicos: 'Eng. Biomédico', facilities: 'Manutenção',
-  vigilancia: 'Segurança', seguranca_trabalho: 'SST',
-  it_admin: 'IT Admin', cio: 'CIO', his_erp: 'HIS/ERP',
-  database_admin: 'DBA', security_officer: 'Cibersegurança', dados_clinicos: 'BI/Dados',
-  quality_manager: 'Gestor Qualidade', compliance: 'Compliance',
-  infection_control: 'Controlo Infeção', internal_audit: 'Auditoria', dpo_role: 'DPO',
-  compliance_director: 'Dir. Qualidade',
-  ceo_hospitalar: 'Diretor Geral', diretor_medico: 'Dir. Clínico',
-  head_nurse: 'Dir. Enfermagem', cfo: 'Dir. Financeiro',
-  coo: 'Dir. Operacional', hr_director: 'Dir. RH',
-};
-
-export const servicoLabel: Record<string, string> = {
-  internamento:       'Internamento',
-  urgencia:           'Urgência',
-  bloco_operatorio:   'Bloco Operatório',
-  consultas_externas: 'Consultas Externas',
-  farmacia:           'Farmácia',
-  fisioterapia:       'Fisioterapia',
-  transporte:         'Transporte',
-  administrativo:     'Administrativo',
-};
-
-export const roleColor: Record<string, string> = {
-  medico:         'bg-violet-500/15 text-violet-400',
-  enfermeiro:     'bg-teal-500/15 text-teal-400',
-  auxiliar:       'bg-slate-500/15 text-slate-500',
-  tecnico_saude:  'bg-sky-500/15 text-sky-400',
-  farmaceutico:   'bg-emerald-500/15 text-emerald-400',
-  administrativo: 'bg-pink-500/15 text-pink-400',
-  operacional:    'bg-orange-500/15 text-orange-400',
-  ti:             'bg-cyan-500/15 text-cyan-400',
-  qualidade:      'bg-indigo-500/15 text-indigo-400',
-  direcao:        'bg-yellow-500/15 text-yellow-400',
-};
+export { roleLabel, subRoleLabel, servicoLabel, roleColor } from './papeis-labels';
 
 export function Avatar({ nome }: { nome: string }) {
   const initials = nome.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();

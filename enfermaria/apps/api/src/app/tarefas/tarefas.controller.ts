@@ -5,11 +5,12 @@ import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { EstadoTarefa } from '../common/enums';
+import { EstadoTarefa } from '../common/infra/enums';
 import { CriarTarefaDto } from './dto/criar-tarefa.dto';
 import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
 import { EditarTarefaDto } from './dto/editar-tarefa.dto';
-import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import { AcessoDoentePor } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @AcessoDoentePor('tarefa')
@@ -21,7 +22,7 @@ export class TarefasController {
   ) {}
 
   @Get('minhas')
-  listarMinhas(@Request() req: any) {
+  listarMinhas(@Request() req: PedidoAutenticado) {
     return this.tarefasService.listarPorResponsavel(req.user.sub);
   }
 
@@ -33,14 +34,14 @@ export class TarefasController {
   }
 
   @Get('doente/:doenteId')
-  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.tarefasService.listarPorDoente(doenteId);
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'administrativo')
   @Post()
-  criar(@Body() dto: CriarTarefaDto, @Request() req: any) {
+  criar(@Body() dto: CriarTarefaDto, @Request() req: PedidoAutenticado) {
     return this.tarefasService.criar({ ...dto, criadoPorId: req.user.sub } as any);
   }
 

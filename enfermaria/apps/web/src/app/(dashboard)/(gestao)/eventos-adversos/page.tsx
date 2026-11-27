@@ -6,6 +6,8 @@ import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ApenasNotificar } from './apenas-notificar';
+import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface EventoAdverso {
   id: string;
@@ -68,7 +70,7 @@ export default function EventosAdversosPage() {
   const [novoEstado, setNovoEstado] = useState('');
 
   const role = utilizador?.role ?? '';
-  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'qualidade'].includes(role);
+  const podeRegistar = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico', 'qualidade'].includes(role);
   // A lista (incidentes de todos os doentes) é da gestão de risco — igual à regra da API.
   const podeGerir = ['qualidade', 'direcao'].includes(role) || ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno'].includes(utilizador?.subRole ?? '');
 
@@ -83,13 +85,6 @@ export default function EventosAdversosPage() {
     },
     staleTime: 30_000,
     enabled: podeGerir,
-  });
-
-  const { data: doentesLista = [] } = useQuery<{ id: string; nome: string }[]>({
-    queryKey: ['doentes-lista-eventos'],
-    queryFn: () => api.get('/doentes?todos=true').then(r => (r.data?.data ?? r.data ?? []).map((d: any) => ({ id: d.id, nome: d.nome }))).catch(() => []),
-    enabled: modalNovo,
-    staleTime: 60_000,
   });
 
   const invalidar = () => qc.invalidateQueries({ queryKey: ['eventos-adversos'] });
@@ -107,8 +102,8 @@ export default function EventosAdversosPage() {
 
   const mutAcao = useMutation({
     mutationFn: ({ id, body }: { id: string; body: object }) => api.patch(`/eventos-adversos/${id}`, body),
-    onSuccess: () => { toast.success('Evento adverso actualizado'); setModalAcao(null); invalidar(); },
-    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar evento'),
+    onSuccess: () => { toast.success('Evento adverso atualizado'); setModalAcao(null); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atualizar evento'),
   });
 
   const criar = () => {
@@ -135,14 +130,13 @@ export default function EventosAdversosPage() {
           </p>
         </div>
         {podeRegistar && (
-          <button onClick={() => setModalNovo(true)}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          <Button variant="danger" className="flex gap-2" onClick={() => setModalNovo(true)}
             style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Registar Evento
-          </button>
+          </Button>
         )}
       </div>
 
@@ -289,7 +283,7 @@ export default function EventosAdversosPage() {
                 <select id="fpage-2" value={form.servicoId} onChange={e => setForm(f => ({ ...f, servicoId: e.target.value }))}
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   style={{ padding: '10px 14px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {SERVICOS.map(s => <option key={s} value={s} className="capitalize">{s}</option>)}
                 </select>
               </div>
@@ -303,12 +297,7 @@ export default function EventosAdversosPage() {
 
             <div style={{ marginBottom: '14px' }}>
               <label htmlFor="fpage-4" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente (opcional)</label>
-              <select id="fpage-4" value={form.doenteId} onChange={e => setForm(f => ({ ...f, doenteId: e.target.value }))}
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                style={{ padding: '10px 14px' }}>
-                <option value="">Sem doente associado</option>
-                {doentesLista.map(d => <option key={d.id} value={d.id}>{d.nome}</option>)}
-              </select>
+              <SeletorDoente id="fpage-4" value={form.doenteId} onChange={(id) => setForm(f => ({ ...f, doenteId: id }))} opcional="Sem doente associado" />
             </div>
 
             <div style={{ marginBottom: '14px' }}>
@@ -328,14 +317,12 @@ export default function EventosAdversosPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalNovo(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criar} disabled={mutCriar.isPending || !form.descricao.trim()}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalNovo(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="danger" className="flex-1" onClick={criar} disabled={mutCriar.isPending || !form.descricao.trim()}
                 style={{ padding: '11px' }}>
                 {mutCriar.isPending ? 'A guardar...' : 'Registar Evento'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -369,14 +356,12 @@ export default function EventosAdversosPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalAcao(null)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={guardarAcao} disabled={mutAcao.isPending}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+              <Button variant="secondary" className="flex-1" onClick={() => setModalAcao(null)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={guardarAcao} disabled={mutAcao.isPending}
                 style={{ padding: '11px' }}>
                 {mutAcao.isPending ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

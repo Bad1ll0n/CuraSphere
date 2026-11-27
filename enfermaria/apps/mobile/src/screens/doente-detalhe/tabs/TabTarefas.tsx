@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { shared } from '../styles';
 import EmptyState from '../../../components/EmptyState';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 
 const prioridadeCor: Record<string, string> = { urgente: '#ef4444', alta: '#f97316', media: '#eab308', baixa: '#22c55e' };
 const grupoLabel: Record<string, string> = { medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar' };
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function TabTarefas({ tarefas, emTurno, utilizadorId, meuGrupoChave, podeCriarTarefa, onHistorico, onCriarTarefa, onConcluirTarefa }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   return (
     <View style={s.secao}>
       <View style={shared.secaoHeader}>
@@ -57,13 +59,13 @@ export default function TabTarefas({ tarefas, emTurno, utilizadorId, meuGrupoCha
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 8, flexDirection: 'row', alignItems: 'center', gap: 10 },
   dot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   conteudo: { flex: 1 },
-  descricao: { fontSize: 14, color: '#334155', fontWeight: '500' },
-  meta: { fontSize: 13, color: '#94a3b8', marginTop: 3 },
+  descricao: { fontSize: LETRA.corpo, color: c.textoSecundario, fontWeight: '500' },
+  meta: { fontSize: 13, color: c.textoTenue, marginTop: 3 },
   concluirBotao: { backgroundColor: '#dcfce7', width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   concluirTexto: { color: '#16a34a', fontWeight: '700', fontSize: 16 },
-});
+}));

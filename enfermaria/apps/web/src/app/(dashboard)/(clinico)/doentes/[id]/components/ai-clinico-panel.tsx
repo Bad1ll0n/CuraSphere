@@ -6,6 +6,7 @@ import { AiFeedback } from '@/components/ai-feedback';
 import { AiConsentModal } from '@/components/ai-consent-modal';
 import { hasAiConsent } from '@/lib/ai-consent';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 interface Props {
   doenteId: string;
@@ -58,7 +59,7 @@ const ROLES_COM_ACESSO = ['medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_tu
 const FACTORES_ANALISADOS = [
   'Diagnóstico principal e comorbilidades',
   'Sinais vitais (últimas 3 medições)',
-  'Medicação activa e prescrições',
+  'Medicação ativa e prescrições',
   'Tarefas pendentes e alertas clínicos',
   'Notas de turno recentes',
   'Avaliações de escala (Braden, Morse)',
@@ -271,7 +272,7 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
 
                 {isMedico && (resposta.padroesDetectados ?? []).length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Padrões Detectados</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Padrões Detetados</p>
                     <ul className="space-y-2">
                       {resposta.padroesDetectados!.map((p, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -349,12 +350,11 @@ export function AiClinicoPanel({ doenteId, utilizador }: Props) {
             {/* Estado inicial: sem streaming e sem resposta */}
             {!streaming && !textoStream && !resposta && (
               <div className="text-center" style={{ padding: '16px' }}>
-                <button
+                <Button variant="primary"
                   onClick={analisar}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
                   style={{ padding: '10px 24px' }}>
                   Analisar com IA
-                </button>
+                </Button>
               </div>
             )}
 

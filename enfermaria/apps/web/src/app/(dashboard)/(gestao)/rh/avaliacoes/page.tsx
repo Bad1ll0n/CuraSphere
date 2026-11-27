@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { Button } from '@/components/ui';
 
 interface Avaliacao {
   id: string;
@@ -51,6 +53,7 @@ function Estrelas({ valor }: { valor: number }) {
 const PERIODOS = ['2026-Anual', '2026-S1', '2026-S2', '2025-Anual', '2025-S1', '2025-S2'];
 
 export default function AvaliacoesPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const qc = useQueryClient();
   const toast = useToast();
   const [filtroPeriodo, setFiltroPeriodo] = useState('');
@@ -101,14 +104,13 @@ export default function AvaliacoesPage() {
           <h1 className="text-2xl font-bold text-slate-900">Avaliações de Desempenho</h1>
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>Acompanhe e registe avaliações por período e colaborador</p>
         </div>
-        <button onClick={() => setModal(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+        <Button variant="primary" className="flex gap-2" onClick={() => setModal(true)}
           style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Nova Avaliação
-        </button>
+        </Button>
       </div>
 
       {/* Filtros */}
@@ -179,12 +181,10 @@ export default function AvaliacoesPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   {a.estado === 'rascunho' && (
                     <>
-                      <button onClick={() => setEditando(a)}
-                        className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                        style={{ padding: '6px 12px' }}>Editar</button>
-                      <button onClick={() => mutAtualizar.mutate({ id: a.id, dto: { estado: 'finalizada' } })}
-                        className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                        style={{ padding: '6px 12px' }}>Finalizar</button>
+                      <Button variant="secondary" size="sm" onClick={() => setEditando(a)}
+                        style={{ padding: '6px 12px' }}>Editar</Button>
+                      <Button variant="primary" size="sm" onClick={() => mutAtualizar.mutate({ id: a.id, dto: { estado: 'finalizada' } })}
+                        style={{ padding: '6px 12px' }}>Finalizar</Button>
                     </>
                   )}
                   {a.estado === 'finalizada' && (
@@ -210,7 +210,7 @@ export default function AvaliacoesPage() {
                 <select id="fpage-0" value={form.utilizadorId} onChange={e => setForm(f => ({ ...f, utilizadorId: e.target.value }))}
                   className="mt-1 w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 12px' }}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">Selecionar...</option>
                   {colaboradores.map((c: Colaborador) => <option key={c.id} value={c.id}>{c.nome} ({ROLE_LABEL[c.role] ?? c.role})</option>)}
                 </select>
               </div>
@@ -234,7 +234,7 @@ export default function AvaliacoesPage() {
                 <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
-                    <button key={n} type="button" onClick={() => setForm(f => ({ ...f, pontuacaoGeral: n }))}
+                    <button aria-label={tA11y('rating', { n })} aria-pressed={n <= form.pontuacaoGeral} key={n} type="button" onClick={() => setForm(f => ({ ...f, pontuacaoGeral: n }))}
                       className="transition-transform hover:scale-110">
                       <svg className={`w-7 h-7 ${n <= form.pontuacaoGeral ? 'text-amber-400' : 'text-slate-200'}`} fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -264,15 +264,14 @@ export default function AvaliacoesPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '24px' }}>
-              <button onClick={() => setModal(false)}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
-              <button onClick={() => mutCriar.mutate(form)}
+              <Button variant="secondary" onClick={() => setModal(false)}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
+              <Button variant="primary" onClick={() => mutCriar.mutate(form)}
                 disabled={!form.utilizadorId || mutCriar.isPending}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '9px 20px' }}>
                 {mutCriar.isPending ? 'A criar...' : 'Criar Avaliação'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -289,7 +288,7 @@ export default function AvaliacoesPage() {
                 <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pontuação Geral</span>
                 <div className="flex gap-2 items-center" style={{ marginTop: '8px' }}>
                   {[1, 2, 3, 4, 5].map(n => (
-                    <button key={n} type="button"
+                    <button aria-label={tA11y('rating', { n })} key={n} type="button"
                       onClick={() => setEditando(e => e ? { ...e, pontuacaoGeral: n } : e)}
                       className="transition-transform hover:scale-110">
                       <svg className={`w-7 h-7 ${n <= editando.pontuacaoGeral ? 'text-amber-400' : 'text-slate-200'}`} fill="currentColor" viewBox="0 0 24 24">
@@ -322,10 +321,9 @@ export default function AvaliacoesPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2" style={{ marginTop: '24px' }}>
-              <button onClick={() => setEditando(null)}
-                className="text-sm font-medium text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '9px 18px' }}>Cancelar</button>
-              <button
+              <Button variant="secondary" onClick={() => setEditando(null)}
+                style={{ padding: '9px 18px' }}>Cancelar</Button>
+              <Button variant="primary"
                 onClick={() => mutAtualizar.mutate({ id: editando.id, dto: {
                   pontuacaoGeral: editando.pontuacaoGeral,
                   pontosFortes: editando.pontosFortes,
@@ -333,10 +331,10 @@ export default function AvaliacoesPage() {
                   observacoes: editando.observacoes,
                 }})}
                 disabled={mutAtualizar.isPending}
-                className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                
                 style={{ padding: '9px 20px' }}>
                 {mutAtualizar.isPending ? 'A guardar...' : 'Guardar'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

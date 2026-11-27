@@ -22,7 +22,8 @@
 
 ### Entrada — `POST /v1/hl7/receive`
 
-Autenticação: cabeçalho `x-hl7-token` igual a `HL7_API_TOKEN` (comparação em tempo constante).
+Autenticação: cabeçalho `x-hl7-token` igual a `HL7_API_TOKEN` (comparação em tempo constante) **e** origem
+em `HL7_ORIGENS_PERMITIDAS` (IPs/CIDR do motor de integração; obrigatório em produção — fora da lista, 403).
 Corpo: a mensagem HL7 (ER7, segmentos separados por `\r`; `\n` e os delimitadores MLLP também
 são aceites). A resposta é JSON com `processado`, `efeito`, `erro`, `doenteId` e `ack` (o ACK HL7:
 `MSA|AA`, `AE` ou `AR`).

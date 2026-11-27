@@ -3,7 +3,7 @@ import { Injectable, Logger, NotFoundException, ConflictException, BadRequestExc
 import * as crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
-import { AI_MODELS } from '../common/ai-models';
+import { AI_MODELS } from '../common/ia/ai-models';
 import { TenantContextService } from '../prisma/tenant-context.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { StewardshipService } from '../stewardship/stewardship.service';
@@ -19,16 +19,23 @@ import { detetarConflitoAlergia, nomeReconhecido } from './alergias.helper';
 import { parsearFrequenciaHoras, tomasPlaneadas, classificarTomas, horaLocal, JANELA_ANTES_MS, JANELA_DEPOIS_MS } from './posologia';
 import { eAltoRisco } from './alto-risco';
 import { eSOS, frequenciaValida, parsearDose, tomasPorDia, verificarDoseMaxima } from './limites-dose';
-import { inicioDoDiaClinico } from '../common/dia-clinico.helper';
-import { verificarTotpAssinatura } from '../common/totp-assinatura';
+import { camposPrescricaoEstruturada, doseComposta, type EntradaPrescricao } from './prescricao-entrada';
+
+import { inicioDoDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { verificarTotpAssinatura } from '../common/seguranca/totp-assinatura';
 
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
-import { ultimasAdministracoes } from '../common/ultimos-registos';
-import { iaPermitida } from '../common/funcoes-ia';
-import { tfgCkdEpi2021 } from '../common/antropometria';
-import { reavaliacaoDorAte } from '../common/vigilancia';
-import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/hora-do-ato';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
+import { ultimasAdministracoes } from '../common/clinico/ultimos-registos';
+import { iaPermitida } from '../common/ia/funcoes-ia';
+import { tfgCkdEpi2021 } from '../common/clinico/antropometria';
+import { reavaliacaoDorAte } from '../common/clinico/vigilancia';
+import { exigirCertosSeDiferido, minutosAoRegistoMaisProximo, resolverHoraDoAto } from '../common/clinico/hora-do-ato';
+import { registarFalha } from '../common/infra/falhas';
+import { assinarQR } from './qr-assinatura';
+import { verificarValidacaoFarmaceutica } from './politica-validacao';
+import { descontinuarMedicacao } from './descontinuacao';
+import { HORAS_TURNO } from '@org/shared';
 /** Estado de verificação de um dos cinco certos. */
 export type EstadoCerto = 'ok' | 'falha' | 'nao_verificado';
 
@@ -113,7 +120,7 @@ export class MedicacaoService {
         where: { doenteId, parametro: { contains: 'Creatinina', mode: 'insensitive' } },
         orderBy: { registadoEm: 'desc' },
         select: { valor: true, unidade: true },
-      }).catch(() => null) ?? null,
+      }).catch(registarFalha('medicacao:creatinina-tfg')) ?? null,
       this.prisma.doente.findUnique({ where: { id: doenteId }, select: { dataNascimento: true, sexo: true } }),
     ]);
     if (!creatinina || !Number.isFinite(Number(creatinina.valor))) return null;
@@ -140,26 +147,8 @@ export class MedicacaoService {
     });
   }
 
-  async prescrever(data: {
-    doenteId: string;
-    nome: string;
-    dose: string;
-    via: string;
-    frequencia: string;
-    prescritoPorId: string;
-    forcarApesarDeAlergia?: boolean;
-    justificativaOverride?: string;
-    forcarDoseAcimaMaximo?: boolean;
-    justificativaDose?: string;
-    intervaloMinimoH?: number;
-    maxDosesDia?: number;
-    catalogoId?: string;
-    justificacaoForaCatalogo?: string;
-    forcarDuplicacao?: boolean;
-    justificativaDuplicacao?: string;
-    forcarInteracao?: boolean;
-    justificativaInteracao?: string;
-  }) {
+  async prescrever(entrada: EntradaPrescricao) {
+    const data = { ...entrada, dose: doseComposta(entrada) }; // UX-17: ver prescricao-entrada.ts
     // QA-07/QA-08: plausibilidade antes de tudo (dose legível, frequência reconhecida, SOS
     // com intervalo mínimo, dose dentro dos máximos de adulto ou override justificado).
     const doseVerificada = this.verificarPlausibilidade(data);
@@ -261,6 +250,7 @@ export class MedicacaoService {
       }
 
       const {
+        duracaoDias, indicacao,
         forcarApesarDeAlergia: _, justificativaOverride: __, forcarDoseAcimaMaximo: ___, justificativaDose: ____,
         catalogoId: _c, justificacaoForaCatalogo: _j, forcarDuplicacao: _d, justificativaDuplicacao: _jd,
         forcarInteracao: _i, justificativaInteracao: _ji,
@@ -271,6 +261,7 @@ export class MedicacaoService {
       const medicacao = await tx.medicacao.create({
         data: {
           ...dadosMedicacao,
+          ...camposPrescricaoEstruturada({ indicacao, duracaoDias }),
           overrideAlergia: houveOverride,
           overrideDose: !!doseVerificada,
           catalogoId: item?.id ?? null,
@@ -395,6 +386,7 @@ export class MedicacaoService {
     atestadoPeloEnfermeiro?: boolean;
     qrPayload?: string;
     justificacaoSOS?: string;
+    justificacaoNaoValidada?: string; // QA-15
     leituraPulseira?: string;
     leituraMedicamento?: string;
     leituraExcecao?: string;
@@ -437,6 +429,7 @@ export class MedicacaoService {
       if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
       const minutosProxima = minutosAoRegistoMaisProximo(medicacao.registos.map((r) => r.administradoEm), momento);
       if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
+      const validacao = verificarValidacaoFarmaceutica({ estadoValidacao: medicacao.estadoValidacao, assinadoEm: medicacao.assinadoEm, jaAdministrada: medicacao.registos.length > 0 }, data.justificacaoNaoValidada);
 
       // 1. Doente certo — agora incondicional.
       if (data.doenteId !== medicacao.doenteId) {
@@ -550,6 +543,7 @@ export class MedicacaoService {
           administradoEm: momento,
           observacoes: data.observacoes,
           ...(sosForaDoLimite && { justificacaoSOS: data.justificacaoSOS!.trim().slice(0, 500) }),
+          justificacaoNaoValidada: validacao.justificacaoNaoValidada,
           // Resultado REAL, não um literal: só é `true` se os 5 foram mesmo confirmados.
           verificacao5Certas: todosConfirmados,
           certosVerificados: certosComLeitura,
@@ -565,10 +559,10 @@ export class MedicacaoService {
           administradoPor: { select: { id: true, nome: true } },
           medicacao: { select: { nome: true, dose: true, via: true } },
         },
-      });
+      }).then((r) => ({ ...r, avisos: validacao.avisos }));
     }, { isolationLevel: 'Serializable' });
 
-    this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(() => null);
+    this.webhooks.dispatcharEvento('medicacao.administrada', { medicacaoId: data.medicacaoId, doenteId: data.doenteId }).catch(registarFalha('webhook:medicacao.administrada'));
     return registo;
   }
 
@@ -659,15 +653,9 @@ export class MedicacaoService {
     });
   }
 
-  async descontinuar(id: string) {
-    const medicacao = await this.prisma.medicacao.findUnique({ where: { id } });
-    if (!medicacao) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
-
-    return this.prisma.medicacao.update({
-      where: { id },
-      data: { ativo: false, terminadoEm: new Date() },
-      select: { id: true, nome: true, ativo: true, terminadoEm: true },
-    });
+  /** QA-14: com autor e motivo; se não for o médico, o prescritor confirma (descontinuacao.ts). */
+  descontinuar(id: string, autor: { id: string; role: string }, motivo: string) {
+    return descontinuarMedicacao(this.prisma, id, autor, motivo);
   }
 
   async historicoAdministracao(doenteId: string) {
@@ -906,8 +894,7 @@ export class MedicacaoService {
    * cama — antes devolvia os fármacos do hospital inteiro.
    */
   async timeline(servico: string, turno: 'manha' | 'tarde' | 'noite', dataStr?: string) {
-    const TURNOS = { manha: { inicio: 8, fim: 16 }, tarde: { inicio: 16, fim: 24 }, noite: { inicio: 0, fim: 8 } };
-    const { inicio, fim } = TURNOS[turno];
+    const { inicio, fim } = HORAS_TURNO[turno]; // UX-12: a definição única (libs/shared)
 
     // `data` vem como YYYY-MM-DD: meio-dia UTC desse dia cai sempre no mesmo dia clínico.
     const dataRef = dataStr && /^\d{4}-\d{2}-\d{2}$/.test(dataStr) ? new Date(`${dataStr}T12:00:00Z`) : new Date();
@@ -1064,17 +1051,6 @@ export class MedicacaoService {
 
   // ── Verificação QR 5 Certos ─────────────────────────────────────────────────
 
-  /** Segredo de assinatura das etiquetas QR. Cai no JWT_SECRET (obrigatório no boot). */
-  private get qrSecret(): string {
-    const secret = process.env.MEDICACAO_QR_SECRET || process.env.JWT_SECRET;
-    if (!secret) throw new Error('MEDICACAO_QR_SECRET/JWT_SECRET não configurado');
-    return secret;
-  }
-
-  private assinarQR(corpo: string): string {
-    return crypto.createHmac('sha256', this.qrSecret).update(corpo).digest('base64url');
-  }
-
   /**
    * Gera a etiqueta QR **assinada** de uma medicação. Sem isto o payload do QR era JSON
    * simples produzido pelo cliente — qualquer pessoa podia fabricar um.
@@ -1112,7 +1088,7 @@ export class MedicacaoService {
       via: medicacao.via,
       emitidoEm: new Date().toISOString(),
     })).toString('base64url');
-    return { qrPayload: `${corpo}.${this.assinarQR(corpo)}` };
+    return { qrPayload: `${corpo}.${assinarQR(corpo)}` };
   }
 
   /** Valida a assinatura e devolve o conteúdo do QR, ou `null` se não for de confiança. */
@@ -1123,7 +1099,7 @@ export class MedicacaoService {
     if (partes.length !== 2) return null;
     const [corpo, assinatura] = partes;
 
-    const esperada = this.assinarQR(corpo);
+    const esperada = assinarQR(corpo);
     const a = Buffer.from(assinatura);
     const b = Buffer.from(esperada);
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;

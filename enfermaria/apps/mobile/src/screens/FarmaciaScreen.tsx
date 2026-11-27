@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform,
+  ActivityIndicator, RefreshControl, Alert, Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import i18n from '../lib/i18n';
+import { estilosTematicos, LETRA, useEsquema } from '../lib/tema';
 
 interface StockItem {
   id: string;
@@ -41,6 +42,7 @@ const prioridadeCor: Record<string, string> = {
 };
 
 export default function FarmaciaScreen({ utilizador, onVoltar }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [tab, setTab] = useState<'pedidos' | 'stock'>('pedidos');
   const [stock, setStock] = useState<StockItem[]>([]);
   const [pedidos, setPedidos] = useState<PedidoFarmacia[]>([]);
@@ -162,32 +164,32 @@ export default function FarmaciaScreen({ utilizador, onVoltar }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f5f9' },
+const s = estilosTematicos((c) => ({
+  container: { flex: 1, backgroundColor: c.fundo },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#2563eb', paddingTop: 52, paddingBottom: 16, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   voltarBtn: { padding: 4 },
   headerTitulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: '#bfdbfe', marginTop: 2 },
-  tabs: { flexDirection: 'row', backgroundColor: '#fff', paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center' },
+  tabs: { flexDirection: 'row', backgroundColor: c.superficie, paddingHorizontal: 16, paddingVertical: 10, gap: 8, borderBottomWidth: 1, borderBottomColor: c.borda },
+  tab: { flex: 1, paddingVertical: 8, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center' },
   tabAtivo: { backgroundColor: '#2563eb' },
-  tabTexto: { fontSize: 14, fontWeight: '600', color: '#64748b' },
+  tabTexto: { fontSize: LETRA.corpo, fontWeight: '600', color: c.textoTenue },
   tabTextoAtivo: { color: '#fff' },
   vazio: { padding: 40, alignItems: 'center' },
-  vazioTexto: { color: '#94a3b8', fontSize: 15 },
-  cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
+  vazioTexto: { color: c.textoTenue, fontSize: 15 },
+  cartao: { backgroundColor: c.superficie, marginHorizontal: 16, marginTop: 12, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   cartaoAlerta: { borderLeftWidth: 4, borderLeftColor: '#ef4444' },
   cartaoTopo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b', flex: 1, marginRight: 8 },
-  cartaoSub: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  cartaoTitulo: { fontSize: 15, fontWeight: '700', color: c.texto, flex: 1, marginRight: 8 },
+  cartaoSub: { fontSize: 13, color: c.textoTenue, marginTop: 2 },
   badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  badgeTexto: { fontSize: 13, fontWeight: '600' },
+  badgeTexto: { fontSize: LETRA.corpo, fontWeight: '600' },
   priorBadge: { marginTop: 6, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
-  priorTexto: { fontSize: 13, fontWeight: '600', textTransform: 'capitalize' },
+  priorTexto: { fontSize: LETRA.corpo, fontWeight: '600', textTransform: 'capitalize' },
   stockRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
-  stockQtd: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
-  stockMin: { fontSize: 13, color: '#94a3b8' },
+  stockQtd: { fontSize: 15, fontWeight: '700', color: c.texto },
+  stockMin: { fontSize: 13, color: c.textoTenue },
   btnDispensar: { marginTop: 10, backgroundColor: '#dcfce7', paddingVertical: 8, borderRadius: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 },
-  btnDispensarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 14 },
-});
+  btnDispensarTexto: { color: '#16a34a', fontWeight: '700', fontSize: LETRA.corpo },
+}));

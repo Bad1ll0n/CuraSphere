@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { chaveDiaClinico } from '../common/dia-clinico.helper';
+import { chaveDiaClinico } from '../common/clinico/dia-clinico.helper';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { turnoEmCurso } from '../common/clinico/turno-em-curso';
 @Injectable()
 export class AtribuicoesService {
   constructor(
@@ -32,18 +33,11 @@ export class AtribuicoesService {
 
   // Retorna o turno ativo agora (ou do dia de hoje pelo tipo)
   async turnoAtivo() {
-    const agora = new Date();
-    const hora = agora.getHours();
-
-    // manha: 7-15, tarde: 15-23, noite: 23-7
-    let tipo: string;
-    if (hora >= 7 && hora < 15) tipo = 'manha';
-    else if (hora >= 15 && hora < 23) tipo = 'tarde';
-    else tipo = 'noite';
-
-    const diaStr = chaveDiaClinico(agora);
-    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
-    const dataFim = new Date(diaStr + 'T23:59:59.999Z');
+    // UX-12: antes "manhã 7–15, tarde 15–23, noite 23–7" — outra definição, só aqui.
+    const t = turnoEmCurso();
+    const tipo = t.tipo;
+    const dataInicio = t.data.gte;
+    const dataFim = t.data.lte;
 
     const turno = await this.prisma.horarioTurno.findFirst({
       where: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },

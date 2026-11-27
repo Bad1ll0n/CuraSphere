@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { Button } from '@/components/ui';
 
 export default function PerfilPage() {
   const { utilizador, logout, registerPasskey } = useAuth();
@@ -122,8 +123,8 @@ export default function PerfilPage() {
       setMsgPwd({ tipo: 'erro', texto: 'As passwords não coincidem' });
       return;
     }
-    if (novaPassword.length < 8) {
-      setMsgPwd({ tipo: 'erro', texto: 'A nova password deve ter pelo menos 8 caracteres' });
+    if ([...novaPassword].length < 12) { // SEC-25
+      setMsgPwd({ tipo: 'erro', texto: 'A nova password deve ter pelo menos 12 caracteres (uma frase curta serve)' });
       return;
     }
     setLoadingPwd(true);
@@ -248,14 +249,13 @@ export default function PerfilPage() {
                     className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xl text-center tracking-[0.5em] font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
                     placeholder="000000"
                   />
-                  <button
+                  <Button variant="primary" className="shrink-0"
                     onClick={ativarMfa}
                     disabled={loadingAtivar || codigoAtivacao.length !== 6}
-                    className="shrink-0 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-colors"
                     style={{ padding: '12px 20px' }}
                   >
                     {loadingAtivar ? 'A verificar...' : 'Confirmar'}
-                  </button>
+                  </Button>
                 </div>
                 <button
                   onClick={() => { setQrCode(null); setSecret(''); setCodigoAtivacao(''); }}
@@ -371,14 +371,13 @@ export default function PerfilPage() {
                 maxLength={50}
                 className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
               />
-              <button
+              <Button variant="primary" size="sm" className="shrink-0"
                 onClick={adicionarPasskey}
                 disabled={loadingRegPasskey}
-                className="shrink-0 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-xl transition-colors"
                 style={{ padding: '10px 16px' }}
               >
                 {loadingRegPasskey ? 'A registar...' : 'Registar'}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -430,14 +429,13 @@ export default function PerfilPage() {
               </div>
             )}
 
-            <button
+            <Button variant="primary"
               type="submit"
               disabled={loadingPwd}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-colors"
               style={{ padding: '12px 24px', marginTop: '20px' }}
             >
               {loadingPwd ? 'A guardar...' : 'Alterar password'}
-            </button>
+            </Button>
           </form>
         </div>
       </section>

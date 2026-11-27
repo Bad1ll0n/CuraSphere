@@ -1,5 +1,8 @@
 'use client';
 
+import { formatarDiaMes } from '@/lib/formatar';
+import { useTranslations } from 'next-intl';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { SkeletonCard } from '@/components/skeleton';
@@ -111,6 +114,7 @@ function CustomTooltipFaturacao({ active, payload, label }: any) {
 }
 
 export default function DashboardExecutivo() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const qc = useQueryClient();
   const { data: dados, isLoading: loading, dataUpdatedAt } = useQuery<DashExec>({
     queryKey: ['dashboard-executivo'],
@@ -146,7 +150,7 @@ export default function DashboardExecutivo() {
             </svg>
             Exportar CSV
           </a>
-          <button onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-500 hover:text-slate-700 transition-colors" title="Atualizar">
+          <button aria-label={tA11y('refresh')} onClick={() => qc.invalidateQueries({ queryKey: ['dashboard-executivo'] })} className="text-slate-500 hover:text-slate-700 transition-colors" title="Atualizar">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -205,7 +209,7 @@ export default function DashboardExecutivo() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                  <XAxis dataKey="data" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => v.slice(5)} />
+                  <XAxis dataKey="data" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={formatarDiaMes} />
                   <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
                   <Tooltip content={<CustomTooltipOcupacao />} />
                   <Area type="monotone" dataKey="ocupadas" stroke="#6366f1" strokeWidth={2} fill="url(#gradOcup)" dot={false} activeDot={{ r: 4 }} />
@@ -306,7 +310,7 @@ export default function DashboardExecutivo() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
-                  <span className="text-sm text-slate-600">Ausências Activas</span>
+                  <span className="text-sm text-slate-600">Ausências Ativas</span>
                   <span className={`text-sm font-bold ${(dados.ausenciasAtivas ?? 0) > 0 ? 'text-red-600' : 'text-slate-500'}`}>
                     {dados.ausenciasAtivas ?? 0}
                   </span>

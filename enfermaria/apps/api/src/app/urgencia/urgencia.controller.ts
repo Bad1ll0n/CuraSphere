@@ -11,7 +11,8 @@ import { CompletarPreNotificacaoDto } from './dto/completar-pre-notificacao.dto'
 import { ReTriagemDto } from './dto/re-triagem.dto';
 import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
 import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
-import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import { AcessoDoenteIsento } from '../doentes/acesso-doente.decorator';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('urgencia')
@@ -21,14 +22,14 @@ export class UrgenciaController {
   @AcessoDoenteIsento('entrada na urgência: o doente chega sem atribuição a nenhum profissional')
   @Post('episodio')
   @Roles('enfermeiro')
-  registarEntrada(@Body() dto: RegistarEntradaUrgenciaDto, @Request() req: any) {
+  registarEntrada(@Body() dto: RegistarEntradaUrgenciaDto, @Request() req: PedidoAutenticado) {
     return this.service.registarEntrada(dto, req.user.sub);
   }
 
   @AcessoDoenteIsento('entrada na urgência: o doente chega sem atribuição a nenhum profissional')
   @Post('pre-notificacao')
   @Roles('enfermeiro', 'administrativo', 'medico')
-  preNotificar(@Body() dto: PreNotificacaoDto, @Request() req: any) {
+  preNotificar(@Body() dto: PreNotificacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.preNotificar(dto, req.user.sub);
   }
 
@@ -41,19 +42,19 @@ export class UrgenciaController {
 
   @Patch(':id/re-triagem')
   @Roles('enfermeiro', 'medico')
-  reTriar(@Param('id') id: string, @Body() dto: ReTriagemDto, @Request() req: any) {
+  reTriar(@Param('id') id: string, @Body() dto: ReTriagemDto, @Request() req: PedidoAutenticado) {
     return this.service.reTriar(id, dto, req.user.sub);
   }
 
   @Post(':id/atualizacao')
   @Roles('enfermeiro', 'medico', 'administrativo')
-  adicionarAtualizacao(@Param('id') id: string, @Body() dto: AdicionarAtualizacaoDto, @Request() req: any) {
+  adicionarAtualizacao(@Param('id') id: string, @Body() dto: AdicionarAtualizacaoDto, @Request() req: PedidoAutenticado) {
     return this.service.adicionarAtualizacao(id, dto, req.user.sub);
   }
 
   @Post(':id/activar-especialidade')
   @Roles('medico', 'enfermeiro')
-  activarEspecialidade(@Param('id') id: string, @Body() dto: ActivarEspecialidadeDto, @Request() req: any) {
+  activarEspecialidade(@Param('id') id: string, @Body() dto: ActivarEspecialidadeDto, @Request() req: PedidoAutenticado) {
     return this.service.activarEspecialidade(id, dto, req.user.sub);
   }
 
@@ -88,7 +89,7 @@ export class UrgenciaController {
     @Body('estado') estado: string,
     @Body('servicoDestino') servicoDestino: string | undefined,
     @Body('isolamento') isolamento: boolean | undefined,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.atualizarEstado(id, estado, req.user?.sub, { servicoDestino, isolamento });
   }

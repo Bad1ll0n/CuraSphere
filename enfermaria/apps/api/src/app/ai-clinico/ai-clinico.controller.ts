@@ -8,37 +8,44 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AiClinicoService } from './ai-clinico.service';
+import { AiVigilanciaService } from './ai-vigilancia.service';
+import { AiRelatoriosService } from './ai-relatorios.service';
 import {
   EpisodioTriagemDto, SumarizarTurnoDto, SumarizarTurnoServicoDto,
   ExecutarNlqDto, FeedbackDecisaoDto,
-} from './dto/ai-clinico.dto';
+} from './dto/ai-clinico.dto';
+import type { PedidoAutenticado } from '../auth/pedido-autenticado';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('ai-clinico')
 export class AiClinicoController {
-  constructor(private readonly service: AiClinicoService) {}
+  constructor(
+    private readonly service: AiClinicoService,
+    private readonly vigilancia: AiVigilanciaService,
+    private readonly relatorios: AiRelatoriosService,
+  ) {}
 
   @Post('triagem')
   @Roles('medico', 'enfermeiro')
-  analisarTriagem(@Body() episodio: EpisodioTriagemDto, @Request() req: any) {
+  analisarTriagem(@Body() episodio: EpisodioTriagemDto, @Request() req: PedidoAutenticado) {
     return this.service.analisarTriagem(episodio, req.user.sub);
   }
 
   @Post('sumarizar-turno')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sumarizarTurno(@Body() body: SumarizarTurnoDto, @Request() req: any) {
+  sumarizarTurno(@Body() body: SumarizarTurnoDto, @Request() req: PedidoAutenticado) {
     return this.service.sumarizarTurno(body.doentes, req.user.sub);
   }
 
   @Post('sumarizar-turno-servico')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  sumarizarTurnoServico(@Body() body: SumarizarTurnoServicoDto, @Request() req: any) {
+  sumarizarTurnoServico(@Body() body: SumarizarTurnoServicoDto, @Request() req: PedidoAutenticado) {
     return this.service.sumarizarTurnoServico(body.servico, req.user.sub);
   }
 
   @Post('nlq')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
-  executarNLQ(@Body() body: ExecutarNlqDto, @Request() req: any) {
+  executarNLQ(@Body() body: ExecutarNlqDto, @Request() req: PedidoAutenticado) {
     return this.service.executarNLQ(body.query, req.user.sub);
   }
 
@@ -51,7 +58,7 @@ export class AiClinicoController {
     @Query('tipo') tipo: string,
     @Res() res: Response,
   ) {
-    const csv = await this.service.relatorioAuditoria(from, to, tipo);
+    const csv = await this.relatorios.relatorioAuditoria(from, to, tipo);
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="auditoria-ia.csv"');
     res.send(csv);
@@ -60,13 +67,13 @@ export class AiClinicoController {
   @Get('insights')
   @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
   insightsRejeicao(@Query('from') from?: string, @Query('to') to?: string) {
-    return this.service.insightsRejeicao(from, to);
+    return this.relatorios.insightsRejeicao(from, to);
   }
 
   @Get('outcomes-correlation')
   @Roles('medico', 'direcao', 'qualidade', 'ti')
   correlacaoOutcomes(@Query('from') from?: string, @Query('to') to?: string) {
-    return this.service.correlacaoOutcomes(
+    return this.relatorios.correlacaoOutcomes(
       from ? new Date(from) : undefined,
       to ? new Date(to) : undefined,
     );
@@ -81,18 +88,18 @@ export class AiClinicoController {
   @Post(':doenteId/readmissao')
   @Roles('medico', 'chefe_enfermeiros', 'administrativo')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {
-    return this.service.calcularRiscoReadmissao(doenteId);
+    return this.vigilancia.calcularRiscoReadmissao(doenteId);
   }
 
   @Get(':doenteId/protocolo')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  verificarProtocolos(@Param('doenteId') doenteId: string, @Request() req: any) {
+  verificarProtocolos(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.verificarProtocolos(doenteId, req.user.sub);
   }
 
   @Get(':doenteId/los')
   @Roles('medico', 'chefe_enfermeiros')
-  preverLOS(@Param('doenteId') doenteId: string, @Request() req: any) {
+  preverLOS(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.preverLOS(doenteId, req.user.sub);
   }
 
@@ -102,18 +109,18 @@ export class AiClinicoController {
     @Param('id') id: string,
     @Body() body: FeedbackDecisaoDto,
   ) {
-    return this.service.registarFeedback(id, body.aceite, body.overrideMotivo);
+    return this.relatorios.registarFeedback(id, body.aceite, body.overrideMotivo);
   }
 
   @Sse(':doenteId/stream')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  analisarStream(@Param('doenteId') doenteId: string, @Request() req: any): Observable<MessageEvent> {
+  analisarStream(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado): Observable<MessageEvent> {
     return this.service.analisarStream(doenteId, req.user.role, req.user.sub) as unknown as Observable<MessageEvent>;
   }
 
   @Get(':doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
-  analisar(@Param('doenteId') doenteId: string, @Request() req: any) {
+  analisar(@Param('doenteId') doenteId: string, @Request() req: PedidoAutenticado) {
     return this.service.analisar(doenteId, req.user.role, req.user.sub);
   }
 
@@ -122,7 +129,7 @@ export class AiClinicoController {
   diagnosticoDiferencial(
     @Param('doenteId') doenteId: string,
     @Body('sintomas') sintomas: string,
-    @Request() req: any,
+    @Request() req: PedidoAutenticado,
   ) {
     return this.service.diagnosticoDiferencial(doenteId, sintomas, req.user.sub);
   }

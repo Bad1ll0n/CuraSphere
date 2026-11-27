@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import { SeletorDoente } from '@/components/seletor-doente';
+import { Button } from '@/components/ui';
 
 interface Doente { id: string; nome: string; numeroProcesso: string; }
 interface ItemFatura { id: string; descricao: string; categoria: string; quantidade: number; precoUnitario: number; total: number; }
@@ -38,6 +41,7 @@ const metodoLabel: Record<string, string> = {
 };
 
 export default function FaturacaoPage() {
+  const tA11y = useTranslations('a11y'); // UX-15: nomes acessíveis traduzidos
   const { utilizador } = useAuth();
   const [episodios, setEpisodios] = useState<Episodio[]>([]);
   const [total, setTotal] = useState(0);
@@ -49,7 +53,6 @@ export default function FaturacaoPage() {
 
   // Modal criar episódio
   const [modalCriar, setModalCriar] = useState(false);
-  const [doentes, setDoentes] = useState<Doente[]>([]);
   const [novoDoenteId, setNovoDoenteId] = useState('');
   const [novoTipo, setNovoTipo] = useState('');
   const [novoNotas, setNovoNotas] = useState('');
@@ -108,13 +111,7 @@ export default function FaturacaoPage() {
     } catch { /* silencioso */ } finally { setCriando(false); }
   };
 
-  const abrirModalCriar = async () => {
-    setModalCriar(true);
-    if (doentes.length === 0) {
-      const r = await api.get('/doentes?todos=true&limit=200');
-      setDoentes(r.data.data ?? r.data);
-    }
-  };
+  const abrirModalCriar = () => setModalCriar(true);
 
   const adicionarItem = async () => {
     if (!detalhe) return;
@@ -192,14 +189,13 @@ export default function FaturacaoPage() {
             <option value="">Todos os estados</option>
             {Object.entries(estadoLabel).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
-          <button onClick={abrirModalCriar}
-            className="bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors flex items-center gap-2"
+          <Button variant="primary" className="flex gap-2" onClick={abrirModalCriar}
             style={{ padding: '10px 18px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Novo Episódio
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -277,10 +273,10 @@ export default function FaturacaoPage() {
             <div className="flex items-center justify-between border-t border-slate-100" style={{ padding: '14px 20px' }}>
               <span className="text-xs text-slate-500">{total} episódios no total</span>
               <div className="flex gap-2">
-                <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
-                  className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40 hover:bg-slate-50">Anterior</button>
-                <button disabled={page * 20 >= total} onClick={() => setPage(p => p + 1)}
-                  className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40 hover:bg-slate-50">Seguinte</button>
+                <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}
+                  >Anterior</Button>
+                <Button variant="secondary" size="sm" disabled={page * 20 >= total} onClick={() => setPage(p => p + 1)}
+                  >Seguinte</Button>
               </div>
             </div>
           )}
@@ -300,7 +296,7 @@ export default function FaturacaoPage() {
                 <h2 className="text-xl font-bold text-slate-900">{detalhe.doente.nome}</h2>
                 <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>Processo: {detalhe.doente.numeroProcesso}</p>
               </div>
-              <button onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 transition-colors">
+              <button aria-label={tA11y('close')} onClick={() => setDetalhe(null)} className="text-slate-500 hover:text-slate-600 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -353,7 +349,7 @@ export default function FaturacaoPage() {
                             </div>
                             <span className="text-sm font-semibold text-slate-700">{item.total.toFixed(2)} €</span>
                             {detalhe.estado !== 'paga' && detalhe.estado !== 'anulada' && (
-                              <button onClick={() => removerItem(item.id)} className="text-slate-300 hover:text-red-400 transition-colors">
+                              <button aria-label={tA11y('removeItem')} onClick={() => removerItem(item.id)} className="text-slate-300 hover:text-red-400 transition-colors">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
@@ -406,11 +402,10 @@ export default function FaturacaoPage() {
             {/* Acções */}
             <div className="flex gap-3 border-t border-slate-100" style={{ padding: '16px 28px' }}>
               {detalhe.estado === 'pendente' && (
-                <button onClick={emitir}
-                  className="bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors"
+                <Button variant="primary" onClick={emitir}
                   style={{ padding: '10px 20px' }}>
                   Emitir Fatura
-                </button>
+                </Button>
               )}
               {['pendente', 'emitida'].includes(detalhe.estado) && (
                 <button onClick={anular}
@@ -419,11 +414,10 @@ export default function FaturacaoPage() {
                   Anular
                 </button>
               )}
-              <button onClick={() => setDetalhe(null)}
-                className="ml-auto border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+              <Button variant="secondary" className="ml-auto" onClick={() => setDetalhe(null)}
                 style={{ padding: '10px 20px' }}>
                 Fechar
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -437,12 +431,7 @@ export default function FaturacaoPage() {
 
             <div style={{ marginBottom: '16px' }}>
               <label htmlFor="fpage-0" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Doente</label>
-              <select id="fpage-0" value={novoDoenteId} onChange={e => setNovoDoenteId(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                style={{ padding: '10px 14px' }}>
-                <option value="">Selecionar doente...</option>
-                {doentes.map(d => <option key={d.id} value={d.id}>{d.nome} ({d.numeroProcesso})</option>)}
-              </select>
+              <SeletorDoente id="fpage-0" value={novoDoenteId} onChange={(id) => setNovoDoenteId(id)} />
             </div>
 
             <div style={{ marginBottom: '16px' }}>
@@ -465,12 +454,10 @@ export default function FaturacaoPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalCriar(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarEpisodio} disabled={!novoDoenteId || criando}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors"
-                style={{ padding: '11px' }}>{criando ? 'A criar...' : 'Criar'}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalCriar(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={criarEpisodio} disabled={!novoDoenteId || criando}
+                style={{ padding: '11px' }}>{criando ? 'A criar...' : 'Criar'}</Button>
             </div>
           </div>
         </div>
@@ -506,12 +493,10 @@ export default function FaturacaoPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalItem(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50"
-                style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={adicionarItem} disabled={!novoItem.descricao || adicionandoItem}
-                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60"
-                style={{ padding: '11px' }}>{adicionandoItem ? 'A adicionar...' : 'Adicionar'}</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalItem(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
+              <Button variant="primary" className="flex-1" onClick={adicionarItem} disabled={!novoItem.descricao || adicionandoItem}
+                style={{ padding: '11px' }}>{adicionandoItem ? 'A adicionar...' : 'Adicionar'}</Button>
             </div>
           </div>
         </div>
@@ -545,9 +530,8 @@ export default function FaturacaoPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setModalPagamento(false)}
-                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50"
-                style={{ padding: '11px' }}>Cancelar</button>
+              <Button variant="secondary" className="flex-1" onClick={() => setModalPagamento(false)}
+                style={{ padding: '11px' }}>Cancelar</Button>
               <button onClick={registarPagamento} disabled={novoPagamento.valor <= 0 || registandoPagamento}
                 className="flex-1 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-60"
                 style={{ padding: '11px' }}>{registandoPagamento ? 'A registar...' : 'Registar'}</button>

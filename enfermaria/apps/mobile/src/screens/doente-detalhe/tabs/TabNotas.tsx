@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Platform } from 'react-native';
 import EmptyState from '../../../components/EmptyState';
 
 import { registarFalhaSilenciosa } from '../../../lib/erros';
+import { estilosTematicos, LETRA, useEsquema } from '../../../lib/tema';
 // Lazy import to avoid crash if native module not linked in Expo Go
 let Voice: any = null;
 try {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function TabNotas({ notas, nota, setNota, gravandoNota, onGravar, podeCriarNota }: Props) {
+  useEsquema(); // UX-24: volta a desenhar quando o telemóvel muda de claro para escuro
   const [gravandoVoz, setGravandoVoz] = useState(false);
   const notaRef = useRef(nota);
   notaRef.current = nota;
@@ -92,20 +94,20 @@ export default function TabNotas({ notas, nota, setNota, gravandoNota, onGravar,
   );
 }
 
-const s = StyleSheet.create({
+const s = estilosTematicos((c) => ({
   secao: { padding: 16 },
-  inputCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12 },
+  inputCard: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 12 },
   inputRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 10 },
-  textInput: { flex: 1, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 8, padding: 10, fontSize: 14, color: '#334155', minHeight: 80, textAlignVertical: 'top' },
-  micBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center', marginTop: 4 },
+  textInput: { flex: 1, borderWidth: 1, borderColor: c.borda, borderRadius: 8, padding: 10, fontSize: 14, color: c.textoSecundario, minHeight: 80, textAlignVertical: 'top' },
+  micBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: c.fundo, alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   micBtnAtivo: { backgroundColor: '#fee2e2' },
   micIcon: { fontSize: 20 },
   botao: { backgroundColor: '#2563eb', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
   botaoDesativado: { backgroundColor: '#93c5fd' },
-  botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8 },
+  botaoTexto: { color: '#fff', fontWeight: '700', fontSize: LETRA.corpo },
+  card: { backgroundColor: c.superficie, borderRadius: 12, padding: 14, marginBottom: 8 },
   cabecalho: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  autor: { fontSize: 13, fontWeight: '600', color: '#475569' },
-  data: { fontSize: 13, color: '#94a3b8' },
-  texto: { fontSize: 14, color: '#334155', lineHeight: 20 },
-});
+  autor: { fontSize: 13, fontWeight: '600', color: c.textoSecundario },
+  data: { fontSize: 13, color: c.textoTenue },
+  texto: { fontSize: LETRA.corpo, color: c.textoSecundario, lineHeight: 20 },
+}));

@@ -1,3 +1,4 @@
+import { chavesJwt } from './chaves-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -6,6 +7,7 @@ import { Request } from 'express';
 import { AUDIENCIAS_PESSOAL, JWT_ISSUER, type TipoToken } from './token-audiences';
 import { PrismaService } from '../prisma/prisma.service';
 import { gravarCacheSessao, lerCacheSessao, type EstadoSessao } from './sessao-cache';
+import { TENANT_UNICO } from '../prisma/tenant-context.service';
 
 interface PayloadPessoal {
   sub: string;
@@ -29,9 +31,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey: config.get<string>('JWT_SECRET')!,
+      // SEC-11: chave pública (ES256) ou segredo (HS256, fora de produção).
+      secretOrKey: chavesJwt().verificacao,
       // Pinning explícito do algoritmo — impede ataques "alg: none" e algorithm-confusion
-      algorithms: ['HS256'],
+      algorithms: [chavesJwt().algoritmo],
       issuer: JWT_ISSUER,
       // SEC-01: só as audiências do domínio "pessoal". Um token do portal do doente
       // (aud 'curasphere-portal') ou um desafio de MFA (aud 'curasphere-mfa-challenge')
@@ -55,6 +58,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         // SEC-04: logout, desactivação e mudança de papel/password/MFA incrementam a
         // versão da sessão; os access tokens emitidos antes deixam de valer de imediato
         // (e não só quando expiram).
+        // ARQ-21: uma instalação, um hospital — um token de outro tenant não vale aqui.
+        if (payload.tenantId && payload.tenantId !== TENANT_UNICO) throw new UnauthorizedException('Sessão de outra instalação');
         const estado = await this.estadoSessao(payload.sub);
         if (!estado || !estado.ativo || typeof payload.sv !== 'number' || payload.sv !== estado.versaoSessao) {
           throw new UnauthorizedException('Sessão terminada. Faça login novamente.');

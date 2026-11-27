@@ -39,6 +39,18 @@ const nextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
   productionBrowserSourceMaps: false,
   transpilePackages: ['@org/shared', '@org/ui'],
+  // As libs do workspace usam imports ESM com extensão (`./lib/permissoes.js` → permissoes.ts).
+  // Com a web a importar o @org/shared em runtime (ARQ-24: matriz de permissões; QA-16: coerência
+  // dos sinais vitais), o `next build` da imagem resolvia o pacote para o código-fonte e não
+  // encontrava os `.js` — a imagem não construía. O `extensionAlias` faz o mapeamento.
+  webpack(config) {
+    config.resolve.extensionAlias = {
+      ...(config.resolve.extensionAlias ?? {}),
+      '.js': ['.ts', '.tsx', '.js'],
+      '.mjs': ['.mts', '.mjs'],
+    };
+    return config;
+  },
   // CSP e Permissions-Policy são por pedido (nonce) e vivem no middleware — ver src/lib/csp.ts.
   // Aqui ficam os cabeçalhos estáticos, que também têm de chegar aos ficheiros de _next/static.
   async headers() {
