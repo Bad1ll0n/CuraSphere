@@ -11,6 +11,7 @@ import { sanitizeForPrompt } from './prompt-sanitizer';
 import { AiMetricsService } from './ai-metrics.service';
 import { AI_MODELS } from '../common/ai-models';
 import { exigirIaPermitida, iaPermitida } from '../common/funcoes-ia';
+import { doentesComOposicaoIA, exigirTratamentoPermitido } from '../common/consentimento-tratamento';
 import {
   parseWithSchema,
   AnaliseClinicoSchema,
@@ -271,6 +272,7 @@ ${baseline && (baseline as any).nRegistos >= 8 ? `BASELINE: FC ${(baseline as an
   }
 
   async analisar(doenteId: string, roleRequerente: string, utilizadorId?: string) {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const cacheKey = `doente:${doenteId}:${roleRequerente}`;
     const cached = this.cached<any>(cacheKey);
     if (cached) return cached;
@@ -393,6 +395,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
   // ── 3. Verificação de Aderência a Protocolos ────────────────────────────────
 
   async verificarProtocolos(doenteId: string, utilizadorId?: string) {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const cacheKey = `protocolo:${doenteId}`;
     const cached = this.cached<any>(cacheKey);
     if (cached) return cached;
@@ -524,7 +527,9 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
       },
     });
 
-    const doentes: DoenteTurno[] = doentesDb.map(d => ({
+    // SEC-19: quem se opôs à IA clínica não entra no texto enviado ao modelo.
+    const oposicao = await doentesComOposicaoIA(this.prisma, doentesDb.map((d) => d.id));
+    const doentes: DoenteTurno[] = doentesDb.filter((d) => !oposicao.has(d.id)).map(d => ({
       nome: d.nome,
       cama: d.cama ? `${d.cama.quarto}/${d.cama.numero}` : '—',
       diagnostico: d.diagnosticoPrincipal ?? 'sem diagnóstico',
@@ -533,7 +538,11 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
       tarefasPendentes: d.tarefas.map((t: any) => `${t.descricao}${t.prioridade === 'urgente' ? ' (urgente)' : ''}`),
     }));
 
-    const resultado = await this.sumarizarTurno(doentes, utilizadorId);
+    const resultado: any = await this.sumarizarTurno(doentes, utilizadorId);
+    if (oposicao.size > 0) {
+      resultado.excluidosPorOposicao = oposicao.size;
+      resultado.narrativa = `${resultado.narrativa ?? ''}\n\n(${oposicao.size} doente(s) não incluído(s): oposição ao uso de IA — rever manualmente.)`;
+    }
     this.store(cacheKey, resultado);
     return resultado;
   }
@@ -541,6 +550,7 @@ Vitais: TA ${episodio.vitalsPASistolica ?? '?'}/${episodio.vitalsPADiastolica ??
   // ── 6. Previsão LOS (Length of Stay) ────────────────────────────────────────
 
   async preverLOS(doenteId: string, utilizadorId?: string) {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const cacheKey = `los:${doenteId}`;
     const cached = this.cached<any>(cacheKey, this.TTL_LOS_MS);
     if (cached) return cached;
@@ -729,10 +739,13 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     if (!iaPermitida('watchdog')) return; // PROD-19: desligada por omissão
     if (!(await this.prisma.tryBecomeLeader('watchdog-deterioracao', 1_500_000))) return; // 25min < 30min
 
-    const doentes = await this.prisma.doente.findMany({
+    const todos = await this.prisma.doente.findMany({
       where: { ativo: true, estadoRegisto: 'internado' },
       select: { id: true, nome: true, estado: true, diagnosticoPrincipal: true },
     });
+    // SEC-19: sem IA para quem se opôs.
+    const oposicao = await doentesComOposicaoIA(this.prisma, todos.map((d) => d.id));
+    const doentes = todos.filter((d) => !oposicao.has(d.id));
 
     if (doentes.length === 0) return;
 
@@ -798,6 +811,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
   // ── 9. Score de Readmissão Pós-Alta ─────────────────────────────────────────
 
   async calcularRiscoReadmissao(doenteId: string): Promise<void> {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const doente = await this.prisma.doente.findUnique({
       where: { id: doenteId },
       select: {
@@ -854,6 +868,7 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
   // ── 10. NLQ — Natural Language Query sobre dados hospitalares ────────────────
 
   async diagnosticoDiferencial(doenteId: string, sintomas: string, utilizadorId: string) {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const built = await this.buildContextoAnalisar(doenteId, 'medico');
     if (!built) return [];
 
@@ -928,6 +943,7 @@ Tabelas disponíveis e campos:
    * "assinada" pelo produto. Uma carta já assinada nunca é reescrita.
    */
   async gerarCartaAlta(doenteId: string): Promise<void> {
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
     const atual = await this.prisma.sumarioAlta.findUnique({ where: { doenteId }, select: { cartaAltaEstado: true } });
     if (atual?.cartaAltaEstado === 'assinada') {
       throw new ConflictException('A carta de alta já está assinada e não pode ser regenerada.');

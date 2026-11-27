@@ -25,6 +25,7 @@ function Dashboard() {
     { href: '/portal/plano-alta', label: 'Plano de Alta', desc: 'Critérios e data estimada de alta', icon: '🏠', color: '#fff7ed', border: '#fed7aa', text: '#9a3412' },
     { href: '/portal/pro', label: 'Como me Sinto', desc: 'Registe sintomas e bem-estar', icon: '❤', color: '#fff1f2', border: '#fecdd3', text: '#be123c' },
     { href: '/portal/mensagem', label: 'Contactar Equipa', desc: 'Enviar uma mensagem à equipa', icon: '✉️', color: '#faf5ff', border: '#e9d5ff', text: '#7c3aed' },
+    { href: '/portal/consentimentos', label: 'Os Meus Consentimentos', desc: 'Partilha com familiares e uso de IA', icon: '✔', color: '#f0f9ff', border: '#bae6fd', text: '#0369a1' },
     { href: '/portal/exportar', label: 'Os Meus Dados', desc: 'Exportar dados clínicos (RGPD)', icon: '⬇', color: '#f8fafc', border: '#e2e8f0', text: '#475569' },
   ];
 

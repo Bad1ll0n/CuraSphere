@@ -197,6 +197,8 @@ model Utilizador {
   reconciliacoesCriadas          ReconciliacaoMedicacao[]    @relation("ReconciliacoesCriadas")
   reconciliacoesAprovadas        ReconciliacaoMedicacao[]    @relation("ReconciliacoesAprovadas")
   acessosFamiliaresCriados       AcessoFamiliar[]            @relation("AcessoFamiliarCriado")
+  consentimentosTratamentoRegistados ConsentimentoTratamento[] @relation("ConsentimentoTratamentoRegistado")
+  consentimentosTratamentoRevogados  ConsentimentoTratamento[] @relation("ConsentimentoTratamentoRevogado")
   resultadosAnaliseRegistados    ResultadoAnalise[]          @relation("ResultadosAnaliseRegisto")
   documentosSaudeRegistados      DocumentoSaude[]            @relation("DocumentosSaudeRegisto")
   documentosSaudeAssinados       DocumentoSaude[]            @relation("DocumentoSaudeAssinatura")
@@ -331,6 +333,7 @@ model Doente {
   planoAlta               PlanoAlta?
   reconciliacoesMedicacao ReconciliacaoMedicacao[]
   acessosFamiliares       AcessoFamiliar[]
+  consentimentosTratamento ConsentimentoTratamento[]
   resultadosAnalise       ResultadoAnalise[]
   documentosSaude         DocumentoSaude[]
   identificadoresExternos IdentificadorExterno[]
@@ -2842,6 +2845,35 @@ model AcessoFamiliar {
 
   @@index([doenteId, ativo])
   @@map("acessos_familiares")
+}
+
+// SEC-19 — consentimento e oposição do doente ao tratamento de dados fora do cuidado directo
+// (RGPD art.º 6.º/7.º/9.º/21.º). Histórico só de acrescentar: uma decisão nova é uma linha nova,
+// e a revogação preenche `revogadoEm` sem apagar nada. A decisão em vigor é a linha mais
+// recente não revogada de cada finalidade.
+//   finalidade: partilha_familiares | portal_doente   → exigem consentimento
+//               ia_clinica                            → permitida salvo oposição
+//   decisao:    consentimento | oposicao
+//   origem:     presencial (registado por um profissional) | portal (o próprio doente)
+model ConsentimentoTratamento {
+  id               String      @id @default(uuid())
+  doenteId         String
+  finalidade       String
+  decisao          String
+  origem           String
+  observacoes      String?
+  registadoEm      DateTime    @default(now())
+  registadoPorId   String?
+  revogadoEm       DateTime?
+  revogadoPorId    String?
+  origemRevogacao  String?
+
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  registadoPor Utilizador? @relation("ConsentimentoTratamentoRegistado", fields: [registadoPorId], references: [id], onDelete: Restrict)
+  revogadoPor  Utilizador? @relation("ConsentimentoTratamentoRevogado", fields: [revogadoPorId], references: [id], onDelete: Restrict)
+
+  @@index([doenteId, finalidade, registadoEm])
+  @@map("consentimentos_tratamento")
 }
 
 // ─── Session 49: Dispositivos FHIR ───────────────────────────────────────────

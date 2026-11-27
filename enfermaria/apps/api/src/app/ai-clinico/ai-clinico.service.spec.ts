@@ -24,6 +24,8 @@ const mockGuidelines = { buscarSimilares: jest.fn().mockResolvedValue([]) };
 const mockAlertasAI = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
 
 const mockPrisma = {
+  // SEC-19: sem oposição registada
+  consentimentoTratamento: { findFirst: jest.fn().mockResolvedValue(null), findMany: jest.fn().mockResolvedValue([]) },
   doente: { findUnique: jest.fn() },
   sinalVital: { findMany: jest.fn() },
   medicacao: { findMany: jest.fn() },

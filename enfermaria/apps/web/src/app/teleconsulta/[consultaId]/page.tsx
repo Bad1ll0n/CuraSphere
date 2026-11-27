@@ -32,13 +32,14 @@ export default function TeleconsultaPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<JitsiAPI | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
+  const [tokenSala, setTokenSala] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [terminando, setTerminando] = useState(false);
   const [jitsiPronto, setJitsiPronto] = useState(false);
 
   useEffect(() => {
     api.get(`/consultas/${consultaId}/video/entrar`)
-      .then(({ data }) => setRoomId(data.videoRoomId))
+      .then(({ data }) => { setTokenSala(data.jwt ?? null); setRoomId(data.videoRoomId); })
       .catch(() => setErro('Não foi possível obter os dados da videochamada.'));
   }, [consultaId]);
 
@@ -46,6 +47,8 @@ export default function TeleconsultaPage() {
     if (!roomId || !containerRef.current || apiRef.current) return;
     apiRef.current = new window.JitsiMeetExternalAPI(JITSI_DOMINIO, {
       roomName: roomId,
+      // SEC-16: o servidor do hospital só deixa entrar com o token desta sala.
+      ...(tokenSala ? { jwt: tokenSala } : {}),
       parentNode: containerRef.current,
       width: '100%',
       height: '100%',
@@ -64,7 +67,7 @@ export default function TeleconsultaPage() {
     apiRef.current.addEventListener('videoConferenceLeft', () => {
       handleTerminar();
     });
-  }, [roomId, utilizador?.nome]);
+  }, [roomId, tokenSala, utilizador?.nome]);
 
   useEffect(() => {
     if (jitsiPronto && roomId) montarJitsi();

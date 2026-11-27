@@ -17,6 +17,7 @@ import { NotasClinicasPanel } from './components/notas-clinicas-panel';
 import { EscalasClinicasPanel } from './components/escalas-clinicas-panel';
 import { ProblemasPanel } from './components/problemas-panel';
 import { DispositivosPanel } from './components/dispositivos-panel';
+import { ConsentimentosTratamentoPanel } from './components/consentimentos-tratamento-panel';
 import { AlergiasContactosPanel } from './components/alergias-contactos-panel';
 import { InterconsultasPanel } from './components/interconsultas-panel';
 import { NotasTurnoPanel } from './components/notas-turno-panel';
@@ -929,6 +930,11 @@ export default function DoenteDetalhe() {
       {/* Dispositivos Invasivos */}
       <PanelErrorBoundary name="Dispositivos Invasivos">
         <DispositivosPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* SEC-19: consentimento/oposição ao tratamento de dados */}
+      <PanelErrorBoundary name="Consentimentos (RGPD)">
+        <ConsentimentosTratamentoPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       <PanelErrorBoundary name="Consultas">

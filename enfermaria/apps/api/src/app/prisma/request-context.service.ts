@@ -32,7 +32,7 @@ export class RequestContextService {
   }
 
   /** Preenche o utilizador do pedido actual (sessão já verificada). Sem contexto, não faz nada. */
-  definirUtilizador(u: { userId: string; nome: string | null; role: string | null }): void {
+  definirUtilizador(u: { userId: string | null; nome: string | null; role: string | null }): void {
     const ctx = this.storage.getStore();
     if (!ctx) return;
     ctx.userId = u.userId;

@@ -149,36 +149,28 @@ describe('ConsultasService', () => {
       ).rejects.toThrow(BadRequestException);
     });
 
-    it('cria videoRoomId com prefixo curasphere- e devolve roomUrl', async () => {
+    it('SEC-16: sala aleatória de 128 bits, sem relação com o id da consulta', async () => {
+      const consultaId = 'abcdef12-resto-do-uuid';
       mockPrisma.consulta.findUnique.mockResolvedValue({
-        ...consultaBase, medicoId: 'medico-1', tipo: 'teleconsulta', videoRoomId: null,
+        ...consultaBase, id: consultaId, medicoId: 'medico-1', tipo: 'teleconsulta', videoRoomId: null,
       });
-      mockPrisma.consulta.update.mockResolvedValue({
-        ...consultaBase, videoRoomId: 'curasphere-consulta',
-      });
+      mockPrisma.consulta.update.mockResolvedValue({});
 
-      const resultado = await service.iniciarVideo('consulta-1', 'medico-1');
-
-      expect(mockPrisma.consulta.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: expect.objectContaining({ videoRoomId: expect.stringContaining('curasphere-') }),
-        }),
-      );
-      expect(resultado.videoRoomId).toMatch(/^curasphere-/);
-      expect(resultado.roomUrl).toContain(resultado.videoRoomId);
+      const a = await service.iniciarVideo(consultaId, 'medico-1');
+      expect(a.videoRoomId).toMatch(/^cs-[0-9a-f]{32}$/);
+      expect(a.videoRoomId).not.toContain('abcdef12');
+      expect(a.roomUrl).toContain(a.videoRoomId);
+      const b = await service.iniciarVideo(consultaId, 'medico-1');
+      expect(b.videoRoomId).not.toBe(a.videoRoomId);
     });
 
-    it('room ID usa os primeiros 8 chars do consultaId em minúsculas', async () => {
-      const consultaId = 'ABCDEF12-resto-do-uuid';
+    it('SEC-16: chamada em curso mantém a sala', async () => {
       mockPrisma.consulta.findUnique.mockResolvedValue({
-        ...consultaBase, id: consultaId, medicoId: 'medico-1', tipo: 'teleconsulta',
+        ...consultaBase, medicoId: 'medico-1', tipo: 'teleconsulta', videoRoomId: 'cs-existente', videoTerminouEm: null,
       });
-      mockPrisma.consulta.update.mockResolvedValue({ videoRoomId: 'curasphere-abcdef12' });
-
-      await service.iniciarVideo(consultaId, 'medico-1');
-
-      const updateCall = mockPrisma.consulta.update.mock.calls[0][0];
-      expect(updateCall.data.videoRoomId).toBe('curasphere-' + consultaId.slice(0, 8).toLowerCase());
+      mockPrisma.consulta.update.mockResolvedValue({});
+      const r = await service.iniciarVideo('consulta-1', 'medico-1');
+      expect(r.videoRoomId).toBe('cs-existente');
     });
   });
 
@@ -240,7 +232,7 @@ describe('ConsultasService', () => {
 
     it('lança NotFoundException quando videoRoomId é null', async () => {
       mockPrisma.consulta.findUnique.mockResolvedValue({
-        ...consultaBase, videoRoomId: null,
+        ...consultaBase, medicoId: 'user-1', videoRoomId: null,
       });
 
       await expect(
@@ -248,15 +240,29 @@ describe('ConsultasService', () => {
       ).rejects.toThrow(NotFoundException);
     });
 
-    it('devolve videoRoomId e roomUrl quando chamada existe', async () => {
+    it('devolve videoRoomId e roomUrl ao médico da consulta', async () => {
       mockPrisma.consulta.findUnique.mockResolvedValue({
-        ...consultaBase, videoRoomId: 'curasphere-abcdef12',
+        ...consultaBase, medicoId: 'user-1', videoRoomId: 'cs-abcdef12',
       });
 
       const resultado = await service.dadosVideo('consulta-1', 'user-1');
 
-      expect(resultado.videoRoomId).toBe('curasphere-abcdef12');
-      expect(resultado.roomUrl).toContain('curasphere-abcdef12');
+      expect(resultado.videoRoomId).toBe('cs-abcdef12');
+      expect(resultado.roomUrl).toContain('cs-abcdef12');
+    });
+
+    it('SEC-16: outro utilizador não recebe os dados da sala', async () => {
+      mockPrisma.consulta.findUnique.mockResolvedValue({
+        ...consultaBase, medicoId: 'medico-1', videoRoomId: 'cs-abcdef12',
+      });
+      await expect(service.dadosVideo('consulta-1', 'enfermeiro-1')).rejects.toThrow(ForbiddenException);
+    });
+
+    it('SEC-16: chamada terminada já não dá entrada', async () => {
+      mockPrisma.consulta.findUnique.mockResolvedValue({
+        ...consultaBase, medicoId: 'user-1', videoRoomId: 'cs-abcdef12', videoTerminouEm: new Date(),
+      });
+      await expect(service.dadosVideo('consulta-1', 'user-1')).rejects.toThrow(BadRequestException);
     });
   });
 

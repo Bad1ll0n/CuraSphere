@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '../../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
@@ -7,6 +7,8 @@ import { StorageService } from '../common/storage.service';
 import { PdfService } from '../common/pdf.service';
 import { hashPassword, verifyPassword } from '../common/password';
 import { AUD_PORTAL } from '../auth/token-audiences';
+import { configJitsi, dadosSala, tokenJitsi } from '../common/jitsi';
+import { exigirTratamentoPermitido } from '../common/consentimento-tratamento';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta quando a conta
 // não existe. Mesma constante e mesma técnica do login de pessoal (`auth.service.ts`).
@@ -27,6 +29,8 @@ export class PortalDoenteService {
   async criarAcesso(doenteId: string, email: string, senha: string, criadoPorId: string) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
     if (!doente || !doente.ativo) throw new NotFoundException('Doente não encontrado');
+    // SEC-19: a conta no portal (email do doente, acesso remoto) exige consentimento registado.
+    await exigirTratamentoPermitido(this.prisma, doenteId, 'portal_doente');
 
     const emailExiste = await this.prisma.portalDoente.findUnique({ where: { email } });
     if (emailExiste && emailExiste.doenteId !== doenteId) {
@@ -37,7 +41,8 @@ export class PortalDoenteService {
     return this.prisma.portalDoente.upsert({
       where: { doenteId },
       create: { doenteId, email, passwordHash, criadoPorId },
-      update: { email, passwordHash },
+      // Recriar o acesso (com consentimento novo) reactiva uma conta desactivada.
+      update: { email, passwordHash, ativo: true },
       select: { id: true, doenteId: true, email: true, ativo: true, criadoEm: true },
     });
   }
@@ -218,8 +223,12 @@ export class PortalDoenteService {
     if (!consulta) throw new NotFoundException('Consulta não encontrada');
     const roomId: string | null = (consulta as any).videoRoomId ?? null;
     if (!roomId) throw new NotFoundException('Chamada ainda não iniciada');
-    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
-    return { roomUrl: `${server}/${roomId}`, videoRoomId: roomId };
+    // SEC-16: só enquanto a chamada decorre, e com token da sala sem privilégios de moderador.
+    if ((consulta as any).videoTerminouEm || (consulta as any).estado !== 'agendada') {
+      throw new BadRequestException('A videochamada já terminou');
+    }
+    const cfg = configJitsi();
+    return dadosSala(cfg, roomId, tokenJitsi(cfg, roomId, { nome: 'Doente', moderador: false }));
   }
 
   async enviarMensagem(doenteId: string, conteudo: string) {

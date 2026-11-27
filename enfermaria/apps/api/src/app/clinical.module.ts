@@ -52,13 +52,14 @@ import { ExamesLabModule } from './exames-lab/exames-lab.module';
 import { DocumentosSaudeModule } from './documentos-saude/documentos-saude.module';
 // Session 58
 import { StewardshipModule } from './stewardship/stewardship.module';
+import { ConsentimentosTratamentoModule } from './consentimentos-tratamento/consentimentos-tratamento.module';
 
 const clinicalModules = [
   // Doente & Cama
   DoenteModule, CamasModule, TarefasModule, SinaisVitaisModule, PediatriaModule,
   AlergiasModule, ContactosModule, AlertasModule, NotasClinicasModule,
   EscalasClinicasModule, DispositivosInvasivosModule, AtosClinicosModule,
-  BreakGlassModule, ConsentimentosModule, EventosAdversosModule,
+  BreakGlassModule, ConsentimentosModule, ConsentimentosTratamentoModule, EventosAdversosModule,
   // Terapêutica & Diagnóstico
   MedicacaoModule, FarmaciaModule, ReconciliacaoModule, ExamesModule,
   ProtocolosModule, DietasModule,

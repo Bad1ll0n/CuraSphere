@@ -14,6 +14,7 @@ import { RedisIoAdapter } from './app/gateway/redis-io.adapter';
 import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
+import { problemaConfigJitsi } from './app/common/jitsi';
 
 // placeholder conhecido, usado só para RECUSAR arrancar com ele
 const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao'; // nosemgrep
@@ -60,6 +61,9 @@ async function bootstrap() {
   if (jwtSecret.length < 32) {
     throw new Error('SEGURANÇA: JWT_SECRET deve ter pelo menos 32 caracteres.');
   }
+  // SEC-16: nunca arrancar em produção com a teleconsulta no Jitsi público ou sem token.
+  const problemaJitsi = problemaConfigJitsi();
+  if (problemaJitsi) throw new Error(`SEGURANÇA: ${problemaJitsi}`);
 
   const uploadsDir = join(process.cwd(), 'uploads', 'mensagens');
   mkdirSync(uploadsDir, { recursive: true });
