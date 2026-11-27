@@ -19,7 +19,7 @@ export class DocumentosSaudeService {
 
   async listar(doenteId: string, tipo?: string) {
     return this.prisma.documentoSaude.findMany({
-      where: { doenteId, ...(tipo ? { tipo } : {}) },
+      where: { doenteId, deletedAt: null, ...(tipo ? { tipo } : {}) },
       orderBy: { dataDocumento: 'desc' },
       include: {
         registadoPor: { select: { id: true, nome: true } },
@@ -104,7 +104,7 @@ export class DocumentosSaudeService {
         const docs = await this.fhir.pullDocumentosDoente(sistema as any, idExterno.valorId);
         for (const doc of docs) {
           const existe = doc.fhirResourceId
-            ? await this.prisma.documentoSaude.findFirst({ where: { fhirResourceId: doc.fhirResourceId } })
+            ? await this.prisma.documentoSaude.findFirst({ where: { fhirResourceId: doc.fhirResourceId, deletedAt: null } })
             : null;
 
           if (!existe) {
@@ -168,18 +168,19 @@ export class DocumentosSaudeService {
     return updated;
   }
 
-  async remover(docId: string, userId: string, role: string) {
+  async remover(docId: string, userId: string, role: string, motivo: string) {
     const doc = await this.prisma.documentoSaude.findUnique({ where: { id: docId } });
-    if (!doc) throw new NotFoundException('Documento não encontrado');
+    if (!doc || doc.deletedAt) throw new NotFoundException('Documento não encontrado');
 
     const podeApagar = ['medico', 'chefe_enfermeiros', 'it_admin'].includes(role);
     if (!podeApagar) throw new ForbiddenException('Sem permissão para apagar documentos');
 
-    if (doc.storageKey) {
-      await this.storage.delete(doc.storageKey);
-    }
-
-    await this.prisma.documentoSaude.delete({ where: { id: docId } });
+    // ARQ-04: remoção lógica. O ficheiro fica no armazenamento — é parte do processo
+    // clínico e tem prazo legal de conservação; só deixa de aparecer nas listas.
+    await this.prisma.documentoSaude.update({
+      where: { id: docId },
+      data: { deletedAt: new Date(), removidoPorId: userId, motivoRemocao: motivo },
+    });
     return { sucesso: true };
   }
 

@@ -32,7 +32,7 @@ pior que *duplicados* transitórios).
 
 ```
 1. Secrets prontos:  AUDIT_SIGNING_KEY  +  papel não-superuser + DATABASE_URL a apontar-lhe
-2. Migrar schema:    prisma db push        (cria/atualiza tabelas + AuditLog/AuditCheckpoint/AcessoLeitura)
+2. Migrar schema:    prisma migrate deploy (cria/atualiza tabelas + AuditLog/AuditCheckpoint/AcessoLeitura — ver MIGRACOES.md)
 3. Aplicar triggers: pnpm --filter @org/api audit:triggers        ← ANTES do código novo
 4. Deploy do código novo                                          ← pára os duplicados do interceptor antigo
 5. Grants WORM:      psql ... -f prisma/audit-grants.sql          (com o papel não-superuser)
@@ -53,18 +53,19 @@ não auditadas. Nunca inverter.
 ### 2.1 Migrar schema + aplicar triggers
 ```bash
 # a partir da raiz do monorepo, com a DATABASE_URL de destino no ambiente
-pnpm --filter @org/api exec prisma db push
+pnpm --filter @org/api exec prisma migrate deploy
 DATABASE_URL="$DATABASE_URL" pnpm --filter @org/api audit:triggers
 ```
 `audit:triggers` é **idempotente** (`DROP TRIGGER IF EXISTS` + `CREATE`), aplica a **todas** as
 tabelas base menos a deny-list (`audit_logs`, `audit_checkpoints`, `acessos_leitura`).
-**Tem de correr após CADA `prisma db push`** — os triggers não estão no schema Prisma.
+**Tem de correr após CADA `prisma migrate deploy`** — os triggers não estão no schema Prisma
+(o serviço `migrate` do compose já o faz).
 
 ### 2.2 Grants WORM (separação de deveres)
 ```bash
 psql "$DATABASE_URL" -v app_role=curasphere_app -f apps/api/prisma/audit-grants.sql
 ```
-Corre como owner/superuser, **depois** do db push + triggers. Concede à app `INSERT,SELECT` e
+Corre como owner/superuser, **depois** das migrações + triggers. Concede à app `INSERT,SELECT` e
 revoga `UPDATE,DELETE,TRUNCATE` sobre `audit_logs`/`audit_checkpoints` (append-only). A retenção
 (fim dos 6 anos) é feita por um papel **separado** e privilegiado, com dupla autorização — nunca
 pelo papel da app.

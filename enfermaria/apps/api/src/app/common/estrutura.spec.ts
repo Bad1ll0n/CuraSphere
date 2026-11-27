@@ -573,3 +573,61 @@ describe('estrutura — assinaturas clínicas e carta de alta', () => {
     expect(metodo).toContain("cartaAltaEstado: 'rascunho'");
   });
 });
+
+describe('estrutura — registos clínicos não se apagam (ARQ-04)', () => {
+  // Modelos clínicos com remoção lógica (`deletedAt` + `removidoPorId` + `motivoRemocao`).
+  const MODELOS = ['balancoHidrico', 'documentoSaude', 'notaTurno', 'fotoFerida', 'contactoEmergencia', 'alergia'];
+  // Nomes das relações que os leem por `include`/`select`.
+  const RELACOES = ['balancosHidricos', 'documentosSaude', 'notasTurno', 'fotos', 'contactosEmergencia', 'alergias'];
+
+  it('nenhum destes modelos é apagado fisicamente', () => {
+    const infratores: string[] = [];
+    for (const f of ficheiros(RAIZ_APP, '.ts').filter((x) => !x.endsWith('.spec.ts'))) {
+      const codigo = lerCodigo(f);
+      for (const m of MODELOS) {
+        if (new RegExp(`\\.${m}\\.(delete|deleteMany)\\(`).test(codigo)) infratores.push(`${caminhoRelativo(f)} → ${m}`);
+      }
+    }
+    expect(infratores).toEqual([]);
+  });
+
+  it('todas as leituras filtram os removidos (deletedAt: null)', () => {
+    const infratores: string[] = [];
+    const leituraDirecta = new RegExp(`\\.(${MODELOS.join('|')})\\.(findMany|findFirst|count|aggregate|groupBy)\\(`);
+    const leituraRelacao = new RegExp(`\\b(${RELACOES.join('|')}):\\s*(true|\\{)`);
+    for (const f of ficheiros(RAIZ_APP, '.service.ts').filter((x) => !x.endsWith('.spec.ts'))) {
+      const linhas = lerCodigo(f).split('\n');
+      linhas.forEach((linha, i) => {
+        if (!leituraDirecta.test(linha) && !leituraRelacao.test(linha)) return;
+        const janela = linhas.slice(i, i + 4).join(' ');
+        if (!janela.includes('deletedAt: null')) infratores.push(`${caminhoRelativo(f)}:${i + 1}`);
+      });
+    }
+    expect(infratores).toEqual([]);
+  });
+});
+
+describe('estrutura — cascatas no schema (ARQ-03)', () => {
+  // Apagar um utilizador ou um doente não pode levar histórico clínico atrás. Só os
+  // dados que pertencem à própria conta/sessão podem ir em cascata.
+  const CASCADE_PERMITIDO = new Set([
+    'PresencaOnline.utilizador', 'DispositivoToken.utilizador', 'NotificacaoInApp.utilizador',
+    'RefreshToken.utilizador', 'DashboardConfig.utilizador', 'WebAuthnCredential.utilizador',
+    'PortalDoente.doente',
+  ]);
+
+  it('nenhuma relação com Utilizador ou Doente apaga em cascata, fora da lista', () => {
+    const schema = readFileSync(join(RAIZ_APP, '..', '..', 'prisma', 'schema.prisma'), 'utf8');
+    const infratores: string[] = [];
+    let modelo = '';
+    for (const linha of schema.split(/\r?\n/)) {
+      const m = /^model (\w+) \{/.exec(linha);
+      if (m) { modelo = m[1]; continue; }
+      const r = /^\s+(\w+)\s+(Utilizador|Doente)\??\s+@relation\(([^)]*)\)/.exec(linha);
+      if (r && /onDelete:\s*Cascade/.test(r[3]) && !CASCADE_PERMITIDO.has(`${modelo}.${r[1]}`)) {
+        infratores.push(`${modelo}.${r[1]}`);
+      }
+    }
+    expect(infratores).toEqual([]);
+  });
+});

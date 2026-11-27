@@ -197,6 +197,7 @@ export class DoenteService {
         },
         medicacoes: { where: { ativo: true } },
         notasTurno: {
+          where: { deletedAt: null },
           include: { autor: { select: { id: true, nome: true, role: true } } },
           orderBy: { criadaEm: 'desc' },
           take: 20,
@@ -637,15 +638,19 @@ export class DoenteService {
     });
   }
 
-  async apagarNota(notaId: string, autorId: string) {
+  async apagarNota(notaId: string, autorId: string, motivo: string) {
     await this.verificarTurnoAtivo(autorId);
     const nota = await this.prisma.notaTurno.findUnique({ where: { id: notaId } });
-    if (!nota) throw new NotFoundException(`Nota (ID ${notaId}) não encontrada`);
+    if (!nota || nota.deletedAt) throw new NotFoundException(`Nota (ID ${notaId}) não encontrada`);
     if (nota.autorId !== autorId) throw new ForbiddenException('Sem permissão para apagar esta nota');
     if (!this.notaDentroDoTurno(nota.criadaEm))
       throw new ForbiddenException('Nota bloqueada — turno já passou');
 
-    return this.prisma.notaTurno.delete({ where: { id: notaId } });
+    // ARQ-04: remoção lógica — a nota e o motivo ficam no processo.
+    return this.prisma.notaTurno.update({
+      where: { id: notaId },
+      data: { deletedAt: new Date(), removidoPorId: autorId, motivoRemocao: motivo },
+    });
   }
 
   async altaEstruturada(doenteId: string, criadoPorId: string, role: string, body: Record<string, any>) {
@@ -928,7 +933,7 @@ export class DoenteService {
       include: {
         tarefas: { include: { criadoPor: { select: { nome: true, role: true } } }, orderBy: { criadaEm: 'desc' } },
         medicacoes: { include: { registos: { include: { administradoPor: { select: { nome: true } } } } } },
-        notasTurno: { include: { autor: { select: { nome: true, role: true } } }, orderBy: { criadaEm: 'desc' } },
+        notasTurno: { where: { deletedAt: null }, include: { autor: { select: { nome: true, role: true } } }, orderBy: { criadaEm: 'desc' } },
       },
     });
 

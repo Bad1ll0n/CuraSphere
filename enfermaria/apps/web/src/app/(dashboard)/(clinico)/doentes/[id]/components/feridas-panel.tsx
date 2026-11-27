@@ -6,6 +6,7 @@ import { useToast } from '@/components/toast';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { FormField } from '@/components/form-field';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
+import { pedirMotivoRemocao } from '@/components/motivo-remocao';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -248,8 +249,10 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
   };
 
   const apagarFoto = async (fotoId: string) => {
+    const motivo = await pedirMotivoRemocao('Remover fotografia');
+    if (!motivo) return;
     try {
-      await api.delete(`/feridas/fotos/${fotoId}`);
+      await api.delete(`/feridas/fotos/${fotoId}`, { data: { motivo } });
       carregar();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao remover foto');

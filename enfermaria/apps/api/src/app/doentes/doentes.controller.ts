@@ -21,6 +21,7 @@ import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
 import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
 import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
+import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -170,9 +171,10 @@ export class DoenteController {
   apagarNota(
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
+    @Body() dto: MotivoRemocaoDto,
     @Request() req: any,
   ) {
-    return this.doenteService.apagarNota(notaId, req.user.sub);
+    return this.doenteService.apagarNota(notaId, req.user.sub, dto.motivo);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')

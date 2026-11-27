@@ -300,7 +300,7 @@ export class TurnosService {
             cama: true,
             tarefas: { where: { estado: { in: ['pendente', 'em_progresso'] } } },
             notasTurno: {
-              where: turnoAnterior ? { turnoId: turnoAnterior.id } : {},
+              where: { deletedAt: null, ...(turnoAnterior ? { turnoId: turnoAnterior.id } : {}) },
               include: { autor: { select: { nome: true, role: true } } },
               orderBy: { criadaEm: 'desc' },
             },

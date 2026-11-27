@@ -50,32 +50,32 @@ enum Servico {
 }
 
 model Utilizador {
-  id                String    @id @default(uuid())
-  tenantId          String    @default("default")
-  numeroFuncionario String    @unique
-  nome              String
-  passwordHash      String
-  mfaSecret         String?
-  mfaAtivo          Boolean   @default(false)
+  id                      String    @id @default(uuid())
+  tenantId                String    @default("default")
+  numeroFuncionario       String    @unique
+  nome                    String
+  passwordHash            String
+  mfaSecret               String?
+  mfaAtivo                Boolean   @default(false)
   // Segredo proposto no setup do MFA: fica no servidor até ser confirmado por um código.
-  mfaSecretPendente String?
+  mfaSecretPendente       String?
   // SEC-04: incrementada no logout, desactivação, mudança de papel/password/MFA.
   // Os access tokens levam-na na claim `sv`; a JwtStrategy recusa os de versão antiga.
-  versaoSessao      Int       @default(0)
-  passwordExpiresAt DateTime?
+  versaoSessao            Int       @default(0)
+  passwordExpiresAt       DateTime?
   // Bloqueio de conta por tentativas falhadas (SEC-08): em Postgres, não em Redis — sem
   // Redis o bloqueio desligava-se em silêncio e a força bruta passava.
   tentativasLoginFalhadas Int       @default(0)
   ultimaFalhaLoginEm      DateTime?
   bloqueadoAte            DateTime?
-  role              String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
-  subRole           String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
-  servico           Servico   @default(internamento)
-  ordemExperiencia  Int? // definida pela chefe de enfermeiros
-  equipa            String? // ex: "A", "B", "C"
-  ativo             Boolean   @default(true)
-  criadoEm          DateTime  @default(now())
-  atualizadoEm      DateTime  @updatedAt
+  role                    String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
+  subRole                 String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
+  servico                 Servico   @default(internamento)
+  ordemExperiencia        Int? // definida pela chefe de enfermeiros
+  equipa                  String? // ex: "A", "B", "C"
+  ativo                   Boolean   @default(true)
+  criadoEm                DateTime  @default(now())
+  atualizadoEm            DateTime  @updatedAt
 
   // Relações existentes
   turnosComoChefe                Turno[]                     @relation("ChefeTurno")
@@ -391,17 +391,16 @@ model AtribuicaoDoente {
   enfermeiroId String
   turnoId      String
 
-  doente     Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  enfermeiro Utilizador @relation(fields: [enfermeiroId], references: [id], onDelete: Cascade)
+  doente     Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  enfermeiro Utilizador @relation(fields: [enfermeiroId], references: [id], onDelete: Restrict)
   turno      Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
 
   @@unique([doenteId, enfermeiroId, turnoId])
-  @@map("atribuicoes_doente")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([turnoId])
+  @@map("atribuicoes_doente")
 }
 
 model HorarioEntrada {
@@ -412,15 +411,14 @@ model HorarioEntrada {
   passagemTurnoVista Boolean  @default(false)
 
   turno      Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
-  utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
 
   @@unique([turnoId, utilizadorId])
-  @@map("horarios_entrada")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([utilizadorId])
+  @@map("horarios_entrada")
 }
 
 model PassagemTurno {
@@ -437,15 +435,14 @@ model PassagemTurno {
 
   turnoAnterior Turno  @relation("PassagemTurnoAnterior", fields: [turnoAnteriorId], references: [id], onDelete: Cascade)
   turnoAtual    Turno  @relation("PassagemTurnoAtual", fields: [turnoAtualId], references: [id], onDelete: Cascade)
-  doente        Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
   @@index([estadoDesafio])
-  @@map("passagens_turno")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("passagens_turno")
 }
 
 model PresencaOnline {
@@ -462,7 +459,7 @@ model PresencaOnline {
 model RegistoCheckin {
   id                String     @id @default(uuid())
   utilizadorId      String
-  utilizador        Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador        Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
   turnoId           String?
   lat               Float?
   lon               Float?
@@ -480,9 +477,9 @@ model RegistoCheckin {
 model NotaClinica {
   id            String      @id @default(uuid())
   doenteId      String
-  doente        Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   autorId       String
-  autor         Utilizador  @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autor         Utilizador  @relation(fields: [autorId], references: [id], onDelete: Restrict)
   subjetivo     String
   objetivo      String
   avaliacao     String
@@ -513,7 +510,7 @@ model NotaClinicaAdenda {
   criadaEm      DateTime @default(now())
 
   nota  NotaClinica @relation(fields: [notaClinicaId], references: [id], onDelete: Cascade)
-  autor Utilizador  @relation("NotaClinicaAdendaAutor", fields: [autorId], references: [id], onDelete: Cascade)
+  autor Utilizador  @relation("NotaClinicaAdendaAutor", fields: [autorId], references: [id], onDelete: Restrict)
 
   @@index([notaClinicaId, criadaEm])
   @@map("notas_clinicas_adendas")
@@ -542,9 +539,9 @@ enum TipoEscalaClinica {
 model EscalaClinica {
   id             String            @id @default(uuid())
   doenteId       String
-  doente         Doente            @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente         Doente            @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   registadoPorId String
-  registadoPor   Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   tipo           TipoEscalaClinica
   valores        Json
   pontuacao      Int?
@@ -568,16 +565,20 @@ model NotaTurno {
   autorId  String
 
   turno  Turno?     @relation(fields: [turnoId], references: [id], onDelete: SetNull)
-  doente Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  autor  Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  doente Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  autor  Utilizador @relation(fields: [autorId], references: [id], onDelete: Restrict)
 
-  @@map("notas_turno")
+  // ARQ-04: registo clínico não se apaga — remove-se com autor, momento e motivo.
+  deletedAt     DateTime?
+  removidoPorId String?
+  motivoRemocao String?
 
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([turnoId])
   @@index([doenteId])
+  @@map("notas_turno")
 }
 
 // ─── Tarefas ─────────────────────────────────────────────────────────────────
@@ -618,19 +619,18 @@ model Tarefa {
   criadoPorId      String
   turnoId          String?
 
-  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   responsavel Utilizador? @relation("TarefaResponsavel", fields: [responsavelId], references: [id], onDelete: SetNull)
-  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id], onDelete: Restrict)
   turno       Turno?      @relation(fields: [turnoId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, estado])
   @@index([responsavelId, estado])
-  @@map("tarefas")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([turnoId])
+  @@map("tarefas")
 }
 
 // ─── Medicação ───────────────────────────────────────────────────────────────
@@ -663,8 +663,8 @@ model Medicacao {
   overrideMotivo      String? @db.VarChar(1000) // justificação obrigatória (mín. 20 caracteres)
   overrideAlergenioId String?
 
-  doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  doente            Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  prescritoPor      Utilizador              @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Restrict)
   validadoPor       Utilizador?             @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
   assinadoPor       Utilizador?             @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
   overrideAlergenio Alergia?                @relation("MedicacaoOverrideAlergia", fields: [overrideAlergenioId], references: [id], onDelete: SetNull)
@@ -692,7 +692,7 @@ model StewardshipAntibiotico {
   aprovadoEm    DateTime?
   criadoEm      DateTime  @default(now())
 
-  doente    Doente    @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente    Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   medicacao Medicacao @relation(fields: [medicacaoId], references: [id], onDelete: Cascade)
 
   @@index([doenteId, alertaEmitido])
@@ -714,8 +714,8 @@ model RegistoMedicacao {
   administradoPorId String
 
   medicacao       Medicacao  @relation(fields: [medicacaoId], references: [id], onDelete: Cascade)
-  doente          Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  administradoPor Utilizador @relation(fields: [administradoPorId], references: [id], onDelete: Cascade)
+  doente          Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  administradoPor Utilizador @relation(fields: [administradoPorId], references: [id], onDelete: Restrict)
 
   @@index([medicacaoId])
   @@index([doenteId, administradoEm])
@@ -733,7 +733,7 @@ model Escala {
   criadaEm    DateTime @default(now())
   criadaPorId String
 
-  criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id], onDelete: Cascade)
+  criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id], onDelete: Restrict)
   turnos    HorarioTurno[]
 
   @@unique([mes, ano])
@@ -759,15 +759,14 @@ model HorarioTurnoProfissional {
   utilizadorId   String
 
   horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id], onDelete: Cascade)
-  utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
 
   @@id([horarioTurnoId, utilizadorId])
-  @@map("horarios_turno_profissionais")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([utilizadorId])
+  @@map("horarios_turno_profissionais")
 }
 
 enum EstadoPedidoTroca {
@@ -788,17 +787,16 @@ model PedidoTrocaTurno {
   destinatarioId String
   aprovadoPorId  String?
 
-  solicitante  Utilizador   @relation("TrocaSolicitante", fields: [solicitanteId], references: [id], onDelete: Cascade)
-  destinatario Utilizador   @relation("TrocaDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  solicitante  Utilizador   @relation("TrocaSolicitante", fields: [solicitanteId], references: [id], onDelete: Restrict)
+  destinatario Utilizador   @relation("TrocaDestinatario", fields: [destinatarioId], references: [id], onDelete: Restrict)
   turno        HorarioTurno @relation("TrocaTurno", fields: [turnoId], references: [id], onDelete: Cascade)
   aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
-
-  @@map("pedidos_troca_turno")
 
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([turnoId])
+  @@map("pedidos_troca_turno")
 }
 
 model AtribuicaoHorarioTurno {
@@ -809,18 +807,17 @@ model AtribuicaoHorarioTurno {
   atribuidoPorId String
 
   horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id], onDelete: Cascade)
-  doente       Doente       @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  utilizador   Utilizador   @relation("AtribuicaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
-  atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id], onDelete: Cascade)
+  doente       Doente       @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  utilizador   Utilizador   @relation("AtribuicaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Restrict)
+  atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id], onDelete: Restrict)
 
   @@unique([horarioTurnoId, doenteId, utilizadorId])
   @@index([utilizadorId, horarioTurnoId])
-  @@map("atribuicoes_horario_turno")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("atribuicoes_horario_turno")
 }
 
 // ─── Sinais Vitais ────────────────────────────────────────────────────────────
@@ -828,9 +825,9 @@ model AtribuicaoHorarioTurno {
 model SinalVital {
   id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   registadoPorId String
-  registadoPor   Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id], onDelete: Restrict)
   data           DateTime   @default(now())
 
   pressaoSistolica       Int?
@@ -890,8 +887,12 @@ model BalancoHidrico {
   quantidade     Int // mL
   descricao      String?
 
-  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  registadoPor Utilizador @relation("BalancoHidricoRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  registadoPor  Utilizador @relation("BalancoHidricoRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Restrict)
+  // ARQ-04: registo clínico não se apaga — remove-se com autor, momento e motivo.
+  deletedAt     DateTime?
+  removidoPorId String?
+  motivoRemocao String?
 
   @@index([doenteId, data])
   @@map("balancos_hidricos")
@@ -926,8 +927,8 @@ model AvaliacaoFerida {
   proximaTroca  DateTime?
   notas         String?   @db.VarChar(2000)
 
-  doente       Doente       @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  registadoPor Utilizador   @relation("FeridasRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  doente       Doente       @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  registadoPor Utilizador   @relation("FeridasRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Restrict)
   fotos        FotoFerida[]
 
   @@index([doenteId, criadaEm])
@@ -979,8 +980,8 @@ model PedidoTransfusao {
   estado             String  @default("pendente") // 'pendente'|'reservado'|'administrado'|'cancelado'
   motivoCancelamento String? @db.VarChar(500)
 
-  doente           Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  prescritoPor     Utilizador          @relation("TransfusoesPrescritas", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  doente           Doente              @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  prescritoPor     Utilizador          @relation("TransfusoesPrescritas", fields: [prescritoPorId], references: [id], onDelete: Restrict)
   bolsasReservadas BolsaSangue[]
   registos         RegistoTransfusao[]
 
@@ -1012,8 +1013,8 @@ model RegistoTransfusao {
 
   pedido             PedidoTransfusao        @relation(fields: [pedidoTransfusaoId], references: [id], onDelete: Cascade)
   bolsa              BolsaSangue             @relation(fields: [bolsaId], references: [id], onDelete: Restrict)
-  doente             Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  administradoPor    Utilizador              @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Cascade)
+  doente             Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  administradoPor    Utilizador              @relation("TransfusoesAdministradas", fields: [administradoPorId], references: [id], onDelete: Restrict)
   segundoVerificador Utilizador?             @relation("TransfusoesSegundaVerificacao", fields: [segundoVerificadorId], references: [id], onDelete: SetNull)
   consentimento      ConsentimentoInformado? @relation("TransfusaoConsentimento", fields: [consentimentoId], references: [id], onDelete: SetNull)
   reacao             ReacaoTransfusional?
@@ -1036,8 +1037,8 @@ model ReacaoTransfusional {
   notificadoHemovigilancia Boolean @default(false)
 
   registo      RegistoTransfusao @relation(fields: [registoTransfusaoId], references: [id], onDelete: Cascade)
-  doente       Doente            @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  registadoPor Utilizador        @relation("ReacoesTransfusRegisto", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  doente       Doente            @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  registadoPor Utilizador        @relation("ReacoesTransfusRegisto", fields: [registadoPorId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, criadaEm])
   @@map("reacoes_transfusionais")
@@ -1215,14 +1216,14 @@ model FeatureFlag {
 // ─── Alergias ─────────────────────────────────────────────────────────────────
 
 model Alergia {
-  id         String   @id @default(uuid())
-  doenteId   String
-  doente     Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  alergenio  String
-  tipo       String
-  severidade String
-  notas      String?
-  criadaEm   DateTime @default(now())
+  id            String    @id @default(uuid())
+  doenteId      String
+  doente        Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  alergenio     String
+  tipo          String
+  severidade    String
+  notas         String?
+  criadaEm      DateTime  @default(now())
   // Remoção lógica (QA-02): uma alergia nunca se apaga — deixa de contar nas verificações,
   // mas fica o registo de quem a removeu e porquê.
   deletedAt     DateTime?
@@ -1240,18 +1241,22 @@ model Alergia {
 model ContactoEmergencia {
   id        String  @id @default(uuid())
   doenteId  String
-  doente    Doente  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente    Doente  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   nome      String
   relacao   String
   telefone  String
   principal Boolean @default(false)
 
-  @@map("contactos_emergencia")
+  // ARQ-04: registo clínico não se apaga — remove-se com autor, momento e motivo.
+  deletedAt     DateTime?
+  removidoPorId String?
+  motivoRemocao String?
 
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("contactos_emergencia")
 }
 
 // ─── Alertas Clínicos ─────────────────────────────────────────────────────────
@@ -1259,7 +1264,7 @@ model ContactoEmergencia {
 model AlertaClinico {
   id           String      @id @default(uuid())
   doenteId     String
-  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo         String
   mensagem     String
   // Severidade numérica (1 = informativo … 4 = crítico). Usada na de-duplicação:
@@ -1284,41 +1289,40 @@ model AlertaClinico {
 model AvaliacaoRisco {
   id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo           String
   pontuacao      Int
   itens          Json
   risco          String
   registadoPorId String
-  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadaEm       DateTime   @default(now())
-
-  @@map("avaliacoes_risco")
 
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("avaliacoes_risco")
 }
 
 // ─── Sumário de Alta ──────────────────────────────────────────────────────────
 
 model SumarioAlta {
-  id                String     @id @default(uuid())
-  doenteId          String     @unique
-  doente            Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  motivoAlta        String
-  destino           String?
-  resumoClinical    String
-  prescricaoSaida   String?
-  medicoFamilia     String?
-  criadoPorId       String
-  criadoPor         Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
-  criadoEm          DateTime   @default(now())
-  riscReadmissao    String?
-  fatoresReadmissao String?    @db.Text
-  recomendacoesAlta String?    @db.Text
-  cartaAlta         String?    @db.Text
+  id                     String     @id @default(uuid())
+  doenteId               String     @unique
+  doente                 Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  motivoAlta             String
+  destino                String?
+  resumoClinical         String
+  prescricaoSaida        String?
+  medicoFamilia          String?
+  criadoPorId            String
+  criadoPor              Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Restrict)
+  criadoEm               DateTime   @default(now())
+  riscReadmissao         String?
+  fatoresReadmissao      String?    @db.Text
+  recomendacoesAlta      String?    @db.Text
+  cartaAlta              String?    @db.Text
   // PROD-11: a IA só escreve um RASCUNHO. rascunho → revista (médico edita/aceita o texto)
   // → assinada (médico, com TOTP). Só a assinada sai em PDF; depois de assinada é imutável.
   cartaAltaEstado        String?
@@ -1326,7 +1330,7 @@ model SumarioAlta {
   cartaAltaRevistaEm     DateTime?
   cartaAltaAssinadaPorId String?
   cartaAltaAssinadaEm    DateTime?
-  icd10Code         String?
+  icd10Code              String?
 
   @@map("sumarios_alta")
 }
@@ -1341,12 +1345,11 @@ model DispositivoToken {
   plataforma   String
   criadoEm     DateTime   @default(now())
 
-  @@map("dispositivos_tokens")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([utilizadorId])
+  @@map("dispositivos_tokens")
 }
 
 // ─── Notificações In-App ──────────────────────────────────────────────────────
@@ -1394,9 +1397,9 @@ enum EstadoExame {
 model Exame {
   id              String      @id @default(uuid())
   doenteId        String
-  doente          Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente          Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   solicitadoPorId String
-  solicitadoPor   Utilizador  @relation("ExameSolicitadoPor", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
+  solicitadoPor   Utilizador  @relation("ExameSolicitadoPor", fields: [solicitadoPorId], references: [id], onDelete: Restrict)
   tipo            TipoExame
   descricao       String
   urgente         Boolean     @default(false)
@@ -1469,7 +1472,7 @@ model EpisodioUrgencia {
   corAnterior           String? // cor antes da re-triagem
   estadoEpisodio        EstadoEpisodio @default(sala_espera)
   triadoPorId           String
-  triadoPor             Utilizador     @relation("EpisodioTriador", fields: [triadoPorId], references: [id], onDelete: Cascade)
+  triadoPor             Utilizador     @relation("EpisodioTriador", fields: [triadoPorId], references: [id], onDelete: Restrict)
   medicoResponsavelId   String?
   medicoResponsavel     Utilizador?    @relation("EpisodioMedico", fields: [medicoResponsavelId], references: [id], onDelete: SetNull)
   dataEntrada           DateTime       @default(now())
@@ -1511,12 +1514,11 @@ model EpisodioUrgencia {
   atualizacoes AtualizacaoTransporte[]
 
   @@index([estadoEpisodio, dataEntrada])
-  @@map("episodios_urgencia")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("episodios_urgencia")
 }
 
 model AtualizacaoTransporte {
@@ -1528,7 +1530,7 @@ model AtualizacaoTransporte {
   novaETA        Int?
 
   episodio     EpisodioUrgencia @relation(fields: [episodioId], references: [id], onDelete: Cascade)
-  registadoPor Utilizador       @relation("AtualizacaoTransporteRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador       @relation("AtualizacaoTransporteRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Restrict)
 
   @@index([episodioId, criadaEm])
   @@map("atualizacoes_transporte")
@@ -1547,14 +1549,14 @@ enum EstadoCirurgia {
 model CirurgiaProgramada {
   id                 String             @id @default(uuid())
   doenteId           String
-  doente             Doente             @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente             Doente             @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   designacao         String
   dataHora           DateTime
   duracaoPrevista    Int
   sala               String
   estado             EstadoCirurgia     @default(agendada)
   cirurgiaoId        String
-  cirurgiao          Utilizador         @relation("CirurgiaCircurgiao", fields: [cirurgiaoId], references: [id], onDelete: Cascade)
+  cirurgiao          Utilizador         @relation("CirurgiaCircurgiao", fields: [cirurgiaoId], references: [id], onDelete: Restrict)
   anestesistaId      String?
   anestesista        Utilizador?        @relation("CirurgiaAnestesista", fields: [anestesistaId], references: [id], onDelete: SetNull)
   equipa             Json?
@@ -1566,12 +1568,11 @@ model CirurgiaProgramada {
 
   @@index([dataHora])
   @@index([estado])
-  @@map("cirurgias_programadas")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("cirurgias_programadas")
 }
 
 model ChecklistCirurgia {
@@ -1612,7 +1613,7 @@ model Consulta {
   doente            Doente?            @relation(fields: [doenteId], references: [id], onDelete: SetNull)
   nomeDoente        String?
   medicoId          String
-  medico            Utilizador         @relation(fields: [medicoId], references: [id], onDelete: Cascade)
+  medico            Utilizador         @relation(fields: [medicoId], references: [id], onDelete: Restrict)
   especialidade     String
   dataHora          DateTime
   duracao           Int                @default(30)
@@ -1633,18 +1634,17 @@ model Consulta {
 
   @@index([medicoId, dataHora])
   @@index([codigo])
-  @@map("consultas")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("consultas")
 }
 
 model AgendaMedico {
   id          String     @id @default(uuid())
   medicoId    String
-  medico      Utilizador @relation("AgendaMedico", fields: [medicoId], references: [id], onDelete: Cascade)
+  medico      Utilizador @relation("AgendaMedico", fields: [medicoId], references: [id], onDelete: Restrict)
   diaSemana   Int // 0=Dom 1=Seg 2=Ter 3=Qua 4=Qui 5=Sex 6=Sab
   horaInicio  String // "08:00"
   horaFim     String // "13:00"
@@ -1735,7 +1735,7 @@ model PedidoFarmacia {
   servico         String
   estado          EstadoPedidoFarmacia @default(pendente)
   solicitadoPorId String
-  solicitadoPor   Utilizador           @relation("PedidoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
+  solicitadoPor   Utilizador           @relation("PedidoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Restrict)
   processadoPorId String?
   processadoPor   Utilizador?          @relation("PedidoProcessador", fields: [processadoPorId], references: [id], onDelete: SetNull)
   aprovadoPorId   String?
@@ -1774,17 +1774,16 @@ model AjusteStock {
   tipo         String // "entrada" | "saida" | "ajuste" | "desperdicio" | "validade" | "encomenda" | "transferencia"
   motivo       String
   utilizadorId String
-  utilizador   Utilizador @relation("AjustesFeitos", fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador   Utilizador @relation("AjustesFeitos", fields: [utilizadorId], references: [id], onDelete: Restrict)
   criadoEm     DateTime   @default(now())
 
   @@index([stockItemId])
   @@index([criadoEm])
-  @@map("ajustes_stock")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([utilizadorId])
+  @@map("ajustes_stock")
 }
 
 model TransferenciaStock {
@@ -1797,7 +1796,7 @@ model TransferenciaStock {
   motivo          String?
   estado          String      @default("pendente") // pendente | confirmada | cancelada
   solicitadoPorId String
-  solicitadoPor   Utilizador  @relation("TransfSolicitadas", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
+  solicitadoPor   Utilizador  @relation("TransfSolicitadas", fields: [solicitadoPorId], references: [id], onDelete: Restrict)
   confirmadoPorId String?
   confirmadoPor   Utilizador? @relation("TransfConfirmadas", fields: [confirmadoPorId], references: [id], onDelete: SetNull)
   criadoEm        DateTime    @default(now())
@@ -1849,9 +1848,9 @@ model EncomendaFornecedor {
 model PlanoReabilitacao {
   id               String     @id @default(uuid())
   doenteId         String
-  doente           Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente           Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   fisioterapeutaId String
-  fisioterapeuta   Utilizador @relation(fields: [fisioterapeutaId], references: [id], onDelete: Cascade)
+  fisioterapeuta   Utilizador @relation(fields: [fisioterapeutaId], references: [id], onDelete: Restrict)
   objetivos        String
   dataInicio       DateTime
   dataFimPrevista  DateTime?
@@ -1860,12 +1859,11 @@ model PlanoReabilitacao {
 
   sessoes SessaoFisioterapia[]
 
-  @@map("planos_reabilitacao")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("planos_reabilitacao")
 }
 
 enum EstadoSessao {
@@ -1880,21 +1878,20 @@ model SessaoFisioterapia {
   planoId          String
   plano            PlanoReabilitacao @relation(fields: [planoId], references: [id], onDelete: Cascade)
   doenteId         String
-  doente           Doente            @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente           Doente            @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   fisioterapeutaId String
-  fisioterapeuta   Utilizador        @relation(fields: [fisioterapeutaId], references: [id], onDelete: Cascade)
+  fisioterapeuta   Utilizador        @relation(fields: [fisioterapeutaId], references: [id], onDelete: Restrict)
   data             DateTime
   duracao          Int
   descricao        String
   evolucao         String?
   estado           EstadoSessao      @default(agendada)
 
-  @@map("sessoes_fisioterapia")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("sessoes_fisioterapia")
 }
 
 // ─── Pedidos Internos ────────────────────────────────────────────────────────
@@ -1924,7 +1921,7 @@ model PedidoInterno {
   prioridade      PrioridadeTarefa
   estado          EstadoPedidoInterno @default(pendente)
   solicitadoPorId String
-  solicitadoPor   Utilizador          @relation("PedidoInternoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
+  solicitadoPor   Utilizador          @relation("PedidoInternoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Restrict)
   executadoPorId  String?
   executadoPor    Utilizador?         @relation("PedidoInternoExecutor", fields: [executadoPorId], references: [id], onDelete: SetNull)
   servicoOrigem   String
@@ -1932,12 +1929,11 @@ model PedidoInterno {
   concluidoEm     DateTime?
 
   @@index([estado, criadoEm])
-  @@map("pedidos_internos")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("pedidos_internos")
 }
 
 // ─── Comunicação Interna ──────────────────────────────────────────────────────
@@ -1945,7 +1941,7 @@ model PedidoInterno {
 model Anuncio {
   id       String     @id @default(uuid())
   autorId  String
-  autor    Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autor    Utilizador @relation(fields: [autorId], references: [id], onDelete: Restrict)
   titulo   String
   texto    String
   servico  String?
@@ -1959,9 +1955,9 @@ model Anuncio {
 model MensagemInterna {
   id             String          @id @default(uuid())
   remetenteId    String
-  remetente      Utilizador      @relation("MensagemRemetente", fields: [remetenteId], references: [id], onDelete: Cascade)
+  remetente      Utilizador      @relation("MensagemRemetente", fields: [remetenteId], references: [id], onDelete: Restrict)
   destinatarioId String
-  destinatario   Utilizador      @relation("MensagemDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  destinatario   Utilizador      @relation("MensagemDestinatario", fields: [destinatarioId], references: [id], onDelete: Restrict)
   assunto        String?
   texto          String
   lida           Boolean         @default(false)
@@ -1999,9 +1995,9 @@ enum EstadoInterconsulta {
 model Interconsulta {
   id                String              @id @default(uuid())
   doenteId          String
-  doente            Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente            Doente              @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   requisitanteId    String
-  requisitante      Utilizador          @relation("InterconsultaRequisitante", fields: [requisitanteId], references: [id], onDelete: Cascade)
+  requisitante      Utilizador          @relation("InterconsultaRequisitante", fields: [requisitanteId], references: [id], onDelete: Restrict)
   especialidadeAlvo String
   motivo            String
   urgente           Boolean             @default(false)
@@ -2036,7 +2032,7 @@ enum TipoDispositivoInvasivo {
 model DispositivoInvasivo {
   id            String                  @id @default(uuid())
   doenteId      String
-  doente        Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente                  @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo          TipoDispositivoInvasivo
   localizacao   String?
   dataInsercao  DateTime                @default(now())
@@ -2044,7 +2040,7 @@ model DispositivoInvasivo {
   ativo         Boolean                 @default(true)
   observacoes   String?
   inseridoPorId String
-  inseridoPor   Utilizador              @relation("DispositivoInserido", fields: [inseridoPorId], references: [id], onDelete: Cascade)
+  inseridoPor   Utilizador              @relation("DispositivoInserido", fields: [inseridoPorId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, ativo])
   @@map("dispositivos_invasivos")
@@ -2085,7 +2081,7 @@ model IncidenteTI {
   prioridade    PrioridadeIncidenteTI @default(media)
   estado        EstadoIncidenteTI     @default(aberto)
   criadoPorId   String
-  criadoPor     Utilizador            @relation("IncidentesCriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor     Utilizador            @relation("IncidentesCriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
   responsavelId String?
   responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id], onDelete: SetNull)
   criadoEm      DateTime              @default(now())
@@ -2102,7 +2098,7 @@ model NotaIncidenteTI {
   incidenteId String
   incidente   IncidenteTI @relation(fields: [incidenteId], references: [id], onDelete: Cascade)
   autorId     String
-  autor       Utilizador  @relation("NotasIncidentesTI", fields: [autorId], references: [id], onDelete: Cascade)
+  autor       Utilizador  @relation("NotasIncidentesTI", fields: [autorId], references: [id], onDelete: Restrict)
   conteudo    String
   criadaEm    DateTime    @default(now())
 
@@ -2139,7 +2135,7 @@ model PedidoTI {
   resolvidoEm DateTime?
 
   criadoPorId String
-  criadoPor   Utilizador @relation("PedidosTICriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor   Utilizador @relation("PedidosTICriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
 
   responsavelId String?
   responsavel   Utilizador? @relation("PedidosTIAtribuidos", fields: [responsavelId], references: [id], onDelete: SetNull)
@@ -2154,7 +2150,7 @@ model PedidoTI {
 model FicheiroPessoalDoente {
   id                 String      @id @default(uuid())
   doenteId           String      @unique
-  doente             Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente             Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   nif                String?
   numeroSNS          String?
   morada             String?
@@ -2185,7 +2181,7 @@ enum EstadoFatura {
 model EpisodioFaturacao {
   id            String       @id @default(uuid())
   doenteId      String
-  doente        Doente       @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente       @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   consultaId    String?      @unique
   consulta      Consulta?    @relation(fields: [consultaId], references: [id], onDelete: SetNull)
   estado        EstadoFatura @default(pendente)
@@ -2195,7 +2191,7 @@ model EpisodioFaturacao {
   tipoCobertura String?
   notas         String?
   criadoPorId   String
-  criadoPor     Utilizador   @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor     Utilizador   @relation(fields: [criadoPorId], references: [id], onDelete: Restrict)
   criadoEm      DateTime     @default(now())
   itens         ItemFatura[]
   pagamentos    Pagamento[]
@@ -2227,7 +2223,7 @@ model Pagamento {
   metodo              String // 'numerario' | 'multibanco' | 'transferencia' | 'seguro' | 'isencao'
   referencia          String?
   registadoPorId      String
-  registadoPor        Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor        Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadoEm            DateTime          @default(now())
 
   @@map("pagamentos")
@@ -2305,14 +2301,14 @@ model RefreshToken {
 model ProblemaClinico {
   id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   descricao      String
   tipo           String // 'principal' | 'comorbilidade' | 'cirurgico' | 'cronico' | 'agudo'
   estado         String     @default("ativo") // 'ativo' | 'resolvido' | 'cronico'
   dataInicio     DateTime?
   dataFim        DateTime?
   registadoPorId String
-  registadoPor   Utilizador @relation("ProblemaRegistado", fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador @relation("ProblemaRegistado", fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadoEm       DateTime   @default(now())
 
   @@index([doenteId])
@@ -2363,7 +2359,7 @@ model Manutencao {
 model Ausencia {
   id            String      @id @default(uuid())
   utilizadorId  String
-  utilizador    Utilizador  @relation("AusenciaUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador    Utilizador  @relation("AusenciaUtilizador", fields: [utilizadorId], references: [id], onDelete: Restrict)
   tipo          String // 'ferias'|'baixa_medica'|'licenca_maternidade'|'falta_justificada'|'outro'
   dataInicio    DateTime
   dataFim       DateTime
@@ -2391,8 +2387,8 @@ model TrocaFolga {
   criadoEm       DateTime @default(now())
   atualizadoEm   DateTime @updatedAt
 
-  solicitante  Utilizador  @relation("TrocaFolgaSolicitante", fields: [solicitanteId], references: [id], onDelete: Cascade)
-  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  solicitante  Utilizador  @relation("TrocaFolgaSolicitante", fields: [solicitanteId], references: [id], onDelete: Restrict)
+  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id], onDelete: Restrict)
   aprovadoPor  Utilizador? @relation("TrocaFolgaAprovador", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
 
   @@index([solicitanteId])
@@ -2404,7 +2400,7 @@ model TrocaFolga {
 model FormacaoUtilizador {
   id             String     @id @default(uuid())
   utilizadorId   String
-  utilizador     Utilizador @relation("FormacaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador     Utilizador @relation("FormacaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Restrict)
   nome           String
   dataRealizacao DateTime
   dataExpiracao  DateTime?
@@ -2438,12 +2434,11 @@ model EventoAdverso {
   @@index([gravidade])
   @@index([estado])
   @@index([ocorridoEm])
-  @@map("eventos_adversos")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("eventos_adversos")
 }
 
 // ─── Especialidades Clínicas (Nutrição, Psicologia, Terapia da Fala, TAE) ────
@@ -2460,8 +2455,8 @@ model SessaoEspecialidade {
   estado         String   @default("agendada") // agendada | realizada | cancelada | faltou
   criadoEm       DateTime @default(now())
 
-  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  profissional Utilizador @relation("SessaoEspecialidadeProfissional", fields: [profissionalId], references: [id], onDelete: Cascade)
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  profissional Utilizador @relation("SessaoEspecialidadeProfissional", fields: [profissionalId], references: [id], onDelete: Restrict)
 
   @@index([profissionalId, data])
   @@index([doenteId])
@@ -2483,8 +2478,8 @@ model AvaliacaoDesempenho {
   estado         String   @default("rascunho") // rascunho | finalizada | assinada
   criadoEm       DateTime @default(now())
 
-  utilizador Utilizador @relation("AvaliacaoAvaliado", fields: [utilizadorId], references: [id], onDelete: Cascade)
-  avaliador  Utilizador @relation("AvaliacaoAvaliador", fields: [avaliadorId], references: [id], onDelete: Cascade)
+  utilizador Utilizador @relation("AvaliacaoAvaliado", fields: [utilizadorId], references: [id], onDelete: Restrict)
+  avaliador  Utilizador @relation("AvaliacaoAvaliador", fields: [avaliadorId], references: [id], onDelete: Restrict)
 
   @@index([utilizadorId])
   @@index([avaliadorId])
@@ -2501,7 +2496,7 @@ model DadosContratuais {
   criadoEm         DateTime  @default(now())
   atualizadoEm     DateTime  @updatedAt
 
-  utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
 
   @@map("dados_contratuais")
 }
@@ -2511,7 +2506,7 @@ model DadosContratuais {
 model ConsentimentoInformado {
   id                   String      @id @default(uuid())
   doenteId             String
-  doente               Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente               Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo                 String // cirurgia | procedimento_invasivo | anestesia | transfusao | outro
   descricao            String
   assinadoDoenteEm     DateTime?
@@ -2522,7 +2517,7 @@ model ConsentimentoInformado {
   motivoRecusa         String?
   criadoEm             DateTime    @default(now())
   criadoPorId          String
-  criadoPor            Utilizador  @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor            Utilizador  @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id], onDelete: Restrict)
 
   registosTransfusao RegistoTransfusao[] @relation("TransfusaoConsentimento")
 
@@ -2537,9 +2532,9 @@ model ConsentimentoInformado {
 model BreakGlassAccess {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
   doenteId     String
-  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   motivo       String
   ip           String?
   ativo        Boolean    @default(true)
@@ -2548,12 +2543,11 @@ model BreakGlassAccess {
 
   @@index([utilizadorId, doenteId, ativo])
   @@index([expiradoEm])
-  @@map("break_glass_access")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([doenteId])
+  @@map("break_glass_access")
 }
 
 // ─── Protocolos Clínicos ──────────────────────────────────────────────────────
@@ -2561,7 +2555,7 @@ model BreakGlassAccess {
 model ProtocoloClinico {
   id           String          @id @default(uuid())
   doenteId     String
-  doente       Doente          @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente       Doente          @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo         String // sepsis | avc | iamcst | outro
   estadoGeral  String          @default("ativo") // ativo | concluido | cancelado
   ativadoPorId String?
@@ -2594,14 +2588,14 @@ model ItemProtocolo {
 model PrescricaoDieta {
   id          String     @id @default(uuid())
   doenteId    String
-  doente      Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente      Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo        String // normal | hipocalorica | diab | renal | hepatica | liquida | jejum | outra
   restricoes  String[]
   observacoes String?
   ativa       Boolean    @default(true)
   criadaEm    DateTime   @default(now())
   criadaPorId String
-  criadaPor   Utilizador @relation(fields: [criadaPorId], references: [id], onDelete: Cascade)
+  criadaPor   Utilizador @relation(fields: [criadaPorId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, ativa])
   @@map("prescricoes_dieta")
@@ -2619,7 +2613,7 @@ enum ResultadoCultura {
 model CulturaMicrobiologica {
   id             String           @id @default(uuid())
   doenteId       String
-  doente         Doente           @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente         Doente           @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   dataColheita   DateTime
   tipoAmostra    String
   agente         String?
@@ -2628,7 +2622,7 @@ model CulturaMicrobiologica {
   servico        String?
   observacoes    String?
   registadoPorId String
-  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadoEm       DateTime         @default(now())
 
   @@index([doenteId])
@@ -2654,7 +2648,7 @@ model SurtoIACS {
   medidas        Json?
   observacoes    String?
   registadoPorId String
-  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
+  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id], onDelete: Restrict)
   criadoEm       DateTime    @default(now())
 
   @@index([estado])
@@ -2688,8 +2682,8 @@ model SinalizacaoPreocupante {
   motivo         String    @db.VarChar(500)
   nivelUrgencia  String    @default("normal") // 'normal' | 'urgente'
 
-  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  criadaPor    Utilizador  @relation("SinalizacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Cascade)
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  criadaPor    Utilizador  @relation("SinalizacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Restrict)
   resolvidaPor Utilizador? @relation("SinalizacoesResolvidas", fields: [resolvidaPorId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, resolvida])
@@ -2716,7 +2710,7 @@ model AlertaSepsis {
   fluidoterapiaIniciada Boolean   @default(false)
   fluidoterapiaEm       DateTime?
 
-  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, resolvido])
   @@map("alertas_sepsis")
@@ -2743,7 +2737,7 @@ model BaselineDoente {
   frMedia            Float?
   frSd               Float?
 
-  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
   @@map("baselines_doente")
 }
@@ -2766,7 +2760,7 @@ model PlanoAlta {
   consultaSegAlt       Boolean @default(false)
   notas                String? @db.VarChar(1000)
 
-  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
   @@map("planos_alta")
 }
@@ -2783,8 +2777,8 @@ model ReconciliacaoMedicacao {
   aprovadaEm    DateTime?
   aprovadaPorId String?
 
-  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  criadoPor   Utilizador  @relation("ReconciliacoesCriadas", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  criadoPor   Utilizador  @relation("ReconciliacoesCriadas", fields: [criadoPorId], references: [id], onDelete: Restrict)
   aprovadaPor Utilizador? @relation("ReconciliacoesAprovadas", fields: [aprovadaPorId], references: [id], onDelete: SetNull)
 
   @@index([doenteId])
@@ -2804,7 +2798,7 @@ model RelatorioPassagemTurno {
   rascunho        String    @db.Text
   conteudo        String    @db.Text
 
-  criadaPor     Utilizador  @relation("RelatorioPassagemCriado", fields: [criadaPorId], references: [id], onDelete: Cascade)
+  criadaPor     Utilizador  @relation("RelatorioPassagemCriado", fields: [criadaPorId], references: [id], onDelete: Restrict)
   confirmadaPor Utilizador? @relation("RelatorioPassagemConfirmado", fields: [confirmadaPorId], references: [id], onDelete: SetNull)
 
   @@index([servico, criadaEm])
@@ -2827,8 +2821,8 @@ model AcessoFamiliar {
   accessTokenExpiry DateTime
   ativo             Boolean  @default(true)
 
-  doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  criadoPor Utilizador @relation("AcessoFamiliarCriado", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  criadoPor Utilizador @relation("AcessoFamiliarCriado", fields: [criadoPorId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, ativo])
   @@map("acessos_familiares")
@@ -2880,7 +2874,7 @@ model IdentificadorExterno {
   valorId  String // ID do doente nesse sistema
   tipo     String // 'sns' | 'nif' | 'hospital_id' | 'fhir_patient_id'
 
-  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
   @@unique([doenteId, sistema, tipo])
   @@index([doenteId])
@@ -2910,10 +2904,14 @@ model DocumentoSaude {
   hashSHA256      String?
   criadoEm        DateTime  @default(now())
 
-  doente        Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente               @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   sistemaOrigem SistemaExternoSaude? @relation(fields: [sistemaOrigemId], references: [id], onDelete: SetNull)
   registadoPor  Utilizador?          @relation("DocumentosSaudeRegisto", fields: [registadoPorId], references: [id], onDelete: SetNull)
   assinadoPor   Utilizador?          @relation("DocumentoSaudeAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
+  // ARQ-04: registo clínico não se apaga — remove-se com autor, momento e motivo.
+  deletedAt     DateTime?
+  removidoPorId String?
+  motivoRemocao String?
 
   @@index([doenteId, tipo])
   @@index([doenteId, dataDocumento])
@@ -2932,16 +2930,15 @@ model AiDecisao {
   inputPayload   Json?
   criadoEm       DateTime @default(now())
 
-  utilizador Utilizador @relation("AiDecisoes", fields: [utilizadorId], references: [id], onDelete: Cascade)
+  utilizador Utilizador @relation("AiDecisoes", fields: [utilizadorId], references: [id], onDelete: Restrict)
 
   @@index([doenteId, criadoEm])
   @@index([tipo, criadoEm])
-  @@map("ai_decisoes")
-
   // BE-06: coluna de chave estrangeira filtrada pelo código e sem índice. O Postgres
   // não cria índices em FKs automaticamente; sem eles, cada filtro por esta coluna é
   // um varrimento sequencial da tabela inteira.
   @@index([utilizadorId])
+  @@map("ai_decisoes")
 }
 
 model AiMetrica {
@@ -2969,7 +2966,7 @@ model OutcomeClinico {
   registadoPorId         String
   criadoEm               DateTime @default(now())
 
-  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   registadoPor Utilizador @relation("OutcomesRegistados", fields: [registadoPorId], references: [id])
 
   @@index([doenteId, tipo])
@@ -2994,7 +2991,7 @@ model ResultadoAnalise {
   registadoEm    DateTime @default(now())
   registadoPorId String?
 
-  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   registadoPor Utilizador? @relation("ResultadosAnaliseRegisto", fields: [registadoPorId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, registadoEm])
@@ -3014,8 +3011,12 @@ model FotoFerida {
   criadaPorId String
   analiseIA   Json? // { estadio, sinaisInfecao, tecidoLeito, recomendacao, confianca, analisadaEm }
 
-  avaliacao AvaliacaoFerida @relation(fields: [avaliacaoId], references: [id], onDelete: Cascade)
-  criadaPor Utilizador      @relation("FotosFeridasCriadas", fields: [criadaPorId], references: [id], onDelete: Cascade)
+  avaliacao     AvaliacaoFerida @relation(fields: [avaliacaoId], references: [id], onDelete: Cascade)
+  criadaPor     Utilizador      @relation("FotosFeridasCriadas", fields: [criadaPorId], references: [id], onDelete: Restrict)
+  // ARQ-04: registo clínico não se apaga — remove-se com autor, momento e motivo.
+  deletedAt     DateTime?
+  removidoPorId String?
+  motivoRemocao String?
 
   @@index([avaliacaoId])
   @@map("fotos_feridas")
@@ -3074,7 +3075,7 @@ model RegistoPRO {
   respostas  Json // { campoId: valor }
   criadoEm   DateTime @default(now())
 
-  doente   Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente   Doente      @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   template TemplatePRO @relation(fields: [templateId], references: [id])
 
   @@index([doenteId, criadoEm])
@@ -3093,7 +3094,7 @@ model PortalDoente {
   criadoEm     DateTime @default(now())
 
   doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
-  criadoPor Utilizador @relation("PortalDoentesCriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  criadoPor Utilizador @relation("PortalDoentesCriados", fields: [criadoPorId], references: [id], onDelete: Restrict)
 
   @@map("portal_doentes")
 }
@@ -3132,12 +3133,12 @@ model DashboardConfig {
 model FollowUpAgendado {
   id            String     @id @default(uuid())
   doenteId      String
-  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   tipo          String // '7_dias' | '30_dias' | 'consulta_especialidade'
   dataAgendada  DateTime
   especialidade String?
   responsavelId String
-  responsavel   Utilizador @relation(fields: [responsavelId], references: [id], onDelete: Cascade)
+  responsavel   Utilizador @relation(fields: [responsavelId], references: [id], onDelete: Restrict)
   concluido     Boolean    @default(false)
   observacoes   String?    @db.Text
   criadoEm      DateTime   @default(now())
@@ -3291,7 +3292,7 @@ model SsoProvider {
 model Gravidez {
   id                    String              @id @default(uuid())
   doenteId              String
-  doente                Doente              @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente                Doente              @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   dataUltimaMenstruacao DateTime? // DUM
   dataPrevistaParto     DateTime? // DPP (calculada da DUM se não indicada)
   gravida               Int? // G — nº de gestações
@@ -3345,7 +3346,7 @@ model Parto {
 model PlanoQuimioterapia {
   id                   String               @id @default(uuid())
   doenteId             String
-  doente               Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente               Doente               @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   protocoloNome        String
   ciclosPrevistos      Int
   intervaloDias        Int                  @default(21)
@@ -3383,7 +3384,7 @@ model CicloQuimioterapia {
 model SessaoDialise {
   id               String   @id @default(uuid())
   doenteId         String
-  doente           Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  doente           Doente   @relation(fields: [doenteId], references: [id], onDelete: Restrict)
   data             DateTime @default(now())
   modalidade       String // hemodialise | dialise_peritoneal
   duracaoMin       Int?

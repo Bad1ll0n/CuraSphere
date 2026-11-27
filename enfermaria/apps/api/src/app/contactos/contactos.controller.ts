@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -27,7 +27,7 @@ export class ContactosController {
 
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'administrativo')
   @Delete(':id')
-  remover(@Param('id') id: string) {
-    return this.service.remover(id);
+  remover(@Param('id') id: string, @Request() req: { user: { sub: string } }) {
+    return this.service.remover(id, req.user.sub);
   }
 }

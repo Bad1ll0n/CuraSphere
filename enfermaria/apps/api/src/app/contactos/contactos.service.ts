@@ -7,7 +7,7 @@ export class ContactosService {
 
   async listar(doenteId: string) {
     return this.prisma.contactoEmergencia.findMany({
-      where: { doenteId },
+      where: { doenteId, deletedAt: null },
       orderBy: [{ principal: 'desc' }, { nome: 'asc' }],
     });
   }
@@ -34,9 +34,14 @@ export class ContactosService {
     });
   }
 
-  async remover(id: string) {
+  async remover(id: string, utilizadorId?: string) {
     const contacto = await this.prisma.contactoEmergencia.findUnique({ where: { id } });
-    if (!contacto) throw new NotFoundException(`Contacto (ID ${id}) não encontrado`);
-    return this.prisma.contactoEmergencia.delete({ where: { id } });
+    if (!contacto || contacto.deletedAt) throw new NotFoundException(`Contacto (ID ${id}) não encontrado`);
+    // ARQ-04: remoção lógica — fica quem removeu e quando (sem motivo obrigatório: não é
+    // um registo clínico, mas foi usado em contactos com a família).
+    return this.prisma.contactoEmergencia.update({
+      where: { id },
+      data: { deletedAt: new Date(), removidoPorId: utilizadorId ?? null },
+    });
   }
 }

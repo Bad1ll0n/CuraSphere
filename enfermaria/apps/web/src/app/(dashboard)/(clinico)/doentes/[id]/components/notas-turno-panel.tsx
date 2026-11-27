@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { pedirMotivoRemocao } from '@/components/motivo-remocao';
 
 interface NotaTurno {
   id: string;
@@ -180,8 +181,10 @@ export function NotasTurnoPanel({ doenteId, utilizador, notas, emTurno, onRefres
   };
 
   const apagarNota = async (notaId: string) => {
+    const motivo = await pedirMotivoRemocao('Remover nota de turno');
+    if (!motivo) return;
     try {
-      await api.delete(`/doentes/${doenteId}/nota/${notaId}`);
+      await api.delete(`/doentes/${doenteId}/nota/${notaId}`, { data: { motivo } });
       toast.success('Removido');
       onRefresh();
     } catch (e: any) {

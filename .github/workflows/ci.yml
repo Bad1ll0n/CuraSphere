@@ -72,6 +72,21 @@ jobs:
     name: Verificação (types · unit · build)
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Base descartável para o passo "Migrações batem certo com o schema" (ARQ-11).
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: enfermaria_migracoes
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
     defaults:
       run:
         working-directory: enfermaria
@@ -106,6 +121,17 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
           JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+
+      # ── Migrações vs schema (BLOQUEANTE) ───────────────────────────────────
+      # ARQ-11: aplica todas as migrações a uma base vazia e compara com o schema.prisma.
+      # Se alguém mudar o schema sem gerar a migração (ou vice-versa), falha aqui.
+      - name: Migrações batem certo com o schema
+        working-directory: enfermaria/apps/api
+        run: |
+          pnpm exec prisma migrate deploy
+          pnpm exec prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_migracoes
 
       # ── Lint (BLOQUEANTE) ──────────────────────────────────────────────────
       # ARQ-09: 93 % do "lint vermelho" era o cliente Prisma gerado (agora ignorado);
@@ -280,7 +306,7 @@ jobs:
 
       - name: Migrar base de dados de teste
         working-directory: enfermaria/apps/api
-        run: pnpm exec prisma db push --force-reset
+        run: pnpm exec prisma migrate reset --force
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
 
