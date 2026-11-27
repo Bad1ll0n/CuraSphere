@@ -30,7 +30,6 @@ export const FUNCOES_IA: Record<string, { tipo: TipoFuncaoIA; finalidade: string
   watchdog: { tipo: 'decisao_clinica', finalidade: 'Detecção de deterioração por LLM' },
   readmissao: { tipo: 'decisao_clinica', finalidade: 'Risco de readmissão' },
   diagnostico_diferencial: { tipo: 'decisao_clinica', finalidade: 'Diagnóstico diferencial' },
-  staffing: { tipo: 'decisao_clinica', finalidade: 'Previsão de necessidades de pessoal' },
   interacoes_medicacao: { tipo: 'decisao_clinica', finalidade: 'Interacções medicamentosas avaliadas por LLM (podia BLOQUEAR prescrições)' },
   ajuste_renal: { tipo: 'decisao_clinica', finalidade: 'Ajuste de dose à função renal' },
   analise_ferida: { tipo: 'decisao_clinica', finalidade: 'Análise de fotografias de feridas' },

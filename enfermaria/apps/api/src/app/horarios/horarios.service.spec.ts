@@ -2,11 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { HorariosService } from './horarios.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { DotacoesService } from '../dotacoes/dotacoes.service';
+import { PARAMETROS_REFERENCIA } from '../dotacoes/dotacoes.regras';
 
 const mockPrisma = {
   $transaction: jest.fn(),
   escala: { findMany: jest.fn(), findUnique: jest.fn(), create: jest.fn(), update: jest.fn() },
-  horarioTurno: { create: jest.fn(), findUnique: jest.fn(), findFirst: jest.fn(), update: jest.fn(), delete: jest.fn() },
+  horarioTurno: { create: jest.fn(), findUnique: jest.fn(), findFirst: jest.fn(), findMany: jest.fn(), update: jest.fn(), delete: jest.fn() },
   horarioTurnoProfissional: { deleteMany: jest.fn(), createMany: jest.fn() },
   atribuicaoHorarioTurno: { create: jest.fn(), findUnique: jest.fn(), delete: jest.fn() },
   ausencia: { findMany: jest.fn() },
@@ -14,6 +16,7 @@ const mockPrisma = {
 };
 
 const escalaBase = { id: 'esc-1', mes: 6, ano: 2026, turnos: [] };
+const mockDotacoes = { parametros: jest.fn() };
 
 describe('HorariosService', () => {
   let service: HorariosService;
@@ -29,7 +32,7 @@ describe('HorariosService', () => {
     mockPrisma.utilizador.findMany.mockResolvedValue([]);
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HorariosService, { provide: PrismaService, useValue: mockPrisma }],
+      providers: [HorariosService, { provide: PrismaService, useValue: mockPrisma }, { provide: DotacoesService, useValue: mockDotacoes }],
     }).compile();
     service = module.get<HorariosService>(HorariosService);
   });
@@ -123,6 +126,35 @@ describe('HorariosService', () => {
 
       expect(mockPrisma.horarioTurno.create).toHaveBeenCalled();
       expect(resultado).toHaveProperty('id', 'turno-1');
+    });
+  });
+
+  // ── gerarEscalaAutomatica() — PROD-17 ───────────────────────────────────────
+
+  describe('gerarEscalaAutomatica() — por serviço (PROD-17)', () => {
+    const minimos = (enfermeiro: number) => ({ enfermeiro, auxiliar: 0, medico: 0 });
+    beforeEach(() => {
+      mockDotacoes.parametros.mockResolvedValue({ ...PARAMETROS_REFERENCIA, minimos: { manha: minimos(1), tarde: minimos(1), noite: minimos(1) } });
+      mockPrisma.horarioTurno.findMany.mockResolvedValue([]);
+      mockPrisma.horarioTurno.create.mockResolvedValue({});
+    });
+
+    it('a escala é do serviço (mes+ano+servico) e o pessoal é o colocado nele', async () => {
+      mockPrisma.escala.findUnique.mockResolvedValue(null);
+      mockPrisma.escala.create.mockResolvedValue({ id: 'esc-med', mes: 2, ano: 2027, servico: 'Medicina A' });
+      mockPrisma.utilizador.findMany.mockResolvedValue([{ id: 'e1', role: 'enfermeiro', competencias: [] }, { id: 'e2', role: 'enfermeiro', competencias: [] }, { id: 'e3', role: 'enfermeiro', competencias: [] }, { id: 'e4', role: 'enfermeiro', competencias: [] }, { id: 'e5', role: 'enfermeiro', competencias: [] }, { id: 'e6', role: 'enfermeiro', competencias: [] }]);
+      const r = await service.gerarEscalaAutomatica(2, 2027, 'chefe', 'Medicina A');
+      expect(mockPrisma.escala.findUnique).toHaveBeenCalledWith({ where: { mes_ano_servico: { mes: 2, ano: 2027, servico: 'Medicina A' } } });
+      expect(mockPrisma.utilizador.findMany.mock.calls[0][0].where).toMatchObject({ unidade: 'Medicina A' });
+      expect(mockDotacoes.parametros).toHaveBeenCalledWith('Medicina A');
+      expect(r).toMatchObject({ turnosCriados: 28 * 3, diasGerados: 28, escala: { servico: 'Medicina A' } });
+      expect(r.faltas).toEqual([]);
+    });
+
+    it('serviço sem pessoal colocado → erro que diz o que fazer', async () => {
+      mockPrisma.escala.findUnique.mockResolvedValue({ id: 'esc-x' });
+      mockPrisma.utilizador.findMany.mockResolvedValue([]);
+      await expect(service.gerarEscalaAutomatica(2, 2027, 'chefe', 'Cirurgia')).rejects.toThrow(/defina a unidade/);
     });
   });
 

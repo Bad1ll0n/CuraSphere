@@ -113,7 +113,7 @@ export class UtilizadoresService {
 
   async atualizar(
     id: string,
-    data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null },
+    data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null; unidade?: string | null; competencias?: string[] },
     atorId?: string,
   ) {
     const atual = await this.buscarPorId(id);
@@ -139,6 +139,8 @@ export class UtilizadoresService {
         servico: true,
         ordemExperiencia: true,
         equipa: true,
+        unidade: true,
+        competencias: true,
         ativo: true,
       },
     });

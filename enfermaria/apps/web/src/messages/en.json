@@ -1120,5 +1120,54 @@
     "notes": "Notes from the team",
     "teachings": "What we taught you",
     "noTeachings": "No teaching recorded yet."
+  },
+  "staffing": {
+    "title": "Safe staffing (current shift)",
+    "hint": "Care hours needed by patient dependency vs hours of rostered nurses.",
+    "loading": "Calculating staffing...",
+    "loadError": "Could not calculate staffing.",
+    "retry": "Try again",
+    "empty": "No services with beds configured.",
+    "error": "Could not save",
+    "col": {
+      "service": "Service",
+      "patients": "Patients",
+      "categories": "Dependency",
+      "hours": "Hours (needed / available)",
+      "nurses": "Nurses (rostered / needed)",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "shift": {
+      "manha": "Morning",
+      "tarde": "Afternoon",
+      "noite": "Night"
+    },
+    "status": {
+      "verde": "Adequate",
+      "amarelo": "Borderline",
+      "vermelho": "Insufficient",
+      "sem_doentes": "No patients"
+    },
+    "hoursValue": "{necessarias} h / {disponiveis} h",
+    "nursesValue": "{escalados} / {necessarios}",
+    "referenceValues": "reference values",
+    "details": "Details",
+    "close": "Close",
+    "generateRoster": "Generate roster {mes}/{ano}",
+    "rosterGenerated": "{n, plural, one {# shift created} other {# shifts created}}",
+    "gaps": "{servico} roster: {n, plural, one {# shift does not meet} other {# shifts do not meet}} the minimums or the required skill.",
+    "noGaps": "{servico} roster: every shift meets the minimums.",
+    "history": "History — {servico} (14 days)",
+    "noHistory": "No history yet.",
+    "parameters": "Service parameters",
+    "hoursPerCategory": "Hours/24 h per category",
+    "effectiveHours": "Effective hours per nurse per shift",
+    "minNurses": "Minimum nurses",
+    "weeklyHours": "Maximum weekly hours",
+    "requiredSkill": "Required skill per shift",
+    "save": "Save parameters",
+    "saved": "Parameters saved",
+    "categoriesValue": "I {I} · II {II} · III {III} · IV {IV}"
   }
 }

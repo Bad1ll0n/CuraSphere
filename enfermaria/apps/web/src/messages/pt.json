@@ -1120,5 +1120,54 @@
     "notes": "Notas da equipa",
     "teachings": "O que lhe ensinámos",
     "noTeachings": "Ainda sem ensinos registados."
+  },
+  "staffing": {
+    "title": "Dotação segura (turno em curso)",
+    "hint": "Horas de cuidados necessárias pela dependência dos doentes vs horas dos enfermeiros escalados.",
+    "loading": "A calcular a dotação...",
+    "loadError": "Não foi possível calcular a dotação.",
+    "retry": "Tentar de novo",
+    "empty": "Sem serviços com camas configuradas.",
+    "error": "Não foi possível guardar",
+    "col": {
+      "service": "Serviço",
+      "patients": "Doentes",
+      "categories": "Dependência",
+      "hours": "Horas (necessárias / disponíveis)",
+      "nurses": "Enfermeiros (escalados / necessários)",
+      "status": "Estado",
+      "actions": "Ações"
+    },
+    "shift": {
+      "manha": "Manhã",
+      "tarde": "Tarde",
+      "noite": "Noite"
+    },
+    "status": {
+      "verde": "Adequada",
+      "amarelo": "No limite",
+      "vermelho": "Insuficiente",
+      "sem_doentes": "Sem doentes"
+    },
+    "hoursValue": "{necessarias} h / {disponiveis} h",
+    "nursesValue": "{escalados} / {necessarios}",
+    "referenceValues": "valores de referência",
+    "details": "Detalhe",
+    "close": "Fechar",
+    "generateRoster": "Gerar escala {mes}/{ano}",
+    "rosterGenerated": "{n, plural, one {# turno criado} other {# turnos criados}}",
+    "gaps": "Escala de {servico}: {n, plural, one {# turno não cumpre} other {# turnos não cumprem}} os mínimos ou a competência obrigatória.",
+    "noGaps": "Escala de {servico}: todos os turnos cumprem os mínimos.",
+    "history": "Histórico — {servico} (14 dias)",
+    "noHistory": "Ainda sem histórico.",
+    "parameters": "Parâmetros do serviço",
+    "hoursPerCategory": "Horas/24 h por categoria",
+    "effectiveHours": "Horas efetivas por enfermeiro e turno",
+    "minNurses": "Mínimo de enfermeiros",
+    "weeklyHours": "Horas semanais máximas",
+    "requiredSkill": "Competência obrigatória por turno",
+    "save": "Guardar parâmetros",
+    "saved": "Parâmetros guardados",
+    "categoriesValue": "I {I} · II {II} · III {III} · IV {IV}"
   }
 }

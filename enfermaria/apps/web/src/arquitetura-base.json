@@ -10,7 +10,7 @@
     "app/(dashboard)/(clinico)/iacs/page.tsx": 641,
     "app/(dashboard)/(clinico)/urgencia/page.tsx": 1141,
     "app/(dashboard)/(gestao)/comunicacao/page.tsx": 604,
-    "app/(dashboard)/(gestao)/horarios/page.tsx": 1532,
+    "app/(dashboard)/(gestao)/horarios/page.tsx": 1405,
     "app/(dashboard)/(suporte)/farmacia/page.tsx": 899,
     "app/(dashboard)/nav-data.tsx": 882,
     "app/quiosque/page.tsx": 1069
@@ -73,7 +73,7 @@
     "app/(dashboard)/(gestao)/auditoria/page.tsx": 2,
     "app/(dashboard)/(gestao)/comunicacao/page.tsx": 5,
     "app/(dashboard)/(gestao)/eventos-adversos/page.tsx": 1,
-    "app/(dashboard)/(gestao)/horarios/page.tsx": 10,
+    "app/(dashboard)/(gestao)/horarios/page.tsx": 9,
     "app/(dashboard)/(gestao)/operacional/page.tsx": 1,
     "app/(dashboard)/(gestao)/relatorios/page.tsx": 3,
     "app/(dashboard)/(gestao)/rh/ausencias/page.tsx": 1,
