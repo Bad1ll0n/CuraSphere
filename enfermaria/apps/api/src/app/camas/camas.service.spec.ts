@@ -14,6 +14,8 @@ const mockPrisma = {
     findMany: jest.fn(),
     count: jest.fn(),
   },
+  doente: { count: jest.fn() },
+  pedidoCama: { count: jest.fn() },
 };
 
 const mockRedis = {
@@ -138,14 +140,20 @@ describe('CamasService', () => {
         .mockResolvedValueOnce(3)   // livres
         .mockResolvedValueOnce(1)   // emLimpeza
         .mockResolvedValueOnce(1);  // reservadas
+      // PROD-03: altas previstas hoje / amanhã e pedidos de cama em espera
+      mockPrisma.doente.count.mockResolvedValueOnce(2).mockResolvedValueOnce(4);
+      mockPrisma.pedidoCama.count.mockResolvedValueOnce(3);
 
       const resultado = await service.ocupacao();
 
       expect(mockPrisma.cama.count).toHaveBeenCalledTimes(5);
-      expect(resultado).toEqual({ total: 10, ocupadas: 5, livres: 3, emLimpeza: 1, reservadas: 1 });
+      expect(resultado).toEqual({
+        total: 10, ocupadas: 5, livres: 3, emLimpeza: 1, reservadas: 1,
+        altasPrevistasHoje: 2, altasPrevistasAmanha: 4, pedidosEmEspera: 3,
+      });
       expect(mockRedis.set).toHaveBeenCalledWith(
         'camas:ocupacao',
-        { total: 10, ocupadas: 5, livres: 3, emLimpeza: 1, reservadas: 1 },
+        expect.objectContaining({ total: 10, ocupadas: 5, livres: 3, emLimpeza: 1, reservadas: 1, pedidosEmEspera: 3 }),
         30,
       );
     });

@@ -241,6 +241,12 @@ model Cama {
   estado   EstadoCama @default(livre)
   servico  String?
   piso     Int?
+  // PROD-03: atributos para alocar a cama certa. sexo null = enfermaria mista.
+  sexo           String? // 'masculino' | 'feminino'
+  isolamento     Boolean   @default(false) // quarto com condições de isolamento
+  especialidade  String?
+  reservadaPedidoId String?
+  reservadaAte   DateTime?
 
   doente Doente?
 
@@ -313,7 +319,9 @@ model Doente {
   contactosEmergencia     ContactoEmergencia[]
   alertasClinicos         AlertaClinico[]
   avaliacoesRisco         AvaliacaoRisco[]
-  sumarioAlta             SumarioAlta?
+  sumariosAlta            SumarioAlta[]
+  episodiosInternamento   EpisodioInternamento[]
+  pedidosCama             PedidoCama[]
   // Novos — Fase 7
   notasClincias           NotaClinica[]
   escalasClinicas         EscalaClinica[]
@@ -344,7 +352,7 @@ model Doente {
   sinalizacoes            SinalizacaoPreocupante[]
   alertasSepsis           AlertaSepsis[]
   baseline                BaselineDoente?
-  planoAlta               PlanoAlta?
+  planosAlta              PlanoAlta[]
   reconciliacoesMedicacao ReconciliacaoMedicacao[]
   acessosFamiliares       AcessoFamiliar[]
   consentimentosTratamento ConsentimentoTratamento[]
@@ -1363,8 +1371,11 @@ model AvaliacaoRisco {
 
 model SumarioAlta {
   id                     String     @id @default(uuid())
-  doenteId               String     @unique
+  // PROD-02: um sumário por EPISÓDIO (antes era um por pessoa, para sempre).
+  doenteId               String
   doente                 Doente     @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  episodioId             String     @unique
+  episodio               EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   motivoAlta             String
   destino                String?
   resumoClinical         String
@@ -1386,6 +1397,7 @@ model SumarioAlta {
   cartaAltaAssinadaEm    DateTime?
   icd10Code              String?
 
+  @@index([doenteId, criadoEm])
   @@map("sumarios_alta")
 }
 
@@ -1520,6 +1532,7 @@ model EpisodioUrgencia {
   id                    String         @id @default(uuid())
   doenteId              String?
   doente                Doente?        @relation(fields: [doenteId], references: [id], onDelete: SetNull)
+  pedidosCama           PedidoCama[]
   nomeTemporario        String?
   queixaPrincipal       String
   triagem               CorTriagem
@@ -2800,7 +2813,10 @@ model BaselineDoente {
 
 model PlanoAlta {
   id          String    @id @default(uuid())
-  doenteId    String    @unique
+  // PROD-02: um plano de alta por episódio.
+  doenteId    String
+  episodioId  String    @unique
+  episodio    EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
   criadoEm    DateTime  @default(now())
   dataAlvoDia DateTime?
 
@@ -2816,7 +2832,105 @@ model PlanoAlta {
 
   doente Doente @relation(fields: [doenteId], references: [id], onDelete: Restrict)
 
+  @@index([doenteId, criadoEm])
   @@map("planos_alta")
+}
+
+// ─── PROD-02/PROD-03: episódio de internamento, movimentos e pedidos de cama ─
+
+/**
+ * O doente (pessoa: identificação, alergias, antecedentes, contactos) deixa de ser o episódio.
+ * Cada internamento abre um episódio (admissão, urgência, reinternamento) e fecha-o na alta.
+ * Os registos clínicos continuam ligados ao doente e lêem-se por episódio pela janela
+ * dataAdmissao–dataAlta. Só há um episódio `ativo` por doente (garantido no serviço).
+ */
+model EpisodioInternamento {
+  id                    String    @id @default(uuid())
+  tenantId              String    @default("default")
+  doenteId              String
+  doente                Doente    @relation(fields: [doenteId], references: [id], onDelete: Restrict)
+  numero                Int // 1, 2, 3… por doente
+  origem                String // 'admissao' | 'registo' | 'urgencia' | 'reinternamento' | 'migracao'
+  estado                String    @default("ativo") // 'ativo' | 'alta'
+  servico               String?
+  camaId                String?
+  diagnosticoPrincipal  String?
+  icd10Code             String?
+  dataAdmissao          DateTime  @default(now())
+  dataAlta              DateTime?
+  motivoAlta            String?
+  destinoAlta           String?
+  episodioUrgenciaId    String?
+  pedidoCamaId          String?
+  // Reinternamento: as alergias vêm do internamento anterior e têm de ser revistas.
+  alergiasRevistasEm    DateTime?
+  alergiasRevistasPorId String?
+  criadoPorId           String?
+  criadoEm              DateTime  @default(now())
+
+  movimentos  MovimentoInternamento[]
+  sumarioAlta SumarioAlta?
+  planoAlta   PlanoAlta?
+
+  @@unique([doenteId, numero])
+  @@index([doenteId, estado])
+  @@index([estado, servico])
+  @@index([dataAlta])
+  @@map("episodios_internamento")
+}
+
+/** Mudança de cama ou de serviço dentro do mesmo episódio (PROD-03). */
+model MovimentoInternamento {
+  id             String   @id @default(uuid())
+  episodioId     String
+  episodio       EpisodioInternamento @relation(fields: [episodioId], references: [id], onDelete: Restrict)
+  doenteId       String
+  tipo           String // 'cama' | 'servico'
+  deCamaId       String?
+  paraCamaId     String?
+  deServico      String?
+  paraServico    String?
+  motivo         String
+  realizadoPorId String?
+  em             DateTime @default(now())
+
+  @@index([episodioId, em])
+  @@index([doenteId])
+  @@map("movimentos_internamento")
+}
+
+/** Pedido de cama: urgência, bloco, consulta ou outro serviço → cama atribuída → ocupada. */
+model PedidoCama {
+  id                 String    @id @default(uuid())
+  tenantId           String    @default("default")
+  doenteId           String?
+  doente             Doente?   @relation(fields: [doenteId], references: [id], onDelete: SetNull)
+  episodioUrgenciaId String?
+  episodioUrgencia   EpisodioUrgencia? @relation(fields: [episodioUrgenciaId], references: [id], onDelete: SetNull)
+  nomeTemporario     String?
+  origem             String // 'urgencia' | 'bloco' | 'consulta' | 'servico' | 'admissao'
+  servicoDestino     String
+  sexo               String?
+  isolamento         Boolean   @default(false)
+  motivoIsolamento   String?
+  prioridade         String    @default("normal") // 'normal' | 'urgente'
+  diagnostico        String?
+  notas              String?
+  estado             String    @default("pedido") // 'pedido' | 'atribuida' | 'ocupada' | 'cancelado'
+  camaId             String?
+  pedidoPorId        String
+  pedidoEm           DateTime  @default(now())
+  atribuidaPorId     String?
+  atribuidaEm        DateTime?
+  justificacaoAtribuicao String?
+  ocupadaEm          DateTime?
+  canceladoEm        DateTime?
+  motivoCancelamento String?
+
+  @@index([estado, servicoDestino])
+  @@index([doenteId])
+  @@index([episodioUrgenciaId])
+  @@map("pedidos_cama")
 }
 
 // ─── Session 49: Farmácia / Reconciliação ────────────────────────────────────

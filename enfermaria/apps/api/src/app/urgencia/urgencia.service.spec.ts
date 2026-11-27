@@ -3,6 +3,8 @@ import { UrgenciaService } from './urgencia.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
+import { PedidosCamaService } from '../camas/pedidos-cama.service';
+const mockPedidosCama = { criar: jest.fn().mockResolvedValue({ id: 'pc-1' }) };
 
 const mockEmit = jest.fn();
 const mockPrisma = {
@@ -34,6 +36,7 @@ describe('UrgenciaService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: EventsGateway, useValue: mockGateway },
+        { provide: PedidosCamaService, useValue: mockPedidosCama },
       ],
     }).compile();
     service = module.get<UrgenciaService>(UrgenciaService);

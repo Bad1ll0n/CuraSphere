@@ -12,9 +12,10 @@ import { NotificacoesModule } from '../notificacoes/notificacoes.module';
 import { AiClinicoModule } from '../ai-clinico/ai-clinico.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
 import { BreakGlassModule } from '../break-glass/break-glass.module';
+import { EpisodiosModule } from '../episodios/episodios.module';
 
 @Module({
-  imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule],
+  imports: [PrismaModule, NotificacoesModule, AiClinicoModule, WebhooksModule, BreakGlassModule, EpisodiosModule],
   controllers: [DoenteController, QuiosqueController],
   providers: [
     DoenteService,

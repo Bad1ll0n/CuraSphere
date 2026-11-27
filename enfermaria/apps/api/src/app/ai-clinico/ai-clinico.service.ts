@@ -855,8 +855,10 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
     const resultado = parseWithSchema(texto, ReadmissaoSchema, { risco: 'baixo' as const, factores: [], recomendacoes: [] });
 
+    const ultimoSumario = await this.prisma.sumarioAlta.findFirst({ where: { doenteId }, orderBy: { criadoEm: 'desc' }, select: { id: true } });
+    if (!ultimoSumario) return;
     await this.prisma.sumarioAlta.update({
-      where: { doenteId },
+      where: { id: ultimoSumario.id },
       data: {
         riscReadmissao: resultado.risco,
         fatoresReadmissao: JSON.stringify(resultado.factores ?? []),
@@ -944,7 +946,8 @@ Tabelas disponíveis e campos:
    */
   async gerarCartaAlta(doenteId: string): Promise<void> {
     await exigirTratamentoPermitido(this.prisma, doenteId, 'ia_clinica'); // SEC-19: oposição do doente
-    const atual = await this.prisma.sumarioAlta.findUnique({ where: { doenteId }, select: { cartaAltaEstado: true } });
+    // PROD-02: a carta é a do último internamento (um sumário por episódio).
+    const atual = await this.prisma.sumarioAlta.findFirst({ where: { doenteId }, orderBy: { criadoEm: 'desc' }, select: { id: true, cartaAltaEstado: true } });
     if (atual?.cartaAltaEstado === 'assinada') {
       throw new ConflictException('A carta de alta já está assinada e não pode ser regenerada.');
     }
@@ -955,7 +958,8 @@ Tabelas disponíveis e campos:
         diagnosticoPrincipal: true,
         dataAdmissao: true,
         dataNascimento: true,
-        sumarioAlta: {
+        sumariosAlta: {
+          orderBy: { criadoEm: 'desc' }, take: 1,
           select: { motivoAlta: true, resumoClinical: true, prescricaoSaida: true, medicoFamilia: true, criadoEm: true },
         },
         sinaisVitais: { orderBy: { data: 'desc' }, take: 1, select: { news2: true, pulso: true, pressaoSistolica: true, saturacaoO2: true, temperatura: true } },
@@ -964,10 +968,11 @@ Tabelas disponíveis e campos:
       },
     });
 
-    if (!doente?.sumarioAlta) return;
+    const sumario = doente?.sumariosAlta[0];
+    if (!doente || !sumario || !atual) return;
 
     const dataAdmissao = new Date(doente.dataAdmissao).toLocaleDateString('pt-PT');
-    const dataAlta = new Date(doente.sumarioAlta.criadoEm).toLocaleDateString('pt-PT');
+    const dataAlta = new Date(sumario.criadoEm).toLocaleDateString('pt-PT');
     const idade = doente.dataNascimento
       ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 86_400_000))
       : null;
@@ -979,10 +984,10 @@ Tabelas disponíveis e campos:
       dataAdmissao,
       dataAlta,
       diagnosticoPrincipal: doente.diagnosticoPrincipal,
-      motivoAlta: doente.sumarioAlta.motivoAlta,
-      resumoClinical: doente.sumarioAlta.resumoClinical,
-      prescricaoSaida: doente.sumarioAlta.prescricaoSaida,
-      medicoFamilia: doente.sumarioAlta.medicoFamilia,
+      motivoAlta: sumario.motivoAlta,
+      resumoClinical: sumario.resumoClinical,
+      prescricaoSaida: sumario.prescricaoSaida,
+      medicoFamilia: sumario.medicoFamilia,
       problemasActivos: doente.problemas.map(p => p.descricao),
     });
 
@@ -1001,7 +1006,7 @@ Tabelas disponíveis e campos:
     // Rascunho: qualquer revisão anterior deixa de valer, porque o texto mudou. Condicional
     // ao estado: se a carta foi assinada enquanto o modelo escrevia, não é reescrita.
     await this.prisma.sumarioAlta.updateMany({
-      where: { doenteId, OR: [{ cartaAltaEstado: null }, { cartaAltaEstado: { not: 'assinada' } }] },
+      where: { id: atual.id, OR: [{ cartaAltaEstado: null }, { cartaAltaEstado: { not: 'assinada' } }] },
       data: { cartaAlta: carta, cartaAltaEstado: 'rascunho', cartaAltaRevistaPorId: null, cartaAltaRevistaEm: null },
     }).catch(err => this.logger.warn('Erro ao guardar carta de alta', (err as any)?.message));
   }

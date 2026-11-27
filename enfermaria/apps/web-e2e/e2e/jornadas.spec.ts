@@ -71,4 +71,45 @@ test.describe('Jornadas clínicas', () => {
     await expect(page.getByText(nome).first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/erro ao carregar doente/i)).not.toBeVisible();
   });
+  test('pedido de cama: a gestão de camas reserva uma cama e dá entrada; a ficha mostra o internamento (PROD-02/03)', async ({ page }) => {
+    const adm = await pwRequest.newContext({ baseURL: API });
+    await adm.get('/v1/csrf-token');
+    await adm.post('/v1/auth/login', { data: { numeroFuncionario: '00007', password: 'Teste1234!' } });
+    await adm.get('/v1/csrf-token');
+    const token = (await adm.storageState()).cookies.find((c) => c.name === 'csrf-token')?.value ?? '';
+    const h = { 'x-csrf-token': token };
+    const marca = Date.now().toString().slice(-6);
+    const nome = `Doente Pedido Cama ${marca}`;
+    const admitido = await adm.post('/v1/doentes/admitir', { data: { nome, dataNascimento: '1955-05-05', diagnosticoPrincipal: 'Celulite' }, headers: h });
+    expect(admitido.status()).toBe(201);
+    const doenteId = (await admitido.json()).id;
+    const cama = await adm.post('/v1/camas', { data: { numero: `PC-${marca}`, quarto: `PC${marca}`, servico: `E2E-${marca}` }, headers: h });
+    expect(cama.status()).toBe(201);
+    const camaId = (await cama.json()).id;
+    const pedido = await adm.post('/v1/pedidos-cama', { data: { doenteId, origem: 'consulta', servicoDestino: `E2E-${marca}` }, headers: h });
+    expect(pedido.status()).toBe(201);
+    await adm.dispose();
+
+    await loginAs(page, '00015'); // enfermagem: gere camas
+    await page.goto('/camas');
+    const linha = page.getByRole('listitem').filter({ hasText: nome });
+    await expect(linha).toBeVisible({ timeout: 10000 });
+    await linha.getByRole('combobox').selectOption(camaId);
+    await linha.getByRole('button', { name: 'Reservar', exact: true }).click();
+    await expect(linha.getByText(`PC${marca}/PC-${marca}`)).toBeVisible({ timeout: 10000 });
+    await linha.getByRole('button', { name: 'Dar entrada' }).click();
+    await expect(page.getByRole('listitem').filter({ hasText: nome })).toHaveCount(0, { timeout: 10000 });
+
+    // A ficha mostra o episódio em curso no serviço da cama. A enfermeira-chefe não está
+    // atribuída a este doente: acesso de emergência (break-glass) justificado, pela API.
+    const bg = await page.request.post(`${API}/v1/break-glass`, {
+      data: { doenteId, motivo: 'Validação E2E do internamento por pedido de cama' },
+      headers: { 'x-csrf-token': await csrf(page) },
+    });
+    expect(bg.ok()).toBeTruthy();
+    await page.goto(`/doentes/${doenteId}`);
+    const painel = page.getByRole('region', { name: 'Internamentos' });
+    await expect(painel).toBeVisible({ timeout: 15000 });
+    await expect(painel.getByText(`Episódio n.º 1 — em curso · E2E-${marca}`)).toBeVisible();
+  });
 });

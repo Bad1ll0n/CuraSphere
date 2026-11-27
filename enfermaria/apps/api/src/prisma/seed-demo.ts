@@ -10,6 +10,7 @@ import { PrismaClient } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
+import { abrirEpisodiosEmFalta } from './episodios-seed';
 
 try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
@@ -431,6 +432,8 @@ async function main() {
 
   // Nota: agendas dos médicos são configuradas através da UI (Utilizadores → Editar → Agenda)
 
+  // PROD-02: os doentes internados do seed ficam com o seu episódio de internamento.
+  await abrirEpisodiosEmFalta(prisma);
   console.log('\n✅  Seed de demo concluído!');
   console.log('\n🔑  Credenciais de acesso (password: demo1234):');
   for (const u of UTILIZADORES.slice(0, 6)) {

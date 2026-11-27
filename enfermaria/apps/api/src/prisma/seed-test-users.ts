@@ -11,6 +11,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
 import { gerarTokenFamilia, hashTokenFamilia } from '../app/familia/token-familia';
+import { abrirEpisodiosEmFalta } from './episodios-seed';
 
 try { process.loadEnvFile(); } catch { /* sem .env: usa as variáveis do ambiente */ }
 const pool = new Pool({ connectionString: process.env['DATABASE_URL'] });
@@ -285,6 +286,8 @@ async function main() {
   console.log('\n  MFA (todas as roles clínicas acima) — segredo TOTP fixo de teste:');
   console.log(`  Secret: ${TOTP_SECRET_TESTE}`);
   console.log('  Gerar código válido: cd apps/api && node -e "require(\'otplib\').generate({secret:\'' + TOTP_SECRET_TESTE + '\'}).then(c=>console.log(c))"');
+  // PROD-02: os doentes internados do seed ficam com o seu episódio de internamento.
+  await abrirEpisodiosEmFalta(prisma);
   console.log('\n  PORTAL DO DOENTE:');
   console.log(`  Email: doente.teste@curasphere.local  /  Password: ${PASSWORD}`);
   console.log('\n  ACESSO FAMÍLIA (link directo, sem login):');

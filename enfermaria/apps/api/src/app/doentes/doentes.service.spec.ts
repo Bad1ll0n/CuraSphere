@@ -25,7 +25,10 @@ const mockPrisma = {
     findMany: jest.fn(),
     update: jest.fn(),
     updateMany: jest.fn(),
+    findUniqueOrThrow: jest.fn(),
   },
+  // PROD-02: episódio de internamento
+  episodioInternamento: { findFirst: jest.fn(), create: jest.fn(), update: jest.fn() },
   alertaClinico: {
     count: jest.fn(),
   },
@@ -49,7 +52,7 @@ const mockPrisma = {
     delete: jest.fn(),
   },
   tarefa: { create: jest.fn() },
-  planoAlta: { upsert: jest.fn().mockResolvedValue({}) },
+  planoAlta: { upsert: jest.fn().mockResolvedValue({}), create: jest.fn() },
   followUpAgendado: {
     createMany: jest.fn().mockResolvedValue({ count: 2 }),
     findMany: jest.fn().mockResolvedValue([]),
@@ -102,6 +105,12 @@ describe('DoenteService', () => {
       return Promise.all(arg);
     });
     mockPrisma.planoAlta.upsert.mockResolvedValue({});
+    mockPrisma.planoAlta.create.mockResolvedValue({});
+    mockPrisma.cama.updateMany.mockResolvedValue({ count: 1 });
+    mockPrisma.cama.findUniqueOrThrow.mockResolvedValue({ id: 'cama-1', quarto: 'A', numero: '101', servico: 'Medicina' });
+    mockPrisma.episodioInternamento.findFirst.mockResolvedValue(null);
+    mockPrisma.episodioInternamento.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'ep-1', ...data }));
+    mockPrisma.episodioInternamento.update.mockImplementation(({ where, data }: any) => Promise.resolve({ id: where.id, ...data }));
     mockPrisma.followUpAgendado.createMany.mockResolvedValue({ count: 2 });
     mockPrisma.followUpAgendado.findMany.mockResolvedValue([]);
     mockNotificacoes.enviarParaUtilizador.mockResolvedValue(undefined);
@@ -179,10 +188,15 @@ describe('DoenteService', () => {
 
       await service.atribuirCama('d1', 'cama-1');
 
-      expect(mockPrisma.cama.updateMany).toHaveBeenCalledWith({
-        where: { id: 'cama-1', estado: { in: ['livre', 'reservada'] } },
-        data: { estado: 'ocupada' },
-      });
+      expect(mockPrisma.cama.updateMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: expect.objectContaining({ id: 'cama-1' }),
+        data: expect.objectContaining({ estado: 'ocupada' }),
+      }));
+      // PROD-02: a cama atribuída abre o episódio de internamento (e o seu plano de alta).
+      expect(mockPrisma.episodioInternamento.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ doenteId: 'd1', numero: 1, camaId: 'cama-1', servico: 'Medicina' }),
+      }));
+      expect(mockPrisma.planoAlta.create).toHaveBeenCalledWith({ data: { doenteId: 'd1', episodioId: 'ep-1' } });
       expect(mockPrisma.doente.update).toHaveBeenCalledWith(expect.objectContaining({
         where: { id: 'd1' },
         data: expect.objectContaining({ camaId: 'cama-1', estadoRegisto: 'internado' }),
@@ -277,9 +291,12 @@ describe('DoenteService', () => {
       const resultado = await service.admitir(dadosBase);
 
       expect(mockPrisma.doente.create).toHaveBeenCalledTimes(1);
-      expect(mockPrisma.cama.update).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { id: 'cama-1' }, data: { estado: 'ocupada' } }),
+      expect(mockPrisma.cama.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: expect.objectContaining({ id: 'cama-1' }), data: expect.objectContaining({ estado: 'ocupada' }) }),
       );
+      expect(mockPrisma.episodioInternamento.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ origem: 'admissao', camaId: 'cama-1' }),
+      }));
       expect(resultado).toMatchObject({ nome: 'Maria Teste' });
     });
 
@@ -420,6 +437,23 @@ describe('DoenteService', () => {
       expect(mockPrisma.doente.create).toHaveBeenCalledWith(
         expect.objectContaining({ data: expect.objectContaining({ camaId: 'cama-1' }) }),
       );
+    });
+
+    it('PROD-02: recusa dar alta a quem já teve alta (não cria episódios fantasma)', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João', camaId: null, ativo: false });
+      await expect(service.darAlta('doente-1', 'admin-1')).rejects.toThrow(/já teve alta/);
+      expect(mockPrisma.episodioInternamento.update).not.toHaveBeenCalled();
+    });
+
+    it('PROD-02: a alta fecha o episódio em curso', async () => {
+      mockPrisma.doente.findUnique.mockResolvedValue({ id: 'doente-1', nome: 'João', camaId: 'cama-1', ativo: true });
+      mockPrisma.episodioInternamento.findFirst.mockResolvedValue({ id: 'ep-2', numero: 2, estado: 'ativo' });
+      mockPrisma.doente.update.mockResolvedValue({});
+      mockPrisma.cama.update.mockResolvedValue({});
+      await service.darAlta('doente-1', 'admin-1');
+      expect(mockPrisma.episodioInternamento.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: 'ep-2' }, data: expect.objectContaining({ estado: 'alta', dataAlta: expect.any(Date) }),
+      }));
     });
 
     it('não actualiza cama quando doente não tem cama atribuída', async () => {
@@ -794,8 +828,9 @@ describe('DoenteService', () => {
     });
 
     it('cria sumário de alta e liberta cama quando doente tem camaId', async () => {
-      const doente = { id: 'doente-1', nome: 'João', camaId: 'cama-1' };
+      const doente = { id: 'doente-1', nome: 'João', camaId: 'cama-1', ativo: true };
       mockPrisma.doente.findUnique.mockResolvedValue(doente);
+      mockPrisma.episodioInternamento.findFirst.mockResolvedValue({ id: 'ep-3', numero: 3, estado: 'ativo' });
       mockPrisma.sumarioAlta.create.mockResolvedValue({ id: 'sumario-1', doenteId: 'doente-1' });
       mockPrisma.doente.update.mockResolvedValue({});
       mockPrisma.cama.update.mockResolvedValue({ id: 'cama-1', quarto: 'A', numero: '101' });
@@ -804,7 +839,11 @@ describe('DoenteService', () => {
         motivoAlta: 'Recuperado', resumoClinical: 'Bom estado',
       });
 
-      expect(mockPrisma.sumarioAlta.create).toHaveBeenCalled();
+      // PROD-02: o sumário é do episódio que a alta fecha.
+      expect(mockPrisma.sumarioAlta.create).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ episodioId: 'ep-3' }) }));
+      expect(mockPrisma.episodioInternamento.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: 'ep-3' }, data: expect.objectContaining({ estado: 'alta', motivoAlta: 'Recuperado' }),
+      }));
       expect(mockPrisma.cama.update).toHaveBeenCalledWith(
         expect.objectContaining({ data: { estado: 'em_limpeza' } }),
       );

@@ -12,6 +12,9 @@ export default function AdmitirDoentesPagina() {
   const [camas, setCamas] = useState<Cama[]>([]);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
+  // PROD-02: a pessoa já cá esteve (NIF/SNS conhecido) e teve alta → reinternar, não duplicar.
+  const [reinternarId, setReinternarId] = useState<string | null>(null);
+  const [aReinternar, setAReinternar] = useState(false);
 
   const [form, setForm] = useState({
     nome: '',
@@ -35,6 +38,7 @@ export default function AdmitirDoentesPagina() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
+    setReinternarId(null);
     setLoading(true);
     try {
       const payload: Record<string, unknown> = {
@@ -42,7 +46,7 @@ export default function AdmitirDoentesPagina() {
         dataNascimento: new Date(form.dataNascimento),
         diagnosticoPrincipal: form.diagnosticoPrincipal,
         ...(form.icd10Code && { icd10Code: form.icd10Code }),
-        camaId: form.camaId,
+        camaId: form.camaId || undefined,
         dataAltaPrevista: form.dataAltaPrevista ? new Date(form.dataAltaPrevista) : undefined,
       };
       if (form.nif)         payload.nif = form.nif;
@@ -55,8 +59,28 @@ export default function AdmitirDoentesPagina() {
       router.push('/doentes');
     } catch (err: any) {
       setErro(err.response?.data?.message ?? 'Erro ao admitir doente');
+      if (err.response?.data?.errorCode === 'DOENTE_EXISTENTE_REINTERNAR') setReinternarId(err.response.data.contexto?.doenteId ?? null);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const reinternar = async () => {
+    if (!reinternarId) return;
+    setAReinternar(true);
+    try {
+      const r = await api.post(`/doentes/${reinternarId}/reinternar`, {
+        diagnosticoPrincipal: form.diagnosticoPrincipal,
+        ...(form.icd10Code && { icd10Code: form.icd10Code }),
+        ...(form.camaId && { camaId: form.camaId }),
+        ...(form.dataAltaPrevista && { dataAltaPrevista: form.dataAltaPrevista }),
+      });
+      const n = r.data?.alergiasARever?.length ?? 0;
+      router.push(`/doentes/${reinternarId}${n ? '?alergiasARever=1' : ''}`);
+    } catch (err: any) {
+      setErro(err.response?.data?.message ?? 'Erro ao reinternar');
+    } finally {
+      setAReinternar(false);
     }
   };
 
@@ -269,7 +293,14 @@ export default function AdmitirDoentesPagina() {
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            {erro}
+            <span className="flex-1">{erro}</span>
+            {reinternarId && (
+              <button type="button" onClick={reinternar} disabled={aReinternar || !form.diagnosticoPrincipal.trim()}
+                className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg disabled:opacity-50"
+                style={{ padding: '8px 14px' }}>
+                {aReinternar ? 'A reinternar...' : 'Reinternar este doente'}
+              </button>
+            )}
           </div>
         )}
 

@@ -24,6 +24,8 @@ import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
 import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 import { MotivoRemocaoDto } from '../common/dto/motivo-remocao.dto';
 import { idCorrelacaoDoPedido } from '../common/correlacao';
+import { EpisodiosService } from '../episodios/episodios.service';
+import { ReinternarDto, TransferirInternoDto } from './dto/episodio.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -33,6 +35,7 @@ export class DoenteController {
     private readonly pdfService: PdfService,
     private readonly cartaAlta: CartaAltaService,
     private readonly leituras: AcessoLeituraService,
+    private readonly episodios: EpisodiosService,
   ) {}
 
   @Get()
@@ -161,8 +164,41 @@ export class DoenteController {
   // Mesmos papéis que a admissão; o doente ainda não tem equipa atribuída.
   @Roles('administrativo', 'enfermeiro')
   @Post(':id/atribuir-cama')
-  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto) {
-    return this.doenteService.atribuirCama(id, dto.camaId);
+  atribuirCama(@Param('id') id: string, @Body() dto: AtribuirCamaDto, @Request() req: any) {
+    return this.doenteService.atribuirCama(id, dto.camaId, req.user.sub);
+  }
+
+  // ── PROD-02 / PROD-03: episódios, reinternamento e transferência interna ──────
+
+  /** Internamentos do doente (episódios, movimentos de cama/serviço, alta). */
+  @Get(':id/episodios')
+  async episodiosDoDoente(@Param('id') id: string, @Request() req: any) {
+    await this.verificarERegistarLeitura(req, id);
+    return this.episodios.listar(id);
+  }
+
+  /**
+   * Reinternar uma pessoa com alta: novo episódio no mesmo processo. Mesmos papéis que a
+   * admissão; o doente ainda não tem equipa atribuída (não há acesso por atribuição a exigir).
+   */
+  @Roles('administrativo', 'enfermeiro')
+  @Post(':id/reinternar')
+  reinternar(@Param('id') id: string, @Body() dto: ReinternarDto, @Request() req: any) {
+    return this.episodios.reinternar(id, req.user.sub, dto);
+  }
+
+  @Roles('medico', 'enfermeiro')
+  @Post(':id/episodio/alergias-revistas')
+  async alergiasRevistas(@Param('id') id: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    return this.episodios.marcarAlergiasRevistas(id, req.user.sub);
+  }
+
+  @Roles('medico', 'enfermeiro', 'administrativo')
+  @Post(':id/transferir')
+  async transferirInterno(@Param('id') id: string, @Body() dto: TransferirInternoDto, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    return this.episodios.transferir(id, req.user.sub, dto);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')

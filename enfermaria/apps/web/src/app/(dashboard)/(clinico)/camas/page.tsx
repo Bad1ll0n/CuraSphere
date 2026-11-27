@@ -7,9 +7,25 @@ import api from '@/lib/api';
 import { useDialogoAcessivel } from '@/components/ui/use-dialogo-acessivel';
 import { ErroCarregamento } from '@/components/erro-carregamento';
 import type { Cama as SharedCama } from '@org/shared';
+import { PedidosCamaPainel } from './pedidos-cama-painel';
 
 interface Cama extends SharedCama {
-  doente?: { id: string; nome: string; estado: string; diagnosticoPrincipal: string } | null;
+  // PROD-03: atributos reais da cama e alta prevista do doente.
+  servico?: string | null;
+  sexo?: string | null;
+  isolamento?: boolean;
+  especialidade?: string | null;
+  doente?: { id: string; nome: string; estado: string; diagnosticoPrincipal: string; dataAltaPrevista?: string | null; emIsolamento?: boolean } | null;
+}
+
+function altaPrevistaRotulo(data?: string | null): string | null {
+  if (!data) return null;
+  const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  const dias = Math.floor((new Date(data).getTime() - hoje.getTime()) / 86_400_000);
+  if (dias < 0) return 'Alta prevista ultrapassada';
+  if (dias === 0) return 'Alta prevista hoje';
+  if (dias === 1) return 'Alta prevista amanhã';
+  return null;
 }
 
 const estadoCor: Record<string, { card: string; dot: string }> = {
@@ -45,7 +61,8 @@ export default function CamasPagina() {
   const [erroCarga, setErroCarga] = useState(false);
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [mostrarFormCama, setMostrarFormCama] = useState(false);
-  const [novaCama, setNovaCama] = useState({ numero: '', quarto: '' });
+  const [novaCama, setNovaCama] = useState({ numero: '', quarto: '', servico: '', sexo: '', isolamento: false });
+  const [ocupacao, setOcupacao] = useState<{ altasPrevistasHoje?: number; altasPrevistasAmanha?: number; pedidosEmEspera?: number } | null>(null);
   const [qrCama, setQrCama] = useState<Cama | null>(null);
   const [filtroQuarto, setFiltroQuarto] = useState('');
 
@@ -66,6 +83,7 @@ export default function CamasPagina() {
       const r = await api.get('/camas');
       setCamas(r.data);
       setErroCarga(false);
+      api.get('/camas/ocupacao').then((o) => setOcupacao(o.data)).catch(() => setOcupacao(null));
     } catch {
       setErroCarga(true);
     } finally {
@@ -83,6 +101,9 @@ export default function CamasPagina() {
       const cama: Cama = JSON.parse(e.data);
       setCamas(prev => prev.map(c => c.id === cama.id ? cama : c));
     });
+
+    // Pedidos de cama, transferências e admissões mudam várias camas de uma vez.
+    es.addEventListener('camas_alteradas', () => { carregar(); });
 
     es.onopen = () => setSseConectado(true);
     es.onerror = () => setSseConectado(false);
@@ -105,8 +126,11 @@ export default function CamasPagina() {
 
   const criarCama = async (e: React.FormEvent) => {
     e.preventDefault();
-    await api.post('/camas', novaCama);
-    setNovaCama({ numero: '', quarto: '' });
+    await api.post('/camas', {
+      numero: novaCama.numero, quarto: novaCama.quarto,
+      servico: novaCama.servico.trim() || undefined, sexo: novaCama.sexo || undefined, isolamento: novaCama.isolamento || undefined,
+    });
+    setNovaCama({ numero: '', quarto: '', servico: '', sexo: '', isolamento: false });
     setMostrarFormCama(false);
     await carregar();
   };
@@ -131,6 +155,9 @@ export default function CamasPagina() {
           </div>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
             {ocupadas} de {camas.length} camas ocupadas
+            {ocupacao && (
+              <> · altas previstas: <strong>{ocupacao.altasPrevistasHoje ?? 0}</strong> hoje, <strong>{ocupacao.altasPrevistasAmanha ?? 0}</strong> amanhã</>
+            )}
           </p>
         </div>
         {podeCriar && (
@@ -161,6 +188,10 @@ export default function CamasPagina() {
           </select>
         </div>
       </div>
+
+      {!loading && !erroCarga && (
+        <PedidosCamaPainel camas={camas as any} podeGerir={podeGerir} onAlterado={carregar} />
+      )}
 
       {loading ? (
         <div className="flex items-center gap-3 text-slate-500" style={{ paddingTop: '60px', justifyContent: 'center' }}>
@@ -203,6 +234,12 @@ export default function CamasPagina() {
                         {estadoLabel[cama.estado]}
                       </span>
                     </div>
+                    {(cama.servico || cama.sexo || cama.isolamento) && (
+                      <p className="text-xs text-slate-500" style={{ marginTop: '-4px' }}>
+                        {[cama.servico, cama.sexo === 'feminino' ? 'Feminina' : cama.sexo === 'masculino' ? 'Masculina' : null, cama.isolamento ? 'Isolamento' : null]
+                          .filter(Boolean).join(' · ')}
+                      </p>
+                    )}
 
                     {cama.doente ? (
                       <div style={{ marginTop: '10px' }}>
@@ -211,6 +248,9 @@ export default function CamasPagina() {
                           {estadoDoenteLabel[cama.doente.estado]}
                         </p>
                         <p className="text-xs text-slate-500 truncate" style={{ marginTop: '2px' }}>{cama.doente.diagnosticoPrincipal}</p>
+                        {altaPrevistaRotulo(cama.doente.dataAltaPrevista) && (
+                          <p className="text-xs font-semibold text-blue-700" style={{ marginTop: '2px' }}>{altaPrevistaRotulo(cama.doente.dataAltaPrevista)}</p>
+                        )}
                         <button
                           onClick={() => setQrCama(cama)}
                           title="Gerar QR do doente"
@@ -263,6 +303,27 @@ export default function CamasPagina() {
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
                   style={{ padding: '10px 14px' }}
                 />
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label htmlFor="fpage-servico" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Serviço</label>
+                <input id="fpage-servico" value={novaCama.servico} maxLength={80}
+                  onChange={(e) => setNovaCama((n) => ({ ...n, servico: e.target.value }))}
+                  className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" style={{ padding: '10px 14px' }} />
+              </div>
+              <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '20px' }}>
+                <div>
+                  <label htmlFor="fpage-sexo" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Enfermaria</label>
+                  <select id="fpage-sexo" value={novaCama.sexo} onChange={(e) => setNovaCama((n) => ({ ...n, sexo: e.target.value }))}
+                    className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" style={{ padding: '10px 14px' }}>
+                    <option value="">Mista</option>
+                    <option value="feminino">Feminina</option>
+                    <option value="masculino">Masculina</option>
+                  </select>
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer" style={{ marginTop: '28px' }}>
+                  <input type="checkbox" checked={novaCama.isolamento} onChange={(e) => setNovaCama((n) => ({ ...n, isolamento: e.target.checked }))} className="w-4 h-4" />
+                  <span className="text-sm text-slate-700">Isolamento</span>
+                </label>
               </div>
               <div style={{ marginBottom: '28px' }}>
                 <label htmlFor="fpage-1" className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Quarto</label>
