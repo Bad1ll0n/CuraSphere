@@ -61,7 +61,7 @@
   "app/(dashboard)/(clinico)/interconsultas/page.tsx": 21,
   "app/(dashboard)/(clinico)/meu-turno/meu-turno-cliente.tsx": 1,
   "app/(dashboard)/(clinico)/passagem-turno/page.tsx": 11,
-  "app/(dashboard)/(clinico)/tarefas/page.tsx": 53,
+  "app/(dashboard)/(clinico)/tarefas/tarefas-cliente.tsx": 53,
   "app/(dashboard)/(clinico)/turno/medicacoes/page.tsx": 7,
   "app/(dashboard)/(clinico)/urgencia/page.tsx": 73,
   "app/(dashboard)/(clinico)/worklist/page.tsx": 22,
